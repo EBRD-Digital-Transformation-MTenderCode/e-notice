@@ -1,13 +1,14 @@
 package com.procurement.notice.model.dto;
 
+import java.util.Date;
 import java.util.List;
 import lombok.Data;
 
 @Data
-public class OcdsRelease {
+public class Release {
     public String ocid;
     public String id;
-    public String date;
+    public Date date;
     public ReleaseTag tag;
     public InitiationType initiationType;
     public String title;

@@ -2,15 +2,34 @@ package com.procurement.notice.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.procurement.notice.convertor.TenderDtoToTenderEntity;
 import com.procurement.notice.utils.JsonUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 @ComponentScan(basePackages = "com.procurement.notice.service")
 public class ServiceConfig {
+
+    @Bean
+    public ConversionServiceFactoryBean conversionService() {
+        final Set<Converter> converters = new HashSet<>();
+        converters.add(new TenderDtoToTenderEntity(jsonUtil()));
+        final ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
+        bean.setConverters(converters);
+        return bean;
+    }
+
+    @Bean
+    public JsonUtil jsonUtil() {
+        return new JsonUtil(objectMapper());
+    }
 
     @Bean
     @Primary
@@ -18,10 +37,5 @@ public class ServiceConfig {
         ObjectMapper jackson2ObjectMapper = new ObjectMapper();
         jackson2ObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return jackson2ObjectMapper;
-    }
-
-    @Bean
-    public JsonUtil jsonUtil(ObjectMapper objectMapper){
-        return new JsonUtil(objectMapper);
     }
 }
