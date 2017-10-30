@@ -1,6 +1,7 @@
 package com.procurement.notice.controller;
 
 import com.procurement.notice.model.dto.Release;
+import com.procurement.notice.service.TenderService;
 import com.procurement.notice.service.TenderServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/update")
 public class TenderController {
 
-    private TenderServiceImpl tenderService;
+    private TenderService tenderService;
 
     public TenderController(TenderServiceImpl tenderService) {
         this.tenderService = tenderService;
@@ -24,5 +25,4 @@ public class TenderController {
         tenderService.insertData(data);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
-
 }

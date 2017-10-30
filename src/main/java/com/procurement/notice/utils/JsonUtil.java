@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
-@Component
 public class JsonUtil {
 
     private final ObjectMapper mapper;
