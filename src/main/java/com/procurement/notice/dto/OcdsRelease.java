@@ -1,7 +1,5 @@
 package com.procurement.notice.dto;
 
-import com.procurement.notice.dto.enums.InitiationType;
-import com.procurement.notice.dto.enums.ReleaseTag;
 import java.util.List;
 
 public class OcdsRelease {

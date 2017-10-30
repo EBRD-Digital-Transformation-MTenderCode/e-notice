@@ -1,4 +1,4 @@
-package com.procurement.notice.dto.enums;
+package com.procurement.notice.dto;
 
 public enum ReleaseTag {
 
