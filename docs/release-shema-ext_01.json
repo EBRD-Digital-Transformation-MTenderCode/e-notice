@@ -138,33 +138,6 @@
       "description": "The bid section is used to publish summary statistics, and where applicable, individual bid information.",
       "$ref": "#/definitions/Bids"
     },
-    "Organization": {
-      "properties": {
-        "details": {
-          "description": "Additional classification information about parties can be provided using partyDetail extensions that define particular properties and classification schemes.",
-          "type": [
-            "object",
-            "null"
-          ],
-          "properties": {
-            "scale": {
-              "title": "Scale",
-              "description": "For commercial organization's, is this a micro (micro), Small or Medium Enterprise (sme) or large (large) entity according to the definitions used by the procuring entity or buyer. This field can be left blank if no such concepts apply.",
-              "type": [
-                "string",
-                "null"
-              ],
-              "enum": [
-                "micro",
-                "sme",
-                "large",
-                ""
-              ]
-            }
-          }
-        }
-      }
-    },
     "buyerInternalReferenceId": {
       "title": "Buyer Internal Reference Identifier",
       "description": "The buyer internal reference identifier is an EU specific field. It uniquely identifies a procurement process within the Buyer's internal system.",
@@ -343,15 +316,37 @@
             "null"
           ]
         },
-        "procurementCategory": {
-          "title": "Procurement category",
-          "description": "The primary category describing the object of this contracting process from the [procurementCategory](http://standard.open-contracting.org/1.1-dev/en/schema/codelists/#procurement-category) codelist (e.g. supplies, works, services, consultingServices or mixed).",
+        "mainProcurementCategory": {
+          "title": "Main procurement category",
+          "description": "The primary category describing the main object of this contracting process from the [procurementCategory](http://standard.open-contracting.org/latest/en/schema/codelists/#procurement-category) codelist. This is a closed codelist. Local classifications should be mapped to this list.",
           "type": [
             "string",
             "null"
           ],
           "codelist": "procurementCategory.csv",
-          "openCodelist": false
+          "openCodelist": false,
+          "enum": [
+            "goods",
+            "works",
+            "services",
+            null
+          ]
+        },
+        "additionalProcurementCategories": {
+          "title": "Additional procurement categories",
+          "description": "Any additional categories which describe the objects of this contracting process, from the [extendedProcurementCategory](http://standard.open-contracting.org/latest/en/schema/codelists/#extended-procurement-category) codelist. This is an open codelist. Local categories can be included in this list.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "codelist": "extendedProcurementCategory.csv",
+          "openCodelist": true
         },
         "awardCriteria": {
           "title": "Award criteria",
@@ -409,6 +404,17 @@
             "boolean",
             "null"
           ]
+        },
+        "enquiries": {
+          "title": "enquiries",
+          "description": "Enquiries array to tender, consisting of one or more enquiry objects, each with fields for a question, and an answer.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/Enquiry"
+          }
         },
         "eligibilityCriteria": {
           "title": "Eligibility criteria",
@@ -541,7 +547,7 @@
         "electronicWorkflows": {
           "title": "Tender economic workflows",
           "description": "Details about economic workflows: ordering, invoicing and payments and whether they will be used and/or accepted. Required by the EU",
-          "$ref": "#/definitions/electronicWorkflows"
+          "$ref": "#/definitions/ElectronicWorkflows"
         },
         "jointProcurement": {
           "title": "Joint Procurement details",
@@ -558,6 +564,7 @@
           "enum": [
             "DIRECTIVE_2014_23_EU",
             "DIRECTIVE_2014_24_EU",
+
             "DIRECTIVE_2014_25_EU",
             "DIRECTIVE_2009_81_EC",
             "REGULATION_966_2012",
@@ -1772,6 +1779,20 @@
                 "string",
                 "null"
               ]
+            },
+            "scale": {
+              "title": "Scale",
+              "description": "For commercial organization's, is this a micro (micro), Small or Medium Enterprise (sme) or large (large) entity according to the definitions used by the procuring entity or buyer. This field can be left blank if no such concepts apply.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "micro",
+                "sme",
+                "large",
+                ""
+              ]
             }
           }
         },
@@ -1895,18 +1916,12 @@
             }
           }
         },
-        "relatedLots": {
-          "title": "Related lot(s)",
+        "relatedLot": {
+          "title": "Related lot",
           "description": "If this item belongs to a lot, provide the identifier(s) of the related lot(s) here.",
           "type": [
-            "array"
-          ],
-          "items": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
+            "string"
+          ]
         }
       },
       "patternProperties": {
@@ -1921,8 +1936,7 @@
     "Amendment": {
       "title": "Amendment",
       "type": [
-        "object",
-        "null"
+        "object"
       ],
       "description": "Amendment information",
       "properties": {
@@ -2295,9 +2309,47 @@
       "type": "object",
       "title": "Related Process",
       "properties": {
-        "ocid": {
-          "description": "The OCID of the related process.",
-          "title": "Related process OCID",
+        "id": {
+          "title": "Relationship ID",
+          "description": "A local identifier for this relationship, unique within this array.",
+          "type": [
+            "string"
+          ]
+        },
+        "relationship": {
+          "items": {
+            "type": "string"
+          },
+          "description": "Specify the type of relationship using the [related process codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#related-process).",
+          "title": "Relationship",
+          "type": [
+            "array",
+            "null"
+          ],
+          "codelist": "relatedProcess.csv",
+          "openCodelist": true
+        },
+        "title": {
+          "description": "The title of the related process, where referencing an open contracting process, this field should match the tender/title field in the related process.",
+          "title": "Related process title",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scheme": {
+          "title": "Scheme",
+          "description": "The identification scheme used by this cross-reference from the [related process scheme codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#related-process-scheme) codelist. When cross-referencing information also published using OCDS, an Open Contracting ID (ocid) should be used.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "codelist": "relatedProcessScheme.csv",
+          "openCodelist": true
+        },
+        "identifier": {
+          "description": "The identifier of the related process. When cross-referencing information also published using OCDS, this should be the Open Contracting ID (ocid).",
+          "title": "Identifier",
           "type": [
             "string",
             "null"
@@ -2305,35 +2357,8 @@
         },
         "uri": {
           "format": "uri",
-          "description": "A URI pointing to an OCDS release or record for the related process. This should be a machine-readable release or record package containing the relevant ocid.",
+          "description": "A URI pointing to a machine-readable document, release or record package containing the identified related process.",
           "title": "Related process URI",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "id": {
-          "type": [
-            "string"
-          ],
-          "description": "A local identifier for this relationship, unique within this array."
-        },
-        "relationship": {
-          "items": {
-            "type": "string"
-          },
-          "description": "Specify the type of relationship using the [related process codelist](http://standard.open-contracting.org/1.1-dev/en/schema/codelists/#related-process).",
-          "title": "Relationship",
-          "type": [
-            "array",
-            "null"
-          ],
-          "codelist": "relatedProcess.csv",
-          "opencodelist": true
-        },
-        "title": {
-          "description": "The title of the related process, where possible this field should match the tender/title field in the related process.",
-          "title": "Related process title",
           "type": [
             "string",
             "null"
@@ -2418,7 +2443,7 @@
             "array"
           ],
           "items": {
-            "$ref": "#/definitions/bidStatistics"
+            "$ref": "#/definitions/BidsStatistic"
           }
         },
         "details": {
@@ -2566,7 +2591,7 @@
           "description": "Details about lot options: if they will be accepted and what they can consist of. Required by the EU",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/options"
+            "$ref": "#/definitions/Options"
           }
         },
         "recurrentProcurement": {
@@ -2590,7 +2615,7 @@
           "description": "Details about lot variants: if they will be accepted and what they can consist of. Required by the EU",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/variants"
+            "$ref": "#/definitions/Variants"
           }
         }
       }
@@ -3113,7 +3138,7 @@
         }
       }
     },
-    "options": {
+    "Options": {
       "title": "Options",
       "type": "object",
       "properties": {
@@ -3189,7 +3214,7 @@
         }
       }
     },
-    "variants": {
+    "Variants": {
       "title": "Variants",
       "type": "object",
       "properties": {
@@ -3287,34 +3312,6 @@
         }
       }
     },
-    "relatedProcess": {
-      "description": "A link to a related contracting process in OCDS and the type of relationship.",
-      "type": "object",
-      "title": "Related Process",
-      "properties": {
-        "relatedLots": {
-          "title": "Related lots",
-          "description": "For subcontracting relationships: an array containing the lot identifiers of the lots within the current contracting process that may be subcontracted in the related process. Required by the EU",
-          "type": [
-            "array",
-            "null"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "description": {
-          "title": "description",
-          "description": "A description of the related process. In the case of subcontracting relationships, this should include a description of the part of the contract to be subcontracted. Required by the EU",
-          "type": "string"
-        },
-        "value": {
-          "title": "value",
-          "description": "Estimated or actual value of the related process. Required by the EU for estimates of the value of related subcontracting processes.",
-          "$ref": "#/definitions/Value"
-        }
-      }
-    },
     "AcceleratedProcedure": {
       "title": "Accelerated Procedure",
       "type": "object",
@@ -3397,7 +3394,7 @@
         }
       }
     },
-    "electronicWorkflows": {
+    "ElectronicWorkflows": {
       "title": "Electronic Workflows",
       "type": "object",
       "properties": {
@@ -3592,6 +3589,82 @@
           "title": "Place of Performance",
           "description": "The address, NUTS code and further description of the place where the contract will be performed",
           "$ref": "#/definitions/PlaceOfPerformance"
+        }
+      }
+    },
+    "Enquiry": {
+      "title": "Place of Performance",
+      "description": "Enquiry to tender, with fields for a question, and an answer.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "id",
+          "description": "A unique identifier for the enquiry.",
+          "type": "string"
+        },
+        "date": {
+          "title": "Enquiry Date",
+          "description": "The date the enquiry was received or processed.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "author": {
+          "title": "Enquiry author",
+          "description": "The identifier and name of the party asking this question. Questioners may be listed in the parties array with a role of ‘enquirer’. Procurement policies vary on whether or not the identity of those asking questions should be disclosed, or at which stage this information may be disclosed. When the identity of the questioner cannot be disclosed leave the author section blank. Display systems should interpret this as an anonymous question.",
+          "$ref": "#/definitions/Author"
+        },
+        "title": {
+          "title": "Enquiry title",
+          "description": "The subject line of the question.",
+          "type": "string"
+        },
+        "description": {
+          "title": "Enquiry description",
+          "description": "The body of the question.",
+          "type": "string"
+        },
+        "answer": {
+          "title": "Enquiry answer",
+          "description": "The answer to this question, when available.",
+          "type": "string"
+        },
+        "dateAnswered": {
+          "title": "Enquiry date of answer",
+          "description": "The date the answer to the question was provided.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "relatedItem": {
+          "title": "Enquiry related item",
+          "description": "If this question relates to a specific line-item, this field contains the line-item identifier.",
+          "type": "string"
+        },
+        "relatedLot": {
+          "title": "Enquiry related lot",
+          "description": "Where lots are used, if this question relates to a specific lot, this field contains the lot identifier.",
+          "type": "string"
+        },
+        "threadID": {
+          "title": "Enquiry thread ID",
+          "description": "If this question and answer forms part of a discussion thread (e.g. the question is a follow up to a previous answer) an optional thread identifier can be used to associate together multiple enquiries.",
+          "type": "string"
+        }
+      }
+    },
+    "Author": {
+      "title": "Author",
+      "description": "The identifier and name of the party asking this question. ",
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Author id",
+          "description": "A unique identifier for the author.",
+          "type": "string"
+        },
+        "name": {
+          "title": "Author name",
+          "description": "The name of the author.",
+          "type": "string"
         }
       }
     }
