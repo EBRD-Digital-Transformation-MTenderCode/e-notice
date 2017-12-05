@@ -11,7 +11,7 @@ public class Award {
     public Value value;
     public List<OrganizationReference> suppliers;
     public List<Item> items;
-    public Period contractPeriod;
+    public Period contractPer0iod;
     public List<Document> documents;
     public List<Amendment> amendments;
     public Amendment amendment;
