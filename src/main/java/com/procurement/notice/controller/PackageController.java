@@ -1,10 +1,9 @@
 package com.procurement.notice.controller;
 
 import com.procurement.notice.model.dto.RequestDto;
+import com.procurement.notice.model.dto.ResponseDto;
 import com.procurement.notice.service.PackageService;
 import com.procurement.notice.service.PackageServiceImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,15 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/package")
 public class PackageController {
 
-    private final PackageService mainService;
+    private final PackageService packageService;
 
-    public PackageController(final PackageServiceImpl mainService) {
-        this.mainService = mainService;
+    public PackageController(final PackageServiceImpl packageService) {
+        this.packageService = packageService;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<String> insertPackage(@RequestParam final String cpId, @RequestBody final RequestDto data) {
-        mainService.savePackage(cpId, data);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+    public ResponseDto savePackage(@RequestParam final String cpId, @RequestBody final RequestDto data) {
+        return packageService.savePackage(cpId, data);
     }
 }
