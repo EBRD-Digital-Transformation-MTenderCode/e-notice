@@ -7,6 +7,5 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 @Configuration
 @ComponentScan(basePackages = "com.procurement.notice.model.entity")
 @EnableCassandraRepositories(basePackages = "com.procurement.notice.repository")
-public class DatabaseMappingConfig {
-
+public class CassandraConfig {
 }

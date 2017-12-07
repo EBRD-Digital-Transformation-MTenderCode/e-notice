@@ -11,5 +11,3 @@ spring:
       port: 9042
       username: cassandra
       password: cassandra
-
-ocds.prefix: ocds-t1s2t3

@@ -14,7 +14,7 @@
   </module>
   <module name="Translation"/>
   <module name="UniqueProperties">
-    <property name="fileExtensions" value="properties,yaml,yml" />
+    <property name="fileExtensions" value="properties,yaml,yml"/>
   </module>
 
   <!--Size Violations-->
@@ -132,16 +132,16 @@
 
     <!--Naming Conventions-->
     <module name="AbbreviationAsWordInName">
-      <property name="allowedAbbreviationLength" value="4" />
-      <property name="allowedAbbreviations" value="XML,URL" />
+      <property name="allowedAbbreviationLength" value="4"/>
+      <property name="allowedAbbreviations" value="XML,URL"/>
     </module>
-    <module name="AbstractClassName" />
-    <module name="CatchParameterName" />
-    <module name="ClassTypeParameterName" />
-    <module name="ConstantName" />
+    <module name="AbstractClassName"/>
+    <module name="CatchParameterName"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="ConstantName"/>
     <module name="InterfaceTypeParameterName"/>
     <module name="LocalFinalVariableName">
-      <property name="tokens" value="VARIABLE_DEF,PARAMETER_DEF" />
+      <property name="tokens" value="VARIABLE_DEF,PARAMETER_DEF"/>
     </module>
     <module name="LocalVariableName"/>
     <module name="MemberName"/>
@@ -166,7 +166,7 @@
     <module name="OuterTypeNumber"/>
     <module name="ParameterNumber">
       <property name="max" value="5"/>
-      <property name="tokens" value="METHOD_DEF" />
+      <property name="tokens" value="METHOD_DEF"/>
     </module>
 
     <!--Whitespace-->
@@ -176,7 +176,8 @@
       <property name="allowNoEmptyLineBetweenFields" value="true"/>
       <property name="allowMultipleEmptyLines" value="false"/>
       <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
-      <property name="tokens" value="PACKAGE_DEF,IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,STATIC_INIT,INSTANCE_INIT,METHOD_DEF,CTOR_DEF,VARIABLE_DEF" />
+      <property name="tokens"
+                value="PACKAGE_DEF,IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,STATIC_INIT,INSTANCE_INIT,METHOD_DEF,CTOR_DEF,VARIABLE_DEF"/>
     </module>
     <module name="GenericWhitespace"/>
     <module name="MethodParamPad"/>
@@ -184,7 +185,7 @@
     <module name="NoWhitespaceAfter"/>
     <module name="NoWhitespaceBefore"/>
     <!--<module name="OperatorWrap">-->
-      <!--<property name="option" value="eol"/>-->
+    <!--<property name="option" value="eol"/>-->
     <!--</module>-->
     <module name="ParenPad"/>
     <module name="SeparatorWrap">
@@ -205,7 +206,7 @@
     <module name="ExplicitInitialization"/>
     <module name="FallThrough"/>
     <module name="FinalLocalVariable">
-      <property name="validateEnhancedForLoopVariable" value="true" />
+      <property name="validateEnhancedForLoopVariable" value="true"/>
     </module>
     <module name="HiddenField">
       <property name="ignoreConstructorParameter" value="true"/>
