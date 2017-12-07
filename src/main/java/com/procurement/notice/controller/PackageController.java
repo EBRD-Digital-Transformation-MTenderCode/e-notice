@@ -21,7 +21,7 @@ public class PackageController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseDto savePackage(@RequestParam final String cpId, @RequestBody final RequestDto data) {
-        return packageService.savePackage(cpId, data);
+    public ResponseDto savePackage(@RequestParam final String cpid, @RequestBody final RequestDto data) {
+        return packageService.savePackage(cpid, data);
     }
 }

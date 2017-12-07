@@ -8,6 +8,8 @@ import com.procurement.notice.repository.PackageRepository;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class PackageServiceImpl implements PackageService {
     public ResponseDto savePackage(final String cpId, final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
         packageRepository.save(getPackageEntity(cpId, requestDto));
-        return getResponseDto();
+        return getResponseDto(cpId);
     }
 
     private PackageEntity getPackageEntity(final String cpId, final RequestDto requestDto) {
@@ -40,8 +42,10 @@ public class PackageServiceImpl implements PackageService {
         return packageEntity;
     }
 
-    private ResponseDto getResponseDto() {
+    private ResponseDto getResponseDto(String cpId) {
+        final Map<String, String> data = new HashMap<>();
+        data.put("cpid", cpId);
         final ResponseDetailsDto details = new ResponseDetailsDto(HttpStatus.CREATED.toString(), "created");
-        return new ResponseDto(true, Collections.singletonList(details), null);
+        return new ResponseDto(true, Collections.singletonList(details), data);
     }
 }
