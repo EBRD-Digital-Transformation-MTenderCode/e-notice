@@ -6,3 +6,5 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_package (
     json_data text,
     primary key(cp_id, package_date)
 )WITH CLUSTERING ORDER BY (package_date DESC);
+
+SELECT * FROM ocds.notice_package;

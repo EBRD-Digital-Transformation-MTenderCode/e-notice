@@ -42,7 +42,7 @@ public class PackageServiceImpl implements PackageService {
         return packageEntity;
     }
 
-    private ResponseDto getResponseDto(String cpId) {
+    private ResponseDto getResponseDto(final String cpId) {
         final Map<String, String> data = new HashMap<>();
         data.put("cpid", cpId);
         final ResponseDetailsDto details = new ResponseDetailsDto(HttpStatus.CREATED.toString(), "created");
