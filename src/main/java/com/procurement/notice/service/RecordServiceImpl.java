@@ -1,10 +1,11 @@
 package com.procurement.notice.service;
 
+import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.notice.model.dto.RequestDto;
 import com.procurement.notice.model.dto.ResponseDetailsDto;
 import com.procurement.notice.model.dto.ResponseDto;
-import com.procurement.notice.model.entity.PackageEntity;
-import com.procurement.notice.repository.PackageRepository;
+import com.procurement.notice.model.entity.RecordEntity;
+import com.procurement.notice.repository.RecordRepository;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -15,31 +16,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PackageServiceImpl implements PackageService {
+public class RecordServiceImpl implements RecordService {
 
-    private final PackageRepository packageRepository;
+    private final RecordRepository recordRepository;
 
     private final JsonUtil jsonUtil;
 
-    public PackageServiceImpl(final PackageRepository packageRepository,
-                              final JsonUtil jsonUtil) {
-        this.packageRepository = packageRepository;
+    public RecordServiceImpl(final RecordRepository recordRepository,
+                             final JsonUtil jsonUtil) {
+        this.recordRepository = recordRepository;
         this.jsonUtil = jsonUtil;
     }
 
     @Override
     public ResponseDto savePackage(final String cpId, final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
-        packageRepository.save(getPackageEntity(cpId, requestDto));
+        recordRepository.save(getPackageEntity(cpId, requestDto));
         return getResponseDto(cpId);
     }
 
-    private PackageEntity getPackageEntity(final String cpId, final RequestDto requestDto) {
-        final PackageEntity packageEntity = new PackageEntity();
-        packageEntity.setCpId(cpId);
-        packageEntity.setPackageDate(LocalDateTime.now());
-        packageEntity.setJsonData(jsonUtil.toJson(requestDto.getData()));
-        return packageEntity;
+    private RecordEntity getPackageEntity(final String cpId, final RequestDto requestDto) {
+        final RecordEntity recordEntity = new RecordEntity();
+        recordEntity.setCpId(cpId);
+        recordEntity.setOcId(cpId);
+        recordEntity.setReleaseDate(LocalDateTime.now());
+        recordEntity.setReleaseId(UUIDs.timeBased());
+        recordEntity.setJsonData(jsonUtil.toJson(requestDto.getData()));
+        return recordEntity;
     }
 
     private ResponseDto getResponseDto(final String cpId) {

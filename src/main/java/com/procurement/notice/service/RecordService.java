@@ -5,7 +5,7 @@ import com.procurement.notice.model.dto.ResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface PackageService {
+public interface RecordService {
 
     ResponseDto savePackage(String cpId, RequestDto data);
 }
