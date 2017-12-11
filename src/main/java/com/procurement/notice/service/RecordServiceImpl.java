@@ -4,8 +4,8 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.notice.model.dto.RequestDto;
 import com.procurement.notice.model.dto.ResponseDetailsDto;
 import com.procurement.notice.model.dto.ResponseDto;
-import com.procurement.notice.model.entity.RecordEntity;
-import com.procurement.notice.repository.RecordRepository;
+import com.procurement.notice.model.entity.ReleaseEntity;
+import com.procurement.notice.repository.ReleaseRepository;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecordServiceImpl implements RecordService {
 
-    private final RecordRepository recordRepository;
+    private final ReleaseRepository recordRepository;
 
     private final JsonUtil jsonUtil;
 
-    public RecordServiceImpl(final RecordRepository recordRepository,
+    public RecordServiceImpl(final ReleaseRepository recordRepository,
                              final JsonUtil jsonUtil) {
         this.recordRepository = recordRepository;
         this.jsonUtil = jsonUtil;
@@ -35,8 +35,8 @@ public class RecordServiceImpl implements RecordService {
         return getResponseDto(cpId);
     }
 
-    private RecordEntity getPackageEntity(final String cpId, final RequestDto requestDto) {
-        final RecordEntity recordEntity = new RecordEntity();
+    private ReleaseEntity getPackageEntity(final String cpId, final RequestDto requestDto) {
+        final ReleaseEntity recordEntity = new ReleaseEntity();
         recordEntity.setCpId(cpId);
         recordEntity.setOcId(cpId);
         recordEntity.setReleaseDate(LocalDateTime.now());

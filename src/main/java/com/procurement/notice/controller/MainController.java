@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/package")
+@RequestMapping("/release")
 public class MainController {
 
     private final RecordService recordService;
@@ -21,7 +21,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseDto saveRecord(@RequestParam final String cpid, @RequestBody final RequestDto data) {
+    public ResponseDto saveRecord(@RequestParam final String cpid,
+                                  @RequestParam final String ocid,
+                                  @RequestParam final String tag,
+                                  @RequestParam final String language,
+                                  @RequestParam final String initiationType,
+                                  @RequestBody final RequestDto data) {
         return recordService.savePackage(cpid, data);
     }
 }

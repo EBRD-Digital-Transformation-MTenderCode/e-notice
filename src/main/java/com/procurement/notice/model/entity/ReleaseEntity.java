@@ -12,8 +12,8 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 @Getter
 @Setter
-@Table("notice_record")
-public class RecordEntity {
+@Table("notice_release")
+public class ReleaseEntity {
 
     @PrimaryKeyColumn(name = "cp_id", type = PrimaryKeyType.PARTITIONED)
     private String cpId;
@@ -25,7 +25,10 @@ public class RecordEntity {
     private LocalDateTime releaseDate;
 
     @PrimaryKeyColumn(name = "release_id", type = PrimaryKeyType.CLUSTERED)
-    private UUID releaseId;
+    private String releaseId;
+
+    @Column(value = "release_version")
+    private int releaseVersion;
 
     @Column(value = "json_data")
     private String jsonData;
