@@ -8,18 +8,33 @@ import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.repository.PackageByDateRepository;
 import com.procurement.notice.repository.ReleaseRepository;
 import com.procurement.notice.utils.JsonUtil;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
+
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
+
+    private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder()
+        .parseCaseInsensitive()
+        .append(ISO_LOCAL_DATE)
+        .appendLiteral('T')
+        .append(ISO_LOCAL_TIME)
+        .appendLiteral('Z')
+        .toFormatter();
 
     private final ReleaseRepository releaseRepository;
     private final PackageByDateRepository packageByDateRepository;
@@ -38,7 +53,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public ResponseDto savePackage(final String cpId, final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
-        releaseRepository.save(getReleaseEntity(cpId, cpId, 1, cpId, requestDto));
+//        releaseRepository.save(getReleaseEntity(cpId, cpId, 1, cpId, requestDto));
         return getResponseDto(cpId);
     }
 
@@ -46,8 +61,8 @@ public class ReleaseServiceImpl implements ReleaseService {
     public ResponseDto saveRelease(String cpid,
                                    String ocid,
                                    String tag,
-                                   String language,
                                    String initiationType,
+                                   String language,
                                    RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
         Optional<Integer> optionalReleaseVersion = releaseRepository.getLastReleaseVersion(cpid, ocid);
@@ -56,24 +71,35 @@ public class ReleaseServiceImpl implements ReleaseService {
             releaseVersion = optionalReleaseVersion.get() + 1;
         }
         String releaseId = ocid + "-" + releaseVersion;
-        ReleaseEntity releaseEntity = getReleaseEntity(cpid, ocid, releaseVersion, releaseId, requestDto);
+        ReleaseEntity releaseEntity = getReleaseEntity(cpid, ocid, tag, initiationType, language, releaseVersion, releaseId, requestDto);
         releaseRepository.save(releaseEntity);
         packageByDateRepository.save(getPackageByDateEntity(releaseEntity));
         return getResponseDto(cpid);
     }
 
-    private ReleaseEntity getReleaseEntity(final String cpId,
-                                           final String ocid,
+    private ReleaseEntity getReleaseEntity(String cpid,
+                                           String ocid,
+                                           String tag,
+                                           String initiationType,
+                                           String language,
                                            final int releaseVersion,
                                            final String releaseId,
                                            final RequestDto requestDto) {
+        final Map data = new LinkedHashMap<String, String>();
+        final LocalDateTime addedDate = LocalDateTime.now();
+        data.put("ocid", data.get("ocid"));
+        data.put("date", addedDate.format(FORMATTER));
+        data.put("tag", Arrays.asList(tag));
+        data.put("language", language);
+        data.put("initiationType", initiationType);
+        data.putAll((LinkedHashMap<String, String>)requestDto.getData());
         final ReleaseEntity releaseEntity = new ReleaseEntity();
-        releaseEntity.setCpId(cpId);
+        releaseEntity.setCpId(cpid);
         releaseEntity.setOcId(ocid);
-        releaseEntity.setReleaseDate(LocalDateTime.now());
+        releaseEntity.setReleaseDate(addedDate);
         releaseEntity.setReleaseVersion(releaseVersion);
         releaseEntity.setReleaseId(releaseId);
-        releaseEntity.setJsonData(jsonUtil.toJson(requestDto.getData()));
+        releaseEntity.setJsonData(jsonUtil.toJson(data));
         return releaseEntity;
     }
 

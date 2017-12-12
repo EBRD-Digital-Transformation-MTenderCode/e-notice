@@ -21,12 +21,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseDto saveRecord(@RequestParam final String cpid,
-                                  @RequestParam final String ocid,
-                                  @RequestParam final String tag,
-                                  @RequestParam final String language,
-                                  @RequestParam final String initiationType,
-                                  @RequestBody final RequestDto data) {
-        return releaseService.saveRelease(cpid, ocid, tag, language, initiationType, data);
+    public ResponseDto saveRecord(@RequestParam String cpid,
+                                  @RequestParam String ocid,
+                                  @RequestParam String tag,
+                                  @RequestParam String initiationType,
+                                  @RequestParam String language,
+                                  @RequestBody RequestDto data) {
+        return releaseService.saveRelease(cpid, ocid, tag, initiationType, language, data);
     }
 }
