@@ -8,17 +8,14 @@ import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.repository.PackageByDateRepository;
 import com.procurement.notice.repository.ReleaseRepository;
 import com.procurement.notice.utils.JsonUtil;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +36,6 @@ public class ReleaseServiceImpl implements ReleaseService {
     private final ReleaseRepository releaseRepository;
     private final PackageByDateRepository packageByDateRepository;
 
-
     private final JsonUtil jsonUtil;
 
     public ReleaseServiceImpl(final ReleaseRepository releaseRepository,
@@ -58,54 +54,65 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto saveRelease(String cpid,
-                                   String ocid,
-                                   String tag,
-                                   String initiationType,
-                                   String language,
-                                   RequestDto requestDto) {
+    public ResponseDto saveRelease(final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
-        Optional<Integer> optionalReleaseVersion = releaseRepository.getLastReleaseVersion(cpid, ocid);
-        int releaseVersion = 1;
-        if (optionalReleaseVersion.isPresent()) {
-            releaseVersion = optionalReleaseVersion.get() + 1;
-        }
-        String releaseId = ocid + "-" + releaseVersion;
-        ReleaseEntity releaseEntity = getReleaseEntity(cpid, ocid, tag, initiationType, language, releaseVersion, releaseId, requestDto);
+//        Optional<Integer> optionalReleaseVersion = releaseRepository.getLastReleaseVersion(cpid, ocid);
+//        int releaseVersion = 1;
+//        if (optionalReleaseVersion.isPresent()) {
+//            releaseVersion = optionalReleaseVersion.get() + 1;
+//        }
+//        String releaseId = ocid + "-" + releaseVersion;
+        ReleaseEntity releaseEntity = getReleaseEntity(requestDto);
         releaseRepository.save(releaseEntity);
-        packageByDateRepository.save(getPackageByDateEntity(releaseEntity));
-        return getResponseDto(cpid);
+//        packageByDateRepository.save(getPackageByDateEntity(releaseEntity));
+        return getResponseDto(releaseEntity.getCpId());
     }
 
-    private ReleaseEntity getReleaseEntity(String cpid,
-                                           String ocid,
-                                           String tag,
-                                           String initiationType,
-                                           String language,
-                                           final int releaseVersion,
-                                           final String releaseId,
-                                           final RequestDto requestDto) {
-        final Map data = new LinkedHashMap<String, String>();
-        final LocalDateTime addedDate = LocalDateTime.now();
-        data.put("ocid", data.get("ocid"));
-        data.put("date", addedDate.format(FORMATTER));
-        data.put("tag", Arrays.asList(tag));
-        data.put("language", language);
-        data.put("initiationType", initiationType);
-        data.putAll((LinkedHashMap<String, String>)requestDto.getData());
+    private ReleaseEntity getReleaseEntity(final RequestDto requestDto) {
+        final Map data = (LinkedHashMap<String, String>) requestDto.getData();
         final ReleaseEntity releaseEntity = new ReleaseEntity();
-        releaseEntity.setCpId(cpid);
-        releaseEntity.setOcId(ocid);
+        final String ocId = (String) data.get("ocid");
+        final LocalDateTime addedDate = LocalDateTime.parse((String) data.get("date"), FORMATTER);
+        final String releaseId = (String) data.get("id");
+        releaseEntity.setCpId(ocId);
+        releaseEntity.setOcId(ocId);
         releaseEntity.setReleaseDate(addedDate);
-        releaseEntity.setReleaseVersion(releaseVersion);
+        releaseEntity.setReleaseVersion(1);
         releaseEntity.setReleaseId(releaseId);
         releaseEntity.setJsonData(jsonUtil.toJson(data));
         return releaseEntity;
     }
 
+//    private ReleaseEntity getReleaseEntity(String cpid,
+//                                           String ocid,
+//                                           String tag,
+//                                           String initiationType,
+//                                           String language,
+//                                           final int releaseVersion,
+//                                           final String releaseId,
+//                                           final RequestDto requestDto) {
+//        final Map data = new LinkedHashMap<String, String>();
+//        final LocalDateTime addedDate = LocalDateTime.now();
+//        data.put("ocid", data.get("ocid"));
+//        data.put("date", addedDate.format(FORMATTER));
+//        data.put("tag", Arrays.asList(tag));
+//        data.put("language", language);
+//        data.put("initiationType", initiationType);
+//        data.putAll((LinkedHashMap<String, String>)requestDto.getData());
+//        final ReleaseEntity releaseEntity = new ReleaseEntity();
+//        releaseEntity.setCpId(cpid);
+//        releaseEntity.setOcId(ocid);
+//        releaseEntity.setReleaseDate(addedDate);
+//        releaseEntity.setReleaseVersion(releaseVersion);
+//        releaseEntity.setReleaseId(releaseId);
+//        releaseEntity.setJsonData(jsonUtil.toJson(data));
+//        return releaseEntity;
+//    }
+
     private PackageByDateEntity getPackageByDateEntity(final ReleaseEntity releaseEntity) {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        final String dayDate = releaseEntity.getReleaseDate().format(formatter);
+        final String dayDate = releaseEntity.getReleaseDate()
+                                            .format(formatter);
         final PackageByDateEntity packageByDateEntity = new PackageByDateEntity();
         packageByDateEntity.setDay_date(dayDate);
         packageByDateEntity.setReleaseDate(releaseEntity.getReleaseDate());

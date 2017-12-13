@@ -18,6 +18,8 @@ SELECT * FROM ocds.notice_release WHERE release_date >= '2017-12-11 16:40:00';
 
 select release_version from notice_release where cp_id=?0 and oc_id = ?1 LIMIT 1
 
+TRUNCATE ocds.notice_release;
+
 
 CREATE TABLE IF NOT EXISTS  ocds.notice_package_by_date (
     day_date text,

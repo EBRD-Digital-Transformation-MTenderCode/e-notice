@@ -11,6 +11,6 @@ public interface ReleaseService {
 
     ResponseDto savePackage(String cpId, RequestDto data);
 
-    ResponseDto saveRelease(String cpid, String ocid, String tag, String language, String initiationType, RequestDto data);
+    ResponseDto saveRelease(RequestDto data);
 
 }
