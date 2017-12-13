@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Service
 public interface ReleaseService {
 
-    ResponseDto savePackage(String cpId, RequestDto data);
+    ResponseDto saveTwineRecordRelease( RequestDto data);
 
-    ResponseDto saveRelease(RequestDto data);
+    ResponseDto saveRecordRelease(String cpId, RequestDto data);
 
 }

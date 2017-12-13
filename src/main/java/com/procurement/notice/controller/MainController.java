@@ -20,8 +20,13 @@ public class MainController {
         this.releaseService = releaseService;
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseDto saveRecord(@RequestBody RequestDto data) {
-        return releaseService.saveRelease(data);
+    @RequestMapping(value = "/saveTwineRecordRelease", method = RequestMethod.POST)
+    public ResponseDto saveTwineRecord(@RequestBody RequestDto data) {
+        return releaseService.saveTwineRecordRelease(data);
+    }
+
+    @RequestMapping(value = "/saveRecordRelease", method = RequestMethod.POST)
+    public ResponseDto saveRecord(@RequestParam String cpId, @RequestBody RequestDto data) {
+        return releaseService.saveRecordRelease(cpId, data);
     }
 }

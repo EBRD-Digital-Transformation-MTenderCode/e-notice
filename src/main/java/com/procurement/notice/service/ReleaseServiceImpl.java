@@ -47,14 +47,15 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto savePackage(final String cpId, final RequestDto requestDto) {
+    public ResponseDto saveRecordRelease(final String cpId, final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
-//        releaseRepository.save(getReleaseEntity(cpId, cpId, 1, cpId, requestDto));
+        ReleaseEntity releaseEntity = getReleaseEntity(requestDto, cpId);
+        releaseRepository.save(releaseEntity);
         return getResponseDto(cpId);
     }
 
     @Override
-    public ResponseDto saveRelease(final RequestDto requestDto) {
+    public ResponseDto saveTwineRecordRelease(final RequestDto requestDto) {
         Objects.requireNonNull(requestDto.getData());
 //        Optional<Integer> optionalReleaseVersion = releaseRepository.getLastReleaseVersion(cpid, ocid);
 //        int releaseVersion = 1;
@@ -62,19 +63,22 @@ public class ReleaseServiceImpl implements ReleaseService {
 //            releaseVersion = optionalReleaseVersion.get() + 1;
 //        }
 //        String releaseId = ocid + "-" + releaseVersion;
-        ReleaseEntity releaseEntity = getReleaseEntity(requestDto);
+        ReleaseEntity releaseEntity = getReleaseEntity(requestDto, "");
         releaseRepository.save(releaseEntity);
 //        packageByDateRepository.save(getPackageByDateEntity(releaseEntity));
         return getResponseDto(releaseEntity.getCpId());
     }
 
-    private ReleaseEntity getReleaseEntity(final RequestDto requestDto) {
+    private ReleaseEntity getReleaseEntity(final RequestDto requestDto, String cpId) {
         final Map data = (LinkedHashMap<String, String>) requestDto.getData();
         final ReleaseEntity releaseEntity = new ReleaseEntity();
         final String ocId = (String) data.get("ocid");
+        if (cpId.isEmpty()){
+            cpId = ocId;
+        }
         final LocalDateTime addedDate = LocalDateTime.parse((String) data.get("date"), FORMATTER);
         final String releaseId = (String) data.get("id");
-        releaseEntity.setCpId(ocId);
+        releaseEntity.setCpId(cpId);
         releaseEntity.setOcId(ocId);
         releaseEntity.setReleaseDate(addedDate);
         releaseEntity.setReleaseVersion(1);
