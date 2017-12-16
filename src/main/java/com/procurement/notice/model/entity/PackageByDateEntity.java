@@ -15,7 +15,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class PackageByDateEntity {
 
     @PrimaryKeyColumn(name = "day_date", type = PrimaryKeyType.PARTITIONED)
-    private String day_date;
+    private String dayDate;
 
     @PrimaryKeyColumn(name = "release_date", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
     private LocalDateTime releaseDate;

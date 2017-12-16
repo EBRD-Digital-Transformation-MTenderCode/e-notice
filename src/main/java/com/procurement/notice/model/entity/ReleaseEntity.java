@@ -1,7 +1,6 @@
 package com.procurement.notice.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.cassandra.core.cql.Ordering;
@@ -26,9 +25,6 @@ public class ReleaseEntity {
 
     @PrimaryKeyColumn(name = "release_id", type = PrimaryKeyType.CLUSTERED)
     private String releaseId;
-
-    @Column(value = "release_version")
-    private int releaseVersion;
 
     @Column(value = "json_data")
     private String jsonData;

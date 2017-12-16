@@ -1,17 +1,34 @@
 package com.procurement.notice.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.procurement.notice.databinding.LocalDateTimeDeserializer;
+import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NonNull;
 
-@Data
-public class RequestDto<T> {
+@Getter
+public class RequestDto {
 
-    @JsonProperty(value = "data")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private T data;
+    @JsonProperty(value = "cpid")
+    @NonNull
+    private String cpId;
 
-    public RequestDto(@JsonProperty(value = "data") final T data) {
-        this.data = data;
-    }
+    @JsonProperty(value = "ocid")
+    @NonNull
+    private String ocId;
+
+    @JsonProperty(value = "releaseId")
+    @NonNull
+    private String releaseId;
+
+    @JsonProperty(value = "releaseDate")
+    @NonNull
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime releaseDate;
+
+    @JsonProperty(value = "jsonData")
+    @NonNull
+    private JsonNode jsonData;
 }

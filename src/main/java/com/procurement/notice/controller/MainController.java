@@ -7,7 +7,6 @@ import com.procurement.notice.service.ReleaseServiceImpl;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,13 +19,8 @@ public class MainController {
         this.releaseService = releaseService;
     }
 
-    @RequestMapping(value = "/saveTwineRecordRelease", method = RequestMethod.POST)
-    public ResponseDto saveTwineRecord(@RequestBody RequestDto data) {
-        return releaseService.saveTwineRecordRelease(data);
-    }
-
     @RequestMapping(value = "/saveRecordRelease", method = RequestMethod.POST)
-    public ResponseDto saveRecord(@RequestParam String cpId, @RequestBody RequestDto data) {
-        return releaseService.saveRecordRelease(cpId, data);
+    public ResponseDto saveRecord(@RequestBody final RequestDto data) {
+        return releaseService.saveRecordRelease(data);
     }
 }
