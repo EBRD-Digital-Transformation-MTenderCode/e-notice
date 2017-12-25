@@ -1,10 +1,11 @@
 package com.procurement.notice.repository;
 
 import com.procurement.notice.model.entity.ReleaseEntity;
-import java.util.Optional;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface ReleaseRepository extends CassandraRepository<ReleaseEntity, String> {
