@@ -42,6 +42,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         final long timeStamp = dateUtil.getMilliUTC(addedDate);
         final ReleaseExt releaseExt = jsonUtil.toObject(ReleaseExt.class, requestDto.getJsonData().toString());
         releaseExt.setDate(addedDate);
+        releaseExt.setOcid(requestDto.getOcId());
         releaseExt.setTag(getTags(requestDto.getTag()));
         releaseExt.setInitiationType(ReleaseExt.InitiationType.fromValue(requestDto.getInitiationType()));
         releaseExt.setLanguage(requestDto.getLanguage());

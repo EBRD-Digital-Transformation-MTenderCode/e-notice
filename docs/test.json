@@ -1,0 +1,25 @@
+{
+  "cpid": "ocds-t1s2t3-UA-1513094593187",
+  "ocid": "ocds-t1s2t3-UA-1786787256553",
+  "stage": "pn",
+  "tag": [
+    "planning",
+    "tender"
+  ],
+  "initiationType": "tender",
+  "language": "en",
+  "jsonData": {
+    "tender": {
+      "id": "ocds-213czf-000-00001-01-planning",
+      "title": "Planned cycle lane improvements",
+      "description": "The authority plans to tender for improvements to the cycle lane in early 2010. This notice provides advanced notice of the intention to tender, and details to upcoming consultation events.",
+      "status": "planned",
+      "statusDetails": "planned",
+      "classification": {
+        "scheme": "CPV",
+        "id": "45233130",
+        "description": "Construction work for highways"
+      }
+    }
+  }
+}

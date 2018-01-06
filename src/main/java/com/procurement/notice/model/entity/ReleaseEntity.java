@@ -18,13 +18,13 @@ public class ReleaseEntity {
     @PrimaryKeyColumn(name = "cp_id", type = PrimaryKeyType.PARTITIONED)
     private String cpId;
 
-    @PrimaryKeyColumn(name = "oc_id", type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "oc_id", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.ASCENDING)
     private String ocId;
 
-    @PrimaryKeyColumn(name = "release_date", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+    @PrimaryKeyColumn(name = "release_date", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.ASCENDING)
     private LocalDateTime releaseDate;
 
-    @PrimaryKeyColumn(name = "release_id", type = PrimaryKeyType.CLUSTERED)
+    @Column(value = "release_id")
     private String releaseId;
 
     @Column(value = "stage")

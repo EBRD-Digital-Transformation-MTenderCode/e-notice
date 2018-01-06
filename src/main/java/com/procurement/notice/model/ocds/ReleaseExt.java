@@ -43,7 +43,7 @@ public class ReleaseExt {
     @JsonPropertyDescription("A globally unique identifier for this Open Contracting Process. Composed of a publisher" +
             " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
             "Identifier guidance](http://standard.open-contracting.org/latest/en/schema/identifiers/)")
-    private final String ocid;
+    private String ocid;
 
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for this particular release of information. A release identifier must be " +
