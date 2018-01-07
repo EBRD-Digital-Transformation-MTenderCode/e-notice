@@ -7,27 +7,39 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_release (
     release_id text,
     stage text,
     json_data text,
-    primary key(cp_id, oc_id, release_date, release_id)
-)WITH CLUSTERING ORDER BY (oc_id DESC, release_date DESC);
+    primary key(cp_id, oc_id, release_date)
+)WITH CLUSTERING ORDER BY (oc_id ASC, release_date ASC);
 
 SELECT * FROM ocds.notice_release;
 
-SELECT release_version FROM ocds.notice_release WHERE cp_id = 'ocds-213czf-000-00001' AND oc_id = 'ocds-213czf-000-00001-01';
-
-SELECT * FROM ocds.notice_release WHERE release_date >= '2017-12-11 16:40:00';
-
-select release_version from notice_release where cp_id=?0 and oc_id = ?1 LIMIT 1
-
 TRUNCATE ocds.notice_release;
 
+CREATE TABLE IF NOT EXISTS ocds.notice_compiled_release (
+       cp_id text,
+       oc_id text,
+       release_date timestamp,
+       release_id text,
+       stage text,
+       json_data text,
+       primary key(cp_id, oc_id)
+)WITH CLUSTERING ORDER BY (oc_id ASC);
 
-CREATE TABLE IF NOT EXISTS  ocds.notice_package_by_date (
-    day_date text,
-    release_date timestamp,
+
+SELECT * FROM ocds.notice_compiled_release;
+
+TRUNCATE ocds.notice_compiled_release;
+
+
+CREATE TABLE IF NOT EXISTS  ocds.notice_offset (
     cp_id text,
-    oc_id text,
-    release_id text,
-    primary key(day_date, release_date)
-)WITH CLUSTERING ORDER BY (release_date DESC);
+    release_date timestamp,
+    primary key(cp_id)
+);
 
-SELECT * FROM ocds.notice_package_by_date WHERE day_date = '2017-12-12' AND release_date > '2017-12-12 09:17:58+0000';
+CREATE INDEX date_index ON ocds.notice_offset (release_date);
+
+TRUNCATE ocds.notice_offset;
+
+SELECT * FROM ocds.notice_offset;
+
+SELECT * FROM ocds.notice_offset WHERE release_date < '2017-12-11 18:31:51' AND release_date > '2017-12-11 18:31:00' LIMIT 2 ALLOW FILTERING;

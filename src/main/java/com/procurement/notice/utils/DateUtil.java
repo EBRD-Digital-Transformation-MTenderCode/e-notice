@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 @Component
 public class DateUtil {
@@ -16,5 +17,13 @@ public class DateUtil {
     public long getMilliUTC(final LocalDateTime localDateTime) {
         return localDateTime.toInstant(ZoneOffset.UTC)
                             .toEpochMilli();
+    }
+
+    public LocalDateTime dateToLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC);
+    }
+
+    public Date localDateTimeToDate(LocalDateTime startDate) {
+        return Date.from(startDate.toInstant(ZoneOffset.UTC));
     }
 }

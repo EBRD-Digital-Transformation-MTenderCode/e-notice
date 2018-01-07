@@ -9,9 +9,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         WebConfig.class,
-        ServiceConfig.class,
-        CassandraConfig.class,
-        ConverterConfig.class
+        DaoConfiguration.class
 })
 public class ApplicationConfig {
     @Bean
