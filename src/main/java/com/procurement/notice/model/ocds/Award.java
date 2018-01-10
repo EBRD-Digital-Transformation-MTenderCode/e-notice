@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.time.LocalDateTime;
 import java.util.*;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,7 +32,8 @@ import java.util.*;
 public class Award {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this award. It must be unique and cannot change within the Open " +
-            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance](http://standard" +
+            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "(http://standard" +
             ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private final String id;
 
@@ -83,7 +81,8 @@ public class Award {
 
     @JsonProperty("amendments")
     @JsonPropertyDescription("An award amendment is a formal change to the details of the award, and generally " +
-            "involves the publication of a new award notice/release. The rationale and a description of the changes made " +
+            "involves the publication of a new award notice/release. The rationale and a description of the changes " +
+            "made " +
             "can be provided here.")
     private final List<Amendment> amendments;
 
@@ -111,7 +110,8 @@ public class Award {
                  @JsonProperty("title") final String title,
                  @JsonProperty("description") final String description,
                  @JsonProperty("status") final Status status,
-                 @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
+                 @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime
+                             date,
                  @JsonProperty("value") final Value value,
                  @JsonProperty("suppliers") final LinkedHashSet<OrganizationReference> suppliers,
                  @JsonProperty("items") final LinkedHashSet<Item> items,
@@ -141,62 +141,12 @@ public class Award {
         this.statusDetails = statusDetails;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(status)
-                .append(date)
-                .append(value)
-                .append(suppliers)
-                .append(items)
-                .append(contractPeriod)
-                .append(documents)
-                .append(amendments)
-                .append(amendment)
-                .append(relatedLots)
-                .append(requirementResponses)
-                .append(reviewProceedings)
-                .append(statusDetails)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Award)) {
-            return false;
-        }
-        final Award rhs = (Award) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(status, rhs.status)
-                .append(date, rhs.date)
-                .append(value, rhs.value)
-                .append(suppliers, rhs.suppliers)
-                .append(items, rhs.items)
-                .append(contractPeriod, rhs.contractPeriod)
-                .append(documents, rhs.documents)
-                .append(amendments, rhs.amendments)
-                .append(amendment, rhs.amendment)
-                .append(relatedLots, rhs.relatedLots)
-                .append(requirementResponses, rhs.requirementResponses)
-                .append(reviewProceedings, rhs.reviewProceedings)
-                .append(statusDetails, rhs.statusDetails)
-                .isEquals();
-    }
-
     public enum Status {
         PENDING("pending"),
         ACTIVE("active"),
         CANCELLED("cancelled"),
         UNSUCCESSFUL("unsuccessful");
 
-        private final String value;
         private final static Map<String, Status> CONSTANTS = new HashMap<>();
 
         static {
@@ -205,8 +155,19 @@ public class Award {
             }
         }
 
+        private final String value;
+
         Status(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Status fromValue(final String value) {
+            final Status constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -217,15 +178,6 @@ public class Award {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Status fromValue(final String value) {
-            final Status constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
     }

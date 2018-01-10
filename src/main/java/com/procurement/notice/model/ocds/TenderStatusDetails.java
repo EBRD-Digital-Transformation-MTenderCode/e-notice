@@ -5,32 +5,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TenderStatus {
-    PLANNING("planning"),
-    PLANNED("planned"),
-    ACTIVE("active"),
-    CANCELLED("cancelled"),
-    UNSUCCESSFUL("unsuccessful"),
-    COMPLETE("complete"),
-    WITHDRAWN("withdrawn");
+public enum TenderStatusDetails {
+    PRESELECTION("preselection"),
+    PRESELECTED("preselected"),
+    PREQUALIFICATION("prequalification"),
+    PREQUALIFIED("prequalified"),
+    EVALUATION("evaluation"),
+    EVALUATED("evaluated"),
+    EXECUTION("execution");
 
-    private final static Map<String, TenderStatus> CONSTANTS = new HashMap<>();
+    private static final Map<String, TenderStatusDetails> CONSTANTS = new HashMap<>();
 
     static {
-        for (final TenderStatus c : values()) {
+        for (final TenderStatusDetails c : values()) {
             CONSTANTS.put(c.value, c);
         }
     }
 
     private final String value;
 
-    private TenderStatus(final String value) {
+    TenderStatusDetails(final String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static TenderStatus fromValue(final String value) {
-        final TenderStatus constant = CONSTANTS.get(value);
+    public static TenderStatusDetails fromValue(final String value) {
+        final TenderStatusDetails constant = CONSTANTS.get(value);
         if (constant == null) {
             throw new IllegalArgumentException(value);
         }

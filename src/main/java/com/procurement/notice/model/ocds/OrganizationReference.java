@@ -2,12 +2,9 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,34 +58,5 @@ public class OrganizationReference {
         this.address = address;
         this.additionalIdentifiers = additionalIdentifiers;
         this.contactPoint = contactPoint;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(name)
-                .append(id)
-                .append(identifier)
-                .append(address)
-                .append(additionalIdentifiers)
-                .append(contactPoint)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof OrganizationReference)) {
-            return false;
-        }
-        final OrganizationReference rhs = (OrganizationReference) other;
-        return new EqualsBuilder().append(name, rhs.name)
-                .append(id, rhs.id)
-                .append(identifier, rhs.identifier)
-                .append(address, rhs.address)
-                .append(additionalIdentifiers, rhs.additionalIdentifiers)
-                .append(contactPoint, rhs.contactPoint)
-                .isEquals();
     }
 }

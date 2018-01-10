@@ -1,13 +1,10 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -55,36 +52,8 @@ public class RelatedNotice {
         this.uri = uri;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(scheme)
-                .append(id)
-                .append(relationship)
-                .append(objectOfProcurementInPIN)
-                .append(uri)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof RelatedNotice)) {
-            return false;
-        }
-        final RelatedNotice rhs = (RelatedNotice) other;
-        return new EqualsBuilder().append(scheme, rhs.scheme)
-                .append(id, rhs.id)
-                .append(relationship, rhs.relationship)
-                .append(objectOfProcurementInPIN, rhs.objectOfProcurementInPIN)
-                .append(uri, rhs.uri)
-                .isEquals();
-    }
-
     public enum Relationship {
         PREVIOUS_NOTICE("previousNotice");
-        private final String value;
         private final static Map<String, Relationship> CONSTANTS = new HashMap<>();
 
         static {
@@ -93,18 +62,10 @@ public class RelatedNotice {
             }
         }
 
+        private final String value;
+
         private Relationship(final String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
 
         @JsonCreator
@@ -116,24 +77,6 @@ public class RelatedNotice {
             return constant;
         }
 
-    }
-
-    public enum Scheme {
-        TED("TED"),
-        NATIONAL("National");
-        private final String value;
-        private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final Scheme c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private Scheme(final String value) {
-            this.value = value;
-        }
-
         @Override
         public String toString() {
             return this.value;
@@ -144,6 +87,25 @@ public class RelatedNotice {
             return this.value;
         }
 
+    }
+
+    public enum Scheme {
+        TED("TED"),
+        NATIONAL("National");
+        private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final Scheme c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private Scheme(final String value) {
+            this.value = value;
+        }
+
         @JsonCreator
         public static Scheme fromValue(final String value) {
             final RelatedNotice.Scheme constant = CONSTANTS.get(value);
@@ -151,6 +113,16 @@ public class RelatedNotice {
                 throw new IllegalArgumentException(value);
             }
             return constant;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
     }
 }

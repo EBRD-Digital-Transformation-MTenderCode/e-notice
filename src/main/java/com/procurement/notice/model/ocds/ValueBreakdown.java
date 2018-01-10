@@ -1,13 +1,10 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,37 +49,9 @@ public class ValueBreakdown {
         this.estimationMethod = estimationMethod;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(type)
-                .append(description)
-                .append(amount)
-                .append(estimationMethod)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof ValueBreakdown)) {
-            return false;
-        }
-        final ValueBreakdown rhs = (ValueBreakdown) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(type, rhs.type)
-                .append(description, rhs.description)
-                .append(amount, rhs.amount)
-                .append(estimationMethod, rhs.estimationMethod)
-                .isEquals();
-    }
-
     public enum ValueBreakdownType {
         USER_FEES("userFees"),
         PUBLIC_AGENCY_FEES("publicAgencyFees");
-        private final String value;
         private final static Map<String, ValueBreakdownType> CONSTANTS = new HashMap<>();
 
         static {
@@ -91,8 +60,19 @@ public class ValueBreakdown {
             }
         }
 
+        private final String value;
+
         private ValueBreakdownType(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static ValueBreakdownType fromValue(final String value) {
+            final ValueBreakdownType constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -103,15 +83,6 @@ public class ValueBreakdown {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static ValueBreakdownType fromValue(final String value) {
-            final ValueBreakdownType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
     }

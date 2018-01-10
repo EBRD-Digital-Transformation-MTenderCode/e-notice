@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 
@@ -70,7 +67,8 @@ public class Transaction {
     @JsonCreator
     public Transaction(@JsonProperty("id") final String id,
                        @JsonProperty("source") final URI source,
-                       @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
+                       @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                           LocalDateTime date,
                        @JsonProperty("value") final Value value,
                        @JsonProperty("payer") final OrganizationReference payer,
                        @JsonProperty("payee") final OrganizationReference payee,
@@ -88,42 +86,5 @@ public class Transaction {
         this.amount = amount;
         this.providerOrganization = providerOrganization;
         this.receiverOrganization = receiverOrganization;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(source)
-                .append(date)
-                .append(value)
-                .append(payer)
-                .append(payee)
-                .append(uri)
-                .append(amount)
-                .append(providerOrganization)
-                .append(receiverOrganization)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Transaction)) {
-            return false;
-        }
-        final Transaction rhs = (Transaction) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(source, rhs.source)
-                .append(date, rhs.date)
-                .append(value, rhs.value)
-                .append(payer, rhs.payer)
-                .append(payee, rhs.payee)
-                .append(uri, rhs.uri)
-                .append(amount, rhs.amount)
-                .append(providerOrganization, rhs.providerOrganization)
-                .append(receiverOrganization, rhs.receiverOrganization)
-                .isEquals();
     }
 }

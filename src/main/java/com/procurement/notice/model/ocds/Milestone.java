@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -48,8 +45,10 @@ public class Milestone {
 
     @JsonProperty("code")
     @JsonPropertyDescription("Milestone codes can be used to track specific events that take place for a particular " +
-            "kind of contracting process. For example, a code of 'approvalLetter' could be used to allow applications to " +
-            "understand this milestone represents the date an approvalLetter is due or signed. Milestone codes is an open" +
+            "kind of contracting process. For example, a code of 'approvalLetter' could be used to allow applications" +
+            " to " +
+            "understand this milestone represents the date an approvalLetter is due or signed. Milestone codes is an " +
+            "open" +
             " codelist, and codes should be agreed among data producers and the applications using that data.")
     private final String code;
 
@@ -98,9 +97,12 @@ public class Milestone {
                      @JsonProperty("type") final MilestoneType type,
                      @JsonProperty("description") final String description,
                      @JsonProperty("code") final String code,
-                     @JsonProperty("dueDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dueDate,
-                     @JsonProperty("dateMet") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dateMet,
-                     @JsonProperty("dateModified") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dateModified,
+                     @JsonProperty("dueDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                     LocalDateTime dueDate,
+                     @JsonProperty("dateMet") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                     LocalDateTime dateMet,
+                     @JsonProperty("dateModified") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                     LocalDateTime dateModified,
                      @JsonProperty("status") final Status status,
                      @JsonProperty("documents") final LinkedHashSet<Document> documents,
                      @JsonProperty("relatedLots") final List<String> relatedLots,
@@ -121,56 +123,12 @@ public class Milestone {
         this.additionalInformation = additionalInformation;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(type)
-                .append(description)
-                .append(code)
-                .append(dueDate)
-                .append(dateMet)
-                .append(dateModified)
-                .append(status)
-                .append(documents)
-                .append(relatedLots)
-                .append(relatedParties)
-                .append(additionalInformation)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Milestone)) {
-            return false;
-        }
-        final Milestone rhs = (Milestone) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(type, rhs.type)
-                .append(description, rhs.description)
-                .append(code, rhs.code)
-                .append(dueDate, rhs.dueDate)
-                .append(dateMet, rhs.dateMet)
-                .append(dateModified, rhs.dateModified)
-                .append(status, rhs.status)
-                .append(documents, rhs.documents)
-                .append(relatedLots, rhs.relatedLots)
-                .append(relatedParties, rhs.relatedParties)
-                .append(additionalInformation, rhs.additionalInformation)
-                .isEquals();
-    }
-
     public enum Status {
         SCHEDULED("scheduled"),
         MET("met"),
         NOT_MET("notMet"),
         PARTIALLY_MET("partiallyMet");
 
-        private final String value;
         private final static Map<String, Status> CONSTANTS = new HashMap<>();
 
         static {
@@ -179,8 +137,19 @@ public class Milestone {
             }
         }
 
+        private final String value;
+
         private Status(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Status fromValue(final String value) {
+            final Status constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -191,15 +160,6 @@ public class Milestone {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Status fromValue(final String value) {
-            final Status constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
     }
@@ -213,7 +173,6 @@ public class Milestone {
         REPORTING("reporting"),
         FINANCING("financing");
 
-        private final String value;
         private final static Map<String, MilestoneType> CONSTANTS = new HashMap<>();
 
         static {
@@ -222,8 +181,19 @@ public class Milestone {
             }
         }
 
+        private final String value;
+
         private MilestoneType(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static MilestoneType fromValue(final String value) {
+            final MilestoneType constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -234,15 +204,6 @@ public class Milestone {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static MilestoneType fromValue(final String value) {
-            final MilestoneType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
     }

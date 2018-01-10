@@ -2,12 +2,9 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,28 +36,5 @@ public class RequirementGroup {
         this.id = id;
         this.description = description;
         this.requirements = requirements;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(description)
-                .append(requirements)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof RequirementGroup)) {
-            return false;
-        }
-        final RequirementGroup rhs = (RequirementGroup) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(description, rhs.description)
-                .append(requirements, rhs.requirements)
-                .isEquals();
     }
 }

@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,26 +23,5 @@ public class ProcedureOutsourcing {
                                 @JsonProperty("outsourcedTo") final Organization outsourcedTo) {
         this.procedureOutsourced = procedureOutsourced;
         this.outsourcedTo = outsourcedTo;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(procedureOutsourced)
-                .append(outsourcedTo)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof ProcedureOutsourcing)) {
-            return false;
-        }
-        final ProcedureOutsourcing rhs = (ProcedureOutsourcing) other;
-        return new EqualsBuilder().append(procedureOutsourced, rhs.procedureOutsourced)
-                .append(outsourcedTo, rhs.outsourcedTo)
-                .isEquals();
     }
 }

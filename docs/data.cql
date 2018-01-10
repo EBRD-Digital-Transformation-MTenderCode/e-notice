@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS ocds.notice_compiled_release (
        primary key(cp_id, oc_id)
 )WITH CLUSTERING ORDER BY (oc_id ASC);
 
-
 SELECT * FROM ocds.notice_compiled_release;
 
 TRUNCATE ocds.notice_compiled_release;

@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,28 +30,5 @@ public class Renewal {
         this.hasRenewals = hasRenewals;
         this.maxNumber = maxNumber;
         this.renewalConditions = renewalConditions;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(hasRenewals)
-                .append(maxNumber)
-                .append(renewalConditions)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Renewal)) {
-            return false;
-        }
-        final Renewal rhs = (Renewal) other;
-        return new EqualsBuilder().append(hasRenewals, rhs.hasRenewals)
-                .append(maxNumber, rhs.maxNumber)
-                .append(renewalConditions, rhs.renewalConditions)
-                .isEquals();
     }
 }

@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,7 +17,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class RequirementResponse {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this requirement response. It must be unique and cannot change " +
-            "within the Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "within the Open Contracting Process it is part of (defined by a single ocid). See the [identifier " +
+            "guidance]" +
             "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private final String id;
 
@@ -64,36 +63,5 @@ public class RequirementResponse {
         this.period = period;
         this.requirement = requirement;
         this.relatedTenderer = relatedTenderer;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(value)
-                .append(period)
-                .append(requirement)
-                .append(relatedTenderer)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof RequirementResponse)) {
-            return false;
-        }
-        final RequirementResponse rhs = (RequirementResponse) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(value, rhs.value)
-                .append(period, rhs.period)
-                .append(requirement, rhs.requirement)
-                .append(relatedTenderer, rhs.relatedTenderer)
-                .isEquals();
     }
 }

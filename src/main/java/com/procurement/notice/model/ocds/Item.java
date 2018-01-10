@@ -2,12 +2,9 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,8 +33,10 @@ public class Item {
     @JsonProperty("additionalClassifications")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("An array of additional classifications for the item. See the [itemClassificationScheme]" +
-            "(http://standard.open-contracting.org/latest/en/schema/codelists/#item-classification-scheme) codelist for " +
-            "common options to use in OCDS. This may also be used to present codes from an internal classification scheme.")
+            "(http://standard.open-contracting.org/latest/en/schema/codelists/#item-classification-scheme) codelist " +
+            "for " +
+            "common options to use in OCDS. This may also be used to present codes from an internal classification " +
+            "scheme.")
     private final Set<Classification> additionalClassifications;
 
     @JsonProperty("quantity")
@@ -69,36 +68,5 @@ public class Item {
         this.quantity = quantity;
         this.unit = unit;
         this.relatedLot = relatedLot;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(description)
-                .append(classification)
-                .append(additionalClassifications)
-                .append(quantity)
-                .append(unit)
-                .append(relatedLot)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Item)) {
-            return false;
-        }
-        final Item rhs = (Item) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(description, rhs.description)
-                .append(classification, rhs.classification)
-                .append(additionalClassifications, rhs.additionalClassifications)
-                .append(quantity, rhs.quantity)
-                .append(unit, rhs.unit)
-                .append(relatedLot, rhs.relatedLot)
-                .isEquals();
     }
 }

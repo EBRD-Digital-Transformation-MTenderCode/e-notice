@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.time.LocalDateTime;
 import java.util.*;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -96,7 +93,8 @@ public class Contract {
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process is followed by one or more contracting processes, represented under a " +
-            "separate open contracting identifier (ocid) then details of the related process can be provided here. This " +
+            "separate open contracting identifier (ocid) then details of the related process can be provided here. " +
+            "This " +
             "is commonly used to point to subcontracts, or to renewal and replacement processes for this contract.")
     private final Set<RelatedProcess> relatedProcesses;
 
@@ -106,7 +104,8 @@ public class Contract {
 
     @JsonProperty("amendments")
     @JsonPropertyDescription("A contract amendment is a formal change to, or extension of, a contract, and generally " +
-            "involves the publication of a new contract notice/release, or some other documents detailing the change. The" +
+            "involves the publication of a new contract notice/release, or some other documents detailing the change." +
+            " The" +
             " rationale and a description of the changes made can be provided here.")
     private final List<Amendment> amendments;
 
@@ -145,7 +144,8 @@ public class Contract {
                     @JsonProperty("period") final Period period,
                     @JsonProperty("value") final Value value,
                     @JsonProperty("items") final LinkedHashSet<Item> items,
-                    @JsonProperty("dateSigned") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dateSigned,
+                    @JsonProperty("dateSigned") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                        LocalDateTime dateSigned,
                     @JsonProperty("documents") final LinkedHashSet<Document> documents,
                     @JsonProperty("implementation") final Implementation implementation,
                     @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses,
@@ -180,73 +180,12 @@ public class Contract {
         this.isFrameworkOrDynamic = isFrameworkOrDynamic;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(awardID)
-                .append(extendsContractID)
-                .append(title)
-                .append(description)
-                .append(status)
-                .append(period)
-                .append(value)
-                .append(items)
-                .append(dateSigned)
-                .append(documents)
-                .append(implementation)
-                .append(relatedProcesses)
-                .append(milestones)
-                .append(amendments)
-                .append(amendment)
-                .append(requirementResponses)
-                .append(countryOfOrigin)
-                .append(lotVariant)
-                .append(valueBreakdown)
-                .append(isFrameworkOrDynamic)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Contract)) {
-            return false;
-        }
-        final Contract rhs = (Contract) other;
-
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(awardID, rhs.awardID)
-                .append(extendsContractID, rhs.extendsContractID)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(status, rhs.status)
-                .append(period, rhs.period)
-                .append(value, rhs.value)
-                .append(items, rhs.items)
-                .append(dateSigned, rhs.dateSigned)
-                .append(documents, rhs.documents)
-                .append(implementation, rhs.implementation)
-                .append(relatedProcesses, rhs.relatedProcesses)
-                .append(milestones, rhs.milestones)
-                .append(amendments, rhs.amendments)
-                .append(amendment, rhs.amendment)
-                .append(requirementResponses, rhs.requirementResponses)
-                .append(countryOfOrigin, rhs.countryOfOrigin)
-                .append(lotVariant, rhs.lotVariant)
-                .append(valueBreakdown, rhs.valueBreakdown)
-                .append(isFrameworkOrDynamic, rhs.isFrameworkOrDynamic)
-                .isEquals();
-    }
-
     public enum Status {
         PENDING("pending"),
         ACTIVE("active"),
         CANCELLED("cancelled"),
         TERMINATED("terminated");
 
-        private final String value;
         private final static Map<String, Status> CONSTANTS = new HashMap<>();
 
         static {
@@ -255,8 +194,19 @@ public class Contract {
             }
         }
 
+        private final String value;
+
         private Status(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Status fromValue(final String value) {
+            final Status constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -267,15 +217,6 @@ public class Contract {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Status fromValue(final String value) {
-            final Status constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 }

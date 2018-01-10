@@ -1,13 +1,10 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,8 +28,10 @@ public class Unit {
     @JsonProperty("scheme")
     @JsonPropertyDescription("The list from which units of measure identifiers are taken. This should be an entry " +
             "from the options available in the [unitClassificationScheme](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#unit-classification-scheme) codelist. Use of the scheme 'UNCEFACT' for the " +
-            "UN/CEFACT Recommendation 20 list of 'Codes for Units of Measure Used in International Trade' is recommended," +
+            ".org/latest/en/schema/codelists/#unit-classification-scheme) codelist. Use of the scheme 'UNCEFACT' for " +
+            "the " +
+            "UN/CEFACT Recommendation 20 list of 'Codes for Units of Measure Used in International Trade' is " +
+            "recommended," +
             " although other options are available.")
     private final Scheme scheme;
 
@@ -57,38 +56,10 @@ public class Unit {
         this.uri = uri;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(name)
-                .append(value)
-                .append(scheme)
-                .append(id)
-                .append(uri)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Unit)) {
-            return false;
-        }
-        final Unit rhs = (Unit) other;
-        return new EqualsBuilder().append(name, rhs.name)
-                .append(value, rhs.value)
-                .append(scheme, rhs.scheme)
-                .append(id, rhs.id)
-                .append(uri, rhs.uri)
-                .isEquals();
-    }
-
     public enum Scheme {
         UNCEFACT("UNCEFACT"),
         QUDT("QUDT");
 
-        private final String value;
         private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
 
         static {
@@ -97,8 +68,19 @@ public class Unit {
             }
         }
 
+        private final String value;
+
         private Scheme(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Scheme fromValue(final String value) {
+            final Scheme constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -109,15 +91,6 @@ public class Unit {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Scheme fromValue(final String value) {
-            final Scheme constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 }

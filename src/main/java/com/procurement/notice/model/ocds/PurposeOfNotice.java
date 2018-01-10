@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,28 +33,5 @@ public class PurposeOfNotice {
         this.reducesTimeLimits = reducesTimeLimits;
         this.isACallForCompetition = isACallForCompetition;
         this.socialOrOtherSpecificServices = socialOrOtherSpecificServices;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(reducesTimeLimits)
-                .append(isACallForCompetition)
-                .append(socialOrOtherSpecificServices)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof PurposeOfNotice)) {
-            return false;
-        }
-        final PurposeOfNotice rhs = (PurposeOfNotice) other;
-        return new EqualsBuilder().append(reducesTimeLimits, rhs.reducesTimeLimits)
-                .append(isACallForCompetition, rhs.isACallForCompetition)
-                .append(socialOrOtherSpecificServices, rhs.socialOrOtherSpecificServices)
-                .isEquals();
     }
 }

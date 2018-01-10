@@ -2,12 +2,9 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,36 +66,5 @@ public class DesignContest {
         this.juryDecisionBinding = juryDecisionBinding;
         this.juryMembers = juryMembers;
         this.participants = participants;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(hasPrizes)
-                .append(prizes)
-                .append(paymentsToParticipants)
-                .append(serviceContractAward)
-                .append(juryDecisionBinding)
-                .append(juryMembers)
-                .append(participants)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof DesignContest)) {
-            return false;
-        }
-        final DesignContest rhs = (DesignContest) other;
-        return new EqualsBuilder().append(hasPrizes, rhs.hasPrizes)
-                .append(prizes, rhs.prizes)
-                .append(paymentsToParticipants, rhs.paymentsToParticipants)
-                .append(serviceContractAward, rhs.serviceContractAward)
-                .append(juryDecisionBinding, rhs.juryDecisionBinding)
-                .append(juryMembers, rhs.juryMembers)
-                .append(participants, rhs.participants)
-                .isEquals();
     }
 }

@@ -5,15 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,7 +57,8 @@ public class ReleasePackage {
     @JsonProperty("license")
     @JsonPropertyDescription("A link to the license that applies to the data in this package. A Public Domain " +
             "Dedication or [Open Definition Conformant](http://opendefinition.org/licenses/) license is strongly " +
-            "recommended. The canonical URI of the license should be used. Documents linked from this file may be under " +
+            "recommended. The canonical URI of the license should be used. Documents linked from this file may be " +
+            "under " +
             "other license conditions. ")
     private final URI license;
 
@@ -73,7 +71,8 @@ public class ReleasePackage {
     public ReleasePackage(@JsonProperty("uri") final URI uri,
                           @JsonProperty("version") final String version,
                           @JsonProperty("extensions") final List<URI> extensions,
-                          @JsonProperty("publishedDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime publishedDate,
+                          @JsonProperty("publishedDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+                              final LocalDateTime publishedDate,
                           @JsonProperty("releases") final LinkedHashSet<ReleaseExt> releases,
                           @JsonProperty("publisher") final Publisher publisher,
                           @JsonProperty("license") final URI license,
@@ -86,38 +85,5 @@ public class ReleasePackage {
         this.publisher = publisher;
         this.license = license;
         this.publicationPolicy = publicationPolicy;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(uri)
-                .append(version)
-                .append(extensions)
-                .append(publishedDate)
-                .append(releases)
-                .append(publisher)
-                .append(license)
-                .append(publicationPolicy)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof ReleasePackage)) {
-            return false;
-        }
-        final ReleasePackage rhs = (ReleasePackage) other;
-        return new EqualsBuilder().append(uri, rhs.uri)
-                .append(version, rhs.version)
-                .append(extensions, rhs.extensions)
-                .append(publishedDate, rhs.publishedDate)
-                .append(releases, rhs.releases)
-                .append(publisher, rhs.publisher)
-                .append(license, rhs.license)
-                .append(publicationPolicy, rhs.publicationPolicy)
-                .isEquals();
     }
 }

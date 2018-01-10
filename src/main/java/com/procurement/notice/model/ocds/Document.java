@@ -5,15 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,8 +34,10 @@ public class Document {
 
     @JsonProperty("documentType")
     @JsonPropertyDescription("A classification of the document described taken from the [documentType codelist]" +
-            "(http://standard.open-contracting.org/latest/en/schema/codelists/#document-type). Values from the provided " +
-            "codelist should be used wherever possible, though extended values can be provided if the codelist does not " +
+            "(http://standard.open-contracting.org/latest/en/schema/codelists/#document-type). Values from the " +
+            "provided " +
+            "codelist should be used wherever possible, though extended values can be provided if the codelist does " +
+            "not " +
             "have a relevant code.")
     private final DocumentType documentType;
 
@@ -70,8 +69,10 @@ public class Document {
 
     @JsonProperty("format")
     @JsonPropertyDescription("The format of the document taken from the [IANA Media Types codelist](http://www.iana" +
-            ".org/assignments/media-types/), with the addition of one extra value for 'offline/print', used when this " +
-            "document entry is being used to describe the offline publication of a document. Use values from the template" +
+            ".org/assignments/media-types/), with the addition of one extra value for 'offline/print', used when this" +
+            " " +
+            "document entry is being used to describe the offline publication of a document. Use values from the " +
+            "template" +
             " column. Links to web pages should be tagged 'text/html'.")
     private final String format;
 
@@ -79,7 +80,8 @@ public class Document {
     @JsonPropertyDescription("Specifies the language of the linked document using either two-letter [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
             ".w3.org/International/articles/language-tags/). The use of lowercase two-letter codes from [ISO639-1]" +
-            "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended unless there is a clear user" +
+            "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended unless there is a clear " +
+            "user" +
             " need for distinguishing the language subtype.")
     private final String language;
 
@@ -111,43 +113,6 @@ public class Document {
         this.format = format;
         this.language = language;
         this.relatedLots = relatedLots;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(documentType)
-                .append(title)
-                .append(description)
-                .append(url)
-                .append(datePublished)
-                .append(dateModified)
-                .append(format)
-                .append(language)
-                .append(relatedLots)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Document)) {
-            return false;
-        }
-        final Document rhs = (Document) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(documentType, rhs.documentType)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(url, rhs.url)
-                .append(datePublished, rhs.datePublished)
-                .append(dateModified, rhs.dateModified)
-                .append(format, rhs.format)
-                .append(language, rhs.language)
-                .append(relatedLots, rhs.relatedLots)
-                .isEquals();
     }
 
     public enum DocumentType {
@@ -192,7 +157,6 @@ public class Document {
         CONTRACT_SUMMARY("contractSummary"),
         CANCELLATION_DETAILS("cancellationDetails");
 
-        private final String value;
         private final static Map<String, DocumentType> CONSTANTS = new HashMap<>();
 
         static {
@@ -201,8 +165,19 @@ public class Document {
             }
         }
 
+        private final String value;
+
         private DocumentType(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static DocumentType fromValue(final String value) {
+            final DocumentType constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -213,15 +188,6 @@ public class Document {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static DocumentType fromValue(final String value) {
-            final DocumentType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 }

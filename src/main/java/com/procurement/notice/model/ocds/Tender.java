@@ -2,17 +2,19 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
         "title",
         "description",
         "status",
+        "statusDetails",
         "items",
         "minValue",
         "value",
@@ -83,6 +85,10 @@ public class Tender {
             ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private final TenderStatus status;
 
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of status.)")
+    private TenderStatusDetails statusDetails;
+
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The goods and services to be purchased, broken into line items wherever possible. Items" +
@@ -97,7 +103,8 @@ public class Tender {
 
     @JsonProperty("procurementMethod")
     @JsonPropertyDescription("Specify tendering method using the [method codelist](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#method). This is a closed codelist. Local method types should be mapped to " +
+            ".org/latest/en/schema/codelists/#method). This is a closed codelist. Local method types should be mapped" +
+            " to " +
             "this list.")
     private final ProcurementMethod procurementMethod;
 
@@ -113,14 +120,16 @@ public class Tender {
 
     @JsonProperty("mainProcurementCategory")
     @JsonPropertyDescription("The primary category describing the main object of this contracting process from the " +
-            "[procurementCategory](http://standard.open-contracting.org/latest/en/schema/codelists/#procurement-category)" +
+            "[procurementCategory](http://standard.open-contracting" +
+            ".org/latest/en/schema/codelists/#procurement-category)" +
             " codelist. This is a closed codelist. Local classifications should be mapped to this list.")
     private final MainProcurementCategory mainProcurementCategory;
 
     @JsonProperty("additionalProcurementCategories")
     @JsonPropertyDescription("Any additional categories which describe the objects of this contracting process, from " +
             "the [extendedProcurementCategory](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#extended-procurement-category) codelist. This is an open codelist. Local " +
+            ".org/latest/en/schema/codelists/#extended-procurement-category) codelist. This is an open codelist. " +
+            "Local " +
             "categories can be included in this list.")
     private final List<ExtendedProcurementCategory> additionalProcurementCategories;
 
@@ -141,7 +150,8 @@ public class Tender {
 
     @JsonProperty("submissionMethodDetails")
     @JsonPropertyDescription("Any detailed or further information on the submission method. This may include the " +
-            "address, e-mail address or online service to which bids should be submitted, and any special requirements to" +
+            "address, e-mail address or online service to which bids should be submitted, and any special " +
+            "requirements to" +
             " be followed for submissions.")
     private final String submissionMethodDetails;
 
@@ -189,7 +199,8 @@ public class Tender {
 
     @JsonProperty("documents")
     @JsonPropertyDescription("All documents and attachments related to the tender, including any notices. See the " +
-            "[documentType codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#document-type) for " +
+            "[documentType codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#document-type) " +
+            "for " +
             "details of potential documents to include. Common documents include official legal notices of tender, " +
             "technical specifications, evaluation criteria, and, as a tender process progresses, clarifications and " +
             "replies to queries.")
@@ -211,7 +222,8 @@ public class Tender {
 
     @JsonProperty("lots")
     @JsonPropertyDescription("A tender process may be divided into lots, where bidders can bid on one or more lots. " +
-            "Details of each lot can be provided here. Items, documents and other features can then reference the lot " +
+            "Details of each lot can be provided here. Items, documents and other features can then reference the lot" +
+            " " +
             "they are related to using relatedLot. Where no relatedLot identifier is given, the values should be " +
             "interpreted as applicable to the whole tender. Properties of tender can be overridden for a given Lot " +
             "through their inclusion in the Lot object.")
@@ -219,7 +231,8 @@ public class Tender {
 
     @JsonProperty("lotDetails")
     @JsonPropertyDescription("If this tender is divided into lots, details can be provided here of any criteria that " +
-            "apply to bidding on these lots. This extended property is currently focussed on fields required by the EU " +
+            "apply to bidding on these lots. This extended property is currently focussed on fields required by the " +
+            "EU " +
             "TED data standard")
     private final LotDetails lotDetails;
 
@@ -231,7 +244,8 @@ public class Tender {
     @JsonProperty("participationFees")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Any fees applicable to bidders wishing to participate in the tender process. Fees may " +
-            "apply for access to bidding documents, for the submission of bids or there may be a win fee payable by the " +
+            "apply for access to bidding documents, for the submission of bids or there may be a win fee payable by " +
+            "the " +
             "successful bidder.")
     private final Set<ParticipationFee> participationFees;
 
@@ -289,7 +303,8 @@ public class Tender {
 
     @JsonProperty("submissionMethodRationale")
     @JsonPropertyDescription("A value from the [submissionValueRationale codelist](http://standard.open-contracting" +
-            ".org/1.1-dev/en/schema/codelists/submission-method-rationale) that identifies the rationale where electronic" +
+            ".org/1.1-dev/en/schema/codelists/submission-method-rationale) that identifies the rationale where " +
+            "electronic" +
             " submission method is not to be allowed. Required by EU.")
     private final List<SubmissionMethodRationale> submissionMethodRationale;
 
@@ -312,6 +327,7 @@ public class Tender {
                   @JsonProperty("title") final String title,
                   @JsonProperty("description") final String description,
                   @JsonProperty("status") final TenderStatus status,
+                  @JsonProperty("statusDetails") final TenderStatusDetails statusDetails,
                   @JsonProperty("items") final LinkedHashSet<Item> items,
                   @JsonProperty("minValue") final Value minValue,
                   @JsonProperty("value") final Value value,
@@ -366,6 +382,7 @@ public class Tender {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.statusDetails = statusDetails;
         this.items = items;
         this.value = value;
         this.minValue = minValue;
@@ -416,133 +433,11 @@ public class Tender {
         this.requiresElectronicCatalogue = requiresElectronicCatalogue;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(status)
-                .append(items)
-                .append(minValue)
-                .append(value)
-                .append(procurementMethod)
-                .append(procurementMethodDetails)
-                .append(procurementMethodRationale)
-                .append(mainProcurementCategory)
-                .append(additionalProcurementCategories)
-                .append(awardCriteria)
-                .append(awardCriteriaDetails)
-                .append(submissionMethod)
-                .append(submissionMethodDetails)
-                .append(tenderPeriod)
-                .append(enquiryPeriod)
-                .append(hasEnquiries)
-                .append(enquiries)
-                .append(eligibilityCriteria)
-                .append(awardPeriod)
-                .append(contractPeriod)
-                .append(numberOfTenderers)
-                .append(tenderers)
-                .append(procuringEntity)
-                .append(documents)
-                .append(milestones)
-                .append(amendments)
-                .append(amendment)
-                .append(lots)
-                .append(lotDetails)
-                .append(lotGroups)
-                .append(participationFees)
-                .append(criteria)
-                .append(acceleratedProcedure)
-                .append(classification)
-                .append(designContest)
-                .append(electronicWorkflows)
-                .append(jointProcurement)
-                .append(legalBasis)
-                .append(objectives)
-                .append(procedureOutsourcing)
-                .append(procurementMethodAdditionalInfo)
-                .append(reviewParties)
-                .append(reviewPeriod)
-                .append(standstillPeriod)
-                .append(submissionLanguages)
-                .append(submissionMethodRationale)
-                .append(dynamicPurchasingSystem)
-                .append(framework)
-                .append(requiresElectronicCatalogue)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Tender)) {
-            return false;
-        }
-        final Tender rhs = (Tender) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(status, rhs.status)
-                .append(items, rhs.items)
-                .append(minValue, rhs.minValue)
-                .append(value, rhs.value)
-                .append(procurementMethod, rhs.procurementMethod)
-                .append(procurementMethodDetails, rhs.procurementMethodDetails)
-                .append(procurementMethodRationale, rhs.procurementMethodRationale)
-                .append(mainProcurementCategory, rhs.mainProcurementCategory)
-                .append(additionalProcurementCategories, rhs.additionalProcurementCategories)
-                .append(awardCriteria, rhs.awardCriteria)
-                .append(awardCriteriaDetails, rhs.awardCriteriaDetails)
-                .append(submissionMethod, rhs.submissionMethod)
-                .append(submissionMethodDetails, rhs.submissionMethodDetails)
-                .append(tenderPeriod, rhs.tenderPeriod)
-                .append(enquiryPeriod, rhs.enquiryPeriod)
-                .append(hasEnquiries, rhs.hasEnquiries)
-                .append(enquiries, rhs.enquiries)
-                .append(eligibilityCriteria, rhs.eligibilityCriteria)
-                .append(awardPeriod, rhs.awardPeriod)
-                .append(contractPeriod, rhs.contractPeriod)
-                .append(numberOfTenderers, rhs.numberOfTenderers)
-                .append(tenderers, rhs.tenderers)
-                .append(procuringEntity, rhs.procuringEntity)
-                .append(documents, rhs.documents)
-                .append(milestones, rhs.milestones)
-                .append(amendments, rhs.amendments)
-                .append(amendment, rhs.amendment)
-                .append(lots, rhs.lots)
-                .append(lotDetails, rhs.lotDetails)
-                .append(lotGroups, rhs.lotGroups)
-                .append(participationFees, rhs.participationFees)
-                .append(criteria, rhs.criteria)
-                .append(acceleratedProcedure, rhs.acceleratedProcedure)
-                .append(classification, rhs.classification)
-                .append(designContest, rhs.designContest)
-                .append(electronicWorkflows, rhs.electronicWorkflows)
-                .append(jointProcurement, rhs.jointProcurement)
-                .append(legalBasis, rhs.legalBasis)
-                .append(objectives, rhs.objectives)
-                .append(procedureOutsourcing, rhs.procedureOutsourcing)
-                .append(procurementMethodAdditionalInfo, rhs.procurementMethodAdditionalInfo)
-                .append(reviewParties, rhs.reviewParties)
-                .append(reviewPeriod, rhs.reviewPeriod)
-                .append(standstillPeriod, rhs.standstillPeriod)
-                .append(submissionLanguages, rhs.submissionLanguages)
-                .append(submissionMethodRationale, rhs.submissionMethodRationale)
-                .append(dynamicPurchasingSystem, rhs.dynamicPurchasingSystem)
-                .append(framework, rhs.framework)
-                .append(requiresElectronicCatalogue, rhs.requiresElectronicCatalogue)
-                .isEquals();
-    }
-
     public enum MainProcurementCategory {
         GOODS("goods"),
         WORKS("works"),
         SERVICES("services");
 
-        private final String value;
         private final static Map<String, MainProcurementCategory> CONSTANTS = new HashMap<>();
 
         static {
@@ -551,18 +446,10 @@ public class Tender {
             }
         }
 
+        private final String value;
+
         private MainProcurementCategory(final String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
 
         @JsonCreator
@@ -573,26 +460,6 @@ public class Tender {
             }
             return constant;
         }
-    }
-
-    public enum ProcurementMethod {
-        OPEN("open"),
-        SELECTIVE("selective"),
-        LIMITED("limited"),
-        DIRECT("direct");
-
-        private final String value;
-        private final static Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final ProcurementMethod c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private ProcurementMethod(final String value) {
-            this.value = value;
-        }
 
         @Override
         public String toString() {
@@ -602,6 +469,27 @@ public class Tender {
         @JsonValue
         public String value() {
             return this.value;
+        }
+    }
+
+    public enum ProcurementMethod {
+        OPEN("open"),
+        SELECTIVE("selective"),
+        LIMITED("limited"),
+        DIRECT("direct");
+
+        private final static Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final ProcurementMethod c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private ProcurementMethod(final String value) {
+            this.value = value;
         }
 
         @JsonCreator
@@ -612,26 +500,6 @@ public class Tender {
             }
             return constant;
         }
-    }
-
-    public enum ExtendedProcurementCategory {
-        GOODS("goods"),
-        WORKS("works"),
-        SERVICES("services"),
-        CONSULTING_SERVICES("consultingServices");
-
-        private final String value;
-        private final static Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final ExtendedProcurementCategory c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private ExtendedProcurementCategory(final String value) {
-            this.value = value;
-        }
 
         @Override
         public String toString() {
@@ -642,6 +510,27 @@ public class Tender {
         public String value() {
             return this.value;
         }
+    }
+
+    public enum ExtendedProcurementCategory {
+        GOODS("goods"),
+        WORKS("works"),
+        SERVICES("services"),
+        CONSULTING_SERVICES("consultingServices");
+
+        private final static Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final ExtendedProcurementCategory c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private ExtendedProcurementCategory(final String value) {
+            this.value = value;
+        }
 
         @JsonCreator
         public static ExtendedProcurementCategory fromValue(final String value) {
@@ -650,6 +539,16 @@ public class Tender {
                 throw new IllegalArgumentException(value);
             }
             return constant;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
     }
 
@@ -663,7 +562,6 @@ public class Tender {
         BEST_VALUE_TO_GOVERNMENT("bestValueToGovernment"),
         SINGLE_BID_ONLY("singleBidOnly");
 
-        private final String value;
         private final static Map<String, AwardCriteria> CONSTANTS = new HashMap<>();
 
         static {
@@ -672,18 +570,10 @@ public class Tender {
             }
         }
 
+        private final String value;
+
         private AwardCriteria(final String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
 
         @JsonCreator
@@ -694,26 +584,6 @@ public class Tender {
             }
             return constant;
         }
-    }
-
-    public enum SubmissionMethod {
-        ELECTRONIC_SUBMISSION("electronicSubmission"),
-        ELECTRONIC_AUCTION("electronicAuction"),
-        WRITTEN("written"),
-        IN_PERSON("inPerson");
-
-        private final String value;
-        private final static Map<String, SubmissionMethod> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final SubmissionMethod c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private SubmissionMethod(final String value) {
-            this.value = value;
-        }
 
         @Override
         public String toString() {
@@ -724,6 +594,27 @@ public class Tender {
         public String value() {
             return this.value;
         }
+    }
+
+    public enum SubmissionMethod {
+        ELECTRONIC_SUBMISSION("electronicSubmission"),
+        ELECTRONIC_AUCTION("electronicAuction"),
+        WRITTEN("written"),
+        IN_PERSON("inPerson");
+
+        private final static Map<String, SubmissionMethod> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final SubmissionMethod c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private SubmissionMethod(final String value) {
+            this.value = value;
+        }
 
         @JsonCreator
         public static SubmissionMethod fromValue(final String value) {
@@ -732,6 +623,16 @@ public class Tender {
                 throw new IllegalArgumentException(value);
             }
             return constant;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
     }
 
@@ -744,7 +645,6 @@ public class Tender {
         NATIONAL_PROCUREMENT_LAW("NATIONAL_PROCUREMENT_LAW"),
         NULL("NULL");
 
-        private final String value;
         private final static Map<String, LegalBasis> CONSTANTS = new HashMap<>();
 
         static {
@@ -753,8 +653,19 @@ public class Tender {
             }
         }
 
+        private final String value;
+
         private LegalBasis(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static LegalBasis fromValue(final String value) {
+            final LegalBasis constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -765,15 +676,6 @@ public class Tender {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static LegalBasis fromValue(final String value) {
-            final LegalBasis constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 
@@ -803,7 +705,6 @@ public class Tender {
         FI("fi"),
         SV("sv");
 
-        private final String value;
         private final static Map<String, SubmissionLanguage> CONSTANTS = new HashMap<>();
 
         static {
@@ -812,18 +713,10 @@ public class Tender {
             }
         }
 
+        private final String value;
+
         private SubmissionLanguage(final String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
 
         @JsonCreator
@@ -834,27 +727,6 @@ public class Tender {
             }
             return constant;
         }
-    }
-
-    public enum SubmissionMethodRationale {
-        TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE("TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"),
-        IPR_ISSUES("IPR_ISSUES"),
-        REQUIRES_SPECIALISED_EQUIPMENT("REQUIRES_SPECIALISED_EQUIPMENT"),
-        PHYSICAL_MODEL("PHYSICAL_MODEL"),
-        SENSITIVE_INFORMATION("SENSITIVE_INFORMATION");
-
-        private final String value;
-        private final static Map<String, SubmissionMethodRationale> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final SubmissionMethodRationale c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private SubmissionMethodRationale(final String value) {
-            this.value = value;
-        }
 
         @Override
         public String toString() {
@@ -865,6 +737,28 @@ public class Tender {
         public String value() {
             return this.value;
         }
+    }
+
+    public enum SubmissionMethodRationale {
+        TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE("TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"),
+        IPR_ISSUES("IPR_ISSUES"),
+        REQUIRES_SPECIALISED_EQUIPMENT("REQUIRES_SPECIALISED_EQUIPMENT"),
+        PHYSICAL_MODEL("PHYSICAL_MODEL"),
+        SENSITIVE_INFORMATION("SENSITIVE_INFORMATION");
+
+        private final static Map<String, SubmissionMethodRationale> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final SubmissionMethodRationale c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private SubmissionMethodRationale(final String value) {
+            this.value = value;
+        }
 
         @JsonCreator
         public static SubmissionMethodRationale fromValue(final String value) {
@@ -873,6 +767,16 @@ public class Tender {
                 throw new IllegalArgumentException(value);
             }
             return constant;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
 
     }

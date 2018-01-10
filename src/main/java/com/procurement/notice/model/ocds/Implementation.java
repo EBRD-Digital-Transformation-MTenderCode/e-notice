@@ -2,9 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -38,28 +35,5 @@ public class Implementation {
         this.transactions = transactions;
         this.milestones = milestones;
         this.documents = documents;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(transactions)
-                .append(milestones)
-                .append(documents)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Implementation)) {
-            return false;
-        }
-        final Implementation rhs = (Implementation) other;
-        return new EqualsBuilder().append(transactions, rhs.transactions)
-                .append(milestones, rhs.milestones)
-                .append(documents, rhs.documents)
-                .isEquals();
     }
 }

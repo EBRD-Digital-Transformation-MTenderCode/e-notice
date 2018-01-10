@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,32 +44,5 @@ public class Address {
         this.region = region;
         this.postalCode = postalCode;
         this.countryName = countryName;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(streetAddress)
-                .append(locality)
-                .append(region)
-                .append(postalCode)
-                .append(countryName)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Address)) {
-            return false;
-        }
-        final Address rhs = (Address) other;
-        return new EqualsBuilder().append(streetAddress, rhs.streetAddress)
-                .append(locality, rhs.locality)
-                .append(region, rhs.region)
-                .append(postalCode, rhs.postalCode)
-                .append(countryName, rhs.countryName)
-                .isEquals();
     }
 }

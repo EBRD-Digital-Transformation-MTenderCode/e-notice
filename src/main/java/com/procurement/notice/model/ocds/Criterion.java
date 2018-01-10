@@ -2,14 +2,11 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +22,8 @@ import java.util.Set;
 public class Criterion {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this criterion. It must be unique and cannot change within the Open " +
-            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance](http://standard" +
+            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "(http://standard" +
             ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private final String id;
 
@@ -76,41 +74,9 @@ public class Criterion {
         this.requirementGroups = requirementGroups;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(source)
-                .append(relatesTo)
-                .append(relatedItem)
-                .append(requirementGroups)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Criterion)) {
-            return false;
-        }
-        final Criterion rhs = (Criterion) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(source, rhs.source)
-                .append(relatesTo, rhs.relatesTo)
-                .append(relatedItem, rhs.relatedItem)
-                .append(requirementGroups, rhs.requirementGroups)
-                .isEquals();
-    }
-
     public enum RelatesTo {
         ITEM("item"),
         TENDERER("tenderer");
-        private final String value;
         private final static Map<String, RelatesTo> CONSTANTS = new HashMap<>();
 
         static {
@@ -119,18 +85,10 @@ public class Criterion {
             }
         }
 
+        private final String value;
+
         private RelatesTo(final String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
 
         @JsonCreator
@@ -141,24 +99,6 @@ public class Criterion {
             }
             return constant;
         }
-    }
-
-    public enum Source {
-        TENDERER("tenderer"),
-        BUYER("buyer"),
-        PROCURING_ENTITY("procuringEntity");
-        private final String value;
-        private final static Map<String, Source> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final Criterion.Source c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private Source(final String value) {
-            this.value = value;
-        }
 
         @Override
         public String toString() {
@@ -169,6 +109,25 @@ public class Criterion {
         public String value() {
             return this.value;
         }
+    }
+
+    public enum Source {
+        TENDERER("tenderer"),
+        BUYER("buyer"),
+        PROCURING_ENTITY("procuringEntity");
+        private final static Map<String, Source> CONSTANTS = new HashMap<>();
+
+        static {
+            for (final Criterion.Source c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private Source(final String value) {
+            this.value = value;
+        }
 
         @JsonCreator
         public static Source fromValue(final String value) {
@@ -177,6 +136,16 @@ public class Criterion {
                 throw new IllegalArgumentException(value);
             }
             return constant;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
     }
 }

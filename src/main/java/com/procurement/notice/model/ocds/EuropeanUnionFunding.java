@@ -1,11 +1,8 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -34,28 +31,5 @@ public class EuropeanUnionFunding {
         this.projectIdentifier = projectIdentifier;
         this.projectName = projectName;
         this.uri = uri;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(projectIdentifier)
-                .append(projectName)
-                .append(uri)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof EuropeanUnionFunding)) {
-            return false;
-        }
-        final EuropeanUnionFunding rhs = (EuropeanUnionFunding) other;
-        return new EqualsBuilder().append(projectIdentifier, rhs.projectIdentifier)
-                .append(projectName, rhs.projectName)
-                .append(uri, rhs.uri)
-                .isEquals();
     }
 }

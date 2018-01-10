@@ -582,7 +582,7 @@
     },
     "designContest": {
       "hasPrizes": true,
-      "prizes":[
+      "prizes": [
         {
           "id": "ID",
           "description": "string",

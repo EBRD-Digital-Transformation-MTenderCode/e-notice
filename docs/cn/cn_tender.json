@@ -1,0 +1,192 @@
+{
+  "id": "ocds-t1s2t3-UA-1515597381860",
+  "title": "string",
+  "description": "string",
+  "status": "active",
+  "classification": {
+    "scheme": "CPV",
+    "description": "string",
+    "id": "string"
+  },
+  "acceleratedProcedure": {
+    "isAcceleratedProcedure": true
+  },
+  "designContest": {
+    "serviceContractAward": true
+  },
+  "electronicWorkflows": {
+    "useOrdering": true,
+    "usePayment": true,
+    "acceptInvoicing": true
+  },
+  "jointProcurement": {
+    "isJointProcurement": true
+  },
+  "procedureOutsourcing": {
+    "procedureOutsourced": true
+  },
+  "framework": {
+    "isAFramework": true
+  },
+  "dynamicPurchasingSystem": {
+    "hasDynamicPurchasingSystem": true
+  },
+  "legalBasis": "DIRECTIVE_2014_23_EU",
+  "procurementMethod": "open",
+  "procurementMethodDetails": "string",
+  "procurementMethodRationale": "string",
+  "procurementMethodAdditionalInfo": "string",
+  "mainProcurementCategory": "goods",
+  "additionalProcurementCategories": [
+    "goods"
+  ],
+  "eligibilityCriteria": "string",
+  "submissionLanguages": [
+    "bg"
+  ],
+  "tenderPeriod": {
+    "startDate": "2018-01-10T15:16:18.719Z",
+    "endDate": "2018-02-09T15:55:12.831Z",
+    "durationInDays": 0
+  },
+  "contractPeriod": {
+    "startDate": "2018-01-09T15:55:12.831Z",
+    "endDate": "2018-01-09T15:55:12.831Z",
+    "durationInDays": 0
+  },
+  "value": {
+    "amount": 0.0,
+    "currency": "AED"
+  },
+  "lotGroups": [
+    {
+      "optionToCombine": true
+    }
+  ],
+  "lots": [
+    {
+      "id": "37458e11-f619-11e7-b2c6-8b89d1ada2e5",
+      "title": "string",
+      "description": "string",
+      "value": {
+        "amount": 0.0,
+        "currency": "AED"
+      },
+      "options": [
+        {
+          "hasOptions": true
+        }
+      ],
+      "variants": [
+        {
+          "hasVariants": true
+        }
+      ],
+      "renewals": [
+        {
+          "hasRenewals": true
+        }
+      ],
+      "recurrentProcurement": [
+        {
+          "isRecurrent": true
+        }
+      ],
+      "contractPeriod": {
+        "startDate": "2018-01-09T15:55:12.837Z",
+        "endDate": "2018-01-09T15:55:12.837Z",
+        "durationInDays": 0
+      },
+      "placeOfPerformance": {
+        "address": {
+          "streetAddress": "string",
+          "locality": "string",
+          "region": "string",
+          "postalCode": "string",
+          "countryName": "string"
+        },
+        "description": "string"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "37458e10-f619-11e7-b2c6-8b89d1ada2e5",
+      "description": "string",
+      "classification": {
+        "scheme": "CPV",
+        "description": "string",
+        "id": "string"
+      },
+      "additionalClassifications": [
+        {
+          "scheme": "CPV",
+          "description": "string",
+          "id": "string"
+        }
+      ],
+      "quantity": 0.0,
+      "unit": {
+        "name": "string",
+        "id": "string"
+      },
+      "relatedLot": "37458e11-f619-11e7-b2c6-8b89d1ada2e5"
+    }
+  ],
+  "awardCriteria": "priceOnly",
+  "requiresElectronicCatalogue": true,
+  "submissionMethod": [
+    "electronicSubmission"
+  ],
+  "submissionMethodRationale": [
+    "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"
+  ],
+  "submissionMethodDetails": "string",
+  "procuringEntity": {
+    "name": "string",
+    "id": "string",
+    "identifier": {
+      "scheme": "string",
+      "id": "string",
+      "legalName": "string",
+      "uri": "string"
+    },
+    "address": {
+      "streetAddress": "string",
+      "locality": "string",
+      "region": "string",
+      "postalCode": "string",
+      "countryName": "string"
+    },
+    "additionalIdentifiers": [
+      {
+        "scheme": "string",
+        "id": "string",
+        "legalName": "string",
+        "uri": "string"
+      }
+    ],
+    "contactPoint": {
+      "name": "string",
+      "email": "string",
+      "telephone": "string",
+      "faxNumber": "string",
+      "url": "string"
+    }
+  },
+  "documents": [
+    {
+      "id": "5e5c3ed0-f179-11e7-983e-87b2b4e6cd3b",
+      "documentType": "tenderNotice",
+      "title": "string",
+      "description": "string",
+      "dateModified": "2018-01-09T15:55:12.831Z",
+      "format": "string",
+      "language": "string"
+    }
+  ],
+  "enquiryPeriod": {
+    "startDate": "2018-01-10T15:16:18.719Z",
+    "endDate": "2018-02-06T15:55:12.831Z"
+  }
+}

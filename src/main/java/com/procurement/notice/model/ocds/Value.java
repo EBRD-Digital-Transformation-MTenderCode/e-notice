@@ -1,12 +1,9 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,27 +26,6 @@ public class Value {
                  @JsonProperty("currency") final Currency currency) {
         this.amount = amount;
         this.currency = currency;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(amount)
-                .append(currency)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Value)) {
-            return false;
-        }
-        final Value rhs = (Value) other;
-        return new EqualsBuilder().append(amount, rhs.amount)
-                .append(currency, rhs.currency)
-                .isEquals();
     }
 
     public enum Currency {
@@ -222,7 +198,6 @@ public class Value {
         ZAR("ZAR"),
         ZMK("ZMK"),
         ZWL("ZWL");
-        private final String value;
         private final static Map<String, Currency> CONSTANTS = new HashMap<>();
 
         static {
@@ -231,8 +206,19 @@ public class Value {
             }
         }
 
+        private final String value;
+
         private Currency(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Currency fromValue(final String value) {
+            final Currency constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -243,15 +229,6 @@ public class Value {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Currency fromValue(final String value) {
-            final Currency constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 }

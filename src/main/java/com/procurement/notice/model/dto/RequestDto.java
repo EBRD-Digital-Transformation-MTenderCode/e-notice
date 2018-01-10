@@ -2,13 +2,9 @@ package com.procurement.notice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.procurement.notice.databinding.LocalDateTimeDeserializer;
+import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class RequestDto {

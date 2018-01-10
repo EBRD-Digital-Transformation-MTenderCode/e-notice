@@ -1,11 +1,8 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -79,40 +76,5 @@ public class Lot {
         this.recurrentProcurement = recurrentProcurement;
         this.renewals = renewals;
         this.variants = variants;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(status)
-                .append(value)
-                .append(options)
-                .append(recurrentProcurement)
-                .append(renewals)
-                .append(variants)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Lot)) {
-            return false;
-        }
-        final Lot rhs = (Lot) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(status, rhs.status)
-                .append(value, rhs.value)
-                .append(options, rhs.options)
-                .append(recurrentProcurement, rhs.recurrentProcurement)
-                .append(renewals, rhs.renewals)
-                .append(variants, rhs.variants)
-                .isEquals();
     }
 }

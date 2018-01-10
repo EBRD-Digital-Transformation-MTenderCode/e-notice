@@ -1,13 +1,10 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,31 +46,6 @@ public class Classification {
         this.uri = uri;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(scheme)
-                .append(id)
-                .append(description)
-                .append(uri)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Classification)) {
-            return false;
-        }
-        final Classification rhs = (Classification) other;
-        return new EqualsBuilder().append(scheme, rhs.scheme)
-                .append(id, rhs.id)
-                .append(description, rhs.description)
-                .append(uri, rhs.uri)
-                .isEquals();
-    }
-
     public enum Scheme {
         CPV("CPV"),
         CPVS("CPVS"),
@@ -83,7 +55,6 @@ public class Classification {
         OKDP("OKDP"),
         OKPD("OKPD");
 
-        private final String value;
         private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
 
         static {
@@ -92,8 +63,19 @@ public class Classification {
             }
         }
 
+        private final String value;
+
         private Scheme(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Scheme fromValue(final String value) {
+            final Scheme constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -104,15 +86,6 @@ public class Classification {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Scheme fromValue(final String value) {
-            final Scheme constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
     }
 }

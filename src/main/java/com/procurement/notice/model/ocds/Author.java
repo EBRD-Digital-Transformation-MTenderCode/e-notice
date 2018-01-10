@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,26 +23,5 @@ public class Author {
                   @JsonProperty("name") final String name) {
         this.id = id;
         this.name = name;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(name)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Author)) {
-            return false;
-        }
-        final Author rhs = (Author) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(name, rhs.name)
-                .isEquals();
     }
 }

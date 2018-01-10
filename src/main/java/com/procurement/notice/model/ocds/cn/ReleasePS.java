@@ -1,10 +1,11 @@
-package com.procurement.notice.model.ocds;
+package com.procurement.notice.model.ocds.cn;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
+import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import lombok.Getter;
@@ -21,26 +22,41 @@ import lombok.Setter;
         "initiationType",
         "title",
         "description",
-        "parties",
-        "planning",
-        "tender",
-        "buyer",
-        "awards",
-        "contracts",
-        "language",
-        "relatedProcesses",
-        "bids",
-        "buyerInternalReferenceId",
         "hasPreviousNotice",
         "purposeOfNotice",
-        "relatedNotice"
+        "planning",
+        "tender",
+        "parties",
+        "buyer",
+        "bids",
+        "awards",
+        "language",
+        "relatedProcesses"
 })
-public class ReleaseExt {
+public class ReleasePS {
     @JsonProperty("title")
     @JsonPropertyDescription("A overall title for this contracting process or release.")
     private final String title;
     @JsonProperty("description")
     private final String description;
+    @JsonProperty("hasPreviousNotice")
+    @JsonPropertyDescription("A True or False field to indicate whether this release represents a TED notice that is " +
+            "connected to a previous notice, either TED or national. Required by EU.")
+    private final Boolean hasPreviousNotice;
+    @JsonProperty("purposeOfNotice")
+    @JsonPropertyDescription("Details about the purpose of this notice release - used to determine the fields in the " +
+            "notice that are required to be completed. Required by EU.")
+    private final PurposeOfNotice purposeOfNotice;
+    @JsonProperty("planning")
+    @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
+            "fields may be filled in a planning release, in the appropriate fields in other schema sections, these " +
+            "would " +
+            "likely be estimates at this stage e.g. totalValue in tender")
+    private final Planning planning;
+    @JsonProperty("tender")
+    @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
+            "bids for evaluation and selecting a winner or winners.")
+    private final Tender tender;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Information on the parties (organizations, economic operators and other participants) " +
@@ -52,16 +68,10 @@ public class ReleaseExt {
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
             "section")
     private final OrganizationReference buyer;
-    @JsonProperty("planning")
-    @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
-            "fields may be filled in a planning release, in the appropriate fields in other schema sections, these " +
-            "would " +
-            "likely be estimates at this stage e.g. totalValue in tender")
-    private final Planning planning;
-    @JsonProperty("tender")
-    @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
-            "bids for evaluation and selecting a winner or winners.")
-    private final Tender tender;
+    @JsonProperty("bids")
+    @JsonPropertyDescription("The bid section is used to publish summary statistics, and where applicable, individual" +
+            " bid information.")
+    private final Bids bids;
     @JsonProperty("awards")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Information from the award phase of the contracting process. There may be more than one" +
@@ -69,10 +79,6 @@ public class ReleaseExt {
             "it " +
             "is a standing offer.")
     private final Set<Award> awards;
-    @JsonProperty("contracts")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("Information from the contract creation phase of the procurement process.")
-    private final Set<Contract> contracts;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
@@ -81,25 +87,6 @@ public class ReleaseExt {
             "pre-qualification " +
             "phase, or individual tenders to a broad planning process.")
     private final Set<RelatedProcess> relatedProcesses;
-    @JsonProperty("bids")
-    @JsonPropertyDescription("The bid section is used to publish summary statistics, and where applicable, individual" +
-            " bid information.")
-    private final Bids bids;
-    @JsonProperty("buyerInternalReferenceId")
-    @JsonPropertyDescription("The buyer internal reference identifier is an EU specific field. It uniquely identifies" +
-            " a procurement process within the Buyer's internal system.")
-    private final String buyerInternalReferenceId;
-    @JsonProperty("hasPreviousNotice")
-    @JsonPropertyDescription("A True or False field to indicate whether this release represents a TED notice that is " +
-            "connected to a previous notice, either TED or national. Required by EU.")
-    private final Boolean hasPreviousNotice;
-    @JsonProperty("purposeOfNotice")
-    @JsonPropertyDescription("Details about the purpose of this notice release - used to determine the fields in the " +
-            "notice that are required to be completed. Required by EU.")
-    private final PurposeOfNotice purposeOfNotice;
-    @JsonProperty("relatedNotice")
-    @JsonPropertyDescription("Information that connects a notice with a related notice for the contracting process.")
-    private final List<RelatedNotice> relatedNotice;
     @JsonProperty("ocid")
     @JsonPropertyDescription("A globally unique identifier for this Open Contracting Process. Composed of a publisher" +
             " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
@@ -134,27 +121,24 @@ public class ReleaseExt {
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended.")
     private String language;
 
-    public ReleaseExt(@JsonProperty("ocid") final String ocid,
-                      @JsonProperty("id") final String id,
-                      @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                      LocalDateTime date,
-                      @JsonProperty("tag") final List<Tag> tag,
-                      @JsonProperty("initiationType") final InitiationType initiationType,
-                      @JsonProperty("title") final String title,
-                      @JsonProperty("description") final String description,
-                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                      @JsonProperty("planning") final Planning planning,
-                      @JsonProperty("tender") final Tender tender,
-                      @JsonProperty("buyer") final OrganizationReference buyer,
-                      @JsonProperty("awards") final LinkedHashSet<Award> awards,
-                      @JsonProperty("contracts") final LinkedHashSet<Contract> contracts,
-                      @JsonProperty("language") final String language,
-                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses,
-                      @JsonProperty("bids") final Bids bids,
-                      @JsonProperty("buyerInternalReferenceId") final String buyerInternalReferenceId,
-                      @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
-                      @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
-                      @JsonProperty("relatedNotice") final List<RelatedNotice> relatedNotice) {
+    public ReleasePS(@JsonProperty("ocid") final String ocid,
+                     @JsonProperty("id") final String id,
+                     @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                     LocalDateTime date,
+                     @JsonProperty("tag") final List<Tag> tag,
+                     @JsonProperty("initiationType") final InitiationType initiationType,
+                     @JsonProperty("title") final String title,
+                     @JsonProperty("description") final String description,
+                     @JsonProperty("parties") final LinkedHashSet<Organization> parties,
+                     @JsonProperty("planning") final Planning planning,
+                     @JsonProperty("tender") final Tender tender,
+                     @JsonProperty("buyer") final OrganizationReference buyer,
+                     @JsonProperty("awards") final LinkedHashSet<Award> awards,
+                     @JsonProperty("language") final String language,
+                     @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses,
+                     @JsonProperty("bids") final Bids bids,
+                     @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
+                     @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;
@@ -167,20 +151,17 @@ public class ReleaseExt {
         this.tender = tender;
         this.buyer = buyer;
         this.awards = awards;
-        this.contracts = contracts;
         this.language = language == null ? "en" : language;
         this.relatedProcesses = relatedProcesses;
         this.bids = bids;
-        this.buyerInternalReferenceId = buyerInternalReferenceId;
         this.hasPreviousNotice = hasPreviousNotice;
         this.purposeOfNotice = purposeOfNotice;
-        this.relatedNotice = relatedNotice;
     }
 
     public enum InitiationType {
         TENDER("tender");
 
-        private final static Map<String, InitiationType> CONSTANTS = new HashMap<>();
+        private static final Map<String, InitiationType> CONSTANTS = new HashMap<>();
 
         static {
             for (final InitiationType c : values()) {

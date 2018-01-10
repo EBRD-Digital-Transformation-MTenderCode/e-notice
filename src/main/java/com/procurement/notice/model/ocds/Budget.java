@@ -1,11 +1,9 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
+import java.util.List;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,21 +34,25 @@ public class Budget {
 
     @JsonProperty("project")
     @JsonPropertyDescription("The name of the project that through which this contracting process is funded (if " +
-            "applicable). Some organizations maintain a registry of projects, and the data should use the name by which " +
+            "applicable). Some organizations maintain a registry of projects, and the data should use the name by " +
+            "which " +
             "the project is known in that registry. No translation option is offered for this string, as translated " +
             "values can be provided in third-party data, linked from the data source above.")
     private final String project;
 
     @JsonProperty("projectID")
     @JsonPropertyDescription("An external identifier for the project that this contracting process forms part of, or " +
-            "is funded via (if applicable). Some organizations maintain a registry of projects, and the data should use " +
+            "is funded via (if applicable). Some organizations maintain a registry of projects, and the data should " +
+            "use " +
             "the identifier from the relevant registry of projects.")
     private final String projectID;
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI pointing directly to a machine-readable record about the budget line-item or " +
-            "line-items that fund this contracting process. Information may be provided in a range of formats, including " +
-            "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget " +
+            "line-items that fund this contracting process. Information may be provided in a range of formats, " +
+            "including " +
+            "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget" +
+            " " +
             "sources. Human readable documents can be included using the planning.documents block.")
     private final URI uri;
 
@@ -68,6 +70,10 @@ public class Budget {
             "and/or programme financed by European Union funds.")
     private final Boolean isEuropeanUnionFunded;
 
+    @JsonProperty("budgetBreakdown")
+    @JsonPropertyDescription("A detailed breakdown of the budget by period and/or participating funders.")
+    private final List<BudgetBreakdown> budgetBreakdown;
+
     @JsonCreator
     public Budget(@JsonProperty("id") final String id,
                   @JsonProperty("description") final String description,
@@ -77,7 +83,8 @@ public class Budget {
                   @JsonProperty("uri") final URI uri,
                   @JsonProperty("source") final URI source,
                   @JsonProperty("europeanUnionFunding") final EuropeanUnionFunding europeanUnionFunding,
-                  @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded) {
+                  @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded,
+                  @JsonProperty("budgetBreakdown") final List<BudgetBreakdown> budgetBreakdown) {
         this.id = id;
         this.description = description;
         this.amount = amount;
@@ -87,40 +94,6 @@ public class Budget {
         this.source = source;
         this.europeanUnionFunding = europeanUnionFunding;
         this.isEuropeanUnionFunded = isEuropeanUnionFunded;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(description)
-                .append(amount)
-                .append(project)
-                .append(projectID)
-                .append(uri)
-                .append(source)
-                .append(europeanUnionFunding)
-                .append(isEuropeanUnionFunded)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Budget)) {
-            return false;
-        }
-        final Budget rhs = (Budget) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(description, rhs.description)
-                .append(amount, rhs.amount)
-                .append(project, rhs.project)
-                .append(projectID, rhs.projectID)
-                .append(uri, rhs.uri)
-                .append(source, rhs.source)
-                .append(europeanUnionFunding, rhs.europeanUnionFunding)
-                .append(isEuropeanUnionFunded, rhs.isEuropeanUnionFunded)
-                .isEquals();
+        this.budgetBreakdown = budgetBreakdown;
     }
 }

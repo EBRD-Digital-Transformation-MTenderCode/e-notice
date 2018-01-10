@@ -2,8 +2,6 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,28 +31,5 @@ public class ElectronicWorkflows {
         this.useOrdering = useOrdering;
         this.usePayment = usePayment;
         this.acceptInvoicing = acceptInvoicing;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(useOrdering)
-                .append(usePayment)
-                .append(acceptInvoicing)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof ElectronicWorkflows)) {
-            return false;
-        }
-        final ElectronicWorkflows rhs = (ElectronicWorkflows) other;
-        return new EqualsBuilder().append(useOrdering, rhs.useOrdering)
-                .append(usePayment, rhs.usePayment)
-                .append(acceptInvoicing, rhs.acceptInvoicing)
-                .isEquals();
     }
 }

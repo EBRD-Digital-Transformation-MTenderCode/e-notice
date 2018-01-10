@@ -1,11 +1,8 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,30 +38,5 @@ public class LotGroup {
         this.relatedLots = relatedLots;
         this.optionToCombine = optionToCombine;
         this.maximumValue = maximumValue;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(relatedLots)
-                .append(optionToCombine)
-                .append(maximumValue)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof LotGroup)) {
-            return false;
-        }
-        final LotGroup rhs = (LotGroup) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(relatedLots, rhs.relatedLots)
-                .append(optionToCombine, rhs.optionToCombine)
-                .append(maximumValue, rhs.maximumValue)
-                .isEquals();
     }
 }

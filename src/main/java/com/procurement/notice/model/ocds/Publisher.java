@@ -1,11 +1,8 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.net.URI;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,30 +39,5 @@ public class Publisher {
         this.scheme = scheme;
         this.uid = uid;
         this.uri = uri;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(name)
-                .append(scheme)
-                .append(uid)
-                .append(uri)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Publisher)) {
-            return false;
-        }
-        final Publisher rhs = (Publisher) other;
-        return new EqualsBuilder().append(name, rhs.name)
-                .append(scheme, rhs.scheme)
-                .append(uid, rhs.uid)
-                .append(uri, rhs.uri)
-                .isEquals();
     }
 }

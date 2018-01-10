@@ -1,12 +1,9 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -82,47 +79,11 @@ public class Requirement {
         this.period = period;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id)
-                .append(title)
-                .append(description)
-                .append(dataType)
-                .append(pattern)
-                .append(expectedValue)
-                .append(minValue)
-                .append(maxValue)
-                .append(period)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Requirement)) {
-            return false;
-        }
-        final Requirement rhs = (Requirement) other;
-        return new EqualsBuilder().append(id, rhs.id)
-                .append(title, rhs.title)
-                .append(description, rhs.description)
-                .append(dataType, rhs.dataType)
-                .append(pattern, rhs.pattern)
-                .append(expectedValue, rhs.expectedValue)
-                .append(minValue, rhs.minValue)
-                .append(maxValue, rhs.maxValue)
-                .append(period, rhs.period)
-                .isEquals();
-    }
-
     public enum DataType {
         STRING("string"),
         DATE_TIME("date-time"),
         NUMBER("number"),
         INTEGER("integer");
-        private final String value;
         private final static Map<String, DataType> CONSTANTS = new HashMap<>();
 
         static {
@@ -131,8 +92,19 @@ public class Requirement {
             }
         }
 
+        private final String value;
+
         private DataType(final String value) {
             this.value = value;
+        }
+
+        @JsonCreator
+        public static Requirement.DataType fromValue(final String value) {
+            final Requirement.DataType constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
         @Override
@@ -143,15 +115,6 @@ public class Requirement {
         @JsonValue
         public String value() {
             return this.value;
-        }
-
-        @JsonCreator
-        public static Requirement.DataType fromValue(final String value) {
-            final Requirement.DataType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
     }

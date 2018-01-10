@@ -1,11 +1,8 @@
 package com.procurement.notice.model.entity;
 
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -28,7 +25,7 @@ public class ReleaseEntity {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(final Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 }

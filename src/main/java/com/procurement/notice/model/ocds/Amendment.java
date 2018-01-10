@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import lombok.Getter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,7 +54,8 @@ public class Amendment {
     private final List<Change> changes;
 
     @JsonCreator
-    public Amendment(@JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
+    public Amendment(@JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
+                         LocalDateTime date,
                      @JsonProperty("releaseID") final String releaseID,
                      @JsonProperty("id") final String id,
                      @JsonProperty("description") final String description,
@@ -71,36 +69,5 @@ public class Amendment {
         this.amendsReleaseID = amendsReleaseID;
         this.releaseID = releaseID;
         this.changes = changes;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(date)
-                .append(releaseID)
-                .append(id)
-                .append(description)
-                .append(amendsReleaseID)
-                .append(rationale)
-                .append(changes)
-                .toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Amendment)) {
-            return false;
-        }
-        final Amendment rhs = (Amendment) other;
-        return new EqualsBuilder().append(date, rhs.date)
-                .append(releaseID, rhs.releaseID)
-                .append(id, rhs.id)
-                .append(description, rhs.description)
-                .append(amendsReleaseID, rhs.amendsReleaseID)
-                .append(rationale, rhs.rationale)
-                .append(changes, rhs.changes)
-                .isEquals();
     }
 }
