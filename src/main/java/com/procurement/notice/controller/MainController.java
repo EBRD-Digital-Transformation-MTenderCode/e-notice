@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import javax.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +24,16 @@ public class MainController {
         this.releaseService = releaseService;
     }
 
-    @RequestMapping(value = "/saveRecordRelease", method = RequestMethod.POST)
-    public ResponseDto saveRecord(@RequestBody final RequestDto data) {
-        return releaseService.saveRecordRelease(data);
-    }
-
     @PostMapping(value = "/cn")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto createCn(@RequestParam("cpid") final String cpid,
-                                @RequestParam("stage") final String stage,
-                                @RequestParam("operation") final String operation,
-                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    public ResponseEntity<ResponseDto> createCn(@RequestParam("cpid") final String cpid,
+                                               @RequestParam("stage") final String stage,
+                                               @RequestParam("operation") final String operation,
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                 @RequestParam("startDate") final LocalDateTime releaseDate,
-                                @Valid @RequestBody final JsonNode data) {
-        return releaseService.createCn(cpid, stage, operation, releaseDate, data);
+                                               @Valid @RequestBody final JsonNode data) {
+        return new ResponseEntity<>(
+                releaseService.createCn(cpid, stage, operation, releaseDate, data),
+                HttpStatus.CREATED);
     }
 }

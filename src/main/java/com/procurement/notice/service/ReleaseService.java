@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ReleaseService {
 
-    ResponseDto saveRecordRelease(RequestDto data);
-
     ResponseDto createCn(String cpid,
                          String stage,
                          String operation,

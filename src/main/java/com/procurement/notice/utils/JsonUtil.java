@@ -25,6 +25,7 @@ public class JsonUtil {
     private final ObjectMapper mapper;
 
     public JsonUtil(final ObjectMapper objectMapper) {
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         this.mapper = objectMapper;
     }
 
@@ -55,6 +56,24 @@ public class JsonUtil {
         }
     }
 
+    public <T> JsonNode toJsonNode(final T object) {
+        Objects.requireNonNull(object);
+        try {
+            return mapper.readTree(mapper.writeValueAsString(object));
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public ObjectNode createObjectNode() {
+        return mapper.createObjectNode();
+    }
+
+
+    public ArrayNode createArrayNode() {
+        return mapper.createArrayNode();
+    }
+
     public <T> T toMap(final MapType mapType, final String json) {
         Objects.requireNonNull(json);
         try {
@@ -79,8 +98,7 @@ public class JsonUtil {
     }
 
     private String getPathFile(final String fileName) {
-        return Optional.ofNullable(getClass().getClassLoader()
-                .getResource(fileName))
+        return Optional.ofNullable(getClass().getClassLoader().getResource(fileName))
                 .map(URL::getPath)
                 .orElseThrow(() -> new IllegalArgumentException(FILE + fileName + "' not found."));
     }
@@ -104,8 +122,7 @@ public class JsonUtil {
                 gen.copyCurrentEvent(parser);
             }
         }
-        return out.getBuffer()
-                .toString();
+        return out.getBuffer().toString();
     }
 
     public String merge(final String mainJson, final String updateJson) {

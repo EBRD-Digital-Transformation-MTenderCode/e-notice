@@ -2,9 +2,8 @@ package com.procurement.notice.service;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.ReleaseDao;
-import com.procurement.notice.model.dto.RequestDto;
-import com.procurement.notice.model.dto.ResponseDetailsDto;
 import com.procurement.notice.model.dto.ResponseDto;
 import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.model.ocds.RelatedProcess;
@@ -16,10 +15,6 @@ import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -82,29 +77,9 @@ public class ReleaseServiceImpl implements ReleaseService {
                         "")
         );
         releaseDao.save(getEntity(ms.getOcid(), ms.getOcid(), ms.getId(), stage, releaseDate, ms));
-
         releaseDao.save(getEntity(ms.getOcid(), ps.getOcid(), ps.getId(), stage, releaseDate, ps));
-
-        return new ResponseDto(true, null, Arrays.asList(ms.getOcid(), ps.getOcid()));
+        return getResponseDto(ms.getOcid(), ps.getOcid());
     }
-
-    @Override
-    public ResponseDto saveRecordRelease(final RequestDto requestDto) {
-//        final LocalDateTime addedDate = dateUtil.getNowUTC();
-//        final long timeStamp = dateUtil.getMilliUTC(addedDate);
-//        final ReleaseExt releaseExt = jsonUtil.toObject(ReleaseExt.class, requestDto.getJsonData().toString());
-//        releaseExt.setDate(addedDate);
-//        releaseExt.setOcid(requestDto.getOcId());
-//        releaseExt.setTag(getTags(requestDto.getTag()));
-//        releaseExt.setInitiationType(ReleaseExt.InitiationType.fromValue(requestDto.getInitiationType()));
-//        releaseExt.setLanguage(requestDto.getLanguage());
-//        releaseExt.setId(getOcId(requestDto.getOcId(), requestDto.getStage(), timeStamp));
-//        final ReleaseEntity releaseEntity = getReleaseEntity(requestDto.getCpId(), requestDto.getStage(), releaseExt);
-//        releaseDao.save(releaseEntity);
-//        return getResponseDto(releaseEntity);
-        return null;
-    }
-
 
     private String getOcId(final String ocId, final String stage, final long timeStamp) {
         return ocId + SEPARATOR + stage + SEPARATOR + timeStamp;
@@ -128,5 +103,12 @@ public class ReleaseServiceImpl implements ReleaseService {
         releaseEntity.setStage(stage);
         releaseEntity.setJsonData(jsonUtil.toJson(jsonData));
         return releaseEntity;
+    }
+
+    private ResponseDto getResponseDto(final String cpid, final String ocid) {
+        final ObjectNode jsonForResponse = jsonUtil.createObjectNode();
+        jsonForResponse.put("cpid", cpid);
+        jsonForResponse.put("ocid", ocid);
+        return new ResponseDto(true, null, jsonForResponse);
     }
 }
