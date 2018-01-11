@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Value {
     @JsonProperty("amount")
     @JsonPropertyDescription("Amount as a number.")
-    private final Double amount;
+    private Double amount;
 
     @JsonProperty("currency")
     @JsonPropertyDescription("The currency for each amount should always be specified using the uppercase 3-letter " +

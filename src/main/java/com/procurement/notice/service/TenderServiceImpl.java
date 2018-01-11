@@ -3,9 +3,10 @@ package com.procurement.notice.service;
 import com.datastax.driver.core.utils.UUIDs;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.procurement.notice.dao.ReleaseDao;
-import com.procurement.notice.model.dto.ResponseDto;
-import com.procurement.notice.model.entity.ReleaseEntity;
+import com.procurement.notice.dao.TenderDao;
+import com.procurement.notice.model.bpe.ResponseDto;
+import com.procurement.notice.model.entity.TenderEntity;
+import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import com.procurement.notice.model.ocds.TenderStatusDetails;
@@ -18,17 +19,17 @@ import java.util.Arrays;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReleaseServiceImpl implements ReleaseService {
+public class TenderServiceImpl implements TenderService {
 
     private static final String SEPARATOR = "-";
-    private final ReleaseDao releaseDao;
+    private final TenderDao tenderDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
-    public ReleaseServiceImpl(final ReleaseDao releaseDao,
-                              final JsonUtil jsonUtil,
-                              final DateUtil dateUtil) {
-        this.releaseDao = releaseDao;
+    public TenderServiceImpl(final TenderDao tenderDao,
+                             final JsonUtil jsonUtil,
+                             final DateUtil dateUtil) {
+        this.tenderDao = tenderDao;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
     }
@@ -40,21 +41,19 @@ public class ReleaseServiceImpl implements ReleaseService {
                                 final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseMS ms = jsonUtil.toObject(ReleaseMS.class, data.toString());
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        final long timeStamp = dateUtil.getMilliUTC(addedDate);
         ms.setOcid(cpid);
-        ms.setId(getReleaseId(cpid, timeStamp));
+        ms.setId(getReleaseId(cpid));
         ms.setDate(releaseDate);
         ms.setTag(Arrays.asList(Tag.COMPILED));
-        ms.setInitiationType(ReleaseMS.InitiationType.TENDER);
+        ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
 
         final ReleasePS ps = jsonUtil.toObject(ReleasePS.class, data.toString());
-        ps.setOcid(getOcId(cpid, stage, timeStamp));
+        ps.setOcid(getOcId(cpid, stage));
         ps.setDate(releaseDate);
         ps.setTag(Arrays.asList(Tag.COMPILED));
-        ps.setInitiationType(ReleasePS.InitiationType.TENDER);
-        ps.setId(getReleaseId(ps.getOcid(), timeStamp));
+        ps.setInitiationType(InitiationType.TENDER);
+        ps.setId(getReleaseId(ps.getOcid()));
         ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
         ps.getPlanning().getBudget().setId(getId());
 
@@ -77,30 +76,30 @@ public class ReleaseServiceImpl implements ReleaseService {
                         ms.getOcid(),
                         "")
         );
-        releaseDao.save(getEntity(ms.getOcid(), ms.getOcid(), ms.getId(), stage, releaseDate, ms));
-        releaseDao.save(getEntity(ms.getOcid(), ps.getOcid(), ps.getId(), stage, releaseDate, ps));
+        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), ms.getId(), stage, releaseDate, ms));
+        tenderDao.saveTender(getEntity(ms.getOcid(), ps.getOcid(), ps.getId(), stage, releaseDate, ps));
         return getResponseDto(ms.getOcid(), ps.getOcid());
     }
 
-    private String getOcId(final String cpId, final String stage, final long timeStamp) {
-        return cpId + SEPARATOR + stage + SEPARATOR + timeStamp;
+    private String getOcId(final String cpId, final String stage) {
+        return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
-    private String getReleaseId(final String ocId, final long timeStamp) {
-        return ocId + SEPARATOR + timeStamp;
+    private String getReleaseId(final String ocId) {
+        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     private String getId() {
         return UUIDs.timeBased().toString();
     }
 
-    private ReleaseEntity getEntity(final String cpId,
-                                    final String ocId,
-                                    final String releaseId,
-                                    final String stage,
-                                    final LocalDateTime releaseDate,
-                                    final Object jsonData) {
-        final ReleaseEntity releaseEntity = new ReleaseEntity();
+    private TenderEntity getEntity(final String cpId,
+                                   final String ocId,
+                                   final String releaseId,
+                                   final String stage,
+                                   final LocalDateTime releaseDate,
+                                   final Object jsonData) {
+        final TenderEntity releaseEntity = new TenderEntity();
         releaseEntity.setCpId(cpId);
         releaseEntity.setOcId(ocId);
         releaseEntity.setReleaseDate(dateUtil.localToDate(releaseDate));

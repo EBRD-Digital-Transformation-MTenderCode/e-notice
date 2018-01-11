@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
+import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import java.time.LocalDateTime;
@@ -23,8 +24,8 @@ import lombok.Setter;
         "initiationType",
         "title",
         "description",
-        "tender",
         "language",
+        "tender",
         "relatedProcesses"
 })
 public class ReleaseMS {
@@ -100,42 +101,5 @@ public class ReleaseMS {
         this.tender = tender;
         this.language = language == null ? "en" : language;
         this.relatedProcesses = relatedProcesses;
-    }
-
-    public enum InitiationType {
-        TENDER("tender");
-
-        private final static Map<String, InitiationType> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final InitiationType c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        private InitiationType(final String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static InitiationType fromValue(final String value) {
-            final InitiationType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
-        }
     }
 }

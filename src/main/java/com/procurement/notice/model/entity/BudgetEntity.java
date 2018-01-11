@@ -1,12 +1,16 @@
 package com.procurement.notice.model.entity;
 
 import java.util.Date;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ReleaseEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class BudgetEntity {
 
     private String cpId;
 
@@ -17,6 +21,8 @@ public class ReleaseEntity {
     private String releaseId;
 
     private String stage;
+
+    private Double amount;
 
     private String jsonData;
 

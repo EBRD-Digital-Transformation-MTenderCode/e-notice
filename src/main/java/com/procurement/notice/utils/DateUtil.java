@@ -18,6 +18,11 @@ public class DateUtil {
                 .toEpochMilli();
     }
 
+    public long getMilliNowUTC() {
+        return getNowUTC().toInstant(ZoneOffset.UTC)
+                .toEpochMilli();
+    }
+
     public LocalDateTime dateToLocal(final Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC);
     }

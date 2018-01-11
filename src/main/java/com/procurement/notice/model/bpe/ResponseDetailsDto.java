@@ -1,4 +1,4 @@
-package com.procurement.notice.model.dto;
+package com.procurement.notice.model.bpe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

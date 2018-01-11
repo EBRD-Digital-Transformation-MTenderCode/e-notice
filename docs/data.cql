@@ -28,7 +28,6 @@ SELECT * FROM ocds.notice_compiled_release;
 
 TRUNCATE ocds.notice_compiled_release;
 
-
 CREATE TABLE IF NOT EXISTS  ocds.notice_offset (
     cp_id text,
     release_date timestamp,
@@ -42,3 +41,48 @@ TRUNCATE ocds.notice_offset;
 SELECT * FROM ocds.notice_offset;
 
 SELECT * FROM ocds.notice_offset WHERE release_date < '2017-12-11 18:31:51' AND release_date > '2017-12-11 18:31:00' LIMIT 2 ALLOW FILTERING;
+
+
+CREATE TABLE IF NOT EXISTS  ocds.notice_budget_release (
+    cp_id text,
+    oc_id text,
+    release_date timestamp,
+    release_id text,
+    stage text,
+    json_data text,
+    primary key(cp_id, oc_id, release_date)
+)WITH CLUSTERING ORDER BY (oc_id ASC, release_date ASC);
+
+SELECT * FROM ocds.notice_budget_release;
+
+TRUNCATE ocds.notice_budget_release;
+
+CREATE TABLE IF NOT EXISTS ocds.notice_budget_compiled_release (
+       cp_id text,
+       oc_id text,
+       release_date timestamp,
+       release_id text,
+       stage text,
+       amount double,
+       json_data text,
+       primary key(cp_id, oc_id)
+)WITH CLUSTERING ORDER BY (oc_id ASC);
+
+SELECT * FROM ocds.notice_budget_compiled_release;
+
+TRUNCATE ocds.notice_budget_compiled_release;
+
+
+CREATE TABLE IF NOT EXISTS  ocds.notice_budget_offset (
+    cp_id text,
+    release_date timestamp,
+    primary key(cp_id)
+);
+
+CREATE INDEX date_index ON ocds.notice_budget_offset (release_date);
+
+TRUNCATE ocds.notice_budget_offset;
+
+SELECT * FROM ocds.notice_budget_offset;
+
+SELECT * FROM ocds.notice_budget_offset WHERE release_date < '2017-12-11 18:31:51' AND release_date > '2017-12-11 18:31:00' LIMIT 2 ALLOW FILTERING;

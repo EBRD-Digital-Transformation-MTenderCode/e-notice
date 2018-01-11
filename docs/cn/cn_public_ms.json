@@ -1,0 +1,84 @@
+{
+  "ocid": "ocds-213czf-000-00001",
+  "id": "ocds-213czf-000-00001-1515612861197",
+  "date": "2018-01-10T14:12:04.891Z",
+  "tag": [
+    "compiled"
+  ],
+  "initiationType": "tender",
+  "tender": {
+    "id": "ocds-t1s2t3-UA-1515597381860",
+    "title": "string",
+    "description": "string",
+    "status": "active",
+    "statusDetails": "preselection",
+    "value": {
+      "amount": 0.0,
+      "currency": "AED"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "string",
+    "procurementMethodRationale": "string",
+    "procurementMethodAdditionalInfo": "string",
+    "mainProcurementCategory": "goods",
+    "additionalProcurementCategories": [
+      "goods"
+    ],
+    "eligibilityCriteria": "string",
+    "submissionLanguages": [
+      "bg"
+    ],
+    "contractPeriod": {
+      "startDate": "2018-01-09T15:55:12.831Z",
+      "endDate": "2018-01-09T15:55:12.831Z",
+      "durationInDays": 0
+    },
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": true
+    },
+    "designContest": {
+      "serviceContractAward": true
+    },
+    "electronicWorkflows": {
+      "useOrdering": true,
+      "usePayment": true,
+      "acceptInvoicing": true
+    },
+    "jointProcurement": {
+      "isJointProcurement": true
+    },
+    "procedureOutsourcing": {
+      "procedureOutsourced": true
+    },
+    "framework": {
+      "isAFramework": true
+    },
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": true
+    },
+    "legalBasis": "DIRECTIVE_2014_23_EU"
+  },
+  "language": "en",
+  "relatedProcesses": [
+    {
+      "id": "string",
+      "relationship": [
+        "framework"
+      ],
+      "title": "string",
+      "scheme": "ocid",
+      "identifier": "string",
+      "uri": "string"
+    },
+    {
+      "id": "41994090-f63d-11e7-afc3-9d5602c9f76b",
+      "relationship": [
+        "x_preselection"
+      ],
+      "title": "",
+      "scheme": "ocid",
+      "identifier": "ocds-213czf-000-00001-ps-1515612861197",
+      "uri": ""
+    }
+  ]
+}
