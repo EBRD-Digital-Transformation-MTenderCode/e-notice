@@ -5,8 +5,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "name",
@@ -19,7 +21,7 @@ public class Unit {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier from the codelist referenced in the scheme property. Check the codelist " +
             "for details of how to find and use identifiers from the scheme in use.")
-    private final String id;
+    private String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("Name of the unit.")

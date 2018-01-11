@@ -3,8 +3,10 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -21,7 +23,7 @@ public class Lot {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier for this lot, such as a lot number. This is used in relatedLot " +
             "references at the item, document and award level.")
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this lot.")

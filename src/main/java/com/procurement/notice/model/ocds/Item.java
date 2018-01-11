@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -21,7 +23,7 @@ public class Item {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier to reference and merge the items by. Must be unique within a given " +
             "array of items.")
-    private final String id;
+    private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A description of the goods, services to be provided.")

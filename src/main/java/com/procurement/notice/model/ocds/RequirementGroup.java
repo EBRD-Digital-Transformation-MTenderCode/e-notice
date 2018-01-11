@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -18,7 +20,7 @@ public class RequirementGroup {
     @JsonPropertyDescription("The identifier for this requirement group. It must be unique and cannot change within " +
             "the Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
             "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
-    private final String id;
+    private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("Requirement group description")

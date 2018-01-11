@@ -3,8 +3,10 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.net.URI;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -14,7 +16,7 @@ import lombok.Getter;
 public class LegalProceedings {
     @JsonProperty("id")
     @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated. Required by the EU")
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("Title(s) of any legal proceedings(s) initiated.")

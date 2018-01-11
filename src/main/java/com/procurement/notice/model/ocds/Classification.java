@@ -5,8 +5,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "scheme",
@@ -17,7 +19,7 @@ import lombok.Getter;
 public class Classification {
     @JsonProperty("id")
     @JsonPropertyDescription("The classification code drawn from the selected scheme.")
-    private final String id;
+    private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A textual description or title for the code.")

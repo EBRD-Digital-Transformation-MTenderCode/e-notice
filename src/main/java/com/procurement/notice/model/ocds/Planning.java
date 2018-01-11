@@ -3,8 +3,10 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "budget",

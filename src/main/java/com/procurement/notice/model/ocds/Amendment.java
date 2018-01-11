@@ -8,8 +8,10 @@ import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "date",
@@ -23,7 +25,7 @@ import lombok.Getter;
 public class Amendment {
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for this amendment: often the amendment number")
-    private final String id;
+    private String id;
 
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

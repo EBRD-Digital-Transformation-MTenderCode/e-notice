@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -18,7 +20,7 @@ import lombok.Getter;
 public class ValueBreakdown {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier of this value breakdown. Unique within this array.")
-    private final String id;
+    private String id;
 
     @JsonProperty("type")
     @JsonPropertyDescription("A value from the [valueType codelist] (http://standard.open-contracting" +

@@ -6,7 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -23,7 +27,7 @@ import java.time.LocalDateTime;
 public class Enquiry {
     @JsonProperty("id")
     @JsonPropertyDescription("A unique identifier for the enquiry.")
-    private final String id;
+    private String id;
 
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

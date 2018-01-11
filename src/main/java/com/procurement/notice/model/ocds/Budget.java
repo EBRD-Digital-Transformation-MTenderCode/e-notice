@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import java.net.URI;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -22,7 +24,7 @@ public class Budget {
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for the budget line item which provides funds for this contracting " +
             "process. This identifier should be possible to cross-reference against the provided data source.")
-    private final String id;
+    private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A short free text description of the budget source. May be used to provide the title of" +

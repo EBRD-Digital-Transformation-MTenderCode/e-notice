@@ -11,9 +11,9 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
         "title",
@@ -47,7 +47,7 @@ public class TenderMS {
             "drawn from an internally held identifier for this tender.")
     @Size(min = 1)
     @NotNull
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import java.net.URI;
 import java.util.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "name",
@@ -23,7 +25,7 @@ public class Organization {
     @JsonPropertyDescription("The ID used for cross-referencing to this party from other sections of the release. " +
             "This field may be built with the following structure {identifier.scheme}-{identifier.id}" +
             "(-{department-identifier}).")
-    private final String id;
+    private String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("A common name for this organization or other participant in the contracting process. " +

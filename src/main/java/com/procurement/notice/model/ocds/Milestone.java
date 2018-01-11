@@ -7,7 +7,11 @@ import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -28,7 +32,7 @@ public class Milestone {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier for this milestone, unique within this block. This field is used to " +
             "keep track of multiple revisions of a milestone through the compilation from release to record mechanism.")
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("Milestone title")

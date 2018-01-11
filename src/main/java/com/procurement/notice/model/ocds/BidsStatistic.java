@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -23,7 +25,7 @@ import lombok.Getter;
 public class BidsStatistic {
     @JsonProperty("id")
     @JsonPropertyDescription("An internal identifier for this statistical item.")
-    private final String id;
+    private String id;
 
     @JsonProperty("measure")
     @JsonPropertyDescription("An item from the bidStatistics codelist for the statisic reported in value.")

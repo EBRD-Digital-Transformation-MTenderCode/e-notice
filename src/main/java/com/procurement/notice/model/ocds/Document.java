@@ -11,8 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -30,7 +32,7 @@ public class Document {
     @JsonProperty("id")
     @JsonPropertyDescription("A local, unique identifier for this document. This field is used to keep track of " +
             "multiple revisions of a document through the compilation from release to record mechanism.")
-    private final String id;
+    private String id;
 
     @JsonProperty("documentType")
     @JsonPropertyDescription("A classification of the document described taken from the [documentType codelist]" +

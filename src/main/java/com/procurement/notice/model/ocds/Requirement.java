@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -23,7 +25,7 @@ public class Requirement {
     @JsonPropertyDescription("The identifier for this requirement. It must be unique and cannot change within the " +
             "Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
             "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("Requirement title")

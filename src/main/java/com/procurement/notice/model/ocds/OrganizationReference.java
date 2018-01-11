@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "name",
@@ -20,7 +22,7 @@ public class OrganizationReference {
     @JsonProperty("id")
     @JsonPropertyDescription("The id of the party being referenced. This must match the id of an entry in the parties" +
             " section.")
-    private final String id;
+    private String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("The name of the party being referenced. This must match the name of an entry in the " +

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonPropertyOrder({
         "id",
         "description",
@@ -16,8 +18,7 @@ import lombok.Getter;
 public class BudgetBreakdown {
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for this particular budget entry.")
-    @NotNull
-    private final String id;
+    private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A short free text description of this budget entry.")

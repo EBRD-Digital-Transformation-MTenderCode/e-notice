@@ -56,6 +56,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         ps.setInitiationType(ReleasePS.InitiationType.TENDER);
         ps.setId(getId(ps.getOcid(), timeStamp));
         ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
+        ps.getPlanning().getBudget().setId(getId(ps.getOcid(), timeStamp));
 
         ms.getRelatedProcesses().add(
                 new RelatedProcess(

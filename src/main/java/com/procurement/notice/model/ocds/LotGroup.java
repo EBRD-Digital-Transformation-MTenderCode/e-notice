@@ -3,8 +3,10 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -15,7 +17,7 @@ import lombok.Getter;
 public class LotGroup {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier for this group of lots.")
-    private final String id;
+    private String id;
 
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("A list of the identifiers of the lots that form this group. Lots may appear in more " +

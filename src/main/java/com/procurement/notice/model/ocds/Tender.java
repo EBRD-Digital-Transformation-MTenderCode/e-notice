@@ -68,7 +68,7 @@ public class Tender {
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
             "drawn from an internally held identifier for this tender.")
-    private final String id;
+    private String id;
 
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +

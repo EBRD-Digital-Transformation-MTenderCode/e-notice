@@ -2,8 +2,10 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -12,7 +14,7 @@ import lombok.Getter;
 public class Author {
     @JsonProperty("id")
     @JsonPropertyDescription("A unique identifier for the author.")
-    private final String id;
+    private String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("The name of the author.")

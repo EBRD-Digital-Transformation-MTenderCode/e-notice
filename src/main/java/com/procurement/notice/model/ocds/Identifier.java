@@ -3,8 +3,10 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.net.URI;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "scheme",
@@ -15,7 +17,7 @@ import lombok.Getter;
 public class Identifier {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier of the organization in the selected scheme.")
-    private final String id;
+    private String id;
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("Organization identifiers should be drawn from an existing organization identifier list." +

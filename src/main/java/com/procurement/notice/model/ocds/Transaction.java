@@ -7,7 +7,11 @@ import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import java.net.URI;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -25,7 +29,7 @@ public class Transaction {
     @JsonProperty("id")
     @JsonPropertyDescription("A unique identifier for this transaction. This identifier should be possible to " +
             "cross-reference against the provided data source. For IATI this is the transaction reference.")
-    private final String id;
+    private String id;
 
     @JsonProperty("source")
     @JsonPropertyDescription("Used to point either to a corresponding Fiscal Data Package, IATI file, or machine or " +
