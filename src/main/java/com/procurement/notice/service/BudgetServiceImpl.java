@@ -56,18 +56,14 @@ public class BudgetServiceImpl implements BudgetService {
                                 final String operation,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        fs.setOcid(getOcId(cpid, stage));
         fs.setId(getReleaseId(fs.getOcid()));
-        fs.setDate(addedDate);
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
-        budgetDao.saveBudget(getEntity(fs.getOcid(), fs.getOcid(), fs.getId(), stage, amount, addedDate, fs));
+        budgetDao.saveBudget(getEntity(fs.getOcid(), fs.getOcid(), fs.getId(), stage, amount, fs.getDate(), fs));
         updateEinByFs(cpid, fs.getOcid());
         return getResponseDto(fs.getOcid(), fs.getOcid());
     }
-
 
     public void updateEinByFs(final String einCpId, final String fsOcId) {
         final Optional<BudgetEntity> entityOptional = budgetDao.getLastByCpId(einCpId);
