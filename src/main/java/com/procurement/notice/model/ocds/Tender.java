@@ -65,66 +65,47 @@ import lombok.Setter;
         "requiresElectronicCatalogue"
 })
 public class Tender {
-    @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
-            "drawn from an internally held identifier for this tender.")
-    private String id;
-
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +
             "attract interest, and to help analysts understand the nature of this procurement.")
     private final String title;
-
     @JsonProperty("description")
     @JsonPropertyDescription("A summary description of the tender. This should complement structured information " +
             "provided using the items array. Descriptions should be short and easy to read. Avoid using ALL CAPS. ")
     private final String description;
-
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private final TenderStatus status;
-
-    @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of status.)")
-    private TenderStatusDetails statusDetails;
-
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The goods and services to be purchased, broken into line items wherever possible. Items" +
             " should not be duplicated, but a quantity of 2 specified instead.")
     private final Set<Item> items;
-
     @JsonProperty("value")
     private final Value value;
-
     @JsonProperty("minValue")
     private final Value minValue;
-
     @JsonProperty("procurementMethod")
     @JsonPropertyDescription("Specify tendering method using the [method codelist](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#method). This is a closed codelist. Local method types should be mapped" +
             " to " +
             "this list.")
     private final ProcurementMethod procurementMethod;
-
     @JsonProperty("procurementMethodDetails")
     @JsonPropertyDescription("Additional detail on the procurement method used. This field may be used to provide the" +
             " local name of the particular procurement method used.")
     private final String procurementMethodDetails;
-
     @JsonProperty("procurementMethodRationale")
     @JsonPropertyDescription("Rationale for the chosen procurement method. This is especially important to provide a " +
             "justification in the case of limited tenders or direct awards.")
     private final String procurementMethodRationale;
-
     @JsonProperty("mainProcurementCategory")
     @JsonPropertyDescription("The primary category describing the main object of this contracting process from the " +
             "[procurementCategory](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#procurement-category)" +
             " codelist. This is a closed codelist. Local classifications should be mapped to this list.")
     private final MainProcurementCategory mainProcurementCategory;
-
     @JsonProperty("additionalProcurementCategories")
     @JsonPropertyDescription("Any additional categories which describe the objects of this contracting process, from " +
             "the [extendedProcurementCategory](http://standard.open-contracting" +
@@ -132,71 +113,56 @@ public class Tender {
             "Local " +
             "categories can be included in this list.")
     private final List<ExtendedProcurementCategory> additionalProcurementCategories;
-
     @JsonProperty("awardCriteria")
     @JsonPropertyDescription("Specify the award criteria for the procurement, using the [award criteria codelist]" +
             "(http://standard.open-contracting.org/latest/en/schema/codelists/#award-criteria)")
     private final AwardCriteria awardCriteria;
-
     @JsonProperty("awardCriteriaDetails")
     @JsonPropertyDescription("Any detailed or further information on the award or selection criteria.")
     private final String awardCriteriaDetails;
-
     @JsonProperty("submissionMethod")
     @JsonPropertyDescription("Specify the method by which bids must be submitted, in person, written, or electronic " +
             "auction. Using the [submission method codelist](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#submission-method)")
     private final List<SubmissionMethod> submissionMethod;
-
     @JsonProperty("submissionMethodDetails")
     @JsonPropertyDescription("Any detailed or further information on the submission method. This may include the " +
             "address, e-mail address or online service to which bids should be submitted, and any special " +
             "requirements to" +
             " be followed for submissions.")
     private final String submissionMethodDetails;
-
     @JsonProperty("tenderPeriod")
     private final Period tenderPeriod;
-
     @JsonProperty("enquiryPeriod")
     private final Period enquiryPeriod;
-
     @JsonProperty("hasEnquiries")
     @JsonPropertyDescription("A true/false field to indicate whether any enquiries were received during the tender " +
             "process. Structured information on enquiries that were received, and responses to them, can be provided " +
             "using the enquiries extension.")
     private final Boolean hasEnquiries;
-
     @JsonProperty("enquiries")
     @JsonPropertyDescription("Enquiries array to tender, consisting of one or more enquiry objects, each with fields " +
             "for a question, and an answer.")
     private final List<Enquiry> enquiries;
-
     @JsonProperty("eligibilityCriteria")
     @JsonPropertyDescription("A description of any eligibility criteria for potential suppliers.")
     private final String eligibilityCriteria;
-
     @JsonProperty("awardPeriod")
     private final Period awardPeriod;
-
     @JsonProperty("contractPeriod")
     private final Period contractPeriod;
-
     @JsonProperty("numberOfTenderers")
     @JsonPropertyDescription("The number of parties who submit a bid.")
     private final Integer numberOfTenderers;
-
     @JsonProperty("tenderers")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("All parties who submit a bid on a tender. More detailed information on bids and the " +
             "bidding organization can be provided using the optional bid extension.")
     private final Set<OrganizationReference> tenderers;
-
     @JsonProperty("procuringEntity")
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
             "section")
     private final OrganizationReference procuringEntity;
-
     @JsonProperty("documents")
     @JsonPropertyDescription("All documents and attachments related to the tender, including any notices. See the " +
             "[documentType codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#document-type) " +
@@ -205,21 +171,17 @@ public class Tender {
             "technical specifications, evaluation criteria, and, as a tender process progresses, clarifications and " +
             "replies to queries.")
     private final List<Document> documents;
-
     @JsonProperty("milestones")
     @JsonPropertyDescription("A list of milestones associated with the tender.")
     private final List<Milestone> milestones;
-
     @JsonProperty("amendments")
     @JsonPropertyDescription("A tender amendment is a formal change to the tender, and generally involves the " +
             "publication of a new tender notice/release. The rationale and a description of the changes made can be " +
             "provided here.")
     private final List<Amendment> amendments;
-
     @JsonProperty("amendment")
     @JsonPropertyDescription("Amendment information")
     private final Amendment amendment;
-
     @JsonProperty("lots")
     @JsonPropertyDescription("A tender process may be divided into lots, where bidders can bid on one or more lots. " +
             "Details of each lot can be provided here. Items, documents and other features can then reference the lot" +
@@ -228,19 +190,16 @@ public class Tender {
             "interpreted as applicable to the whole tender. Properties of tender can be overridden for a given Lot " +
             "through their inclusion in the Lot object.")
     private final List<Lot> lots;
-
     @JsonProperty("lotDetails")
     @JsonPropertyDescription("If this tender is divided into lots, details can be provided here of any criteria that " +
             "apply to bidding on these lots. This extended property is currently focussed on fields required by the " +
             "EU " +
             "TED data standard")
     private final LotDetails lotDetails;
-
     @JsonProperty("lotGroups")
     @JsonPropertyDescription("ere the buyer reserves the right to combine lots, or wishes to specify the total value " +
             "for a group of lots, a lot group is used to capture this information.")
     private final List<LotGroup> lotGroups;
-
     @JsonProperty("participationFees")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Any fees applicable to bidders wishing to participate in the tender process. Fees may " +
@@ -248,79 +207,68 @@ public class Tender {
             "the " +
             "successful bidder.")
     private final Set<ParticipationFee> participationFees;
-
     @JsonProperty("criteria")
     @JsonPropertyDescription("A list of criteria on which either bidders or items will be judged, evaluated or " +
             "assessed.")
     private final List<Criterion> criteria;
-
     @JsonProperty("acceleratedProcedure")
     private final AcceleratedProcedure acceleratedProcedure;
-
     @JsonProperty("classification")
     private final Classification classification;
-
     @JsonProperty("designContest")
     private final DesignContest designContest;
-
     @JsonProperty("electronicWorkflows")
     private final ElectronicWorkflows electronicWorkflows;
-
     @JsonProperty("jointProcurement")
     private final JointProcurement jointProcurement;
-
     @JsonProperty("legalBasis")
     @JsonPropertyDescription("The legal basis of the tender based on the [legalBasis codelist](http://standard" +
             ".open-contracting.org/......")
     private final LegalBasis legalBasis;
-
     @JsonProperty("objectives")
     private final Objectives objectives;
-
     @JsonProperty("procedureOutsourcing")
     private final ProcedureOutsourcing procedureOutsourcing;
-
     @JsonProperty("procurementMethodAdditionalInfo")
     @JsonPropertyDescription("Additional information about the procurement method.")
     private final String procurementMethodAdditionalInfo;
-
     @JsonProperty("reviewParties")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The organizations involved in the review procedure for the procurement procedure. " +
             "Required by the EU and UNCITRAL")
     private final Set<OrganizationReference> reviewParties;
-
     @JsonProperty("reviewPeriod")
     private final Period reviewPeriod;
-
     @JsonProperty("standstillPeriod")
     private final Period standstillPeriod;
-
     @JsonProperty("submissionLanguages")
     @JsonPropertyDescription("Language(s) in which tenderers may submit, drawn from the [submissionLanguages " +
             "codelist](http://standard.open-contracting.org/1.1-dev/en/schema/codelists/#submission-languages)")
     private final List<SubmissionLanguage> submissionLanguages;
-
     @JsonProperty("submissionMethodRationale")
     @JsonPropertyDescription("A value from the [submissionValueRationale codelist](http://standard.open-contracting" +
             ".org/1.1-dev/en/schema/codelists/submission-method-rationale) that identifies the rationale where " +
             "electronic" +
             " submission method is not to be allowed. Required by EU.")
     private final List<SubmissionMethodRationale> submissionMethodRationale;
-
     @JsonProperty("dynamicPurchasingSystem")
     @JsonPropertyDescription("Dynamic Purchasing System: Whether a dynamic purchasing system has been set up and if " +
             "so whether it may be used by buyers outside the notice. Required by EU.")
     private final DynamicPurchasingSystem dynamicPurchasingSystem;
-
     @JsonProperty("framework")
     @JsonPropertyDescription("The details of any framework agreement established as part of this procurement. " +
             "Required by EU.")
     private final Framework framework;
-
     @JsonProperty("requiresElectronicCatalogue")
     @JsonPropertyDescription("Tenders must include an electronic catalogue. Required by the EU")
     private final Boolean requiresElectronicCatalogue;
+    @JsonProperty("id")
+    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
+            "drawn from an internally held identifier for this tender.")
+    private String id;
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of status.)")
+    private TenderStatusDetails statusDetails;
 
     @JsonCreator
     public Tender(@JsonProperty("id") final String id,

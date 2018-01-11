@@ -52,9 +52,9 @@ public class MainController {
 
     @PostMapping(value = "/fs")
     public ResponseEntity<ResponseDto> createFs(@RequestParam("cpid") final String cpid,
-                                                 @RequestParam("stage") final String stage,
-                                                 @RequestParam("operation") final String operation,
-                                                 @Valid @RequestBody final JsonNode data) {
+                                                @RequestParam("stage") final String stage,
+                                                @RequestParam("operation") final String operation,
+                                                @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
                 budgetService.createFs(cpid, stage, operation, data),
                 HttpStatus.CREATED);

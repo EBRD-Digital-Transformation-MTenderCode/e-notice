@@ -16,31 +16,27 @@ import lombok.Setter;
         "sourceParty"
 })
 public class BudgetBreakdown {
-    @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this particular budget entry.")
-    private String id;
-
     @JsonProperty("description")
     @JsonPropertyDescription("A short free text description of this budget entry.")
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private final String description;
-
     @JsonProperty("amount")
     @Valid
     @NotNull
     private final Value amount;
-
     @JsonProperty("period")
     @Valid
     @NotNull
     private final Period period;
-
     @JsonProperty("sourceParty")
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
             "section")
     @Valid
     @NotNull
     private final OrganizationReference sourceParty;
+    @JsonProperty("id")
+    @JsonPropertyDescription("An identifier for this particular budget entry.")
+    private String id;
 
     @JsonCreator
     public BudgetBreakdown(@JsonProperty("id") final String id,

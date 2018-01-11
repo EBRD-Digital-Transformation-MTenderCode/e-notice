@@ -1,6 +1,9 @@
 package com.procurement.notice.model.ocds.cn;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
@@ -9,7 +12,9 @@ import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 

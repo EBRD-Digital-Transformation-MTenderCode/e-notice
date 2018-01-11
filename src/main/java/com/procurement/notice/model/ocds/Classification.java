@@ -17,25 +17,22 @@ import lombok.Setter;
         "uri"
 })
 public class Classification {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The classification code drawn from the selected scheme.")
-    private String id;
-
     @JsonProperty("description")
     @JsonPropertyDescription("A textual description or title for the code.")
     private final String description;
-
     @JsonProperty("scheme")
     @JsonPropertyDescription("An classification should be drawn from an existing scheme or list of codes. This field " +
             "is used to indicate the scheme/codelist from which the classification is drawn. For line item " +
             "classifications, this value should represent an known [Item Classification Scheme](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#item-classification-scheme) wherever possible.")
     private final Scheme scheme;
-
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI to identify the code. In the event individual URIs are not available for items in" +
             " the identifier scheme this value should be left blank.")
     private final URI uri;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The classification code drawn from the selected scheme.")
+    private String id;
 
     @JsonCreator
     public Classification(@JsonProperty("scheme") final Scheme scheme,

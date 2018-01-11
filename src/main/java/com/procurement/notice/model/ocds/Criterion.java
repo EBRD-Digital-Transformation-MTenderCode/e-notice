@@ -22,42 +22,36 @@ import lombok.Setter;
         "requirementGroups"
 })
 public class Criterion {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier for this criterion. It must be unique and cannot change within the Open " +
-            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
-            "(http://standard" +
-            ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
-    private String id;
-
     @JsonProperty("title")
     @JsonPropertyDescription("Criterion title")
     private final String title;
-
     @JsonProperty("description")
     @JsonPropertyDescription("Criterion description")
     private final String description;
-
     @JsonProperty("source")
     @JsonPropertyDescription("Source of response to the requirements specificed in the criterion, for example " +
             "responses may be submitted by tenderers or by an assessment committee at the procuringEntity.")
     private final Source source;
-
     @JsonProperty("relatesTo")
     @JsonPropertyDescription("The schema element that the criterion judges, evaluates or assesses. For example " +
             "criterion may be defined against items or against bidders.")
     private final RelatesTo relatesTo;
-
     @JsonProperty("relatedItem")
     @JsonPropertyDescription("Where relatesTo = \"item\" this field must be populated with the id of the item in this" +
             " tender section which the criterion relates to. Where relatesTo <> \"item\" this field should be omitted")
     private final String relatedItem;
-
     @JsonProperty("requirementGroups")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("A list of requirement groups for this Criterion. A criterion is satisfied by one or " +
             "more requirement groups being met. A requirement group is met when all requirements in the group are " +
             "satisfied.")
     private final Set<RequirementGroup> requirementGroups;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier for this criterion. It must be unique and cannot change within the Open " +
+            "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "(http://standard" +
+            ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
+    private String id;
 
     @JsonCreator
     public Criterion(@JsonProperty("id") final String id,

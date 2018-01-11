@@ -23,14 +23,9 @@ import lombok.Setter;
         "relatedLot"
 })
 public class BidsStatistic {
-    @JsonProperty("id")
-    @JsonPropertyDescription("An internal identifier for this statistical item.")
-    private String id;
-
     @JsonProperty("measure")
     @JsonPropertyDescription("An item from the bidStatistics codelist for the statisic reported in value.")
     private final Measure measure;
-
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date when this statistic was last updated. This is often the closing date of the " +
@@ -40,27 +35,27 @@ public class BidsStatistic {
             "calculated to" +
             " be provided.")
     private final LocalDateTime date;
-
     @JsonProperty("value")
     @JsonPropertyDescription("The value for the measure in question. Total counts should be provided as an integer. " +
             "Percentages should be presented as a proportion of 1 (e.g. 10% = 0.1)")
     private final Double value;
-
     @JsonProperty("notes")
     @JsonPropertyDescription("Any notes required to understand or interpret the given statistic.")
     private final String notes;
-
     @JsonProperty("relatedLot")
     @JsonPropertyDescription("Where lots are in use, if this statistic relates to bids on a particular lot, provide " +
             "the lot identifier here. If left blank, the statistic will be interpreted as applying to the whole " +
             "tender.")
     private final String relatedLot;
+    @JsonProperty("id")
+    @JsonPropertyDescription("An internal identifier for this statistical item.")
+    private String id;
 
     @JsonCreator
     public BidsStatistic(@JsonProperty("id") final String id,
                          @JsonProperty("measure") final Measure measure,
                          @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                             LocalDateTime date,
+                         LocalDateTime date,
                          @JsonProperty("value") final Double value,
                          @JsonProperty("notes") final String notes,
                          @JsonProperty("relatedLot") final String relatedLot) {

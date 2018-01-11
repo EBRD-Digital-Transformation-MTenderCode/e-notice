@@ -32,6 +32,59 @@ import lombok.Setter;
         "statusDetails"
 })
 public class Award {
+    @JsonProperty("title")
+    @JsonPropertyDescription("Award title")
+    private final String title;
+    @JsonProperty("description")
+    @JsonPropertyDescription("Award description")
+    private final String description;
+    @JsonProperty("status")
+    @JsonPropertyDescription("The current status of the award drawn from the [awardStatus codelist](http://standard" +
+            ".open-contracting.org/latest/en/schema/codelists/#award-status)")
+    private final Status status;
+    @JsonProperty("date")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonPropertyDescription("The date of the contract award. This is usually the date on which a decision to award " +
+            "was made.")
+    private final LocalDateTime date;
+    @JsonProperty("value")
+    private final Value value;
+    @JsonProperty("suppliers")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("The suppliers awarded this award. If different suppliers have been awarded different " +
+            "items of values, these should be split into separate award blocks.")
+    private final Set<OrganizationReference> suppliers;
+    @JsonProperty("items")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("The goods and services awarded in this award, broken into line items wherever possible." +
+            " Items should not be duplicated, but the quantity specified instead.")
+    private final Set<Item> items;
+    @JsonProperty("contractPeriod")
+    private final Period contractPeriod;
+    @JsonProperty("documents")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("All documents and attachments related to the award, including any notices.")
+    private final Set<Document> documents;
+    @JsonProperty("amendments")
+    @JsonPropertyDescription("An award amendment is a formal change to the details of the award, and generally " +
+            "involves the publication of a new award notice/release. The rationale and a description of the changes " +
+            "made " +
+            "can be provided here.")
+    private final List<Amendment> amendments;
+    @JsonProperty("amendment")
+    @JsonPropertyDescription("Amendment information")
+    private final Amendment amendment;
+    @JsonProperty("relatedLots")
+    @JsonPropertyDescription("If this award relates to one or more specific lots, provide the identifier(s) of the " +
+            "related lot(s) here.")
+    private final List<String> relatedLots;
+    @JsonProperty("requirementResponses")
+    private final Set<RequirementResponse> requirementResponses;
+    @JsonProperty("reviewProceedings")
+    private final ReviewProceedings reviewProceedings;
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of an award status.")
+    private final String statusDetails;
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this award. It must be unique and cannot change within the Open " +
             "Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
@@ -39,81 +92,13 @@ public class Award {
             ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private String id;
 
-    @JsonProperty("title")
-    @JsonPropertyDescription("Award title")
-    private final String title;
-
-    @JsonProperty("description")
-    @JsonPropertyDescription("Award description")
-    private final String description;
-
-    @JsonProperty("status")
-    @JsonPropertyDescription("The current status of the award drawn from the [awardStatus codelist](http://standard" +
-            ".open-contracting.org/latest/en/schema/codelists/#award-status)")
-    private final Status status;
-
-    @JsonProperty("date")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonPropertyDescription("The date of the contract award. This is usually the date on which a decision to award " +
-            "was made.")
-    private final LocalDateTime date;
-
-    @JsonProperty("value")
-    private final Value value;
-
-    @JsonProperty("suppliers")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("The suppliers awarded this award. If different suppliers have been awarded different " +
-            "items of values, these should be split into separate award blocks.")
-    private final Set<OrganizationReference> suppliers;
-
-    @JsonProperty("items")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("The goods and services awarded in this award, broken into line items wherever possible." +
-            " Items should not be duplicated, but the quantity specified instead.")
-    private final Set<Item> items;
-
-    @JsonProperty("contractPeriod")
-    private final Period contractPeriod;
-
-    @JsonProperty("documents")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("All documents and attachments related to the award, including any notices.")
-    private final Set<Document> documents;
-
-    @JsonProperty("amendments")
-    @JsonPropertyDescription("An award amendment is a formal change to the details of the award, and generally " +
-            "involves the publication of a new award notice/release. The rationale and a description of the changes " +
-            "made " +
-            "can be provided here.")
-    private final List<Amendment> amendments;
-
-    @JsonProperty("amendment")
-    @JsonPropertyDescription("Amendment information")
-    private final Amendment amendment;
-
-    @JsonProperty("relatedLots")
-    @JsonPropertyDescription("If this award relates to one or more specific lots, provide the identifier(s) of the " +
-            "related lot(s) here.")
-    private final List<String> relatedLots;
-
-    @JsonProperty("requirementResponses")
-    private final Set<RequirementResponse> requirementResponses;
-
-    @JsonProperty("reviewProceedings")
-    private final ReviewProceedings reviewProceedings;
-
-    @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of an award status.")
-    private final String statusDetails;
-
     @JsonCreator
     public Award(@JsonProperty("id") final String id,
                  @JsonProperty("title") final String title,
                  @JsonProperty("description") final String description,
                  @JsonProperty("status") final Status status,
                  @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime
-                             date,
+                         date,
                  @JsonProperty("value") final Value value,
                  @JsonProperty("suppliers") final LinkedHashSet<OrganizationReference> suppliers,
                  @JsonProperty("items") final LinkedHashSet<Item> items,

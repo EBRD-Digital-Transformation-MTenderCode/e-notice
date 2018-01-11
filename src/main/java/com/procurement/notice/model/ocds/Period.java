@@ -49,11 +49,11 @@ public class Period {
 
     @JsonCreator
     public Period(@JsonProperty("startDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                      LocalDateTime startDate,
+                  LocalDateTime startDate,
                   @JsonProperty("endDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
                   LocalDateTime endDate,
                   @JsonProperty("maxExtentDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                      LocalDateTime maxExtentDate,
+                  LocalDateTime maxExtentDate,
                   @JsonProperty("durationInDays") final Integer durationInDays) {
         this.startDate = startDate;
         this.endDate = endDate;

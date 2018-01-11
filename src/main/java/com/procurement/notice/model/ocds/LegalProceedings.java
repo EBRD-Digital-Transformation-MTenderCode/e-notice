@@ -14,17 +14,15 @@ import lombok.Setter;
         "uri"
 })
 public class LegalProceedings {
-    @JsonProperty("id")
-    @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated. Required by the EU")
-    private String id;
-
     @JsonProperty("title")
     @JsonPropertyDescription("Title(s) of any legal proceedings(s) initiated.")
     private final String title;
-
     @JsonProperty("uri")
     @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated.")
     private final URI uri;
+    @JsonProperty("id")
+    @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated. Required by the EU")
+    private String id;
 
     @JsonCreator
     public LegalProceedings(@JsonProperty("id") final String id,

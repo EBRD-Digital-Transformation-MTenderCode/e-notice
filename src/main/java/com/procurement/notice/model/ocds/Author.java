@@ -12,13 +12,12 @@ import lombok.Setter;
         "name"
 })
 public class Author {
-    @JsonProperty("id")
-    @JsonPropertyDescription("A unique identifier for the author.")
-    private String id;
-
     @JsonProperty("name")
     @JsonPropertyDescription("The name of the author.")
     private final String name;
+    @JsonProperty("id")
+    @JsonPropertyDescription("A unique identifier for the author.")
+    private String id;
 
     @JsonCreator
     public Author(@JsonProperty("id") final String id,

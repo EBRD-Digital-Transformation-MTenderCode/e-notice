@@ -24,39 +24,32 @@ import lombok.Setter;
         "requirementResponses"
 })
 public class Bid {
-    @JsonProperty("id")
-    @JsonPropertyDescription("A local identifier for this bid")
-    private String id;
-
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date when this bid was received.")
     private final LocalDateTime date;
-
     @JsonProperty("status")
     @JsonPropertyDescription("The status of the bid, drawn from the bidStatus codelist")
     private final Status status;
-
     @JsonProperty("tenderers")
     @JsonPropertyDescription("The party, or parties, responsible for this bid. This should provide a name and " +
             "identifier, cross-referenced to an entry in the parties array at the top level of the release.")
     private final List<OrganizationReference> tenderers;
-
     @JsonProperty("value")
     private final Value value;
-
     @JsonProperty("documents")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("All documents and attachments related to the bid and its evaluation.")
     private final Set<Document> documents;
-
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("If this bid relates to one or more specific lots, provide the identifier(s) of the " +
             "related lot(s) here.")
     private final List<String> relatedLots;
-
     @JsonProperty("requirementResponses")
     private final Set<RequirementResponse> requirementResponses;
+    @JsonProperty("id")
+    @JsonPropertyDescription("A local identifier for this bid")
+    private String id;
 
     @JsonCreator
     public Bid(@JsonProperty("id") final String id,

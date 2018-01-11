@@ -16,20 +16,18 @@ import lombok.Setter;
         "requirements"
 })
 public class RequirementGroup {
+    @JsonProperty("description")
+    @JsonPropertyDescription("Requirement group description")
+    private final String description;
+    @JsonProperty("requirements")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("A list requirements which must all be satisified for the requirement group to be met.")
+    private final Set<Requirement> requirements;
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this requirement group. It must be unique and cannot change within " +
             "the Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
             "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private String id;
-
-    @JsonProperty("description")
-    @JsonPropertyDescription("Requirement group description")
-    private final String description;
-
-    @JsonProperty("requirements")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("A list requirements which must all be satisified for the requirement group to be met.")
-    private final Set<Requirement> requirements;
 
     @JsonCreator
     public RequirementGroup(@JsonProperty("id") final String id,

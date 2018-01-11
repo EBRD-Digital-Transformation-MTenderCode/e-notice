@@ -18,25 +18,21 @@ import lombok.Setter;
         "estimationMethod"
 })
 public class ValueBreakdown {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier of this value breakdown. Unique within this array.")
-    private String id;
-
     @JsonProperty("type")
     @JsonPropertyDescription("A value from the [valueType codelist] (http://standard.open-contracting" +
             ".org/1.1-dev/en/schema/codelists/#value-type) that identifies the nature of the value in the breakdown. " +
             "Negative values indicate a revenue to the supplier.")
     private final List<ValueBreakdownType> type;
-
     @JsonProperty("description")
     @JsonPropertyDescription("The description of this value breakdown.")
     private final String description;
-
     @JsonProperty("amount")
     private final Value amount;
-
     @JsonProperty("estimationMethod")
     private final Value estimationMethod;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier of this value breakdown. Unique within this array.")
+    private String id;
 
     @JsonCreator
     public ValueBreakdown(@JsonProperty("id") final String id,

@@ -37,61 +37,44 @@ import lombok.Setter;
         "isFrameworkOrDynamic"
 })
 public class Contract {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier for this contract. It must be unique and cannot change within its Open " +
-            "Contracting Process (defined by a single ocid). See the [identifier guidance](http://standard" +
-            ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
-    private String id;
-
     @JsonProperty("awardID")
     @JsonPropertyDescription("The award.id against which this contract is being issued.")
     private final String awardID;
-
     @JsonProperty("extendsContractID")
     @JsonPropertyDescription("If this contract extends or amends a previously issued contract, then the contract.id " +
             "value for the extended/amended contract can be provided here.")
     private final String extendsContractID;
-
     @JsonProperty("title")
     @JsonPropertyDescription("Contract title")
     private final String title;
-
     @JsonProperty("description")
     @JsonPropertyDescription("Contract description")
     private final String description;
-
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the contract. Drawn from the [contractStatus codelist]" +
             "(http://standard.open-contracting.org/latest/en/schema/codelists/#contract-status)")
     private final Status status;
-
     @JsonProperty("period")
     private final Period period;
-
     @JsonProperty("value")
     private final Value value;
-
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The goods, services, and any intangible outcomes in this contract. Note: If the items " +
             "are the same as the award do not repeat.")
     private final Set<Item> items;
-
     @JsonProperty("dateSigned")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date the contract was signed. In the case of multiple signatures, the date of the " +
             "last signature.")
     private final LocalDateTime dateSigned;
-
     @JsonProperty("documents")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("All documents and attachments related to the contract, including any notices.")
     private final Set<Document> documents;
-
     @JsonProperty("implementation")
     @JsonPropertyDescription("Information during the performance / implementation stage of the contract.")
     private final Implementation implementation;
-
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process is followed by one or more contracting processes, represented under a " +
@@ -99,42 +82,39 @@ public class Contract {
             "This " +
             "is commonly used to point to subcontracts, or to renewal and replacement processes for this contract.")
     private final Set<RelatedProcess> relatedProcesses;
-
     @JsonProperty("milestones")
     @JsonPropertyDescription("A list of milestones associated with the finalization of this contract.")
     private final List<Milestone> milestones;
-
     @JsonProperty("amendments")
     @JsonPropertyDescription("A contract amendment is a formal change to, or extension of, a contract, and generally " +
             "involves the publication of a new contract notice/release, or some other documents detailing the change." +
             " The" +
             " rationale and a description of the changes made can be provided here.")
     private final List<Amendment> amendments;
-
     @JsonProperty("amendment")
     @JsonPropertyDescription("Amendment information")
     private final Amendment amendment;
-
     @JsonProperty("requirementResponses")
     private final Set<RequirementResponse> requirementResponses;
-
     @JsonProperty("countryOfOrigin")
     @JsonPropertyDescription("Country of origin of the product or service. Required by EU.")
     private final String countryOfOrigin;
-
     @JsonProperty("lotVariant")
     @JsonPropertyDescription("The contract was awarded to a tenderer who submitted a variant for the following lot(s)")
     private final Set<String> lotVariant;
-
     @JsonProperty("valueBreakdown")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The breakdown of known and/or estimated values in this contract.")
     private final Set<ValueBreakdown> valueBreakdown;
-
     @JsonProperty("isFrameworkOrDynamic")
     @JsonPropertyDescription("Contracts within a framework agreement or a dynamic purchasing system are being awarded" +
             ". Required by the EU")
     private final Boolean isFrameworkOrDynamic;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier for this contract. It must be unique and cannot change within its Open " +
+            "Contracting Process (defined by a single ocid). See the [identifier guidance](http://standard" +
+            ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
+    private String id;
 
     @JsonCreator
     public Contract(@JsonProperty("id") final String id,
@@ -147,7 +127,7 @@ public class Contract {
                     @JsonProperty("value") final Value value,
                     @JsonProperty("items") final LinkedHashSet<Item> items,
                     @JsonProperty("dateSigned") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                        LocalDateTime dateSigned,
+                    LocalDateTime dateSigned,
                     @JsonProperty("documents") final LinkedHashSet<Document> documents,
                     @JsonProperty("implementation") final Implementation implementation,
                     @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses,

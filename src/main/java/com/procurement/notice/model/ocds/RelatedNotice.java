@@ -22,24 +22,20 @@ public class RelatedNotice {
     @JsonPropertyDescription("The source of the related notice identifier. Currently only 'TED' and 'national' are " +
             "permitted values.")
     private final RelatedNotice.Scheme scheme;
-
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier of the related national notice.")
-    private String id;
-
     @JsonProperty("relationship")
     @JsonPropertyDescription("Type of relationship")
     private final RelatedNotice.Relationship relationship;
-
     @JsonProperty("objectOfProcurementInPIN")
     @JsonPropertyDescription("If the related notice linked to is a planning or 'Prior Information Notice' (PIN) that " +
             "describes a number of potential tenders, the identifier of the specific Object to which this current " +
             "contracting process relates should be given.")
     private final String objectOfProcurementInPIN;
-
     @JsonProperty("uri")
     @JsonPropertyDescription("Uri of a national notice")
     private final URI uri;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier of the related national notice.")
+    private String id;
 
     @JsonCreator
     public RelatedNotice(@JsonProperty("scheme") final Scheme scheme,

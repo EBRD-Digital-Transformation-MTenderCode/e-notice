@@ -20,18 +20,11 @@ import lombok.Setter;
         "relatedLot"
 })
 public class Item {
-    @JsonProperty("id")
-    @JsonPropertyDescription("A local identifier to reference and merge the items by. Must be unique within a given " +
-            "array of items.")
-    private String id;
-
     @JsonProperty("description")
     @JsonPropertyDescription("A description of the goods, services to be provided.")
     private final String description;
-
     @JsonProperty("classification")
     private final Classification classification;
-
     @JsonProperty("additionalClassifications")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("An array of additional classifications for the item. See the [itemClassificationScheme]" +
@@ -40,19 +33,20 @@ public class Item {
             "common options to use in OCDS. This may also be used to present codes from an internal classification " +
             "scheme.")
     private final Set<Classification> additionalClassifications;
-
     @JsonProperty("quantity")
     @JsonPropertyDescription("The number of units required")
     private final Double quantity;
-
     @JsonProperty("unit")
     @JsonPropertyDescription("A description of the unit in which the supplies, services or works are provided (e.g. " +
             "hours, kilograms) and the unit-price. For comparability, an established list of units can be used.  ")
     private final Unit unit;
-
     @JsonProperty("relatedLot")
     @JsonPropertyDescription("If this item belongs to a lot, provide the identifier(s) of the related lot(s) here.")
     private final String relatedLot;
+    @JsonProperty("id")
+    @JsonPropertyDescription("A local identifier to reference and merge the items by. Must be unique within a given " +
+            "array of items.")
+    private String id;
 
     @JsonCreator
     public Item(@JsonProperty("id") final String id,

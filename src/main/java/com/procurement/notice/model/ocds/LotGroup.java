@@ -15,21 +15,18 @@ import lombok.Setter;
         "maximumValue"
 })
 public class LotGroup {
-    @JsonProperty("id")
-    @JsonPropertyDescription("A local identifier for this group of lots.")
-    private String id;
-
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("A list of the identifiers of the lots that form this group. Lots may appear in more " +
             "than one group.")
     private final List<String> relatedLots;
-
     @JsonProperty("optionToCombine")
     @JsonPropertyDescription("The buyer reserves the right to combine the lots in this group when awarding a contract.")
     private final Boolean optionToCombine;
-
     @JsonProperty("maximumValue")
     private final Value maximumValue;
+    @JsonProperty("id")
+    @JsonPropertyDescription("A local identifier for this group of lots.")
+    private String id;
 
     @JsonCreator
     public LotGroup(@JsonProperty("id") final String id,

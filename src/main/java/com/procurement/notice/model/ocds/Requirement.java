@@ -21,44 +21,36 @@ import lombok.Setter;
         "period"
 })
 public class Requirement {
+    @JsonProperty("title")
+    @JsonPropertyDescription("Requirement title")
+    private final String title;
+    @JsonProperty("description")
+    @JsonPropertyDescription("Requirement description")
+    private final String description;
+    @JsonProperty("dataType")
+    @JsonPropertyDescription("Requirement description")
+    private final DataType dataType;
+    @JsonProperty("pattern")
+    @JsonPropertyDescription("A regular expression against which validate the requirement response")
+    private final String pattern;
+    @JsonProperty("expectedValue")
+    @JsonPropertyDescription("Used to state the requirement when the response must be particular value")
+    private final String expectedValue;
+    @JsonProperty("minValue")
+    @JsonPropertyDescription("Used to state the lower bound of the requirement when the response must be within a " +
+            "certain range")
+    private final Double minValue;
+    @JsonProperty("maxValue")
+    @JsonPropertyDescription("Used to state the upper bound of the requirement when the response must be within a " +
+            "certain range")
+    private final Double maxValue;
+    @JsonProperty("period")
+    private final Period period;
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this requirement. It must be unique and cannot change within the " +
             "Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
             "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
     private String id;
-
-    @JsonProperty("title")
-    @JsonPropertyDescription("Requirement title")
-    private final String title;
-
-    @JsonProperty("description")
-    @JsonPropertyDescription("Requirement description")
-    private final String description;
-
-    @JsonProperty("dataType")
-    @JsonPropertyDescription("Requirement description")
-    private final DataType dataType;
-
-    @JsonProperty("pattern")
-    @JsonPropertyDescription("A regular expression against which validate the requirement response")
-    private final String pattern;
-
-    @JsonProperty("expectedValue")
-    @JsonPropertyDescription("Used to state the requirement when the response must be particular value")
-    private final String expectedValue;
-
-    @JsonProperty("minValue")
-    @JsonPropertyDescription("Used to state the lower bound of the requirement when the response must be within a " +
-            "certain range")
-    private final Double minValue;
-
-    @JsonProperty("maxValue")
-    @JsonPropertyDescription("Used to state the upper bound of the requirement when the response must be within a " +
-            "certain range")
-    private final Double maxValue;
-
-    @JsonProperty("period")
-    private final Period period;
 
     @JsonCreator
     public Requirement(@JsonProperty("id") final String id,

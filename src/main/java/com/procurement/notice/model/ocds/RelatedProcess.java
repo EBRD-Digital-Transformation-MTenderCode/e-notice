@@ -1,7 +1,6 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

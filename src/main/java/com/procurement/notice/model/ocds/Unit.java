@@ -18,15 +18,9 @@ import lombok.Setter;
         "uri"
 })
 public class Unit {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier from the codelist referenced in the scheme property. Check the codelist " +
-            "for details of how to find and use identifiers from the scheme in use.")
-    private String id;
-
     @JsonProperty("name")
     @JsonPropertyDescription("Name of the unit.")
     private final String name;
-
     @JsonProperty("scheme")
     @JsonPropertyDescription("The list from which units of measure identifiers are taken. This should be an entry " +
             "from the options available in the [unitClassificationScheme](http://standard.open-contracting" +
@@ -36,14 +30,16 @@ public class Unit {
             "recommended," +
             " although other options are available.")
     private final Scheme scheme;
-
     @JsonProperty("value")
     private final Value value;
-
     @JsonProperty("uri")
     @JsonPropertyDescription("If the scheme used provide a machine-readable URI for this unit of measure, this can be" +
             " given.")
     private final URI uri;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier from the codelist referenced in the scheme property. Check the codelist " +
+            "for details of how to find and use identifiers from the scheme in use.")
+    private String id;
 
     @JsonCreator
     public Unit(@JsonProperty("name") final String name,

@@ -12,13 +12,12 @@ import lombok.Setter;
         "title"
 })
 public class RequirementReference {
-    @JsonProperty("id")
-    @JsonPropertyDescription("The id of the requirement which the response is applicable to")
-    private String id;
-
     @JsonProperty("title")
     @JsonPropertyDescription("The title of the requirement which the response is applicable to")
     private final String title;
+    @JsonProperty("id")
+    @JsonPropertyDescription("The id of the requirement which the response is applicable to")
+    private String id;
 
     @JsonCreator
     public RequirementReference(@JsonProperty("id") final String id,
