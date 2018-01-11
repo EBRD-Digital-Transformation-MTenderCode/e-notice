@@ -43,10 +43,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         final LocalDateTime addedDate = dateUtil.getNowUTC();
         final long timeStamp = dateUtil.getMilliUTC(addedDate);
         ms.setOcid(cpid);
+        ms.setId(getReleaseId(cpid, timeStamp));
         ms.setDate(releaseDate);
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(ReleaseMS.InitiationType.TENDER);
-        ms.setId(getId(cpid, timeStamp));
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
 
         final ReleasePS ps = jsonUtil.toObject(ReleasePS.class, data.toString());
@@ -54,9 +54,9 @@ public class ReleaseServiceImpl implements ReleaseService {
         ps.setDate(releaseDate);
         ps.setTag(Arrays.asList(Tag.COMPILED));
         ps.setInitiationType(ReleasePS.InitiationType.TENDER);
-        ps.setId(getId(ps.getOcid(), timeStamp));
+        ps.setId(getReleaseId(ps.getOcid(), timeStamp));
         ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        ps.getPlanning().getBudget().setId(getId(ps.getOcid(), timeStamp));
+        ps.getPlanning().getBudget().setId(getId());
 
         ms.getRelatedProcesses().add(
                 new RelatedProcess(
@@ -82,12 +82,16 @@ public class ReleaseServiceImpl implements ReleaseService {
         return getResponseDto(ms.getOcid(), ps.getOcid());
     }
 
-    private String getOcId(final String ocId, final String stage, final long timeStamp) {
-        return ocId + SEPARATOR + stage + SEPARATOR + timeStamp;
+    private String getOcId(final String cpId, final String stage, final long timeStamp) {
+        return cpId + SEPARATOR + stage + SEPARATOR + timeStamp;
     }
 
-    private String getId(final String ocId, final long timeStamp) {
+    private String getReleaseId(final String ocId, final long timeStamp) {
         return ocId + SEPARATOR + timeStamp;
+    }
+
+    private String getId() {
+        return UUIDs.timeBased().toString();
     }
 
     private ReleaseEntity getEntity(final String cpId,

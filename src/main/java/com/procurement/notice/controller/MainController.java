@@ -1,7 +1,6 @@
 package com.procurement.notice.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.procurement.notice.model.dto.RequestDto;
 import com.procurement.notice.model.dto.ResponseDto;
 import com.procurement.notice.service.ReleaseService;
 import com.procurement.notice.service.ReleaseServiceImpl;
