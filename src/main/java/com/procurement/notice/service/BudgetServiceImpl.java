@@ -76,7 +76,6 @@ public class BudgetServiceImpl implements BudgetService {
             ein.setDate(addedDate);
             ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
             addFsRelatedProcessToEin(ein, fsOcId);
-
             budgetDao.saveBudget(getEntity(
                     einCpId,
                     einCpId,
