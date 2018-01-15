@@ -1,4 +1,4 @@
-package com.procurement.notice.model.ocds.cn;
+package com.procurement.notice.model.cn;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

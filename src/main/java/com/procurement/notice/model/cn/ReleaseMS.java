@@ -1,4 +1,4 @@
-package com.procurement.notice.model.ocds.cn;
+package com.procurement.notice.model.cn;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,23 +34,6 @@ import lombok.Setter;
         "relatedProcesses"
 })
 public class ReleaseMS {
-    @JsonProperty("title")
-    @JsonPropertyDescription("A overall title for this contracting process or release.")
-    private final String title;
-    @JsonProperty("description")
-    private final String description;
-    @JsonProperty("tender")
-    @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
-            "bids for evaluation and selecting a winner or winners.")
-    private final TenderMS tender;
-    @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
-            " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
-            "commonly used to relate mini-competitions to their parent frameworks, full tenders to a " +
-            "pre-qualification " +
-            "phase, or individual tenders to a broad planning process.")
-    private final Set<RelatedProcess> relatedProcesses;
     @JsonProperty("ocid")
     @JsonPropertyDescription("A globally unique identifier for this Open Contracting Process. Composed of a publisher" +
             " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
@@ -64,6 +47,7 @@ public class ReleaseMS {
     private String id;
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonPropertyDescription("The date this information was first released, or published.")
     private LocalDateTime date;
     @JsonProperty("tag")
@@ -78,17 +62,33 @@ public class ReleaseMS {
             "codelist" +
             ". Currently only tender is supported.")
     private InitiationType initiationType;
+    @JsonProperty("title")
+    @JsonPropertyDescription("A overall title for this contracting process or release.")
+    private final String title;
+    @JsonProperty("description")
+    private final String description;
     @JsonProperty("language")
     @JsonPropertyDescription("Specifies the default language of the data using either two-letter [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
             ".w3.org/International/articles/language-tags/). The use of lowercase two-letter codes from [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended.")
     private String language;
+    @JsonProperty("tender")
+    @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
+            "bids for evaluation and selecting a winner or winners.")
+    private final TenderMS tender;
+    @JsonProperty("relatedProcesses")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
+            " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
+            "commonly used to relate mini-competitions to their parent frameworks, full tenders to a " +
+            "pre-qualification " +
+            "phase, or individual tenders to a broad planning process.")
+    private final Set<RelatedProcess> relatedProcesses;
 
     public ReleaseMS(@JsonProperty("ocid") final String ocid,
                      @JsonProperty("id") final String id,
-                     @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
-                     LocalDateTime date,
+                     @JsonProperty("date") final LocalDateTime date,
                      @JsonProperty("tag") final List<Tag> tag,
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("title") final String title,
@@ -103,8 +103,8 @@ public class ReleaseMS {
         this.initiationType = initiationType;
         this.title = title;
         this.description = description;
-        this.tender = tender;
         this.language = language == null ? "en" : language;
+        this.tender = tender;
         this.relatedProcesses = relatedProcesses;
     }
 }

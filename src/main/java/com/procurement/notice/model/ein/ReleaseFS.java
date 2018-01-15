@@ -1,4 +1,4 @@
-package com.procurement.notice.model.ocds.ein;
+package com.procurement.notice.model.ein;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,32 +33,6 @@ import lombok.Setter;
         "relatedProcesses"
 })
 public class ReleaseFS {
-    @JsonProperty("parties")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("Information on the parties (organizations, economic operators and other participants) " +
-            "who are involved in the contracting process and their roles, e.g. buyer, procuring entity, supplier etc." +
-            " " +
-            "Organization references elsewhere in the schema are used to refer back to this entries in this list.")
-    private final Set<Organization> parties;
-    @JsonProperty("planning")
-    @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
-            "fields may be filled in a planning release, in the appropriate fields in other schema sections, these " +
-            "would " +
-            "likely be estimates at this stage e.g. totalValue in tender")
-    private final Planning planning;
-    @JsonProperty("title")
-    @JsonPropertyDescription("A overall title for this contracting process or release.")
-    private final String title;
-    @JsonProperty("description")
-    private final String description;
-    @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
-            " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
-            "commonly used to relate mini-competitions to their parent frameworks, full tenders to a " +
-            "pre-qualification " +
-            "phase, or individual tenders to a broad planning process.")
-    private final Set<RelatedProcess> relatedProcesses;
     @JsonProperty("ocid")
     @JsonPropertyDescription("A globally unique identifier for this Open Contracting Process. Composed of a publisher" +
             " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
@@ -87,12 +61,38 @@ public class ReleaseFS {
             "codelist" +
             ". Currently only tender is supported.")
     private InitiationType initiationType;
+    @JsonProperty("title")
+    @JsonPropertyDescription("A overall title for this contracting process or release.")
+    private final String title;
+    @JsonProperty("description")
+    private final String description;
     @JsonProperty("language")
     @JsonPropertyDescription("Specifies the default language of the data using either two-letter [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
             ".w3.org/International/articles/language-tags/). The use of lowercase two-letter codes from [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended.")
     private String language;
+    @JsonProperty("parties")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("Information on the parties (organizations, economic operators and other participants) " +
+            "who are involved in the contracting process and their roles, e.g. buyer, procuring entity, supplier etc." +
+            " " +
+            "Organization references elsewhere in the schema are used to refer back to this entries in this list.")
+    private final Set<Organization> parties;
+    @JsonProperty("planning")
+    @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
+            "fields may be filled in a planning release, in the appropriate fields in other schema sections, these " +
+            "would " +
+            "likely be estimates at this stage e.g. totalValue in tender")
+    private final Planning planning;
+    @JsonProperty("relatedProcesses")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
+            " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
+            "commonly used to relate mini-competitions to their parent frameworks, full tenders to a " +
+            "pre-qualification " +
+            "phase, or individual tenders to a broad planning process.")
+    private final Set<RelatedProcess> relatedProcesses;
 
     public ReleaseFS(@JsonProperty("ocid") final String ocid,
                      @JsonProperty("id") final String id,

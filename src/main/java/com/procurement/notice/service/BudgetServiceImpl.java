@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.BudgetDao;
 import com.procurement.notice.model.bpe.ResponseDto;
+import com.procurement.notice.model.ein.ReleaseEIN;
+import com.procurement.notice.model.ein.ReleaseFS;
 import com.procurement.notice.model.entity.BudgetEntity;
 import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
-import com.procurement.notice.model.ocds.ein.ReleaseEIN;
-import com.procurement.notice.model.ocds.ein.ReleaseFS;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
@@ -41,12 +41,11 @@ public class BudgetServiceImpl implements BudgetService {
                                  final JsonNode data) {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final LocalDateTime addedDate = dateUtil.getNowUTC();
-        ein.setOcid(cpid);
         ein.setId(getReleaseId(cpid));
         ein.setDate(addedDate);
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
-        budgetDao.saveBudget(getEntity(ein.getOcid(), ein.getOcid(), ein.getId(), stage, 0D, addedDate, ein));
+        budgetDao.saveBudget(getEntity(cpid, ein.getOcid(), ein.getId(), stage, 0D, addedDate, ein));
         return getResponseDto(ein.getOcid(), ein.getOcid());
     }
 
@@ -60,7 +59,7 @@ public class BudgetServiceImpl implements BudgetService {
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
-        budgetDao.saveBudget(getEntity(fs.getOcid(), fs.getOcid(), fs.getId(), stage, amount, fs.getDate(), fs));
+        budgetDao.saveBudget(getEntity(cpid, fs.getOcid(), fs.getId(), stage, amount, fs.getDate(), fs));
         updateEinByFs(cpid, fs.getOcid());
         return getResponseDto(fs.getOcid(), fs.getOcid());
     }

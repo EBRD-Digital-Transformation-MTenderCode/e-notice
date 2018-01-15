@@ -1,4 +1,4 @@
-package com.procurement.notice.model.ocds.cn;
+package com.procurement.notice.model.cn;
 
 import com.fasterxml.jackson.annotation.*;
 import com.procurement.notice.model.ocds.*;
@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +40,10 @@ import lombok.Setter;
         "legalBasis"
 })
 public class TenderMS {
+    @JsonProperty("id")
+    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
+            "drawn from an internally held identifier for this tender.")
+    private String id;
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +
             "attract interest, and to help analysts understand the nature of this procurement.")
@@ -54,14 +56,16 @@ public class TenderMS {
     @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private final TenderStatus status;
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of status.)")
+    private TenderStatusDetails statusDetails;
     @JsonProperty("value")
     @Valid
     private final Value value;
     @JsonProperty("procurementMethod")
     @JsonPropertyDescription("Specify tendering method using the [method codelist](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#method). This is a closed codelist. Local method types should be mapped" +
-            " to " +
-            "this list.")
+            " to this list.")
     @Valid
     private final ProcurementMethod procurementMethod;
     @JsonProperty("procurementMethodDetails")
@@ -86,8 +90,7 @@ public class TenderMS {
     @JsonPropertyDescription("Any additional categories which describe the objects of this contracting process, from " +
             "the [extendedProcurementCategory](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#extended-procurement-category) codelist. This is an open codelist. " +
-            "Local " +
-            "categories can be included in this list.")
+            "Local categories can be included in this list.")
     private final List<ExtendedProcurementCategory> additionalProcurementCategories;
     @JsonProperty("hasEnquiries")
     @JsonPropertyDescription("A true/false field to indicate whether any enquiries were received during the tender " +
@@ -139,15 +142,6 @@ public class TenderMS {
     @JsonPropertyDescription("The legal basis of the tender based on the [legalBasis codelist](http://standard" +
             ".open-contracting.org/......")
     private final LegalBasis legalBasis;
-    @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
-            "drawn from an internally held identifier for this tender.")
-    @Size(min = 1)
-    @NotNull
-    private String id;
-    @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of status.)")
-    private TenderStatusDetails statusDetails;
 
     @JsonCreator
     public TenderMS(@JsonProperty("id") final String id,
@@ -208,7 +202,7 @@ public class TenderMS {
         WORKS("works"),
         SERVICES("services");
 
-        private final static Map<String, MainProcurementCategory> CONSTANTS = new HashMap<>();
+        private static final Map<String, MainProcurementCategory> CONSTANTS = new HashMap<>();
 
         static {
             for (final MainProcurementCategory c : values()) {
@@ -218,7 +212,7 @@ public class TenderMS {
 
         private final String value;
 
-        private MainProcurementCategory(final String value) {
+        MainProcurementCategory(final String value) {
             this.value = value;
         }
 
@@ -248,7 +242,7 @@ public class TenderMS {
         LIMITED("limited"),
         DIRECT("direct");
 
-        private final static Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
+        private static final Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
 
         static {
             for (final ProcurementMethod c : values()) {
@@ -258,7 +252,7 @@ public class TenderMS {
 
         private final String value;
 
-        private ProcurementMethod(final String value) {
+        ProcurementMethod(final String value) {
             this.value = value;
         }
 
@@ -288,7 +282,7 @@ public class TenderMS {
         SERVICES("services"),
         CONSULTING_SERVICES("consultingServices");
 
-        private final static Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
+        private static final Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
 
         static {
             for (final ExtendedProcurementCategory c : values()) {
@@ -298,7 +292,7 @@ public class TenderMS {
 
         private final String value;
 
-        private ExtendedProcurementCategory(final String value) {
+        ExtendedProcurementCategory(final String value) {
             this.value = value;
         }
 
@@ -331,7 +325,7 @@ public class TenderMS {
         NATIONAL_PROCUREMENT_LAW("NATIONAL_PROCUREMENT_LAW"),
         NULL("NULL");
 
-        private final static Map<String, LegalBasis> CONSTANTS = new HashMap<>();
+        private static final Map<String, LegalBasis> CONSTANTS = new HashMap<>();
 
         static {
             for (final LegalBasis c : values()) {
@@ -341,7 +335,7 @@ public class TenderMS {
 
         private final String value;
 
-        private LegalBasis(final String value) {
+        LegalBasis(final String value) {
             this.value = value;
         }
 
@@ -391,7 +385,7 @@ public class TenderMS {
         FI("fi"),
         SV("sv");
 
-        private final static Map<String, SubmissionLanguage> CONSTANTS = new HashMap<>();
+        private static final Map<String, SubmissionLanguage> CONSTANTS = new HashMap<>();
 
         static {
             for (final SubmissionLanguage c : values()) {
@@ -401,7 +395,7 @@ public class TenderMS {
 
         private final String value;
 
-        private SubmissionLanguage(final String value) {
+        SubmissionLanguage(final String value) {
             this.value = value;
         }
 

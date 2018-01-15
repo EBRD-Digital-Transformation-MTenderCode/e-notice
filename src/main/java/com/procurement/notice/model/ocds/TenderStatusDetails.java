@@ -12,7 +12,8 @@ public enum TenderStatusDetails {
     PREQUALIFIED("prequalified"),
     EVALUATION("evaluation"),
     EVALUATED("evaluated"),
-    EXECUTION("execution");
+    EXECUTION("execution"),
+    PLANNING("planning");
 
     private static final Map<String, TenderStatusDetails> CONSTANTS = new HashMap<>();
 
