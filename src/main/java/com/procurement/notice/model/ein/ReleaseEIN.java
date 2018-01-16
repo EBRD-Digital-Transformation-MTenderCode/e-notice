@@ -1,9 +1,6 @@
 package com.procurement.notice.model.ein;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
@@ -104,6 +101,7 @@ public class ReleaseEIN {
             "phase, or individual tenders to a broad planning process.")
     private final Set<RelatedProcess> relatedProcesses;
 
+    @JsonCreator
     public ReleaseEIN(@JsonProperty("ocid") final String ocid,
                       @JsonProperty("id") final String id,
                       @JsonProperty("date") final LocalDateTime date,
@@ -129,6 +127,6 @@ public class ReleaseEIN {
         this.parties = parties;
         this.planning = planning;
         this.buyer = buyer;
-        this.relatedProcesses = relatedProcesses;
+        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
     }
 }

@@ -1,9 +1,6 @@
 package com.procurement.notice.model.cn;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
@@ -11,6 +8,7 @@ import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
+import com.procurement.notice.model.ocds.Tender;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -76,7 +74,7 @@ public class ReleaseMS {
     @JsonProperty("tender")
     @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
             "bids for evaluation and selecting a winner or winners.")
-    private final TenderMS tender;
+    private final Tender tender;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
@@ -86,6 +84,7 @@ public class ReleaseMS {
             "phase, or individual tenders to a broad planning process.")
     private final Set<RelatedProcess> relatedProcesses;
 
+    @JsonCreator
     public ReleaseMS(@JsonProperty("ocid") final String ocid,
                      @JsonProperty("id") final String id,
                      @JsonProperty("date") final LocalDateTime date,
@@ -93,7 +92,7 @@ public class ReleaseMS {
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("title") final String title,
                      @JsonProperty("description") final String description,
-                     @JsonProperty("tender") final TenderMS tender,
+                     @JsonProperty("tender") final Tender tender,
                      @JsonProperty("language") final String language,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
@@ -105,6 +104,6 @@ public class ReleaseMS {
         this.description = description;
         this.language = language == null ? "en" : language;
         this.tender = tender;
-        this.relatedProcesses = relatedProcesses;
+        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
     }
 }
