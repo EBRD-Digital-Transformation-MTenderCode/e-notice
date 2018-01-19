@@ -65,6 +65,10 @@ import lombok.Setter;
         "requiresElectronicCatalogue"
 })
 public class Tender {
+    @JsonProperty("id")
+    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
+            "drawn from an internally held identifier for this tender.")
+    private String id;
     @JsonProperty("title")
     @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +
             "attract interest, and to help analysts understand the nature of this procurement.")
@@ -77,6 +81,9 @@ public class Tender {
     @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private final TenderStatus status;
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of status.)")
+    private TenderStatusDetails statusDetails;
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The goods and services to be purchased, broken into line items wherever possible. Items" +
@@ -262,13 +269,6 @@ public class Tender {
     @JsonProperty("requiresElectronicCatalogue")
     @JsonPropertyDescription("Tenders must include an electronic catalogue. Required by the EU")
     private final Boolean requiresElectronicCatalogue;
-    @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
-            "drawn from an internally held identifier for this tender.")
-    private String id;
-    @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of status.)")
-    private TenderStatusDetails statusDetails;
 
     @JsonCreator
     public Tender(@JsonProperty("id") final String id,
