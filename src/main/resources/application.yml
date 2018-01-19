@@ -4,18 +4,16 @@ server:
 spring:
   application:
     name: e-notice
-#  data:
-#    cassandra:
-#      contact-points: 127.0.0.1
-#      keyspace-name: ocds
-#      port: 9042
-#      username: cassandra
-#      password: cassandra
-
 
 cassandra:
-  datasource:
-    contact-point: 127.0.0.1
-    keyspace: ocds
-    username: cassandra
-    password: cassandra
+  contact-points: ac-node1.eprocurement.systems,ac-node2.eprocurement.systems,ac-node3.eprocurement.systems
+  keyspace-name: ocds
+  port: 9042
+  username: caclient
+  password: brT4Kn27RQs
+
+ocds.prefix: ocds-t1s2t3-MD-
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"

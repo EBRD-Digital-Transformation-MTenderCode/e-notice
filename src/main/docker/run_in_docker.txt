@@ -24,7 +24,7 @@ docker push docker-registry.eprocurement.systems/e-notice:17.12.1
 docker run -d --name=notice-1 \
   --env __PROP_spring_cloud_config_uri=http://config-server-1:8700 \
   --env __PROP_spring_profiles_active=default \
-  --env __PROP_spring_cloud_config_label=38b98c5 \
+  --env __PROP_spring_cloud_config_label=3d88c9f \
   --publish 9041:8080 \
   --network ocds-network \
   --dns 10.0.10.115 \
