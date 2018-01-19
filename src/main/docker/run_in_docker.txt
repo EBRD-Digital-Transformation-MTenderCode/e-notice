@@ -10,9 +10,16 @@ docker network create \
 
 
 #****************************************#
-# Run E-AUTH                             #
+# Run E-NOTICE                           #
 # Need assign uri, username and password #
 #****************************************#
+
+mvn clean package docker:build
+docker login https://docker-registry.eprocurement.systems
+Username: docker
+Password: 3FFcKYtMxzmwFMa
+docker push docker-registry.eprocurement.systems/e-notice:17.12.1
+
 
 docker run -d --name=notice-1 \
   --env __PROP_spring_cloud_config_uri=http://config-server-1:8700 \
@@ -22,3 +29,8 @@ docker run -d --name=notice-1 \
   --network ocds-network \
   --dns 10.0.10.115 \
   docker-registry.eprocurement.systems/e-notice:17.12.1
+
+docker logs notice-1
+
+docker rm notice-1
+
