@@ -31,7 +31,7 @@ public class Enquiry {
     private final LocalDateTime date;
     @JsonProperty("author")
     @JsonPropertyDescription("The identifier and name of the party asking this question. ")
-    private final Author author;
+    private final OrganizationReference author;
     @JsonProperty("title")
     @JsonPropertyDescription("The subject line of the question.")
     private final String title;
@@ -67,7 +67,7 @@ public class Enquiry {
     public Enquiry(@JsonProperty("id") final String id,
                    @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
                    LocalDateTime date,
-                   @JsonProperty("author") final Author author,
+                   @JsonProperty("author") final OrganizationReference author,
                    @JsonProperty("title") final String title,
                    @JsonProperty("description") final String description,
                    @JsonProperty("answer") final String answer,
