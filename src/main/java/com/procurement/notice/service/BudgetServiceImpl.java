@@ -37,7 +37,6 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createEin(final String cpid,
                                  final String stage,
-                                 final String operation,
                                  final JsonNode data) {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final LocalDateTime addedDate = dateUtil.getNowUTC();
@@ -52,7 +51,6 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createFs(final String cpid,
                                 final String stage,
-                                final String operation,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));

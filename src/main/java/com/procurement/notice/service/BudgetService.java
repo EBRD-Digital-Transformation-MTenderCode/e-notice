@@ -9,11 +9,9 @@ public interface BudgetService {
 
     ResponseDto createEin(String cpid,
                           String stage,
-                          String operation,
                           JsonNode data);
 
     ResponseDto createFs(String cpid,
                          String stage,
-                         String operation,
                          JsonNode data);
 }

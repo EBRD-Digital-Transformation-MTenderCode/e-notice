@@ -31,32 +31,29 @@ public class MainController {
     @PostMapping(value = "/cn")
     public ResponseEntity<ResponseDto> createCn(@RequestParam("cpid") final String cpid,
                                                 @RequestParam("stage") final String stage,
-                                                @RequestParam("operation") final String operation,
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 @RequestParam("startDate") final LocalDateTime releaseDate,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                releaseService.createCn(cpid, stage, operation, releaseDate, data),
+                releaseService.createCn(cpid, stage, releaseDate, data),
                 HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/ein")
     public ResponseEntity<ResponseDto> createEin(@RequestParam("cpid") final String cpid,
                                                  @RequestParam("stage") final String stage,
-                                                 @RequestParam("operation") final String operation,
                                                  @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                budgetService.createEin(cpid, stage, operation, data),
+                budgetService.createEin(cpid, stage, data),
                 HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/fs")
     public ResponseEntity<ResponseDto> createFs(@RequestParam("cpid") final String cpid,
                                                 @RequestParam("stage") final String stage,
-                                                @RequestParam("operation") final String operation,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                budgetService.createFs(cpid, stage, operation, data),
+                budgetService.createFs(cpid, stage, data),
                 HttpStatus.CREATED);
     }
 
