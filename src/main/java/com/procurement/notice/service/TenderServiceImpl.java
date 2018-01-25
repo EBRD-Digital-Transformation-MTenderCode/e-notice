@@ -37,7 +37,6 @@ public class TenderServiceImpl implements TenderService {
     @Override
     public ResponseDto createCn(final String cpid,
                                 final String stage,
-                                final String operation,
                                 final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseMS ms = jsonUtil.toObject(ReleaseMS.class, data.toString());
