@@ -29,31 +29,31 @@ public class MainController {
     }
 
     @PostMapping(value = "/cn")
-    public ResponseEntity<ResponseDto> createCn(@RequestParam("cpid") final String cpid,
-                                                @RequestParam("stage") final String stage,
+    public ResponseEntity<ResponseDto> createCn(final String cpId,
+                                                final String stage,
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                @RequestParam("startDate") final LocalDateTime releaseDate,
+                                                    final LocalDateTime releaseDate,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                releaseService.createCn(cpid, stage, releaseDate, data),
+                releaseService.createCn(cpId, stage, releaseDate, data),
                 HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/ein")
-    public ResponseEntity<ResponseDto> createEin(@RequestParam("cpid") final String cpid,
-                                                 @RequestParam("stage") final String stage,
+    public ResponseEntity<ResponseDto> createEin(final String cpId,
+                                                 final String stage,
                                                  @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                budgetService.createEin(cpid, stage, data),
+                budgetService.createEin(cpId, stage, data),
                 HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/fs")
-    public ResponseEntity<ResponseDto> createFs(@RequestParam("cpid") final String cpid,
-                                                @RequestParam("stage") final String stage,
+    public ResponseEntity<ResponseDto> createFs(final String cpId,
+                                                final String stage,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
-                budgetService.createFs(cpid, stage, data),
+                budgetService.createFs(cpId, stage, data),
                 HttpStatus.CREATED);
     }
 

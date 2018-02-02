@@ -23,15 +23,6 @@ public class TenderEntity {
     private String stage;
 
     private String jsonData;
-
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(final Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
 }
 
 

@@ -25,15 +25,6 @@ public class BudgetEntity {
     private Double amount;
 
     private String jsonData;
-
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(final Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
 }
 
 

@@ -40,7 +40,6 @@ public class BudgetServiceImpl implements BudgetService {
                                  final JsonNode data) {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final LocalDateTime addedDate = dateUtil.getNowUTC();
-        ein.setId(getReleaseId(cpid));
         ein.setDate(addedDate);
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
@@ -53,13 +52,18 @@ public class BudgetServiceImpl implements BudgetService {
                                 final String stage,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
-        fs.setId(getReleaseId(fs.getOcid()));
+        fs.setOcid(getOcId(cpid, stage));
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
+        addEinRelatedProcessToFs(fs, cpid);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
         budgetDao.saveBudget(getEntity(cpid, fs.getOcid(), fs.getId(), stage, amount, fs.getDate(), fs));
         updateEinByFs(cpid, fs.getOcid());
         return getResponseDto(fs.getOcid(), fs.getOcid());
+    }
+
+    private String getOcId(final String cpId, final String stage) {
+        return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     public void updateEinByFs(final String einCpId, final String fsOcId) {
@@ -69,7 +73,7 @@ public class BudgetServiceImpl implements BudgetService {
             final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
             final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
             final LocalDateTime addedDate = dateUtil.getNowUTC();
-            ein.setId(getReleaseId(einCpId));
+            ein.setId(UUIDs.timeBased().toString());
             ein.setDate(addedDate);
             ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
             addFsRelatedProcessToEin(ein, fsOcId);
@@ -96,16 +100,16 @@ public class BudgetServiceImpl implements BudgetService {
         ein.getRelatedProcesses().add(relatedProcess);
     }
 
-    private String getOcId(final String cpId, final String stage) {
-        return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
-    }
-
-    private String getReleaseId(final String ocId) {
-        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
-    }
-
-    private String getId() {
-        return UUIDs.timeBased().toString();
+    private void addEinRelatedProcessToFs(final ReleaseFS fs, final String einOcId) {
+        final RelatedProcess relatedProcess = new RelatedProcess(
+                UUIDs.timeBased().toString(),
+                Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
+                "",
+                RelatedProcess.RelatedProcessScheme.OCID,
+                einOcId,
+                ""
+        );
+        fs.getRelatedProcesses().add(relatedProcess);
     }
 
     private BudgetEntity getEntity(final String cpId,
