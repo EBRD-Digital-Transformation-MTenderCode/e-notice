@@ -3,6 +3,7 @@ package com.procurement.notice.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.service.BudgetService;
+import com.procurement.notice.service.EnquiryService;
 import com.procurement.notice.service.TenderService;
 import com.procurement.notice.service.TenderServiceImpl;
 import java.time.LocalDateTime;
@@ -22,21 +23,14 @@ public class MainController {
 
     private final BudgetService budgetService;
 
+    private final EnquiryService enquiryService;
+
     public MainController(final TenderServiceImpl releaseService,
-                          final BudgetService budgetService) {
+                          final BudgetService budgetService,
+                          final EnquiryService enquiryService) {
         this.releaseService = releaseService;
         this.budgetService = budgetService;
-    }
-
-    @PostMapping(value = "/cn")
-    public ResponseEntity<ResponseDto> createCn(final String cpId,
-                                                final String stage,
-                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                final LocalDateTime releaseDate,
-                                                @Valid @RequestBody final JsonNode data) {
-        return new ResponseEntity<>(
-                releaseService.createCn(cpId, stage, releaseDate, data),
-                HttpStatus.CREATED);
+        this.enquiryService = enquiryService;
     }
 
     @PostMapping(value = "/ein")
@@ -73,6 +67,26 @@ public class MainController {
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
                 budgetService.updateFs(cpId, ocId, stage, data),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/cn")
+    public ResponseEntity<ResponseDto> createCn(final String cpId,
+                                                final String stage,
+                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime releaseDate,
+                                                @Valid @RequestBody final JsonNode data) {
+        return new ResponseEntity<>(
+                releaseService.createCn(cpId, stage, releaseDate, data),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/enquiry")
+    public ResponseEntity<ResponseDto> createCn(final String cpId,
+                                                final String ocId,
+                                                final String stage,
+                                                @Valid @RequestBody final JsonNode data) {
+        return new ResponseEntity<>(
+                enquiryService.createEnquiry(cpId, ocId, stage, data),
                 HttpStatus.CREATED);
     }
 
