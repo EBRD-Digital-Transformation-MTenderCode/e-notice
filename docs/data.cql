@@ -29,9 +29,6 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_budget_release (
     cp_id text,
     oc_id text,
     release_date timestamp,
-    primary key(cp_id)
-);
-
     release_id text,
     stage text,
     json_data text,

@@ -11,7 +11,16 @@ public interface BudgetService {
                           String stage,
                           JsonNode data);
 
+    ResponseDto updateEin(String cpid,
+                          String stage,
+                          JsonNode data);
+
     ResponseDto createFs(String cpid,
+                         String stage,
+                         JsonNode data);
+
+    ResponseDto updateFs(String cpid,
+                         String ocid,
                          String stage,
                          JsonNode data);
 }

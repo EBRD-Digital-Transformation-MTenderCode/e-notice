@@ -60,9 +60,9 @@ public class ReleaseFS {
     private InitiationType initiationType;
     @JsonProperty("title")
     @JsonPropertyDescription("A overall title for this contracting process or release.")
-    private final String title;
+    private String title;
     @JsonProperty("description")
-    private final String description;
+    private String description;
     @JsonProperty("language")
     @JsonPropertyDescription("Specifies the default language of the data using either two-letter [ISO639-1]" +
             "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
@@ -75,13 +75,13 @@ public class ReleaseFS {
             "who are involved in the contracting process and their roles, e.g. buyer, procuring entity, supplier etc." +
             " " +
             "Organization references elsewhere in the schema are used to refer back to this entries in this list.")
-    private final Set<Organization> parties;
+    private Set<Organization> parties;
     @JsonProperty("planning")
     @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
             "fields may be filled in a planning release, in the appropriate fields in other schema sections, these " +
             "would " +
             "likely be estimates at this stage e.g. totalValue in tender")
-    private final Planning planning;
+    private Planning planning;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
@@ -89,7 +89,7 @@ public class ReleaseFS {
             "commonly used to relate mini-competitions to their parent frameworks, full tenders to a " +
             "pre-qualification " +
             "phase, or individual tenders to a broad planning process.")
-    private final Set<RelatedProcess> relatedProcesses;
+    private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
     public ReleaseFS(@JsonProperty("ocid") final String ocid,

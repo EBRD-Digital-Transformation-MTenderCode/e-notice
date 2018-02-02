@@ -4,6 +4,7 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.BudgetDao;
+import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.ein.ReleaseEIN;
 import com.procurement.notice.model.ein.ReleaseFS;
@@ -43,8 +44,32 @@ public class BudgetServiceImpl implements BudgetService {
         ein.setDate(addedDate);
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
-        budgetDao.saveBudget(getEntity(cpid, ein.getOcid(), ein.getId(), stage, 0D, addedDate, ein));
+        budgetDao.saveBudget(getEntity(cpid, cpid, ein.getId(), stage, 0D, addedDate, ein));
         return getResponseDto(ein.getOcid(), ein.getOcid());
+    }
+
+    @Override
+    public ResponseDto updateEin(final String cpid,
+                                 final String stage,
+                                 final JsonNode data) {
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpId(cpid))
+                .orElseThrow(() -> new ErrorException("Ein not found."));
+        final ReleaseEIN updateEinDto = jsonUtil.toObject(ReleaseEIN.class, data.toString());
+        final ReleaseEIN einFromEntity = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
+        updateEinDto(einFromEntity, updateEinDto);
+        final LocalDateTime addedDate = dateUtil.getNowUTC();
+        einFromEntity.setDate(addedDate);
+        budgetDao.saveBudget(getEntity(cpid, cpid, einFromEntity.getId(), stage, 0D, addedDate, einFromEntity));
+        return getResponseDto(einFromEntity.getOcid(), einFromEntity.getOcid());
+    }
+
+    private void updateEinDto(final ReleaseEIN einFromEntity, final ReleaseEIN updateEinDto) {
+        einFromEntity.setTitle(updateEinDto.getTitle());
+        einFromEntity.setDescription(updateEinDto.getDescription());
+        einFromEntity.setPlanning(updateEinDto.getPlanning());
+        einFromEntity.setTender(updateEinDto.getTender());
+        einFromEntity.setParties(updateEinDto.getParties());
+        einFromEntity.setBuyer(updateEinDto.getBuyer());
     }
 
     @Override
@@ -62,30 +87,52 @@ public class BudgetServiceImpl implements BudgetService {
         return getResponseDto(fs.getOcid(), fs.getOcid());
     }
 
+    @Override
+    public ResponseDto updateFs(final String cpid,
+                                final String ocid,
+                                final String stage,
+                                final JsonNode data) {
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpIdAndOcId(cpid, ocid))
+                .orElseThrow(() -> new ErrorException("Fs not found."));
+        final ReleaseFS updateFsDto = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
+        updateFsDto(fsFromEntity, updateFsDto);
+        final LocalDateTime addedDate = dateUtil.getNowUTC();
+        fsFromEntity.setDate(addedDate);
+        budgetDao.saveBudget(getEntity(cpid, cpid, fsFromEntity.getId(), stage, 0D, addedDate, fsFromEntity));
+        return getResponseDto(fsFromEntity.getOcid(), fsFromEntity.getOcid());
+    }
+
+    private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateFsDto) {
+        fsFromEntity.setTitle(updateFsDto.getTitle());
+        fsFromEntity.setDescription(updateFsDto.getDescription());
+        fsFromEntity.setParties(updateFsDto.getParties());
+        fsFromEntity.setPlanning(updateFsDto.getPlanning());
+    }
+
     private String getOcId(final String cpId, final String stage) {
         return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     public void updateEinByFs(final String einCpId, final String fsOcId) {
-        final Optional<BudgetEntity> entityOptional = budgetDao.getLastByCpId(einCpId);
-        if (entityOptional.isPresent()) {
-            final BudgetEntity entity = entityOptional.get();
-            final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
-            final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
-            final LocalDateTime addedDate = dateUtil.getNowUTC();
-            ein.setId(UUIDs.timeBased().toString());
-            ein.setDate(addedDate);
-            ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
-            addFsRelatedProcessToEin(ein, fsOcId);
-            budgetDao.saveBudget(getEntity(
-                    einCpId,
-                    einCpId,
-                    ein.getId(),
-                    entity.getStage(),
-                    totalAmount,
-                    addedDate,
-                    ein));
-        }
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpId(einCpId))
+                .orElseThrow(() -> new ErrorException("Ein not found."));
+        final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
+        final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
+        final LocalDateTime addedDate = dateUtil.getNowUTC();
+        ein.setId(UUIDs.timeBased().toString());
+        ein.setDate(addedDate);
+        ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
+        addFsRelatedProcessToEin(ein, fsOcId);
+        budgetDao.saveBudget(getEntity(
+                einCpId,
+                einCpId,
+                ein.getId(),
+                entity.getStage(),
+                totalAmount,
+                addedDate,
+                ein));
+
     }
 
     private void addFsRelatedProcessToEin(final ReleaseEIN ein, final String fsOcId) {

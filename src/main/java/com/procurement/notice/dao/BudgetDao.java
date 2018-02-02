@@ -1,7 +1,6 @@
 package com.procurement.notice.dao;
 
 import com.procurement.notice.model.entity.BudgetEntity;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +10,8 @@ public interface BudgetDao {
 
     Double getTotalAmountByCpId(String cpId);
 
-    Optional<BudgetEntity> getLastByCpId(String cpId);
+    BudgetEntity getLastByCpId(String cpId);
+
+    BudgetEntity getLastByCpIdAndOcId(String cpId, String ocId);
 
 }

@@ -32,7 +32,7 @@ public class MainController {
     public ResponseEntity<ResponseDto> createCn(final String cpId,
                                                 final String stage,
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                    final LocalDateTime releaseDate,
+                                                final LocalDateTime releaseDate,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
                 releaseService.createCn(cpId, stage, releaseDate, data),
@@ -48,12 +48,31 @@ public class MainController {
                 HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "/ein")
+    public ResponseEntity<ResponseDto> updateEin(final String cpId,
+                                                 final String stage,
+                                                 @Valid @RequestBody final JsonNode data) {
+        return new ResponseEntity<>(
+                budgetService.updateEin(cpId, stage, data),
+                HttpStatus.CREATED);
+    }
+
     @PostMapping(value = "/fs")
     public ResponseEntity<ResponseDto> createFs(final String cpId,
                                                 final String stage,
                                                 @Valid @RequestBody final JsonNode data) {
         return new ResponseEntity<>(
                 budgetService.createFs(cpId, stage, data),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/fs")
+    public ResponseEntity<ResponseDto> updateFs(final String cpId,
+                                                final String ocId,
+                                                final String stage,
+                                                @Valid @RequestBody final JsonNode data) {
+        return new ResponseEntity<>(
+                budgetService.updateFs(cpId, ocId, stage, data),
                 HttpStatus.CREATED);
     }
 

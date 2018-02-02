@@ -1,14 +1,13 @@
 package com.procurement.notice.dao;
 
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.procurement.notice.model.entity.BudgetEntity;
-import java.util.Date;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
@@ -64,26 +63,40 @@ public class BudgetDaoImpl implements BudgetDao {
     }
 
     @Override
-    public Optional<BudgetEntity> getLastByCpId(final String cpId) {
+    public BudgetEntity getLastByCpId(final String cpId) {
         final Statement query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
                 .limit(1);
+        final Row row = session.execute(query).one();
+        return new BudgetEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getDouble(AMOUNT),
+                row.getString(JSON_DATA));
+    }
 
-        final ResultSet rows = session.execute(query);
-
-        return Optional.ofNullable(rows.one())
-                .map(row -> {
-                    final String cpid = row.getString(CP_ID);
-                    final String ocid = row.getString(OC_ID);
-                    final Date releaseDate = row.getTimestamp(RELEASE_DATE);
-                    final String releaseId = row.getString(RELEASE_ID);
-                    final String stage = row.getString(STAGE);
-                    final Double amount = row.getDouble(AMOUNT);
-                    final String jsonData = row.getString(JSON_DATA);
-                    return new BudgetEntity(cpid, ocid, releaseDate, releaseId, stage, amount, jsonData);
-                });
+    @Override
+    public BudgetEntity getLastByCpIdAndOcId(final String cpId, final String ocId) {
+        final Statement query = select()
+                .all()
+                .from(BUDGET_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .and(eq(OC_ID, ocId))
+                .limit(1);
+        final Row row = session.execute(query).one();
+        return new BudgetEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getDouble(AMOUNT),
+                row.getString(JSON_DATA));
     }
 
     @Override
