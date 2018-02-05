@@ -10,8 +10,8 @@ public interface BudgetDao {
 
     Double getTotalAmountByCpId(String cpId);
 
-    BudgetEntity getLastByCpId(String cpId);
+    BudgetEntity getByCpId(String cpId);
 
-    BudgetEntity getLastByCpIdAndOcId(String cpId, String ocId);
+    BudgetEntity getByCpIdAndOcId(String cpId, String ocId);
 
 }

@@ -85,7 +85,8 @@ public class TenderServiceImpl implements TenderService {
     }
 
     private String getReleaseId(final String ocId) {
-        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
+//        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
+        return UUIDs.timeBased().toString();
     }
 
     private String getId() {

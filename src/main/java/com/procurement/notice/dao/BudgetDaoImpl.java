@@ -63,7 +63,7 @@ public class BudgetDaoImpl implements BudgetDao {
     }
 
     @Override
-    public BudgetEntity getLastByCpId(final String cpId) {
+    public BudgetEntity getByCpId(final String cpId) {
         final Statement query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)
@@ -81,7 +81,7 @@ public class BudgetDaoImpl implements BudgetDao {
     }
 
     @Override
-    public BudgetEntity getLastByCpIdAndOcId(final String cpId, final String ocId) {
+    public BudgetEntity getByCpIdAndOcId(final String cpId, final String ocId) {
         final Statement query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)

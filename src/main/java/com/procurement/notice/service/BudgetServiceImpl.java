@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class BudgetServiceImpl implements BudgetService {
 
     private static final String SEPARATOR = "-";
+    private static final String EIN_NOT_FOUND_ERROR = "EIN not found.";
+    private static final String FS_NOT_FOUND_ERROR = "FS not found.";
     private final BudgetDao budgetDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
@@ -52,8 +54,8 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseDto updateEin(final String cpid,
                                  final String stage,
                                  final JsonNode data) {
-        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpId(cpid))
-                .orElseThrow(() -> new ErrorException("Ein not found."));
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
+                .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
         final ReleaseEIN updateEinDto = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final ReleaseEIN einFromEntity = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
         updateEinDto(einFromEntity, updateEinDto);
@@ -92,8 +94,8 @@ public class BudgetServiceImpl implements BudgetService {
                                 final String ocid,
                                 final String stage,
                                 final JsonNode data) {
-        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpIdAndOcId(cpid, ocid))
-                .orElseThrow(() -> new ErrorException("Fs not found."));
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(cpid, ocid))
+                .orElseThrow(() -> new ErrorException(FS_NOT_FOUND_ERROR));
         final ReleaseFS updateFsDto = jsonUtil.toObject(ReleaseFS.class, data.toString());
         final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
         updateFsDto(fsFromEntity, updateFsDto);
@@ -115,8 +117,8 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     public void updateEinByFs(final String einCpId, final String fsOcId) {
-        final BudgetEntity entity = Optional.ofNullable(budgetDao.getLastByCpId(einCpId))
-                .orElseThrow(() -> new ErrorException("Ein not found."));
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(einCpId))
+                .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
         final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
         final LocalDateTime addedDate = dateUtil.getNowUTC();
@@ -132,7 +134,6 @@ public class BudgetServiceImpl implements BudgetService {
                 totalAmount,
                 addedDate,
                 ein));
-
     }
 
     private void addFsRelatedProcessToEin(final ReleaseEIN ein, final String fsOcId) {

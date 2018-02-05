@@ -8,4 +8,7 @@ public interface TenderDao {
 
     void saveTender(TenderEntity entity);
 
+    TenderEntity getByCpId(String cpId);
+
+    TenderEntity getByCpIdAndOcId(String cpId, String ocId);
 }

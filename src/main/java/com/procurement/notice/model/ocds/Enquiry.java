@@ -25,6 +25,9 @@ import lombok.Setter;
         "threadID"
 })
 public class Enquiry {
+    @JsonProperty("id")
+    @JsonPropertyDescription("A unique identifier for the enquiry.")
+    private String id;
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date the enquiry was received or processed.")
@@ -59,9 +62,6 @@ public class Enquiry {
             " " +
             "enquiries.")
     private final String threadID;
-    @JsonProperty("id")
-    @JsonPropertyDescription("A unique identifier for the enquiry.")
-    private String id;
 
     @JsonCreator
     public Enquiry(@JsonProperty("id") final String id,

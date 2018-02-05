@@ -1,13 +1,15 @@
 package com.procurement.notice.dao;
 
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.procurement.notice.model.entity.TenderEntity;
 import org.springframework.stereotype.Service;
 
-import static com.datastax.driver.core.querybuilder.QueryBuilder.insertInto;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 
 @Service
 public class TenderDaoImpl implements TenderDao {
@@ -55,5 +57,40 @@ public class TenderDaoImpl implements TenderDao {
 
         final Batch batch = QueryBuilder.batch(insert, insertCompiled, insertOffset);
         session.execute(batch);
+    }
+
+    @Override
+    public TenderEntity getByCpId(final String cpId) {
+        final Statement query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .limit(1);
+        final Row row = session.execute(query).one();
+        return new TenderEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getString(JSON_DATA));
+    }
+
+    @Override
+    public TenderEntity getByCpIdAndOcId(final String cpId, final String ocId) {
+        final Statement query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .and(eq(OC_ID, ocId))
+                .limit(1);
+        final Row row = session.execute(query).one();
+        return new TenderEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getString(JSON_DATA));
     }
 }
