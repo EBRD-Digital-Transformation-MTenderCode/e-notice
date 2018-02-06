@@ -44,6 +44,7 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final LocalDateTime addedDate = dateUtil.getNowUTC();
         ein.setDate(addedDate);
+        ein.setId(UUIDs.timeBased().toString());
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
         budgetDao.saveBudget(getEntity(cpid, cpid, ein.getId(), stage, 0D, addedDate, ein));
@@ -79,7 +80,10 @@ public class BudgetServiceImpl implements BudgetService {
                                 final String stage,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final LocalDateTime addedDate = dateUtil.getNowUTC();
         fs.setOcid(getOcId(cpid, stage));
+        fs.setDate(addedDate);
+        fs.setId(UUIDs.timeBased().toString());
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         addEinRelatedProcessToFs(fs, cpid);
