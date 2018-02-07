@@ -57,8 +57,6 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseEIN updateEinDto = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         final ReleaseEIN einFromEntity = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
         updateEinDto(einFromEntity, updateEinDto);
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        einFromEntity.setDate(addedDate);
         budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, einFromEntity));
         return getResponseDto(einFromEntity.getOcid(), einFromEntity.getOcid());
     }

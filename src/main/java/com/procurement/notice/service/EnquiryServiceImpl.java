@@ -47,7 +47,6 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     private void updateTender(final ReleaseExt releaseExt, final Enquiry enquiry) {
-        releaseExt.setDate(enquiry.getDate());
         releaseExt.getTender().getEnquiries().add(enquiry);
     }
 
