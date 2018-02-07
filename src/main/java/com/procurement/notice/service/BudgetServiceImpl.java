@@ -42,12 +42,9 @@ public class BudgetServiceImpl implements BudgetService {
                                  final String stage,
                                  final JsonNode data) {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        ein.setDate(addedDate);
-        ein.setId(UUIDs.timeBased().toString());
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
-        budgetDao.saveBudget(getEntity(cpid, cpid, ein.getId(), stage, 0D, addedDate, ein));
+        budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, ein));
         return getResponseDto(ein.getOcid(), ein.getOcid());
     }
 
@@ -62,12 +59,11 @@ public class BudgetServiceImpl implements BudgetService {
         updateEinDto(einFromEntity, updateEinDto);
         final LocalDateTime addedDate = dateUtil.getNowUTC();
         einFromEntity.setDate(addedDate);
-        budgetDao.saveBudget(getEntity(cpid, cpid, einFromEntity.getId(), stage, 0D, addedDate, einFromEntity));
+        budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, einFromEntity));
         return getResponseDto(einFromEntity.getOcid(), einFromEntity.getOcid());
     }
 
     private void updateEinDto(final ReleaseEIN einFromEntity, final ReleaseEIN updateEinDto) {
-        einFromEntity.setId(UUIDs.timeBased().toString());
         einFromEntity.setTitle(updateEinDto.getTitle());
         einFromEntity.setDescription(updateEinDto.getDescription());
         einFromEntity.setPlanning(updateEinDto.getPlanning());
@@ -81,15 +77,12 @@ public class BudgetServiceImpl implements BudgetService {
                                 final String stage,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
         fs.setOcid(getOcId(cpid, stage));
-        fs.setDate(addedDate);
-        fs.setId(UUIDs.timeBased().toString());
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         addEinRelatedProcessToFs(fs, cpid);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
-        budgetDao.saveBudget(getEntity(cpid, fs.getOcid(), fs.getId(), stage, amount, fs.getDate(), fs));
+        budgetDao.saveBudget(getEntity(cpid, fs.getOcid(), stage, amount, fs));
         updateEinByFs(cpid, fs.getOcid());
         return getResponseDto(fs.getOcid(), fs.getOcid());
     }
@@ -104,14 +97,11 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseFS updateFsDto = jsonUtil.toObject(ReleaseFS.class, data.toString());
         final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
         updateFsDto(fsFromEntity, updateFsDto);
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        fsFromEntity.setDate(addedDate);
-        budgetDao.saveBudget(getEntity(cpid, cpid, fsFromEntity.getId(), stage, 0D, addedDate, fsFromEntity));
+        budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, fsFromEntity));
         return getResponseDto(fsFromEntity.getOcid(), fsFromEntity.getOcid());
     }
 
     private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateFsDto) {
-        fsFromEntity.setId(UUIDs.timeBased().toString());
         fsFromEntity.setTitle(updateFsDto.getTitle());
         fsFromEntity.setDescription(updateFsDto.getDescription());
         fsFromEntity.setParties(updateFsDto.getParties());
@@ -122,23 +112,22 @@ public class BudgetServiceImpl implements BudgetService {
         return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
+    private String getReleaseId(final String ocId) {
+        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
+    }
+
     public void updateEinByFs(final String einCpId, final String fsOcId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(einCpId))
                 .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
         final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
-        final LocalDateTime addedDate = dateUtil.getNowUTC();
-        ein.setId(UUIDs.timeBased().toString());
-        ein.setDate(addedDate);
         ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
         addFsRelatedProcessToEin(ein, fsOcId);
         budgetDao.saveBudget(getEntity(
                 einCpId,
                 einCpId,
-                ein.getId(),
                 entity.getStage(),
                 totalAmount,
-                addedDate,
                 ein));
     }
 
@@ -168,16 +157,14 @@ public class BudgetServiceImpl implements BudgetService {
 
     private BudgetEntity getEntity(final String cpId,
                                    final String ocId,
-                                   final String releaseId,
                                    final String stage,
                                    final Double amount,
-                                   final LocalDateTime releaseDate,
                                    final Object jsonData) {
         final BudgetEntity entity = new BudgetEntity();
         entity.setCpId(cpId);
         entity.setOcId(ocId);
-        entity.setReleaseDate(dateUtil.localToDate(releaseDate));
-        entity.setReleaseId(releaseId);
+        entity.setReleaseDate(dateUtil.localToDate(dateUtil.getNowUTC()));
+        entity.setReleaseId(getReleaseId(ocId));
         entity.setStage(stage);
         entity.setAmount(amount);
         entity.setJsonData(jsonUtil.toJson(jsonData));
@@ -188,6 +175,6 @@ public class BudgetServiceImpl implements BudgetService {
         final ObjectNode jsonForResponse = jsonUtil.createObjectNode();
         jsonForResponse.put("cpid", cpid);
         jsonForResponse.put("ocid", ocid);
-        return new ResponseDto(true, null, jsonForResponse);
+        return new ResponseDto<>(true, null, jsonForResponse);
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EnquiryServiceImpl implements EnquiryService {
 
+    private static final String SEPARATOR = "-";
     private static final String TENDER_NOT_FOUND_ERROR = "Tender not found.";
 
     private final TenderDao tenderDao;
@@ -46,9 +47,12 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     private void updateTender(final ReleaseExt releaseExt, final Enquiry enquiry) {
-        releaseExt.setId(UUIDs.timeBased().toString());
         releaseExt.setDate(enquiry.getDate());
         releaseExt.getTender().getEnquiries().add(enquiry);
+    }
+
+    private String getReleaseId(final String ocId) {
+        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     private TenderEntity getEntity(final String cpId,
@@ -59,7 +63,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         releaseEntity.setCpId(cpId);
         releaseEntity.setOcId(ocId);
         releaseEntity.setReleaseDate(dateUtil.localToDate(releaseExt.getDate()));
-        releaseEntity.setReleaseId(releaseExt.getId());
+        releaseEntity.setReleaseId(getReleaseId(ocId));
         releaseEntity.setStage(stage);
         releaseEntity.setJsonData(jsonUtil.toJson(releaseExt));
         return releaseEntity;
