@@ -67,6 +67,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private void updateEinDto(final ReleaseEIN einFromEntity, final ReleaseEIN updateEinDto) {
+        einFromEntity.setId(UUIDs.timeBased().toString());
         einFromEntity.setTitle(updateEinDto.getTitle());
         einFromEntity.setDescription(updateEinDto.getDescription());
         einFromEntity.setPlanning(updateEinDto.getPlanning());
@@ -110,6 +111,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateFsDto) {
+        fsFromEntity.setId(UUIDs.timeBased().toString());
         fsFromEntity.setTitle(updateFsDto.getTitle());
         fsFromEntity.setDescription(updateFsDto.getDescription());
         fsFromEntity.setParties(updateFsDto.getParties());
