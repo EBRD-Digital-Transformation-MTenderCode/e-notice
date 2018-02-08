@@ -22,7 +22,7 @@ public class BudgetController {
 //        this.budgetService = budgetService;
 //    }
 //
-//    @PostMapping(value = "/ein")
+//    @PostMapping(value = "/budget")
 //    public ResponseEntity<ResponseDto> createEin(@RequestParam final String cpId,
 //                                                 @RequestParam final String stage,
 //                                                 @Valid @RequestBody final JsonNode data) {
@@ -31,7 +31,7 @@ public class BudgetController {
 //                HttpStatus.CREATED);
 //    }
 //
-//    @PutMapping(value = "/ein")
+//    @PutMapping(value = "/budget")
 //    public ResponseEntity<ResponseDto> updateEin(@RequestParam final String cpId,
 //                                                 @RequestParam final String stage,
 //                                                 @Valid @RequestBody final JsonNode data) {

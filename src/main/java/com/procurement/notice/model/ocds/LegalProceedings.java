@@ -19,7 +19,7 @@ public class LegalProceedings {
     private final String title;
     @JsonProperty("uri")
     @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated.")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("id")
     @JsonPropertyDescription("Legal identifier(s) of any review procedure(s) initiated. Required by the EU")
     private String id;
@@ -27,7 +27,7 @@ public class LegalProceedings {
     @JsonCreator
     public LegalProceedings(@JsonProperty("id") final String id,
                             @JsonProperty("title") final String title,
-                            @JsonProperty("uri") final URI uri) {
+                            @JsonProperty("uri") final String uri) {
         this.id = id;
         this.title = title;
         this.uri = uri;

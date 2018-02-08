@@ -35,7 +35,7 @@ public class Unit {
     @JsonProperty("uri")
     @JsonPropertyDescription("If the scheme used provide a machine-readable URI for this unit of measure, this can be" +
             " given.")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier from the codelist referenced in the scheme property. Check the codelist " +
             "for details of how to find and use identifiers from the scheme in use.")
@@ -46,7 +46,7 @@ public class Unit {
                 @JsonProperty("value") final Value value,
                 @JsonProperty("scheme") final Scheme scheme,
                 @JsonProperty("id") final String id,
-                @JsonProperty("uri") final URI uri) {
+                @JsonProperty("uri") final String uri) {
         this.name = name;
         this.value = value;
         this.scheme = scheme;

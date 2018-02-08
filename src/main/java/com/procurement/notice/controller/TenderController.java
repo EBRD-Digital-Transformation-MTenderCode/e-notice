@@ -28,7 +28,7 @@ public class TenderController {
 //        this.enquiryService = enquiryService;
 //    }
 //
-//    @PostMapping(value = "/cn")
+//    @PostMapping(value = "/tender")
 //    public ResponseEntity<ResponseDto> createCn(@RequestParam final String cpId,
 //                                                @RequestParam final String stage,
 //                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

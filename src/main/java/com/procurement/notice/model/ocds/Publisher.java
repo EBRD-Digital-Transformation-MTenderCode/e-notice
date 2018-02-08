@@ -1,7 +1,6 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,13 +29,13 @@ public class Publisher {
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI to identify the publisher.")
-    private final URI uri;
+    private final String uri;
 
     @JsonCreator
     public Publisher(@JsonProperty("name") final String name,
                      @JsonProperty("scheme") final String scheme,
                      @JsonProperty("uid") final String uid,
-                     @JsonProperty("uri") final URI uri) {
+                     @JsonProperty("uri") final String uri) {
         this.name = name;
         this.scheme = scheme;
         this.uid = uid;

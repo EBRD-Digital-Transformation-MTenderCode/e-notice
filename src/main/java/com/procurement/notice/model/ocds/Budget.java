@@ -1,7 +1,6 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,12 +46,12 @@ public class Budget {
             "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget" +
             " " +
             "sources. Human readable documents can be included using the planning.documents block.")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("source")
     @JsonPropertyDescription("(Deprecated in 1.1) Used to point either to a corresponding Budget Data Package, or to " +
             "a machine or human-readable source where users can find further information on the budget line item " +
             "identifiers, or project identifiers, provided here.")
-    private final URI source;
+    private final String source;
     @JsonProperty("europeanUnionFunding")
     private final EuropeanUnionFunding europeanUnionFunding;
     @JsonProperty("isEuropeanUnionFunded")
@@ -73,8 +72,8 @@ public class Budget {
                   @JsonProperty("amount") final Value amount,
                   @JsonProperty("project") final String project,
                   @JsonProperty("projectID") final String projectID,
-                  @JsonProperty("uri") final URI uri,
-                  @JsonProperty("source") final URI source,
+                  @JsonProperty("uri") final String uri,
+                  @JsonProperty("source") final String source,
                   @JsonProperty("europeanUnionFunding") final EuropeanUnionFunding europeanUnionFunding,
                   @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded,
                   @JsonProperty("budgetBreakdown") final List<BudgetBreakdown> budgetBreakdown) {

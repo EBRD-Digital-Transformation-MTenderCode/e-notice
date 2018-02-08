@@ -29,7 +29,7 @@ public class Classification {
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI to identify the code. In the event individual URIs are not available for items in" +
             " the identifier scheme this value should be left blank.")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("id")
     @JsonPropertyDescription("The classification code drawn from the selected scheme.")
     private String id;
@@ -38,7 +38,7 @@ public class Classification {
     public Classification(@JsonProperty("scheme") final Scheme scheme,
                           @JsonProperty("id") final String id,
                           @JsonProperty("description") final String description,
-                          @JsonProperty("uri") final URI uri) {
+                          @JsonProperty("uri") final String uri) {
         this.id = id;
         this.description = description;
         this.scheme = scheme;

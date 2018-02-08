@@ -72,7 +72,7 @@ public class Organization {
     @JsonProperty("buyerProfile")
     @JsonPropertyDescription("For buyer organisations only: the url of the organization's buyer profile. Specified by" +
             " the EU")
-    private final URI buyerProfile;
+    private final String buyerProfile;
     @JsonProperty("id")
     @JsonPropertyDescription("The ID used for cross-referencing to this party from other sections of the release. " +
             "This field may be built with the following structure {identifier.scheme}-{identifier.id}" +
@@ -88,7 +88,7 @@ public class Organization {
                         @JsonProperty("contactPoint") final ContactPoint contactPoint,
                         @JsonProperty("roles") final List<PartyRole> roles,
                         @JsonProperty("details") final Details details,
-                        @JsonProperty("buyerProfile") final URI buyerProfile) {
+                        @JsonProperty("buyerProfile") final String buyerProfile) {
         this.name = name;
         this.id = id;
         this.identifier = identifier;

@@ -6,15 +6,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.BudgetDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
-import com.procurement.notice.model.ein.ReleaseEIN;
-import com.procurement.notice.model.ein.ReleaseFS;
+import com.procurement.notice.model.budget.ReleaseEI;
+import com.procurement.notice.model.budget.ReleaseFS;
 import com.procurement.notice.model.entity.BudgetEntity;
 import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class BudgetServiceImpl implements BudgetService {
 
     private static final String SEPARATOR = "-";
-    private static final String EIN_NOT_FOUND_ERROR = "EIN not found.";
+    private static final String EIN_NOT_FOUND_ERROR = "EI not found.";
     private static final String FS_NOT_FOUND_ERROR = "FS not found.";
     private final BudgetDao budgetDao;
     private final JsonUtil jsonUtil;
@@ -41,7 +40,7 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseDto createEi(final String cpid,
                                 final String stage,
                                 final JsonNode data) {
-        final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
+        final ReleaseEI ein = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
         budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, ein));
@@ -54,20 +53,20 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
                 .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
-        final ReleaseEIN updateEinDto = jsonUtil.toObject(ReleaseEIN.class, data.toString());
-        final ReleaseEIN einFromEntity = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
-        updateEinDto(einFromEntity, updateEinDto);
+        final ReleaseEI updateReleaseEI = jsonUtil.toObject(ReleaseEI.class, data.toString());
+        final ReleaseEI einFromEntity = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
+        updateEinDto(einFromEntity, updateReleaseEI);
         budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, einFromEntity));
         return getResponseDto(einFromEntity.getOcid(), einFromEntity.getOcid());
     }
 
-    private void updateEinDto(final ReleaseEIN einFromEntity, final ReleaseEIN updateEinDto) {
-        einFromEntity.setTitle(updateEinDto.getTitle());
-        einFromEntity.setDescription(updateEinDto.getDescription());
-        einFromEntity.setPlanning(updateEinDto.getPlanning());
-        einFromEntity.setTender(updateEinDto.getTender());
-        einFromEntity.setParties(updateEinDto.getParties());
-        einFromEntity.setBuyer(updateEinDto.getBuyer());
+    private void updateEinDto(final ReleaseEI einFromEntity, final ReleaseEI updateReleaseEI) {
+        einFromEntity.setTitle(updateReleaseEI.getTitle());
+        einFromEntity.setDescription(updateReleaseEI.getDescription());
+        einFromEntity.setPlanning(updateReleaseEI.getPlanning());
+        einFromEntity.setTender(updateReleaseEI.getTender());
+        einFromEntity.setParties(updateReleaseEI.getParties());
+        einFromEntity.setBuyer(updateReleaseEI.getBuyer());
     }
 
     @Override
@@ -92,18 +91,19 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(FS_NOT_FOUND_ERROR));
-        final ReleaseFS updateFsDto = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final ReleaseFS updateReleaseFS = jsonUtil.toObject(ReleaseFS.class, data.toString());
         final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
-        updateFsDto(fsFromEntity, updateFsDto);
+        updateFsDto(fsFromEntity, updateReleaseFS);
         budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, fsFromEntity));
         return getResponseDto(fsFromEntity.getOcid(), fsFromEntity.getOcid());
     }
 
-    private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateFsDto) {
-        fsFromEntity.setTitle(updateFsDto.getTitle());
-        fsFromEntity.setDescription(updateFsDto.getDescription());
-        fsFromEntity.setParties(updateFsDto.getParties());
-        fsFromEntity.setPlanning(updateFsDto.getPlanning());
+    private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateReleaseFS) {
+        fsFromEntity.setTitle(updateReleaseFS.getTitle());
+        fsFromEntity.setDescription(updateReleaseFS.getDescription());
+        fsFromEntity.setTender(updateReleaseFS.getTender());
+        fsFromEntity.setParties(updateReleaseFS.getParties());
+        fsFromEntity.setPlanning(updateReleaseFS.getPlanning());
     }
 
     private String getOcId(final String cpId, final String stage) {
@@ -117,7 +117,7 @@ public class BudgetServiceImpl implements BudgetService {
     public void updateEinByFs(final String einCpId, final String fsOcId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(einCpId))
                 .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
-        final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, entity.getJsonData());
+        final ReleaseEI ein = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
         final Double totalAmount = budgetDao.getTotalAmountByCpId(einCpId);
         ein.getPlanning().getBudget().getAmount().setAmount(totalAmount);
         addFsRelatedProcessToEin(ein, fsOcId);
@@ -129,7 +129,7 @@ public class BudgetServiceImpl implements BudgetService {
                 ein));
     }
 
-    private void addFsRelatedProcessToEin(final ReleaseEIN ein, final String fsOcId) {
+    private void addFsRelatedProcessToEin(final ReleaseEI ein, final String fsOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
                 Arrays.asList(RelatedProcess.RelatedProcessType.X_FINANCE_SOURCE),

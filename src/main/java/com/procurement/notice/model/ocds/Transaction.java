@@ -30,7 +30,7 @@ public class Transaction {
     @JsonPropertyDescription("Used to point either to a corresponding Fiscal Data Package, IATI file, or machine or " +
             "human-readable source where users can find further information on the budget line item identifiers, or " +
             "project identifiers, provided here.")
-    private final URI source;
+    private final String source;
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date of the transaction")
@@ -47,7 +47,7 @@ public class Transaction {
     private final OrganizationReference payee;
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI pointing directly to a machine-readable record about this spending transaction.")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("amount")
     private final Value amount;
     @JsonProperty("providerOrganization")
@@ -61,13 +61,13 @@ public class Transaction {
 
     @JsonCreator
     public Transaction(@JsonProperty("id") final String id,
-                       @JsonProperty("source") final URI source,
+                       @JsonProperty("source") final String source,
                        @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
                        LocalDateTime date,
                        @JsonProperty("value") final Value value,
                        @JsonProperty("payer") final OrganizationReference payer,
                        @JsonProperty("payee") final OrganizationReference payee,
-                       @JsonProperty("uri") final URI uri,
+                       @JsonProperty("uri") final String uri,
                        @JsonProperty("amount") final Value amount,
                        @JsonProperty("providerOrganization") final Identifier providerOrganization,
                        @JsonProperty("receiverOrganization") final Identifier receiverOrganization) {

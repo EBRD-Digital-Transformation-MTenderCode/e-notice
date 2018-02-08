@@ -48,7 +48,7 @@ public class Document {
     @JsonProperty("url")
     @JsonPropertyDescription(" direct link to the document or attachment. The server providing access to this " +
             "document should be configured to correctly report the document mime type.")
-    private final URI url;
+    private final String url;
     @JsonProperty("datePublished")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date on which the document was first published. This is particularly important for " +
@@ -88,7 +88,7 @@ public class Document {
                     @JsonProperty("documentType") final DocumentType documentType,
                     @JsonProperty("title") final String title,
                     @JsonProperty("description") final String description,
-                    @JsonProperty("url") final URI url,
+                    @JsonProperty("url") final String url,
                     @JsonProperty("datePublished") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final
                     LocalDateTime datePublished,
                     @JsonProperty("dateModified") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final

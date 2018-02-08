@@ -24,12 +24,12 @@ public class EuropeanUnionFunding {
 
     @JsonProperty("uri")
     @JsonPropertyDescription("Uri of the project providing full or partial funding.")
-    private final URI uri;
+    private final String uri;
 
     @JsonCreator
     public EuropeanUnionFunding(@JsonProperty("projectIdentifier") final String projectIdentifier,
                                 @JsonProperty("projectName") final String projectName,
-                                @JsonProperty("uri") final URI uri) {
+                                @JsonProperty("uri") final String uri) {
         this.projectIdentifier = projectIdentifier;
         this.projectName = projectName;
         this.uri = uri;

@@ -1,7 +1,6 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -32,7 +31,7 @@ public class RelatedNotice {
     private final String objectOfProcurementInPIN;
     @JsonProperty("uri")
     @JsonPropertyDescription("Uri of a national notice")
-    private final URI uri;
+    private final String uri;
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier of the related national notice.")
     private String id;
@@ -42,7 +41,7 @@ public class RelatedNotice {
                          @JsonProperty("id") final String id,
                          @JsonProperty("relationship") final Relationship relationship,
                          @JsonProperty("objectOfProcurementInPIN") final String objectOfProcurementInPIN,
-                         @JsonProperty("uri") final URI uri) {
+                         @JsonProperty("uri") final String uri) {
         this.scheme = scheme;
         this.id = id;
         this.relationship = relationship;

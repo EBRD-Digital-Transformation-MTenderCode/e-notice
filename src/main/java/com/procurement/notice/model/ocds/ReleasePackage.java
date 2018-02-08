@@ -30,7 +30,7 @@ public class ReleasePackage {
     @JsonProperty("uri")
     @JsonPropertyDescription("The URI of this package that identifies it uniquely in the world. Recommended practice " +
             "is to use a dereferenceable URI, where a persistent copy of this package is available.")
-    private final URI uri;
+    private final String uri;
 
     @JsonProperty("version")
     @JsonPropertyDescription("The version of the OCDS schema used in this package, expressed as major.minor For " +
@@ -40,7 +40,7 @@ public class ReleasePackage {
     @JsonProperty("extensions")
     @JsonPropertyDescription("An array of OCDS extensions used in this package. Each entry should be a URL to the " +
             "extension.json file for that extension.")
-    private final List<URI> extensions;
+    private final List<String> extensions;
 
     @JsonProperty("publishedDate")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -62,23 +62,23 @@ public class ReleasePackage {
             "recommended. The canonical URI of the license should be used. Documents linked from this file may be " +
             "under " +
             "other license conditions. ")
-    private final URI license;
+    private final String license;
 
     @JsonProperty("publicationPolicy")
     @JsonPropertyDescription("A link to a document describing the publishers [publication policy](http://standard" +
             ".open-contracting.org/latest/en/implementation/publication_policy/).")
-    private final URI publicationPolicy;
+    private final String publicationPolicy;
 
     @JsonCreator
-    public ReleasePackage(@JsonProperty("uri") final URI uri,
+    public ReleasePackage(@JsonProperty("uri") final String uri,
                           @JsonProperty("version") final String version,
-                          @JsonProperty("extensions") final List<URI> extensions,
+                          @JsonProperty("extensions") final List<String> extensions,
                           @JsonProperty("publishedDate") @JsonDeserialize(using = LocalDateTimeDeserializer.class)
                               final LocalDateTime publishedDate,
                           @JsonProperty("releases") final LinkedHashSet<ReleaseExt> releases,
                           @JsonProperty("publisher") final Publisher publisher,
-                          @JsonProperty("license") final URI license,
-                          @JsonProperty("publicationPolicy") final URI publicationPolicy) {
+                          @JsonProperty("license") final String license,
+                          @JsonProperty("publicationPolicy") final String publicationPolicy) {
         this.uri = uri;
         this.version = version;
         this.extensions = extensions;
