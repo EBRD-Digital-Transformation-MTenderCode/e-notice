@@ -38,9 +38,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseDto createEin(final String cpid,
-                                 final String stage,
-                                 final JsonNode data) {
+    public ResponseDto createEi(final String cpid,
+                                final String stage,
+                                final JsonNode data) {
         final ReleaseEIN ein = jsonUtil.toObject(ReleaseEIN.class, data.toString());
         ein.setTag(Arrays.asList(Tag.COMPILED));
         ein.setInitiationType(InitiationType.TENDER);
@@ -49,9 +49,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseDto updateEin(final String cpid,
-                                 final String stage,
-                                 final JsonNode data) {
+    public ResponseDto updateEi(final String cpid,
+                                final String stage,
+                                final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
                 .orElseThrow(() -> new ErrorException(EIN_NOT_FOUND_ERROR));
         final ReleaseEIN updateEinDto = jsonUtil.toObject(ReleaseEIN.class, data.toString());

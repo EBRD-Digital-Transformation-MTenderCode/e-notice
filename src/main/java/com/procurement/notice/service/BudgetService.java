@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BudgetService {
 
-    ResponseDto createEin(String cpid,
-                          String stage,
-                          JsonNode data);
+    ResponseDto createEi(String cpid,
+                         String stage,
+                         JsonNode data);
 
-    ResponseDto updateEin(String cpid,
-                          String stage,
-                          JsonNode data);
+    ResponseDto updateEi(String cpid,
+                         String stage,
+                         JsonNode data);
 
     ResponseDto createFs(String cpid,
                          String stage,

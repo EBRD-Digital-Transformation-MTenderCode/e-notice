@@ -26,8 +26,15 @@ public class ControllerExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(OK)
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseDto handleNullPointerException(final NullPointerException e) {
+        return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
+    }
+
+    @ResponseBody
+    @ResponseStatus(OK)
     @ExceptionHandler(ValidationException.class)
-    public ResponseDto handleValidationContractProcessPeriod(final ValidationException e) {
+    public ResponseDto handleValidationException(final ValidationException e) {
         return new ResponseDto<>(false, getErrors(e.getErrors()), null);
     }
 
@@ -41,7 +48,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseDto handle(final ConstraintViolationException e) {
+    public ResponseDto handleConstraintViolationException(final ConstraintViolationException e) {
         return new ResponseDto<>(false, getErrors(e), null);
     }
 
@@ -55,28 +62,28 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseDto handleJsonMappingExceptionException(final IllegalArgumentException e) {
+    public ResponseDto handlIllegalArgumentException(final IllegalArgumentException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseDto handleJsonMappingExceptionException(final MethodArgumentTypeMismatchException e) {
+    public ResponseDto handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(ErrorException.class)
-    public ResponseDto handleErrorInsertException(final ErrorException e) {
+    public ResponseDto handleErrorException(final ErrorException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(ServletException.class)
-    public ResponseDto handleErrorInsertException(final ServletException e) {
+    public ResponseDto handleServletException(final ServletException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
