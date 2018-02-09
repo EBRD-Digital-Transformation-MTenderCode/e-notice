@@ -3,6 +3,7 @@ package com.procurement.notice.model.ocds;
 import com.fasterxml.jackson.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,13 +15,16 @@ import lombok.Setter;
         "currency"
 })
 public class Value {
+    @JsonProperty("amount")
+    @NotNull
+    @JsonPropertyDescription("Amount as a number.")
+    private Double amount;
+
     @JsonProperty("currency")
     @JsonPropertyDescription("The currency for each amount should always be specified using the uppercase 3-letter " +
             "currency code from ISO4217.")
+    @NotNull
     private final Currency currency;
-    @JsonProperty("amount")
-    @JsonPropertyDescription("Amount as a number.")
-    private Double amount;
 
     @JsonCreator
     public Value(@JsonProperty("amount") final Double amount,
@@ -200,14 +204,13 @@ public class Value {
         ZMK("ZMK"),
         ZWL("ZWL");
         private final static Map<String, Currency> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final Currency c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         private Currency(final String value) {
             this.value = value;
