@@ -1,40 +1,46 @@
+
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
-@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "scheme",
-        "id",
-        "relationship",
-        "objectOfProcurementInPIN",
-        "uri"
+    "scheme",
+    "id",
+    "relationship",
+    "objectOfProcurementInPIN",
+    "uri"
 })
 public class RelatedNotice {
     @JsonProperty("scheme")
     @JsonPropertyDescription("The source of the related notice identifier. Currently only 'TED' and 'national' are " +
-            "permitted values.")
+        "permitted values.")
     private final RelatedNotice.Scheme scheme;
+
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier of the related national notice.")
+    private final String id;
+
     @JsonProperty("relationship")
     @JsonPropertyDescription("Type of relationship")
     private final RelatedNotice.Relationship relationship;
+
     @JsonProperty("objectOfProcurementInPIN")
     @JsonPropertyDescription("If the related notice linked to is a planning or 'Prior Information Notice' (PIN) that " +
-            "describes a number of potential tenders, the identifier of the specific Object to which this current " +
-            "contracting process relates should be given.")
+        "describes a number of potential tenders, the identifier of the specific Object to which this current " +
+        "contracting process relates should be given.")
     private final String objectOfProcurementInPIN;
+
     @JsonProperty("uri")
     @JsonPropertyDescription("Uri of a national notice")
     private final String uri;
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier of the related national notice.")
-    private String id;
 
     @JsonCreator
     public RelatedNotice(@JsonProperty("scheme") final Scheme scheme,
@@ -49,8 +55,36 @@ public class RelatedNotice {
         this.uri = uri;
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(scheme)
+                                    .append(id)
+                                    .append(relationship)
+                                    .append(objectOfProcurementInPIN)
+                                    .append(uri)
+                                    .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof RelatedNotice)) {
+            return false;
+        }
+        final RelatedNotice rhs = (RelatedNotice) other;
+        return new EqualsBuilder().append(scheme, rhs.scheme)
+                                  .append(id, rhs.id)
+                                  .append(relationship, rhs.relationship)
+                                  .append(objectOfProcurementInPIN, rhs.objectOfProcurementInPIN)
+                                  .append(uri, rhs.uri)
+                                  .isEquals();
+    }
+
     public enum Relationship {
         PREVIOUS_NOTICE("previousNotice");
+        private final String value;
         private final static Map<String, Relationship> CONSTANTS = new HashMap<>();
 
         static {
@@ -59,10 +93,18 @@ public class RelatedNotice {
             }
         }
 
-        private final String value;
-
         private Relationship(final String value) {
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
 
         @JsonCreator
@@ -74,21 +116,12 @@ public class RelatedNotice {
             return constant;
         }
 
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
-        }
-
     }
 
     public enum Scheme {
         TED("TED"),
         NATIONAL("National");
+        private final String value;
         private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
 
         static {
@@ -97,10 +130,18 @@ public class RelatedNotice {
             }
         }
 
-        private final String value;
-
         private Scheme(final String value) {
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
         }
 
         @JsonCreator
@@ -110,16 +151,6 @@ public class RelatedNotice {
                 throw new IllegalArgumentException(value);
             }
             return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
         }
     }
 }

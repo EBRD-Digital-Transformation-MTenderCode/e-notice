@@ -1,38 +1,49 @@
+
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
-@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "id",
-        "type",
-        "description",
-        "amount",
-        "estimationMethod"
+    "id",
+    "type",
+    "description",
+    "amount",
+    "estimationMethod"
 })
 public class ValueBreakdown {
+    @JsonProperty("id")
+    @JsonPropertyDescription("The identifier of this value breakdown. Unique within this array.")
+    @NotNull
+    private final String id;
+
     @JsonProperty("type")
     @JsonPropertyDescription("A value from the [valueType codelist] (http://standard.open-contracting" +
-            ".org/1.1-dev/en/schema/codelists/#value-type) that identifies the nature of the value in the breakdown. " +
-            "Negative values indicate a revenue to the supplier.")
+        ".org/1.1-dev/en/schema/codelists/#value-type) that identifies the nature of the value in the breakdown. " +
+        "Negative values indicate a revenue to the supplier.")
+    @Valid
     private final List<ValueBreakdownType> type;
+
     @JsonProperty("description")
     @JsonPropertyDescription("The description of this value breakdown.")
     private final String description;
+
     @JsonProperty("amount")
+    @Valid
     private final Value amount;
+
     @JsonProperty("estimationMethod")
+    @Valid
     private final Value estimationMethod;
-    @JsonProperty("id")
-    @JsonPropertyDescription("The identifier of this value breakdown. Unique within this array.")
-    private String id;
 
     @JsonCreator
     public ValueBreakdown(@JsonProperty("id") final String id,
@@ -47,9 +58,37 @@ public class ValueBreakdown {
         this.estimationMethod = estimationMethod;
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id)
+                                    .append(type)
+                                    .append(description)
+                                    .append(amount)
+                                    .append(estimationMethod)
+                                    .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ValueBreakdown)) {
+            return false;
+        }
+        final ValueBreakdown rhs = (ValueBreakdown) other;
+        return new EqualsBuilder().append(id, rhs.id)
+                                  .append(type, rhs.type)
+                                  .append(description, rhs.description)
+                                  .append(amount, rhs.amount)
+                                  .append(estimationMethod, rhs.estimationMethod)
+                                  .isEquals();
+    }
+
     public enum ValueBreakdownType {
         USER_FEES("userFees"),
         PUBLIC_AGENCY_FEES("publicAgencyFees");
+        private final String value;
         private final static Map<String, ValueBreakdownType> CONSTANTS = new HashMap<>();
 
         static {
@@ -58,19 +97,8 @@ public class ValueBreakdown {
             }
         }
 
-        private final String value;
-
         private ValueBreakdownType(final String value) {
             this.value = value;
-        }
-
-        @JsonCreator
-        public static ValueBreakdownType fromValue(final String value) {
-            final ValueBreakdownType constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
         }
 
         @Override
@@ -81,6 +109,15 @@ public class ValueBreakdown {
         @JsonValue
         public String value() {
             return this.value;
+        }
+
+        @JsonCreator
+        public static ValueBreakdownType fromValue(final String value) {
+            final ValueBreakdownType constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
 
     }

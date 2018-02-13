@@ -13,7 +13,15 @@ public enum TenderStatusDetails {
     EVALUATION("evaluation"),
     EVALUATED("evaluated"),
     EXECUTION("execution"),
-    PLANNING("planning");
+    //**//
+    PLANNING("planning"),
+    PLANNED("planned"),
+    ACTIVE("active"),
+    BLOCKED("blocked"),
+    CANCELLED("cancelled"),
+    UNSUCCESSFUL("unsuccessful"),
+    COMPLETE("complete"),
+    WITHDRAWN("withdrawn");
 
     private static final Map<String, TenderStatusDetails> CONSTANTS = new HashMap<>();
 

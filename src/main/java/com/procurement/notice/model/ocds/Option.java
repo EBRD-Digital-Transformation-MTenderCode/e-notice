@@ -1,15 +1,16 @@
+
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
-@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "hasOptions",
-        "optionDetails"
+    "hasOptions",
+    "optionDetails"
 })
 public class Option {
     @JsonProperty("hasOptions")
@@ -25,5 +26,26 @@ public class Option {
                   @JsonProperty("optionDetails") final String optionDetails) {
         this.hasOptions = hasOptions;
         this.optionDetails = optionDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(hasOptions)
+                                    .append(optionDetails)
+                                    .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Option)) {
+            return false;
+        }
+        final Option rhs = (Option) other;
+        return new EqualsBuilder().append(hasOptions, rhs.hasOptions)
+                                  .append(optionDetails, rhs.optionDetails)
+                                  .isEquals();
     }
 }

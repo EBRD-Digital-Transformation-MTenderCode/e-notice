@@ -14,6 +14,7 @@ public enum TenderStatus {
     COMPLETE("complete"),
     WITHDRAWN("withdrawn");
 
+    private final String value;
     private final static Map<String, TenderStatus> CONSTANTS = new HashMap<>();
 
     static {
@@ -22,19 +23,8 @@ public enum TenderStatus {
         }
     }
 
-    private final String value;
-
     private TenderStatus(final String value) {
         this.value = value;
-    }
-
-    @JsonCreator
-    public static TenderStatus fromValue(final String value) {
-        final TenderStatus constant = CONSTANTS.get(value);
-        if (constant == null) {
-            throw new IllegalArgumentException(value);
-        }
-        return constant;
     }
 
     @Override
@@ -45,5 +35,14 @@ public enum TenderStatus {
     @JsonValue
     public String value() {
         return this.value;
+    }
+
+    @JsonCreator
+    public static TenderStatus fromValue(final String value) {
+        final TenderStatus constant = CONSTANTS.get(value);
+        if (constant == null) {
+            throw new IllegalArgumentException(value);
+        }
+        return constant;
     }
 }

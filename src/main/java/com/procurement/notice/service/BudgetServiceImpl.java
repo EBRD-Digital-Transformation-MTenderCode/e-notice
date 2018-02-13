@@ -60,15 +60,6 @@ public class BudgetServiceImpl implements BudgetService {
         return getResponseDto(eiFromEntity.getOcid(), eiFromEntity.getOcid());
     }
 
-    private void updateEiDto(final ReleaseEI eiFromEntity, final ReleaseEI updateReleaseEI) {
-        eiFromEntity.setTitle(updateReleaseEI.getTitle());
-        eiFromEntity.setDescription(updateReleaseEI.getDescription());
-        eiFromEntity.setPlanning(updateReleaseEI.getPlanning());
-        eiFromEntity.setTender(updateReleaseEI.getTender());
-        eiFromEntity.setParties(updateReleaseEI.getParties());
-        eiFromEntity.setBuyer(updateReleaseEI.getBuyer());
-    }
-
     @Override
     public ResponseDto createFs(final String cpid,
                                 final String stage,
@@ -96,6 +87,15 @@ public class BudgetServiceImpl implements BudgetService {
         updateFsDto(fsFromEntity, updateReleaseFS);
         budgetDao.saveBudget(getEntity(cpid, cpid, stage, 0D, fsFromEntity));
         return getResponseDto(cpid, fsFromEntity.getOcid());
+    }
+
+    private void updateEiDto(final ReleaseEI eiFromEntity, final ReleaseEI updateReleaseEI) {
+        eiFromEntity.setTitle(updateReleaseEI.getTitle());
+        eiFromEntity.setDescription(updateReleaseEI.getDescription());
+        eiFromEntity.setPlanning(updateReleaseEI.getPlanning());
+        eiFromEntity.setTender(updateReleaseEI.getTender());
+        eiFromEntity.setParties(updateReleaseEI.getParties());
+        eiFromEntity.setBuyer(updateReleaseEI.getBuyer());
     }
 
     private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateReleaseFS) {

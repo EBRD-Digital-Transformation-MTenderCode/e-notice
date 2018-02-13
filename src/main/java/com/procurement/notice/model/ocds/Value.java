@@ -1,29 +1,29 @@
+
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "amount",
-        "currency"
+    "amount",
+    "currency"
 })
 public class Value {
     @JsonProperty("amount")
-    @NotNull
     @JsonPropertyDescription("Amount as a number.")
     private Double amount;
 
     @JsonProperty("currency")
     @JsonPropertyDescription("The currency for each amount should always be specified using the uppercase 3-letter " +
-            "currency code from ISO4217.")
-    @NotNull
+        "currency code from ISO4217.")
     private final Currency currency;
 
     @JsonCreator
@@ -31,6 +31,27 @@ public class Value {
                  @JsonProperty("currency") final Currency currency) {
         this.amount = amount;
         this.currency = currency;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(amount)
+                                    .append(currency)
+                                    .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Value)) {
+            return false;
+        }
+        final Value rhs = (Value) other;
+        return new EqualsBuilder().append(amount, rhs.amount)
+                                  .append(currency, rhs.currency)
+                                  .isEquals();
     }
 
     public enum Currency {
@@ -203,8 +224,8 @@ public class Value {
         ZAR("ZAR"),
         ZMK("ZMK"),
         ZWL("ZWL");
-        private final static Map<String, Currency> CONSTANTS = new HashMap<>();
         private final String value;
+        private final static Map<String, Currency> CONSTANTS = new HashMap<>();
 
         static {
             for (final Currency c : values()) {
@@ -216,15 +237,6 @@ public class Value {
             this.value = value;
         }
 
-        @JsonCreator
-        public static Currency fromValue(final String value) {
-            final Currency constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
-            return constant;
-        }
-
         @Override
         public String toString() {
             return this.value;
@@ -233,6 +245,15 @@ public class Value {
         @JsonValue
         public String value() {
             return this.value;
+        }
+
+        @JsonCreator
+        public static Currency fromValue(final String value) {
+            final Currency constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            }
+            return constant;
         }
     }
 }

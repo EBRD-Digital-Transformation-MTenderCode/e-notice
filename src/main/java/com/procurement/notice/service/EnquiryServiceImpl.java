@@ -1,6 +1,5 @@
 package com.procurement.notice.service;
 
-import com.datastax.driver.core.utils.UUIDs;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.TenderDao;
@@ -40,18 +39,37 @@ public class EnquiryServiceImpl implements EnquiryService {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
         final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, data.get("enquiry").asText());
-        final ReleaseExt releaseExt = jsonUtil.toObject(ReleaseExt.class, entity.getJsonData());
-        updateTender(releaseExt, enquiry);
-        tenderDao.saveTender(getEntity(cpid, ocid, stage, releaseExt));
+        final ReleaseExt release = jsonUtil.toObject(ReleaseExt.class, entity.getJsonData());
+        addEnquiry(release, enquiry);
+        addParty(release, enquiry);
+        tenderDao.saveTender(getEntity(cpid, ocid, stage, release));
         return getResponseDto(cpid, ocid);
     }
 
-    private void updateTender(final ReleaseExt releaseExt, final Enquiry enquiry) {
-        releaseExt.getTender().getEnquiries().add(enquiry);
+    @Override
+    public ResponseDto updateEnquiry(final String cpid, final String ocid, final String stage, final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, ocid))
+                .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
+        final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, data.get("enquiry").asText());
+        final ReleaseExt release = jsonUtil.toObject(ReleaseExt.class, entity.getJsonData());
+        addAnswer(release, enquiry);
+        tenderDao.saveTender(getEntity(cpid, ocid, stage, release));
+        return getResponseDto(cpid, ocid);
     }
 
-    private String getReleaseId(final String ocId) {
-        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
+    private void addEnquiry(final ReleaseExt release, final Enquiry enquiry) {
+        release.getTender().getEnquiries().add(enquiry);
+    }
+
+    private void addParty(final ReleaseExt release, final Enquiry enquiry) {
+    }
+
+    private void addAnswer(final ReleaseExt release, final Enquiry enquiry) {
+        release.getTender().getEnquiries().stream()
+                .filter(e -> e.getId().equals(enquiry.getId()))
+                .findFirst()
+                .get()
+                .setAnswer(enquiry.getAnswer());
     }
 
     private TenderEntity getEntity(final String cpId,
@@ -66,6 +84,10 @@ public class EnquiryServiceImpl implements EnquiryService {
         releaseEntity.setStage(stage);
         releaseEntity.setJsonData(jsonUtil.toJson(releaseExt));
         return releaseEntity;
+    }
+
+    private String getReleaseId(final String ocId) {
+        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {

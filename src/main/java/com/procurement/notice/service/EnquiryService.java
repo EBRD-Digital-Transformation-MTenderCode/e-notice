@@ -12,4 +12,9 @@ public interface EnquiryService {
                          String ocid,
                          String stage,
                          JsonNode data);
+
+    ResponseDto updateEnquiry(String cpid,
+                              String ocid,
+                              String stage,
+                              JsonNode data);
 }

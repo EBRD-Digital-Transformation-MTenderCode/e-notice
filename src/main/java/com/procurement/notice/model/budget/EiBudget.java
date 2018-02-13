@@ -27,7 +27,7 @@ public class EiBudget {
     private final Period period;
     @JsonProperty("amount")
     @Valid
-    private final Value amount;
+    private Value amount;
 
     @JsonCreator
     public EiBudget(@JsonProperty("id") final String id,

@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.TenderDao;
 import com.procurement.notice.model.bpe.ResponseDto;
-import com.procurement.notice.model.tender.ReleaseMS;
-import com.procurement.notice.model.tender.ReleasePS;
 import com.procurement.notice.model.entity.TenderEntity;
 import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import com.procurement.notice.model.ocds.TenderStatusDetails;
+import com.procurement.notice.model.tender.ReleaseMS;
+import com.procurement.notice.model.tender.ReleasePS;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
@@ -81,7 +81,7 @@ public class TenderServiceImpl implements TenderService {
 
     private String getReleaseId(final String ocId) {
         return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
-   }
+    }
 
     private String getId() {
         return UUIDs.timeBased().toString();

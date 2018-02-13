@@ -1,11 +1,14 @@
+
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "hasVariants",
-        "variantDetails"
+    "hasVariants",
+    "variantDetails"
 })
 public class Variant {
     @JsonProperty("hasVariants")
@@ -22,5 +25,26 @@ public class Variant {
         super();
         this.hasVariants = hasVariants;
         this.variantDetails = variantDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(hasVariants)
+                                    .append(variantDetails)
+                                    .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Variant)) {
+            return false;
+        }
+        final Variant rhs = ((Variant) other);
+        return new EqualsBuilder().append(hasVariants, rhs.hasVariants)
+                                  .append(variantDetails, rhs.variantDetails)
+                                  .isEquals();
     }
 }

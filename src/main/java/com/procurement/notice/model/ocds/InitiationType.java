@@ -8,15 +8,14 @@ import java.util.Map;
 public enum InitiationType {
     TENDER("tender");
 
-    private static final Map<String, InitiationType> CONSTANTS = new HashMap<>();
+    private final String value;
+    private final static Map<String, InitiationType> CONSTANTS = new HashMap<>();
 
     static {
         for (final InitiationType c : values()) {
             CONSTANTS.put(c.value, c);
         }
     }
-
-    private final String value;
 
     InitiationType(final String value) {
         this.value = value;

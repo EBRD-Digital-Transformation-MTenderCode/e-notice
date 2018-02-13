@@ -54,7 +54,11 @@ public class MainServiceImpl implements MainService {
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
-                throw new ErrorException(IMPLEMENTATION_ERROR);
+                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
+                enquiryService.createEnquiry(cpId, ocId, stage, data);
+            case UPDATE_ENQUIRY:
+                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
+                enquiryService.updateEnquiry(cpId, ocId, stage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -69,7 +73,8 @@ public class MainServiceImpl implements MainService {
         UPDATE_FS("updateFS"),
         CREATE_CN("createCN"),
         UPDATE_CN("updateCN"),
-        CREATE_ENQUIRY("createEnquiry");
+        CREATE_ENQUIRY("createEnquiry"),
+        UPDATE_ENQUIRY("updateEnquiry");
 
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 

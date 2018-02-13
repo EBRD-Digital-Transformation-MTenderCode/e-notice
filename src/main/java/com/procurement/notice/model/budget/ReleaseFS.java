@@ -72,7 +72,7 @@ public class ReleaseFS {
                      @JsonProperty("title") final String title,
                      @JsonProperty("description") final String description,
                      @JsonProperty("language") final String language,
-                     @JsonProperty("tender")  final Tender tender,
+                     @JsonProperty("tender") final Tender tender,
                      @JsonProperty("parties") final Set<Organization> parties,
                      @JsonProperty("planning") final FsPlanning planning,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {

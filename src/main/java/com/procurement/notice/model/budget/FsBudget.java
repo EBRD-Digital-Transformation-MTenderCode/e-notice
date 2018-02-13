@@ -29,7 +29,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "source",
         "europeanUnionFunding",
         "isEuropeanUnionFunded"
- })
+})
 public class FsBudget {
     @JsonProperty("id")
     private String id;
