@@ -75,14 +75,14 @@ public class EnquiryServiceImpl implements EnquiryService {
     private TenderEntity getEntity(final String cpId,
                                    final String ocId,
                                    final String stage,
-                                   final ReleaseExt releaseExt) {
+                                   final ReleaseExt release) {
         final TenderEntity releaseEntity = new TenderEntity();
         releaseEntity.setCpId(cpId);
         releaseEntity.setOcId(ocId);
-        releaseEntity.setReleaseDate(dateUtil.localToDate(releaseExt.getDate()));
+        releaseEntity.setReleaseDate(dateUtil.localToDate(release.getDate()));
         releaseEntity.setReleaseId(getReleaseId(ocId));
         releaseEntity.setStage(stage);
-        releaseEntity.setJsonData(jsonUtil.toJson(releaseExt));
+        releaseEntity.setJsonData(jsonUtil.toJson(release));
         return releaseEntity;
     }
 
