@@ -204,7 +204,7 @@ public class Tender {
     @JsonProperty("enquiries")
     @JsonPropertyDescription("Enquiries array to tender, consisting of one or more enquiry objects, each with fields " +
             "for a question, and an answer.")
-    private final List<Enquiry> enquiries;
+    private List<Enquiry> enquiries;
 
     @JsonProperty("eligibilityCriteria")
     @JsonPropertyDescription("A description of any eligibility criteria for potential suppliers.")

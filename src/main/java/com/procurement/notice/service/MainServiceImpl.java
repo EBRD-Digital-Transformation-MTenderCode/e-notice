@@ -55,7 +55,7 @@ public class MainServiceImpl implements MainService {
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.createEnquiry(cpId, ocId, stage, data);
+                return enquiryService.createEnquiry(cpId, ocId, stage, data);
             case UPDATE_ENQUIRY:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 enquiryService.updateEnquiry(cpId, ocId, stage, data);
