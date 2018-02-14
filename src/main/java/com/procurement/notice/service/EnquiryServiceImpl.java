@@ -74,6 +74,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         } else {
             enquiries.add(enquiry);
         }
+        release.getTender().setEnquiries(enquiries);
     }
 
 
