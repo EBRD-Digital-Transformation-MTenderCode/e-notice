@@ -98,7 +98,7 @@ public class Tender {
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
-    private final TenderStatus status;
+    private TenderStatus status;
 
     @JsonProperty("statusDetails")
     @JsonPropertyDescription("Additional details of status.)")
@@ -189,11 +189,11 @@ public class Tender {
 
     @JsonProperty("tenderPeriod")
     @Valid
-    private final Period tenderPeriod;
+    private Period tenderPeriod;
 
     @JsonProperty("enquiryPeriod")
     @Valid
-    private final Period enquiryPeriod;
+    private Period enquiryPeriod;
 
     @JsonProperty("hasEnquiries")
     @JsonPropertyDescription("A true/false field to indicate whether any enquiries were received during the tender " +

@@ -56,9 +56,12 @@ public class MainServiceImpl implements MainService {
             case CREATE_ENQUIRY:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 return enquiryService.createEnquiry(cpId, ocId, stage, data);
-            case UPDATE_ENQUIRY:
+            case ADD_ANSWER:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.updateEnquiry(cpId, ocId, stage, data);
+                enquiryService.addAnswer(cpId, ocId, stage, data);
+            case ENQUIRY_UNSUSPEND_TENDER:
+                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
+                enquiryService.enquiryUnsuspendTender(cpId, ocId, stage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -74,9 +77,11 @@ public class MainServiceImpl implements MainService {
         CREATE_CN("createCN"),
         UPDATE_CN("updateCN"),
         CREATE_ENQUIRY("createEnquiry"),
-        UPDATE_ENQUIRY("updateEnquiry");
-
+        ADD_ANSWER("addAnswer"),
+        ENQUIRY_UNSUSPEND_TENDER("enquiryUnsuspendTender");
+        
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
+
 
         static {
             for (final Operation c : values()) {

@@ -6,8 +6,7 @@ import com.procurement.notice.dao.TenderDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.TenderEntity;
-import com.procurement.notice.model.ocds.Enquiry;
-import com.procurement.notice.model.ocds.ReleaseExt;
+import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.util.ArrayList;
@@ -50,12 +49,36 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public ResponseDto updateEnquiry(final String cpid, final String ocid, final String stage, final JsonNode data) {
+    public ResponseDto addAnswer(final String cpid, final String ocid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
         final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, jsonUtil.toJson(data.get("enquiry")));
         final ReleaseExt release = jsonUtil.toObject(ReleaseExt.class, entity.getJsonData());
         updateEnquiry(release, enquiry);
+        tenderDao.saveTender(getEntity(cpid, ocid, stage, release));
+        return getResponseDto(cpid, ocid);
+    }
+
+    @Override
+    public ResponseDto enquiryUnsuspendTender(String cpid, String ocid, String stage, JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, ocid))
+                .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
+        final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, jsonUtil.toJson(data.get("enquiry")));
+        final ReleaseExt release = jsonUtil.toObject(ReleaseExt.class, entity.getJsonData());
+        updateEnquiry(release, enquiry);
+        final JsonNode tenderNode = data.get("tender");
+        final String tenderStatusString = tenderNode.get("status").asText();
+        if ((tenderStatusString != null && !"".equals(tenderStatusString.trim()))) {
+            release.getTender().setStatus(TenderStatus.fromValue(tenderStatusString));
+        }
+        final String tenderStatusDetailsString = tenderNode.get("statusDetails").asText();
+        if ((tenderStatusDetailsString != null && !"".equals(tenderStatusDetailsString.trim()))) {
+            release.getTender().setStatusDetails(TenderStatusDetails.fromValue(tenderStatusDetailsString));
+        }
+        final Period tenderPeriod = jsonUtil.toObject(Period.class, jsonUtil.toJson(tenderNode.get("tenderPeriod")));
+        release.getTender().setTenderPeriod(tenderPeriod);
+        final Period enquiryPeriod = jsonUtil.toObject(Period.class, jsonUtil.toJson(tenderNode.get("enquiryPeriod")));
+        release.getTender().setEnquiryPeriod(enquiryPeriod);
         tenderDao.saveTender(getEntity(cpid, ocid, stage, release));
         return getResponseDto(cpid, ocid);
     }
