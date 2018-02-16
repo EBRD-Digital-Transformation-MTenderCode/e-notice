@@ -137,6 +137,8 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
         final Double totalAmount = budgetDao.getTotalAmountByCpId(eiCpId);
         ei.getPlanning().getBudget().getAmount().setAmount(totalAmount);
+        ei.setId(getReleaseId(eiCpId));
+        ei.setDate(dateUtil.getNowUTC());
         addFsRelatedProcessToEi(ei, fsOcId);
         budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
     }
