@@ -6,10 +6,12 @@ import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
@@ -27,7 +29,7 @@ public class Organization {
     @JsonPropertyDescription("The ID used for cross-referencing to this party from other sections of the release. " +
         "This field may be built with the following structure {identifier.scheme}-{identifier.id}" +
         "(-{department-identifier}).")
-    private final String id;
+    private String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("A common name for this organization or other participant in the contracting process. " +

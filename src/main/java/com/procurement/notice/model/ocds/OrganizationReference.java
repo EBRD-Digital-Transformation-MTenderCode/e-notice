@@ -14,23 +14,23 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "id",
-    "identifier",
-    "address",
-    "additionalIdentifiers",
-    "contactPoint"
+        "name",
+        "id",
+        "identifier",
+        "address",
+        "additionalIdentifiers",
+        "contactPoint"
 })
 public class OrganizationReference {
     @JsonProperty("id")
     @JsonPropertyDescription("The id of the party being referenced. This must match the id of an entry in the parties" +
-        " section.")
+            " section.")
     @NotNull
     private final String id;
 
     @JsonProperty("name")
     @JsonPropertyDescription("The name of the party being referenced. This must match the name of an entry in the " +
-        "parties section.")
+            "parties section.")
     @Size(min = 1)
     @NotNull
     private final String name;
@@ -46,9 +46,9 @@ public class OrganizationReference {
     @JsonProperty("additionalIdentifiers")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("(Deprecated outside the parties section) A list of additional / supplemental " +
-        "identifiers for the organization, using the [organization identifier guidance](http://standard" +
-        ".open-contracting.org/latest/en/schema/identifiers/). This could be used to provide an internally used " +
-        "identifier for this organization in addition to the primary legal entity identifier.")
+            "identifiers for the organization, using the [organization identifier guidance](http://standard" +
+            ".open-contracting.org/latest/en/schema/identifiers/). This could be used to provide an internally used " +
+            "identifier for this organization in addition to the primary legal entity identifier.")
     @Valid
     private final Set<Identifier> additionalIdentifiers;
 
@@ -57,12 +57,12 @@ public class OrganizationReference {
     private final ContactPoint contactPoint;
 
     @JsonCreator
-    public OrganizationReference(@JsonProperty("name") final String name,
-                                 @JsonProperty("id") final String id,
+    public OrganizationReference(@JsonProperty("id") final String id,
+                                 @JsonProperty("name") final String name,
                                  @JsonProperty("identifier") final Identifier identifier,
                                  @JsonProperty("address") final Address address,
                                  @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>
-                                     additionalIdentifiers,
+                                         additionalIdentifiers,
                                  @JsonProperty("contactPoint") final ContactPoint contactPoint) {
         this.id = id;
         this.name = name;
@@ -75,12 +75,12 @@ public class OrganizationReference {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(name)
-                                    .append(id)
-                                    .append(identifier)
-                                    .append(address)
-                                    .append(additionalIdentifiers)
-                                    .append(contactPoint)
-                                    .toHashCode();
+                .append(id)
+                .append(identifier)
+                .append(address)
+                .append(additionalIdentifiers)
+                .append(contactPoint)
+                .toHashCode();
     }
 
     @Override
@@ -93,11 +93,11 @@ public class OrganizationReference {
         }
         final OrganizationReference rhs = (OrganizationReference) other;
         return new EqualsBuilder().append(name, rhs.name)
-                                  .append(id, rhs.id)
-                                  .append(identifier, rhs.identifier)
-                                  .append(address, rhs.address)
-                                  .append(additionalIdentifiers, rhs.additionalIdentifiers)
-                                  .append(contactPoint, rhs.contactPoint)
-                                  .isEquals();
+                .append(id, rhs.id)
+                .append(identifier, rhs.identifier)
+                .append(address, rhs.address)
+                .append(additionalIdentifiers, rhs.additionalIdentifiers)
+                .append(contactPoint, rhs.contactPoint)
+                .isEquals();
     }
 }
