@@ -10,6 +10,5 @@ public interface TenderService {
 
     ResponseDto createCn(String cpid,
                          String stage,
-                         LocalDateTime releaseDate,
                          JsonNode data);
 }

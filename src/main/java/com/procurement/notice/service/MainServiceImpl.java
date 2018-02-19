@@ -49,8 +49,7 @@ public class MainServiceImpl implements MainService {
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 return budgetService.updateFs(cpId, ocId, stage, data);
             case CREATE_CN:
-                Objects.requireNonNull(releaseDate, "releaseDate " + PARAM_ERROR);
-                return tenderService.createCn(cpId, stage, releaseDate, data);
+                return tenderService.createCn(cpId, stage, data);
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:

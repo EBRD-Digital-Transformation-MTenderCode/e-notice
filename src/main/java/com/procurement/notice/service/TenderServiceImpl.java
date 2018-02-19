@@ -37,7 +37,6 @@ public class TenderServiceImpl implements TenderService {
     @Override
     public ResponseDto createCn(final String cpid,
                                 final String stage,
-                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseMS ms = jsonUtil.toObject(ReleaseMS.class, data.toString());
         ms.setOcid(cpid);
@@ -48,6 +47,7 @@ public class TenderServiceImpl implements TenderService {
         final ReleasePS ps = jsonUtil.toObject(ReleasePS.class, data.toString());
         ps.setOcid(getOcId(cpid, stage));
         ps.setId(getReleaseId(ps.getOcid()));
+        ps.setDate(ms.getDate());
         ps.setTag(Arrays.asList(Tag.COMPILED));
         ps.setInitiationType(InitiationType.TENDER);
         ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
@@ -72,8 +72,8 @@ public class TenderServiceImpl implements TenderService {
                         ms.getOcid(),
                         "")
         );
-        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), stage, releaseDate, ms));
-        tenderDao.saveTender(getEntity(ms.getOcid(), ps.getOcid(), stage, releaseDate, ps));
+        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), stage, ms.getDate(), ms));
+        tenderDao.saveTender(getEntity(ms.getOcid(), ps.getOcid(), stage, ps.getDate(), ps));
         return getResponseDto(ms.getOcid(), ps.getOcid());
     }
 
