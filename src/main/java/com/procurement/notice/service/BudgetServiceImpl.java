@@ -117,12 +117,14 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
+        ei.setDate(updateEi.getDate());
         ei.setTitle(updateEi.getTitle());
         ei.setPlanning(updateEi.getPlanning());
         ei.setTender(updateEi.getTender());
     }
 
     private void updateFsDto(final ReleaseFS fs, final ReleaseFS updateFs) {
+        fs.setDate(updateFs.getDate());
         fs.setTitle(updateFs.getTitle());
         fs.setTender(updateFs.getTender());
         fs.setParties(updateFs.getParties());
