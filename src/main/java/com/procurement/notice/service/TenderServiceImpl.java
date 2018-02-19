@@ -41,11 +41,13 @@ public class TenderServiceImpl implements TenderService {
                                 final JsonNode data) {
         final ReleaseMS ms = jsonUtil.toObject(ReleaseMS.class, data.toString());
         ms.setOcid(cpid);
+        ms.setId(getReleaseId(cpid));
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
         final ReleasePS ps = jsonUtil.toObject(ReleasePS.class, data.toString());
         ps.setOcid(getOcId(cpid, stage));
+        ps.setId(getReleaseId(ps.getOcid()));
         ps.setTag(Arrays.asList(Tag.COMPILED));
         ps.setInitiationType(InitiationType.TENDER);
         ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
