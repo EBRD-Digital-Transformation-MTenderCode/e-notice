@@ -70,6 +70,7 @@ public class BudgetDaoImpl implements BudgetDao {
                 .where(eq(CP_ID, cpId))
                 .limit(1);
         final Row row = session.execute(query).one();
+        if (row!=null)
         return new BudgetEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
@@ -78,6 +79,7 @@ public class BudgetDaoImpl implements BudgetDao {
                 row.getString(STAGE),
                 row.getDouble(AMOUNT),
                 row.getString(JSON_DATA));
+        return null;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class BudgetDaoImpl implements BudgetDao {
                 .and(eq(OC_ID, ocId))
                 .limit(1);
         final Row row = session.execute(query).one();
+        if (row!=null)
         return new BudgetEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
@@ -97,6 +100,7 @@ public class BudgetDaoImpl implements BudgetDao {
                 row.getString(STAGE),
                 row.getDouble(AMOUNT),
                 row.getString(JSON_DATA));
+        return null;
     }
 
     @Override
