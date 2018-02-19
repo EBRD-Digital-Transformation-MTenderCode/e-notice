@@ -44,7 +44,7 @@ public class BudgetServiceImpl implements BudgetService {
         ei.setTag(Arrays.asList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
-        budgetDao.saveBudget(getEiEntity(ei, stage, 0D));
+        budgetDao.saveBudget(getEiEntity(ei, stage));
         return getResponseDto(ei.getOcid(), ei.getOcid());
     }
 
@@ -58,7 +58,7 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
         ei.setId(getReleaseId(cpid));
         updateEiDto(ei, updateEi);
-        budgetDao.saveBudget(getEiEntity(ei, stage, ei.getPlanning().getBudget().getAmount().getAmount()));
+        budgetDao.saveBudget(getEiEntity(ei, stage));
         return getResponseDto(ei.getOcid(), ei.getOcid());
     }
 
@@ -145,7 +145,7 @@ public class BudgetServiceImpl implements BudgetService {
         ei.setId(getReleaseId(eiCpId));
         ei.setDate(dateUtil.getNowUTC());
         addFsRelatedProcessToEi(ei, fsOcId);
-        budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
+        budgetDao.saveBudget(getEiEntity(ei, entity.getStage()));
     }
 
     public void updateEiAmountByFs(final String eiCpId) {
@@ -156,7 +156,7 @@ public class BudgetServiceImpl implements BudgetService {
         ei.getPlanning().getBudget().getAmount().setAmount(totalAmount);
         ei.setId(getReleaseId(eiCpId));
         ei.setDate(dateUtil.getNowUTC());
-        budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
+        budgetDao.saveBudget(getEiEntity(ei, entity.getStage()));
     }
 
     private void addFsRelatedProcessToEi(final ReleaseEI ei, final String fsOcId) {
@@ -184,15 +184,13 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private BudgetEntity getEiEntity(final ReleaseEI ei,
-                                     final String stage,
-                                     final Double amount) {
+                                     final String stage) {
         final BudgetEntity entity = new BudgetEntity();
         entity.setCpId(ei.getOcid());
         entity.setOcId(ei.getOcid());
         entity.setReleaseDate(dateUtil.localToDate(ei.getDate()));
         entity.setReleaseId(ei.getId());
         entity.setStage(stage);
-        entity.setAmount(amount);
         entity.setJsonData(jsonUtil.toJson(ei));
         return entity;
     }
