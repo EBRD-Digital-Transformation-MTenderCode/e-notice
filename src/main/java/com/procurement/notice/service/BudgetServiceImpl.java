@@ -121,7 +121,6 @@ public class BudgetServiceImpl implements BudgetService {
         ei.setDescription(updateEi.getDescription());
         ei.setPlanning(updateEi.getPlanning());
         ei.setTender(updateEi.getTender());
-        ei.setParties(updateEi.getParties());
     }
 
     private void updateFsDto(final ReleaseFS fs, final ReleaseFS updateFs) {

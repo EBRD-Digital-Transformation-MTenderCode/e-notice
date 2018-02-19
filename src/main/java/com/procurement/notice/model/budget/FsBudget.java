@@ -28,7 +28,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "uri",
         "source",
         "europeanUnionFunding",
-        "isEuropeanUnionFunded"
+        "isEuropeanUnionFunded",
+        "budgetBreakdown",
+        "verified"
 })
 public class FsBudget {
     @JsonProperty("id")
@@ -55,6 +57,8 @@ public class FsBudget {
     private final Boolean isEuropeanUnionFunded;
     @JsonProperty("budgetBreakdown")
     private final List<BudgetBreakdown> budgetBreakdown;
+    @JsonProperty("verified")
+    private final Boolean verified;
 
     @JsonCreator
     public FsBudget(@JsonProperty("id") final String id,
@@ -67,7 +71,8 @@ public class FsBudget {
                     @JsonProperty("source") final String source,
                     @JsonProperty("europeanUnionFunding") final EuropeanUnionFunding europeanUnionFunding,
                     @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded,
-                    @JsonProperty("budgetBreakdown") final List<BudgetBreakdown> budgetBreakdown) {
+                    @JsonProperty("budgetBreakdown") final List<BudgetBreakdown> budgetBreakdown,
+                    @JsonProperty("verified") final Boolean verified) {
         this.id = id;
         this.description = description;
         this.period = period;
@@ -79,6 +84,7 @@ public class FsBudget {
         this.europeanUnionFunding = europeanUnionFunding;
         this.isEuropeanUnionFunded = isEuropeanUnionFunded;
         this.budgetBreakdown = budgetBreakdown;
+        this.verified = verified;
     }
 
     @Override
@@ -93,6 +99,7 @@ public class FsBudget {
                 .append(europeanUnionFunding)
                 .append(isEuropeanUnionFunded)
                 .append(budgetBreakdown)
+                .append(verified)
                 .toHashCode();
     }
 
@@ -115,6 +122,7 @@ public class FsBudget {
                 .append(europeanUnionFunding, rhs.europeanUnionFunding)
                 .append(isEuropeanUnionFunded, rhs.isEuropeanUnionFunded)
                 .append(budgetBreakdown, rhs.budgetBreakdown)
+                .append(verified, rhs.verified)
                 .isEquals();
     }
 }
