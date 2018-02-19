@@ -54,12 +54,12 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
                 .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
-        final ReleaseEI updateReleaseEI = jsonUtil.toObject(ReleaseEI.class, data.toString());
-        final ReleaseEI eiFromEntity = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
-        eiFromEntity.setId(getReleaseId(cpid));
-        updateEiDto(eiFromEntity, updateReleaseEI);
-        budgetDao.saveBudget(getEiEntity(eiFromEntity, stage, 0D));
-        return getResponseDto(eiFromEntity.getOcid(), eiFromEntity.getOcid());
+        final ReleaseEI updateEi = jsonUtil.toObject(ReleaseEI.class, data.toString());
+        final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
+        ei.setId(getReleaseId(cpid));
+        updateEiDto(ei, updateEi);
+        budgetDao.saveBudget(getEiEntity(ei, stage, ei.getPlanning().getBudget().getAmount().getAmount()));
+        return getResponseDto(ei.getOcid(), ei.getOcid());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class BudgetServiceImpl implements BudgetService {
         addEiRelatedProcessToFs(fs, cpid);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount));
-        updateEiByFs(cpid, fs.getOcid());
+        createEiByFs(cpid, fs.getOcid());
         return getResponseDto(cpid, fs.getOcid());
     }
 
@@ -84,12 +84,17 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(FS_NOT_FOUND_ERROR));
-        final ReleaseFS updateReleaseFS = jsonUtil.toObject(ReleaseFS.class, data.toString());
-        final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
-        fsFromEntity.setId(getReleaseId(ocid));
-        updateFsDto(fsFromEntity, updateReleaseFS);
-        budgetDao.saveBudget(getFsEntity(cpid, fsFromEntity, stage, 0D));
-        return getResponseDto(cpid, fsFromEntity.getOcid());
+        final ReleaseFS updateFs = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
+        final Double updateAmount = updateFs.getPlanning().getBudget().getAmount().getAmount();
+        final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
+        fs.setId(getReleaseId(ocid));
+        updateFsDto(fs, updateFs);
+        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount));
+        if (updateAmount!=amount){
+            updateEiAmountByFs(cpid);
+        }
+        return getResponseDto(cpid, fs.getOcid());
     }
 
     private void processEiParties(final ReleaseEI ei) {
@@ -131,7 +136,7 @@ public class BudgetServiceImpl implements BudgetService {
         return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
-    public void updateEiByFs(final String eiCpId, final String fsOcId) {
+    public void createEiByFs(final String eiCpId, final String fsOcId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
                 .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
@@ -140,6 +145,17 @@ public class BudgetServiceImpl implements BudgetService {
         ei.setId(getReleaseId(eiCpId));
         ei.setDate(dateUtil.getNowUTC());
         addFsRelatedProcessToEi(ei, fsOcId);
+        budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
+    }
+
+    public void updateEiAmountByFs(final String eiCpId) {
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
+                .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
+        final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
+        final Double totalAmount = budgetDao.getTotalAmountByCpId(eiCpId);
+        ei.getPlanning().getBudget().getAmount().setAmount(totalAmount);
+        ei.setId(getReleaseId(eiCpId));
+        ei.setDate(dateUtil.getNowUTC());
         budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
     }
 
