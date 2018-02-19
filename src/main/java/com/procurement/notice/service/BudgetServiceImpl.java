@@ -116,20 +116,20 @@ public class BudgetServiceImpl implements BudgetService {
         }
     }
 
-    private void updateEiDto(final ReleaseEI eiFromEntity, final ReleaseEI updateReleaseEI) {
-        eiFromEntity.setTitle(updateReleaseEI.getTitle());
-        eiFromEntity.setDescription(updateReleaseEI.getDescription());
-        eiFromEntity.setPlanning(updateReleaseEI.getPlanning());
-        eiFromEntity.setTender(updateReleaseEI.getTender());
-        eiFromEntity.setParties(updateReleaseEI.getParties());
+    private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
+        ei.setTitle(updateEi.getTitle());
+        ei.setDescription(updateEi.getDescription());
+        ei.setPlanning(updateEi.getPlanning());
+        ei.setTender(updateEi.getTender());
+        ei.setParties(updateEi.getParties());
     }
 
-    private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateReleaseFS) {
-        fsFromEntity.setTitle(updateReleaseFS.getTitle());
-        fsFromEntity.setDescription(updateReleaseFS.getDescription());
-        fsFromEntity.setTender(updateReleaseFS.getTender());
-        fsFromEntity.setParties(updateReleaseFS.getParties());
-        fsFromEntity.setPlanning(updateReleaseFS.getPlanning());
+    private void updateFsDto(final ReleaseFS fs, final ReleaseFS updateFs) {
+        fs.setTitle(updateFs.getTitle());
+        fs.setDescription(updateFs.getDescription());
+        fs.setTender(updateFs.getTender());
+        fs.setParties(updateFs.getParties());
+        fs.setPlanning(updateFs.getPlanning());
     }
 
     private String getReleaseId(final String ocId) {
