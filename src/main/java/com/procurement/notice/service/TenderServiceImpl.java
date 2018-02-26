@@ -13,7 +13,7 @@ import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.Tag;
 import com.procurement.notice.model.ocds.TenderStatusDetails;
 import com.procurement.notice.model.tender.ReleaseMS;
-import com.procurement.notice.model.tender.ReleasePS;
+import com.procurement.notice.model.tender.ReleaseTender;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
@@ -48,7 +48,7 @@ public class TenderServiceImpl implements TenderService {
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        final ReleasePS ps = jsonUtil.toObject(ReleasePS.class, data.toString());
+        final ReleaseTender ps = jsonUtil.toObject(ReleaseTender.class, data.toString());
         ps.setOcid(getOcId(cpid, stage));
         ps.setId(getReleaseId(ps.getOcid()));
         ps.setDate(ms.getDate());
@@ -120,7 +120,7 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseFS updateFs = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final ReleaseTender tender = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
         return null;
     }
 }
