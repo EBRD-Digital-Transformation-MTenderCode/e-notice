@@ -6,18 +6,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.TenderDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
-import com.procurement.notice.model.budget.ReleaseFS;
 import com.procurement.notice.model.entity.TenderEntity;
-import com.procurement.notice.model.ocds.InitiationType;
-import com.procurement.notice.model.ocds.RelatedProcess;
-import com.procurement.notice.model.ocds.Tag;
-import com.procurement.notice.model.ocds.TenderStatusDetails;
+import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.ReleaseMS;
 import com.procurement.notice.model.tender.ReleaseTender;
+import com.procurement.notice.model.tender.TenderPeriodEndDto;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +74,7 @@ public class TenderServiceImpl implements TenderService {
                         ms.getOcid(),
                         "")
         );
-        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), stage, ms.getDate(), ms));
+        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), "ms", ms.getDate(), ms));
         tenderDao.saveTender(getEntity(ms.getOcid(), ps.getOcid(), stage, ps.getDate(), ps));
         return getResponseDto(ms.getOcid(), ps.getOcid());
     }
@@ -121,6 +119,13 @@ public class TenderServiceImpl implements TenderService {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final ReleaseTender tender = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderPeriodEndDto updateDto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
+        tender.setId(getReleaseId(tender.getOcid()));
+        tender.setDate(updateDto.getAwardPeriod().getStartDate());
+        tender.setTag(Arrays.asList(Tag.AWARD));
+        tender.setAwards(new LinkedHashSet<>(updateDto.getAwards()));
+        tender.setBids(new Bids(null, updateDto.getBids()));
+        tenderDao.saveTender(getEntity(cpid, tender.getOcid(), stage, tender.getDate(), tender));
         return null;
     }
 }

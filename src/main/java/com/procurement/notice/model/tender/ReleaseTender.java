@@ -70,10 +70,10 @@ public class ReleaseTender {
     @JsonProperty("buyer")
     private final OrganizationReference buyer;
     @JsonProperty("bids")
-    private final Bids bids;
+    private Bids bids;
     @JsonProperty("awards")
     @JsonDeserialize(as = LinkedHashSet.class)
-    private final Set<Award> awards;
+    private Set<Award> awards;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<RelatedProcess> relatedProcesses;
