@@ -60,7 +60,10 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public ResponseDto enquiryUnsuspendTender(String cpid, String ocid, String stage, JsonNode data) {
+    public ResponseDto enquiryUnsuspendTender(final String cpid, 
+                                              final String ocid,
+                                              final String stage,
+                                              final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
         final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, jsonUtil.toJson(data.get("enquiry")));
