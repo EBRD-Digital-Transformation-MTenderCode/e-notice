@@ -11,4 +11,8 @@ public interface TenderService {
     ResponseDto createCn(String cpid,
                          String stage,
                          JsonNode data);
+
+    ResponseDto tenderPeriodEnd(String cpid,
+                         String stage,
+                         JsonNode data);
 }

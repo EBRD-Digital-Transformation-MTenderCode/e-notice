@@ -11,4 +11,6 @@ public interface TenderDao {
     TenderEntity getByCpId(String cpId);
 
     TenderEntity getByCpIdAndOcId(String cpId, String ocId);
+
+    TenderEntity getByCpIdAndStage(String cpId, String stage);
 }

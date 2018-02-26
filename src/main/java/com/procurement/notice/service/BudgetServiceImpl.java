@@ -91,19 +91,19 @@ public class BudgetServiceImpl implements BudgetService {
         fs.setId(getReleaseId(ocid));
         updateFsDto(fs, updateFs);
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount));
-        if (updateAmount!=amount){
+        if (!updateAmount.equals(amount)) {
             updateEiAmountByFs(cpid);
         }
         return getResponseDto(cpid, fs.getOcid());
     }
 
     private void processEiParties(final ReleaseEI ei) {
-        ei.getParties().forEach(p -> p.setId(p.getIdentifier().getScheme() + "-" + p.getIdentifier().getId()));
+        ei.getParties().forEach(p -> p.setId(p.getIdentifier().getScheme() + SEPARATOR + p.getIdentifier().getId()));
         final Optional<Organization> partyOptional = ei.getParties().stream()
                 .filter(p -> p.getRoles().contains(Organization.PartyRole.BUYER))
                 .findFirst();
         if (partyOptional.isPresent()) {
-            Organization party = partyOptional.get();
+            final Organization party = partyOptional.get();
             final OrganizationReference buyer = new OrganizationReference(
                     party.getId(),
                     party.getName(),

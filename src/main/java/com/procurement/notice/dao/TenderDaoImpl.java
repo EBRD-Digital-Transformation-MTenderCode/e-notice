@@ -97,4 +97,25 @@ public class TenderDaoImpl implements TenderDao {
                     row.getString(JSON_DATA));
         return null;
     }
+
+    @Override
+    public TenderEntity getByCpIdAndStage(final String cpId, final String stage) {
+        final Statement query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .and(eq(STAGE, stage))
+                .allowFiltering()
+                .limit(1);
+        final Row row = session.execute(query).one();
+        if (row != null)
+            return new TenderEntity(
+                    row.getString(CP_ID),
+                    row.getString(OC_ID),
+                    row.getTimestamp(RELEASE_DATE),
+                    row.getString(RELEASE_ID),
+                    row.getString(STAGE),
+                    row.getString(JSON_DATA));
+        return null;
+    }
 }

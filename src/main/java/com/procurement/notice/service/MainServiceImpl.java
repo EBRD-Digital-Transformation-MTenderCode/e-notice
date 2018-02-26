@@ -37,7 +37,7 @@ public class MainServiceImpl implements MainService {
                                      final String phase,
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
-        Operation operationType = Operation.fromValue(operation);
+        final Operation operationType = Operation.fromValue(operation);
         switch (operationType) {
             case CREATE_EI:
                 return budgetService.createEi(cpId, stage, data);
@@ -57,10 +57,12 @@ public class MainServiceImpl implements MainService {
                 return enquiryService.createEnquiry(cpId, ocId, stage, data);
             case ADD_ANSWER:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.addAnswer(cpId, ocId, stage, data);
+                return enquiryService.addAnswer(cpId, ocId, stage, data);
             case ENQUIRY_UNSUSPEND_TENDER:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.enquiryUnsuspendTender(cpId, ocId, stage, data);
+                return enquiryService.enquiryUnsuspendTender(cpId, ocId, stage, data);
+            case TENDER_PERIOD_END:
+                return tenderService.tenderPeriodEnd(cpId, stage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -77,7 +79,8 @@ public class MainServiceImpl implements MainService {
         UPDATE_CN("updateCN"),
         CREATE_ENQUIRY("createEnquiry"),
         ADD_ANSWER("addAnswer"),
-        ENQUIRY_UNSUSPEND_TENDER("enquiryUnsuspendTender");
+        ENQUIRY_UNSUSPEND_TENDER("enquiryUnsuspendTender"),
+        TENDER_PERIOD_END("tenderPeriodEnd");
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 
