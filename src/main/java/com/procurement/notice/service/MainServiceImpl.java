@@ -53,14 +53,11 @@ public class MainServiceImpl implements MainService {
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return enquiryService.createEnquiry(cpId, ocId, stage, data);
+                return enquiryService.createEnquiry(cpId, stage, data);
             case ADD_ANSWER:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return enquiryService.addAnswer(cpId, ocId, stage, data);
+                return enquiryService.addAnswer(cpId, stage, data);
             case ENQUIRY_UNSUSPEND_TENDER:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return enquiryService.enquiryUnsuspendTender(cpId, ocId, stage, data);
+                return enquiryService.enquiryUnsuspendTender(cpId, stage, data);
             case TENDER_PERIOD_END:
                 return tenderService.tenderPeriodEnd(cpId, stage, data);
             default:

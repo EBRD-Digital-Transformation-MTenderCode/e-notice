@@ -9,17 +9,14 @@ import org.springframework.stereotype.Service;
 public interface EnquiryService {
 
     ResponseDto createEnquiry(String cpid,
-                         String ocid,
                          String stage,
                          JsonNode data);
 
     ResponseDto addAnswer(String cpid,
-                          String ocid,
                           String stage,
                           JsonNode data);
 
     ResponseDto enquiryUnsuspendTender(String cpid,
-                                       String ocid,
                                        String stage,
                                        JsonNode data);
 }

@@ -143,7 +143,7 @@ public class Tender {
 
     @JsonProperty("mainProcurementCategory")
     @JsonPropertyDescription("The primary category describing the main object of this contracting process from the " +
-            "[procurementCategory](http://standard.open-contracting" +
+            "[procuremen     this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;tCategory](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#procurement-category)" +
             " codelist. This is a closed codelist. Local classifications should be mapped to this list.")
     @Valid
