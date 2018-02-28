@@ -121,15 +121,15 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseTender tender = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
         final TenderPeriodEndDto updateDto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
-        tender.setId(getReleaseId(tender.getOcid()));
-        tender.setDate(updateDto.getAwardPeriod().getStartDate());
-        tender.setTag(Arrays.asList(Tag.AWARD));
-        tender.setAwards(new LinkedHashSet<>(updateDto.getAwards()));
-        tender.setBids(new Bids(null, updateDto.getBids()));
-        tenderDao.saveTender(getTenderEntity(cpid, stage, tender));
-        return null;
+        release.setId(getReleaseId(release.getOcid()));
+        release.setDate(updateDto.getAwardPeriod().getStartDate());
+        release.setTag(Arrays.asList(Tag.AWARD));
+        release.setAwards(new LinkedHashSet<>(updateDto.getAwards()));
+        release.setBids(new Bids(null, updateDto.getBids()));
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
     }
 
     @Override
