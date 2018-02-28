@@ -56,10 +56,12 @@ public class MainServiceImpl implements MainService {
                 return enquiryService.createEnquiry(cpId, stage, data);
             case ADD_ANSWER:
                 return enquiryService.addAnswer(cpId, stage, data);
-            case ENQUIRY_UNSUSPEND_TENDER:
-                return enquiryService.enquiryUnsuspendTender(cpId, stage, data);
+            case UNSUSPEND_TENDER:
+                return enquiryService.unsuspendTender(cpId, stage, data);
             case TENDER_PERIOD_END:
                 return tenderService.tenderPeriodEnd(cpId, stage, data);
+            case SUSPEND_TENDER:
+                return tenderService.suspendTender(cpId, stage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -76,8 +78,9 @@ public class MainServiceImpl implements MainService {
         UPDATE_CN("updateCN"),
         CREATE_ENQUIRY("createEnquiry"),
         ADD_ANSWER("addAnswer"),
-        ENQUIRY_UNSUSPEND_TENDER("enquiryUnsuspendTender"),
-        TENDER_PERIOD_END("tenderPeriodEnd");
+        UNSUSPEND_TENDER("unsuspendTender"),
+        TENDER_PERIOD_END("tenderPeriodEnd"),
+        SUSPEND_TENDER("suspendTender"),;
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 

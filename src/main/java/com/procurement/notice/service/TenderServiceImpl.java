@@ -10,10 +10,10 @@ import com.procurement.notice.model.entity.TenderEntity;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.ReleaseMS;
 import com.procurement.notice.model.tender.ReleaseTender;
+import com.procurement.notice.model.tender.SuspendTenderDto;
 import com.procurement.notice.model.tender.TenderPeriodEndDto;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -37,6 +37,20 @@ public class TenderServiceImpl implements TenderService {
     }
 
     @Override
+    public TenderEntity getTenderEntity(final String cpId,
+                                        final String stage,
+                                        final ReleaseTender tender) {
+        final TenderEntity tenderEntity = new TenderEntity();
+        tenderEntity.setCpId(cpId);
+        tenderEntity.setStage(stage);
+        tenderEntity.setOcId(tender.getOcid());
+        tenderEntity.setJsonData(jsonUtil.toJson(tender));
+        tenderEntity.setReleaseId(tender.getId());
+        tenderEntity.setReleaseDate(dateUtil.localToDate(tender.getDate()));
+        return tenderEntity;
+    }
+
+    @Override
     public ResponseDto createCn(final String cpid,
                                 final String stage,
                                 final JsonNode data) {
@@ -46,14 +60,14 @@ public class TenderServiceImpl implements TenderService {
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        final ReleaseTender ps = jsonUtil.toObject(ReleaseTender.class, data.toString());
-        ps.setOcid(getOcId(cpid, stage));
-        ps.setId(getReleaseId(ps.getOcid()));
-        ps.setDate(ms.getDate());
-        ps.setTag(Arrays.asList(Tag.COMPILED));
-        ps.setInitiationType(InitiationType.TENDER);
-        ps.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        ps.getPlanning().getBudget().setId(getId());
+        final ReleaseTender tender = jsonUtil.toObject(ReleaseTender.class, data.toString());
+        tender.setOcid(getOcId(cpid, stage));
+        tender.setId(getReleaseId(tender.getOcid()));
+        tender.setDate(ms.getDate());
+        tender.setTag(Arrays.asList(Tag.COMPILED));
+        tender.setInitiationType(InitiationType.TENDER);
+        tender.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
+        tender.getPlanning().getBudget().setId(getId());
 
         ms.getRelatedProcesses().add(
                 new RelatedProcess(
@@ -61,11 +75,11 @@ public class TenderServiceImpl implements TenderService {
                         Arrays.asList(RelatedProcess.RelatedProcessType.X_PRESELECTION),
                         "",
                         RelatedProcess.RelatedProcessScheme.OCID,
-                        ps.getOcid(),
+                        tender.getOcid(),
                         "")
         );
 
-        ps.getRelatedProcesses().add(
+        tender.getRelatedProcesses().add(
                 new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
@@ -74,9 +88,9 @@ public class TenderServiceImpl implements TenderService {
                         ms.getOcid(),
                         "")
         );
-        tenderDao.saveTender(getEntity(ms.getOcid(), ms.getOcid(), "ms", ms.getDate(), ms));
-        tenderDao.saveTender(getEntity(ms.getOcid(), ps.getOcid(), stage, ps.getDate(), ps));
-        return getResponseDto(ms.getOcid(), ps.getOcid());
+        tenderDao.saveTender(getMSEntity(ms.getOcid(), ms));
+        tenderDao.saveTender(getTenderEntity(ms.getOcid(), stage, tender));
+        return getResponseDto(ms.getOcid(), tender.getOcid());
     }
 
     private String getOcId(final String cpId, final String stage) {
@@ -91,28 +105,17 @@ public class TenderServiceImpl implements TenderService {
         return UUIDs.timeBased().toString();
     }
 
-    private TenderEntity getEntity(final String cpId,
-                                   final String ocId,
-                                   final String stage,
-                                   final LocalDateTime releaseDate,
-                                   final Object jsonData) {
-        final TenderEntity releaseEntity = new TenderEntity();
-        releaseEntity.setCpId(cpId);
-        releaseEntity.setOcId(ocId);
-        releaseEntity.setReleaseDate(dateUtil.localToDate(releaseDate));
-        releaseEntity.setReleaseId(getReleaseId(ocId));
-        releaseEntity.setStage(stage);
-        releaseEntity.setJsonData(jsonUtil.toJson(jsonData));
-        return releaseEntity;
+    private TenderEntity getMSEntity(final String cpId,
+                                     final ReleaseMS ms) {
+        final TenderEntity msEntity = new TenderEntity();
+        msEntity.setCpId(cpId);
+        msEntity.setStage("ms");
+        msEntity.setOcId(ms.getOcid());
+        msEntity.setJsonData(jsonUtil.toJson(ms));
+        msEntity.setReleaseId(ms.getId());
+        msEntity.setReleaseDate(dateUtil.localToDate(ms.getDate()));
+        return msEntity;
     }
-
-    private ResponseDto getResponseDto(final String cpid, final String ocid) {
-        final ObjectNode jsonForResponse = jsonUtil.createObjectNode();
-        jsonForResponse.put("cpid", cpid);
-        jsonForResponse.put("ocid", ocid);
-        return new ResponseDto<>(true, null, jsonForResponse);
-    }
-
 
     @Override
     public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
@@ -125,7 +128,30 @@ public class TenderServiceImpl implements TenderService {
         tender.setTag(Arrays.asList(Tag.AWARD));
         tender.setAwards(new LinkedHashSet<>(updateDto.getAwards()));
         tender.setBids(new Bids(null, updateDto.getBids()));
-        tenderDao.saveTender(getEntity(cpid, tender.getOcid(), stage, tender.getDate(), tender));
+        tenderDao.saveTender(getTenderEntity(cpid, stage, tender));
         return null;
     }
+
+    @Override
+    public ResponseDto suspendTender(final String cpid,
+                                     final String stage,
+                                     final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR));
+        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final SuspendTenderDto dto = jsonUtil.toObject(SuspendTenderDto.class, jsonUtil.toJson(data));
+        release.setDate(dateUtil.getNowUTC());
+        release.setId(getReleaseId(release.getOcid()));
+        release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
+    }
+
+    private ResponseDto getResponseDto(final String cpid, final String ocid) {
+        final ObjectNode jsonForResponse = jsonUtil.createObjectNode();
+        jsonForResponse.put("cpid", cpid);
+        jsonForResponse.put("ocid", ocid);
+        return new ResponseDto<>(true, null, jsonForResponse);
+    }
+
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.procurement.notice.dao.TenderDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
-import com.procurement.notice.model.enquiry.EnquiryUnsuspendTenderDto;
+import com.procurement.notice.model.tender.UnsuspendTenderDto;
 import com.procurement.notice.model.entity.TenderEntity;
 import com.procurement.notice.model.ocds.Enquiry;
 import com.procurement.notice.model.tender.ReleaseTender;
@@ -21,16 +21,19 @@ import org.springframework.stereotype.Service;
 public class EnquiryServiceImpl implements EnquiryService {
 
     private static final String SEPARATOR = "-";
-    private static final String TENDER_NOT_FOUND_ERROR = "Tender not found.";
+    private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
     private static final String ENQUIRY_NOT_FOUND_ERROR = "Enquiry not found.";
     private static final String ENQUIRY_JSON = "enquiry";
+    private final TenderService tenderService;
     private final TenderDao tenderDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
-    public EnquiryServiceImpl(final TenderDao tenderDao,
+    public EnquiryServiceImpl(final TenderService tenderService,
+                              final TenderDao tenderDao,
                               final JsonUtil jsonUtil,
                               final DateUtil dateUtil) {
+        this.tenderService = tenderService;
         this.tenderDao = tenderDao;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
@@ -41,13 +44,13 @@ public class EnquiryServiceImpl implements EnquiryService {
                                      final String stage,
                                      final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
-        addEnquiry(release, enquiry);
+        addEnquiryToTender(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        tenderDao.saveTender(getEntity(cpid, stage, release));
+        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -56,38 +59,36 @@ public class EnquiryServiceImpl implements EnquiryService {
                                  final String stage,
                                  final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final Enquiry enquiry = jsonUtil.toObject(Enquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
-        addAnswer(release, enquiry);
+        addAnswerToEnquiry(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        tenderDao.saveTender(getEntity(cpid, stage, release));
+        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
     @Override
-    public ResponseDto enquiryUnsuspendTender(final String cpid,
-                                              final String stage,
-                                              final JsonNode data) {
+    public ResponseDto unsuspendTender(final String cpid,
+                                       final String stage,
+                                       final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(TENDER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
-        final EnquiryUnsuspendTenderDto dto = jsonUtil.toObject(EnquiryUnsuspendTenderDto.class, jsonUtil.toJson(data));
+        final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));
         final Enquiry enquiry = dto.getEnquiry();
-        addAnswer(release, enquiry);
+        addAnswerToEnquiry(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        release.getTender().setStatus(dto.getTender().getStatus());
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         release.getTender().setTenderPeriod(dto.getTenderPeriod());
         release.getTender().setEnquiryPeriod(dto.getEnquiryPeriod());
-        tenderDao.saveTender(getEntity(cpid, stage, release));
+        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
-
-    private void addEnquiry(final ReleaseTender release, final Enquiry enquiry) {
+    private void addEnquiryToTender(final ReleaseTender release, final Enquiry enquiry) {
         List<Enquiry> enquiries = release.getTender().getEnquiries();
         if (Objects.isNull(enquiries)) {
             enquiries = new ArrayList<>();
@@ -101,7 +102,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         }
     }
 
-    private void addAnswer(final ReleaseTender release, final Enquiry enquiry) {
+    private void addAnswerToEnquiry(final ReleaseTender release, final Enquiry enquiry) {
         final List<Enquiry> enquiries = release.getTender().getEnquiries();
         final Optional<Enquiry> enquiryOptional = enquiries.stream()
                 .filter(e -> e.getId().equals(enquiry.getId()))
@@ -113,19 +114,6 @@ public class EnquiryServiceImpl implements EnquiryService {
         } else {
             throw new ErrorException(ENQUIRY_NOT_FOUND_ERROR);
         }
-    }
-
-    private TenderEntity getEntity(final String cpId,
-                                   final String stage,
-                                   final ReleaseTender release) {
-        final TenderEntity releaseEntity = new TenderEntity();
-        releaseEntity.setCpId(cpId);
-        releaseEntity.setStage(stage);
-        releaseEntity.setOcId(release.getOcid());
-        releaseEntity.setJsonData(jsonUtil.toJson(release));
-        releaseEntity.setReleaseId(release.getId());
-        releaseEntity.setReleaseDate(dateUtil.localToDate(release.getDate()));
-        return releaseEntity;
     }
 
     private String getReleaseId(final String ocId) {

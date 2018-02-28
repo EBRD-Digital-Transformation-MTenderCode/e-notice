@@ -1,4 +1,4 @@
-package com.procurement.notice.model.enquiry;
+package com.procurement.notice.model.tender;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ import lombok.NonNull;
         "tenderPeriod",
         "enquiryPeriod"
 })
-public class EnquiryUnsuspendTenderDto {
+public class UnsuspendTenderDto {
 
     @JsonProperty("enquiry")
     @NonNull
@@ -33,10 +33,10 @@ public class EnquiryUnsuspendTenderDto {
     private final Period enquiryPeriod;
 
     @JsonCreator
-    public EnquiryUnsuspendTenderDto(@JsonProperty("enquiry") final Enquiry enquiry,
-                                     @JsonProperty("tender") final Tender tender,
-                                     @JsonProperty("tenderPeriod") final Period tenderPeriod,
-                                     @JsonProperty("enquiryPeriod") final Period enquiryPeriod) {
+    public UnsuspendTenderDto(@JsonProperty("enquiry") final Enquiry enquiry,
+                              @JsonProperty("tender") final Tender tender,
+                              @JsonProperty("tenderPeriod") final Period tenderPeriod,
+                              @JsonProperty("enquiryPeriod") final Period enquiryPeriod) {
         this.enquiry = enquiry;
         this.tender = tender;
         this.tenderPeriod = tenderPeriod;

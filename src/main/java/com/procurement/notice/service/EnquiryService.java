@@ -16,7 +16,7 @@ public interface EnquiryService {
                           String stage,
                           JsonNode data);
 
-    ResponseDto enquiryUnsuspendTender(String cpid,
-                                       String stage,
-                                       JsonNode data);
+    ResponseDto unsuspendTender(String cpid,
+                                String stage,
+                                JsonNode data);
 }
