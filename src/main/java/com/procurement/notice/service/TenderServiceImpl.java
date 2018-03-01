@@ -8,15 +8,10 @@ import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.TenderEntity;
 import com.procurement.notice.model.ocds.*;
-import com.procurement.notice.model.tender.ReleaseMS;
-import com.procurement.notice.model.tender.ReleaseTender;
-import com.procurement.notice.model.tender.SuspendTenderDto;
-import com.procurement.notice.model.tender.TenderPeriodEndDto;
+import com.procurement.notice.model.tender.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
+import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +19,8 @@ public class TenderServiceImpl implements TenderService {
 
     private static final String SEPARATOR = "-";
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
+    private static final String AWARD_NOT_FOUND_ERROR = "Award not found by stage: ";
+    private static final String BID_NOT_FOUND_ERROR = "Bid not found by stage: ";
     private final TenderDao tenderDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
@@ -122,12 +119,12 @@ public class TenderServiceImpl implements TenderService {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
-        final TenderPeriodEndDto updateDto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
+        final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
-        release.setDate(updateDto.getAwardPeriod().getStartDate());
+        release.setDate(dto.getAwardPeriod().getStartDate());
         release.setTag(Arrays.asList(Tag.AWARD));
-        release.setAwards(new LinkedHashSet<>(updateDto.getAwards()));
-        release.setBids(new Bids(null, updateDto.getBids()));
+        release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
@@ -145,6 +142,51 @@ public class TenderServiceImpl implements TenderService {
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
+    }
+
+    @Override
+    public ResponseDto awardByBid(final String cpid,
+                                  final String stage,
+                                  final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
+        release.setDate(dateUtil.getNowUTC());
+        release.setId(getReleaseId(release.getOcid()));
+        updateAward(release, dto.getAward());
+        updateBid(release, dto.getBid());
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
+    }
+
+    private void updateAward(final ReleaseTender release, final Award award) {
+        final Set<Award> awards = release.getAwards();
+        final Optional<Award> awardOptional = awards.stream()
+                .filter(a -> a.getId().equals(award.getId()))
+                .findFirst();
+        if (awardOptional.isPresent()) {
+            final Award updatableAward = awardOptional.get();
+            updatableAward.setDocuments(award.getDocuments());
+            release.setAwards(awards);
+        } else {
+            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
+        }
+    }
+
+    private void updateBid(final ReleaseTender release, final Bid bid) {
+        final List<Bid> bids = release.getBids().getDetails();
+        final Optional<Bid> bidOptional = bids.stream()
+                .filter(b -> b.getId().equals(bid.getId()))
+                .findFirst();
+        if (bidOptional.isPresent()) {
+            final Bid updatableBid = bidOptional.get();
+            updatableBid.setStatus(bid.getStatus());
+            updatableBid.setStatusDetails(bid.getStatusDetails());
+            release.getBids().setDetails(bids);
+        } else {
+            throw new ErrorException(BID_NOT_FOUND_ERROR);
+        }
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {

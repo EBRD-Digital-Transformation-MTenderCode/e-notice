@@ -62,6 +62,8 @@ public class MainServiceImpl implements MainService {
                 return tenderService.tenderPeriodEnd(cpId, stage, data);
             case SUSPEND_TENDER:
                 return tenderService.suspendTender(cpId, stage, data);
+            case AWARD_BY_BID:
+                return tenderService.awardByBid(cpId, stage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -80,7 +82,8 @@ public class MainServiceImpl implements MainService {
         ADD_ANSWER("addAnswer"),
         UNSUSPEND_TENDER("unsuspendTender"),
         TENDER_PERIOD_END("tenderPeriodEnd"),
-        SUSPEND_TENDER("suspendTender"),;
+        SUSPEND_TENDER("suspendTender"),
+        AWARD_BY_BID("awardByBid");
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 

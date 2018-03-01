@@ -11,20 +11,23 @@ import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "date",
-    "status",
-    "tenderers",
-    "value",
-    "documents",
-    "relatedLots",
-    "requirementResponses"
+        "id",
+        "date",
+        "status",
+        "statusDetails",
+        "tenderers",
+        "value",
+        "documents",
+        "relatedLots",
+        "requirementResponses"
 })
 public class Bid {
     @JsonProperty("id")
@@ -39,11 +42,14 @@ public class Bid {
 
     @JsonProperty("status")
     @JsonPropertyDescription("The status of the bid, drawn from the bidStatus codelist")
-    private final Status status;
+    private Status status;
+
+    @JsonProperty("statusDetails")
+    private StatusDetails statusDetails;
 
     @JsonProperty("tenderers")
     @JsonPropertyDescription("The party, or parties, responsible for this bid. This should provide a name and " +
-        "identifier, cross-referenced to an entry in the parties array at the top level of the release.")
+            "identifier, cross-referenced to an entry in the parties array at the top level of the release.")
     private final List<OrganizationReference> tenderers;
 
     @JsonProperty("value")
@@ -58,7 +64,7 @@ public class Bid {
 
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("If this bid relates to one or more specific lots, provide the identifier(s) of the " +
-        "related lot(s) here.")
+            "related lot(s) here.")
     private final List<String> relatedLots;
 
     @JsonProperty("requirementResponses")
@@ -69,6 +75,7 @@ public class Bid {
     public Bid(@JsonProperty("id") final String id,
                @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
                @JsonProperty("status") final Status status,
+               @JsonProperty("statusDetails") final StatusDetails statusDetails,
                @JsonProperty("tenderers") final List<OrganizationReference> tenderers,
                @JsonProperty("value") final Value value,
                @JsonProperty("documents") final LinkedHashSet<Document> documents,
@@ -77,6 +84,7 @@ public class Bid {
         this.id = id;
         this.date = date;
         this.status = status;
+        this.statusDetails = statusDetails;
         this.tenderers = tenderers;
         this.value = value;
         this.documents = documents;
@@ -87,14 +95,15 @@ public class Bid {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(date)
-                                    .append(status)
-                                    .append(tenderers)
-                                    .append(value)
-                                    .append(documents)
-                                    .append(relatedLots)
-                                    .append(requirementResponses)
-                                    .toHashCode();
+                .append(date)
+                .append(status)
+                .append(statusDetails)
+                .append(tenderers)
+                .append(value)
+                .append(documents)
+                .append(relatedLots)
+                .append(requirementResponses)
+                .toHashCode();
     }
 
     @Override
@@ -107,14 +116,15 @@ public class Bid {
         }
         final Bid rhs = (Bid) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(date, rhs.date)
-                                  .append(status, rhs.status)
-                                  .append(tenderers, rhs.tenderers)
-                                  .append(value, rhs.value)
-                                  .append(documents, rhs.documents)
-                                  .append(relatedLots, rhs.relatedLots)
-                                  .append(requirementResponses, rhs.requirementResponses)
-                                  .isEquals();
+                .append(date, rhs.date)
+                .append(status, rhs.status)
+                .append(statusDetails, rhs.statusDetails)
+                .append(tenderers, rhs.tenderers)
+                .append(value, rhs.value)
+                .append(documents, rhs.documents)
+                .append(relatedLots, rhs.relatedLots)
+                .append(requirementResponses, rhs.requirementResponses)
+                .isEquals();
     }
 
     public enum Status {
@@ -124,8 +134,8 @@ public class Bid {
         DISQUALIFIED("disqualified"),
         WITHDRAWN("withdrawn");
 
+        private static final Map<String, Status> CONSTANTS = new HashMap<>();
         private final String value;
-        private final static Map<String, Status> CONSTANTS = new HashMap<>();
 
         static {
             for (final Status c : values()) {
@@ -133,7 +143,7 @@ public class Bid {
             }
         }
 
-        private Status(final String value) {
+        Status(final String value) {
             this.value = value;
         }
 
@@ -151,7 +161,46 @@ public class Bid {
         public static Status fromValue(final String value) {
             final Status constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new IllegalArgumentException(
+                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
+            }
+            return constant;
+        }
+    }
+
+    public enum StatusDetails {
+        VALID("valid"),
+        DISQUALIFIED("disqualified");
+
+        private static final Map<String, StatusDetails> CONSTANTS = new HashMap<String, StatusDetails>();
+        private final String value;
+
+        static {
+            for (final StatusDetails c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        StatusDetails(final String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
+        }
+
+        @JsonCreator
+        public static StatusDetails fromValue(final String value) {
+            final StatusDetails constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(
+                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
             }
             return constant;
         }

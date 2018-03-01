@@ -12,10 +12,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -98,7 +100,7 @@ public class Award {
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("All documents and attachments related to the award, including any notices.")
     @Valid
-    private final Set<Document> documents;
+    private Set<Document> documents;
 
     @JsonProperty("amendments")
     @JsonPropertyDescription("An award amendment is a formal change to the details of the award, and generally " +
