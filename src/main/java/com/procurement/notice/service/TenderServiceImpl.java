@@ -12,6 +12,7 @@ import com.procurement.notice.model.tender.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,7 @@ public class TenderServiceImpl implements TenderService {
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
     private static final String AWARD_NOT_FOUND_ERROR = "Award not found by stage: ";
     private static final String BID_NOT_FOUND_ERROR = "Bid not found by stage: ";
+    private static final String LOTS_NOT_FOUND_ERROR = "Lots not found by stage: ";
     private final TenderDao tenderDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
@@ -188,6 +190,31 @@ public class TenderServiceImpl implements TenderService {
             throw new ErrorException(BID_NOT_FOUND_ERROR);
         }
     }
+
+    @Override
+    public ResponseDto endAwarding(final String cpid, final String stage, final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final EndAwardingDto dto = jsonUtil.toObject(EndAwardingDto.class, jsonUtil.toJson(data));
+        release.setDate(dto.getStandstillPeriod().getStartDate());
+        release.setId(getReleaseId(release.getOcid()));
+        release.getTender().setStandstillPeriod(dto.getStandstillPeriod());
+        updateLots(release, dto.getLots());
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
+    }
+
+    private void updateLots(final ReleaseTender release, final List<Lot> lotsDto) {
+        final List<Lot> lots = release.getTender().getLots();
+        if (lots.isEmpty()) throw new ErrorException(LOTS_NOT_FOUND_ERROR);
+        final Map<String, Lot> updatableLots = new HashMap<>();
+        lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
+        lotsDto.forEach(lotDto -> updatableLots .get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
+        final List<Lot> updatedLots = updatableLots.values().stream().collect(Collectors.toList());
+        release.getTender().setLots(updatedLots);
+    }
+
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
         final ObjectNode jsonForResponse = jsonUtil.createObjectNode();

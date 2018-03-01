@@ -29,5 +29,10 @@ public interface TenderService {
                            String stage,
                            JsonNode data);
 
+    ResponseDto endAwarding(String cpid,
+                            String stage,
+                            JsonNode data);
+
+
 }
 
