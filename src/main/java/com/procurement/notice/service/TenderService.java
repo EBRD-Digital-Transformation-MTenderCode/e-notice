@@ -33,6 +33,9 @@ public interface TenderService {
                             String stage,
                             JsonNode data);
 
+    ResponseDto standstillPeriodEnd(String cpid,
+                                    String stage,
+                                    JsonNode data);
 
 }
 

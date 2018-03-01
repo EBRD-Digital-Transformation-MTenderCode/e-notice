@@ -215,6 +215,21 @@ public class TenderServiceImpl implements TenderService {
         release.getTender().setLots(updatedLots);
     }
 
+    @Override
+    public ResponseDto standstillPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, data.toString());
+        release.setId(getReleaseId(release.getOcid()));
+        release.setDate(dateUtil.getNowUTC());
+        release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        release.getTender().setAwardPeriod(dto.getAwardPeriod());
+        release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        release.setBids(new Bids(null, dto.getBids()));
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
+    }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
         final ObjectNode jsonForResponse = jsonUtil.createObjectNode();

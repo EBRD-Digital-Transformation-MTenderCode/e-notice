@@ -216,7 +216,7 @@ public class Tender {
 
     @JsonProperty("awardPeriod")
     @Valid
-    private final Period awardPeriod;
+    private Period awardPeriod;
 
     @JsonProperty("contractPeriod")
     @Valid
