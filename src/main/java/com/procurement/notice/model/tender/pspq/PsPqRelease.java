@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender.record;
+package com.procurement.notice.model.tender.pspq;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,7 +31,7 @@ import lombok.Setter;
         "awards",
         "relatedProcesses"
 })
-public class TenderRelease {
+public class PsPqRelease {
     @JsonProperty("ocid")
     private String ocid;
     @JsonProperty("id")
@@ -52,7 +52,7 @@ public class TenderRelease {
     @JsonProperty("purposeOfNotice")
     private final PurposeOfNotice purposeOfNotice;
     @JsonProperty("tender")
-    private final Tender tender;
+    private final PsPqTender tender;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<Organization> parties;
@@ -67,19 +67,19 @@ public class TenderRelease {
 
 
     @JsonCreator
-    public TenderRelease(@JsonProperty("ocid") final String ocid,
-                         @JsonProperty("id") final String id,
-                         @JsonProperty("date") final LocalDateTime date,
-                         @JsonProperty("tag") final List<Tag> tag,
-                         @JsonProperty("initiationType") final InitiationType initiationType,
-                         @JsonProperty("language") final String language,
-                         @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                         @JsonProperty("tender") final Tender tender,
-                         @JsonProperty("awards") final LinkedHashSet<Award> awards,
-                         @JsonProperty("bids") final Bids bids,
-                         @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
-                         @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
-                         @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+    public PsPqRelease(@JsonProperty("ocid") final String ocid,
+                       @JsonProperty("id") final String id,
+                       @JsonProperty("date") final LocalDateTime date,
+                       @JsonProperty("tag") final List<Tag> tag,
+                       @JsonProperty("initiationType") final InitiationType initiationType,
+                       @JsonProperty("language") final String language,
+                       @JsonProperty("parties") final LinkedHashSet<Organization> parties,
+                       @JsonProperty("tender") final PsPqTender tender,
+                       @JsonProperty("awards") final LinkedHashSet<Award> awards,
+                       @JsonProperty("bids") final Bids bids,
+                       @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
+                       @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
+                       @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

@@ -3,7 +3,7 @@ package com.procurement.notice.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.TenderEntity;
-import com.procurement.notice.model.tender.record.TenderRelease;
+import com.procurement.notice.model.tender.pspq.PsPqRelease;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,7 +11,7 @@ public interface TenderService {
 
     TenderEntity getTenderEntity(String cpId,
                                  String stage,
-                                 TenderRelease tender);
+                                 PsPqRelease tender);
 
     ResponseDto createCn(String cpid,
                          String stage,

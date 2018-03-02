@@ -7,6 +7,7 @@ import com.procurement.notice.model.ocds.Enquiry;
 import com.procurement.notice.model.ocds.Period;
 import com.procurement.notice.model.ocds.TenderStatus;
 import com.procurement.notice.model.ocds.TenderStatusDetails;
+import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -21,7 +22,7 @@ public class UnsuspendTenderDto {
 
     @JsonProperty("enquiry")
     @NonNull
-    private final Enquiry enquiry;
+    private final PsPqEnquiry enquiry;
     @JsonProperty("tender")
     @NonNull
     private final Tender tender;
@@ -33,7 +34,7 @@ public class UnsuspendTenderDto {
     private final Period enquiryPeriod;
 
     @JsonCreator
-    public UnsuspendTenderDto(@JsonProperty("enquiry") final Enquiry enquiry,
+    public UnsuspendTenderDto(@JsonProperty("enquiry") final PsPqEnquiry enquiry,
                               @JsonProperty("tender") final Tender tender,
                               @JsonProperty("tenderPeriod") final Period tenderPeriod,
                               @JsonProperty("enquiryPeriod") final Period enquiryPeriod) {

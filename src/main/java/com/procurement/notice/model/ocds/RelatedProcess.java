@@ -43,7 +43,7 @@ public class RelatedProcess {
     private final String identifier;
 
     @JsonProperty("uri")
-    @JsonPropertyDescription("A URI pointing to a machine-readable document, release or record package containing the" +
+    @JsonPropertyDescription("A URI pointing to a machine-readable document, release or pspq package containing the" +
         " identified related process.")
     private final String uri;
 
