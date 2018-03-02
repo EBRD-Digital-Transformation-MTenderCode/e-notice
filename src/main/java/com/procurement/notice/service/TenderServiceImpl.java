@@ -9,8 +9,8 @@ import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.TenderEntity;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.dto.*;
-import com.procurement.notice.model.tender.ms.ReleaseMS;
-import com.procurement.notice.model.tender.record.ReleaseTender;
+import com.procurement.notice.model.tender.ms.MsRelease;
+import com.procurement.notice.model.tender.record.TenderRelease;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.util.*;
@@ -40,7 +40,7 @@ public class TenderServiceImpl implements TenderService {
     @Override
     public TenderEntity getTenderEntity(final String cpId,
                                         final String stage,
-                                        final ReleaseTender tender) {
+                                        final TenderRelease tender) {
         final TenderEntity tenderEntity = new TenderEntity();
         tenderEntity.setCpId(cpId);
         tenderEntity.setStage(stage);
@@ -55,26 +55,24 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto createCn(final String cpid,
                                 final String stage,
                                 final JsonNode data) {
-        final ReleaseMS ms = jsonUtil.toObject(ReleaseMS.class, data.toString());
+        final MsRelease ms = jsonUtil.toObject(MsRelease.class, data.toString());
         ms.setOcid(cpid);
         ms.setId(getReleaseId(cpid));
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        final ReleaseTender tender = jsonUtil.toObject(ReleaseTender.class, data.toString());
+        final TenderRelease tender = jsonUtil.toObject(TenderRelease.class, data.toString());
         tender.setOcid(getOcId(cpid, stage));
         tender.setId(getReleaseId(tender.getOcid()));
         tender.setDate(ms.getDate());
         tender.setTag(Arrays.asList(Tag.COMPILED));
         tender.setInitiationType(InitiationType.TENDER);
         tender.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        tender.getPlanning().getBudget().setId(getId());
 
         ms.getRelatedProcesses().add(
                 new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Arrays.asList(RelatedProcess.RelatedProcessType.X_PRESELECTION),
-                        "",
                         RelatedProcess.RelatedProcessScheme.OCID,
                         tender.getOcid(),
                         "")
@@ -84,7 +82,6 @@ public class TenderServiceImpl implements TenderService {
                 new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
-                        "",
                         RelatedProcess.RelatedProcessScheme.OCID,
                         ms.getOcid(),
                         "")
@@ -107,7 +104,7 @@ public class TenderServiceImpl implements TenderService {
     }
 
     private TenderEntity getMSEntity(final String cpId,
-                                     final ReleaseMS ms) {
+                                     final MsRelease ms) {
         final TenderEntity msEntity = new TenderEntity();
         msEntity.setCpId(cpId);
         msEntity.setStage("ms");
@@ -122,7 +119,7 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderRelease release = jsonUtil.toObject(TenderRelease.class, entity.getJsonData());
         final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dto.getAwardPeriod().getStartDate());
@@ -139,7 +136,7 @@ public class TenderServiceImpl implements TenderService {
                                      final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR));
-        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderRelease release = jsonUtil.toObject(TenderRelease.class, entity.getJsonData());
         final SuspendTenderDto dto = jsonUtil.toObject(SuspendTenderDto.class, jsonUtil.toJson(data));
         release.setDate(dateUtil.getNowUTC());
         release.setId(getReleaseId(release.getOcid()));
@@ -154,7 +151,7 @@ public class TenderServiceImpl implements TenderService {
                                   final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderRelease release = jsonUtil.toObject(TenderRelease.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
         release.setDate(dateUtil.getNowUTC());
         release.setId(getReleaseId(release.getOcid()));
@@ -164,7 +161,7 @@ public class TenderServiceImpl implements TenderService {
         return getResponseDto(cpid, release.getOcid());
     }
 
-    private void updateAward(final ReleaseTender release, final Award award) {
+    private void updateAward(final TenderRelease release, final Award award) {
         final Set<Award> awards = release.getAwards();
         final Optional<Award> awardOptional = awards.stream()
                 .filter(a -> a.getId().equals(award.getId()))
@@ -178,7 +175,7 @@ public class TenderServiceImpl implements TenderService {
         }
     }
 
-    private void updateBid(final ReleaseTender release, final Bid bid) {
+    private void updateBid(final TenderRelease release, final Bid bid) {
         final List<Bid> bids = release.getBids().getDetails();
         final Optional<Bid> bidOptional = bids.stream()
                 .filter(b -> b.getId().equals(bid.getId()))
@@ -197,7 +194,7 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto endAwarding(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderRelease release = jsonUtil.toObject(TenderRelease.class, entity.getJsonData());
         final EndAwardingDto dto = jsonUtil.toObject(EndAwardingDto.class, jsonUtil.toJson(data));
         release.setDate(dto.getStandstillPeriod().getStartDate());
         release.setId(getReleaseId(release.getOcid()));
@@ -207,7 +204,7 @@ public class TenderServiceImpl implements TenderService {
         return getResponseDto(cpid, release.getOcid());
     }
 
-    private void updateLots(final ReleaseTender release, final List<Lot> lotsDto) {
+    private void updateLots(final TenderRelease release, final List<Lot> lotsDto) {
         final List<Lot> lots = release.getTender().getLots();
         if (lots.isEmpty()) throw new ErrorException(LOTS_NOT_FOUND_ERROR);
         final Map<String, Lot> updatableLots = new HashMap<>();
@@ -221,7 +218,7 @@ public class TenderServiceImpl implements TenderService {
     public ResponseDto standstillPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final ReleaseTender release = jsonUtil.toObject(ReleaseTender.class, entity.getJsonData());
+        final TenderRelease release = jsonUtil.toObject(TenderRelease.class, entity.getJsonData());
         final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dateUtil.getNowUTC());

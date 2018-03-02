@@ -22,20 +22,16 @@ import lombok.Setter;
         "date",
         "tag",
         "initiationType",
-        "title",
-        "description",
         "language",
         "hasPreviousNotice",
         "purposeOfNotice",
-        "planning",
         "tender",
         "parties",
-        "buyer",
         "bids",
         "awards",
         "relatedProcesses"
 })
-public class ReleaseTender {
+public class TenderRelease {
     @JsonProperty("ocid")
     private String ocid;
     @JsonProperty("id")
@@ -49,26 +45,17 @@ public class ReleaseTender {
     private List<Tag> tag;
     @JsonProperty("initiationType")
     private InitiationType initiationType;
-    @JsonProperty("title")
-    @JsonPropertyDescription("A overall title for this contracting process or release.")
-    private final String title;
-    @JsonProperty("description")
-    private final String description;
     @JsonProperty("language")
     private String language;
     @JsonProperty("hasPreviousNotice")
     private final Boolean hasPreviousNotice;
     @JsonProperty("purposeOfNotice")
     private final PurposeOfNotice purposeOfNotice;
-    @JsonProperty("planning")
-    private final Planning planning;
     @JsonProperty("tender")
     private final Tender tender;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<Organization> parties;
-    @JsonProperty("buyer")
-    private final OrganizationReference buyer;
     @JsonProperty("bids")
     private Bids bids;
     @JsonProperty("awards")
@@ -80,18 +67,14 @@ public class ReleaseTender {
 
 
     @JsonCreator
-    public ReleaseTender(@JsonProperty("ocid") final String ocid,
+    public TenderRelease(@JsonProperty("ocid") final String ocid,
                          @JsonProperty("id") final String id,
                          @JsonProperty("date") final LocalDateTime date,
                          @JsonProperty("tag") final List<Tag> tag,
                          @JsonProperty("initiationType") final InitiationType initiationType,
-                         @JsonProperty("title") final String title,
-                         @JsonProperty("description") final String description,
                          @JsonProperty("language") final String language,
                          @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                         @JsonProperty("planning") final Planning planning,
                          @JsonProperty("tender") final Tender tender,
-                         @JsonProperty("buyer") final OrganizationReference buyer,
                          @JsonProperty("awards") final LinkedHashSet<Award> awards,
                          @JsonProperty("bids") final Bids bids,
                          @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
@@ -102,12 +85,8 @@ public class ReleaseTender {
         this.date = date;
         this.tag = tag;
         this.initiationType = initiationType;
-        this.title = title;
-        this.description = description;
         this.parties = parties;
-        this.planning = planning;
         this.tender = tender;
-        this.buyer = buyer;
         this.awards = awards;
         this.language = language == null ? "en" : language;
         this.bids = bids;

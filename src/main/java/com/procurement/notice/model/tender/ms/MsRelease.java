@@ -22,8 +22,6 @@ import lombok.Setter;
         "date",
         "tag",
         "initiationType",
-        "title",
-        "description",
         "language",
         "planning",
         "tender",
@@ -31,7 +29,7 @@ import lombok.Setter;
         "buyer",
         "relatedProcesses"
 })
-public class ReleaseMS {
+public class MsRelease {
     @JsonProperty("ocid")
     private String ocid;
     @JsonProperty("id")
@@ -44,11 +42,6 @@ public class ReleaseMS {
     private List<Tag> tag;
     @JsonProperty("initiationType")
     private InitiationType initiationType;
-    @JsonProperty("title")
-    @JsonPropertyDescription("A overall title for this contracting process or release.")
-    private final String title;
-    @JsonProperty("description")
-    private final String description;
     @JsonProperty("language")
     private String language;
     @JsonProperty("planning")
@@ -65,13 +58,11 @@ public class ReleaseMS {
     private final Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
-    public ReleaseMS(@JsonProperty("ocid") final String ocid,
+    public MsRelease(@JsonProperty("ocid") final String ocid,
                      @JsonProperty("id") final String id,
                      @JsonProperty("date") final LocalDateTime date,
                      @JsonProperty("tag") final List<Tag> tag,
                      @JsonProperty("initiationType") final InitiationType initiationType,
-                     @JsonProperty("title") final String title,
-                     @JsonProperty("description") final String description,
                      @JsonProperty("language") final String language,
                      @JsonProperty("planning") final Planning planning,
                      @JsonProperty("tender") final MsTender tender,
@@ -83,8 +74,6 @@ public class ReleaseMS {
         this.date = date;
         this.tag = tag;
         this.initiationType = initiationType;
-        this.title = title;
-        this.description = description;
         this.language = language == null ? "en" : language;
         this.planning = planning;
         this.tender = tender;

@@ -162,7 +162,6 @@ public class BudgetServiceImpl implements BudgetService {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
                 Arrays.asList(RelatedProcess.RelatedProcessType.X_FINANCE_SOURCE),
-                "",
                 RelatedProcess.RelatedProcessScheme.OCID,
                 fsOcId,
                 ""
@@ -174,7 +173,6 @@ public class BudgetServiceImpl implements BudgetService {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
                 Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
-                "",
                 RelatedProcess.RelatedProcessScheme.OCID,
                 eiOcId,
                 ""
