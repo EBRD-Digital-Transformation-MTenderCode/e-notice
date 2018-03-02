@@ -3,7 +3,7 @@ package com.procurement.notice.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.TenderEntity;
-import com.procurement.notice.model.tender.ReleaseTender;
+import com.procurement.notice.model.tender.record.ReleaseTender;
 import org.springframework.stereotype.Service;
 
 @Service

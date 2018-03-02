@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender;
+package com.procurement.notice.model.tender.ms;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -25,7 +25,10 @@ import lombok.Setter;
         "title",
         "description",
         "language",
+        "planning",
         "tender",
+        "parties",
+        "buyer",
         "relatedProcesses"
 })
 public class ReleaseMS {
@@ -48,8 +51,15 @@ public class ReleaseMS {
     private final String description;
     @JsonProperty("language")
     private String language;
+    @JsonProperty("planning")
+    private final Planning planning;
     @JsonProperty("tender")
-    private final Tender tender;
+    private final MsTender tender;
+    @JsonProperty("parties")
+    @JsonDeserialize(as = LinkedHashSet.class)
+    private final Set<Organization> parties;
+    @JsonProperty("buyer")
+    private final OrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<RelatedProcess> relatedProcesses;
@@ -62,8 +72,11 @@ public class ReleaseMS {
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("title") final String title,
                      @JsonProperty("description") final String description,
-                     @JsonProperty("tender") final Tender tender,
                      @JsonProperty("language") final String language,
+                     @JsonProperty("planning") final Planning planning,
+                     @JsonProperty("tender") final MsTender tender,
+                     @JsonProperty("parties") final LinkedHashSet<Organization> parties,
+                     @JsonProperty("buyer") final OrganizationReference buyer,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
@@ -73,7 +86,10 @@ public class ReleaseMS {
         this.title = title;
         this.description = description;
         this.language = language == null ? "en" : language;
+        this.planning = planning;
         this.tender = tender;
+        this.parties = parties;
+        this.buyer = buyer;
         this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
     }
 }

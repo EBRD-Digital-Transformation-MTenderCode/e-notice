@@ -16,7 +16,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @JsonPropertyOrder({
     "id",
     "relationship",
-    "title",
     "scheme",
     "identifier",
     "uri"
@@ -31,11 +30,6 @@ public class RelatedProcess {
     @JsonPropertyDescription("Specify the type of relationship using the [related process codelist](http://standard" +
         ".open-contracting.org/latest/en/schema/codelists/#related-process).")
     private final List<RelatedProcessType> relationship;
-
-    @JsonProperty("title")
-    @JsonPropertyDescription("The title of the related process, where referencing an open contracting process, this " +
-        "field should match the tender/title field in the related process.")
-    private final String title;
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("The identification scheme used by this cross-reference from the [related process scheme" +
@@ -56,13 +50,11 @@ public class RelatedProcess {
     @JsonCreator
     public RelatedProcess(@JsonProperty("id") final String id,
                           @JsonProperty("relationship") final List<RelatedProcessType> relationship,
-                          @JsonProperty("title") final String title,
                           @JsonProperty("scheme") final RelatedProcessScheme scheme,
                           @JsonProperty("identifier") final String identifier,
                           @JsonProperty("uri") final String uri) {
         this.id = id;
         this.relationship = relationship;
-        this.title = title;
         this.scheme = scheme;
         this.identifier = identifier;
         this.uri = uri;
@@ -72,7 +64,6 @@ public class RelatedProcess {
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(relationship)
-                                    .append(title)
                                     .append(scheme)
                                     .append(identifier)
                                     .append(uri)
@@ -90,7 +81,6 @@ public class RelatedProcess {
         final RelatedProcess rhs = (RelatedProcess) other;
         return new EqualsBuilder().append(id, rhs.id)
                                   .append(relationship, rhs.relationship)
-                                  .append(title, rhs.title)
                                   .append(scheme, rhs.scheme)
                                   .append(identifier, rhs.identifier)
                                   .append(uri, rhs.uri)

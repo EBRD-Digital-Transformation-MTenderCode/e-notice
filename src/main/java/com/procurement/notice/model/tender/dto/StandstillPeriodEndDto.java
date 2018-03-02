@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender;
+package com.procurement.notice.model.tender.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender;
+package com.procurement.notice.model.tender.record;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
