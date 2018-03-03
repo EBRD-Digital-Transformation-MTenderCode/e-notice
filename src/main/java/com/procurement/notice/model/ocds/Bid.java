@@ -38,7 +38,7 @@ public class Bid {
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date when this bid was received.")
-    private final LocalDateTime date;
+    private LocalDateTime date;
 
     @JsonProperty("status")
     @JsonPropertyDescription("The status of the bid, drawn from the bidStatus codelist")

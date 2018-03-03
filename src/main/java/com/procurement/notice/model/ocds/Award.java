@@ -53,17 +53,17 @@ public class Award {
 
     @JsonProperty("description")
     @JsonPropertyDescription("Award description")
-    private final String description;
+    private String description;
 
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the award drawn from the [awardStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#award-status)")
-    private final Status status;
+    private Status status;
 
 
     @JsonProperty("statusDetails")
     @JsonPropertyDescription("Additional details of an award status.")
-    private final Status statusDetails;
+    private Status statusDetails;
 
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -149,7 +149,6 @@ public class Award {
                  @JsonProperty("relatedLots") final List<String> relatedLots,
                  @JsonProperty("requirementResponses") final LinkedHashSet<RequirementResponse> requirementResponses,
                  @JsonProperty("reviewProceedings") final ReviewProceedings reviewProceedings,
-                 @JsonProperty("statusDetails") final String statusDetails,
                  @JsonProperty("relatedBid") final String relatedBid) {
         this.id = id;
         this.title = title;

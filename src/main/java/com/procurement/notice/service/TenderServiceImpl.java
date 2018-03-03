@@ -91,26 +91,6 @@ public class TenderServiceImpl implements TenderService {
         return getResponseDto(ms.getOcid(), tender.getOcid());
     }
 
-    private String getOcId(final String cpId, final String stage) {
-        return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
-    }
-
-    private String getReleaseId(final String ocId) {
-        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
-    }
-
-    private TenderEntity getMSEntity(final String cpId,
-                                     final MsRelease ms) {
-        final TenderEntity msEntity = new TenderEntity();
-        msEntity.setCpId(cpId);
-        msEntity.setStage("ms");
-        msEntity.setOcId(ms.getOcid());
-        msEntity.setJsonData(jsonUtil.toJson(ms));
-        msEntity.setReleaseId(ms.getId());
-        msEntity.setReleaseDate(dateUtil.localToDate(ms.getDate()));
-        return msEntity;
-    }
-
     @Override
     public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
@@ -157,35 +137,6 @@ public class TenderServiceImpl implements TenderService {
         return getResponseDto(cpid, release.getOcid());
     }
 
-    private void updateAward(final PsPqRelease release, final Award award) {
-        final Set<Award> awards = release.getAwards();
-        final Optional<Award> awardOptional = awards.stream()
-                .filter(a -> a.getId().equals(award.getId()))
-                .findFirst();
-        if (awardOptional.isPresent()) {
-            final Award updatableAward = awardOptional.get();
-            updatableAward.setDocuments(award.getDocuments());
-            release.setAwards(awards);
-        } else {
-            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
-        }
-    }
-
-    private void updateBid(final PsPqRelease release, final Bid bid) {
-        final List<Bid> bids = release.getBids().getDetails();
-        final Optional<Bid> bidOptional = bids.stream()
-                .filter(b -> b.getId().equals(bid.getId()))
-                .findFirst();
-        if (bidOptional.isPresent()) {
-            final Bid updatableBid = bidOptional.get();
-            updatableBid.setStatus(bid.getStatus());
-            updatableBid.setStatusDetails(bid.getStatusDetails());
-            release.getBids().setDetails(bids);
-        } else {
-            throw new ErrorException(BID_NOT_FOUND_ERROR);
-        }
-    }
-
     @Override
     public ResponseDto endAwarding(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
@@ -198,16 +149,6 @@ public class TenderServiceImpl implements TenderService {
         updateLots(release, dto.getLots());
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
-    }
-
-    private void updateLots(final PsPqRelease release, final List<Lot> lotsDto) {
-        final List<Lot> lots = release.getTender().getLots();
-        if (lots.isEmpty()) throw new ErrorException(LOTS_NOT_FOUND_ERROR);
-        final Map<String, Lot> updatableLots = new HashMap<>();
-        lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
-        lotsDto.forEach(lotDto -> updatableLots .get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
-        final List<Lot> updatedLots = updatableLots.values().stream().collect(Collectors.toList());
-        release.getTender().setLots(updatedLots);
     }
 
     @Override
@@ -223,6 +164,72 @@ public class TenderServiceImpl implements TenderService {
         release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
+    }
+
+    private String getOcId(final String cpId, final String stage) {
+        return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
+    }
+
+    private String getReleaseId(final String ocId) {
+        return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
+    }
+
+    private TenderEntity getMSEntity(final String cpId,
+                                     final MsRelease ms) {
+        final TenderEntity msEntity = new TenderEntity();
+        msEntity.setCpId(cpId);
+        msEntity.setStage("ms");
+        msEntity.setOcId(ms.getOcid());
+        msEntity.setJsonData(jsonUtil.toJson(ms));
+        msEntity.setReleaseId(ms.getId());
+        msEntity.setReleaseDate(dateUtil.localToDate(ms.getDate()));
+        return msEntity;
+    }
+
+    private void updateAward(final PsPqRelease release, final Award award) {
+        final Set<Award> awards = release.getAwards();
+        final Optional<Award> awardOptional = awards.stream()
+                .filter(a -> a.getId().equals(award.getId()))
+                .findFirst();
+        if (awardOptional.isPresent()) {
+            final Award updatableAward = awardOptional.get();
+            if (Objects.nonNull(award.getDescription()))
+                updatableAward.setDescription(award.getDescription());
+            if (Objects.nonNull(award.getStatusDetails()))
+                updatableAward.setStatusDetails(award.getStatusDetails());
+            if (Objects.nonNull(award.getDocuments()))
+                updatableAward.setDocuments(award.getDocuments());
+            release.setAwards(awards);
+        } else {
+            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
+        }
+    }
+
+    private void updateBid(final PsPqRelease release, final Bid bid) {
+        final List<Bid> bids = release.getBids().getDetails();
+        final Optional<Bid> bidOptional = bids.stream()
+                .filter(b -> b.getId().equals(bid.getId()))
+                .findFirst();
+        if (bidOptional.isPresent()) {
+            final Bid updatableBid = bidOptional.get();
+            if (Objects.nonNull(bid.getDate()))
+                updatableBid.setDate(bid.getDate());
+            if (Objects.nonNull(bid.getStatusDetails()))
+                updatableBid.setStatusDetails(bid.getStatusDetails());
+            release.getBids().setDetails(bids);
+        } else {
+            throw new ErrorException(BID_NOT_FOUND_ERROR);
+        }
+    }
+
+    private void updateLots(final PsPqRelease release, final List<Lot> lotsDto) {
+        final List<Lot> lots = release.getTender().getLots();
+        if (lots.isEmpty()) throw new ErrorException(LOTS_NOT_FOUND_ERROR);
+        final Map<String, Lot> updatableLots = new HashMap<>();
+        lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
+        lotsDto.forEach(lotDto -> updatableLots.get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
+        final List<Lot> updatedLots = updatableLots.values().stream().collect(Collectors.toList());
+        release.getTender().setLots(updatedLots);
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
