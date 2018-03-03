@@ -24,6 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "title",
         "description",
         "status",
+        "statusDetails",
         "date",
         "value",
         "suppliers",
@@ -34,8 +35,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "amendment",
         "relatedLots",
         "requirementResponses",
-        "reviewProceedings",
-        "statusDetails"
+        "reviewProceedings"
 })
 public class Award {
     @JsonProperty("id")
@@ -49,23 +49,21 @@ public class Award {
 
     @JsonProperty("title")
     @JsonPropertyDescription("Award title")
-//    @Pattern(regexp = "^(title_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-" +
-//            "([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//            "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String title;
 
     @JsonProperty("description")
     @JsonPropertyDescription("Award description")
-//    @Pattern(regexp = "^(description_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5," +
-//            "8})(-([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-" +
-//            "([0-9A-WY-Za-wy-z]" +
-//            "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String description;
 
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the award drawn from the [awardStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#award-status)")
     private final Status status;
+
+
+    @JsonProperty("statusDetails")
+    @JsonPropertyDescription("Additional details of an award status.")
+    private final Status statusDetails;
 
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -128,10 +126,6 @@ public class Award {
     @Valid
     private final ReviewProceedings reviewProceedings;
 
-    @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of an award status.")
-    private final String statusDetails;
-
     @JsonProperty("relatedBid")
     @JsonPropertyDescription("Where bid details are used, a cross reference to the entry in the bids array to which " +
             "this award relates. Provide the bid identifier here.")
@@ -142,6 +136,7 @@ public class Award {
                  @JsonProperty("title") final String title,
                  @JsonProperty("description") final String description,
                  @JsonProperty("status") final Status status,
+                 @JsonProperty("statusDetails") final Status statusDetails,
                  @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime
                              date,
                  @JsonProperty("value") final Value value,
@@ -160,6 +155,7 @@ public class Award {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.statusDetails = statusDetails;
         this.date = date;
         this.value = value;
         this.suppliers = suppliers;
@@ -171,7 +167,6 @@ public class Award {
         this.relatedLots = relatedLots;
         this.requirementResponses = requirementResponses;
         this.reviewProceedings = reviewProceedings;
-        this.statusDetails = statusDetails;
         this.relatedBid = relatedBid;
     }
 
@@ -181,6 +176,7 @@ public class Award {
                 .append(title)
                 .append(description)
                 .append(status)
+                .append(statusDetails)
                 .append(date)
                 .append(value)
                 .append(suppliers)
@@ -192,8 +188,7 @@ public class Award {
                 .append(relatedLots)
                 .append(requirementResponses)
                 .append(reviewProceedings)
-                .append(statusDetails)
-                .append(relatedBid)
+                 .append(relatedBid)
                 .toHashCode();
     }
 
@@ -210,6 +205,7 @@ public class Award {
                 .append(title, rhs.title)
                 .append(description, rhs.description)
                 .append(status, rhs.status)
+                .append(statusDetails, rhs.statusDetails)
                 .append(date, rhs.date)
                 .append(value, rhs.value)
                 .append(suppliers, rhs.suppliers)
@@ -221,7 +217,6 @@ public class Award {
                 .append(relatedLots, rhs.relatedLots)
                 .append(requirementResponses, rhs.requirementResponses)
                 .append(reviewProceedings, rhs.reviewProceedings)
-                .append(statusDetails, rhs.statusDetails)
                 .append(relatedBid, rhs.relatedBid)
                 .isEquals();
     }

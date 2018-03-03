@@ -99,10 +99,6 @@ public class TenderServiceImpl implements TenderService {
         return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
-    private String getId() {
-        return UUIDs.timeBased().toString();
-    }
-
     private TenderEntity getMSEntity(final String cpId,
                                      final MsRelease ms) {
         final TenderEntity msEntity = new TenderEntity();
