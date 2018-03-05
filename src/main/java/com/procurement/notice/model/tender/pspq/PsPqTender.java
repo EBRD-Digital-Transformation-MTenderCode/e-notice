@@ -42,132 +42,63 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class PsPqTender {
     @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
-            "drawn from an internally held identifier for this tender.")
     @Size(min = 1)
     @NotNull
     private final String id;
-
     @JsonProperty("title")
-    @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +
-            "attract interest, and to help analysts understand the nature of this procurement.")
     private final String title;
-
     @JsonProperty("description")
-    @JsonPropertyDescription("A summary description of the tender. This should complement structured information " +
-            "provided using the items array. Descriptions should be short and easy to read. Avoid using ALL CAPS. ")
     private final String description;
-
     @JsonProperty("status")
-    @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
-            ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private TenderStatus status;
-
     @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of status.)")
     private TenderStatusDetails statusDetails;
-
     @JsonProperty("enquiryPeriod")
     @Valid
     private Period enquiryPeriod;
-
     @JsonProperty("hasEnquiries")
-    @JsonPropertyDescription("A true/false field to indicate whether any enquiries were received during the tender " +
-            "process. Structured information on enquiries that were received, and responses to them, can be provided " +
-            "using the enquiries extension.")
     private final Boolean hasEnquiries;
-
     @JsonProperty("enquiries")
-    @JsonPropertyDescription("Enquiries array to tender, consisting of one or more enquiry objects, each with fields " +
-            "for a question, and an answer.")
     private List<PsPqEnquiry> enquiries;
-
     @JsonProperty("amendments")
-    @JsonPropertyDescription("A tender amendment is a formal change to the tender, and generally involves the " +
-            "publication of a new tender notice/release. The rationale and a description of the changes made can be " +
-            "provided here.")
     @Valid
     private final List<Amendment> amendments;
-
     @JsonProperty("value")
     @Valid
     private final Value value;
-
     @JsonProperty("lots")
-    @JsonPropertyDescription("A tender process may be divided into lots, where bidders can bid on one or more lots. " +
-            "Details of each lot can be provided here. Items, documents and other features can then reference the lot" +
-            " " +
-            "they are related to using relatedLot. Where no relatedLot identifier is given, the values should be " +
-            "interpreted as applicable to the whole tender. Properties of tender can be overridden for a given Lot " +
-            "through their inclusion in the Lot object.")
     @Valid
     private List<Lot> lots;
-
     @JsonProperty("lotGroups")
-    @JsonPropertyDescription("ere the buyer reserves the right to combine lots, or wishes to specify the total value " +
-            "for a group of lots, a lot group is used to capture this information.")
     @Valid
     private final List<LotGroup> lotGroups;
-
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
-    @JsonPropertyDescription("The goods and services to be purchased, broken into line items wherever possible. Items" +
-            " should not be duplicated, but a quantity of 2 specified instead.")
     @Valid
     private final Set<Item> items;
-
     @JsonProperty("awardCriteria")
-    @JsonPropertyDescription("Specify the award criteria for the procurement, using the [award criteria codelist]" +
-            "(http://standard.open-contracting.org/latest/en/schema/codelists/#award-criteria)")
     private final AwardCriteria awardCriteria;
-
     @JsonProperty("requiresElectronicCatalogue")
-    @JsonPropertyDescription("Tenders must include an electronic catalogue. Required by the EU")
     private final Boolean requiresElectronicCatalogue;
-
     @JsonProperty("submissionMethod")
-    @JsonPropertyDescription("Specify the method by which bids must be submitted, in person, written, or electronic " +
-            "auction. Using the [submission method codelist](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#submission-method)")
     private final List<SubmissionMethod> submissionMethod;
-
     @JsonProperty("submissionMethodDetails")
-    @JsonPropertyDescription("Any detailed or further information on the submission method. This may include the " +
-            "address, e-mail address or online service to which bids should be submitted, and any special " +
-            "requirements to" +
-            " be followed for submissions.")
     private final String submissionMethodDetails;
-
     @JsonProperty("submissionMethodRationale")
-    @JsonPropertyDescription("A value from the [submissionValueRationale codelist](http://standard.open-contracting" +
-            ".org/1.1-dev/en/schema/codelists/submission-method-rationale) that identifies the rationale where " +
-            "electronic" +
-            " submission method is not to be allowed. Required by EU.")
     @Valid
     private final List<SubmissionMethodRationale> submissionMethodRationale;
-
     @JsonProperty("tenderPeriod")
     @Valid
     private Period tenderPeriod;
-
     @JsonProperty("contractPeriod")
     @Valid
     private final Period contractPeriod;
-
     @JsonProperty("standstillPeriod")
     @Valid
     private Period standstillPeriod;
-
     @JsonProperty("documents")
-    @JsonPropertyDescription("All documents and attachments related to the tender, including any notices. See the " +
-            "[documentType codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#document-type) " +
-            "for " +
-            "details of potential documents to include. Common documents include official legal notices of tender, " +
-            "technical specifications, evaluation criteria, and, as a tender process progresses, clarifications and " +
-            "replies to queries.")
     @Valid
     private final List<Document> documents;
-
 
     @JsonCreator
     public PsPqTender(@JsonProperty("id") final String id,
@@ -205,7 +136,7 @@ public class PsPqTender {
         this.submissionMethodDetails = submissionMethodDetails;
         this.tenderPeriod = tenderPeriod;
         this.enquiryPeriod = enquiryPeriod;
-        this.hasEnquiries = hasEnquiries;
+        this.hasEnquiries = hasEnquiries == null ? false : hasEnquiries;
         this.enquiries = enquiries;
         this.contractPeriod = contractPeriod;
         this.documents = documents;

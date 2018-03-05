@@ -100,6 +100,7 @@ public class Lot {
         this.description = description;
         this.status = status;
         this.statusDetails = statusDetails;
+        this.statusDetails = statusDetails == null ? TenderStatusDetails.EMPTY : statusDetails;
         this.value = value;
         this.options = options;
         this.recurrentProcurement = recurrentProcurement;

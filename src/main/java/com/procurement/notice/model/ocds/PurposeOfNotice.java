@@ -34,7 +34,7 @@ public class PurposeOfNotice {
                            @JsonProperty("socialOrOtherSpecificServices") final Boolean socialOrOtherSpecificServices) {
         super();
         this.reducesTimeLimits = reducesTimeLimits;
-        this.isACallForCompetition = isACallForCompetition;
+        this.isACallForCompetition = isACallForCompetition == null ? false : isACallForCompetition;
         this.socialOrOtherSpecificServices = socialOrOtherSpecificServices;
     }
 

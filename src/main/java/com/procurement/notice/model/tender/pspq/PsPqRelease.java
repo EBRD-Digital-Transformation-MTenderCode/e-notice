@@ -90,7 +90,7 @@ public class PsPqRelease {
         this.awards = awards;
         this.language = language == null ? "en" : language;
         this.bids = bids;
-        this.hasPreviousNotice = hasPreviousNotice;
+        this.hasPreviousNotice = hasPreviousNotice == null ? false : hasPreviousNotice;
         this.purposeOfNotice = purposeOfNotice;
         this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
     }

@@ -4,7 +4,6 @@
   "date": "",
   "tag": "",
   "initiationType": "",
-  "language": "",
   "hasPreviousNotice": false,
   "purposeOfNotice": {
     "isACallForCompetition": true
@@ -30,7 +29,8 @@
         },
         "title":"",
         "description":"",
-        "signOfResponse": "false",
+        "dateAnswered":"",
+        "answer":"",
         "relatedItem":"",
         "relatedLot":""
       }
@@ -44,10 +44,6 @@
         "releaseID": ""
       }
     ],
-    "value": {
-      "amount": 0,
-      "currency": ""
-    },
     "lotGroups": [
       {
         "optionToCombine": false
@@ -78,7 +74,7 @@
         },
         "contractPeriod": {
           "startDate": "",
-          "endDate": "",
+          "endDate": ""
         },
         "placeOfPerformance": {
           "address": {
@@ -125,10 +121,6 @@
       "startDate": "",
       "endDate": ""
     },
-    "contractPeriod": {
-      "startDate": "",
-      "endDate": ""
-    },
     "standstillPeriod": {
       "startDate":"",
       "endDate": ""
@@ -146,6 +138,7 @@
       }
     ]
   },
+  "language": "",
   "parties": [
     {
       "name": "",
@@ -201,14 +194,14 @@
             "name":""
           }
         ],
-        "documents": [
+        --"documents": [
         {
           "documentType": "",
           "datePublished": "",
           "id": "",
           "url": "",
-          "title": "",
-          "description": "",
+          --"title": "",
+          --"description": "",
           "language": "",
           "relatedLot": ""
         }
@@ -221,18 +214,18 @@
     {
       "id": "",
       "date": "",
-      "description":"",
+      --"description":"",
       "status": "",
       "statusDetails":"",
       "relatedLots":[""],
-      "relatedBid":"",
-      "suppliers": [
+      --"relatedBid":"",
+      --"suppliers": [
       {
         "id":"",
         "name":""
       }
     ],
-      "documents": [
+      --"documents": [
       {
         "id":"",
         "title":"",
@@ -257,7 +250,7 @@
   ]
 }
 
-"root['hasPreviousNotice']",
-"root['purposeOfNotice']",
+//"root['hasPreviousNotice']",
+//"root['purposeOfNotice']",
 "root['tender']['hasEnquiries']",
 "root['tender']['lots'][0]['statusDetails']"

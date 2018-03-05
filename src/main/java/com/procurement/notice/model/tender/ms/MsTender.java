@@ -47,144 +47,60 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class MsTender {
     @JsonProperty("id")
-    @JsonPropertyDescription("An identifier for this tender process. This may be the same as the ocid, or may be " +
-            "drawn from an internally held identifier for this tender.")
     @Size(min = 1)
     @NotNull
     private final String id;
-
     @JsonProperty("title")
-    @JsonPropertyDescription("A title for this tender. This will often be used by applications as a headline to " +
-            "attract interest, and to help analysts understand the nature of this procurement.")
     private final String title;
-
     @JsonProperty("description")
-    @JsonPropertyDescription("A summary description of the tender. This should complement structured information " +
-            "provided using the items array. Descriptions should be short and easy to read. Avoid using ALL CAPS. ")
     private final String description;
-
     @JsonProperty("status")
-    @JsonPropertyDescription("The current status of the tender based on the [tenderStatus codelist](http://standard" +
-            ".open-contracting.org/latest/en/schema/codelists/#tender-status)")
     private TenderStatus status;
-
     @JsonProperty("statusDetails")
-    @JsonPropertyDescription("Additional details of status.)")
     private TenderStatusDetails statusDetails;
-
     @JsonProperty("value")
-    @Valid
     private final Value value;
-
     @JsonProperty("procurementMethod")
-    @JsonPropertyDescription("Specify tendering method using the [method codelist](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#method). This is a closed codelist. Local method types should be mapped" +
-            " to " +
-            "this list.")
-    @Valid
     private final ProcurementMethod procurementMethod;
-
     @JsonProperty("procurementMethodDetails")
-    @JsonPropertyDescription("Additional detail on the procurement method used. This field may be used to provide the" +
-            " local name of the particular procurement method used.")
     private final String procurementMethodDetails;
-
     @JsonProperty("procurementMethodRationale")
-    @JsonPropertyDescription("Rationale for the chosen procurement method. This is especially important to provide a " +
-            "justification in the case of limited tenders or direct awards.")
     private final String procurementMethodRationale;
-
     @JsonProperty("mainProcurementCategory")
-    @JsonPropertyDescription("The primary category describing the main object of this contracting process from the " +
-            "[procuremen     this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;tCategory](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#procurement-category)" +
-            " codelist. This is a closed codelist. Local classifications should be mapped to this list.")
-    @Valid
     private final MainProcurementCategory mainProcurementCategory;
-
     @JsonProperty("additionalProcurementCategories")
-    @JsonPropertyDescription("Any additional categories which describe the objects of this contracting process, from " +
-            "the [extendedProcurementCategory](http://standard.open-contracting" +
-            ".org/latest/en/schema/codelists/#extended-procurement-category) codelist. This is an open codelist. " +
-            "Local " +
-            "categories can be included in this list.")
     private final List<ExtendedProcurementCategory> additionalProcurementCategories;
-
     @JsonProperty("hasEnquiries")
-    @JsonPropertyDescription("A true/false field to indicate whether any enquiries were received during the tender " +
-            "process. Structured information on enquiries that were received, and responses to them, can be provided " +
-            "using the enquiries extension.")
     private final Boolean hasEnquiries;
-
     @JsonProperty("eligibilityCriteria")
-    @JsonPropertyDescription("A description of any eligibility criteria for potential suppliers.")
     private final String eligibilityCriteria;
-
     @JsonProperty("contractPeriod")
-    @Valid
     private final Period contractPeriod;
-
     @JsonProperty("procuringEntity")
-    @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
-            "section")
-    @Valid
-    private final OrganizationReference procuringEntity;
-
+    private final MsOrganizationReference procuringEntity;
     @JsonProperty("amendments")
-    @JsonPropertyDescription("A tender amendment is a formal change to the tender, and generally involves the " +
-            "publication of a new tender notice/release. The rationale and a description of the changes made can be " +
-            "provided here.")
-    @Valid
     private final List<Amendment> amendments;
-
     @JsonProperty("acceleratedProcedure")
-    @Valid
     private final AcceleratedProcedure acceleratedProcedure;
-
     @JsonProperty("classification")
-    @Valid
     private final Classification classification;
-
     @JsonProperty("designContest")
-    @Valid
     private final DesignContest designContest;
-
     @JsonProperty("electronicWorkflows")
-    @Valid
     private final ElectronicWorkflows electronicWorkflows;
-
     @JsonProperty("jointProcurement")
-    @Valid
     private final JointProcurement jointProcurement;
-
     @JsonProperty("legalBasis")
-    @JsonPropertyDescription("The legal basis of the tender based on the [legalBasis codelist](http://standard" +
-            ".open-contracting.org/......")
     private final LegalBasis legalBasis;
-
     @JsonProperty("procedureOutsourcing")
-    @Valid
     private final ProcedureOutsourcing procedureOutsourcing;
-
     @JsonProperty("procurementMethodAdditionalInfo")
-    @JsonPropertyDescription("Additional information about the procurement method.")
     private final String procurementMethodAdditionalInfo;
-
     @JsonProperty("submissionLanguages")
-    @JsonPropertyDescription("Language(s) in which tenderers may submit, drawn from the [submissionLanguages " +
-            "codelist](http://standard.open-contracting.org/1.1-dev/en/schema/codelists/#submission-languages)")
     private final List<SubmissionLanguage> submissionLanguages;
-
     @JsonProperty("dynamicPurchasingSystem")
-    @JsonPropertyDescription("Dynamic Purchasing System: Whether a dynamic purchasing system has been set up and if " +
-            "so whether it may be used by buyers outside the notice. Required by EU.")
-    @Valid
     private final DynamicPurchasingSystem dynamicPurchasingSystem;
-
     @JsonProperty("framework")
-    @JsonPropertyDescription("The details of any framework agreement established as part of this procurement. " +
-            "Required by EU.")
-    @Valid
     private final Framework framework;
 
     @JsonCreator
@@ -202,7 +118,7 @@ public class MsTender {
                     @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
                     @JsonProperty("eligibilityCriteria") final String eligibilityCriteria,
                     @JsonProperty("contractPeriod") final Period contractPeriod,
-                    @JsonProperty("procuringEntity") final OrganizationReference procuringEntity,
+                    @JsonProperty("procuringEntity") final MsOrganizationReference procuringEntity,
                     @JsonProperty("amendments") final List<Amendment> amendments,
                     @JsonProperty("acceleratedProcedure") final AcceleratedProcedure acceleratedProcedure,
                     @JsonProperty("classification") final Classification classification,
@@ -226,7 +142,7 @@ public class MsTender {
         this.procurementMethodRationale = procurementMethodRationale;
         this.mainProcurementCategory = mainProcurementCategory;
         this.additionalProcurementCategories = additionalProcurementCategories;
-        this.hasEnquiries = hasEnquiries;
+        this.hasEnquiries = hasEnquiries == null ? false : hasEnquiries;
         this.eligibilityCriteria = eligibilityCriteria;
         this.contractPeriod = contractPeriod;
         this.procuringEntity = procuringEntity;

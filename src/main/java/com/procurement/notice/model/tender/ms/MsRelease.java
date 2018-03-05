@@ -45,14 +45,14 @@ public class MsRelease {
     @JsonProperty("language")
     private String language;
     @JsonProperty("planning")
-    private final Planning planning;
+    private final MsPlanning planning;
     @JsonProperty("tender")
     private final MsTender tender;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<Organization> parties;
     @JsonProperty("buyer")
-    private final OrganizationReference buyer;
+    private final MsOrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<RelatedProcess> relatedProcesses;
@@ -64,10 +64,10 @@ public class MsRelease {
                      @JsonProperty("tag") final List<Tag> tag,
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("language") final String language,
-                     @JsonProperty("planning") final Planning planning,
+                     @JsonProperty("planning") final MsPlanning planning,
                      @JsonProperty("tender") final MsTender tender,
                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                     @JsonProperty("buyer") final OrganizationReference buyer,
+                     @JsonProperty("buyer") final MsOrganizationReference buyer,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;

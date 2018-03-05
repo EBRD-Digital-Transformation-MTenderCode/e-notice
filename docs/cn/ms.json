@@ -4,7 +4,6 @@
   "date": "",
   "tag": "",
   "initiationType": "",
-  "language": "",
   "planning": {
     "rationale": "",
     "budget": {
@@ -13,8 +12,8 @@
         "amount": 0,
         "currency": ""
       },
-      "isEuropenUnionFunded": false,
-      "europenUnionFunding": {
+      "isEuropeanUnionFunded": false,
+      "europeanUnionFunding": {
         "projectIdentifier": "",
         "projectName": ""
       },
@@ -58,10 +57,14 @@
     "procurementMethodRationale": "",
     "procurementMethodAdditionalInfo": "",
     "mainProcurementCategory": "",
-    "additionalProcurementCategories": [""],
+    "additionalProcurementCategories": [
+      ""
+    ],
     "hasEnquiries": true,
     "eligibilityCriteria": "",
-    "submissionLanguages": [""],
+    "submissionLanguages": [
+      ""
+    ],
     "amendments": [
       {
         "date": "",
@@ -101,35 +104,7 @@
     "legalBasis": "",
     "procuringEntity": {
       "name": "",
-      "id": "",
-      "identifier": {
-        "scheme": "",
-        "id": "",
-        "legalName": "",
-        "uri": ""
-      },
-      "additionalIdentifiers": [
-        {
-          "scheme": "",
-          "id": "",
-          "legalName": "",
-          "uri": ""
-        }
-      ],
-      "address": {
-        "streetAddress": "",
-        "locality": "",
-        "region": "",
-        "postalCode": "",
-        "countryName": ""
-      },
-      "contactPoint": {
-        "name": "",
-        "email": "",
-        "telephone": "",
-        "faxNumber": "",
-        "url": ""
-      }
+      "id": ""
     }
   },
   "parties": [
@@ -164,7 +139,9 @@
         "faxNumber": "",
         "url": ""
       },
-      "roles": [""],
+      "roles": [
+        ""
+      ],
       "details": {
         "typeOfBuyer": "",
         "mainGeneralActivity": "",
@@ -177,36 +154,9 @@
   ],
   "buyer": {
     "name": "",
-    "id": "",
-    "identifier": {
-      "scheme": "",
-      "id": "",
-      "legalName": "",
-      "uri": ""
-    },
-    "additionalIdentifiers": [
-      {
-        "scheme": "",
-        "id": "",
-        "legalName": "",
-        "uri": ""
-      }
-    ],
-    "address": {
-      "streetAddress": "",
-      "locality": "",
-      "region": "",
-      "postalCode": "",
-      "countryName": ""
-    },
-    "contactPoint": {
-      "name": "",
-      "email": "",
-      "telephone": "",
-      "faxNumber": "",
-      "url": ""
-    }
+    "id": ""
   },
+  "language": "",
   "relatedProcesses": [
     {
       "id": "",
@@ -217,16 +167,3 @@
     }
   ]
 }
-
-
-//"root['relatedProcesses'][0]['title']",
-//"root['tender']['awardCriteria']",
-//"root['tender']['enquiryPeriod']",
-//"root['tender']['items']",
-//"root['tender']['lotGroups']",
-//"root['tender']['lots']",
-//"root['tender']['requiresElectronicCatalogue']",
-//"root['tender']['submissionMethod']",
-//"root['tender']['submissionMethodDetails']",
-//"root['tender']['submissionMethodRationale']",
-//"root['tender']['tenderPeriod']"

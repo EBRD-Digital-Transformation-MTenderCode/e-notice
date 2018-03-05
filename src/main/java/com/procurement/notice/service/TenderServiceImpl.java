@@ -100,6 +100,7 @@ public class TenderServiceImpl implements TenderService {
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dto.getAwardPeriod().getStartDate());
         release.setTag(Arrays.asList(Tag.AWARD));
+        release.getTender().setLots(dto.getLots());
         release.setAwards(new LinkedHashSet<>(dto.getAwards()));
         release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
