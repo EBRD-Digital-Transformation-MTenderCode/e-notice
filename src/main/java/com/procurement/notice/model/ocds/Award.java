@@ -221,10 +221,12 @@ public class Award {
     }
 
     public enum Status {
+
         PENDING("pending"),
         ACTIVE("active"),
         CANCELLED("cancelled"),
-        UNSUCCESSFUL("unsuccessful");
+        UNSUCCESSFUL("unsuccessful"),
+        EMPTY("empty");
 
         private final static Map<String, Status> CONSTANTS = new HashMap<>();
 
