@@ -77,7 +77,7 @@ public class MsTender {
     @JsonProperty("contractPeriod")
     private final Period contractPeriod;
     @JsonProperty("procuringEntity")
-    private final MsOrganizationReference procuringEntity;
+    private final OrganizationReference procuringEntity;
     @JsonProperty("amendments")
     private final List<Amendment> amendments;
     @JsonProperty("acceleratedProcedure")
@@ -118,7 +118,7 @@ public class MsTender {
                     @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
                     @JsonProperty("eligibilityCriteria") final String eligibilityCriteria,
                     @JsonProperty("contractPeriod") final Period contractPeriod,
-                    @JsonProperty("procuringEntity") final MsOrganizationReference procuringEntity,
+                    @JsonProperty("procuringEntity") final OrganizationReference procuringEntity,
                     @JsonProperty("amendments") final List<Amendment> amendments,
                     @JsonProperty("acceleratedProcedure") final AcceleratedProcedure acceleratedProcedure,
                     @JsonProperty("classification") final Classification classification,

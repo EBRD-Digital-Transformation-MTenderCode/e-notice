@@ -52,7 +52,7 @@ public class MsRelease {
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<Organization> parties;
     @JsonProperty("buyer")
-    private final MsOrganizationReference buyer;
+    private final OrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<RelatedProcess> relatedProcesses;
@@ -67,7 +67,7 @@ public class MsRelease {
                      @JsonProperty("planning") final MsPlanning planning,
                      @JsonProperty("tender") final MsTender tender,
                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                     @JsonProperty("buyer") final MsOrganizationReference buyer,
+                     @JsonProperty("buyer") final OrganizationReference buyer,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;

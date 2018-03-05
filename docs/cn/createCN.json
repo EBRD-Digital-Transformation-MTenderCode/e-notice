@@ -1,7 +1,7 @@
 {
-  "token": "c0d58892-208c-11e8-968d-a907a31319ca",
-  "ocid": "ocds-t1s2t3-MD-1520264953350",
-  "date": "2018-03-05T15:49:13Z",
+  "token": "a03078e2-2094-11e8-bb33-5f5d45bf10dd",
+  "ocid": "ocds-t1s2t3-MD-1520268334958",
+  "date": "2018-03-05T16:45:34Z",
   "planning": {
     "budget": {
       "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
@@ -33,13 +33,13 @@
     "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
   },
   "tender": {
-    "id": "ocds-t1s2t3-MD-1520264953350",
+    "id": "ocds-t1s2t3-MD-1520268334958",
     "title": "Tender title",
     "description": "Tender description",
     "status": "active",
     "items": [
       {
-        "id": "c0d58890-208c-11e8-968d-a907a31319ca",
+        "id": "a03078e0-2094-11e8-bb33-5f5d45bf10dd",
         "description": "A description of the goods, services to be provided.",
         "classification": {
           "scheme": "CPV",
@@ -58,7 +58,7 @@
           "name": "kg",
           "id": "0971"
         },
-        "relatedLot": "c0d58891-208c-11e8-968d-a907a31319ca"
+        "relatedLot": "a03078e1-2094-11e8-bb33-5f5d45bf10dd"
       }
     ],
     "value": {
@@ -78,8 +78,8 @@
     ],
     "submissionMethodDetails": "Any detailed or further information on the submission method. This may include the address, e-mail address or online service to which bids should be submitted, and any special requirements to be followed for submissions.",
     "tenderPeriod": {
-      "endDate": "2018-03-05T15:53:13Z",
-      "startDate": "2018-03-05T15:49:13.35Z"
+      "endDate": "2018-03-05T16:49:34Z",
+      "startDate": "2018-03-05T16:45:34Z"
     },
     "eligibilityCriteria": "A description of any eligibility criteria for potential suppliers.",
     "contractPeriod": {
@@ -120,7 +120,7 @@
     },
     "lots": [
       {
-        "id": "c0d58891-208c-11e8-968d-a907a31319ca",
+        "id": "a03078e1-2094-11e8-bb33-5f5d45bf10dd",
         "title": "A title for this lot.",
         "description": "A description of this lot.",
         "status": "active",
@@ -209,8 +209,8 @@
     },
     "requiresElectronicCatalogue": false,
     "enquiryPeriod": {
-      "startDate": "2018-03-05T15:49:13Z",
-      "endDate": "2018-03-05T15:52:13Z"
+      "startDate": "2018-03-05T16:45:34Z",
+      "endDate": "2018-03-05T16:48:34Z"
     }
   },
   "parties": [
