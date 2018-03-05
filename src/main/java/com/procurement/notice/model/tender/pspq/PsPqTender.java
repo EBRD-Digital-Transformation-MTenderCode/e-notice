@@ -26,7 +26,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "hasEnquiries",
         "enquiries",
         "amendments",
-        "value",
         "lotGroups",
         "lots",
         "items",
@@ -36,7 +35,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "submissionMethodDetails",
         "submissionMethodRationale",
         "tenderPeriod",
-        "contractPeriod",
         "standstillPeriod",
         "documents"
 })
@@ -63,9 +61,6 @@ public class PsPqTender {
     @JsonProperty("amendments")
     @Valid
     private final List<Amendment> amendments;
-    @JsonProperty("value")
-    @Valid
-    private final Value value;
     @JsonProperty("lots")
     @Valid
     private List<Lot> lots;
@@ -90,9 +85,6 @@ public class PsPqTender {
     @JsonProperty("tenderPeriod")
     @Valid
     private Period tenderPeriod;
-    @JsonProperty("contractPeriod")
-    @Valid
-    private final Period contractPeriod;
     @JsonProperty("standstillPeriod")
     @Valid
     private Period standstillPeriod;
@@ -107,7 +99,6 @@ public class PsPqTender {
                       @JsonProperty("status") final TenderStatus status,
                       @JsonProperty("statusDetails") final TenderStatusDetails statusDetails,
                       @JsonProperty("items") final LinkedHashSet<Item> items,
-                      @JsonProperty("value") final Value value,
                       @JsonProperty("awardCriteria") final AwardCriteria awardCriteria,
                       @JsonProperty("submissionMethod") final List<SubmissionMethod> submissionMethod,
                       @JsonProperty("submissionMethodDetails") final String submissionMethodDetails,
@@ -115,7 +106,6 @@ public class PsPqTender {
                       @JsonProperty("enquiryPeriod") final Period enquiryPeriod,
                       @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
                       @JsonProperty("enquiries") final List<PsPqEnquiry> enquiries,
-                      @JsonProperty("contractPeriod") final Period contractPeriod,
                       @JsonProperty("documents") final List<Document> documents,
                       @JsonProperty("amendments") final List<Amendment> amendments,
                       @JsonProperty("lots") final List<Lot> lots,
@@ -130,7 +120,6 @@ public class PsPqTender {
         this.status = status;
         this.statusDetails = statusDetails;
         this.items = items;
-        this.value = value;
         this.awardCriteria = awardCriteria;
         this.submissionMethod = submissionMethod;
         this.submissionMethodDetails = submissionMethodDetails;
@@ -138,7 +127,6 @@ public class PsPqTender {
         this.enquiryPeriod = enquiryPeriod;
         this.hasEnquiries = hasEnquiries == null ? false : hasEnquiries;
         this.enquiries = enquiries;
-        this.contractPeriod = contractPeriod;
         this.documents = documents;
         this.amendments = amendments;
         this.lots = lots;
@@ -156,7 +144,6 @@ public class PsPqTender {
                 .append(status)
                 .append(statusDetails)
                 .append(items)
-                .append(value)
                 .append(awardCriteria)
                 .append(submissionMethod)
                 .append(submissionMethodDetails)
@@ -164,7 +151,6 @@ public class PsPqTender {
                 .append(enquiryPeriod)
                 .append(hasEnquiries)
                 .append(enquiries)
-                .append(contractPeriod)
                 .append(documents)
                 .append(amendments)
                 .append(lots)
@@ -190,7 +176,6 @@ public class PsPqTender {
                 .append(status, rhs.status)
                 .append(statusDetails, rhs.statusDetails)
                 .append(items, rhs.items)
-                .append(value, rhs.value)
                 .append(awardCriteria, rhs.awardCriteria)
                 .append(submissionMethod, rhs.submissionMethod)
                 .append(submissionMethodDetails, rhs.submissionMethodDetails)
@@ -198,7 +183,6 @@ public class PsPqTender {
                 .append(enquiryPeriod, rhs.enquiryPeriod)
                 .append(hasEnquiries, rhs.hasEnquiries)
                 .append(enquiries, rhs.enquiries)
-                .append(contractPeriod, rhs.contractPeriod)
                 .append(documents, rhs.documents)
                 .append(amendments, rhs.amendments)
                 .append(lots, rhs.lots)
