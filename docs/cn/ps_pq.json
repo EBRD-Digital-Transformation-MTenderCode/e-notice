@@ -252,5 +252,5 @@
 
 //"root['hasPreviousNotice']",
 //"root['purposeOfNotice']",
-"root['tender']['hasEnquiries']",
-"root['tender']['lots'][0]['statusDetails']"
+//"root['tender']['hasEnquiries']",
+//"root['tender']['lots'][0]['statusDetails']"

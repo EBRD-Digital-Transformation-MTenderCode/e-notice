@@ -179,7 +179,7 @@ public class TenderServiceImpl implements TenderService {
                                      final MsRelease ms) {
         final TenderEntity msEntity = new TenderEntity();
         msEntity.setCpId(cpId);
-        msEntity.setStage("ms");
+        msEntity.setStage("MS");
         msEntity.setOcId(ms.getOcid());
         msEntity.setJsonData(jsonUtil.toJson(ms));
         msEntity.setReleaseId(ms.getId());

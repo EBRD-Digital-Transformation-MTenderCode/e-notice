@@ -91,7 +91,9 @@ public class PsPqRelease {
         this.language = language == null ? "en" : language;
         this.bids = bids;
         this.hasPreviousNotice = hasPreviousNotice == null ? false : hasPreviousNotice;
-        this.purposeOfNotice = purposeOfNotice;
+        this.purposeOfNotice = purposeOfNotice == null ?
+                new PurposeOfNotice(null, false, null)
+                : purposeOfNotice;
         this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
     }
 }
