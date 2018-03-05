@@ -106,11 +106,7 @@ public class BudgetServiceImpl implements BudgetService {
             final Organization party = partyOptional.get();
             final OrganizationReference buyer = new OrganizationReference(
                     party.getId(),
-                    party.getName(),
-                    party.getIdentifier(),
-                    party.getAddress(),
-                    new LinkedHashSet(party.getAdditionalIdentifiers()),
-                    party.getContactPoint()
+                    party.getName()
             );
             ei.setBuyer(buyer);
         }
