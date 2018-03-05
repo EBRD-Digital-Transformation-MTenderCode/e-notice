@@ -170,7 +170,8 @@ public class Bid {
 
     public enum StatusDetails {
         VALID("valid"),
-        DISQUALIFIED("disqualified");
+        DISQUALIFIED("disqualified"),
+        EMPTY("empty");
 
         private static final Map<String, StatusDetails> CONSTANTS = new HashMap<String, StatusDetails>();
         private final String value;
