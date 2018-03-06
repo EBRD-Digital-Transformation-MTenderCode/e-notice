@@ -100,9 +100,12 @@ public class TenderServiceImpl implements TenderService {
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dto.getAwardPeriod().getStartDate());
         release.setTag(Arrays.asList(Tag.AWARD));
-        release.getTender().setLots(dto.getLots());
-        release.setAwards(new LinkedHashSet<>(dto.getAwards()));
-        release.setBids(new Bids(null, dto.getBids()));
+        if (Objects.nonNull(dto.getLots()))
+            release.getTender().setLots(dto.getLots());
+        if (Objects.nonNull(dto.getAwards()))
+            release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        if (Objects.nonNull(dto.getBids()))
+            release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
@@ -130,7 +133,7 @@ public class TenderServiceImpl implements TenderService {
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
-        release.setDate(dateUtil.getNowUTC());
+        release.setDate(dto.getAward().getDate());
         release.setId(getReleaseId(release.getOcid()));
         updateAward(release, dto.getAward());
         updateBid(release, dto.getBid());
@@ -161,8 +164,10 @@ public class TenderServiceImpl implements TenderService {
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dateUtil.getNowUTC());
         release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        release.setAwards(new LinkedHashSet<>(dto.getAwards()));
-        release.setBids(new Bids(null, dto.getBids()));
+        if (Objects.nonNull(dto.getAwards()))
+            release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        if (Objects.nonNull(dto.getBids()))
+            release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
