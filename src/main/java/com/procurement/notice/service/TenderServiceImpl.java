@@ -212,6 +212,8 @@ public class TenderServiceImpl implements TenderService {
                 .findFirst();
         if (awardOptional.isPresent()) {
             final Award updatableAward = awardOptional.get();
+            if (Objects.nonNull(award.getDate()))
+                updatableAward.setDate(award.getDate());
             if (Objects.nonNull(award.getDescription()))
                 updatableAward.setDescription(award.getDescription());
             if (Objects.nonNull(award.getStatusDetails()))

@@ -69,7 +69,7 @@ public class Award {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date of the contract award. This is usually the date on which a decision to award " +
             "was made.")
-    private final LocalDateTime date;
+    private LocalDateTime date;
 
     @JsonProperty("value")
     @Valid
