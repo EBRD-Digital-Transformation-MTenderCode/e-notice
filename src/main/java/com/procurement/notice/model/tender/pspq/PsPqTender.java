@@ -36,6 +36,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "submissionMethodRationale",
         "tenderPeriod",
         "standstillPeriod",
+        "awardPeriod",
         "documents"
 })
 public class PsPqTender {
@@ -88,6 +89,9 @@ public class PsPqTender {
     @JsonProperty("standstillPeriod")
     @Valid
     private Period standstillPeriod;
+    @JsonProperty("awardPeriod")
+    @Valid
+    private Period awardPeriod;
     @JsonProperty("documents")
     @Valid
     private final List<Document> documents;
@@ -111,6 +115,7 @@ public class PsPqTender {
                       @JsonProperty("lots") final List<Lot> lots,
                       @JsonProperty("lotGroups") final List<LotGroup> lotGroups,
                       @JsonProperty("standstillPeriod") final Period standstillPeriod,
+                      @JsonProperty("awardPeriod") final Period awardPeriod,
                       @JsonProperty("submissionMethodRationale") final List<SubmissionMethodRationale>
                           submissionMethodRationale,
                       @JsonProperty("requiresElectronicCatalogue") final Boolean requiresElectronicCatalogue) {
@@ -132,6 +137,7 @@ public class PsPqTender {
         this.lots = lots;
         this.lotGroups = lotGroups;
         this.standstillPeriod = standstillPeriod;
+        this.awardPeriod = awardPeriod;
         this.submissionMethodRationale = submissionMethodRationale;
         this.requiresElectronicCatalogue = requiresElectronicCatalogue;
     }
@@ -156,6 +162,7 @@ public class PsPqTender {
                 .append(lots)
                 .append(lotGroups)
                 .append(standstillPeriod)
+                .append(awardPeriod)
                 .append(submissionMethodRationale)
                 .append(requiresElectronicCatalogue)
                 .toHashCode();
@@ -188,6 +195,7 @@ public class PsPqTender {
                 .append(lots, rhs.lots)
                 .append(lotGroups, rhs.lotGroups)
                 .append(standstillPeriod, rhs.standstillPeriod)
+                .append(awardPeriod, rhs.awardPeriod)
                 .append(submissionMethodRationale, rhs.submissionMethodRationale)
                 .append(requiresElectronicCatalogue, rhs.requiresElectronicCatalogue)
                 .isEquals();

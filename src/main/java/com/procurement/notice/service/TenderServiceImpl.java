@@ -142,30 +142,43 @@ public class TenderServiceImpl implements TenderService {
     }
 
     @Override
-    public ResponseDto endAwarding(final String cpid, final String stage, final JsonNode data) {
-        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+    public ResponseDto standstillPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+        final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, jsonUtil.toJson(data));
+        /*MS*/
+        final TenderEntity msEntity = Optional.ofNullable(tenderDao.getByCpIdAndOcId(cpid, cpid))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
-        final EndAwardingDto dto = jsonUtil.toObject(EndAwardingDto.class, jsonUtil.toJson(data));
-        release.setDate(dto.getStandstillPeriod().getStartDate());
-        release.setId(getReleaseId(release.getOcid()));
-        release.getTender().setStandstillPeriod(dto.getStandstillPeriod());
-        updateLots(release, dto.getLots());
-        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
-        return getResponseDto(cpid, release.getOcid());
+        final MsRelease ms = jsonUtil.toObject(MsRelease.class, msEntity.getJsonData());
+        ms.setDate(dto.getStandstillPeriod().getEndDate());
+        ms.setId(getReleaseId(ms.getOcid()));
+        ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
+        tenderDao.saveTender(getMSEntity(ms.getOcid(), ms));
+        /*PS-PQ*/
+        final TenderEntity tenderEntity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+        final PsPqRelease tender = jsonUtil.toObject(PsPqRelease.class, tenderEntity.getJsonData());
+        tender.setDate(dto.getStandstillPeriod().getEndDate());
+        tender.setId(getReleaseId(tender.getOcid()));
+        tender.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
+        tender.getTender().setStandstillPeriod(dto.getStandstillPeriod());
+        updateLots(tender, dto.getLots());
+        tenderDao.saveTender(getTenderEntity(tender.getOcid(), stage, tender));
+        return getResponseDto(cpid, tender.getOcid());
     }
 
     @Override
-    public ResponseDto standstillPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+    public ResponseDto awardPeriodEnd(final String cpid, final String stage, final JsonNode data) {
         final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
-        final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, data.toString());
+        final AwardPeriodEndDto dto = jsonUtil.toObject(AwardPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dateUtil.getNowUTC());
         release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        release.getTender().setAwardPeriod(dto.getAwardPeriod());
         if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
             release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
+            release.getTender().setLots(dto.getLots());
         if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
@@ -234,8 +247,7 @@ public class TenderServiceImpl implements TenderService {
         final Map<String, Lot> updatableLots = new HashMap<>();
         lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
         lotsDto.forEach(lotDto -> updatableLots.get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
-        final List<Lot> updatedLots = updatableLots.values().stream().collect(Collectors.toList());
-        release.getTender().setLots(updatedLots);
+        release.getTender().setLots(new ArrayList<>(updatableLots.values()));
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
