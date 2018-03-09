@@ -14,7 +14,6 @@ import com.procurement.notice.model.tender.pspq.PsPqRelease;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -133,10 +132,31 @@ public class TenderServiceImpl implements TenderService {
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
+        release.setTag(Arrays.asList(Tag.AWARD_UPDATE));
         release.setDate(dto.getAward().getDate());
         release.setId(getReleaseId(release.getOcid()));
         updateAward(release, dto.getAward());
         updateBid(release, dto.getBid());
+        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
+        return getResponseDto(cpid, release.getOcid());
+    }
+
+    @Override
+    public ResponseDto awardPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
+        final AwardPeriodEndDto dto = jsonUtil.toObject(AwardPeriodEndDto.class, data.toString());
+        release.setId(getReleaseId(release.getOcid()));
+        release.setDate(dateUtil.getNowUTC());
+        release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        release.getTender().setAwardPeriod(dto.getAwardPeriod());
+        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
+            release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
+            release.getTender().setLots(dto.getLots());
+        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
+            release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
@@ -165,26 +185,6 @@ public class TenderServiceImpl implements TenderService {
         return getResponseDto(cpid, tender.getOcid());
     }
 
-    @Override
-    public ResponseDto awardPeriodEnd(final String cpid, final String stage, final JsonNode data) {
-        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
-        final AwardPeriodEndDto dto = jsonUtil.toObject(AwardPeriodEndDto.class, data.toString());
-        release.setId(getReleaseId(release.getOcid()));
-        release.setDate(dateUtil.getNowUTC());
-        release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        release.getTender().setAwardPeriod(dto.getAwardPeriod());
-        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
-            release.setAwards(new LinkedHashSet<>(dto.getAwards()));
-        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
-            release.getTender().setLots(dto.getLots());
-        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
-            release.setBids(new Bids(null, dto.getBids()));
-        tenderDao.saveTender(getTenderEntity(cpid, stage, release));
-        return getResponseDto(cpid, release.getOcid());
-    }
-
     private String getOcId(final String cpId, final String stage) {
         return cpId + SEPARATOR + stage + SEPARATOR + dateUtil.getMilliNowUTC();
     }
@@ -206,41 +206,48 @@ public class TenderServiceImpl implements TenderService {
     }
 
     private void updateAward(final PsPqRelease release, final Award award) {
-        final Set<Award> awards = release.getAwards();
-        final Optional<Award> awardOptional = awards.stream()
+        release.getAwards()
+                .stream()
                 .filter(a -> a.getId().equals(award.getId()))
-                .findFirst();
-        if (awardOptional.isPresent()) {
-            final Award updatableAward = awardOptional.get();
-            if (Objects.nonNull(award.getDate()))
-                updatableAward.setDate(award.getDate());
-            if (Objects.nonNull(award.getDescription()))
-                updatableAward.setDescription(award.getDescription());
-            if (Objects.nonNull(award.getStatusDetails()))
-                updatableAward.setStatusDetails(award.getStatusDetails());
-            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments().isEmpty())
-                updatableAward.setDocuments(award.getDocuments());
-            release.setAwards(awards);
-        } else {
-            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
-        }
+                .forEach(a -> a = award);
+//        if (awardOptional.isPresent()) {
+//            final Award updatableAward = awardOptional.get();
+//            if (Objects.nonNull(award.getDate()))
+//                updatableAward.setDate(award.getDate());
+//            if (Objects.nonNull(award.getDescription()))
+//                updatableAward.setDescription(award.getDescription());
+//            if (Objects.nonNull(award.getStatusDetails()))
+//                updatableAward.setStatusDetails(award.getStatusDetails());
+//            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments().isEmpty())
+//                updatableAward.setDocuments(award.getDocuments());
+//            release.setAwards(awards);
+//        } else {
+//            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
+//        }
     }
 
     private void updateBid(final PsPqRelease release, final Bid bid) {
-        final List<Bid> bids = release.getBids().getDetails();
-        final Optional<Bid> bidOptional = bids.stream()
+//        release.getBids().getDetails().forEach(b -> {
+//            if (b.getId().equals(bid.getId())) b = bid;
+//        });
+        release.getBids().getDetails()
+                .stream()
                 .filter(b -> b.getId().equals(bid.getId()))
-                .findFirst();
-        if (bidOptional.isPresent()) {
-            final Bid updatableBid = bidOptional.get();
-            if (Objects.nonNull(bid.getDate()))
-                updatableBid.setDate(bid.getDate());
-            if (Objects.nonNull(bid.getStatusDetails()))
-                updatableBid.setStatusDetails(bid.getStatusDetails());
-            release.getBids().setDetails(bids);
-        } else {
-            throw new ErrorException(BID_NOT_FOUND_ERROR);
-        }
+                .forEach(b -> b = bid);
+//        final List<Bid> bids = release.getBids().getDetails();
+//        final Optional<Bid> bidOptional = bids.stream()
+//                .filter(b -> b.getId().equals(bid.getId()))
+//                .findFirst();
+//        if (bidOptional.isPresent()) {
+//            final Bid updatableBid = bidOptional.get();
+//            if (Objects.nonNull(bid.getDate()))
+//                updatableBid.setDate(bid.getDate());
+//            if (Objects.nonNull(bid.getStatusDetails()))
+//                updatableBid.setStatusDetails(bid.getStatusDetails());
+//            release.getBids().setDetails(bids);
+//        } else {
+//            throw new ErrorException(BID_NOT_FOUND_ERROR);
+//        }
     }
 
     private void updateLots(final PsPqRelease release, final List<Lot> lotsDto) {
