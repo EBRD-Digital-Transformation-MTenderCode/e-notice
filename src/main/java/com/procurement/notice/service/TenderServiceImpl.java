@@ -206,48 +206,41 @@ public class TenderServiceImpl implements TenderService {
     }
 
     private void updateAward(final PsPqRelease release, final Award award) {
-        release.getAwards()
-                .stream()
+        final Set<Award> awards = release.getAwards();
+        final Optional<Award> awardOptional = awards.stream()
                 .filter(a -> a.getId().equals(award.getId()))
-                .forEach(a -> a = award);
-//        if (awardOptional.isPresent()) {
-//            final Award updatableAward = awardOptional.get();
-//            if (Objects.nonNull(award.getDate()))
-//                updatableAward.setDate(award.getDate());
-//            if (Objects.nonNull(award.getDescription()))
-//                updatableAward.setDescription(award.getDescription());
-//            if (Objects.nonNull(award.getStatusDetails()))
-//                updatableAward.setStatusDetails(award.getStatusDetails());
-//            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments().isEmpty())
-//                updatableAward.setDocuments(award.getDocuments());
-//            release.setAwards(awards);
-//        } else {
-//            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
-//        }
+                .findFirst();
+        if (awardOptional.isPresent()) {
+            final Award updatableAward = awardOptional.get();
+            if (Objects.nonNull(award.getDate()))
+                updatableAward.setDate(award.getDate());
+            if (Objects.nonNull(award.getDescription()))
+                updatableAward.setDescription(award.getDescription());
+            if (Objects.nonNull(award.getStatusDetails()))
+                updatableAward.setStatusDetails(award.getStatusDetails());
+            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments().isEmpty())
+                updatableAward.setDocuments(award.getDocuments());
+            release.setAwards(awards);
+        } else {
+            throw new ErrorException(AWARD_NOT_FOUND_ERROR);
+        }
     }
 
     private void updateBid(final PsPqRelease release, final Bid bid) {
-//        release.getBids().getDetails().forEach(b -> {
-//            if (b.getId().equals(bid.getId())) b = bid;
-//        });
-        release.getBids().getDetails()
-                .stream()
+        final List<Bid> bids = release.getBids().getDetails();
+        final Optional<Bid> bidOptional = bids.stream()
                 .filter(b -> b.getId().equals(bid.getId()))
-                .forEach(b -> b = bid);
-//        final List<Bid> bids = release.getBids().getDetails();
-//        final Optional<Bid> bidOptional = bids.stream()
-//                .filter(b -> b.getId().equals(bid.getId()))
-//                .findFirst();
-//        if (bidOptional.isPresent()) {
-//            final Bid updatableBid = bidOptional.get();
-//            if (Objects.nonNull(bid.getDate()))
-//                updatableBid.setDate(bid.getDate());
-//            if (Objects.nonNull(bid.getStatusDetails()))
-//                updatableBid.setStatusDetails(bid.getStatusDetails());
-//            release.getBids().setDetails(bids);
-//        } else {
-//            throw new ErrorException(BID_NOT_FOUND_ERROR);
-//        }
+                .findFirst();
+        if (bidOptional.isPresent()) {
+            final Bid updatableBid = bidOptional.get();
+            if (Objects.nonNull(bid.getDate()))
+                updatableBid.setDate(bid.getDate());
+            if (Objects.nonNull(bid.getStatusDetails()))
+                updatableBid.setStatusDetails(bid.getStatusDetails());
+            release.getBids().setDetails(bids);
+        } else {
+            throw new ErrorException(BID_NOT_FOUND_ERROR);
+        }
     }
 
     private void updateLots(final PsPqRelease release, final List<Lot> lotsDto) {
