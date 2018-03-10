@@ -195,7 +195,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         prevRelease.setDate(startDate);
         prevRelease.setId(getReleaseId(prevRelease.getOcid()));
         prevRelease.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        releaseDao.saveTender(getReleaseEntity(prevRelease.getOcid(), stage, prevRelease));
+        releaseDao.saveTender(getReleaseEntity(cpid, stage, prevRelease));
         /*PQ*/
         final PsPqRelease release = prevRelease;
         release.setOcid(getOcId(cpid, stage));
@@ -219,7 +219,7 @@ public class ReleaseServiceImpl implements ReleaseService {
             release.setBids(new Bids(null, dto.getBids()));
         addRelatedProcessToMs(ms, release.getOcid(), RelatedProcess.RelatedProcessType.X_PREQUALIFICATION);
         addMsToRelatedProcess(release, ms.getOcid());
-        releaseDao.saveTender(getReleaseEntity(release.getOcid(), stage, release));
+        releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
 
         return getResponseDto(cpid, release.getOcid());
     }
