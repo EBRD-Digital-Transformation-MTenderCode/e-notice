@@ -70,6 +70,7 @@ public class MainServiceImpl implements MainService {
             case STANDSTILL_PERIOD_END:
                 return releaseService.standstillPeriodEnd(cpId, stage, data);
             case START_NEW_STAGE:
+                Objects.requireNonNull(previousStage, "previousStage " + PARAM_ERROR);
                 return releaseService.startNewStage(cpId, stage, previousStage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
