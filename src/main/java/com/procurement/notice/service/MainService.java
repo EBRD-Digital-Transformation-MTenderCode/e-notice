@@ -11,6 +11,7 @@ public interface MainService {
     ResponseDto createRelease(String cpId,
                               String ocId,
                               String stage,
+                              String previousStage,
                               String operation,
                               String phase,
                               LocalDateTime releaseDate,

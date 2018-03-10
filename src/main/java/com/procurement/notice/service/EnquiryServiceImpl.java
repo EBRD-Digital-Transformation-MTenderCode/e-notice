@@ -2,10 +2,10 @@ package com.procurement.notice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.procurement.notice.dao.TenderDao;
+import com.procurement.notice.dao.ReleaseDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
-import com.procurement.notice.model.entity.TenderEntity;
+import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto;
 import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
 import com.procurement.notice.model.tender.pspq.PsPqRelease;
@@ -25,16 +25,16 @@ public class EnquiryServiceImpl implements EnquiryService {
     private static final String ENQUIRY_NOT_FOUND_ERROR = "PsPqEnquiry not found.";
     private static final String ENQUIRY_JSON = "enquiry";
     private final TenderService tenderService;
-    private final TenderDao tenderDao;
+    private final ReleaseDao releaseDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
     public EnquiryServiceImpl(final TenderService tenderService,
-                              final TenderDao tenderDao,
+                              final ReleaseDao releaseDao,
                               final JsonUtil jsonUtil,
                               final DateUtil dateUtil) {
         this.tenderService = tenderService;
-        this.tenderDao = tenderDao;
+        this.releaseDao = releaseDao;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
     }
@@ -43,14 +43,14 @@ public class EnquiryServiceImpl implements EnquiryService {
     public ResponseDto createEnquiry(final String cpid,
                                      final String stage,
                                      final JsonNode data) {
-        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         addEnquiryToTender(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
+        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -58,14 +58,14 @@ public class EnquiryServiceImpl implements EnquiryService {
     public ResponseDto addAnswer(final String cpid,
                                  final String stage,
                                  final JsonNode data) {
-        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         addAnswerToEnquiry(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
+        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -73,7 +73,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     public ResponseDto unsuspendTender(final String cpid,
                                        final String stage,
                                        final JsonNode data) {
-        final TenderEntity entity = Optional.ofNullable(tenderDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));
@@ -84,7 +84,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         release.getTender().setTenderPeriod(dto.getTenderPeriod());
         release.getTender().setEnquiryPeriod(dto.getEnquiryPeriod());
-        tenderDao.saveTender(tenderService.getTenderEntity(cpid, stage, release));
+        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 

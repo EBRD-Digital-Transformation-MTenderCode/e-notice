@@ -99,6 +99,8 @@ public class RelatedProcess {
         X_EXPENDITURE_ITEM("x_expenditureItem"),
         X_FINANCE_SOURCE("x_financeSource"),
         X_PRESELECTION("x_preselection"),
+        X_PREQUALIFICATION("x_prequalification"),
+        X_EVALUATION("x_evaluation"),
         X_EXECUTION("x_execution"),
         X_PLANNED("x_planned"),
         X_BUDGET("x_budget");

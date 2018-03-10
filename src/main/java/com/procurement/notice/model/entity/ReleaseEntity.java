@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TenderEntity {
+public class ReleaseEntity {
 
     private String cpId;
 

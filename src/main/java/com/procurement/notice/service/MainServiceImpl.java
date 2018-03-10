@@ -33,6 +33,7 @@ public class MainServiceImpl implements MainService {
     public ResponseDto createRelease(final String cpId,
                                      final String ocId,
                                      final String stage,
+                                     final String previousStage,
                                      final String operation,
                                      final String phase,
                                      final LocalDateTime releaseDate,
@@ -68,6 +69,8 @@ public class MainServiceImpl implements MainService {
                 return tenderService.awardPeriodEnd(cpId, stage, data);
             case STANDSTILL_PERIOD_END:
                 return tenderService.standstillPeriodEnd(cpId, stage, data);
+            case START_NEW_STAGE:
+                return tenderService.startNewStage(cpId, stage, previousStage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -89,7 +92,8 @@ public class MainServiceImpl implements MainService {
         SUSPEND_TENDER("suspendTender"),
         AWARD_BY_BID("awardByBid"),
         AWARD_PERIOD_END("awardPeriodEnd"),
-        STANDSTILL_PERIOD_END("standstillPeriodEnd");
+        STANDSTILL_PERIOD_END("standstillPeriodEnd"),
+        START_NEW_STAGE("startNewStage");
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 
