@@ -204,6 +204,11 @@ public class ReleaseServiceImpl implements ReleaseService {
         release.setTag(Arrays.asList(Tag.COMPILED));
         release.setInitiationType(InitiationType.TENDER);
         release.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
+        release.setAwards(new LinkedHashSet<>());
+        release.getTender().setAwardPeriod(null);
+        release.getTender().setStandstillPeriod(null);
+        release.getTender().setEnquiries(new ArrayList<>());
+        release.setRelatedProcesses(new LinkedHashSet<>());
         if (Objects.nonNull(dto.getTender().getTenderPeriod()))
             release.getTender().setTenderPeriod(dto.getTender().getTenderPeriod());
         if (Objects.nonNull(dto.getTender().getEnquiryPeriod()))

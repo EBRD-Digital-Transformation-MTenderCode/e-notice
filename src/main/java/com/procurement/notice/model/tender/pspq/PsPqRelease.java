@@ -63,7 +63,7 @@ public class PsPqRelease {
     private Set<Award> awards;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
-    private final Set<RelatedProcess> relatedProcesses;
+    private Set<RelatedProcess> relatedProcesses;
 
 
     @JsonCreator
