@@ -187,7 +187,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         ms.setDate(startDate);
         ms.setId(getReleaseId(ms.getOcid()));
         ms.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
-        releaseDao.saveTender(getMSEntity(ms.getOcid(), ms));
+        releaseDao.saveTender(getMSEntity(cpid, ms));
         /*PS*/
         final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, previousStage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
