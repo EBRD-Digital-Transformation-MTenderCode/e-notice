@@ -197,7 +197,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         prevRelease.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
         releaseDao.saveTender(getReleaseEntity(prevRelease.getOcid(), stage, prevRelease));
         /*PQ*/
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, data.toString());
+        final PsPqRelease release = prevRelease;
         release.setOcid(getOcId(cpid, stage));
         release.setId(getReleaseId(prevRelease.getOcid()));
         release.setDate(startDate);
