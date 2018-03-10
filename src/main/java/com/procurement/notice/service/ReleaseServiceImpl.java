@@ -18,7 +18,7 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TenderServiceImpl implements TenderService {
+public class ReleaseServiceImpl implements ReleaseService {
 
     private static final String SEPARATOR = "-";
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
@@ -29,9 +29,9 @@ public class TenderServiceImpl implements TenderService {
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
-    public TenderServiceImpl(final ReleaseDao releaseDao,
-                             final JsonUtil jsonUtil,
-                             final DateUtil dateUtil) {
+    public ReleaseServiceImpl(final ReleaseDao releaseDao,
+                              final JsonUtil jsonUtil,
+                              final DateUtil dateUtil) {
         this.releaseDao = releaseDao;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;

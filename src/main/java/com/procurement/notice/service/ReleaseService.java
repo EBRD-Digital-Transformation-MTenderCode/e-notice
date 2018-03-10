@@ -7,7 +7,7 @@ import com.procurement.notice.model.tender.pspq.PsPqRelease;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface TenderService {
+public interface ReleaseService {
 
     ReleaseEntity getReleaseEntity(String cpId,
                                    String stage,

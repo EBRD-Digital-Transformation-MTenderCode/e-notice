@@ -24,16 +24,16 @@ public class EnquiryServiceImpl implements EnquiryService {
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
     private static final String ENQUIRY_NOT_FOUND_ERROR = "PsPqEnquiry not found.";
     private static final String ENQUIRY_JSON = "enquiry";
-    private final TenderService tenderService;
+    private final ReleaseService releaseService;
     private final ReleaseDao releaseDao;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
-    public EnquiryServiceImpl(final TenderService tenderService,
+    public EnquiryServiceImpl(final ReleaseService releaseService,
                               final ReleaseDao releaseDao,
                               final JsonUtil jsonUtil,
                               final DateUtil dateUtil) {
-        this.tenderService = tenderService;
+        this.releaseService = releaseService;
         this.releaseDao = releaseDao;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
@@ -50,7 +50,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         addEnquiryToTender(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -65,7 +65,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         addAnswerToEnquiry(release, enquiry);
         release.setDate(enquiry.getDate());
         release.setId(getReleaseId(release.getOcid()));
-        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -84,7 +84,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         release.getTender().setTenderPeriod(dto.getTenderPeriod());
         release.getTender().setEnquiryPeriod(dto.getEnquiryPeriod());
-        releaseDao.saveTender(tenderService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 

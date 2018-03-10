@@ -18,13 +18,13 @@ public class MainServiceImpl implements MainService {
     private static final String PARAM_ERROR = " should not be empty for this type of operation";
     private static final String IMPLEMENTATION_ERROR = "No implementation for this type of operation.";
     private final BudgetService budgetService;
-    private final TenderService tenderService;
+    private final ReleaseService releaseService;
     private final EnquiryService enquiryService;
 
     public MainServiceImpl(final BudgetService budgetService,
-                           final TenderServiceImpl tenderService,
+                           final ReleaseServiceImpl tenderService,
                            final EnquiryService enquiryService) {
-        this.tenderService = tenderService;
+        this.releaseService = tenderService;
         this.enquiryService = enquiryService;
         this.budgetService = budgetService;
     }
@@ -50,7 +50,7 @@ public class MainServiceImpl implements MainService {
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 return budgetService.updateFs(cpId, ocId, stage, data);
             case CREATE_CN:
-                return tenderService.createCn(cpId, stage, data);
+                return releaseService.createCn(cpId, stage, data);
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
@@ -60,17 +60,17 @@ public class MainServiceImpl implements MainService {
             case UNSUSPEND_TENDER:
                 return enquiryService.unsuspendTender(cpId, stage, data);
             case TENDER_PERIOD_END:
-                return tenderService.tenderPeriodEnd(cpId, stage, data);
+                return releaseService.tenderPeriodEnd(cpId, stage, data);
             case SUSPEND_TENDER:
-                return tenderService.suspendTender(cpId, stage, data);
+                return releaseService.suspendTender(cpId, stage, data);
             case AWARD_BY_BID:
-                return tenderService.awardByBid(cpId, stage, data);
+                return releaseService.awardByBid(cpId, stage, data);
             case AWARD_PERIOD_END:
-                return tenderService.awardPeriodEnd(cpId, stage, data);
+                return releaseService.awardPeriodEnd(cpId, stage, data);
             case STANDSTILL_PERIOD_END:
-                return tenderService.standstillPeriodEnd(cpId, stage, data);
+                return releaseService.standstillPeriodEnd(cpId, stage, data);
             case START_NEW_STAGE:
-                return tenderService.startNewStage(cpId, stage, previousStage, data);
+                return releaseService.startNewStage(cpId, stage, previousStage, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
