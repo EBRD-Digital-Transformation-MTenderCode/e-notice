@@ -204,7 +204,14 @@ public class ReleaseServiceImpl implements ReleaseService {
         release.setTag(Arrays.asList(Tag.COMPILED));
         release.setInitiationType(InitiationType.TENDER);
         release.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
-
+        if (Objects.nonNull(dto.getTender().getTenderPeriod()))
+            release.getTender().setTenderPeriod(dto.getTender().getTenderPeriod());
+        if (Objects.nonNull(dto.getTender().getEnquiryPeriod()))
+            release.getTender().setEnquiryPeriod(dto.getTender().getEnquiryPeriod());
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
+            release.getTender().setLots(dto.getLots());
+        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
+            release.setBids(new Bids(null, dto.getBids()));
         addRelatedProcessToMs(ms, release.getOcid(), RelatedProcess.RelatedProcessType.X_PREQUALIFICATION);
         addMsToRelatedProcess(release, ms.getOcid());
         releaseDao.saveTender(getReleaseEntity(release.getOcid(), stage, release));
