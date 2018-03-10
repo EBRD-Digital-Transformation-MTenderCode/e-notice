@@ -97,12 +97,15 @@ public class TenderServiceImpl implements TenderService {
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
-        release.setDate(dto.getAwardPeriod().getStartDate());
         release.setTag(Arrays.asList(Tag.AWARD));
-        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
-            release.getTender().setLots(dto.getLots());
+        if (Objects.nonNull(dto.getAwardPeriod())) {
+            release.getTender().setAwardPeriod(dto.getAwardPeriod());
+            release.setDate(dto.getAwardPeriod().getStartDate());
+        }
         if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
             release.setAwards(new LinkedHashSet<>(dto.getAwards()));
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
+            release.getTender().setLots(dto.getLots());
         if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
         tenderDao.saveTender(getTenderEntity(cpid, stage, release));
@@ -150,7 +153,8 @@ public class TenderServiceImpl implements TenderService {
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(dateUtil.getNowUTC());
         release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        release.getTender().setAwardPeriod(dto.getAwardPeriod());
+        if (Objects.nonNull(dto.getAwardPeriod()))
+            release.getTender().setAwardPeriod(dto.getAwardPeriod());
         if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
             release.setAwards(new LinkedHashSet<>(dto.getAwards()));
         if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
