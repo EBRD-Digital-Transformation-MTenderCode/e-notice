@@ -27,7 +27,7 @@ public class MainController {
     public ResponseEntity<ResponseDto> createRelease(@RequestParam final String cpId,
                                                      @RequestParam(required = false) final String ocId,
                                                      @RequestParam final String stage,
-                                                     @RequestParam final String previousStage,
+                                                     @RequestParam(required = false) final String previousStage,
                                                      @RequestParam final String operation,
                                                      @RequestParam(required = false) final String phase,
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
