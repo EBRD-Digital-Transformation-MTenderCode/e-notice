@@ -213,8 +213,6 @@ public class ReleaseServiceImpl implements ReleaseService {
             release.getTender().setTenderPeriod(dto.getTender().getTenderPeriod());
         if (Objects.nonNull(dto.getTender().getEnquiryPeriod()))
             release.getTender().setEnquiryPeriod(dto.getTender().getEnquiryPeriod());
-        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
-            release.getTender().setLots(dto.getLots());
         if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
         addRelatedProcessToMs(ms, release.getOcid(), RelatedProcess.RelatedProcessType.X_PREQUALIFICATION);
