@@ -111,11 +111,7 @@ public class BudgetServiceImpl implements BudgetService {
                 null
         );
         ei.getParties().add(partyBuyer);
-        buyer.setIdentifier(null);
-        buyer.setAdditionalIdentifiers(null);
-        buyer.setAddress(null);
-        buyer.setContactPoint(null);
-
+        clearOrganizationReference(buyer);
     }
 
     private void processFsParties(final ReleaseFS fs) {
@@ -134,6 +130,7 @@ public class BudgetServiceImpl implements BudgetService {
                 null
         );
         fs.getParties().add(partyFunder);
+        clearOrganizationReference(funder);
        /*payer*/
         OrganizationReference payer = fs.getPayer();
         payer.setId(payer.getIdentifier().getScheme() + SEPARATOR + payer.getIdentifier().getId());
@@ -155,6 +152,14 @@ public class BudgetServiceImpl implements BudgetService {
                     null);
             fs.getParties().add(partyPayer);
         }
+        clearOrganizationReference(payer);
+    }
+
+    private void clearOrganizationReference(final OrganizationReference organization){
+        organization.setIdentifier(null);
+        organization.setAdditionalIdentifiers(null);
+        organization.setAddress(null);
+        organization.setContactPoint(null);
     }
 
     private Optional<Organization> getParty(final Set<Organization> parties, final String partyId){
