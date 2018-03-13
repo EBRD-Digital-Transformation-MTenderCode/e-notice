@@ -12,9 +12,7 @@ import com.procurement.notice.model.entity.BudgetEntity;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
+import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,6 +68,7 @@ public class BudgetServiceImpl implements BudgetService {
         fs.setId(getReleaseId(fs.getOcid()));
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
+        processFsParties(fs);
         addEiRelatedProcessToFs(fs, cpid);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount));
@@ -98,18 +97,68 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private void processEiParties(final ReleaseEI ei) {
-        ei.getParties().forEach(p -> p.setId(p.getIdentifier().getScheme() + SEPARATOR + p.getIdentifier().getId()));
-        final Optional<Organization> partyOptional = ei.getParties().stream()
-                .filter(p -> p.getRoles().contains(Organization.PartyRole.BUYER))
-                .findFirst();
+        OrganizationReference buyer = ei.getBuyer();
+        buyer.setId(buyer.getIdentifier().getScheme() + SEPARATOR + buyer.getIdentifier().getId());
+        Organization partyBuyer = new Organization(
+                buyer.getId(),
+                buyer.getName(),
+                buyer.getIdentifier(),
+                new LinkedHashSet(buyer.getAdditionalIdentifiers()),
+                buyer.getAddress(),
+                buyer.getContactPoint(),
+                Collections.singletonList(Organization.PartyRole.BUYER),
+                null,
+                null
+        );
+        ei.getParties().add(partyBuyer);
+        buyer.setIdentifier(null);
+        buyer.setAdditionalIdentifiers(null);
+        buyer.setAddress(null);
+        buyer.setContactPoint(null);
+
+    }
+
+    private void processFsParties(final ReleaseFS fs) {
+        /*funder*/
+        OrganizationReference funder = fs.getFunder();
+        funder.setId(funder.getIdentifier().getScheme() + SEPARATOR + funder.getIdentifier().getId());
+        Organization partyFunder = new Organization(
+                funder.getId(),
+                funder.getName(),
+                funder.getIdentifier(),
+                new LinkedHashSet(funder.getAdditionalIdentifiers()),
+                funder.getAddress(),
+                funder.getContactPoint(),
+                Collections.singletonList(Organization.PartyRole.BUYER),
+                null,
+                null
+        );
+        fs.getParties().add(partyFunder);
+       /*payer*/
+        OrganizationReference payer = fs.getPayer();
+        payer.setId(payer.getIdentifier().getScheme() + SEPARATOR + payer.getIdentifier().getId());
+        Optional<Organization> partyOptional = getParty(fs.getParties(), funder.getId());
+        Organization partyPayer;
         if (partyOptional.isPresent()) {
-            final Organization party = partyOptional.get();
-            final OrganizationReference buyer = new OrganizationReference(
-                    party.getId(),
-                    party.getName()
-            );
-            ei.setBuyer(buyer);
+            partyPayer = partyOptional.get();
+            partyPayer.getRoles().add(Organization.PartyRole.PAYER);
+        }else{
+            partyPayer = new Organization(
+                    funder.getId(),
+                    funder.getName(),
+                    funder.getIdentifier(),
+                    new LinkedHashSet(funder.getAdditionalIdentifiers()),
+                    funder.getAddress(),
+                    funder.getContactPoint(),
+                    Collections.singletonList(Organization.PartyRole.PAYER),
+                    null,
+                    null);
+            fs.getParties().add(partyPayer);
         }
+    }
+
+    private Optional<Organization> getParty(final Set<Organization> parties, final String partyId){
+        return parties.stream().filter(p->p.getId().equals(partyId)).findFirst();
     }
 
     private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {

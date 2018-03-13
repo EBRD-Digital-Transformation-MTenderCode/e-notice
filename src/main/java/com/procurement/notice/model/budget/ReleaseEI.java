@@ -60,7 +60,7 @@ public class ReleaseEI {
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
     @JsonProperty("buyer")
-    private OrganizationReference buyer;
+    private final OrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
@@ -88,7 +88,7 @@ public class ReleaseEI {
         this.description = description;
         this.language = language == null ? "en" : language;
         this.tender = tender;
-        this.parties = parties;
+        this.parties = parties == null ? new LinkedHashSet<>() : parties;
         this.planning = planning;
         this.buyer = buyer;
         this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
