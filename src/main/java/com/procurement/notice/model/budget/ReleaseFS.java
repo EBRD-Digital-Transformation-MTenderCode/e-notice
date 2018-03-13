@@ -59,9 +59,9 @@ public class ReleaseFS {
     @JsonProperty("planning")
     private FsPlanning planning;
     @JsonProperty("funder")
-    private final OrganizationReference funder;
+    private OrganizationReference funder;
     @JsonProperty("payer")
-    private final OrganizationReference payer;
+    private OrganizationReference payer;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;

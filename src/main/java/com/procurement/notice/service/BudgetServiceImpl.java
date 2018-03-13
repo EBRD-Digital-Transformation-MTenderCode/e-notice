@@ -130,7 +130,7 @@ public class BudgetServiceImpl implements BudgetService {
                 null
         );
         fs.getParties().add(partyFunder);
-        clearOrganizationReference(funder);
+        fs.setFunder(null);
        /*payer*/
         OrganizationReference payer = fs.getPayer();
         payer.setId(payer.getIdentifier().getScheme() + SEPARATOR + payer.getIdentifier().getId());
@@ -152,7 +152,7 @@ public class BudgetServiceImpl implements BudgetService {
                     null);
             fs.getParties().add(partyPayer);
         }
-        clearOrganizationReference(payer);
+        fs.setPayer(null);
     }
 
     private void clearOrganizationReference(final OrganizationReference organization){
