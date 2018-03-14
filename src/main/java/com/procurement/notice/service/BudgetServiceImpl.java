@@ -98,7 +98,6 @@ public class BudgetServiceImpl implements BudgetService {
 
     private void processEiParties(final ReleaseEI ei) {
         OrganizationReference buyer = ei.getBuyer();
-        buyer.setId(buyer.getIdentifier().getScheme() + SEPARATOR + buyer.getIdentifier().getId());
         Organization partyBuyer = new Organization(
                 buyer.getId(),
                 buyer.getName(),
@@ -117,7 +116,6 @@ public class BudgetServiceImpl implements BudgetService {
     private void processFsParties(final ReleaseFS fs) {
         /*funder*/
         OrganizationReference funder = fs.getFunder();
-        funder.setId(funder.getIdentifier().getScheme() + SEPARATOR + funder.getIdentifier().getId());
         Organization partyFunder = new Organization(
                 funder.getId(),
                 funder.getName(),
@@ -125,7 +123,7 @@ public class BudgetServiceImpl implements BudgetService {
                 new LinkedHashSet(funder.getAdditionalIdentifiers()),
                 funder.getAddress(),
                 funder.getContactPoint(),
-                Collections.singletonList(Organization.PartyRole.BUYER),
+                Collections.singletonList(Organization.PartyRole.FUNDER),
                 null,
                 null
         );
@@ -133,20 +131,19 @@ public class BudgetServiceImpl implements BudgetService {
         fs.setFunder(null);
        /*payer*/
         OrganizationReference payer = fs.getPayer();
-        payer.setId(payer.getIdentifier().getScheme() + SEPARATOR + payer.getIdentifier().getId());
-        Optional<Organization> partyOptional = getParty(fs.getParties(), funder.getId());
+        Optional<Organization> partyOptional = getParty(fs.getParties(), payer.getId());
         Organization partyPayer;
         if (partyOptional.isPresent()) {
             partyPayer = partyOptional.get();
             partyPayer.getRoles().add(Organization.PartyRole.PAYER);
         }else{
             partyPayer = new Organization(
-                    funder.getId(),
-                    funder.getName(),
-                    funder.getIdentifier(),
-                    new LinkedHashSet(funder.getAdditionalIdentifiers()),
-                    funder.getAddress(),
-                    funder.getContactPoint(),
+                    payer.getId(),
+                    payer.getName(),
+                    payer.getIdentifier(),
+                    new LinkedHashSet(payer.getAdditionalIdentifiers()),
+                    payer.getAddress(),
+                    payer.getContactPoint(),
                     Collections.singletonList(Organization.PartyRole.PAYER),
                     null,
                     null);
