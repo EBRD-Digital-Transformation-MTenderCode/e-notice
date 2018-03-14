@@ -98,66 +98,74 @@ public class BudgetServiceImpl implements BudgetService {
 
     private void processEiParties(final ReleaseEI ei) {
         OrganizationReference buyer = ei.getBuyer();
-        Organization partyBuyer = new Organization(
-                buyer.getId(),
-                buyer.getName(),
-                buyer.getIdentifier(),
-                new LinkedHashSet(buyer.getAdditionalIdentifiers()),
-                buyer.getAddress(),
-                buyer.getContactPoint(),
-                Collections.singletonList(Organization.PartyRole.BUYER),
-                buyer.getDetails(),
-                null
-        );
-        ei.getParties().add(partyBuyer);
-        clearOrganizationReference(buyer);
+        if (Objects.nonNull(buyer)) {
+            Organization partyBuyer = new Organization(
+                    buyer.getId(),
+                    buyer.getName(),
+                    buyer.getIdentifier(),
+                    new LinkedHashSet(buyer.getAdditionalIdentifiers()),
+                    buyer.getAddress(),
+                    buyer.getContactPoint(),
+                    Collections.singletonList(Organization.PartyRole.BUYER),
+                    buyer.getDetails(),
+                    null
+            );
+            ei.getParties().add(partyBuyer);
+            clearOrganizationReference(buyer);
+        }
     }
 
     private void processFsParties(final ReleaseFS fs) {
         /*funder*/
         OrganizationReference funder = fs.getFunder();
-        Organization partyFunder = new Organization(
-                funder.getId(),
-                funder.getName(),
-                funder.getIdentifier(),
-                new LinkedHashSet(funder.getAdditionalIdentifiers()),
-                funder.getAddress(),
-                funder.getContactPoint(),
-                Collections.singletonList(Organization.PartyRole.FUNDER),
-                funder.getDetails(),
-                null
-        );
-        fs.getParties().add(partyFunder);
-        fs.setFunder(null);
+        if (Objects.nonNull(funder)) {
+            Organization partyFunder = new Organization(
+                    funder.getId(),
+                    funder.getName(),
+                    funder.getIdentifier(),
+                    new LinkedHashSet(funder.getAdditionalIdentifiers()),
+                    funder.getAddress(),
+                    funder.getContactPoint(),
+                    Collections.singletonList(Organization.PartyRole.FUNDER),
+                    funder.getDetails(),
+                    null
+            );
+            fs.getParties().add(partyFunder);
+            fs.setFunder(null);
+        }
        /*payer*/
         OrganizationReference payer = fs.getPayer();
-        Optional<Organization> partyOptional = getParty(fs.getParties(), payer.getId());
-        Organization partyPayer;
-        if (partyOptional.isPresent()) {
-            partyPayer = partyOptional.get();
-            partyPayer.getRoles().add(Organization.PartyRole.PAYER);
-        } else {
-            partyPayer = new Organization(
-                    payer.getId(),
-                    payer.getName(),
-                    payer.getIdentifier(),
-                    new LinkedHashSet(payer.getAdditionalIdentifiers()),
-                    payer.getAddress(),
-                    payer.getContactPoint(),
-                    Collections.singletonList(Organization.PartyRole.PAYER),
-                    payer.getDetails(),
-                    null);
-            fs.getParties().add(partyPayer);
+        if (Objects.nonNull(payer)) {
+            Optional<Organization> partyOptional = getParty(fs.getParties(), payer.getId());
+            Organization partyPayer;
+            if (partyOptional.isPresent()) {
+                partyPayer = partyOptional.get();
+                partyPayer.getRoles().add(Organization.PartyRole.PAYER);
+            } else {
+                partyPayer = new Organization(
+                        payer.getId(),
+                        payer.getName(),
+                        payer.getIdentifier(),
+                        new LinkedHashSet(payer.getAdditionalIdentifiers()),
+                        payer.getAddress(),
+                        payer.getContactPoint(),
+                        Collections.singletonList(Organization.PartyRole.PAYER),
+                        payer.getDetails(),
+                        null);
+                fs.getParties().add(partyPayer);
+            }
+            fs.setPayer(null);
         }
-        fs.setPayer(null);
     }
 
     private void clearOrganizationReference(final OrganizationReference organization) {
-        organization.setIdentifier(null);
-        organization.setAdditionalIdentifiers(null);
-        organization.setAddress(null);
-        organization.setContactPoint(null);
-        organization.setDetails(null);
+        if (Objects.nonNull(organization)) {
+            organization.setIdentifier(null);
+            organization.setAdditionalIdentifiers(null);
+            organization.setAddress(null);
+            organization.setContactPoint(null);
+            organization.setDetails(null);
+        }
     }
 
     private Optional<Organization> getParty(final Set<Organization> parties, final String partyId) {
