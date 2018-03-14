@@ -23,7 +23,6 @@ import lombok.Setter;
         "tag",
         "initiationType",
         "language",
-        "planning",
         "tender",
         "parties",
         "buyer",
@@ -44,8 +43,6 @@ public class MsRelease {
     private InitiationType initiationType;
     @JsonProperty("language")
     private String language;
-    @JsonProperty("planning")
-    private final MsPlanning planning;
     @JsonProperty("tender")
     private final MsTender tender;
     @JsonProperty("parties")
@@ -64,7 +61,6 @@ public class MsRelease {
                      @JsonProperty("tag") final List<Tag> tag,
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("language") final String language,
-                     @JsonProperty("planning") final MsPlanning planning,
                      @JsonProperty("tender") final MsTender tender,
                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
                      @JsonProperty("buyer") final OrganizationReference buyer,
@@ -75,7 +71,6 @@ public class MsRelease {
         this.tag = tag;
         this.initiationType = initiationType;
         this.language = language == null ? "en" : language;
-        this.planning = planning;
         this.tender = tender;
         this.parties = parties;
         this.buyer = buyer;
