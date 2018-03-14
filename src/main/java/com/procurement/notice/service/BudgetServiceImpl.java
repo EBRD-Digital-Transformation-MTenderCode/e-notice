@@ -222,6 +222,9 @@ public class BudgetServiceImpl implements BudgetService {
                 fsOcId,
                 ""
         );
+        if (Objects.isNull(ei.getRelatedProcesses())) {
+            ei.setRelatedProcesses(new LinkedHashSet<>());
+        }
         ei.getRelatedProcesses().add(relatedProcess);
     }
 
@@ -233,6 +236,9 @@ public class BudgetServiceImpl implements BudgetService {
                 eiOcId,
                 ""
         );
+        if (Objects.isNull(fs.getRelatedProcesses())) {
+            fs.setRelatedProcesses(new LinkedHashSet<>());
+        }
         fs.getRelatedProcesses().add(relatedProcess);
     }
 

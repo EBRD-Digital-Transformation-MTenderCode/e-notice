@@ -98,6 +98,6 @@ public class ReleaseFS {
         this.payer = payer;
         this.parties = parties == null ? new LinkedHashSet<>() : parties;
         this.planning = planning;
-        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
+        this.relatedProcesses = relatedProcesses;
     }
 }

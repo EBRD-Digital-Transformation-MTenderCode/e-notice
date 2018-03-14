@@ -91,6 +91,6 @@ public class ReleaseEI {
         this.parties = parties == null ? new LinkedHashSet<>() : parties;
         this.planning = planning;
         this.buyer = buyer;
-        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
+        this.relatedProcesses = relatedProcesses;
     }
 }
