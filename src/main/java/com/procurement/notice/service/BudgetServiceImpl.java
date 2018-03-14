@@ -106,7 +106,7 @@ public class BudgetServiceImpl implements BudgetService {
                 buyer.getAddress(),
                 buyer.getContactPoint(),
                 Collections.singletonList(Organization.PartyRole.BUYER),
-                null,
+                buyer.getDetails(),
                 null
         );
         ei.getParties().add(partyBuyer);
@@ -124,7 +124,7 @@ public class BudgetServiceImpl implements BudgetService {
                 funder.getAddress(),
                 funder.getContactPoint(),
                 Collections.singletonList(Organization.PartyRole.FUNDER),
-                null,
+                funder.getDetails(),
                 null
         );
         fs.getParties().add(partyFunder);
@@ -136,7 +136,7 @@ public class BudgetServiceImpl implements BudgetService {
         if (partyOptional.isPresent()) {
             partyPayer = partyOptional.get();
             partyPayer.getRoles().add(Organization.PartyRole.PAYER);
-        }else{
+        } else {
             partyPayer = new Organization(
                     payer.getId(),
                     payer.getName(),
@@ -145,22 +145,23 @@ public class BudgetServiceImpl implements BudgetService {
                     payer.getAddress(),
                     payer.getContactPoint(),
                     Collections.singletonList(Organization.PartyRole.PAYER),
-                    null,
+                    payer.getDetails(),
                     null);
             fs.getParties().add(partyPayer);
         }
         fs.setPayer(null);
     }
 
-    private void clearOrganizationReference(final OrganizationReference organization){
+    private void clearOrganizationReference(final OrganizationReference organization) {
         organization.setIdentifier(null);
         organization.setAdditionalIdentifiers(null);
         organization.setAddress(null);
         organization.setContactPoint(null);
+        organization.setDetails(null);
     }
 
-    private Optional<Organization> getParty(final Set<Organization> parties, final String partyId){
-        return parties.stream().filter(p->p.getId().equals(partyId)).findFirst();
+    private Optional<Organization> getParty(final Set<Organization> parties, final String partyId) {
+        return parties.stream().filter(p -> p.getId().equals(partyId)).findFirst();
     }
 
     private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
