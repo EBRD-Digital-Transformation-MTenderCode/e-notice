@@ -39,7 +39,7 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ei.setId(getReleaseId(cpid));
-        ei.setTag(Arrays.asList(Tag.COMPILED));
+        ei.setTag(Collections.singletonList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
         budgetDao.saveBudget(getEiEntity(ei, stage));
@@ -66,7 +66,7 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
-        fs.setTag(Arrays.asList(Tag.COMPILED));
+        fs.setTag(Collections.singletonList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         processFsParties(fs);
         addEiRelatedProcessToFs(fs, cpid);
@@ -110,6 +110,9 @@ public class BudgetServiceImpl implements BudgetService {
                     buyer.getDetails(),
                     null
             );
+            if (Objects.isNull(ei.getParties())) {
+                ei.setParties(new LinkedHashSet<>());
+            }
             ei.getParties().add(partyBuyer);
             clearOrganizationReference(buyer);
         }
@@ -130,6 +133,9 @@ public class BudgetServiceImpl implements BudgetService {
                     funder.getDetails(),
                     null
             );
+            if (Objects.isNull(fs.getParties())) {
+                fs.setParties(new LinkedHashSet<>());
+            }
             fs.getParties().add(partyFunder);
             fs.setFunder(null);
         }
@@ -152,6 +158,9 @@ public class BudgetServiceImpl implements BudgetService {
                         Collections.singletonList(Organization.PartyRole.PAYER),
                         payer.getDetails(),
                         null);
+                if (Objects.isNull(fs.getParties())) {
+                    fs.setParties(new LinkedHashSet<>());
+                }
                 fs.getParties().add(partyPayer);
             }
             fs.setPayer(null);

@@ -88,7 +88,7 @@ public class ReleaseEI {
         this.description = description;
         this.language = language == null ? "en" : language;
         this.tender = tender;
-        this.parties = parties == null ? new LinkedHashSet<>() : parties;
+        this.parties = parties;
         this.planning = planning;
         this.buyer = buyer;
         this.relatedProcesses = relatedProcesses;

@@ -96,7 +96,7 @@ public class ReleaseFS {
         this.tender = tender;
         this.funder = funder;
         this.payer = payer;
-        this.parties = parties == null ? new LinkedHashSet<>() : parties;
+        this.parties = parties;
         this.planning = planning;
         this.relatedProcesses = relatedProcesses;
     }
