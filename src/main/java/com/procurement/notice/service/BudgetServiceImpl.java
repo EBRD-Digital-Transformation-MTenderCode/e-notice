@@ -178,7 +178,10 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private Optional<Organization> getParty(final Set<Organization> parties, final String partyId) {
-        return parties.stream().filter(p -> p.getId().equals(partyId)).findFirst();
+        Optional<Organization> organizationOptional = Optional.empty();
+        if (Objects.nonNull(parties))
+            organizationOptional = parties.stream().filter(p -> p.getId().equals(partyId)).findFirst();
+        return organizationOptional;
     }
 
     private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
