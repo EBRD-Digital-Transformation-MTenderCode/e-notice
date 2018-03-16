@@ -25,7 +25,6 @@ import lombok.Setter;
         "language",
         "hasPreviousNotice",
         "purposeOfNotice",
-        "planning",
         "tender",
         "parties",
         "bids",
@@ -52,8 +51,6 @@ public class PsPqRelease {
     private final Boolean hasPreviousNotice;
     @JsonProperty("purposeOfNotice")
     private final PurposeOfNotice purposeOfNotice;
-    @JsonProperty("planning")
-    private final PsPqPlanning planning;
     @JsonProperty("tender")
     private final PsPqTender tender;
     @JsonProperty("parties")
@@ -77,7 +74,6 @@ public class PsPqRelease {
                        @JsonProperty("initiationType") final InitiationType initiationType,
                        @JsonProperty("language") final String language,
                        @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                       @JsonProperty("planning") final PsPqPlanning planning,
                        @JsonProperty("tender") final PsPqTender tender,
                        @JsonProperty("awards") final LinkedHashSet<Award> awards,
                        @JsonProperty("bids") final Bids bids,
@@ -90,7 +86,6 @@ public class PsPqRelease {
         this.tag = tag;
         this.initiationType = initiationType;
         this.parties = parties;
-        this.planning = planning;
         this.tender = tender;
         this.awards = awards;
         this.language = language == null ? "en" : language;

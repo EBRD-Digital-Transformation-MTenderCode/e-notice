@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
+import com.procurement.notice.model.tender.pspq.PsPqPlanning;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import lombok.Setter;
         "tag",
         "initiationType",
         "language",
+        "planning",
         "tender",
         "parties",
         "buyer",
@@ -43,6 +45,8 @@ public class MsRelease {
     private InitiationType initiationType;
     @JsonProperty("language")
     private String language;
+    @JsonProperty("planning")
+    private final PsPqPlanning planning;
     @JsonProperty("tender")
     private final MsTender tender;
     @JsonProperty("parties")
@@ -61,6 +65,7 @@ public class MsRelease {
                      @JsonProperty("tag") final List<Tag> tag,
                      @JsonProperty("initiationType") final InitiationType initiationType,
                      @JsonProperty("language") final String language,
+                     @JsonProperty("planning") final PsPqPlanning planning,
                      @JsonProperty("tender") final MsTender tender,
                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
                      @JsonProperty("buyer") final OrganizationReference buyer,
@@ -71,6 +76,7 @@ public class MsRelease {
         this.tag = tag;
         this.initiationType = initiationType;
         this.language = language == null ? "en" : language;
+        this.planning = planning;
         this.tender = tender;
         this.parties = parties;
         this.buyer = buyer;
