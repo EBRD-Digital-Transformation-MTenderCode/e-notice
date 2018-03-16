@@ -94,6 +94,6 @@ public class PsPqRelease {
         this.purposeOfNotice = purposeOfNotice == null ?
                 new PurposeOfNotice(null, false, null)
                 : purposeOfNotice;
-        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
+        this.relatedProcesses = relatedProcesses;
     }
 }

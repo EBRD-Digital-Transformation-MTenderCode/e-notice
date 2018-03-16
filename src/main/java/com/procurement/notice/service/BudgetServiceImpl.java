@@ -39,7 +39,7 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ei.setId(getReleaseId(cpid));
-        ei.setTag(Collections.singletonList(Tag.COMPILED));
+        ei.setTag(Arrays.asList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
         budgetDao.saveBudget(getEiEntity(ei, stage));
@@ -66,7 +66,7 @@ public class BudgetServiceImpl implements BudgetService {
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
-        fs.setTag(Collections.singletonList(Tag.COMPILED));
+        fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         processFsParties(fs);
         addEiRelatedProcessToFs(fs, cpid);
@@ -106,7 +106,7 @@ public class BudgetServiceImpl implements BudgetService {
                     new LinkedHashSet(buyer.getAdditionalIdentifiers()),
                     buyer.getAddress(),
                     buyer.getContactPoint(),
-                    Collections.singletonList(Organization.PartyRole.BUYER),
+                    new HashSet(Arrays.asList(Organization.PartyRole.BUYER)),
                     buyer.getDetails(),
                     null
             );
@@ -129,7 +129,7 @@ public class BudgetServiceImpl implements BudgetService {
                     new LinkedHashSet(funder.getAdditionalIdentifiers()),
                     funder.getAddress(),
                     funder.getContactPoint(),
-                    Collections.singletonList(Organization.PartyRole.FUNDER),
+                    new HashSet(Arrays.asList(Organization.PartyRole.FUNDER)),
                     funder.getDetails(),
                     null
             );
@@ -155,7 +155,7 @@ public class BudgetServiceImpl implements BudgetService {
                         new LinkedHashSet(payer.getAdditionalIdentifiers()),
                         payer.getAddress(),
                         payer.getContactPoint(),
-                        Collections.singletonList(Organization.PartyRole.PAYER),
+                        new HashSet(Arrays.asList(Organization.PartyRole.PAYER)),
                         payer.getDetails(),
                         null);
                 if (Objects.isNull(fs.getParties())) {

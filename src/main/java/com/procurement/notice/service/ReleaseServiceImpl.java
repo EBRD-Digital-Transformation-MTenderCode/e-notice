@@ -58,7 +58,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         final MsRelease ms = jsonUtil.toObject(MsRelease.class, data.toString());
         ms.setOcid(cpid);
         ms.setId(getReleaseId(cpid));
-        ms.setTag(Collections.singletonList(Tag.COMPILED));
+        ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, data.toString());
@@ -84,7 +84,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
-        release.setTag(Collections.singletonList(Tag.AWARD));
+        release.setTag(Arrays.asList(Tag.AWARD));
         if (Objects.nonNull(dto.getAwardPeriod())) {
             release.getTender().setAwardPeriod(dto.getAwardPeriod());
             release.setDate(dto.getAwardPeriod().getStartDate());
@@ -122,7 +122,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
-        release.setTag(Collections.singletonList(Tag.AWARD_UPDATE));
+        release.setTag(Arrays.asList(Tag.AWARD_UPDATE));
         release.setDate(dto.getAward().getDate());
         release.setId(getReleaseId(release.getOcid()));
         updateAward(release, dto.getAward());
@@ -201,7 +201,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         release.setOcid(getOcId(cpid, stage));
         release.setId(getReleaseId(prevRelease.getOcid()));
         release.setDate(startDate);
-        release.setTag(Collections.singletonList(Tag.COMPILED));
+        release.setTag(Arrays.asList(Tag.COMPILED));
         release.setInitiationType(InitiationType.TENDER);
         release.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
         release.setAwards(new LinkedHashSet<>());

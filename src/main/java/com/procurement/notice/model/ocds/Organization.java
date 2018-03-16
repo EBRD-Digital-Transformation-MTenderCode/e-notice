@@ -75,7 +75,7 @@ public class Organization {
             "[partyRole codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#party-role). Values " +
             "from the provided codelist should be used wherever possible, though extended values can be provided if the " +
             "codelist does not have a relevant code.")
-    private final List<PartyRole> roles;
+    private final Set<PartyRole> roles;
 
     @JsonProperty("details")
     @JsonPropertyDescription("Additional classification information about parties can be provided using partyDetail " +
@@ -90,10 +90,10 @@ public class Organization {
     public Organization(@JsonProperty("id") final String id,
                         @JsonProperty("name") final String name,
                         @JsonProperty("identifier") final Identifier identifier,
-                        @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier> additionalIdentifiers,
+                        @JsonProperty("additionalIdentifiers") final HashSet<Identifier> additionalIdentifiers,
                         @JsonProperty("address") final Address address,
                         @JsonProperty("contactPoint") final ContactPoint contactPoint,
-                        @JsonProperty("roles") final List<PartyRole> roles,
+                        @JsonProperty("roles") final HashSet<PartyRole> roles,
                         @JsonProperty("details") final Details details,
                         @JsonProperty("buyerProfile") final String buyerProfile) {
         this.name = name;
@@ -102,7 +102,7 @@ public class Organization {
         this.additionalIdentifiers = additionalIdentifiers;
         this.address = address;
         this.contactPoint = contactPoint;
-        this.roles = roles;
+        this.roles = roles == null ? new LinkedHashSet<>() : roles;
         this.details = details;
         this.buyerProfile = buyerProfile;
     }
