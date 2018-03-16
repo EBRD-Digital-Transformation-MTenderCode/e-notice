@@ -292,26 +292,30 @@ public class ReleaseServiceImpl implements ReleaseService {
     private void addRelatedProcessToMs(final MsRelease ms,
                                        final String ocId,
                                        final RelatedProcess.RelatedProcessType processType) {
-        ms.getRelatedProcesses().add(
-                new RelatedProcess(
+        RelatedProcess relatedProcess = new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Arrays.asList(processType),
                         RelatedProcess.RelatedProcessScheme.OCID,
                         ocId,
-                        "")
-        );
+                        "");
+        if (Objects.isNull(ms.getRelatedProcesses())) {
+            ms.setRelatedProcesses(new LinkedHashSet<>());
+        }
+        ms.getRelatedProcesses().add(relatedProcess);
     }
 
     private void addMsToRelatedProcess(final PsPqRelease release,
                                        final String cpId) {
-        release.getRelatedProcesses().add(
-                new RelatedProcess(
+        RelatedProcess relatedProcess = new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
                         RelatedProcess.RelatedProcessScheme.OCID,
                         cpId,
-                        "")
-        );
+                        "");
+        if (Objects.isNull(release.getRelatedProcesses())) {
+            release.setRelatedProcesses(new LinkedHashSet<>());
+        }
+        release.getRelatedProcesses().add(relatedProcess);
     }
 
 

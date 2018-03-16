@@ -56,7 +56,7 @@ public class MsRelease {
     private final OrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
-    private final Set<RelatedProcess> relatedProcesses;
+    private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
     public MsRelease(@JsonProperty("ocid") final String ocid,
@@ -80,6 +80,6 @@ public class MsRelease {
         this.tender = tender;
         this.parties = parties;
         this.buyer = buyer;
-        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
+        this.relatedProcesses = relatedProcesses;
     }
 }
