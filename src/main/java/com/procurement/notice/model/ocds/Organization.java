@@ -102,7 +102,7 @@ public class Organization {
         this.additionalIdentifiers = additionalIdentifiers;
         this.address = address;
         this.contactPoint = contactPoint;
-        this.roles = roles == null ? new LinkedHashSet<>() : roles;
+        this.roles = roles == null ? new HashSet<>() : roles;
         this.details = details;
         this.buyerProfile = buyerProfile;
     }
