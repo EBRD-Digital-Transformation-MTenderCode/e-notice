@@ -11,6 +11,7 @@ import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
 import com.procurement.notice.model.tender.pspq.PsPqRelease;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public ResponseDto createEnquiry(final String cpid,
                                      final String stage,
+                                     final LocalDateTime releaseDate,
                                      final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
@@ -57,6 +59,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public ResponseDto addAnswer(final String cpid,
                                  final String stage,
+                                 final LocalDateTime releaseDate,
                                  final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
@@ -72,6 +75,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public ResponseDto unsuspendTender(final String cpid,
                                        final String stage,
+                                       final LocalDateTime releaseDate,
                                        final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));

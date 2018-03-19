@@ -52,6 +52,7 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto updateEi(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
                 .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
@@ -85,6 +86,7 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseDto updateFs(final String cpid,
                                 final String ocid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(FS_NOT_FOUND_ERROR));

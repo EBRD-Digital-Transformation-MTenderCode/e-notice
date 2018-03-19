@@ -43,35 +43,35 @@ public class MainServiceImpl implements MainService {
             case CREATE_EI:
                 return budgetService.createEi(cpId, stage, releaseDate, data);
             case UPDATE_EI:
-                return budgetService.updateEi(cpId, stage, data);
+                return budgetService.updateEi(cpId, stage, releaseDate, data);
             case CREATE_FS:
                 return budgetService.createFs(cpId, stage, releaseDate, data);
             case UPDATE_FS:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return budgetService.updateFs(cpId, ocId, stage, data);
+                return budgetService.updateFs(cpId, ocId, stage, releaseDate, data);
             case CREATE_CN:
-                return releaseService.createCn(cpId, stage, data);
+                return releaseService.createCn(cpId, stage, releaseDate, data);
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
-                return enquiryService.createEnquiry(cpId, stage, data);
+                return enquiryService.createEnquiry(cpId, stage, releaseDate, data);
             case ADD_ANSWER:
-                return enquiryService.addAnswer(cpId, stage, data);
+                return enquiryService.addAnswer(cpId, stage, releaseDate, data);
             case UNSUSPEND_TENDER:
-                return enquiryService.unsuspendTender(cpId, stage, data);
+                return enquiryService.unsuspendTender(cpId, stage, releaseDate, data);
             case TENDER_PERIOD_END:
-                return releaseService.tenderPeriodEnd(cpId, stage, data);
+                return releaseService.tenderPeriodEnd(cpId, stage, releaseDate, data);
             case SUSPEND_TENDER:
-                return releaseService.suspendTender(cpId, stage, data);
+                return releaseService.suspendTender(cpId, stage, releaseDate, data);
             case AWARD_BY_BID:
-                return releaseService.awardByBid(cpId, stage, data);
+                return releaseService.awardByBid(cpId, stage, releaseDate, data);
             case AWARD_PERIOD_END:
-                return releaseService.awardPeriodEnd(cpId, stage, data);
+                return releaseService.awardPeriodEnd(cpId, stage, releaseDate, data);
             case STANDSTILL_PERIOD_END:
-                return releaseService.standstillPeriodEnd(cpId, stage, data);
+                return releaseService.standstillPeriodEnd(cpId, stage, releaseDate, data);
             case START_NEW_STAGE:
                 Objects.requireNonNull(previousStage, "previousStage " + PARAM_ERROR);
-                return releaseService.startNewStage(cpId, stage, previousStage, data);
+                return releaseService.startNewStage(cpId, stage, previousStage, releaseDate, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }

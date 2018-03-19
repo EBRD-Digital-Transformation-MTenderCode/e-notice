@@ -15,6 +15,7 @@ public interface BudgetService {
 
     ResponseDto updateEi(String cpid,
                          String stage,
+                         LocalDateTime releaseDate,
                          JsonNode data);
 
     ResponseDto createFs(String cpid,
@@ -25,5 +26,6 @@ public interface BudgetService {
     ResponseDto updateFs(String cpid,
                          String ocid,
                          String stage,
+                         LocalDateTime releaseDate,
                          JsonNode data);
 }

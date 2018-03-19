@@ -54,6 +54,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public ResponseDto createCn(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final MsRelease ms = jsonUtil.toObject(MsRelease.class, data.toString());
         ms.setOcid(cpid);
@@ -78,7 +79,10 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto tenderPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+    public ResponseDto tenderPeriodEnd(final String cpid,
+                                       final String stage,
+                                       final LocalDateTime releaseDate,
+                                       final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
@@ -102,6 +106,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public ResponseDto suspendTender(final String cpid,
                                      final String stage,
+                                     final LocalDateTime releaseDate,
                                      final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR));
@@ -117,6 +122,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public ResponseDto awardByBid(final String cpid,
                                   final String stage,
+                                  final LocalDateTime releaseDate,
                                   final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
@@ -132,7 +138,10 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto awardPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+    public ResponseDto awardPeriodEnd(final String cpid,
+                                      final String stage,
+                                      final LocalDateTime releaseDate,
+                                      final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
@@ -153,7 +162,10 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto standstillPeriodEnd(final String cpid, final String stage, final JsonNode data) {
+    public ResponseDto standstillPeriodEnd(final String cpid,
+                                           final String stage,
+                                           final LocalDateTime releaseDate,
+                                           final JsonNode data) {
         final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, jsonUtil.toJson(data));
         /*MS*/
         final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getByCpIdAndOcId(cpid, cpid))
@@ -177,7 +189,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto startNewStage(final String cpid, final String stage, final String previousStage, final JsonNode data) {
+    public ResponseDto startNewStage(final String cpid,
+                                     final String stage,
+                                     final String previousStage,
+                                     final LocalDateTime releaseDate,
+                                     final JsonNode data) {
         final StartNewStageDto dto = jsonUtil.toObject(StartNewStageDto.class, jsonUtil.toJson(data));
         final LocalDateTime startDate = dto.getTender().getTenderPeriod().getStartDate();
         /*MS*/
