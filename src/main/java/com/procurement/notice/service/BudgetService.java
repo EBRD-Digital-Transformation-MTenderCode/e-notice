@@ -2,6 +2,7 @@ package com.procurement.notice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,7 +10,8 @@ public interface BudgetService {
 
     ResponseDto createEi(String cpid,
                          String stage,
-                         JsonNode data);
+                         JsonNode data,
+                         LocalDateTime releaseDate);
 
     ResponseDto updateEi(String cpid,
                          String stage,

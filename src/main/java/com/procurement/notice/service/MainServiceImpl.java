@@ -41,7 +41,7 @@ public class MainServiceImpl implements MainService {
         final Operation operationType = Operation.fromValue(operation);
         switch (operationType) {
             case CREATE_EI:
-                return budgetService.createEi(cpId, stage, data);
+                return budgetService.createEi(cpId, stage, data, releaseDate);
             case UPDATE_EI:
                 return budgetService.updateEi(cpId, stage, data);
             case CREATE_FS:

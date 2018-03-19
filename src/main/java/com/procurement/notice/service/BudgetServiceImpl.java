@@ -12,6 +12,7 @@ import com.procurement.notice.model.entity.BudgetEntity;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +37,12 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createEi(final String cpid,
                                 final String stage,
-                                final JsonNode data) {
+                                final JsonNode data,
+                                final LocalDateTime releaseDate) {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ei.setId(getReleaseId(cpid));
         ei.setTag(Arrays.asList(Tag.COMPILED));
+        ei.setDate(releaseDate);
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
         budgetDao.saveBudget(getEiEntity(ei, stage));
@@ -108,7 +111,7 @@ public class BudgetServiceImpl implements BudgetService {
                     buyer.getContactPoint(),
                     new HashSet(Arrays.asList(Organization.PartyRole.BUYER)),
                     buyer.getDetails(),
-                    null
+                    buyer.getBuyerProfile()
             );
             if (Objects.isNull(ei.getParties())) {
                 ei.setParties(new LinkedHashSet<>());
@@ -131,7 +134,7 @@ public class BudgetServiceImpl implements BudgetService {
                     funder.getContactPoint(),
                     new HashSet(Arrays.asList(Organization.PartyRole.FUNDER)),
                     funder.getDetails(),
-                    null
+                    funder.getBuyerProfile()
             );
             if (Objects.isNull(fs.getParties())) {
                 fs.setParties(new LinkedHashSet<>());
@@ -157,7 +160,8 @@ public class BudgetServiceImpl implements BudgetService {
                         payer.getContactPoint(),
                         new HashSet(Arrays.asList(Organization.PartyRole.PAYER)),
                         payer.getDetails(),
-                        null);
+                        payer.getBuyerProfile()
+                );
                 if (Objects.isNull(fs.getParties())) {
                     fs.setParties(new LinkedHashSet<>());
                 }
@@ -174,6 +178,7 @@ public class BudgetServiceImpl implements BudgetService {
             organization.setAddress(null);
             organization.setContactPoint(null);
             organization.setDetails(null);
+            organization.setBuyerProfile(null);
         }
     }
 
