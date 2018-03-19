@@ -10,8 +10,8 @@ public interface BudgetService {
 
     ResponseDto createEi(String cpid,
                          String stage,
-                         JsonNode data,
-                         LocalDateTime releaseDate);
+                         LocalDateTime releaseDate,
+                         JsonNode data);
 
     ResponseDto updateEi(String cpid,
                          String stage,
@@ -19,6 +19,7 @@ public interface BudgetService {
 
     ResponseDto createFs(String cpid,
                          String stage,
+                         LocalDateTime releaseDate,
                          JsonNode data);
 
     ResponseDto updateFs(String cpid,

@@ -37,12 +37,12 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createEi(final String cpid,
                                 final String stage,
-                                final JsonNode data,
-                                final LocalDateTime releaseDate) {
+                                final LocalDateTime releaseDate,
+                                final JsonNode data) {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ei.setId(getReleaseId(cpid));
-        ei.setTag(Arrays.asList(Tag.COMPILED));
         ei.setDate(releaseDate);
+        ei.setTag(Arrays.asList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
         budgetDao.saveBudget(getEiEntity(ei, stage));
@@ -66,9 +66,11 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createFs(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
+        fs.setDate(releaseDate);
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
         processFsParties(fs);
@@ -133,8 +135,8 @@ public class BudgetServiceImpl implements BudgetService {
                     funder.getAddress(),
                     funder.getContactPoint(),
                     new HashSet(Arrays.asList(Organization.PartyRole.FUNDER)),
-                    funder.getDetails(),
-                    funder.getBuyerProfile()
+                    null,
+                    null
             );
             if (Objects.isNull(fs.getParties())) {
                 fs.setParties(new LinkedHashSet<>());
@@ -159,8 +161,8 @@ public class BudgetServiceImpl implements BudgetService {
                         payer.getAddress(),
                         payer.getContactPoint(),
                         new HashSet(Arrays.asList(Organization.PartyRole.PAYER)),
-                        payer.getDetails(),
-                        payer.getBuyerProfile()
+                        null,
+                        null
                 );
                 if (Objects.isNull(fs.getParties())) {
                     fs.setParties(new LinkedHashSet<>());

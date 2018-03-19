@@ -41,11 +41,11 @@ public class MainServiceImpl implements MainService {
         final Operation operationType = Operation.fromValue(operation);
         switch (operationType) {
             case CREATE_EI:
-                return budgetService.createEi(cpId, stage, data, releaseDate);
+                return budgetService.createEi(cpId, stage, releaseDate, data);
             case UPDATE_EI:
                 return budgetService.updateEi(cpId, stage, data);
             case CREATE_FS:
-                return budgetService.createFs(cpId, stage, data);
+                return budgetService.createFs(cpId, stage, releaseDate, data);
             case UPDATE_FS:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 return budgetService.updateFs(cpId, ocId, stage, data);
