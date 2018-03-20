@@ -29,6 +29,8 @@ import lombok.Setter;
         "description",
         "language",
         "tender",
+        "funder",
+        "payer",
         "parties",
         "planning",
         "relatedProcesses"
@@ -54,11 +56,15 @@ public class ReleaseFS {
     private String language;
     @JsonProperty("tender")
     private Tender tender;
+    @JsonProperty("planning")
+    private FsPlanning planning;
+    @JsonProperty("funder")
+    private OrganizationReference funder;
+    @JsonProperty("payer")
+    private OrganizationReference payer;
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
-    @JsonProperty("planning")
-    private FsPlanning planning;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
@@ -73,6 +79,8 @@ public class ReleaseFS {
                      @JsonProperty("description") final String description,
                      @JsonProperty("language") final String language,
                      @JsonProperty("tender") final Tender tender,
+                     @JsonProperty("funder") final OrganizationReference funder,
+                     @JsonProperty("payer") final OrganizationReference payer,
                      @JsonProperty("parties") final Set<Organization> parties,
                      @JsonProperty("planning") final FsPlanning planning,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
@@ -86,8 +94,10 @@ public class ReleaseFS {
         this.description = description;
         this.language = language == null ? "en" : language;
         this.tender = tender;
+        this.funder = funder;
+        this.payer = payer;
         this.parties = parties;
         this.planning = planning;
-        this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;
+        this.relatedProcesses = relatedProcesses;
     }
 }

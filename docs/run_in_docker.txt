@@ -15,10 +15,12 @@ docker network create \
 #****************************************#
 
 mvn clean package docker:build
+docker push docker-registry.eprocurement.systems/e-notice:17.12.1
+
 docker login https://docker-registry.eprocurement.systems
 Username: docker
 Password: 3FFcKYtMxzmwFMa
-docker push docker-registry.eprocurement.systems/e-notice:17.12.1
+
 
 
 docker run -d --name=notice-1 \

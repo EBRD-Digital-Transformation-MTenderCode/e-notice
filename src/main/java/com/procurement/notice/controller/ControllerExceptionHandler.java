@@ -62,7 +62,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseDto handlIllegalArgumentException(final IllegalArgumentException e) {
+    public ResponseDto handleIllegalArgumentException(final IllegalArgumentException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
@@ -86,6 +86,14 @@ public class ControllerExceptionHandler {
     public ResponseDto handleServletException(final ServletException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
+
+    @ResponseBody
+    @ResponseStatus(OK)
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseDto handleUnsupportedOperationException(final UnsupportedOperationException e) {
+        return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
+    }
+
 
     private List<ResponseDetailsDto> getErrors(final BindingResult result) {
         return result.getFieldErrors()

@@ -6,13 +6,13 @@ import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.procurement.notice.model.entity.TenderEntity;
+import com.procurement.notice.model.entity.ReleaseEntity;
 import org.springframework.stereotype.Service;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 
 @Service
-public class TenderDaoImpl implements TenderDao {
+public class ReleaseDaoImpl implements ReleaseDao {
 
     private static final String TENDER_TABLE = "notice_release";
     private static final String TENDER_COMPILED_TABLE = "notice_compiled_release";
@@ -26,12 +26,12 @@ public class TenderDaoImpl implements TenderDao {
 
     private final Session session;
 
-    public TenderDaoImpl(final Session session) {
+    public ReleaseDaoImpl(final Session session) {
         this.session = session;
     }
 
     @Override
-    public void saveTender(final TenderEntity releaseEntity) {
+    public void saveTender(final ReleaseEntity releaseEntity) {
         final Insert insert = insertInto(TENDER_TABLE);
         insert
                 .value(CP_ID, releaseEntity.getCpId())
@@ -60,24 +60,26 @@ public class TenderDaoImpl implements TenderDao {
     }
 
     @Override
-    public TenderEntity getByCpId(final String cpId) {
+    public ReleaseEntity getByCpId(final String cpId) {
         final Statement query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
                 .limit(1);
         final Row row = session.execute(query).one();
-        return new TenderEntity(
-                row.getString(CP_ID),
-                row.getString(OC_ID),
-                row.getTimestamp(RELEASE_DATE),
-                row.getString(RELEASE_ID),
-                row.getString(STAGE),
-                row.getString(JSON_DATA));
+        if (row != null)
+            return new ReleaseEntity(
+                    row.getString(CP_ID),
+                    row.getString(OC_ID),
+                    row.getTimestamp(RELEASE_DATE),
+                    row.getString(RELEASE_ID),
+                    row.getString(STAGE),
+                    row.getString(JSON_DATA));
+        return null;
     }
 
     @Override
-    public TenderEntity getByCpIdAndOcId(final String cpId, final String ocId) {
+    public ReleaseEntity getByCpIdAndOcId(final String cpId, final String ocId) {
         final Statement query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)
@@ -85,12 +87,35 @@ public class TenderDaoImpl implements TenderDao {
                 .and(eq(OC_ID, ocId))
                 .limit(1);
         final Row row = session.execute(query).one();
-        return new TenderEntity(
-                row.getString(CP_ID),
-                row.getString(OC_ID),
-                row.getTimestamp(RELEASE_DATE),
-                row.getString(RELEASE_ID),
-                row.getString(STAGE),
-                row.getString(JSON_DATA));
+        if (row != null)
+            return new ReleaseEntity(
+                    row.getString(CP_ID),
+                    row.getString(OC_ID),
+                    row.getTimestamp(RELEASE_DATE),
+                    row.getString(RELEASE_ID),
+                    row.getString(STAGE),
+                    row.getString(JSON_DATA));
+        return null;
+    }
+
+    @Override
+    public ReleaseEntity getByCpIdAndStage(final String cpId, final String stage) {
+        final Statement query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .and(eq(STAGE, stage))
+                .allowFiltering()
+                .limit(1);
+        final Row row = session.execute(query).one();
+        if (row != null)
+            return new ReleaseEntity(
+                    row.getString(CP_ID),
+                    row.getString(OC_ID),
+                    row.getTimestamp(RELEASE_DATE),
+                    row.getString(RELEASE_ID),
+                    row.getString(STAGE),
+                    row.getString(JSON_DATA));
+        return null;
     }
 }

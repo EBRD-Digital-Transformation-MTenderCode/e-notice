@@ -1,0 +1,388 @@
+{
+  "token": "984a0f8f-667e-4d2a-89f4-808af82723cf",
+  "ocid": "ocds-t1s2t3-MD-1521216936399",
+  "date": "2018-03-16T16:15:35Z",
+  "planning": {
+    "budget": {
+      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
+      "amount": {
+        "amount": 1000.0,
+        "currency": "MDL"
+      },
+      "europeanUnionFunding": {
+        "projectIdentifier": "proj-cn-12346",
+        "projectName": "test proj name",
+        "uri": "https://jwt.io"
+      },
+      "isEuropeanUnionFunded": true,
+      "budgetBreakdown": [
+        {
+          "id": "ocds-t1s2t3-MD-1521194732593-fs-1521194776273",
+          "description": "A short free text description of this budget entry.",
+          "amount": {
+            "amount": 500.0,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-02-27T00:00:00Z",
+            "endDate": "2018-09-27T00:00:00Z"
+          }
+        }
+      ]
+    },
+    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
+  },
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1521216936399",
+    "title": "Tender title",
+    "description": "Tender description",
+    "status": "active",
+    "statusDetails": "empty",
+    "items": [
+      {
+        "id": "42b565f0-2935-11e8-85d0-87b982b16239",
+        "description": "A description of the goods, services to be provided 111111.",
+        "classification": {
+          "scheme": "CPV",
+          "id": "33600000-6",
+          "description": "Фармацевтична продукція"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "CPVs-id-12341234",
+            "description": "A textual description or title for the code 111111."
+          }
+        ],
+        "quantity": 11.0,
+        "unit": {
+          "name": "kg",
+          "id": "0971"
+        },
+        "relatedLot": "42b565f2-2935-11e8-85d0-87b982b16239"
+      },
+      {
+        "id": "42b565f1-2935-11e8-85d0-87b982b16239",
+        "description": "A description of the goods, services to be provided 222222.",
+        "classification": {
+          "scheme": "CPV",
+          "id": "33600000-6",
+          "description": "Фармацевтична продукція"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "CPVs-id-12341234",
+            "description": "A textual description or title for the code 222222."
+          }
+        ],
+        "quantity": 22.0,
+        "unit": {
+          "name": "kg",
+          "id": "0971"
+        },
+        "relatedLot": "42b565f3-2935-11e8-85d0-87b982b16239"
+      }
+    ],
+    "value": {
+      "amount": 1000.0,
+      "currency": "MDL"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open Procurement",
+    "procurementMethodRationale": "Rationale of procurement method, especially in the case of Limited tendering.",
+    "mainProcurementCategory": "goods",
+    "additionalProcurementCategories": [
+      "goods"
+    ],
+    "awardCriteria": "priceOnly",
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionMethodDetails": "Any detailed or further information on the submission method. This may include the address, e-mail address or online service to which bids should be submitted, and any special requirements to be followed for submissions.",
+    "tenderPeriod": {
+      "endDate": "2018-03-16T16:25:00Z",
+      "startDate": "2018-03-16T16:15:35Z"
+    },
+    "eligibilityCriteria": "A description of any eligibility criteria for potential suppliers.",
+    "contractPeriod": {
+      "startDate": "2018-09-27T00:00:00Z",
+      "endDate": "2018-11-27T00:00:00Z"
+    },
+    "procuringEntity": {
+      "name": "Новороздільська міська лікарня",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "20764777",
+        "legalName": "Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
+      },
+      "address": {
+        "streetAddress": "вул. Винниченка, 37",
+        "locality": "місто Новий Розділ",
+        "region": "Львівська область",
+        "postalCode": "7770777",
+        "countryName": "Україна"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "123123123",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
+      "contactPoint": {
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "http://test.ua"
+      }
+    },
+    "documents": [
+      {
+        "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+        "documentType": "tenderNotice",
+        "title": "Title Test CN document to tender",
+        "description": "Description Test CN document to tender",
+        "url": "http://bpe.eprocurement.systems/api/v1/storage/get/385104e0-2901-11e8-b1c7-dff3c5406c1d",
+        "language": "ro",
+        "relatedLots": [
+          "lot-id-123123"
+        ]
+      }
+    ],
+    "lots": [
+      {
+        "id": "42b565f2-2935-11e8-85d0-87b982b16239",
+        "title": "A title for this lot 111111.",
+        "description": "A description of this lot 111111.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 1000.0,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-09-27T00:00:00Z",
+          "endDate": "2018-11-27T00:00:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "149-159 High Street 111111",
+            "locality": "Birmingham 111111",
+            "region": "Digbeth 111111",
+            "postalCode": "B12 0JU 111111",
+            "countryName": "United Kingdom 111111"
+          },
+          "description": "Further description of the place of performance of the contract. Required by EU 111111."
+        }
+      },
+      {
+        "id": "42b565f3-2935-11e8-85d0-87b982b16239",
+        "title": "A title for this lot 222222.",
+        "description": "A description of this lot 222222.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 1000.0,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-09-27T00:00:00Z",
+          "endDate": "2018-11-27T00:00:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "149-159 High Street 222222",
+            "locality": "Birmingham 222222",
+            "region": "Digbeth 222222",
+            "postalCode": "B12 0JU 222222",
+            "countryName": "United Kingdom 222222"
+          },
+          "description": "Further description of the place of performance of the contract. Required by EU 222222."
+        }
+      }
+    ],
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": false
+    },
+    "classification": {
+      "scheme": "CPV",
+      "id": "Фармацевтична продукція",
+      "description": "33600000-6"
+    },
+    "designContest": {
+      "serviceContractAward": false
+    },
+    "electronicWorkflows": {
+      "useOrdering": false,
+      "usePayment": false,
+      "acceptInvoicing": false
+    },
+    "jointProcurement": {
+      "isJointProcurement": false
+    },
+    "legalBasis": "DIRECTIVE_2014_24_EU",
+    "procedureOutsourcing": {
+      "procedureOutsourced": false
+    },
+    "procurementMethodAdditionalInfo": "Additional information about the procurement method.",
+    "submissionLanguages": [
+      "pl",
+      "ro"
+    ],
+    "submissionMethodRationale": [
+      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE",
+      "IPR_ISSUES"
+    ],
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": false
+    },
+    "framework": {
+      "isAFramework": false
+    },
+    "requiresElectronicCatalogue": false,
+    "enquiryPeriod": {
+      "startDate": "2018-03-16T16:15:35Z",
+      "endDate": "2018-03-16T16:24:00Z"
+    }
+  },
+  "parties": [
+    {
+      "name": "Новороздільська міська лікарня",
+      "id": "UA-EDR-20764777",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "20764777",
+        "legalName": "Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "123123123",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
+      "address": {
+        "streetAddress": "вул. Винниченка, 37",
+        "locality": "місто Новий Розділ",
+        "region": "Львівська область",
+        "postalCode": "7770777",
+        "countryName": "Україна"
+      },
+      "contactPoint": {
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "http://test.ua"
+      },
+      "roles": [
+        "buyer",
+        "procuringEntity"
+      ],
+      "details": {
+        "typeOfBuyer": "BODY_PUBLIC",
+        "mainGeneralActivity": "DEFENCE",
+        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+        "isACentralPurchasingBody": false,
+        "scale": "micro"
+      },
+      "buyerProfile": "http://linkToInfoAboutBuyer.ua"
+    }
+  ],
+  "buyer": {
+    "name": "Новороздільська міська лікарня",
+    "id": "UA-EDR-20764777",
+    "identifier": {
+      "scheme": "UA-EDR",
+      "id": "20764777",
+      "legalName": "Новороздільська міська лікарня",
+      "uri": "http://buyerTestLink.ua"
+    },
+    "address": {
+      "streetAddress": "вул. Винниченка, 37",
+      "locality": "місто Новий Розділ",
+      "region": "Львівська область",
+      "postalCode": "7770777",
+      "countryName": "Україна"
+    },
+    "additionalIdentifiers": [
+      {
+        "scheme": "UA-EDR",
+        "id": "123123123",
+        "legalName": "Додатково Новороздільська міська лікарня",
+        "uri": "http://additionalBuyerTestLink.ua"
+      }
+    ],
+    "contactPoint": {
+      "name": "Осипових Сергій Олександрович",
+      "email": "test2@test.test",
+      "telephone": "+380222222222",
+      "faxNumber": "+380222222222",
+      "url": "test3@test.test"
+    }
+  },
+  "documents": [
+    {
+      "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+      "documentType": "tenderNotice",
+      "title": "Title Test CN document to tender",
+      "description": "Description Test CN document to tender",
+      "url": "http://bpe.eprocurement.systems/api/v1/storage/get/385104e0-2901-11e8-b1c7-dff3c5406c1d",
+      "language": "ro",
+      "relatedLots": [
+        "lot-id-123123"
+      ]
+    }
+  ]
+}

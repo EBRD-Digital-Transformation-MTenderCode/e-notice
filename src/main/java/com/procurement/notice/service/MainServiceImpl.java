@@ -18,13 +18,13 @@ public class MainServiceImpl implements MainService {
     private static final String PARAM_ERROR = " should not be empty for this type of operation";
     private static final String IMPLEMENTATION_ERROR = "No implementation for this type of operation.";
     private final BudgetService budgetService;
-    private final TenderService tenderService;
+    private final ReleaseService releaseService;
     private final EnquiryService enquiryService;
 
     public MainServiceImpl(final BudgetService budgetService,
-                           final TenderServiceImpl tenderService,
+                           final ReleaseServiceImpl tenderService,
                            final EnquiryService enquiryService) {
-        this.tenderService = tenderService;
+        this.releaseService = tenderService;
         this.enquiryService = enquiryService;
         this.budgetService = budgetService;
     }
@@ -33,35 +33,45 @@ public class MainServiceImpl implements MainService {
     public ResponseDto createRelease(final String cpId,
                                      final String ocId,
                                      final String stage,
+                                     final String previousStage,
                                      final String operation,
                                      final String phase,
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
-        Operation operationType = Operation.fromValue(operation);
+        final Operation operationType = Operation.fromValue(operation);
         switch (operationType) {
             case CREATE_EI:
-                return budgetService.createEi(cpId, stage, data);
+                return budgetService.createEi(cpId, stage, releaseDate, data);
             case UPDATE_EI:
-                return budgetService.updateEi(cpId, stage, data);
+                return budgetService.updateEi(cpId, stage, releaseDate, data);
             case CREATE_FS:
-                return budgetService.createFs(cpId, stage, data);
+                return budgetService.createFs(cpId, stage, releaseDate, data);
             case UPDATE_FS:
                 Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return budgetService.updateFs(cpId, ocId, stage, data);
+                return budgetService.updateFs(cpId, ocId, stage, releaseDate, data);
             case CREATE_CN:
-                Objects.requireNonNull(releaseDate, "releaseDate " + PARAM_ERROR);
-                return tenderService.createCn(cpId, stage, releaseDate, data);
+                return releaseService.createCn(cpId, stage, releaseDate, data);
             case UPDATE_CN:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                return enquiryService.createEnquiry(cpId, ocId, stage, data);
+                return enquiryService.createEnquiry(cpId, stage, releaseDate, data);
             case ADD_ANSWER:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.addAnswer(cpId, ocId, stage, data);
-            case ENQUIRY_UNSUSPEND_TENDER:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
-                enquiryService.enquiryUnsuspendTender(cpId, ocId, stage, data);
+                return enquiryService.addAnswer(cpId, stage, releaseDate, data);
+            case UNSUSPEND_TENDER:
+                return enquiryService.unsuspendTender(cpId, stage, releaseDate, data);
+            case TENDER_PERIOD_END:
+                return releaseService.tenderPeriodEnd(cpId, stage, releaseDate, data);
+            case SUSPEND_TENDER:
+                return releaseService.suspendTender(cpId, stage, releaseDate, data);
+            case AWARD_BY_BID:
+                return releaseService.awardByBid(cpId, stage, releaseDate, data);
+            case AWARD_PERIOD_END:
+                return releaseService.awardPeriodEnd(cpId, stage, releaseDate, data);
+            case STANDSTILL_PERIOD_END:
+                return releaseService.standstillPeriodEnd(cpId, stage, releaseDate, data);
+            case START_NEW_STAGE:
+                Objects.requireNonNull(previousStage, "previousStage " + PARAM_ERROR);
+                return releaseService.startNewStage(cpId, stage, previousStage, releaseDate, data);
             default:
                 throw new ErrorException(IMPLEMENTATION_ERROR);
         }
@@ -78,7 +88,13 @@ public class MainServiceImpl implements MainService {
         UPDATE_CN("updateCN"),
         CREATE_ENQUIRY("createEnquiry"),
         ADD_ANSWER("addAnswer"),
-        ENQUIRY_UNSUSPEND_TENDER("enquiryUnsuspendTender");
+        UNSUSPEND_TENDER("unsuspendTender"),
+        TENDER_PERIOD_END("tenderPeriodEnd"),
+        SUSPEND_TENDER("suspendTender"),
+        AWARD_BY_BID("awardByBid"),
+        AWARD_PERIOD_END("awardPeriodEnd"),
+        STANDSTILL_PERIOD_END("standstillPeriodEnd"),
+        START_NEW_STAGE("startNewStage");
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
 

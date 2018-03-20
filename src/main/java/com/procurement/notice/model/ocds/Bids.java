@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "statistics",
@@ -26,7 +28,7 @@ public class Bids {
         "status, bid values and related documents. The extent to which this information can be disclosed varies from " +
         "jurisdiction to jurisdiction.")
     @Valid
-    private final List<Bid> details;
+    private List<Bid> details;
 
 
 

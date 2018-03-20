@@ -35,9 +35,6 @@ public class Budget {
     @JsonProperty("description")
     @JsonPropertyDescription("A short free text description of the budget source. May be used to provide the title of" +
         " the budget line, or the programme used to fund this project.")
-//    @Pattern(regexp = "^(description_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5," +
-//        "8})(-([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String description;
 
     @JsonProperty("amount")
@@ -49,9 +46,6 @@ public class Budget {
         "applicable). Some organizations maintain a registry of projects, and the data should use the name by which " +
         "the project is known in that registry. No translation option is offered for this string, as translated " +
         "values can be provided in third-party data, linked from the data source above.")
-//    @Pattern(regexp = "^(project_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-" +
-//        "([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String project;
 
     @JsonProperty("projectID")
@@ -61,7 +55,7 @@ public class Budget {
     private final String projectID;
 
     @JsonProperty("uri")
-    @JsonPropertyDescription("A URI pointing directly to a machine-readable record about the budget line-item or " +
+    @JsonPropertyDescription("A URI pointing directly to a machine-readable pspq about the budget line-item or " +
         "line-items that fund this contracting process. Information may be provided in a range of formats, including " +
         "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget " +
         "sources. Human readable documents can be included using the planning.documents block.")
@@ -71,9 +65,6 @@ public class Budget {
     @JsonPropertyDescription("(Deprecated in 1.1) Used to point either to a corresponding Budget Data Package, or to " +
         "a machine or human-readable source where users can find further information on the budget line item " +
         "identifiers, or project identifiers, provided here.")
-//    @Pattern(regexp = "^(source_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-" +
-//        "([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String source;
 
     @JsonProperty("europeanUnionFunding")

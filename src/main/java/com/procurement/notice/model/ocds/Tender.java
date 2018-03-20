@@ -143,7 +143,7 @@ public class Tender {
 
     @JsonProperty("mainProcurementCategory")
     @JsonPropertyDescription("The primary category describing the main object of this contracting process from the " +
-            "[procurementCategory](http://standard.open-contracting" +
+            "[procuremen     this.relatedProcesses = relatedProcesses == null ? new LinkedHashSet<>() : relatedProcesses;tCategory](http://standard.open-contracting" +
             ".org/latest/en/schema/codelists/#procurement-category)" +
             " codelist. This is a closed codelist. Local classifications should be mapped to this list.")
     @Valid
@@ -216,7 +216,7 @@ public class Tender {
 
     @JsonProperty("awardPeriod")
     @Valid
-    private final Period awardPeriod;
+    private Period awardPeriod;
 
     @JsonProperty("contractPeriod")
     @Valid
@@ -274,7 +274,7 @@ public class Tender {
             "interpreted as applicable to the whole tender. Properties of tender can be overridden for a given Lot " +
             "through their inclusion in the Lot object.")
     @Valid
-    private final List<Lot> lots;
+    private List<Lot> lots;
 
     @JsonProperty("lotDetails")
     @JsonPropertyDescription("If this tender is divided into lots, details can be provided here of any criteria that " +
@@ -354,7 +354,7 @@ public class Tender {
 
     @JsonProperty("standstillPeriod")
     @Valid
-    private final Period standstillPeriod;
+    private Period standstillPeriod;
 
     @JsonProperty("submissionLanguages")
     @JsonPropertyDescription("Language(s) in which tenderers may submit, drawn from the [submissionLanguages " +

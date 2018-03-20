@@ -12,9 +12,8 @@ import com.procurement.notice.model.entity.BudgetEntity;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,42 +37,48 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseDto createEi(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, data.toString());
         ei.setId(getReleaseId(cpid));
+        ei.setDate(releaseDate);
         ei.setTag(Arrays.asList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         processEiParties(ei);
-        budgetDao.saveBudget(getEiEntity(ei, stage, 0D));
+        budgetDao.saveBudget(getEiEntity(ei, stage));
         return getResponseDto(ei.getOcid(), ei.getOcid());
     }
 
     @Override
     public ResponseDto updateEi(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(cpid))
                 .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
-        final ReleaseEI updateReleaseEI = jsonUtil.toObject(ReleaseEI.class, data.toString());
-        final ReleaseEI eiFromEntity = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
-        eiFromEntity.setId(getReleaseId(cpid));
-        updateEiDto(eiFromEntity, updateReleaseEI);
-        budgetDao.saveBudget(getEiEntity(eiFromEntity, stage, 0D));
-        return getResponseDto(eiFromEntity.getOcid(), eiFromEntity.getOcid());
+        final ReleaseEI updateEi = jsonUtil.toObject(ReleaseEI.class, data.toString());
+        final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
+        ei.setId(getReleaseId(cpid));
+        updateEiDto(ei, updateEi);
+        budgetDao.saveBudget(getEiEntity(ei, stage));
+        return getResponseDto(ei.getOcid(), ei.getOcid());
     }
 
     @Override
     public ResponseDto createFs(final String cpid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
+        fs.setDate(releaseDate);
         fs.setTag(Arrays.asList(Tag.COMPILED));
         fs.setInitiationType(InitiationType.TENDER);
+        processFsParties(fs);
         addEiRelatedProcessToFs(fs, cpid);
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount));
-        updateEiByFs(cpid, fs.getOcid());
+        createEiByFs(cpid, fs.getOcid());
         return getResponseDto(cpid, fs.getOcid());
     }
 
@@ -81,57 +86,133 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseDto updateFs(final String cpid,
                                 final String ocid,
                                 final String stage,
+                                final LocalDateTime releaseDate,
                                 final JsonNode data) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(cpid, ocid))
                 .orElseThrow(() -> new ErrorException(FS_NOT_FOUND_ERROR));
-        final ReleaseFS updateReleaseFS = jsonUtil.toObject(ReleaseFS.class, data.toString());
-        final ReleaseFS fsFromEntity = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
-        fsFromEntity.setId(getReleaseId(ocid));
-        updateFsDto(fsFromEntity, updateReleaseFS);
-        budgetDao.saveBudget(getFsEntity(cpid, fsFromEntity, stage, 0D));
-        return getResponseDto(cpid, fsFromEntity.getOcid());
+        final ReleaseFS updateFs = jsonUtil.toObject(ReleaseFS.class, data.toString());
+        final ReleaseFS fs = jsonUtil.toObject(ReleaseFS.class, entity.getJsonData());
+        final Double updateAmount = updateFs.getPlanning().getBudget().getAmount().getAmount();
+        final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
+        fs.setId(getReleaseId(ocid));
+        updateFsDto(fs, updateFs);
+        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount));
+        if (!updateAmount.equals(amount)) {
+            updateEiAmountByFs(cpid);
+        }
+        return getResponseDto(cpid, fs.getOcid());
     }
 
     private void processEiParties(final ReleaseEI ei) {
-        ei.getParties().forEach(p -> p.setId(p.getIdentifier().getScheme() + "-" + p.getIdentifier().getId()));
-        final Optional<Organization> partyOptional = ei.getParties().stream()
-                .filter(p -> p.getRoles().contains(Organization.PartyRole.BUYER))
-                .findFirst();
-        if (partyOptional.isPresent()) {
-            Organization party = partyOptional.get();
-            final OrganizationReference buyer = new OrganizationReference(
-                    party.getId(),
-                    party.getName(),
-                    party.getIdentifier(),
-                    party.getAddress(),
-                    new LinkedHashSet(party.getAdditionalIdentifiers()),
-                    party.getContactPoint()
+        OrganizationReference buyer = ei.getBuyer();
+        if (Objects.nonNull(buyer)) {
+            Organization partyBuyer = new Organization(
+                    buyer.getId(),
+                    buyer.getName(),
+                    buyer.getIdentifier(),
+                    new LinkedHashSet(buyer.getAdditionalIdentifiers()),
+                    buyer.getAddress(),
+                    buyer.getContactPoint(),
+                    new HashSet(Arrays.asList(Organization.PartyRole.BUYER)),
+                    buyer.getDetails(),
+                    buyer.getBuyerProfile()
             );
-            ei.setBuyer(buyer);
+            if (Objects.isNull(ei.getParties())) {
+                ei.setParties(new LinkedHashSet<>());
+            }
+            ei.getParties().add(partyBuyer);
+            clearOrganizationReference(buyer);
         }
     }
 
-    private void updateEiDto(final ReleaseEI eiFromEntity, final ReleaseEI updateReleaseEI) {
-        eiFromEntity.setTitle(updateReleaseEI.getTitle());
-        eiFromEntity.setDescription(updateReleaseEI.getDescription());
-        eiFromEntity.setPlanning(updateReleaseEI.getPlanning());
-        eiFromEntity.setTender(updateReleaseEI.getTender());
-        eiFromEntity.setParties(updateReleaseEI.getParties());
+    private void processFsParties(final ReleaseFS fs) {
+        /*funder*/
+        OrganizationReference funder = fs.getFunder();
+        if (Objects.nonNull(funder)) {
+            Organization partyFunder = new Organization(
+                    funder.getId(),
+                    funder.getName(),
+                    funder.getIdentifier(),
+                    new LinkedHashSet(funder.getAdditionalIdentifiers()),
+                    funder.getAddress(),
+                    funder.getContactPoint(),
+                    new HashSet(Arrays.asList(Organization.PartyRole.FUNDER)),
+                    null,
+                    null
+            );
+            if (Objects.isNull(fs.getParties())) {
+                fs.setParties(new LinkedHashSet<>());
+            }
+            fs.getParties().add(partyFunder);
+            fs.setFunder(null);
+        }
+       /*payer*/
+        OrganizationReference payer = fs.getPayer();
+        if (Objects.nonNull(payer)) {
+            Optional<Organization> partyOptional = getParty(fs.getParties(), payer.getId());
+            Organization partyPayer;
+            if (partyOptional.isPresent()) {
+                partyPayer = partyOptional.get();
+                partyPayer.getRoles().add(Organization.PartyRole.PAYER);
+            } else {
+                partyPayer = new Organization(
+                        payer.getId(),
+                        payer.getName(),
+                        payer.getIdentifier(),
+                        new LinkedHashSet(payer.getAdditionalIdentifiers()),
+                        payer.getAddress(),
+                        payer.getContactPoint(),
+                        new HashSet(Arrays.asList(Organization.PartyRole.PAYER)),
+                        null,
+                        null
+                );
+                if (Objects.isNull(fs.getParties())) {
+                    fs.setParties(new LinkedHashSet<>());
+                }
+                fs.getParties().add(partyPayer);
+            }
+            fs.setPayer(null);
+        }
     }
 
-    private void updateFsDto(final ReleaseFS fsFromEntity, final ReleaseFS updateReleaseFS) {
-        fsFromEntity.setTitle(updateReleaseFS.getTitle());
-        fsFromEntity.setDescription(updateReleaseFS.getDescription());
-        fsFromEntity.setTender(updateReleaseFS.getTender());
-        fsFromEntity.setParties(updateReleaseFS.getParties());
-        fsFromEntity.setPlanning(updateReleaseFS.getPlanning());
+    private void clearOrganizationReference(final OrganizationReference organization) {
+        if (Objects.nonNull(organization)) {
+            organization.setIdentifier(null);
+            organization.setAdditionalIdentifiers(null);
+            organization.setAddress(null);
+            organization.setContactPoint(null);
+            organization.setDetails(null);
+            organization.setBuyerProfile(null);
+        }
+    }
+
+    private Optional<Organization> getParty(final Set<Organization> parties, final String partyId) {
+        Optional<Organization> organizationOptional = Optional.empty();
+        if (Objects.nonNull(parties))
+            organizationOptional = parties.stream().filter(p -> p.getId().equals(partyId)).findFirst();
+        return organizationOptional;
+    }
+
+    private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
+        ei.setDate(updateEi.getDate());
+        ei.setTitle(updateEi.getTitle());
+        ei.setPlanning(updateEi.getPlanning());
+        ei.setTender(updateEi.getTender());
+    }
+
+    private void updateFsDto(final ReleaseFS fs, final ReleaseFS updateFs) {
+        fs.setDate(updateFs.getDate());
+        fs.setTitle(updateFs.getTitle());
+        fs.setTender(updateFs.getTender());
+        fs.setParties(updateFs.getParties());
+        fs.setPlanning(updateFs.getPlanning());
     }
 
     private String getReleaseId(final String ocId) {
         return ocId + SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
-    public void updateEiByFs(final String eiCpId, final String fsOcId) {
+    public void createEiByFs(final String eiCpId, final String fsOcId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
                 .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
@@ -140,18 +221,31 @@ public class BudgetServiceImpl implements BudgetService {
         ei.setId(getReleaseId(eiCpId));
         ei.setDate(dateUtil.getNowUTC());
         addFsRelatedProcessToEi(ei, fsOcId);
-        budgetDao.saveBudget(getEiEntity(ei, entity.getStage(), totalAmount));
+        budgetDao.saveBudget(getEiEntity(ei, entity.getStage()));
+    }
+
+    public void updateEiAmountByFs(final String eiCpId) {
+        final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
+                .orElseThrow(() -> new ErrorException(EI_NOT_FOUND_ERROR));
+        final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
+        final Double totalAmount = budgetDao.getTotalAmountByCpId(eiCpId);
+        ei.getPlanning().getBudget().getAmount().setAmount(totalAmount);
+        ei.setId(getReleaseId(eiCpId));
+        ei.setDate(dateUtil.getNowUTC());
+        budgetDao.saveBudget(getEiEntity(ei, entity.getStage()));
     }
 
     private void addFsRelatedProcessToEi(final ReleaseEI ei, final String fsOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
                 Arrays.asList(RelatedProcess.RelatedProcessType.X_FINANCE_SOURCE),
-                "",
                 RelatedProcess.RelatedProcessScheme.OCID,
                 fsOcId,
                 ""
         );
+        if (Objects.isNull(ei.getRelatedProcesses())) {
+            ei.setRelatedProcesses(new LinkedHashSet<>());
+        }
         ei.getRelatedProcesses().add(relatedProcess);
     }
 
@@ -159,24 +253,24 @@ public class BudgetServiceImpl implements BudgetService {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
                 Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
-                "",
                 RelatedProcess.RelatedProcessScheme.OCID,
                 eiOcId,
                 ""
         );
+        if (Objects.isNull(fs.getRelatedProcesses())) {
+            fs.setRelatedProcesses(new LinkedHashSet<>());
+        }
         fs.getRelatedProcesses().add(relatedProcess);
     }
 
     private BudgetEntity getEiEntity(final ReleaseEI ei,
-                                     final String stage,
-                                     final Double amount) {
+                                     final String stage) {
         final BudgetEntity entity = new BudgetEntity();
         entity.setCpId(ei.getOcid());
         entity.setOcId(ei.getOcid());
         entity.setReleaseDate(dateUtil.localToDate(ei.getDate()));
         entity.setReleaseId(ei.getId());
         entity.setStage(stage);
-        entity.setAmount(amount);
         entity.setJsonData(jsonUtil.toJson(ei));
         return entity;
     }

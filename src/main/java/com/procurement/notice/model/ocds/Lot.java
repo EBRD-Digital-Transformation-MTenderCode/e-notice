@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -40,11 +42,11 @@ public class Lot {
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the process related to this lot based on the [tenderStatus " +
             "codelist](http://ocds.open-contracting.org/standard/r/1__0__0/en/schema/codelists#tender-status)")
-    private final TenderStatus status;
+    private TenderStatus status;
 
     @JsonProperty("statusDetails")
     @JsonPropertyDescription("Additional details of status.)")
-    private final TenderStatusDetails statusDetails;
+    private TenderStatusDetails statusDetails;
 
     @JsonProperty("value")
     @Valid
@@ -98,6 +100,7 @@ public class Lot {
         this.description = description;
         this.status = status;
         this.statusDetails = statusDetails;
+        this.statusDetails = statusDetails == null ? TenderStatusDetails.EMPTY : statusDetails;
         this.value = value;
         this.options = options;
         this.recurrentProcurement = recurrentProcurement;
