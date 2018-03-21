@@ -14,11 +14,14 @@ import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BudgetServiceImpl implements BudgetService {
 
+    @Value("${uri.budget}")
+    private String[] budgetUri;
     private static final String SEPARATOR = "-";
     private static final String EI_NOT_FOUND_ERROR = "EI not found.";
     private static final String FS_NOT_FOUND_ERROR = "FS not found.";
@@ -241,7 +244,7 @@ public class BudgetServiceImpl implements BudgetService {
                 Arrays.asList(RelatedProcess.RelatedProcessType.X_FINANCE_SOURCE),
                 RelatedProcess.RelatedProcessScheme.OCID,
                 fsOcId,
-                ""
+                getBudgetUri(fsOcId)
         );
         if (Objects.isNull(ei.getRelatedProcesses())) {
             ei.setRelatedProcesses(new LinkedHashSet<>());
@@ -255,7 +258,7 @@ public class BudgetServiceImpl implements BudgetService {
                 Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
                 RelatedProcess.RelatedProcessScheme.OCID,
                 eiOcId,
-                ""
+                getBudgetUri(eiOcId)
         );
         if (Objects.isNull(fs.getRelatedProcesses())) {
             fs.setRelatedProcesses(new LinkedHashSet<>());
@@ -263,8 +266,7 @@ public class BudgetServiceImpl implements BudgetService {
         fs.getRelatedProcesses().add(relatedProcess);
     }
 
-    private BudgetEntity getEiEntity(final ReleaseEI ei,
-                                     final String stage) {
+    private BudgetEntity getEiEntity(final ReleaseEI ei, final String stage) {
         final BudgetEntity entity = new BudgetEntity();
         entity.setCpId(ei.getOcid());
         entity.setOcId(ei.getOcid());
@@ -288,6 +290,10 @@ public class BudgetServiceImpl implements BudgetService {
         entity.setAmount(amount);
         entity.setJsonData(jsonUtil.toJson(fs));
         return entity;
+    }
+
+    private String getBudgetUri(final String id) {
+        return budgetUri + id;
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
