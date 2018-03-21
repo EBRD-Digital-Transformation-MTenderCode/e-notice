@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
 public class ReleaseServiceImpl implements ReleaseService {
 
     @Value("${uri.budget}")
-    private String[] budgetUri;
+    private String budgetUri;
     @Value("${uri.tender}")
-    private String[] tenderUri;
+    private String tenderUri;
 
     private static final String SEPARATOR = "-";
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";

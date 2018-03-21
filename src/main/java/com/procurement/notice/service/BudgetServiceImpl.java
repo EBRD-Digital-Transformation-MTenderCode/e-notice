@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class BudgetServiceImpl implements BudgetService {
 
     @Value("${uri.budget}")
-    private String[] budgetUri;
+    private String budgetUri;
     private static final String SEPARATOR = "-";
     private static final String EI_NOT_FOUND_ERROR = "EI not found.";
     private static final String FS_NOT_FOUND_ERROR = "FS not found.";
