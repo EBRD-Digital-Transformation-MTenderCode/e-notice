@@ -20,8 +20,9 @@ cassandra:
 #  username: cassandra
 #  password: cassandra
 
-
-ocds.prefix: ocds-t1s2t3-UA-
+uri:
+  budget: http://public.eprocurement.systems/budget/
+  tender: http://public.eprocurement.systems/tender/
 
 logging:
   pattern:

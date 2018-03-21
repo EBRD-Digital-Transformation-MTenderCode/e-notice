@@ -65,7 +65,6 @@ public class PsPqRelease {
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
 
-
     @JsonCreator
     public PsPqRelease(@JsonProperty("ocid") final String ocid,
                        @JsonProperty("id") final String id,

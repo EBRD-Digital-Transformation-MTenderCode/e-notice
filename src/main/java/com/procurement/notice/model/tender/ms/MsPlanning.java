@@ -1,10 +1,9 @@
-package com.procurement.notice.model.tender.pspq;
+package com.procurement.notice.model.tender.ms;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.procurement.notice.model.tender.ms.MsBudget;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -15,7 +14,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "rationale",
         "budget"
 })
-public class PsPqPlanning {
+public class MsPlanning {
     @JsonProperty("rationale")
     private final String rationale;
 
@@ -23,8 +22,8 @@ public class PsPqPlanning {
     private final MsBudget budget;
 
     @JsonCreator
-    public PsPqPlanning(@JsonProperty("budget") final MsBudget budget,
-                        @JsonProperty("rationale") final String rationale) {
+    public MsPlanning(@JsonProperty("budget") final MsBudget budget,
+                      @JsonProperty("rationale") final String rationale) {
         this.budget = budget;
         this.rationale = rationale;
     }
@@ -41,10 +40,10 @@ public class PsPqPlanning {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof PsPqPlanning)) {
+        if (!(other instanceof MsPlanning)) {
             return false;
         }
-        final PsPqPlanning rhs = (PsPqPlanning) other;
+        final MsPlanning rhs = (MsPlanning) other;
         return new EqualsBuilder().append(rationale, rhs.rationale)
                 .append(budget, rhs.budget)
                 .isEquals();
