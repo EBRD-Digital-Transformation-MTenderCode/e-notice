@@ -63,6 +63,7 @@ public class BudgetServiceImpl implements BudgetService {
         final ReleaseEI updateEi = jsonUtil.toObject(ReleaseEI.class, data.toString());
         final ReleaseEI ei = jsonUtil.toObject(ReleaseEI.class, entity.getJsonData());
         ei.setId(getReleaseId(cpid));
+        ei.setDate(releaseDate);
         updateEiDto(ei, updateEi);
         budgetDao.saveBudget(getEiEntity(ei, stage));
         return getResponseDto(ei.getOcid(), ei.getOcid());
@@ -99,6 +100,7 @@ public class BudgetServiceImpl implements BudgetService {
         final Double updateAmount = updateFs.getPlanning().getBudget().getAmount().getAmount();
         final Double amount = fs.getPlanning().getBudget().getAmount().getAmount();
         fs.setId(getReleaseId(ocid));
+        fs.setDate(releaseDate);
         updateFsDto(fs, updateFs);
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount));
         if (!updateAmount.equals(amount)) {
@@ -198,14 +200,12 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private void updateEiDto(final ReleaseEI ei, final ReleaseEI updateEi) {
-        ei.setDate(updateEi.getDate());
         ei.setTitle(updateEi.getTitle());
         ei.setPlanning(updateEi.getPlanning());
         ei.setTender(updateEi.getTender());
     }
 
     private void updateFsDto(final ReleaseFS fs, final ReleaseFS updateFs) {
-        fs.setDate(updateFs.getDate());
         fs.setTitle(updateFs.getTitle());
         fs.setTender(updateFs.getTender());
         fs.setParties(updateFs.getParties());
