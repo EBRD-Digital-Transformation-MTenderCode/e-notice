@@ -28,32 +28,25 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class OrganizationReference {
     @JsonProperty("id")
     private String id;
-
     @JsonProperty("name")
     @Size(min = 1)
     @NotNull
     private final String name;
-
     @JsonProperty("identifier")
     @Valid
     private Identifier identifier;
-
     @JsonProperty("address")
     @Valid
     private Address address;
-
     @JsonProperty("additionalIdentifiers")
     @JsonDeserialize(as = LinkedHashSet.class)
     @Valid
     private Set<Identifier> additionalIdentifiers;
-
     @JsonProperty("contactPoint")
     @Valid
     private ContactPoint contactPoint;
-
     @JsonProperty("details")
     private Details details;
-
     @JsonProperty("buyerProfile")
     private String buyerProfile;
 
@@ -75,5 +68,38 @@ public class OrganizationReference {
         this.contactPoint = contactPoint;
         this.details = details;
         this.buyerProfile = buyerProfile;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id)
+                .append(name)
+                .append(identifier)
+                .append(address)
+                .append(additionalIdentifiers)
+                .append(contactPoint)
+                .append(details)
+                .append(buyerProfile)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ParticipationFee)) {
+            return false;
+        }
+        final OrganizationReference rhs = (OrganizationReference) other;
+        return new EqualsBuilder().append(id, rhs.id)
+                .append(name, rhs.name)
+                .append(identifier, rhs.identifier)
+                .append(address, rhs.address)
+                .append(additionalIdentifiers, rhs.additionalIdentifiers)
+                .append(contactPoint, rhs.contactPoint)
+                .append(details, rhs.details)
+                .append(buyerProfile, rhs.buyerProfile)
+                .isEquals();
     }
 }
