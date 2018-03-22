@@ -50,7 +50,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         addEnquiryToTender(release, enquiry);
-        release.setDate(enquiry.getDate());
+        release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
         releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
@@ -66,7 +66,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
         addAnswerToEnquiry(release, enquiry);
-        release.setDate(enquiry.getDate());
+        release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
         releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
@@ -83,7 +83,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));
         final PsPqEnquiry enquiry = dto.getEnquiry();
         addAnswerToEnquiry(release, enquiry);
-        release.setDate(enquiry.getDate());
+        release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         release.getTender().setTenderPeriod(dto.getTenderPeriod());
