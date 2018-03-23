@@ -27,7 +27,6 @@ import lombok.Setter;
         "planning",
         "tender",
         "parties",
-        "buyer",
         "relatedProcesses"
 })
 public class MsRelease {
@@ -52,8 +51,6 @@ public class MsRelease {
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
-    @JsonProperty("buyer")
-    private final OrganizationReference buyer;
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
@@ -68,7 +65,6 @@ public class MsRelease {
                      @JsonProperty("planning") final MsPlanning planning,
                      @JsonProperty("tender") final MsTender tender,
                      @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                     @JsonProperty("buyer") final OrganizationReference buyer,
                      @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
@@ -79,7 +75,6 @@ public class MsRelease {
         this.planning = planning;
         this.tender = tender;
         this.parties = parties == null ? new HashSet<>() : parties;
-        this.buyer = buyer;
         this.relatedProcesses = relatedProcesses;
     }
 }
