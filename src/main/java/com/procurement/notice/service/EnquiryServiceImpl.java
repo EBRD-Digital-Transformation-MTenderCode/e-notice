@@ -8,7 +8,7 @@ import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto;
 import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
-import com.procurement.notice.model.tender.pspq.PsPqRelease;
+import com.procurement.notice.model.tender.pspq.PsPq;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
@@ -48,7 +48,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
+        final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         addEnquiryToTender(release, enquiry);
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
@@ -64,7 +64,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
+        final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         addAnswerToEnquiry(release, enquiry);
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
@@ -79,7 +79,7 @@ public class EnquiryServiceImpl implements EnquiryService {
                                        final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
-        final PsPqRelease release = jsonUtil.toObject(PsPqRelease.class, entity.getJsonData());
+        final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));
         final PsPqEnquiry enquiry = dto.getEnquiry();
         addAnswerToEnquiry(release, enquiry);
@@ -92,7 +92,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         return getResponseDto(cpid, release.getOcid());
     }
 
-    private void addEnquiryToTender(final PsPqRelease release, final PsPqEnquiry enquiry) {
+    private void addEnquiryToTender(final PsPq release, final PsPqEnquiry enquiry) {
         List<PsPqEnquiry> enquiries = release.getTender().getEnquiries();
         if (Objects.isNull(enquiries)) {
             enquiries = new ArrayList<>();
@@ -106,7 +106,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         }
     }
 
-    private void addAnswerToEnquiry(final PsPqRelease release, final PsPqEnquiry enquiry) {
+    private void addAnswerToEnquiry(final PsPq release, final PsPqEnquiry enquiry) {
         final List<PsPqEnquiry> enquiries = release.getTender().getEnquiries();
         final Optional<PsPqEnquiry> enquiryOptional = enquiries.stream()
                 .filter(e -> e.getId().equals(enquiry.getId()))

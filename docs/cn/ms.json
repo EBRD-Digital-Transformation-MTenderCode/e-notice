@@ -1,82 +1,78 @@
 {
-  "ocid": "",
-  "id": "",
-  "date": "",
-  "tag": "",
-  "initiationType": "",
+  "ocid": "ocds-t1s2t3-MD-1521827804015",
+  "id": "ocds-t1s2t3-MD-1521827804015-1521827804276",
+  "date": "2018-03-23T17:56:43Z",
+  "tag": [
+    "compiled"
+  ],
+  "initiationType": "tender",
+  "language": "en",
   "planning": {
-    "rationale": "",
+    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document.",
     "budget": {
-      "description": "",
+      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
       "amount": {
-        "amount": 0,
-        "currency": ""
+        "amount": 2.85,
+        "currency": "LAJ"
       },
-      "isEuropeanUnionFunded": false,
+      "isEuropeanUnionFunded": true,
       "europeanUnionFunding": {
-        "projectIdentifier": "",
-        "projectName": ""
+        "projectIdentifier": "proj-cn-12346",
+        "projectName": "test proj name",
+        "uri": "https://jwt.io"
       },
       "budgetBreakdown": [
         {
-          "id": "",
-          "description": "",
+          "id": "ocds-t1s2t3-UA-1521797966040-FS-1521797969595",
+          "description": "A short free text description of this budget entry.",
           "amount": {
-            "amount": 0,
-            "currency": ""
+            "amount": 2.85,
+            "currency": "LAJ"
           },
           "period": {
-            "startDate": "",
-            "endDate": ""
+            "startDate": "2018-03-23T09:39:25Z",
+            "endDate": "2018-05-06T02:23:40Z"
           },
           "sourceParty": {
-            "name": "",
-            "id": ""
+            "name": "Taylor, Dennis and Munoz",
+            "id": "UA-EDR-753-18-5525"
           }
         }
       ]
     }
   },
   "tender": {
-    "id": "",
-    "title": "",
-    "description": "",
+    "id": "ocds-t1s2t3-MD-1521827804015",
+    "title": "Tender title",
+    "description": "Tender description",
     "classification": {
-      "scheme": "",
-      "description": "",
-      "id": ""
+      "scheme": "CPV",
+      "id": "15540000-5",
+      "description": "Cheese products"
     },
-    "status": "",
-    "statusDetails": "",
+    "status": "active",
+    "statusDetails": "preselection",
     "value": {
-      "amount": 0,
-      "currency": ""
+      "amount": 2.85,
+      "currency": "LAJ"
     },
-    "procurementMethod": "",
-    "procurementMethodDetails": "",
-    "procurementMethodRationale": "",
-    "procurementMethodAdditionalInfo": "",
-    "mainProcurementCategory": "",
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open Procurement",
+    "procurementMethodRationale": "Rationale of procurement method, especially in the case of Limited tendering.",
+    "procurementMethodAdditionalInfo": "Additional information about the procurement method.",
+    "mainProcurementCategory": "goods",
     "additionalProcurementCategories": [
-      ""
+      "goods"
     ],
-    "hasEnquiries": true,
-    "eligibilityCriteria": "",
+    "hasEnquiries": false,
+    "eligibilityCriteria": "A description of any eligibility criteria for potential suppliers.",
     "submissionLanguages": [
-      ""
-    ],
-    "amendments": [
-      {
-        "date": "",
-        "rationale": "",
-        "id": "",
-        "amendsReleaseID": "",
-        "releaseID": ""
-      }
+      "pl",
+      "ro"
     ],
     "contractPeriod": {
-      "startDate": "",
-      "endDate": ""
+      "startDate": "2018-09-27T00:00:00Z",
+      "endDate": "2018-11-27T00:00:00Z"
     },
     "acceleratedProcedure": {
       "isAcceleratedProcedure": false
@@ -101,69 +97,148 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "",
+    "legalBasis": "DIRECTIVE_2014_24_EU",
     "procuringEntity": {
-      "name": "",
-      "id": ""
+      "name": "Новороздільська міська лікарня",
+      "id": "UA-EDR-20764777",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "20764777",
+        "legalName": "Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
+      },
+      "address": {
+        "streetAddress": "вул. Винниченка, 37",
+        "locality": "місто Новий Розділ",
+        "region": "Львівська область",
+        "postalCode": "7770777",
+        "countryName": "Україна"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "123123123",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
+      "contactPoint": {
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "http://test.ua"
+      }
     }
   },
   "parties": [
     {
-      "name": "",
-      "id": "",
+      "name": "Новороздільська міська лікарня",
+      "id": "UA-EDR-20764777",
       "identifier": {
-        "scheme": "",
-        "id": "",
-        "legalName": "",
-        "uri": ""
+        "scheme": "UA-EDR",
+        "id": "20764777",
+        "legalName": "Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
       },
       "additionalIdentifiers": [
         {
-          "scheme": "",
-          "id": "",
-          "legalName": "",
-          "uri": ""
+          "scheme": "UA-EDR",
+          "id": "123123123",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
         }
       ],
       "address": {
-        "streetAddress": "",
-        "locality": "",
-        "region": "",
-        "postalCode": "",
-        "countryName": ""
+        "streetAddress": "вул. Винниченка, 37",
+        "locality": "місто Новий Розділ",
+        "region": "Львівська область",
+        "postalCode": "7770777",
+        "countryName": "Україна"
       },
       "contactPoint": {
-        "name": "",
-        "email": "",
-        "telephone": "",
-        "faxNumber": "",
-        "url": ""
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "http://test.ua"
       },
       "roles": [
-        ""
+        "procuringEntity"
+      ]
+    },
+    {
+      "name": "Taylor, Dennis and Munoz",
+      "id": "UA-EDR-753-18-5525",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "753-18-5525",
+        "legalName": "Taylor, Dennis and Munoz Inc",
+        "uri": "http://zuniga-smith.com/"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "886-69-4916",
+          "legalName": "Taylor, Dennis and Munoz Group",
+          "uri": "https://spencer.com/list/main.htm"
+        }
+      ],
+      "address": {
+        "streetAddress": "2485 Cook Ridge",
+        "locality": "East Janetbury",
+        "region": "California",
+        "postalCode": "88909",
+        "countryName": "Liberia"
+      },
+      "contactPoint": {
+        "name": "David Mcintosh",
+        "email": "alisonmaxwell@hotmail.com",
+        "telephone": "1-869-514-4337",
+        "faxNumber": "04796869785",
+        "url": "https://johnson-cox.net/app/app/list/search/"
+      },
+      "roles": [
+        "buyer",
+        "payer",
+        "funder"
       ],
       "details": {
-        "typeOfBuyer": "",
-        "mainGeneralActivity": "",
-        "mainSectoralActivity": "",
-        "isACentralPurchasingBody": false,
-        "scale": ""
-      },
-      "buyerProfile": ""
+        "typeOfBuyer": "NATIONAL_AGENCY",
+        "mainGeneralActivity": "HOUSING_AND_COMMUNITY_AMENITIES",
+        "mainSectoralActivity": "WATER",
+        "isACentralPurchasingBody": true,
+        "scale": "large"
+      }
     }
   ],
-  "buyer": {
-    "name": "",
-    "id": ""
-  },
-  "language": "",
   "relatedProcesses": [
     {
-      "id": "",
-      "identifier": "",
-      "relationship": "",
-      "scheme": "",
-      "uri": ""
+      "id": "8c646410-2ec3-11e8-aefa-358fa94f0cdf",
+      "relationship": [
+        "x_preselection"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-MD-1521827804015-PS-1521827804368",
+      "uri": "http://point.eprocurement.systems/tender/ocds-t1s2t3-MD-1521827804015-PS-1521827804368"
+    },
+    {
+      "id": "8c646411-2ec3-11e8-aefa-358fa94f0cdf",
+      "relationship": [
+        "x_expenditureItem"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-UA-1521797966040",
+      "uri": "http://point.eprocurement.systems/budget/ocds-t1s2t3-UA-1521797966040"
+    },
+    {
+      "id": "8c648b20-2ec3-11e8-aefa-358fa94f0cdf",
+      "relationship": [
+        "x_budget"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-UA-1521797966040-FS-1521797969595",
+      "uri": "http://point.eprocurement.systems/budget/ocds-t1s2t3-UA-1521797966040-FS-1521797969595"
     }
   ]
 }
