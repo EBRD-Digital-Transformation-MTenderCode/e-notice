@@ -1,49 +1,27 @@
 {
-  "ocid": "",
-  "id": "",
-  "date": "",
-  "tag": "",
-  "initiationType": "",
+  "ocid": "ocds-t1s2t3-MD-1521827804015-PS-1521827804368",
+  "id": "ocds-t1s2t3-MD-1521827804015-PS-1521827804368-1521827804368",
+  "date": "2018-03-23T17:56:43Z",
+  "tag": [
+    "compiled"
+  ],
+  "initiationType": "tender",
+  "language": "en",
   "hasPreviousNotice": false,
   "purposeOfNotice": {
-    "isACallForCompetition": true
+    "isACallForCompetition": false
   },
   "tender": {
-    "id": "",
-    "title": "",
-    "description": "",
-    "status": "",
-    "statusDetails": "",
+    "id": "ocds-t1s2t3-MD-1521827804015",
+    "title": "Tender title",
+    "description": "Tender description",
+    "status": "active",
+    "statusDetails": "preselection",
     "enquiryPeriod": {
-      "startDate": "",
-      "endDate": ""
+      "startDate": "2018-03-23T17:56:43Z",
+      "endDate": "2018-05-03T02:23:40Z"
     },
-    "hasEnquiries": true,
-    "enquiries": [
-      {
-        "id":"",
-        "date":"2017-01-22T14:55:00Z",
-        "author": {
-          "name":"",
-          "id":""
-        },
-        "title":"",
-        "description":"",
-        "dateAnswered":"",
-        "answer":"",
-        "relatedItem":"",
-        "relatedLot":""
-      }
-    ],
-    "amendments": [
-      {
-        "date": "",
-        "rationale": "",
-        "id": "",
-        "amendsReleaseID": "",
-        "releaseID": ""
-      }
-    ],
+    "hasEnquiries": false,
     "lotGroups": [
       {
         "optionToCombine": false
@@ -51,206 +29,111 @@
     ],
     "lots": [
       {
-        "id": "",
-        "title": "",
-        "description": "",
-        "status": "",
-        "statusDetails":"",
+        "id": "8c32ccc0-2ec3-11e8-9ab3-6901b271e9a6",
+        "title": "A title for this lot.",
+        "description": "A description of this lot.",
+        "status": "active",
+        "statusDetails": "empty",
         "value": {
-          "amount": 0,
-          "currency": ""
+          "amount": 2.85,
+          "currency": "LAJ"
         },
-        "options": {
-          "hasOptions": false
-        },
-        "variants": {
-          "hasVariants": false
-        },
-        "renewals": {
-          "hasRenewals": false
-        },
-        "recurrentProcurement": {
-          "isRecurrent": false
-        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
         "contractPeriod": {
-          "startDate": "",
-          "endDate": ""
+          "startDate": "2018-09-27T00:00:00Z",
+          "endDate": "2018-11-27T00:00:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "",
-            "locality": "",
-            "region": "",
-            "postalCode": "",
-            "countryName": ""
+            "streetAddress": "149-159 High Street",
+            "locality": "Birmingham",
+            "region": "Digbeth",
+            "postalCode": "B12 0JU",
+            "countryName": "United Kingdom"
           },
-          "description": ""
+          "description": "Further description of the place of performance of the contract. Required by EU."
         }
       }
     ],
     "items": [
       {
-        "id": "",
+        "id": "8c32a5b0-2ec3-11e8-9ab3-6901b271e9a6",
+        "description": "A description of the goods, services to be provided.",
         "classification": {
-          "scheme": "",
-          "description": "",
-          "id": ""
+          "scheme": "CPV",
+          "id": "15540000-5",
+          "description": "Cheese products"
         },
         "additionalClassifications": [
           {
-            "scheme": "",
-            "description": "",
-            "id": ""
+            "scheme": "CPVS",
+            "id": "CPVs-id-12341234",
+            "description": "A textual description or title for the code."
           }
         ],
-        "quantity": 0,
+        "quantity": 10.0,
         "unit": {
-          "id": "",
-          "name": ""
+          "name": "kg",
+          "id": "0971"
         },
-        "description": "",
-        "relatedLot": ""
+        "relatedLot": "8c32ccc0-2ec3-11e8-9ab3-6901b271e9a6"
       }
     ],
     "awardCriteria": "priceOnly",
     "requiresElectronicCatalogue": false,
-    "submissionMethod": ["electronicSubmission"],
-    "submissionMethodRationale": [""],
-    "submissionMethodDetails": "",
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionMethodDetails": "Any detailed or further information on the submission method. This may include the address, e-mail address or online service to which bids should be submitted, and any special requirements to be followed for submissions.",
+    "submissionMethodRationale": [
+      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE",
+      "IPR_ISSUES"
+    ],
     "tenderPeriod": {
-      "startDate": "",
-      "endDate": ""
-    },
-    "standstillPeriod": {
-      "startDate":"",
-      "endDate": ""
+      "startDate": "2018-03-23T17:56:43Z",
+      "endDate": "2018-05-06T02:23:40Z"
     },
     "documents": [
       {
-        "documentType": "",
-        "datePublished": "",
-        "id": "",
-        "url": "",
-        "title": "",
-        "description": "",
-        "language": "",
-        "relatedLot": ""
+        "id": "e585d8d0-2e91-11e8-ac76-4940f127948b",
+        "documentType": "tenderNotice",
+        "title": "The document title.",
+        "description": "A short description of the document. We recommend descriptions do not exceed 250 words. In the event the document is not accessible online, the description field can be used to describe arrangements for obtaining a copy of the document.",
+        "language": "ro",
+        "relatedLots": [
+          "lot-id-123123"
+        ]
       }
     ]
   },
-  "language": "",
-  "parties": [
-    {
-      "name": "",
-      "id": "",
-      "identifier": {
-        "scheme": "",
-        "id": "",
-        "legalName": "",
-        "uri": ""
-      },
-      "additionalIdentifiers": [
-        {
-          "scheme": "",
-          "id": "",
-          "legalName": "",
-          "uri": ""
-        }
-      ],
-      "address": {
-        "streetAddress": "",
-        "locality": "",
-        "region": "",
-        "postalCode": "",
-        "countryName": ""
-      },
-      "contactPoint": {
-        "name": "",
-        "email": "",
-        "telephone": "",
-        "faxNumber": "",
-        "url": ""
-      },
-      "roles": [""],
-      "details": {
-        "typeOfBuyer": "",
-        "mainGeneralActivity": "",
-        "mainSectoralActivity": "",
-        "isACentralPurchasingBody": false,
-        "scale": ""
-      },
-      "buyerProfile": ""
-    }
-  ],
-  "bids": {
-    "details": [
-      {
-        "id":"",
-        "date":"",
-        "status":"",
-        "tenderers": [
-          {
-            "id":"",
-            "name":""
-          }
-        ],
-        --"documents": [
-        {
-          "documentType": "",
-          "datePublished": "",
-          "id": "",
-          "url": "",
-          --"title": "",
-          --"description": "",
-          "language": "",
-          "relatedLot": ""
-        }
-      ],
-        "relatedLots":[""]
-      }
-    ]
-  },
-  "awards": [
-    {
-      "id": "",
-      "date": "",
-      --"description":"",
-      "status": "",
-      "statusDetails":"",
-      "relatedLots":[""],
-      --"relatedBid":"",
-      --"suppliers": [
-      {
-        "id":"",
-        "name":""
-      }
-    ],
-      --"documents": [
-      {
-        "id":"",
-        "title":"",
-        "description": "",
-        "url":"",
-        "datePublished": "",
-        "documentType":"",
-        "language": "",
-        "relatedLot": ""
-      }
-    ]
-    }
-  ],
   "relatedProcesses": [
     {
-      "id": "",
-      "identifier": "",
-      "relationship": "",
-      "scheme": "",
-      "uri": ""
+      "id": "8c648b21-2ec3-11e8-aefa-358fa94f0cdf",
+      "relationship": [
+        "parent"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-MD-1521827804015",
+      "uri": "http://point.eprocurement.systems/tender/ocds-t1s2t3-MD-1521827804015"
     }
   ]
 }
-
-//"root['hasPreviousNotice']",
-//"root['purposeOfNotice']",
-//"root['tender']['hasEnquiries']",
-//"root['tender']['lots'][0]['statusDetails']"

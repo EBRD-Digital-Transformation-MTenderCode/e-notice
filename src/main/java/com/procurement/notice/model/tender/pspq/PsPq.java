@@ -31,7 +31,7 @@ import lombok.Setter;
         "awards",
         "relatedProcesses"
 })
-public class PsPqRelease {
+public class PsPq {
     @JsonProperty("ocid")
     private String ocid;
     @JsonProperty("id")
@@ -66,19 +66,19 @@ public class PsPqRelease {
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
-    public PsPqRelease(@JsonProperty("ocid") final String ocid,
-                       @JsonProperty("id") final String id,
-                       @JsonProperty("date") final LocalDateTime date,
-                       @JsonProperty("tag") final List<Tag> tag,
-                       @JsonProperty("initiationType") final InitiationType initiationType,
-                       @JsonProperty("language") final String language,
-                       @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-                       @JsonProperty("tender") final PsPqTender tender,
-                       @JsonProperty("awards") final LinkedHashSet<Award> awards,
-                       @JsonProperty("bids") final Bids bids,
-                       @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
-                       @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
-                       @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+    public PsPq(@JsonProperty("ocid") final String ocid,
+                @JsonProperty("id") final String id,
+                @JsonProperty("date") final LocalDateTime date,
+                @JsonProperty("tag") final List<Tag> tag,
+                @JsonProperty("initiationType") final InitiationType initiationType,
+                @JsonProperty("language") final String language,
+                @JsonProperty("parties") final LinkedHashSet<Organization> parties,
+                @JsonProperty("tender") final PsPqTender tender,
+                @JsonProperty("awards") final LinkedHashSet<Award> awards,
+                @JsonProperty("bids") final Bids bids,
+                @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
+                @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
+                @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

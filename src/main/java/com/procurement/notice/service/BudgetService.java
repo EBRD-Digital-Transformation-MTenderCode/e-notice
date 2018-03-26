@@ -2,7 +2,10 @@ package com.procurement.notice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
+import com.procurement.notice.model.ocds.BudgetBreakdown;
+import com.procurement.notice.model.tender.dto.CheckFsDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,4 +31,14 @@ public interface BudgetService {
                          String stage,
                          LocalDateTime releaseDate,
                          JsonNode data);
+
+    void createEiByMs(List<String> ei,
+                      String msCpId,
+                      LocalDateTime dateTime);
+
+
+    void createFsByMs(List<BudgetBreakdown> budgetBreakdown,
+                      String msCpId,
+                      LocalDateTime dateTime);
+
 }
