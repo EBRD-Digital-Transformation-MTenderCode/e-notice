@@ -48,18 +48,12 @@ public class Document {
 
     @JsonProperty("title")
     @JsonPropertyDescription("The document title.")
-//    @Pattern(regexp = "^(title_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-" +
-//        "([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String title;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A short description of the document. We recommend descriptions do not exceed 250 words." +
         " In the event the document is not accessible online, the description field can be used to describe " +
         "arrangements for obtaining a copy of the document.")
-//    @Pattern(regexp = "^(description_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5," +
-//        "8})(-([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String description;
 
     @JsonProperty("url")
@@ -211,7 +205,7 @@ public class Document {
             }
         }
 
-        private DocumentType(final String value) {
+        DocumentType(final String value) {
             this.value = value;
         }
 
