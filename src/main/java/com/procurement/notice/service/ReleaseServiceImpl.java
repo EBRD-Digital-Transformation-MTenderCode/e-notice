@@ -1,9 +1,7 @@
 package com.procurement.notice.service;
 
-import com.datastax.driver.core.utils.UUIDs;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.procurement.notice.dao.BudgetDao;
 import com.procurement.notice.dao.ReleaseDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
@@ -16,16 +14,11 @@ import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
-    @Value("${uri.budget}")
-    private String budgetUri;
-    @Value("${uri.tender}")
-    private String tenderUri;
     private static final String SEPARATOR = "-";
     private static final String RELEASE_NOT_FOUND_ERROR = "Release not found by stage: ";
     private static final String AWARD_NOT_FOUND_ERROR = "Award not found by stage: ";
@@ -33,15 +26,21 @@ public class ReleaseServiceImpl implements ReleaseService {
     private static final String LOTS_NOT_FOUND_ERROR = "Lots not found by stage: ";
     private final ReleaseDao releaseDao;
     private final BudgetService budgetService;
+    private final OrganizationService organizationService;
+    private final RelatedProcessService relatedProcessService;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
     public ReleaseServiceImpl(final ReleaseDao releaseDao,
                               final BudgetService budgetService,
+                              final OrganizationService organizationService,
+                              final RelatedProcessService relatedProcessService,
                               final JsonUtil jsonUtil,
                               final DateUtil dateUtil) {
         this.releaseDao = releaseDao;
         this.budgetService = budgetService;
+        this.organizationService = organizationService;
+        this.relatedProcessService = relatedProcessService;
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
     }
@@ -73,8 +72,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        addMsParties(ms, checkFs);
-
+        organizationService.processMsParties(ms, checkFs);
         final PsPq record = jsonUtil.toObject(PsPq.class, data.toString());
         record.setDate(releaseDate);
         record.setOcid(getOcId(cpid, stage));
@@ -82,71 +80,13 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.setTag(Arrays.asList(Tag.COMPILED));
         record.setInitiationType(InitiationType.TENDER);
         record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-
-        addRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcess.RelatedProcessType.X_PRESELECTION);
-        addMsRelatedProcess(record, ms.getOcid());
-
+        relatedProcessService.addRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
+        relatedProcessService.addMsRelatedProcess(record, ms.getOcid());
         releaseDao.saveTender(getMSEntity(ms.getOcid(), ms));
         releaseDao.saveTender(getReleaseEntity(ms.getOcid(), stage, record));
-
         budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
         budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
-
         return getResponseDto(ms.getOcid(), record.getOcid());
-    }
-
-    private void addRelatedProcessToMs(final Ms ms,
-                                       final CheckFsDto checkFs,
-                                       final String ocId,
-                                       final RelatedProcess.RelatedProcessType recordProcessType) {
-        if (Objects.isNull(ms.getRelatedProcesses())) {
-            ms.setRelatedProcesses(new LinkedHashSet<>());
-        }
-
-        /*record*/
-        ms.getRelatedProcesses().add(new RelatedProcess(
-                UUIDs.timeBased().toString(),
-                Arrays.asList(recordProcessType),
-                RelatedProcess.RelatedProcessScheme.OCID,
-                ocId,
-                getTenderUri(ocId)));
-
-        /*expenditure items*/
-        checkFs.getEi().forEach(eiCpId ->
-                ms.getRelatedProcesses().add(new RelatedProcess(
-                        UUIDs.timeBased().toString(),
-                        Arrays.asList(RelatedProcess.RelatedProcessType.X_EXPENDITURE_ITEM),
-                        RelatedProcess.RelatedProcessScheme.OCID,
-                        eiCpId,
-                        getBudgetUri(eiCpId))
-                )
-        );
-
-        /*financial sources*/
-        ms.getPlanning().getBudget().getBudgetBreakdown().forEach(fs ->
-                ms.getRelatedProcesses().add(new RelatedProcess(
-                        UUIDs.timeBased().toString(),
-                        Arrays.asList(RelatedProcess.RelatedProcessType.X_BUDGET),
-                        RelatedProcess.RelatedProcessScheme.OCID,
-                        fs.getId(),
-                        getBudgetUri(fs.getId()))
-                )
-        );
-    }
-
-    private void addMsRelatedProcess(final PsPq release,
-                                     final String cpId) {
-        /*ms*/
-        final RelatedProcess relatedProcess = new RelatedProcess(
-                UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcess.RelatedProcessType.PARENT),
-                RelatedProcess.RelatedProcessScheme.OCID,
-                cpId,
-                getTenderUri(cpId));
-        if (Objects.isNull(release.getRelatedProcesses())) {
-            release.setRelatedProcesses(new LinkedHashSet<>());
-        }
-        release.getRelatedProcesses().add(relatedProcess);
     }
 
 
@@ -306,51 +246,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
 //        addRelatedProcessToMs(ms, release.getOcid(), RelatedProcess.RelatedProcessType.X_PREQUALIFICATION);
-        addMsRelatedProcess(release, ms.getOcid());
+        relatedProcessService.addMsRelatedProcess(release, ms.getOcid());
         releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
 
         return getResponseDto(cpid, release.getOcid());
-    }
-
-    private void addMsParties(final Ms ms, final CheckFsDto checkFs) {
-        final Set<Organization> parties = ms.getParties();
-        addParty(parties, ms.getTender().getProcuringEntity(), Organization.PartyRole.PROCURING_ENTITY);
-        checkFs.getBuyer().forEach(buyer -> addParty(parties, buyer, Organization.PartyRole.BUYER));
-        checkFs.getFunder().forEach(funder -> addParty(parties, funder, Organization.PartyRole.FUNDER));
-        checkFs.getPayer().forEach(payer -> addParty(parties, payer, Organization.PartyRole.PAYER));
-    }
-
-    private void addParty(final Set<Organization> parties,
-                          final OrganizationReference organization,
-                          final Organization.PartyRole role) {
-        if (Objects.nonNull(organization)) {
-            final Optional<Organization> partyOptional = getParty(parties, organization.getId());
-            final Organization party;
-            if (partyOptional.isPresent()) {
-                party = partyOptional.get();
-                party.getRoles().add(role);
-            } else {
-                party = new Organization(
-                        organization.getId(),
-                        organization.getName(),
-                        organization.getIdentifier(),
-                        new LinkedHashSet(organization.getAdditionalIdentifiers()),
-                        organization.getAddress(),
-                        organization.getContactPoint(),
-                        new HashSet(Arrays.asList(role)),
-                        organization.getDetails(),
-                        organization.getBuyerProfile()
-                );
-                parties.add(party);
-            }
-        }
-    }
-
-    private Optional<Organization> getParty(final Set<Organization> parties, final String partyId) {
-        Optional<Organization> organizationOptional = Optional.empty();
-        if (Objects.nonNull(parties))
-            organizationOptional = parties.stream().filter(p -> p.getId().equals(partyId)).findFirst();
-        return organizationOptional;
     }
 
     private String getOcId(final String cpId, final String stage) {
@@ -418,15 +317,6 @@ public class ReleaseServiceImpl implements ReleaseService {
         lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
         lotsDto.forEach(lotDto -> updatableLots.get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
         release.getTender().setLots(new ArrayList<>(updatableLots.values()));
-    }
-
-
-    private String getBudgetUri(final String id) {
-        return budgetUri + id;
-    }
-
-    private String getTenderUri(final String id) {
-        return tenderUri + id;
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
