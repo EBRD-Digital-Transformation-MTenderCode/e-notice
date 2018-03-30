@@ -10,6 +10,7 @@ import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,37 +37,49 @@ import lombok.Setter;
         "relatedProcesses"
 })
 public class ReleaseFS {
+
     @JsonProperty("ocid")
     private String ocid;
+
     @JsonProperty("id")
     private String id;
-    @JsonProperty("date")
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonProperty("date")
     private LocalDateTime date;
+
     @JsonProperty("tag")
     private List<Tag> tag;
+
     @JsonProperty("initiationType")
     private InitiationType initiationType;
+
     @JsonProperty("title")
     private String title;
+
     @JsonProperty("description")
     private String description;
+
     @JsonProperty("language")
     private String language;
+
     @JsonProperty("tender")
     private Tender tender;
+
     @JsonProperty("planning")
     private FsPlanning planning;
+
     @JsonProperty("funder")
     private OrganizationReference funder;
+
     @JsonProperty("payer")
     private OrganizationReference payer;
+
     @JsonProperty("parties")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
+
     @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
@@ -81,9 +94,9 @@ public class ReleaseFS {
                      @JsonProperty("tender") final Tender tender,
                      @JsonProperty("funder") final OrganizationReference funder,
                      @JsonProperty("payer") final OrganizationReference payer,
-                     @JsonProperty("parties") final Set<Organization> parties,
+                     @JsonProperty("parties") final HashSet<Organization> parties,
                      @JsonProperty("planning") final FsPlanning planning,
-                     @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+                     @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
 
         this.id = id;
         this.ocid = ocid;

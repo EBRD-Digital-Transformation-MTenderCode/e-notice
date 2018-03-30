@@ -2,8 +2,10 @@ package com.procurement.notice.model.tender.pspq;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.procurement.notice.exception.EnumException;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
+import com.procurement.notice.model.tender.ms.MsTender;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -40,60 +42,68 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "documents"
 })
 public class PsPqTender {
+
     @JsonProperty("id")
-    @Size(min = 1)
-    @NotNull
     private final String id;
+
     @JsonProperty("title")
     private final String title;
+
     @JsonProperty("description")
     private final String description;
+
     @JsonProperty("status")
     private TenderStatus status;
+
     @JsonProperty("statusDetails")
     private TenderStatusDetails statusDetails;
+
     @JsonProperty("enquiryPeriod")
-    @Valid
     private Period enquiryPeriod;
+
     @JsonProperty("hasEnquiries")
     private final Boolean hasEnquiries;
+
     @JsonProperty("enquiries")
     private List<PsPqEnquiry> enquiries;
+
     @JsonProperty("amendments")
-    @Valid
     private final List<Amendment> amendments;
+
     @JsonProperty("lots")
-    @Valid
     private List<Lot> lots;
+
     @JsonProperty("lotGroups")
-    @Valid
     private final List<LotGroup> lotGroups;
+
     @JsonProperty("items")
-    @JsonDeserialize(as = LinkedHashSet.class)
-    @Valid
     private final Set<Item> items;
+
     @JsonProperty("awardCriteria")
     private final AwardCriteria awardCriteria;
+
     @JsonProperty("requiresElectronicCatalogue")
     private final Boolean requiresElectronicCatalogue;
+
     @JsonProperty("submissionMethod")
     private final List<SubmissionMethod> submissionMethod;
+
     @JsonProperty("submissionMethodDetails")
     private final String submissionMethodDetails;
+
     @JsonProperty("submissionMethodRationale")
-    @Valid
     private final List<SubmissionMethodRationale> submissionMethodRationale;
+
     @JsonProperty("tenderPeriod")
-    @Valid
     private Period tenderPeriod;
+
     @JsonProperty("standstillPeriod")
-    @Valid
     private Period standstillPeriod;
+
     @JsonProperty("awardPeriod")
-    @Valid
     private Period awardPeriod;
+
     @JsonProperty("documents")
-    @Valid
     private final List<Document> documents;
 
     @JsonCreator
@@ -229,7 +239,7 @@ public class PsPqTender {
         public static AwardCriteria fromValue(final String value) {
             final AwardCriteria constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(AwardCriteria.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -269,7 +279,7 @@ public class PsPqTender {
         public static SubmissionMethod fromValue(final String value) {
             final SubmissionMethod constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(SubmissionMethod.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -310,7 +320,7 @@ public class PsPqTender {
         public static SubmissionMethodRationale fromValue(final String value) {
             final SubmissionMethodRationale constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(SubmissionMethodRationale.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }

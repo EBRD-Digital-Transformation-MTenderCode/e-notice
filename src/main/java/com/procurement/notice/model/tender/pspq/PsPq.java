@@ -7,6 +7,7 @@ import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,35 +35,43 @@ import lombok.Setter;
 public class PsPq {
     @JsonProperty("ocid")
     private String ocid;
+
     @JsonProperty("id")
     private String id;
-    @JsonProperty("date")
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonPropertyDescription("The date this information was first released, or published.")
+    @JsonProperty("date")
     private LocalDateTime date;
+
     @JsonProperty("tag")
     private List<Tag> tag;
+
     @JsonProperty("initiationType")
     private InitiationType initiationType;
+
     @JsonProperty("language")
     private String language;
+
     @JsonProperty("hasPreviousNotice")
     private final Boolean hasPreviousNotice;
+
     @JsonProperty("purposeOfNotice")
     private final PurposeOfNotice purposeOfNotice;
+
     @JsonProperty("tender")
     private final PsPqTender tender;
+
     @JsonProperty("parties")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private final Set<Organization> parties;
+
     @JsonProperty("bids")
     private Bids bids;
+
     @JsonProperty("awards")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Award> awards;
+
     @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
@@ -72,13 +81,13 @@ public class PsPq {
                 @JsonProperty("tag") final List<Tag> tag,
                 @JsonProperty("initiationType") final InitiationType initiationType,
                 @JsonProperty("language") final String language,
-                @JsonProperty("parties") final LinkedHashSet<Organization> parties,
+                @JsonProperty("parties") final HashSet<Organization> parties,
                 @JsonProperty("tender") final PsPqTender tender,
-                @JsonProperty("awards") final LinkedHashSet<Award> awards,
+                @JsonProperty("awards") final HashSet<Award> awards,
                 @JsonProperty("bids") final Bids bids,
                 @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
                 @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
-                @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+                @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

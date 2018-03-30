@@ -26,17 +26,22 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "budgetBreakdown"
 })
 public class MsBudget {
+
     @JsonProperty("id")
-    @NotNull
     private String id;
+
     @JsonProperty("description")
     private final String description;
+
     @JsonProperty("amount")
     private final Value amount;
+
     @JsonProperty("isEuropeanUnionFunded")
     private final Boolean isEuropeanUnionFunded;
+
     @JsonProperty("europeanUnionFunding")
     private final EuropeanUnionFunding europeanUnionFunding;
+
     @JsonProperty("budgetBreakdown")
     private final List<BudgetBreakdown> budgetBreakdown;
 

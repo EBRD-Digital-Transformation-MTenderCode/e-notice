@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.*;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,10 +23,13 @@ public class AwardPeriodEndDto {
 
     @JsonProperty("awardPeriod")
     private final Period awardPeriod;
+
     @JsonProperty("awards")
     private final List<Award> awards;
+
     @JsonProperty("lots")
     private final List<Lot> lots;
+
     @JsonProperty("bids")
     private final List<Bid> bids;
 

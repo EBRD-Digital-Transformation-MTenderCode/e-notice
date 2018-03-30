@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "budget"
 })
 public class MsPlanning {
+
     @JsonProperty("rationale")
     private final String rationale;
 

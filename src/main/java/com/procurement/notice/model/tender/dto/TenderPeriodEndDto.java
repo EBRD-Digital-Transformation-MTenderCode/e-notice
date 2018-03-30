@@ -24,14 +24,19 @@ public class TenderPeriodEndDto {
 
     @JsonProperty("tenderPeriod")
     private final Period tenderPeriod;
+
     @JsonProperty("awardPeriod")
     private final Period awardPeriod;
+
     @JsonProperty("awards")
     private final List<Award> awards;
+
     @JsonProperty("lots")
     private final List<Lot> lots;
+
     @JsonProperty("tenderers")
     private final List<OrganizationReference> tenderers;
+
     @JsonProperty("bids")
     private final List<Bid> bids;
 

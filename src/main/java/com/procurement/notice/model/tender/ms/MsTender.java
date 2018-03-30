@@ -1,7 +1,9 @@
 package com.procurement.notice.model.tender.ms;
 
 import com.fasterxml.jackson.annotation.*;
+import com.procurement.notice.exception.EnumException;
 import com.procurement.notice.model.ocds.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +48,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "procuringEntity"
 })
 public class MsTender {
+
     @JsonProperty("id")
-    @Size(min = 1)
-    @NotNull
     private final String id;
     @JsonProperty("title")
     private final String title;
@@ -253,7 +254,7 @@ public class MsTender {
         public static MainProcurementCategory fromValue(final String value) {
             final MainProcurementCategory constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(MainProcurementCategory.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -292,7 +293,7 @@ public class MsTender {
         public static ProcurementMethod fromValue(final String value) {
             final ProcurementMethod constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(ProcurementMethod.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -333,7 +334,7 @@ public class MsTender {
         public static ExtendedProcurementCategory fromValue(final String value) {
             final ExtendedProcurementCategory constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(ExtendedProcurementCategory.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -375,7 +376,7 @@ public class MsTender {
         public static LegalBasis fromValue(final String value) {
             final LegalBasis constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(LegalBasis.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }
@@ -434,7 +435,7 @@ public class MsTender {
         public static SubmissionLanguage fromValue(final String value) {
             final SubmissionLanguage constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(SubmissionLanguage.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }

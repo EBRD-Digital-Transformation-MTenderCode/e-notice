@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.OrganizationReference;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,10 +23,13 @@ public class CheckFsDto {
 
     @JsonProperty("ei")
     private final List<String> ei;
+
     @JsonProperty("buyer")
     private final List<OrganizationReference> buyer;
+
     @JsonProperty("funder")
     private final List<OrganizationReference> funder;
+
     @JsonProperty("payer")
     private final List<OrganizationReference> payer;
 

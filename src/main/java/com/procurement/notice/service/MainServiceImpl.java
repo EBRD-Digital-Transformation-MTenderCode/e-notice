@@ -3,7 +3,9 @@ package com.procurement.notice.service;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.procurement.notice.exception.EnumException;
 import com.procurement.notice.exception.ErrorException;
+import com.procurement.notice.exception.ErrorType;
 import com.procurement.notice.model.bpe.ResponseDto;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -15,8 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class MainServiceImpl implements MainService {
 
-    private static final String PARAM_ERROR = " should not be empty for this type of operation";
-    private static final String IMPLEMENTATION_ERROR = "No implementation for this type of operation.";
     private final BudgetService budgetService;
     private final ReleaseService releaseService;
     private final EnquiryService enquiryService;
@@ -47,12 +47,11 @@ public class MainServiceImpl implements MainService {
             case CREATE_FS:
                 return budgetService.createFs(cpId, stage, releaseDate, data);
             case UPDATE_FS:
-                Objects.requireNonNull(ocId, "ocId " + PARAM_ERROR);
                 return budgetService.updateFs(cpId, ocId, stage, releaseDate, data);
             case CREATE_CN:
                 return releaseService.createCn(cpId, stage, releaseDate, data);
             case UPDATE_CN:
-                throw new ErrorException(IMPLEMENTATION_ERROR);
+                throw new ErrorException(ErrorType.IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
                 return enquiryService.createEnquiry(cpId, stage, releaseDate, data);
             case ADD_ANSWER:
@@ -70,10 +69,9 @@ public class MainServiceImpl implements MainService {
             case STANDSTILL_PERIOD_END:
                 return releaseService.standstillPeriodEnd(cpId, stage, releaseDate, data);
             case START_NEW_STAGE:
-                Objects.requireNonNull(previousStage, "previousStage " + PARAM_ERROR);
                 return releaseService.startNewStage(cpId, stage, previousStage, releaseDate, data);
             default:
-                throw new ErrorException(IMPLEMENTATION_ERROR);
+                throw new ErrorException(ErrorType.IMPLEMENTATION_ERROR);
         }
     }
 
@@ -97,7 +95,7 @@ public class MainServiceImpl implements MainService {
         START_NEW_STAGE("startNewStage");
         
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
-
+        private final String value;
 
         static {
             for (final Operation c : values()) {
@@ -105,7 +103,6 @@ public class MainServiceImpl implements MainService {
             }
         }
 
-        private final String value;
 
         Operation(final String value) {
             this.value = value;
@@ -115,8 +112,7 @@ public class MainServiceImpl implements MainService {
         public static Operation fromValue(final String value) {
             final Operation constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(
-                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
+                throw new EnumException(Operation.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
         }

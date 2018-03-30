@@ -15,29 +15,12 @@ import lombok.NonNull;
 public class SuspendTenderDto {
 
     @JsonProperty("tender")
-    @NonNull
-    private final Tender tender;
+    private final TenderDto tender;
 
     @JsonCreator
-    public SuspendTenderDto(@JsonProperty("tender") final Tender tender) {
+    public SuspendTenderDto(@JsonProperty("tender") final TenderDto tender) {
         this.tender = tender;
     }
 
-    @Getter
-    public class Tender {
-        @JsonProperty("status")
-        @NonNull
-        private final TenderStatus status;
-        @JsonProperty("statusDetails")
-        @NonNull
-        private final TenderStatusDetails statusDetails;
-
-        @JsonCreator
-        Tender(@JsonProperty("status") final TenderStatus status,
-               @JsonProperty("statusDetails") final TenderStatusDetails statusDetails) {
-            this.status = status;
-            this.statusDetails = statusDetails;
-        }
-    }
 
 }

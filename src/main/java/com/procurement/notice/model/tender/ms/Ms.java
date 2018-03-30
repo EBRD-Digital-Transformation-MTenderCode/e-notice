@@ -30,29 +30,38 @@ import lombok.Setter;
         "relatedProcesses"
 })
 public class Ms {
+
     @JsonProperty("ocid")
     private String ocid;
+
     @JsonProperty("id")
     private String id;
-    @JsonProperty("date")
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonProperty("date")
     private LocalDateTime date;
+
     @JsonProperty("tag")
     private List<Tag> tag;
+
     @JsonProperty("initiationType")
     private InitiationType initiationType;
+
     @JsonProperty("language")
     private String language;
+
     @JsonProperty("planning")
     private final MsPlanning planning;
+
     @JsonProperty("tender")
     private final MsTender tender;
+
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
+
     @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
@@ -64,8 +73,8 @@ public class Ms {
               @JsonProperty("language") final String language,
               @JsonProperty("planning") final MsPlanning planning,
               @JsonProperty("tender") final MsTender tender,
-              @JsonProperty("parties") final LinkedHashSet<Organization> parties,
-              @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+              @JsonProperty("parties") final HashSet<Organization> parties,
+              @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

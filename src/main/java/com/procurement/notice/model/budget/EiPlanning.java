@@ -14,9 +14,11 @@ import lombok.Getter;
         "rationale"
 })
 public class EiPlanning {
+
     @JsonProperty("budget")
-    @Valid
     private final EiBudget budget;
+
+
     @JsonProperty("rationale")
     private final String rationale;
 

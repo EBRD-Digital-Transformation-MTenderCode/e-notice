@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.Period;
 import com.procurement.notice.model.ocds.Value;
-import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,11 +21,11 @@ public class EiBudget {
 
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("period")
-    @Valid
     private final Period period;
+
     @JsonProperty("amount")
-    @Valid
     private Value amount;
 
     @JsonCreator

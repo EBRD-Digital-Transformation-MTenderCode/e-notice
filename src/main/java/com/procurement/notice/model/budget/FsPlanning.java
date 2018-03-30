@@ -14,9 +14,10 @@ import lombok.Getter;
         "rationale"
 })
 public class FsPlanning {
+
     @JsonProperty("budget")
-    @Valid
     private final FsBudget budget;
+
     @JsonProperty("rationale")
     private final String rationale;
 

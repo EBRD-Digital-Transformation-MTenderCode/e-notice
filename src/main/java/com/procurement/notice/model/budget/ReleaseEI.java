@@ -7,6 +7,7 @@ import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,37 +33,47 @@ import lombok.Setter;
         "relatedProcesses"
 })
 public class ReleaseEI {
+
     @JsonProperty("ocid")
     private String ocid;
+
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonPropertyDescription("The date this information was first released, or published.")
     private LocalDateTime date;
+
     @JsonProperty("tag")
     private List<Tag> tag;
+
     @JsonProperty("initiationType")
     private InitiationType initiationType;
+
     @JsonProperty("title")
-    @JsonPropertyDescription("A overall title for this contracting process or release.")
     private String title;
+
     @JsonProperty("description")
     private String description;
+
     @JsonProperty("language")
     private String language;
+
     @JsonProperty("planning")
     private EiPlanning planning;
+
     @JsonProperty("tender")
     private Tender tender;
+
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     private Set<Organization> parties;
+
     @JsonProperty("buyer")
     private final OrganizationReference buyer;
+
     @JsonProperty("relatedProcesses")
-    @JsonDeserialize(as = LinkedHashSet.class)
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
@@ -78,7 +89,7 @@ public class ReleaseEI {
                      @JsonProperty("buyer") final OrganizationReference buyer,
                      @JsonProperty("parties") final Set<Organization> parties,
                      @JsonProperty("planning") final EiPlanning planning,
-                     @JsonProperty("relatedProcesses") final LinkedHashSet<RelatedProcess> relatedProcesses) {
+                     @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

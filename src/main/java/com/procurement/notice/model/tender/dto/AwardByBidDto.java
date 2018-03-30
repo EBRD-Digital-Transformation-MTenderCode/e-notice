@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.Award;
 import com.procurement.notice.model.ocds.Bid;
+import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class AwardByBidDto {
 
     @JsonProperty("award")
     private final Award award;
+
     @JsonProperty("bid")
     private final Bid bid;
 

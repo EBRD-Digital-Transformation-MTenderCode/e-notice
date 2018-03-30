@@ -1,11 +1,9 @@
-package com.procurement.notice.controller;
+package com.procurement.notice.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.procurement.notice.exception.ErrorException;
-import com.procurement.notice.exception.ValidationException;
 import com.procurement.notice.model.bpe.ResponseDetailsDto;
 import com.procurement.notice.model.bpe.ResponseDto;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
@@ -24,18 +22,13 @@ import static org.springframework.http.HttpStatus.OK;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    private static final String ERROR_PREFIX = "400.02.";
+
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(NullPointerException.class)
     public ResponseDto handleNullPointerException(final NullPointerException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
-    }
-
-    @ResponseBody
-    @ResponseStatus(OK)
-    @ExceptionHandler(ValidationException.class)
-    public ResponseDto handleValidationException(final ValidationException e) {
-        return new ResponseDto<>(false, getErrors(e.getErrors()), null);
     }
 
     @ResponseBody
@@ -75,13 +68,6 @@ public class ControllerExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(OK)
-    @ExceptionHandler(ErrorException.class)
-    public ResponseDto handleErrorException(final ErrorException e) {
-        return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
-    }
-
-    @ResponseBody
-    @ResponseStatus(OK)
     @ExceptionHandler(ServletException.class)
     public ResponseDto handleServletException(final ServletException e) {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
@@ -94,12 +80,29 @@ public class ControllerExceptionHandler {
         return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
     }
 
+    @ResponseBody
+    @ResponseStatus(OK)
+    @ExceptionHandler(EnumException.class)
+    public ResponseDto handleErrorInsertException(final EnumException e) {
+        return new ResponseDto<>(false, getErrors(e.getCode(), e.getMessage()), null);
+    }
+
+    @ResponseBody
+    @ResponseStatus(OK)
+    @ExceptionHandler(ErrorException.class)
+    public ResponseDto handleErrorInsertException(final ErrorException e) {
+        return new ResponseDto<>(false, getErrors(e.getCode(), e.getMessage()), null);
+    }
+
+    private List<ResponseDetailsDto> getErrors(final String code, final String error) {
+        return Collections.singletonList(new ResponseDetailsDto(ERROR_PREFIX + code, error));
+    }
 
     private List<ResponseDetailsDto> getErrors(final BindingResult result) {
         return result.getFieldErrors()
                 .stream()
                 .map(f -> new ResponseDetailsDto(
-                        f.getField(),
+                        ERROR_PREFIX + f.getField(),
                         f.getCode() + " : " + f.getDefaultMessage()))
                 .collect(Collectors.toList());
     }
@@ -108,12 +111,8 @@ public class ControllerExceptionHandler {
         return e.getConstraintViolations()
                 .stream()
                 .map(f -> new ResponseDetailsDto(
-                        f.getPropertyPath().toString(),
+                        ERROR_PREFIX + f.getPropertyPath().toString(),
                         f.getMessage() + " " + f.getMessageTemplate()))
                 .collect(toList());
-    }
-
-    private List<ResponseDetailsDto> getErrors(final String code, final String error) {
-        return Arrays.asList(new ResponseDetailsDto(code, error));
     }
 }

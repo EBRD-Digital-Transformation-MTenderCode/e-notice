@@ -28,23 +28,29 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "sourceEntity"
 })
 public class FsBudget {
+
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("description")
     private final String description;
+
     @JsonProperty("period")
     private final Period period;
+
     @JsonProperty("amount")
     private final Value amount;
+
     @JsonProperty("europeanUnionFunding")
-    @Valid
     private final EuropeanUnionFunding europeanUnionFunding;
+
     @JsonProperty("isEuropeanUnionFunded")
     private final Boolean isEuropeanUnionFunded;
+
     @JsonProperty("verified")
     private Boolean verified;
+
     @JsonProperty("sourceEntity")
-    @Valid
     private OrganizationReference sourceEntity;
 
     @JsonCreator

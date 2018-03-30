@@ -20,21 +20,20 @@ import lombok.NonNull;
 public class UnsuspendTenderDto {
 
     @JsonProperty("enquiry")
-    @NonNull
     private final PsPqEnquiry enquiry;
+
     @JsonProperty("tender")
-    @NonNull
-    private final Tender tender;
+    private final TenderDto tender;
+
     @JsonProperty("tenderPeriod")
-    @NonNull
     private final Period tenderPeriod;
+
     @JsonProperty("enquiryPeriod")
-    @NonNull
     private final Period enquiryPeriod;
 
     @JsonCreator
     public UnsuspendTenderDto(@JsonProperty("enquiry") final PsPqEnquiry enquiry,
-                              @JsonProperty("tender") final Tender tender,
+                              @JsonProperty("tender") final TenderDto tender,
                               @JsonProperty("tenderPeriod") final Period tenderPeriod,
                               @JsonProperty("enquiryPeriod") final Period enquiryPeriod) {
         this.enquiry = enquiry;
@@ -42,22 +41,4 @@ public class UnsuspendTenderDto {
         this.tenderPeriod = tenderPeriod;
         this.enquiryPeriod = enquiryPeriod;
     }
-
-    @Getter
-    public class Tender {
-        @JsonProperty("status")
-        @NonNull
-        private final TenderStatus status;
-        @JsonProperty("statusDetails")
-        @NonNull
-        private final TenderStatusDetails statusDetails;
-
-        @JsonCreator
-        Tender(@JsonProperty("status") final TenderStatus status,
-               @JsonProperty("statusDetails") final TenderStatusDetails statusDetails) {
-            this.status = status;
-            this.statusDetails = statusDetails;
-        }
-    }
-
 }

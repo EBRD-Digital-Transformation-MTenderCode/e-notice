@@ -21,6 +21,7 @@ public class StandstillPeriodEndDto {
 
     @JsonProperty("standstillPeriod")
     private final Period standstillPeriod;
+
     @JsonProperty("lots")
     private final List<Lot> lots;
 

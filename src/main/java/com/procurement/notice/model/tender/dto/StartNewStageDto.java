@@ -13,8 +13,10 @@ public class StartNewStageDto {
 
     @JsonProperty("lots")
     private final List<Lot> lots;
+
     @JsonProperty("bids")
     private final List<Bid> bids;
+
     @JsonProperty("tender")
     private final Tender tender;
 
