@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -13,13 +12,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hasPrizes",
-    "prizes",
-    "paymentsToParticipants",
-    "serviceContractAward",
-    "juryDecisionBinding",
-    "juryMembers",
-    "participants"
+        "hasPrizes",
+        "prizes",
+        "paymentsToParticipants",
+        "serviceContractAward",
+        "juryDecisionBinding",
+        "juryMembers",
+        "participants"
 })
 public class DesignContest {
     @JsonProperty("hasPrizes")
@@ -33,17 +32,17 @@ public class DesignContest {
 
     @JsonProperty("paymentsToParticipants")
     @JsonPropertyDescription("Details of any payments that will be made to participants in the design contest. " +
-        "Required by the EU")
+            "Required by the EU")
     private final String paymentsToParticipants;
 
     @JsonProperty("serviceContractAward")
     @JsonPropertyDescription("A True/False field to indicate whether a service contract will be awarded to the winner" +
-        "(s) of the design contest. Required by the EU")
+            "(s) of the design contest. Required by the EU")
     private final Boolean serviceContractAward;
 
     @JsonProperty("juryDecisionBinding")
     @JsonPropertyDescription("A True/False field to indicate whether the jury decision of the design contest is " +
-        "binding. Required by the EU")
+            "binding. Required by the EU")
     private final Boolean juryDecisionBinding;
 
     @JsonProperty("juryMembers")
@@ -78,13 +77,13 @@ public class DesignContest {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(hasPrizes)
-                                    .append(prizes)
-                                    .append(paymentsToParticipants)
-                                    .append(serviceContractAward)
-                                    .append(juryDecisionBinding)
-                                    .append(juryMembers)
-                                    .append(participants)
-                                    .toHashCode();
+                .append(prizes)
+                .append(paymentsToParticipants)
+                .append(serviceContractAward)
+                .append(juryDecisionBinding)
+                .append(juryMembers)
+                .append(participants)
+                .toHashCode();
     }
 
     @Override
@@ -97,12 +96,12 @@ public class DesignContest {
         }
         final DesignContest rhs = (DesignContest) other;
         return new EqualsBuilder().append(hasPrizes, rhs.hasPrizes)
-                                  .append(prizes, rhs.prizes)
-                                  .append(paymentsToParticipants, rhs.paymentsToParticipants)
-                                  .append(serviceContractAward, rhs.serviceContractAward)
-                                  .append(juryDecisionBinding, rhs.juryDecisionBinding)
-                                  .append(juryMembers, rhs.juryMembers)
-                                  .append(participants, rhs.participants)
-                                  .isEquals();
+                .append(prizes, rhs.prizes)
+                .append(paymentsToParticipants, rhs.paymentsToParticipants)
+                .append(serviceContractAward, rhs.serviceContractAward)
+                .append(juryDecisionBinding, rhs.juryDecisionBinding)
+                .append(juryMembers, rhs.juryMembers)
+                .append(participants, rhs.participants)
+                .isEquals();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.tender.enquiry;
 
 import com.fasterxml.jackson.annotation.*;
@@ -17,15 +16,15 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "date",
-    "author",
-    "title",
-    "description",
-    "answer",
-    "dateAnswered",
-    "relatedItem",
-    "relatedLot"
+        "id",
+        "date",
+        "author",
+        "title",
+        "description",
+        "answer",
+        "dateAnswered",
+        "relatedItem",
+        "relatedLot"
 })
 public class PsPqEnquiry {
     @JsonProperty("id")
@@ -61,12 +60,12 @@ public class PsPqEnquiry {
 
     @JsonProperty("relatedItem")
     @JsonPropertyDescription("If this question relates to a specific line-item, this field contains the line-item " +
-        "identifier.")
+            "identifier.")
     private final String relatedItem;
 
     @JsonProperty("relatedLot")
     @JsonPropertyDescription("Where lots are used, if this question relates to a specific lot, this field contains " +
-        "the lot identifier.")
+            "the lot identifier.")
     private final String relatedLot;
 
     @JsonCreator
@@ -93,15 +92,15 @@ public class PsPqEnquiry {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(date)
-                                    .append(author)
-                                    .append(title)
-                                    .append(description)
-                                    .append(answer)
-                                    .append(dateAnswered)
-                                    .append(relatedItem)
-                                    .append(relatedLot)
-                                    .toHashCode();
+                .append(date)
+                .append(author)
+                .append(title)
+                .append(description)
+                .append(answer)
+                .append(dateAnswered)
+                .append(relatedItem)
+                .append(relatedLot)
+                .toHashCode();
     }
 
     @Override
@@ -114,14 +113,14 @@ public class PsPqEnquiry {
         }
         final PsPqEnquiry rhs = (PsPqEnquiry) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(date, rhs.date)
-                                  .append(author, rhs.author)
-                                  .append(title, rhs.title)
-                                  .append(description, rhs.description)
-                                  .append(answer, rhs.answer)
-                                  .append(dateAnswered, rhs.dateAnswered)
-                                  .append(relatedItem, rhs.relatedItem)
-                                  .append(relatedLot, rhs.relatedLot)
-                                  .isEquals();
+                .append(date, rhs.date)
+                .append(author, rhs.author)
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(answer, rhs.answer)
+                .append(dateAnswered, rhs.dateAnswered)
+                .append(relatedItem, rhs.relatedItem)
+                .append(relatedLot, rhs.relatedLot)
+                .isEquals();
     }
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.OrganizationReference;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 

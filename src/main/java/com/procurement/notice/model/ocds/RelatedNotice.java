@@ -1,8 +1,6 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -12,16 +10,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "scheme",
-    "id",
-    "relationship",
-    "objectOfProcurementInPIN",
-    "uri"
+        "scheme",
+        "id",
+        "relationship",
+        "objectOfProcurementInPIN",
+        "uri"
 })
 public class RelatedNotice {
     @JsonProperty("scheme")
     @JsonPropertyDescription("The source of the related notice identifier. Currently only 'TED' and 'national' are " +
-        "permitted values.")
+            "permitted values.")
     private final RelatedNotice.Scheme scheme;
 
     @JsonProperty("id")
@@ -34,8 +32,8 @@ public class RelatedNotice {
 
     @JsonProperty("objectOfProcurementInPIN")
     @JsonPropertyDescription("If the related notice linked to is a planning or 'Prior Information Notice' (PIN) that " +
-        "describes a number of potential tenders, the identifier of the specific Object to which this current " +
-        "contracting process relates should be given.")
+            "describes a number of potential tenders, the identifier of the specific Object to which this current " +
+            "contracting process relates should be given.")
     private final String objectOfProcurementInPIN;
 
     @JsonProperty("uri")
@@ -58,11 +56,11 @@ public class RelatedNotice {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(scheme)
-                                    .append(id)
-                                    .append(relationship)
-                                    .append(objectOfProcurementInPIN)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(id)
+                .append(relationship)
+                .append(objectOfProcurementInPIN)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -75,11 +73,11 @@ public class RelatedNotice {
         }
         final RelatedNotice rhs = (RelatedNotice) other;
         return new EqualsBuilder().append(scheme, rhs.scheme)
-                                  .append(id, rhs.id)
-                                  .append(relationship, rhs.relationship)
-                                  .append(objectOfProcurementInPIN, rhs.objectOfProcurementInPIN)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(id, rhs.id)
+                .append(relationship, rhs.relationship)
+                .append(objectOfProcurementInPIN, rhs.objectOfProcurementInPIN)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
 
     public enum Relationship {

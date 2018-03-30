@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -11,9 +10,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "isRecurrent",
-    "dates",
-    "description"
+        "isRecurrent",
+        "dates",
+        "description"
 })
 public class RecurrentProcurement {
     @JsonProperty("isRecurrent")
@@ -41,9 +40,9 @@ public class RecurrentProcurement {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(isRecurrent)
-                                    .append(dates)
-                                    .append(description)
-                                    .toHashCode();
+                .append(dates)
+                .append(description)
+                .toHashCode();
     }
 
     @Override
@@ -56,8 +55,8 @@ public class RecurrentProcurement {
         }
         final RecurrentProcurement rhs = (RecurrentProcurement) other;
         return new EqualsBuilder().append(isRecurrent, rhs.isRecurrent)
-                                  .append(dates, rhs.dates)
-                                  .append(description, rhs.description)
-                                  .isEquals();
+                .append(dates, rhs.dates)
+                .append(description, rhs.description)
+                .isEquals();
     }
 }

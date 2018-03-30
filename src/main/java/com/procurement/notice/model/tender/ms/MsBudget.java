@@ -8,7 +8,6 @@ import com.procurement.notice.model.ocds.BudgetBreakdown;
 import com.procurement.notice.model.ocds.EuropeanUnionFunding;
 import com.procurement.notice.model.ocds.Value;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;

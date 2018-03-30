@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,8 +9,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "procedureOutsourced",
-    "outsourcedTo"
+        "procedureOutsourced",
+        "outsourcedTo"
 })
 public class ProcedureOutsourcing {
     @JsonProperty("procedureOutsourced")
@@ -33,8 +32,8 @@ public class ProcedureOutsourcing {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(procedureOutsourced)
-                                    .append(outsourcedTo)
-                                    .toHashCode();
+                .append(outsourcedTo)
+                .toHashCode();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class ProcedureOutsourcing {
         }
         final ProcedureOutsourcing rhs = (ProcedureOutsourcing) other;
         return new EqualsBuilder().append(procedureOutsourced, rhs.procedureOutsourced)
-                                  .append(outsourcedTo, rhs.outsourcedTo)
-                                  .isEquals();
+                .append(outsourcedTo, rhs.outsourcedTo)
+                .isEquals();
     }
 }

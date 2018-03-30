@@ -18,7 +18,6 @@ public class MainController {
 
     private final MainService mainService;
 
-
     public MainController(final MainService mainService) {
         this.mainService = mainService;
     }

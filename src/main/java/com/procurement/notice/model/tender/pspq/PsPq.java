@@ -1,6 +1,9 @@
 package com.procurement.notice.model.tender.pspq;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
@@ -8,7 +11,6 @@ import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.Getter;

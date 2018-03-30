@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,14 +8,14 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "reducesTimeLimits",
-    "isACallForCompetition",
-    "socialOrOtherSpecificServices"
+        "reducesTimeLimits",
+        "isACallForCompetition",
+        "socialOrOtherSpecificServices"
 })
 public class PurposeOfNotice {
     @JsonProperty("reducesTimeLimits")
     @JsonPropertyDescription("A True/False field to indicate whether this notice aims at reducing time limits for the" +
-        " receipt of tenders ")
+            " receipt of tenders ")
     private final Boolean reducesTimeLimits;
 
     @JsonProperty("isACallForCompetition")
@@ -25,7 +24,7 @@ public class PurposeOfNotice {
 
     @JsonProperty("socialOrOtherSpecificServices")
     @JsonPropertyDescription("A True/False field to indicate whether this notice is for social or other specific " +
-        "services")
+            "services")
     private final Boolean socialOrOtherSpecificServices;
 
     @JsonCreator
@@ -41,9 +40,9 @@ public class PurposeOfNotice {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(reducesTimeLimits)
-                                    .append(isACallForCompetition)
-                                    .append(socialOrOtherSpecificServices)
-                                    .toHashCode();
+                .append(isACallForCompetition)
+                .append(socialOrOtherSpecificServices)
+                .toHashCode();
     }
 
     @Override
@@ -56,8 +55,8 @@ public class PurposeOfNotice {
         }
         final PurposeOfNotice rhs = (PurposeOfNotice) other;
         return new EqualsBuilder().append(reducesTimeLimits, rhs.reducesTimeLimits)
-                                  .append(isACallForCompetition, rhs.isACallForCompetition)
-                                  .append(socialOrOtherSpecificServices, rhs.socialOrOtherSpecificServices)
-                                  .isEquals();
+                .append(isACallForCompetition, rhs.isACallForCompetition)
+                .append(socialOrOtherSpecificServices, rhs.socialOrOtherSpecificServices)
+                .isEquals();
     }
 }

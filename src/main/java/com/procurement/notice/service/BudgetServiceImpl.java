@@ -31,7 +31,6 @@ public class BudgetServiceImpl implements BudgetService {
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
 
-
     public BudgetServiceImpl(final BudgetDao budgetDao,
                              final OrganizationService organizationService,
                              final RelatedProcessService relatedProcessService,

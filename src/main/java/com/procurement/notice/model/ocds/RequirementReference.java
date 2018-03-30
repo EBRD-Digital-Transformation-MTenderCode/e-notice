@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,8 +9,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "title"
+        "id",
+        "title"
 })
 public class RequirementReference {
     @JsonProperty("id")
@@ -33,8 +32,8 @@ public class RequirementReference {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(title)
-                                    .toHashCode();
+                .append(title)
+                .toHashCode();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class RequirementReference {
         }
         final RequirementReference rhs = (RequirementReference) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(title, rhs.title)
-                                  .isEquals();
+                .append(title, rhs.title)
+                .isEquals();
     }
 }

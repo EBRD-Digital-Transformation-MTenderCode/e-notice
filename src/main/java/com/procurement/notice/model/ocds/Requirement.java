@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -13,21 +12,21 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "title",
-    "description",
-    "dataType",
-    "pattern",
-    "expectedValue",
-    "minValue",
-    "maxValue",
-    "period"
+        "id",
+        "title",
+        "description",
+        "dataType",
+        "pattern",
+        "expectedValue",
+        "minValue",
+        "maxValue",
+        "period"
 })
 public class Requirement {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this requirement. It must be unique and cannot change within the " +
-        "Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
-        "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
+            "Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
     @NotNull
     private final String id;
 
@@ -53,12 +52,12 @@ public class Requirement {
 
     @JsonProperty("minValue")
     @JsonPropertyDescription("Used to state the lower bound of the requirement when the response must be within a " +
-        "certain range")
+            "certain range")
     private final Double minValue;
 
     @JsonProperty("maxValue")
     @JsonPropertyDescription("Used to state the upper bound of the requirement when the response must be within a " +
-        "certain range")
+            "certain range")
     private final Double maxValue;
 
     @JsonProperty("period")
@@ -89,15 +88,15 @@ public class Requirement {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(title)
-                                    .append(description)
-                                    .append(dataType)
-                                    .append(pattern)
-                                    .append(expectedValue)
-                                    .append(minValue)
-                                    .append(maxValue)
-                                    .append(period)
-                                    .toHashCode();
+                .append(title)
+                .append(description)
+                .append(dataType)
+                .append(pattern)
+                .append(expectedValue)
+                .append(minValue)
+                .append(maxValue)
+                .append(period)
+                .toHashCode();
     }
 
     @Override
@@ -110,15 +109,15 @@ public class Requirement {
         }
         final Requirement rhs = (Requirement) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(title, rhs.title)
-                                  .append(description, rhs.description)
-                                  .append(dataType, rhs.dataType)
-                                  .append(pattern, rhs.pattern)
-                                  .append(expectedValue, rhs.expectedValue)
-                                  .append(minValue, rhs.minValue)
-                                  .append(maxValue, rhs.maxValue)
-                                  .append(period, rhs.period)
-                                  .isEquals();
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(dataType, rhs.dataType)
+                .append(pattern, rhs.pattern)
+                .append(expectedValue, rhs.expectedValue)
+                .append(minValue, rhs.minValue)
+                .append(maxValue, rhs.maxValue)
+                .append(period, rhs.period)
+                .isEquals();
     }
 
     public enum DataType {

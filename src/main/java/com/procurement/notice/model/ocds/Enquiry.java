@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -17,16 +16,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "date",
-    "author",
-    "title",
-    "description",
-    "answer",
-    "dateAnswered",
-    "relatedItem",
-    "relatedLot",
-    "threadID"
+        "id",
+        "date",
+        "author",
+        "title",
+        "description",
+        "answer",
+        "dateAnswered",
+        "relatedItem",
+        "relatedLot",
+        "threadID"
 })
 public class Enquiry {
     @JsonProperty("id")
@@ -62,18 +61,18 @@ public class Enquiry {
 
     @JsonProperty("relatedItem")
     @JsonPropertyDescription("If this question relates to a specific line-item, this field contains the line-item " +
-        "identifier.")
+            "identifier.")
     private final String relatedItem;
 
     @JsonProperty("relatedLot")
     @JsonPropertyDescription("Where lots are used, if this question relates to a specific lot, this field contains " +
-        "the lot identifier.")
+            "the lot identifier.")
     private final String relatedLot;
 
     @JsonProperty("threadID")
     @JsonPropertyDescription("If this question and answer forms part of a discussion thread (e.g. the question is a " +
-        "follow up to a previous answer) an optional thread identifier can be used to associate together multiple " +
-        "enquiries.")
+            "follow up to a previous answer) an optional thread identifier can be used to associate together multiple " +
+            "enquiries.")
     private final String threadID;
 
     @JsonCreator
@@ -102,16 +101,16 @@ public class Enquiry {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(date)
-                                    .append(author)
-                                    .append(title)
-                                    .append(description)
-                                    .append(answer)
-                                    .append(dateAnswered)
-                                    .append(relatedItem)
-                                    .append(relatedLot)
-                                    .append(threadID)
-                                    .toHashCode();
+                .append(date)
+                .append(author)
+                .append(title)
+                .append(description)
+                .append(answer)
+                .append(dateAnswered)
+                .append(relatedItem)
+                .append(relatedLot)
+                .append(threadID)
+                .toHashCode();
     }
 
     @Override
@@ -124,15 +123,15 @@ public class Enquiry {
         }
         final Enquiry rhs = (Enquiry) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(date, rhs.date)
-                                  .append(author, rhs.author)
-                                  .append(title, rhs.title)
-                                  .append(description, rhs.description)
-                                  .append(answer, rhs.answer)
-                                  .append(dateAnswered, rhs.dateAnswered)
-                                  .append(relatedItem, rhs.relatedItem)
-                                  .append(relatedLot, rhs.relatedLot)
-                                  .append(threadID, rhs.threadID)
-                                  .isEquals();
+                .append(date, rhs.date)
+                .append(author, rhs.author)
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(answer, rhs.answer)
+                .append(dateAnswered, rhs.dateAnswered)
+                .append(relatedItem, rhs.relatedItem)
+                .append(relatedLot, rhs.relatedLot)
+                .append(threadID, rhs.threadID)
+                .isEquals();
     }
 }

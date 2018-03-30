@@ -8,13 +8,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "isAcceleratedProcedure",
-    "acceleratedProcedureJustification"
+        "isAcceleratedProcedure",
+        "acceleratedProcedureJustification"
 })
 public class AcceleratedProcedure {
     @JsonProperty("isAcceleratedProcedure")
     @JsonPropertyDescription("A True/False field to indicate whether an accelerated procedure has been used for this " +
-        "procurement")
+            "procurement")
     private final Boolean isAcceleratedProcedure;
 
     @JsonProperty("acceleratedProcedureJustification")
@@ -24,7 +24,7 @@ public class AcceleratedProcedure {
     @JsonCreator
     public AcceleratedProcedure(@JsonProperty("isAcceleratedProcedure") final Boolean isAcceleratedProcedure,
                                 @JsonProperty("acceleratedProcedureJustification") final String
-                                    acceleratedProcedureJustification) {
+                                        acceleratedProcedureJustification) {
         this.isAcceleratedProcedure = isAcceleratedProcedure;
         this.acceleratedProcedureJustification = acceleratedProcedureJustification;
     }
@@ -32,8 +32,8 @@ public class AcceleratedProcedure {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(isAcceleratedProcedure)
-                                    .append(acceleratedProcedureJustification)
-                                    .toHashCode();
+                .append(acceleratedProcedureJustification)
+                .toHashCode();
     }
 
     @Override
@@ -44,9 +44,9 @@ public class AcceleratedProcedure {
         if (!(other instanceof AcceleratedProcedure)) {
             return false;
         }
-        final AcceleratedProcedure rhs = ((AcceleratedProcedure) other);
+        final AcceleratedProcedure rhs = (AcceleratedProcedure) other;
         return new EqualsBuilder().append(isAcceleratedProcedure, rhs.isAcceleratedProcedure)
-                                  .append(acceleratedProcedureJustification, rhs.acceleratedProcedureJustification)
-                                  .isEquals();
+                .append(acceleratedProcedureJustification, rhs.acceleratedProcedureJustification)
+                .isEquals();
     }
 }

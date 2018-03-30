@@ -1,8 +1,6 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -10,9 +8,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "title",
-    "uri"
+        "id",
+        "title",
+        "uri"
 })
 public class LegalProceedings {
     @JsonProperty("id")
@@ -39,9 +37,9 @@ public class LegalProceedings {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(title)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(title)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -54,8 +52,8 @@ public class LegalProceedings {
         }
         final LegalProceedings rhs = (LegalProceedings) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(title, rhs.title)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(title, rhs.title)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
 }

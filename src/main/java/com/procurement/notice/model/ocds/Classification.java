@@ -1,11 +1,8 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -13,10 +10,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "scheme",
-    "id",
-    "description",
-    "uri"
+        "scheme",
+        "id",
+        "description",
+        "uri"
 })
 public class Classification {
     @JsonProperty("id")
@@ -32,14 +29,14 @@ public class Classification {
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("An classification should be drawn from an existing scheme or list of codes. This field " +
-        "is used to indicate the scheme/codelist from which the classification is drawn. For line item " +
-        "classifications, this value should represent an known [Item Classification Scheme](http://standard" +
-        ".open-contracting.org/latest/en/schema/codelists/#item-classification-scheme) wherever possible.")
+            "is used to indicate the scheme/codelist from which the classification is drawn. For line item " +
+            "classifications, this value should represent an known [Item Classification Scheme](http://standard" +
+            ".open-contracting.org/latest/en/schema/codelists/#item-classification-scheme) wherever possible.")
     private final Scheme scheme;
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI to identify the code. In the event individual URIs are not available for items in" +
-        " the identifier scheme this value should be left blank.")
+            " the identifier scheme this value should be left blank.")
     private final String uri;
 
     @JsonCreator
@@ -56,10 +53,10 @@ public class Classification {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(scheme)
-                                    .append(id)
-                                    .append(description)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(id)
+                .append(description)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -72,10 +69,10 @@ public class Classification {
         }
         final Classification rhs = (Classification) other;
         return new EqualsBuilder().append(scheme, rhs.scheme)
-                                  .append(id, rhs.id)
-                                  .append(description, rhs.description)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(id, rhs.id)
+                .append(description, rhs.description)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
 
     public enum Scheme {

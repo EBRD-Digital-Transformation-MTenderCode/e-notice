@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -14,15 +13,15 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "description",
-    "requirements"
+        "id",
+        "description",
+        "requirements"
 })
 public class RequirementGroup {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this requirement group. It must be unique and cannot change within " +
-        "the Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
-        "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
+            "the Open Contracting Process it is part of (defined by a single ocid). See the [identifier guidance]" +
+            "(http://standard.open-contracting.org/latest/en/schema/identifiers/) for further details.")
     @NotNull
     private final String id;
 
@@ -48,9 +47,9 @@ public class RequirementGroup {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(description)
-                                    .append(requirements)
-                                    .toHashCode();
+                .append(description)
+                .append(requirements)
+                .toHashCode();
     }
 
     @Override
@@ -63,8 +62,8 @@ public class RequirementGroup {
         }
         final RequirementGroup rhs = (RequirementGroup) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(description, rhs.description)
-                                  .append(requirements, rhs.requirements)
-                                  .isEquals();
+                .append(description, rhs.description)
+                .append(requirements, rhs.requirements)
+                .isEquals();
     }
 }

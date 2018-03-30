@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.procurement.notice.model.ocds.*;
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import com.procurement.notice.model.ocds.EuropeanUnionFunding;
+import com.procurement.notice.model.ocds.OrganizationReference;
+import com.procurement.notice.model.ocds.Period;
+import com.procurement.notice.model.ocds.Value;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @Setter
@@ -55,13 +53,13 @@ public class FsBudget {
 
     @JsonCreator
     public FsBudget(@JsonProperty("id") final String id,
-                       @JsonProperty("description") final String description,
-                       @JsonProperty("period") final Period period,
-                       @JsonProperty("amount") final Value amount,
-                       @JsonProperty("europeanUnionFunding") final EuropeanUnionFunding europeanUnionFunding,
-                       @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded,
-                       @JsonProperty("verified") final Boolean verified,
-                       @JsonProperty("sourceEntity") final OrganizationReference sourceEntity) {
+                    @JsonProperty("description") final String description,
+                    @JsonProperty("period") final Period period,
+                    @JsonProperty("amount") final Value amount,
+                    @JsonProperty("europeanUnionFunding") final EuropeanUnionFunding europeanUnionFunding,
+                    @JsonProperty("isEuropeanUnionFunded") final Boolean isEuropeanUnionFunded,
+                    @JsonProperty("verified") final Boolean verified,
+                    @JsonProperty("sourceEntity") final OrganizationReference sourceEntity) {
         this.id = id;
         this.description = description;
         this.period = period;

@@ -1,7 +1,10 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;

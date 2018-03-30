@@ -1,11 +1,8 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -15,26 +12,26 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "description",
-    "amount",
-    "project",
-    "projectID",
-    "uri",
-    "source",
-    "europeanUnionFunding",
-    "isEuropeanUnionFunded",
-    "budgetBreakdown"
+        "id",
+        "description",
+        "amount",
+        "project",
+        "projectID",
+        "uri",
+        "source",
+        "europeanUnionFunding",
+        "isEuropeanUnionFunded",
+        "budgetBreakdown"
 })
 public class Budget {
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for the budget line item which provides funds for this contracting " +
-        "process. This identifier should be possible to cross-reference against the provided data source.")
+            "process. This identifier should be possible to cross-reference against the provided data source.")
     private String id;
 
     @JsonProperty("description")
     @JsonPropertyDescription("A short free text description of the budget source. May be used to provide the title of" +
-        " the budget line, or the programme used to fund this project.")
+            " the budget line, or the programme used to fund this project.")
     private final String description;
 
     @JsonProperty("amount")
@@ -43,28 +40,28 @@ public class Budget {
 
     @JsonProperty("project")
     @JsonPropertyDescription("The name of the project that through which this contracting process is funded (if " +
-        "applicable). Some organizations maintain a registry of projects, and the data should use the name by which " +
-        "the project is known in that registry. No translation option is offered for this string, as translated " +
-        "values can be provided in third-party data, linked from the data source above.")
+            "applicable). Some organizations maintain a registry of projects, and the data should use the name by which " +
+            "the project is known in that registry. No translation option is offered for this string, as translated " +
+            "values can be provided in third-party data, linked from the data source above.")
     private final String project;
 
     @JsonProperty("projectID")
     @JsonPropertyDescription("An external identifier for the project that this contracting process forms part of, or " +
-        "is funded via (if applicable). Some organizations maintain a registry of projects, and the data should use " +
-        "the identifier from the relevant registry of projects.")
+            "is funded via (if applicable). Some organizations maintain a registry of projects, and the data should use " +
+            "the identifier from the relevant registry of projects.")
     private final String projectID;
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI pointing directly to a machine-readable pspq about the budget line-item or " +
-        "line-items that fund this contracting process. Information may be provided in a range of formats, including " +
-        "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget " +
-        "sources. Human readable documents can be included using the planning.documents block.")
+            "line-items that fund this contracting process. Information may be provided in a range of formats, including " +
+            "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget " +
+            "sources. Human readable documents can be included using the planning.documents block.")
     private final String uri;
 
     @JsonProperty("source")
     @JsonPropertyDescription("(Deprecated in 1.1) Used to point either to a corresponding Budget Data Package, or to " +
-        "a machine or human-readable source where users can find further information on the budget line item " +
-        "identifiers, or project identifiers, provided here.")
+            "a machine or human-readable source where users can find further information on the budget line item " +
+            "identifiers, or project identifiers, provided here.")
     private final String source;
 
     @JsonProperty("europeanUnionFunding")
@@ -73,7 +70,7 @@ public class Budget {
 
     @JsonProperty("isEuropeanUnionFunded")
     @JsonPropertyDescription("A True or False field to indicate whether this procurement is related to a project " +
-        "and/or programme financed by European Union funds.")
+            "and/or programme financed by European Union funds.")
     private final Boolean isEuropeanUnionFunded;
 
     @JsonProperty("budgetBreakdown")
@@ -106,16 +103,16 @@ public class Budget {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(description)
-                                    .append(amount)
-                                    .append(project)
-                                    .append(projectID)
-                                    .append(uri)
-                                    .append(source)
-                                    .append(europeanUnionFunding)
-                                    .append(isEuropeanUnionFunded)
-                                    .append(budgetBreakdown)
-                                    .toHashCode();
+                .append(description)
+                .append(amount)
+                .append(project)
+                .append(projectID)
+                .append(uri)
+                .append(source)
+                .append(europeanUnionFunding)
+                .append(isEuropeanUnionFunded)
+                .append(budgetBreakdown)
+                .toHashCode();
     }
 
     @Override
@@ -128,15 +125,15 @@ public class Budget {
         }
         final Budget rhs = (Budget) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(description, rhs.description)
-                                  .append(amount, rhs.amount)
-                                  .append(project, rhs.project)
-                                  .append(projectID, rhs.projectID)
-                                  .append(uri, rhs.uri)
-                                  .append(source, rhs.source)
-                                  .append(europeanUnionFunding, rhs.europeanUnionFunding)
-                                  .append(isEuropeanUnionFunded, rhs.isEuropeanUnionFunded)
-                                  .append(budgetBreakdown, rhs.budgetBreakdown)
-                                  .isEquals();
+                .append(description, rhs.description)
+                .append(amount, rhs.amount)
+                .append(project, rhs.project)
+                .append(projectID, rhs.projectID)
+                .append(uri, rhs.uri)
+                .append(source, rhs.source)
+                .append(europeanUnionFunding, rhs.europeanUnionFunding)
+                .append(isEuropeanUnionFunded, rhs.isEuropeanUnionFunded)
+                .append(budgetBreakdown, rhs.budgetBreakdown)
+                .isEquals();
     }
 }

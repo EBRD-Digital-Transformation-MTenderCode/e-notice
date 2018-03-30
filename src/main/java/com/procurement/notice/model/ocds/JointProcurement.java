@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,8 +9,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "isJointProcurement",
-    "country"
+        "isJointProcurement",
+        "country"
 })
 public class JointProcurement {
     @JsonProperty("isJointProcurement")
@@ -33,8 +32,8 @@ public class JointProcurement {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(isJointProcurement)
-                                    .append(country)
-                                    .toHashCode();
+                .append(country)
+                .toHashCode();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class JointProcurement {
         }
         final JointProcurement rhs = (JointProcurement) other;
         return new EqualsBuilder().append(isJointProcurement, rhs.isJointProcurement)
-                                  .append(country, rhs.country)
-                                  .isEquals();
+                .append(country, rhs.country)
+                .isEquals();
     }
 }

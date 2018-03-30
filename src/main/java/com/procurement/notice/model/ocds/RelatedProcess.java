@@ -1,11 +1,7 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -14,11 +10,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "relationship",
-    "scheme",
-    "identifier",
-    "uri"
+        "id",
+        "relationship",
+        "scheme",
+        "identifier",
+        "uri"
 })
 public class RelatedProcess {
     @JsonProperty("id")
@@ -28,23 +24,23 @@ public class RelatedProcess {
 
     @JsonProperty("relationship")
     @JsonPropertyDescription("Specify the type of relationship using the [related process codelist](http://standard" +
-        ".open-contracting.org/latest/en/schema/codelists/#related-process).")
+            ".open-contracting.org/latest/en/schema/codelists/#related-process).")
     private final List<RelatedProcessType> relationship;
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("The identification scheme used by this cross-reference from the [related process scheme" +
-        " codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#related-process-scheme) codelist" +
-        ". When cross-referencing information also published using OCDS, an Open Contracting ID (ocid) should be used.")
+            " codelist](http://standard.open-contracting.org/latest/en/schema/codelists/#related-process-scheme) codelist" +
+            ". When cross-referencing information also published using OCDS, an Open Contracting ID (ocid) should be used.")
     private final RelatedProcessScheme scheme;
 
     @JsonProperty("identifier")
     @JsonPropertyDescription("The identifier of the related process. When cross-referencing information also " +
-        "published using OCDS, this should be the Open Contracting ID (ocid).")
+            "published using OCDS, this should be the Open Contracting ID (ocid).")
     private final String identifier;
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI pointing to a machine-readable document, release or pspq package containing the" +
-        " identified related process.")
+            " identified related process.")
     private final String uri;
 
     @JsonCreator
@@ -63,11 +59,11 @@ public class RelatedProcess {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(relationship)
-                                    .append(scheme)
-                                    .append(identifier)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(relationship)
+                .append(scheme)
+                .append(identifier)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -80,13 +76,12 @@ public class RelatedProcess {
         }
         final RelatedProcess rhs = (RelatedProcess) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(relationship, rhs.relationship)
-                                  .append(scheme, rhs.scheme)
-                                  .append(identifier, rhs.identifier)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(relationship, rhs.relationship)
+                .append(scheme, rhs.scheme)
+                .append(identifier, rhs.identifier)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
-
 
 
 }

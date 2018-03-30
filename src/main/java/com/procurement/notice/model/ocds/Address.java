@@ -1,7 +1,6 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -9,11 +8,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "streetAddress",
-    "locality",
-    "region",
-    "postalCode",
-    "countryName"
+        "streetAddress",
+        "locality",
+        "region",
+        "postalCode",
+        "countryName"
 })
 public class Address {
     @JsonProperty("streetAddress")
@@ -34,9 +33,6 @@ public class Address {
 
     @JsonProperty("countryName")
     @JsonPropertyDescription("The country name. For example, United States.")
-//    @Pattern(regexp = "^(countryName_(((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5," +
-//        "8})(-([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z]" +
-//        "(-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+)))$")
     private final String countryName;
 
     @JsonCreator
@@ -55,11 +51,11 @@ public class Address {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(streetAddress)
-                                    .append(locality)
-                                    .append(region)
-                                    .append(postalCode)
-                                    .append(countryName)
-                                    .toHashCode();
+                .append(locality)
+                .append(region)
+                .append(postalCode)
+                .append(countryName)
+                .toHashCode();
     }
 
     @Override
@@ -72,10 +68,10 @@ public class Address {
         }
         final Address rhs = (Address) other;
         return new EqualsBuilder().append(streetAddress, rhs.streetAddress)
-                                  .append(locality, rhs.locality)
-                                  .append(region, rhs.region)
-                                  .append(postalCode, rhs.postalCode)
-                                  .append(countryName, rhs.countryName)
-                                  .isEquals();
+                .append(locality, rhs.locality)
+                .append(region, rhs.region)
+                .append(postalCode, rhs.postalCode)
+                .append(countryName, rhs.countryName)
+                .isEquals();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,9 +8,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hasDynamicPurchasingSystem",
-    "hasOutsideBuyerAccess",
-    "noFurtherContracts"
+        "hasDynamicPurchasingSystem",
+        "hasOutsideBuyerAccess",
+        "noFurtherContracts"
 })
 public class DynamicPurchasingSystem {
     @JsonProperty("hasDynamicPurchasingSystem")
@@ -20,12 +19,12 @@ public class DynamicPurchasingSystem {
 
     @JsonProperty("hasOutsideBuyerAccess")
     @JsonPropertyDescription("A True/False field to indicate whether the Dynamic Purchasing System may be used by " +
-        "buyers outside the notice.")
+            "buyers outside the notice.")
     private final Boolean hasOutsideBuyerAccess;
 
     @JsonProperty("noFurtherContracts")
     @JsonPropertyDescription("A True/False field to indicate whether no further contracts will be awarded in this " +
-        "dynamic purchasing system.")
+            "dynamic purchasing system.")
     private final Boolean noFurtherContracts;
 
     @JsonCreator
@@ -40,9 +39,9 @@ public class DynamicPurchasingSystem {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(hasDynamicPurchasingSystem)
-                                    .append(hasOutsideBuyerAccess)
-                                    .append(noFurtherContracts)
-                                    .toHashCode();
+                .append(hasOutsideBuyerAccess)
+                .append(noFurtherContracts)
+                .toHashCode();
     }
 
     @Override
@@ -55,8 +54,8 @@ public class DynamicPurchasingSystem {
         }
         final DynamicPurchasingSystem rhs = (DynamicPurchasingSystem) other;
         return new EqualsBuilder().append(hasDynamicPurchasingSystem, rhs.hasDynamicPurchasingSystem)
-                                  .append(hasOutsideBuyerAccess, rhs.hasOutsideBuyerAccess)
-                                  .append(noFurtherContracts, rhs.noFurtherContracts)
-                                  .isEquals();
+                .append(hasOutsideBuyerAccess, rhs.hasOutsideBuyerAccess)
+                .append(noFurtherContracts, rhs.noFurtherContracts)
+                .isEquals();
     }
 }

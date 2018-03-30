@@ -1,13 +1,17 @@
-
 package com.procurement.notice.model.ocds;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,40 +22,40 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "ocid",
-    "id",
-    "date",
-    "tag",
-    "initiationType",
-    "title",
-    "description",
-    "parties",
-    "planning",
-    "tender",
-    "buyer",
-    "awards",
-    "contracts",
-    "language",
-    "relatedProcesses",
-    "bids",
-    "buyerInternalReferenceId",
-    "hasPreviousNotice",
-    "purposeOfNotice",
-    "relatedNotice"
+        "ocid",
+        "id",
+        "date",
+        "tag",
+        "initiationType",
+        "title",
+        "description",
+        "parties",
+        "planning",
+        "tender",
+        "buyer",
+        "awards",
+        "contracts",
+        "language",
+        "relatedProcesses",
+        "bids",
+        "buyerInternalReferenceId",
+        "hasPreviousNotice",
+        "purposeOfNotice",
+        "relatedNotice"
 })
 public class ReleaseExt {
     @JsonProperty("ocid")
     @JsonPropertyDescription("A globally unique identifier for this Open Contracting Process. Composed of a publisher" +
-        " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
-        "Identifier guidance](http://standard.open-contracting.org/latest/en/schema/identifiers/)")
+            " prefix and an identifier for the contracting process. For more information see the [Open Contracting " +
+            "Identifier guidance](http://standard.open-contracting.org/latest/en/schema/identifiers/)")
     @Size(min = 1)
     @NotNull
     private final String ocid;
 
     @JsonProperty("id")
     @JsonPropertyDescription("An identifier for this particular release of information. A release identifier must be " +
-        "unique within the scope of its related contracting process (defined by a common ocid), and unique within any" +
-        " release package it appears in. A release identifier must not contain the # character.")
+            "unique within the scope of its related contracting process (defined by a common ocid), and unique within any" +
+            " release package it appears in. A release identifier must not contain the # character.")
     @Size(min = 1)
     @NotNull
     private final String id;
@@ -64,8 +68,8 @@ public class ReleaseExt {
 
     @JsonProperty("tag")
     @JsonPropertyDescription("One or more values from the [releaseTag codelist](http://standard.open-contracting" +
-        ".org/latest/en/schema/codelists/#release-tag). Tags may be used to filter release and to understand the kind" +
-        " of information that a release might contain.")
+            ".org/latest/en/schema/codelists/#release-tag). Tags may be used to filter release and to understand the kind" +
+            " of information that a release might contain.")
     @Size(min = 1)
     @Valid
     @NotNull
@@ -73,8 +77,8 @@ public class ReleaseExt {
 
     @JsonProperty("initiationType")
     @JsonPropertyDescription("String specifying the type of initiation process used for this contract, taken from the" +
-        " [initiationType](http://standard.open-contracting.org/latest/en/schema/codelists/#initiation-type) codelist" +
-        ". Currently only tender is supported.")
+            " [initiationType](http://standard.open-contracting.org/latest/en/schema/codelists/#initiation-type) codelist" +
+            ". Currently only tender is supported.")
     @NotNull
     private final InitiationType initiationType;
 
@@ -88,35 +92,35 @@ public class ReleaseExt {
     @JsonProperty("parties")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Information on the parties (organizations, economic operators and other participants) " +
-        "who are involved in the contracting process and their roles, e.g. buyer, procuring entity, supplier etc. " +
-        "Organization references elsewhere in the schema are used to refer back to this entries in this list.")
+            "who are involved in the contracting process and their roles, e.g. buyer, procuring entity, supplier etc. " +
+            "Organization references elsewhere in the schema are used to refer back to this entries in this list.")
     @Valid
     private final Set<Organization> parties;
 
     @JsonProperty("buyer")
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
-        "section")
+            "section")
     @Valid
     private final OrganizationReference buyer;
 
     @JsonProperty("planning")
     @JsonPropertyDescription("Information from the planning phase of the contracting process. Note that many other " +
-        "fields may be filled in a planning release, in the appropriate fields in other schema sections, these would " +
-        "likely be estimates at this stage e.g. totalValue in tender")
+            "fields may be filled in a planning release, in the appropriate fields in other schema sections, these would " +
+            "likely be estimates at this stage e.g. totalValue in tender")
     @Valid
     private final Planning planning;
 
     @JsonProperty("tender")
     @JsonPropertyDescription("Data regarding tender process - publicly inviting prospective contractors to submit " +
-        "bids for evaluation and selecting a winner or winners.")
+            "bids for evaluation and selecting a winner or winners.")
     @Valid
     private final Tender tender;
 
     @JsonProperty("awards")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("Information from the award phase of the contracting process. There may be more than one" +
-        " award per contracting process e.g. because the contract is split among different providers, or because it " +
-        "is a standing offer.")
+            " award per contracting process e.g. because the contract is split among different providers, or because it " +
+            "is a standing offer.")
     @Valid
     private final Set<Award> awards;
 
@@ -128,38 +132,38 @@ public class ReleaseExt {
 
     @JsonProperty("language")
     @JsonPropertyDescription("Specifies the default language of the data using either two-letter [ISO639-1]" +
-        "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
-        ".w3.org/International/articles/language-tags/). The use of lowercase two-letter codes from [ISO639-1]" +
-        "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended.")
+            "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), or extended [BCP47 language tags](http://www" +
+            ".w3.org/International/articles/language-tags/). The use of lowercase two-letter codes from [ISO639-1]" +
+            "(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) is strongly recommended.")
     private final String language;
 
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process follows on from one or more prior process, represented under a separate" +
-        " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
-        "commonly used to relate mini-competitions to their parent frameworks, full tenders to a pre-qualification " +
-        "phase, or individual tenders to a broad planning process.")
+            " open contracting identifier (ocid) then details of the related process can be provided here. This is " +
+            "commonly used to relate mini-competitions to their parent frameworks, full tenders to a pre-qualification " +
+            "phase, or individual tenders to a broad planning process.")
     @Valid
     private final Set<RelatedProcess> relatedProcesses;
 
     @JsonProperty("bids")
     @JsonPropertyDescription("The bid section is used to publish summary statistics, and where applicable, individual" +
-        " bid information.")
+            " bid information.")
     private final Bids bids;
 
     @JsonProperty("buyerInternalReferenceId")
     @JsonPropertyDescription("The buyer internal reference identifier is an EU specific field. It uniquely identifies" +
-        " a procurement process within the Buyer's internal system.")
+            " a procurement process within the Buyer's internal system.")
     private final String buyerInternalReferenceId;
 
     @JsonProperty("hasPreviousNotice")
     @JsonPropertyDescription("A True or False field to indicate whether this release represents a TED notice that is " +
-        "connected to a previous notice, either TED or national. Required by EU.")
+            "connected to a previous notice, either TED or national. Required by EU.")
     private final Boolean hasPreviousNotice;
 
     @JsonProperty("purposeOfNotice")
     @JsonPropertyDescription("Details about the purpose of this notice release - used to determine the fields in the " +
-        "notice that are required to be completed. Required by EU.")
+            "notice that are required to be completed. Required by EU.")
     private final PurposeOfNotice purposeOfNotice;
 
     @JsonProperty("relatedNotice")
@@ -211,24 +215,24 @@ public class ReleaseExt {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(ocid)
-                                    .append(id)
-                                    .append(date)
-                                    .append(tag)
-                                    .append(initiationType)
-                                    .append(parties)
-                                    .append(planning)
-                                    .append(tender)
-                                    .append(buyer)
-                                    .append(awards)
-                                    .append(contracts)
-                                    .append(language)
-                                    .append(relatedProcesses)
-                                    .append(bids)
-                                    .append(buyerInternalReferenceId)
-                                    .append(hasPreviousNotice)
-                                    .append(purposeOfNotice)
-                                    .append(relatedNotice)
-                                    .toHashCode();
+                .append(id)
+                .append(date)
+                .append(tag)
+                .append(initiationType)
+                .append(parties)
+                .append(planning)
+                .append(tender)
+                .append(buyer)
+                .append(awards)
+                .append(contracts)
+                .append(language)
+                .append(relatedProcesses)
+                .append(bids)
+                .append(buyerInternalReferenceId)
+                .append(hasPreviousNotice)
+                .append(purposeOfNotice)
+                .append(relatedNotice)
+                .toHashCode();
     }
 
     @Override
@@ -241,23 +245,23 @@ public class ReleaseExt {
         }
         final ReleaseExt rhs = (ReleaseExt) other;
         return new EqualsBuilder().append(ocid, rhs.ocid)
-                                  .append(id, rhs.id)
-                                  .append(date, rhs.date)
-                                  .append(tag, rhs.tag)
-                                  .append(initiationType, rhs.initiationType)
-                                  .append(parties, rhs.parties)
-                                  .append(planning, rhs.planning)
-                                  .append(tender, rhs.tender)
-                                  .append(buyer, rhs.buyer)
-                                  .append(awards, rhs.awards)
-                                  .append(contracts, rhs.contracts)
-                                  .append(language, rhs.language)
-                                  .append(relatedProcesses, rhs.relatedProcesses)
-                                  .append(bids, rhs.bids)
-                                  .append(buyerInternalReferenceId, rhs.buyerInternalReferenceId)
-                                  .append(hasPreviousNotice, rhs.hasPreviousNotice)
-                                  .append(purposeOfNotice, rhs.purposeOfNotice)
-                                  .append(relatedNotice, rhs.relatedNotice)
-                                  .isEquals();
+                .append(id, rhs.id)
+                .append(date, rhs.date)
+                .append(tag, rhs.tag)
+                .append(initiationType, rhs.initiationType)
+                .append(parties, rhs.parties)
+                .append(planning, rhs.planning)
+                .append(tender, rhs.tender)
+                .append(buyer, rhs.buyer)
+                .append(awards, rhs.awards)
+                .append(contracts, rhs.contracts)
+                .append(language, rhs.language)
+                .append(relatedProcesses, rhs.relatedProcesses)
+                .append(bids, rhs.bids)
+                .append(buyerInternalReferenceId, rhs.buyerInternalReferenceId)
+                .append(hasPreviousNotice, rhs.hasPreviousNotice)
+                .append(purposeOfNotice, rhs.purposeOfNotice)
+                .append(relatedNotice, rhs.relatedNotice)
+                .isEquals();
     }
 }

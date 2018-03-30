@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.notice.databinding.LocalDateTimeDeserializer;
 import com.procurement.notice.databinding.LocalDateTimeSerializer;
-import java.net.URI;
 import java.time.LocalDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -15,29 +14,29 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "source",
-    "date",
-    "value",
-    "payer",
-    "payee",
-    "uri",
-    "amount",
-    "providerOrganization",
-    "receiverOrganization"
+        "id",
+        "source",
+        "date",
+        "value",
+        "payer",
+        "payee",
+        "uri",
+        "amount",
+        "providerOrganization",
+        "receiverOrganization"
 })
 public class Transaction {
     @JsonProperty("id")
     @JsonPropertyDescription("A unique identifier for this transaction. This identifier should be possible to " +
-        "cross-reference against the provided data source. For IATI this is the transaction reference.")
+            "cross-reference against the provided data source. For IATI this is the transaction reference.")
     @Size(min = 1)
     @NotNull
     private final String id;
 
     @JsonProperty("source")
     @JsonPropertyDescription("Used to point either to a corresponding Fiscal Data Package, IATI file, or machine or " +
-        "human-readable source where users can find further information on the budget line item identifiers, or " +
-        "project identifiers, provided here.")
+            "human-readable source where users can find further information on the budget line item identifiers, or " +
+            "project identifiers, provided here.")
     private final String source;
 
     @JsonProperty("date")
@@ -51,13 +50,13 @@ public class Transaction {
 
     @JsonProperty("payer")
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
-        "section")
+            "section")
     @Valid
     private final OrganizationReference payer;
 
     @JsonProperty("payee")
     @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
-        "section")
+            "section")
     @Valid
     private final OrganizationReference payee;
 
@@ -103,16 +102,16 @@ public class Transaction {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(source)
-                                    .append(date)
-                                    .append(value)
-                                    .append(payer)
-                                    .append(payee)
-                                    .append(uri)
-                                    .append(amount)
-                                    .append(providerOrganization)
-                                    .append(receiverOrganization)
-                                    .toHashCode();
+                .append(source)
+                .append(date)
+                .append(value)
+                .append(payer)
+                .append(payee)
+                .append(uri)
+                .append(amount)
+                .append(providerOrganization)
+                .append(receiverOrganization)
+                .toHashCode();
     }
 
     @Override
@@ -125,15 +124,15 @@ public class Transaction {
         }
         final Transaction rhs = (Transaction) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(source, rhs.source)
-                                  .append(date, rhs.date)
-                                  .append(value, rhs.value)
-                                  .append(payer, rhs.payer)
-                                  .append(payee, rhs.payee)
-                                  .append(uri, rhs.uri)
-                                  .append(amount, rhs.amount)
-                                  .append(providerOrganization, rhs.providerOrganization)
-                                  .append(receiverOrganization, rhs.receiverOrganization)
-                                  .isEquals();
+                .append(source, rhs.source)
+                .append(date, rhs.date)
+                .append(value, rhs.value)
+                .append(payer, rhs.payer)
+                .append(payee, rhs.payee)
+                .append(uri, rhs.uri)
+                .append(amount, rhs.amount)
+                .append(providerOrganization, rhs.providerOrganization)
+                .append(receiverOrganization, rhs.receiverOrganization)
+                .isEquals();
     }
 }

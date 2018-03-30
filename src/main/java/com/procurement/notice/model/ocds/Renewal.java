@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,9 +8,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hasRenewals",
-    "maxNumber",
-    "renewalConditions"
+        "hasRenewals",
+        "maxNumber",
+        "renewalConditions"
 })
 public class Renewal {
     @JsonProperty("hasRenewals")
@@ -38,9 +37,9 @@ public class Renewal {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(hasRenewals)
-                                    .append(maxNumber)
-                                    .append(renewalConditions)
-                                    .toHashCode();
+                .append(maxNumber)
+                .append(renewalConditions)
+                .toHashCode();
     }
 
     @Override
@@ -53,8 +52,8 @@ public class Renewal {
         }
         final Renewal rhs = (Renewal) other;
         return new EqualsBuilder().append(hasRenewals, rhs.hasRenewals)
-                                  .append(maxNumber, rhs.maxNumber)
-                                  .append(renewalConditions, rhs.renewalConditions)
-                                  .isEquals();
+                .append(maxNumber, rhs.maxNumber)
+                .append(renewalConditions, rhs.renewalConditions)
+                .isEquals();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -14,11 +13,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "type",
-    "description",
-    "amount",
-    "estimationMethod"
+        "id",
+        "type",
+        "description",
+        "amount",
+        "estimationMethod"
 })
 public class ValueBreakdown {
     @JsonProperty("id")
@@ -28,8 +27,8 @@ public class ValueBreakdown {
 
     @JsonProperty("type")
     @JsonPropertyDescription("A value from the [valueType codelist] (http://standard.open-contracting" +
-        ".org/1.1-dev/en/schema/codelists/#value-type) that identifies the nature of the value in the breakdown. " +
-        "Negative values indicate a revenue to the supplier.")
+            ".org/1.1-dev/en/schema/codelists/#value-type) that identifies the nature of the value in the breakdown. " +
+            "Negative values indicate a revenue to the supplier.")
     @Valid
     private final List<ValueBreakdownType> type;
 
@@ -61,11 +60,11 @@ public class ValueBreakdown {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(type)
-                                    .append(description)
-                                    .append(amount)
-                                    .append(estimationMethod)
-                                    .toHashCode();
+                .append(type)
+                .append(description)
+                .append(amount)
+                .append(estimationMethod)
+                .toHashCode();
     }
 
     @Override
@@ -78,11 +77,11 @@ public class ValueBreakdown {
         }
         final ValueBreakdown rhs = (ValueBreakdown) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(type, rhs.type)
-                                  .append(description, rhs.description)
-                                  .append(amount, rhs.amount)
-                                  .append(estimationMethod, rhs.estimationMethod)
-                                  .isEquals();
+                .append(type, rhs.type)
+                .append(description, rhs.description)
+                .append(amount, rhs.amount)
+                .append(estimationMethod, rhs.estimationMethod)
+                .isEquals();
     }
 
     public enum ValueBreakdownType {

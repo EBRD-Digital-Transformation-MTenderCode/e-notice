@@ -11,7 +11,6 @@ import com.procurement.notice.databinding.LocalDateTimeSerializer;
 import com.procurement.notice.model.ocds.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.Getter;

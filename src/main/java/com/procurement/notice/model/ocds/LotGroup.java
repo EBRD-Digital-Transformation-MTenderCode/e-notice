@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -11,10 +10,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "relatedLots",
-    "optionToCombine",
-    "maximumValue"
+        "id",
+        "relatedLots",
+        "optionToCombine",
+        "maximumValue"
 })
 public class LotGroup {
     @JsonProperty("id")
@@ -23,7 +22,7 @@ public class LotGroup {
 
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("A list of the identifiers of the lots that form this group. Lots may appear in more " +
-        "than one group.")
+            "than one group.")
     private final List<String> relatedLots;
 
     @JsonProperty("optionToCombine")
@@ -48,10 +47,10 @@ public class LotGroup {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(relatedLots)
-                                    .append(optionToCombine)
-                                    .append(maximumValue)
-                                    .toHashCode();
+                .append(relatedLots)
+                .append(optionToCombine)
+                .append(maximumValue)
+                .toHashCode();
     }
 
     @Override
@@ -64,9 +63,9 @@ public class LotGroup {
         }
         final LotGroup rhs = (LotGroup) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(relatedLots, rhs.relatedLots)
-                                  .append(optionToCombine, rhs.optionToCombine)
-                                  .append(maximumValue, rhs.maximumValue)
-                                  .isEquals();
+                .append(relatedLots, rhs.relatedLots)
+                .append(optionToCombine, rhs.optionToCombine)
+                .append(maximumValue, rhs.maximumValue)
+                .isEquals();
     }
 }

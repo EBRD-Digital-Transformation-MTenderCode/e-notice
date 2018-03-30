@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -18,33 +17,33 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "awardID",
-    "extendsContractID",
-    "title",
-    "description",
-    "status",
-    "period",
-    "value",
-    "items",
-    "dateSigned",
-    "documents",
-    "implementation",
-    "relatedProcesses",
-    "milestones",
-    "amendments",
-    "amendment",
-    "requirementResponses",
-    "countryOfOrigin",
-    "lotVariant",
-    "valueBreakdown",
-    "isFrameworkOrDynamic"
+        "id",
+        "awardID",
+        "extendsContractID",
+        "title",
+        "description",
+        "status",
+        "period",
+        "value",
+        "items",
+        "dateSigned",
+        "documents",
+        "implementation",
+        "relatedProcesses",
+        "milestones",
+        "amendments",
+        "amendment",
+        "requirementResponses",
+        "countryOfOrigin",
+        "lotVariant",
+        "valueBreakdown",
+        "isFrameworkOrDynamic"
 })
 public class Contract {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier for this contract. It must be unique and cannot change within its Open " +
-        "Contracting Process (defined by a single ocid). See the [identifier guidance](http://standard" +
-        ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
+            "Contracting Process (defined by a single ocid). See the [identifier guidance](http://standard" +
+            ".open-contracting.org/latest/en/schema/identifiers/) for further details.")
     @Size(min = 1)
     @NotNull
     private final String id;
@@ -57,7 +56,7 @@ public class Contract {
 
     @JsonProperty("extendsContractID")
     @JsonPropertyDescription("If this contract extends or amends a previously issued contract, then the contract.id " +
-        "value for the extended/amended contract can be provided here.")
+            "value for the extended/amended contract can be provided here.")
     private final String extendsContractID;
 
     @JsonProperty("title")
@@ -76,7 +75,7 @@ public class Contract {
 
     @JsonProperty("status")
     @JsonPropertyDescription("The current status of the contract. Drawn from the [contractStatus codelist]" +
-        "(http://standard.open-contracting.org/latest/en/schema/codelists/#contract-status)")
+            "(http://standard.open-contracting.org/latest/en/schema/codelists/#contract-status)")
     private final Status status;
 
     @JsonProperty("period")
@@ -90,7 +89,7 @@ public class Contract {
     @JsonProperty("items")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("The goods, services, and any intangible outcomes in this contract. Note: If the items " +
-        "are the same as the award do not repeat.")
+            "are the same as the award do not repeat.")
     @Size(min = 1)
     @Valid
     private final Set<Item> items;
@@ -98,7 +97,7 @@ public class Contract {
     @JsonProperty("dateSigned")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date the contract was signed. In the case of multiple signatures, the date of the " +
-        "last signature.")
+            "last signature.")
     private final LocalDateTime dateSigned;
 
     @JsonProperty("documents")
@@ -115,8 +114,8 @@ public class Contract {
     @JsonProperty("relatedProcesses")
     @JsonDeserialize(as = LinkedHashSet.class)
     @JsonPropertyDescription("If this process is followed by one or more contracting processes, represented under a " +
-        "separate open contracting identifier (ocid) then details of the related process can be provided here. This " +
-        "is commonly used to point to subcontracts, or to renewal and replacement processes for this contract.")
+            "separate open contracting identifier (ocid) then details of the related process can be provided here. This " +
+            "is commonly used to point to subcontracts, or to renewal and replacement processes for this contract.")
     @Valid
     private final Set<RelatedProcess> relatedProcesses;
 
@@ -127,8 +126,8 @@ public class Contract {
 
     @JsonProperty("amendments")
     @JsonPropertyDescription("A contract amendment is a formal change to, or extension of, a contract, and generally " +
-        "involves the publication of a new contract notice/release, or some other documents detailing the change. The" +
-        " rationale and a description of the changes made can be provided here.")
+            "involves the publication of a new contract notice/release, or some other documents detailing the change. The" +
+            " rationale and a description of the changes made can be provided here.")
     @Valid
     private final List<Amendment> amendments;
 
@@ -157,7 +156,7 @@ public class Contract {
 
     @JsonProperty("isFrameworkOrDynamic")
     @JsonPropertyDescription("Contracts within a framework agreement or a dynamic purchasing system are being awarded" +
-        ". Required by the EU")
+            ". Required by the EU")
     private final Boolean isFrameworkOrDynamic;
 
     @JsonCreator
@@ -208,27 +207,27 @@ public class Contract {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(awardID)
-                                    .append(extendsContractID)
-                                    .append(title)
-                                    .append(description)
-                                    .append(status)
-                                    .append(period)
-                                    .append(value)
-                                    .append(items)
-                                    .append(dateSigned)
-                                    .append(documents)
-                                    .append(implementation)
-                                    .append(relatedProcesses)
-                                    .append(milestones)
-                                    .append(amendments)
-                                    .append(amendment)
-                                    .append(requirementResponses)
-                                    .append(countryOfOrigin)
-                                    .append(lotVariant)
-                                    .append(valueBreakdown)
-                                    .append(isFrameworkOrDynamic)
-                                    .toHashCode();
+                .append(awardID)
+                .append(extendsContractID)
+                .append(title)
+                .append(description)
+                .append(status)
+                .append(period)
+                .append(value)
+                .append(items)
+                .append(dateSigned)
+                .append(documents)
+                .append(implementation)
+                .append(relatedProcesses)
+                .append(milestones)
+                .append(amendments)
+                .append(amendment)
+                .append(requirementResponses)
+                .append(countryOfOrigin)
+                .append(lotVariant)
+                .append(valueBreakdown)
+                .append(isFrameworkOrDynamic)
+                .toHashCode();
     }
 
     @Override
@@ -242,27 +241,27 @@ public class Contract {
         final Contract rhs = (Contract) other;
 
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(awardID, rhs.awardID)
-                                  .append(extendsContractID, rhs.extendsContractID)
-                                  .append(title, rhs.title)
-                                  .append(description, rhs.description)
-                                  .append(status, rhs.status)
-                                  .append(period, rhs.period)
-                                  .append(value, rhs.value)
-                                  .append(items, rhs.items)
-                                  .append(dateSigned, rhs.dateSigned)
-                                  .append(documents, rhs.documents)
-                                  .append(implementation, rhs.implementation)
-                                  .append(relatedProcesses, rhs.relatedProcesses)
-                                  .append(milestones, rhs.milestones)
-                                  .append(amendments, rhs.amendments)
-                                  .append(amendment, rhs.amendment)
-                                  .append(requirementResponses, rhs.requirementResponses)
-                                  .append(countryOfOrigin, rhs.countryOfOrigin)
-                                  .append(lotVariant, rhs.lotVariant)
-                                  .append(valueBreakdown, rhs.valueBreakdown)
-                                  .append(isFrameworkOrDynamic, rhs.isFrameworkOrDynamic)
-                                  .isEquals();
+                .append(awardID, rhs.awardID)
+                .append(extendsContractID, rhs.extendsContractID)
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(status, rhs.status)
+                .append(period, rhs.period)
+                .append(value, rhs.value)
+                .append(items, rhs.items)
+                .append(dateSigned, rhs.dateSigned)
+                .append(documents, rhs.documents)
+                .append(implementation, rhs.implementation)
+                .append(relatedProcesses, rhs.relatedProcesses)
+                .append(milestones, rhs.milestones)
+                .append(amendments, rhs.amendments)
+                .append(amendment, rhs.amendment)
+                .append(requirementResponses, rhs.requirementResponses)
+                .append(countryOfOrigin, rhs.countryOfOrigin)
+                .append(lotVariant, rhs.lotVariant)
+                .append(valueBreakdown, rhs.valueBreakdown)
+                .append(isFrameworkOrDynamic, rhs.isFrameworkOrDynamic)
+                .isEquals();
     }
 
     public enum Status {

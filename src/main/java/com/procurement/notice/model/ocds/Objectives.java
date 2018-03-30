@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -13,13 +12,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "types",
-    "additionalInformation"
+        "types",
+        "additionalInformation"
 })
 public class Objectives {
     @JsonProperty("types")
     @JsonPropertyDescription("Contract performance conditions with environmental, social and innovative objectives. " +
-        "Required by the EU.")
+            "Required by the EU.")
     @Valid
     private final List<ObjectivesType> types;
 
@@ -37,8 +36,8 @@ public class Objectives {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(types)
-                                    .append(additionalInformation)
-                                    .toHashCode();
+                .append(additionalInformation)
+                .toHashCode();
     }
 
     @Override
@@ -51,8 +50,8 @@ public class Objectives {
         }
         final Objectives rhs = (Objectives) other;
         return new EqualsBuilder().append(types, rhs.types)
-                                  .append(additionalInformation, rhs.additionalInformation)
-                                  .isEquals();
+                .append(additionalInformation, rhs.additionalInformation)
+                .isEquals();
     }
 
     public enum ObjectivesType {

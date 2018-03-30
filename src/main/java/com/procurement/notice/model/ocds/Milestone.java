@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,31 +9,30 @@ import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "title",
-    "type",
-    "description",
-    "code",
-    "dueDate",
-    "dateMet",
-    "dateModified",
-    "status",
-    "documents",
-    "relatedLots",
-    "relatedParties",
-    "additionalInformation"
+        "id",
+        "title",
+        "type",
+        "description",
+        "code",
+        "dueDate",
+        "dateMet",
+        "dateModified",
+        "status",
+        "documents",
+        "relatedLots",
+        "relatedParties",
+        "additionalInformation"
 })
 public class Milestone {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier for this milestone, unique within this block. This field is used to " +
-        "keep track of multiple revisions of a milestone through the compilation from release to pspq mechanism.")
+            "keep track of multiple revisions of a milestone through the compilation from release to pspq mechanism.")
     @Size(min = 1)
     @NotNull
     private final String id;
@@ -48,7 +46,7 @@ public class Milestone {
 
     @JsonProperty("type")
     @JsonPropertyDescription("The type of milestone, drawn from an extended [milestoneType codelist](http://standard" +
-        ".open-contracting.org/latest/en/schema/codelists/#milestone-type).")
+            ".open-contracting.org/latest/en/schema/codelists/#milestone-type).")
     private final MilestoneType type;
 
     @JsonProperty("description")
@@ -60,9 +58,9 @@ public class Milestone {
 
     @JsonProperty("code")
     @JsonPropertyDescription("Milestone codes can be used to track specific events that take place for a particular " +
-        "kind of contracting process. For example, a code of 'approvalLetter' could be used to allow applications to " +
-        "understand this milestone represents the date an approvalLetter is due or signed. Milestone codes is an open" +
-        " codelist, and codes should be agreed among data producers and the applications using that data.")
+            "kind of contracting process. For example, a code of 'approvalLetter' could be used to allow applications to " +
+            "understand this milestone represents the date an approvalLetter is due or signed. Milestone codes is an open" +
+            " codelist, and codes should be agreed among data producers and the applications using that data.")
     private final String code;
 
     @JsonProperty("dueDate")
@@ -78,13 +76,13 @@ public class Milestone {
     @JsonProperty("dateModified")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonPropertyDescription("The date the milestone was last reviewed or modified and the status was altered or " +
-        "confirmed to still be correct.")
+            "confirmed to still be correct.")
     private final LocalDateTime dateModified;
 
     @JsonProperty("status")
     @JsonPropertyDescription("The status that was realized on the date provided in dateModified, drawn from the " +
-        "[milestoneStatus codelist](http://standard.open-contracting" +
-        ".org/latest/en/schema/codelists/#milestone-status).")
+            "[milestoneStatus codelist](http://standard.open-contracting" +
+            ".org/latest/en/schema/codelists/#milestone-status).")
     private final Status status;
 
     @JsonProperty("documents")
@@ -95,7 +93,7 @@ public class Milestone {
 
     @JsonProperty("relatedLots")
     @JsonPropertyDescription("If this milestone relates to a particular lot, provide the identifier(s) of the related" +
-        " lot(s) here.")
+            " lot(s) here.")
     private final List<String> relatedLots;
 
     @JsonProperty("relatedParties")
@@ -138,19 +136,19 @@ public class Milestone {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(title)
-                                    .append(type)
-                                    .append(description)
-                                    .append(code)
-                                    .append(dueDate)
-                                    .append(dateMet)
-                                    .append(dateModified)
-                                    .append(status)
-                                    .append(documents)
-                                    .append(relatedLots)
-                                    .append(relatedParties)
-                                    .append(additionalInformation)
-                                    .toHashCode();
+                .append(title)
+                .append(type)
+                .append(description)
+                .append(code)
+                .append(dueDate)
+                .append(dateMet)
+                .append(dateModified)
+                .append(status)
+                .append(documents)
+                .append(relatedLots)
+                .append(relatedParties)
+                .append(additionalInformation)
+                .toHashCode();
     }
 
     @Override
@@ -163,19 +161,19 @@ public class Milestone {
         }
         final Milestone rhs = (Milestone) other;
         return new EqualsBuilder().append(id, rhs.id)
-                                  .append(title, rhs.title)
-                                  .append(type, rhs.type)
-                                  .append(description, rhs.description)
-                                  .append(code, rhs.code)
-                                  .append(dueDate, rhs.dueDate)
-                                  .append(dateMet, rhs.dateMet)
-                                  .append(dateModified, rhs.dateModified)
-                                  .append(status, rhs.status)
-                                  .append(documents, rhs.documents)
-                                  .append(relatedLots, rhs.relatedLots)
-                                  .append(relatedParties, rhs.relatedParties)
-                                  .append(additionalInformation, rhs.additionalInformation)
-                                  .isEquals();
+                .append(title, rhs.title)
+                .append(type, rhs.type)
+                .append(description, rhs.description)
+                .append(code, rhs.code)
+                .append(dueDate, rhs.dueDate)
+                .append(dateMet, rhs.dateMet)
+                .append(dateModified, rhs.dateModified)
+                .append(status, rhs.status)
+                .append(documents, rhs.documents)
+                .append(relatedLots, rhs.relatedLots)
+                .append(relatedParties, rhs.relatedParties)
+                .append(additionalInformation, rhs.additionalInformation)
+                .isEquals();
     }
 
     public enum Status {

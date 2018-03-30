@@ -1,9 +1,6 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -11,10 +8,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "scheme",
-    "id",
-    "legalName",
-    "uri"
+        "scheme",
+        "id",
+        "legalName",
+        "uri"
 })
 public class Identifier {
     @JsonProperty("id")
@@ -23,9 +20,9 @@ public class Identifier {
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("Organization identifiers should be drawn from an existing organization identifier list." +
-        " The scheme field is used to indicate the list or register from which the identifier is drawn. This value " +
-        "should be drawn from the [Organization Identifier Scheme](http://standard.open-contracting" +
-        ".org/latest/en/schema/codelists/#organization-identifier-scheme) codelist.")
+            " The scheme field is used to indicate the list or register from which the identifier is drawn. This value " +
+            "should be drawn from the [Organization Identifier Scheme](http://standard.open-contracting" +
+            ".org/latest/en/schema/codelists/#organization-identifier-scheme) codelist.")
     private final String scheme;
 
     @JsonProperty("legalName")
@@ -37,8 +34,8 @@ public class Identifier {
 
     @JsonProperty("uri")
     @JsonPropertyDescription("A URI to identify the organization, such as those provided by [Open Corporates]" +
-        "(http://www.opencorporates.com) or some other relevant URI provider. This is not for listing the website of " +
-        "the organization: that can be done through the URL field of the Organization contact point.")
+            "(http://www.opencorporates.com) or some other relevant URI provider. This is not for listing the website of " +
+            "the organization: that can be done through the URL field of the Organization contact point.")
     private final String uri;
 
     @JsonCreator
@@ -55,10 +52,10 @@ public class Identifier {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(scheme)
-                                    .append(id)
-                                    .append(legalName)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(id)
+                .append(legalName)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -71,9 +68,9 @@ public class Identifier {
         }
         final Identifier rhs = (Identifier) other;
         return new EqualsBuilder().append(scheme, rhs.scheme)
-                                  .append(id, rhs.id)
-                                  .append(legalName, rhs.legalName)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(id, rhs.id)
+                .append(legalName, rhs.legalName)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
 }

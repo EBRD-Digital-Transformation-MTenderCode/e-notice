@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,9 +8,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "useOrdering",
-    "usePayment",
-    "acceptInvoicing"
+        "useOrdering",
+        "usePayment",
+        "acceptInvoicing"
 })
 public class ElectronicWorkflows {
     @JsonProperty("useOrdering")
@@ -24,7 +23,7 @@ public class ElectronicWorkflows {
 
     @JsonProperty("acceptInvoicing")
     @JsonPropertyDescription("A True/False field to indicate if electronic invoicing will be accepted. Required by " +
-        "the EU")
+            "the EU")
     private final Boolean acceptInvoicing;
 
     @JsonCreator
@@ -39,9 +38,9 @@ public class ElectronicWorkflows {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(useOrdering)
-                                    .append(usePayment)
-                                    .append(acceptInvoicing)
-                                    .toHashCode();
+                .append(usePayment)
+                .append(acceptInvoicing)
+                .toHashCode();
     }
 
     @Override
@@ -54,8 +53,8 @@ public class ElectronicWorkflows {
         }
         final ElectronicWorkflows rhs = (ElectronicWorkflows) other;
         return new EqualsBuilder().append(useOrdering, rhs.useOrdering)
-                                  .append(usePayment, rhs.usePayment)
-                                  .append(acceptInvoicing, rhs.acceptInvoicing)
-                                  .isEquals();
+                .append(usePayment, rhs.usePayment)
+                .append(acceptInvoicing, rhs.acceptInvoicing)
+                .isEquals();
     }
 }

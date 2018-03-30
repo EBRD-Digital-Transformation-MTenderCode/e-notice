@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -93,7 +92,7 @@ public class MainServiceImpl implements MainService {
         AWARD_PERIOD_END("awardPeriodEnd"),
         STANDSTILL_PERIOD_END("standstillPeriodEnd"),
         START_NEW_STAGE("startNewStage");
-        
+
         private static final Map<String, Operation> CONSTANTS = new HashMap<>();
         private final String value;
 

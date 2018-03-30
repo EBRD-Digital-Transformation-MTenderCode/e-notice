@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,19 +14,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "buyerProcedureReview",
-    "reviewBodyChallenge",
-    "legalProcedures"
+        "buyerProcedureReview",
+        "reviewBodyChallenge",
+        "legalProcedures"
 })
 public class ReviewProceedings {
     @JsonProperty("buyerProcedureReview")
     @JsonPropertyDescription("A True/False field to indicate if an economic operator applied to the buyer for a " +
-        "review of the procedure. Required by the EU")
+            "review of the procedure. Required by the EU")
     private final Boolean buyerProcedureReview;
 
     @JsonProperty("reviewBodyChallenge")
     @JsonPropertyDescription("A True/False field to indicate if an economic operator or another party challenged the " +
-        "procedure before a review body. Required by the EU")
+            "procedure before a review body. Required by the EU")
     private final Boolean reviewBodyChallenge;
 
     @JsonProperty("legalProcedures")
@@ -46,9 +45,9 @@ public class ReviewProceedings {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(buyerProcedureReview)
-                                    .append(reviewBodyChallenge)
-                                    .append(legalProcedures)
-                                    .toHashCode();
+                .append(reviewBodyChallenge)
+                .append(legalProcedures)
+                .toHashCode();
     }
 
     @Override
@@ -61,8 +60,8 @@ public class ReviewProceedings {
         }
         final ReviewProceedings rhs = (ReviewProceedings) other;
         return new EqualsBuilder().append(buyerProcedureReview, rhs.buyerProcedureReview)
-                                  .append(reviewBodyChallenge, rhs.reviewBodyChallenge)
-                                  .append(legalProcedures, rhs.legalProcedures)
-                                  .isEquals();
+                .append(reviewBodyChallenge, rhs.reviewBodyChallenge)
+                .append(legalProcedures, rhs.legalProcedures)
+                .isEquals();
     }
 }

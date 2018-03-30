@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,7 +58,6 @@ public class Award {
     @JsonPropertyDescription("The current status of the award drawn from the [awardStatus codelist](http://standard" +
             ".open-contracting.org/latest/en/schema/codelists/#award-status)")
     private Status status;
-
 
     @JsonProperty("statusDetails")
     @JsonPropertyDescription("Additional details of an award status.")
@@ -138,7 +136,7 @@ public class Award {
                  @JsonProperty("status") final Status status,
                  @JsonProperty("statusDetails") final Status statusDetails,
                  @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime
-                             date,
+                         date,
                  @JsonProperty("value") final Value value,
                  @JsonProperty("suppliers") final LinkedHashSet<OrganizationReference> suppliers,
                  @JsonProperty("items") final LinkedHashSet<Item> items,
@@ -187,7 +185,7 @@ public class Award {
                 .append(relatedLots)
                 .append(requirementResponses)
                 .append(reviewProceedings)
-                 .append(relatedBid)
+                .append(relatedBid)
                 .toHashCode();
     }
 
@@ -228,15 +226,14 @@ public class Award {
         UNSUCCESSFUL("unsuccessful"),
         EMPTY("empty");
 
-        private final static Map<String, Status> CONSTANTS = new HashMap<>();
+        private static final Map<String, Status> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final Status c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         Status(final String value) {
             this.value = value;

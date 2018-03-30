@@ -1,10 +1,8 @@
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -12,16 +10,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value",
-    "scheme",
-    "id",
-    "uri"
+        "name",
+        "value",
+        "scheme",
+        "id",
+        "uri"
 })
 public class Unit {
     @JsonProperty("id")
     @JsonPropertyDescription("The identifier from the codelist referenced in the scheme property. Check the codelist " +
-        "for details of how to find and use identifiers from the scheme in use.")
+            "for details of how to find and use identifiers from the scheme in use.")
     private final String id;
 
     @JsonProperty("name")
@@ -33,10 +31,10 @@ public class Unit {
 
     @JsonProperty("scheme")
     @JsonPropertyDescription("The list from which units of measure identifiers are taken. This should be an entry " +
-        "from the options available in the [unitClassificationScheme](http://standard.open-contracting" +
-        ".org/latest/en/schema/codelists/#unit-classification-scheme) codelist. Use of the scheme 'UNCEFACT' for the " +
-        "UN/CEFACT Recommendation 20 list of 'Codes for Units of Measure Used in International Trade' is recommended," +
-        " although other options are available.")
+            "from the options available in the [unitClassificationScheme](http://standard.open-contracting" +
+            ".org/latest/en/schema/codelists/#unit-classification-scheme) codelist. Use of the scheme 'UNCEFACT' for the " +
+            "UN/CEFACT Recommendation 20 list of 'Codes for Units of Measure Used in International Trade' is recommended," +
+            " although other options are available.")
     private final Scheme scheme;
 
     @JsonProperty("value")
@@ -44,7 +42,7 @@ public class Unit {
 
     @JsonProperty("uri")
     @JsonPropertyDescription("If the scheme used provide a machine-readable URI for this unit of measure, this can be" +
-        " given.")
+            " given.")
     private final String uri;
 
     @JsonCreator
@@ -63,11 +61,11 @@ public class Unit {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(name)
-                                    .append(value)
-                                    .append(scheme)
-                                    .append(id)
-                                    .append(uri)
-                                    .toHashCode();
+                .append(value)
+                .append(scheme)
+                .append(id)
+                .append(uri)
+                .toHashCode();
     }
 
     @Override
@@ -80,11 +78,11 @@ public class Unit {
         }
         final Unit rhs = (Unit) other;
         return new EqualsBuilder().append(name, rhs.name)
-                                  .append(value, rhs.value)
-                                  .append(scheme, rhs.scheme)
-                                  .append(id, rhs.id)
-                                  .append(uri, rhs.uri)
-                                  .isEquals();
+                .append(value, rhs.value)
+                .append(scheme, rhs.scheme)
+                .append(id, rhs.id)
+                .append(uri, rhs.uri)
+                .isEquals();
     }
 
     public enum Scheme {

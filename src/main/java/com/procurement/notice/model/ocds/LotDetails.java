@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,18 +8,18 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "maximumLotsBidPerSupplier",
-    "maximumLotsAwardedPerSupplier"
+        "maximumLotsBidPerSupplier",
+        "maximumLotsAwardedPerSupplier"
 })
 public class LotDetails {
     @JsonProperty("maximumLotsBidPerSupplier")
     @JsonPropertyDescription("The maximum number of lots that one supplier may bid for as part of this contracting " +
-        "process.")
+            "process.")
     private final Integer maximumLotsBidPerSupplier;
 
     @JsonProperty("maximumLotsAwardedPerSupplier")
     @JsonPropertyDescription("The maximum number of lots that may be awarded to one supplier as part of this " +
-        "contracting process.")
+            "contracting process.")
     private final Integer maximumLotsAwardedPerSupplier;
 
     @JsonCreator
@@ -33,8 +32,8 @@ public class LotDetails {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(maximumLotsBidPerSupplier)
-                                    .append(maximumLotsAwardedPerSupplier)
-                                    .toHashCode();
+                .append(maximumLotsAwardedPerSupplier)
+                .toHashCode();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class LotDetails {
         }
         final LotDetails rhs = (LotDetails) other;
         return new EqualsBuilder().append(maximumLotsBidPerSupplier, rhs.maximumLotsBidPerSupplier)
-                                  .append(maximumLotsAwardedPerSupplier, rhs.maximumLotsAwardedPerSupplier)
-                                  .isEquals();
+                .append(maximumLotsAwardedPerSupplier, rhs.maximumLotsAwardedPerSupplier)
+                .isEquals();
     }
 }

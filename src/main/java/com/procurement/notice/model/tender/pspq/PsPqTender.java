@@ -1,15 +1,10 @@
 package com.procurement.notice.model.tender.pspq;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.procurement.notice.exception.EnumException;
 import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
-import com.procurement.notice.model.tender.ms.MsTender;
 import java.util.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -127,7 +122,7 @@ public class PsPqTender {
                       @JsonProperty("standstillPeriod") final Period standstillPeriod,
                       @JsonProperty("awardPeriod") final Period awardPeriod,
                       @JsonProperty("submissionMethodRationale") final List<SubmissionMethodRationale>
-                          submissionMethodRationale,
+                              submissionMethodRationale,
                       @JsonProperty("requiresElectronicCatalogue") final Boolean requiresElectronicCatalogue) {
         this.id = id;
         this.title = title;

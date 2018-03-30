@@ -4,11 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.Period;
-import com.procurement.notice.model.ocds.TenderStatus;
-import com.procurement.notice.model.ocds.TenderStatusDetails;
 import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
 import lombok.Getter;
-import lombok.NonNull;
 
 @Getter
 @JsonPropertyOrder({

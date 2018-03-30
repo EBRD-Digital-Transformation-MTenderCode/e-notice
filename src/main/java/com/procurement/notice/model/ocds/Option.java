@@ -1,4 +1,3 @@
-
 package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
@@ -9,8 +8,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hasOptions",
-    "optionDetails"
+        "hasOptions",
+        "optionDetails"
 })
 public class Option {
     @JsonProperty("hasOptions")
@@ -31,8 +30,8 @@ public class Option {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(hasOptions)
-                                    .append(optionDetails)
-                                    .toHashCode();
+                .append(optionDetails)
+                .toHashCode();
     }
 
     @Override
@@ -45,7 +44,7 @@ public class Option {
         }
         final Option rhs = (Option) other;
         return new EqualsBuilder().append(hasOptions, rhs.hasOptions)
-                                  .append(optionDetails, rhs.optionDetails)
-                                  .isEquals();
+                .append(optionDetails, rhs.optionDetails)
+                .isEquals();
     }
 }

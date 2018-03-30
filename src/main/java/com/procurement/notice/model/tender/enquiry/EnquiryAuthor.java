@@ -1,13 +1,6 @@
 package com.procurement.notice.model.tender.enquiry;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.procurement.notice.model.ocds.Address;
-import com.procurement.notice.model.ocds.ContactPoint;
-import com.procurement.notice.model.ocds.Identifier;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
