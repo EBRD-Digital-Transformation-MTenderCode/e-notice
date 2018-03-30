@@ -3,8 +3,8 @@ package com.procurement.notice.exception;
 public enum ErrorType {
 
     DATA_NOT_FOUND("00.01", "DATA not found."),
-    IMPLEMENTATION_ERROR("00.01", "No implementation for this type of operation."),
-    PARAM_ERROR("00.02", "Should not be empty for this type of operation");
+    IMPLEMENTATION_ERROR("00.02", "No implementation for this type of operation."),
+    PARAM_ERROR("00.03", "Should not be empty for this type of operation");
 
     private final String code;
     private final String message;

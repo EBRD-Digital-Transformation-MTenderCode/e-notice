@@ -15,5 +15,4 @@ public class SuspendTenderDto {
         this.tender = tender;
     }
 
-
 }

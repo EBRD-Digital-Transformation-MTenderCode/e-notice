@@ -216,7 +216,7 @@ public class PsPqTender {
         BEST_VALUE_TO_GOVERNMENT("bestValueToGovernment"),
         SINGLE_BID_ONLY("singleBidOnly");
 
-        private final static Map<String, AwardCriteria> CONSTANTS = new HashMap<>();
+        private static final Map<String, AwardCriteria> CONSTANTS = new HashMap<>();
 
         static {
             for (final AwardCriteria c : values()) {
@@ -256,7 +256,7 @@ public class PsPqTender {
         WRITTEN("written"),
         IN_PERSON("inPerson");
 
-        private final static Map<String, SubmissionMethod> CONSTANTS = new HashMap<>();
+        private static final Map<String, SubmissionMethod> CONSTANTS = new HashMap<>();
 
         static {
             for (final SubmissionMethod c : values()) {
@@ -297,7 +297,7 @@ public class PsPqTender {
         PHYSICAL_MODEL("PHYSICAL_MODEL"),
         SENSITIVE_INFORMATION("SENSITIVE_INFORMATION");
 
-        private final static Map<String, SubmissionMethodRationale> CONSTANTS = new HashMap<>();
+        private static final Map<String, SubmissionMethodRationale> CONSTANTS = new HashMap<>();
 
         static {
             for (final SubmissionMethodRationale c : values()) {

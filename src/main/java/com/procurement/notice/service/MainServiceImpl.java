@@ -74,7 +74,6 @@ public class MainServiceImpl implements MainService {
         }
     }
 
-
     private enum Operation {
 
         CREATE_EI("createEI"),

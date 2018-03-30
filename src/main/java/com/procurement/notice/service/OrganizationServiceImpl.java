@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
 
-
     public void processEiParties(final ReleaseEI ei) {
         final OrganizationReference buyer = ei.getBuyer();
         if (Objects.nonNull(buyer)) {
@@ -86,7 +85,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public void processMsParties(Ms ms, CheckFsDto checkFs) {
+    public void processMsParties(final Ms ms, final CheckFsDto checkFs) {
         final Set<Organization> parties = ms.getParties();
         addParty(parties, ms.getTender().getProcuringEntity(), Organization.PartyRole.PROCURING_ENTITY);
         clearOrganizationReference(ms.getTender().getProcuringEntity());

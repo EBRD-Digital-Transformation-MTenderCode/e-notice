@@ -273,7 +273,7 @@ public class MsTender {
         LIMITED("limited"),
         DIRECT("direct");
 
-        private final static Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
+        private static final Map<String, ProcurementMethod> CONSTANTS = new HashMap<>();
         private final String value;
 
         static {
@@ -314,7 +314,7 @@ public class MsTender {
         SERVICES("services"),
         CONSULTING_SERVICES("consultingServices");
 
-        private final static Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
+        private static final Map<String, ExtendedProcurementCategory> CONSTANTS = new HashMap<>();
         private final String value;
 
         static {
@@ -356,7 +356,7 @@ public class MsTender {
         NATIONAL_PROCUREMENT_LAW("NATIONAL_PROCUREMENT_LAW"),
         NULL("NULL");
 
-        private final static Map<String, LegalBasis> CONSTANTS = new HashMap<>();
+        private static final Map<String, LegalBasis> CONSTANTS = new HashMap<>();
         private final String value;
 
         static {
@@ -415,7 +415,7 @@ public class MsTender {
         FI("fi"),
         SV("sv");
 
-        private final static Map<String, SubmissionLanguage> CONSTANTS = new HashMap<>();
+        private static final Map<String, SubmissionLanguage> CONSTANTS = new HashMap<>();
         private final String value;
 
         static {
