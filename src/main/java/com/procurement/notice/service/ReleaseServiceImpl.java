@@ -6,8 +6,21 @@ import com.procurement.notice.dao.ReleaseDao;
 import com.procurement.notice.exception.ErrorException;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.ReleaseEntity;
-import com.procurement.notice.model.ocds.*;
-import com.procurement.notice.model.tender.dto.*;
+import com.procurement.notice.model.ocds.Award;
+import com.procurement.notice.model.ocds.Bid;
+import com.procurement.notice.model.ocds.Bids;
+import com.procurement.notice.model.ocds.InitiationType;
+import com.procurement.notice.model.ocds.Lot;
+import com.procurement.notice.model.ocds.RelatedProcessType;
+import com.procurement.notice.model.ocds.Tag;
+import com.procurement.notice.model.ocds.TenderStatusDetails;
+import com.procurement.notice.model.tender.dto.AwardByBidDto;
+import com.procurement.notice.model.tender.dto.AwardPeriodEndDto;
+import com.procurement.notice.model.tender.dto.CheckFsDto;
+import com.procurement.notice.model.tender.dto.StandstillPeriodEndDto;
+import com.procurement.notice.model.tender.dto.StartNewStageDto;
+import com.procurement.notice.model.tender.dto.SuspendTenderDto;
+import com.procurement.notice.model.tender.dto.TenderPeriodEndDto;
 import com.procurement.notice.model.tender.ms.Ms;
 import com.procurement.notice.model.tender.pspq.PsPq;
 import com.procurement.notice.utils.DateUtil;
@@ -71,7 +84,8 @@ public class ReleaseServiceImpl implements ReleaseService {
         ms.setId(getReleaseId(cpid));
         ms.setTag(Arrays.asList(Tag.COMPILED));
         ms.setInitiationType(InitiationType.TENDER);
-        ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
+        ms.getTender()
+          .setStatusDetails(TenderStatusDetails.PRESELECTION);
         organizationService.processMsParties(ms, checkFs);
         final PsPq record = jsonUtil.toObject(PsPq.class, data.toString());
         record.setDate(releaseDate);
@@ -79,16 +93,18 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.setId(getReleaseId(record.getOcid()));
         record.setTag(Arrays.asList(Tag.COMPILED));
         record.setInitiationType(InitiationType.TENDER);
-        record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
+        record.getTender()
+              .setStatusDetails(TenderStatusDetails.PRESELECTION);
         relatedProcessService.addRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
         relatedProcessService.addMsRelatedProcess(record, ms.getOcid());
         releaseDao.saveTender(getMSEntity(ms.getOcid(), ms));
         releaseDao.saveTender(getReleaseEntity(ms.getOcid(), stage, record));
         budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
-        budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
+        budgetService.createFsByMs(ms.getPlanning()
+                                     .getBudget()
+                                     .getBudgetBreakdown(), cpid, releaseDate);
         return getResponseDto(ms.getOcid(), record.getOcid());
     }
-
 
     @Override
     public ResponseDto tenderPeriodEnd(final String cpid,
@@ -96,7 +112,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                        final LocalDateTime releaseDate,
                                        final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                             .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
@@ -104,14 +120,20 @@ public class ReleaseServiceImpl implements ReleaseService {
         release.setTag(Arrays.asList(Tag.AWARD));
 
         if (Objects.nonNull(dto.getAwardPeriod())) {
-            release.getTender().setAwardPeriod(dto.getAwardPeriod());
-            release.setDate(dto.getAwardPeriod().getStartDate());
+            release.getTender()
+                   .setAwardPeriod(dto.getAwardPeriod());
+            release.setDate(dto.getAwardPeriod()
+                               .getStartDate());
         }
-        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
+        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards()
+                                                    .isEmpty())
             release.setAwards(new LinkedHashSet<>(dto.getAwards()));
-        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
-            release.getTender().setLots(dto.getLots());
-        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots()
+                                                  .isEmpty())
+            release.getTender()
+                   .setLots(dto.getLots());
+        if (Objects.nonNull(dto.getBids()) && !dto.getBids()
+                                                  .isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
         releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
@@ -123,12 +145,14 @@ public class ReleaseServiceImpl implements ReleaseService {
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR));
+                                             .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR));
         final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         final SuspendTenderDto dto = jsonUtil.toObject(SuspendTenderDto.class, jsonUtil.toJson(data));
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
-        release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
+        release.getTender()
+               .setStatusDetails(dto.getTender()
+                                    .getStatusDetails());
         releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
@@ -139,7 +163,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                   final LocalDateTime releaseDate,
                                   final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                             .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
         release.setTag(Arrays.asList(Tag.AWARD_UPDATE));
@@ -157,19 +181,25 @@ public class ReleaseServiceImpl implements ReleaseService {
                                       final LocalDateTime releaseDate,
                                       final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                             .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final PsPq release = jsonUtil.toObject(PsPq.class, entity.getJsonData());
         final AwardPeriodEndDto dto = jsonUtil.toObject(AwardPeriodEndDto.class, data.toString());
         release.setId(getReleaseId(release.getOcid()));
         release.setDate(releaseDate);
-        release.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        release.getTender()
+               .setStatusDetails(TenderStatusDetails.COMPLETE);
         if (Objects.nonNull(dto.getAwardPeriod()))
-            release.getTender().setAwardPeriod(dto.getAwardPeriod());
-        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards().isEmpty())
+            release.getTender()
+                   .setAwardPeriod(dto.getAwardPeriod());
+        if (Objects.nonNull(dto.getAwards()) && !dto.getAwards()
+                                                    .isEmpty())
             release.setAwards(new LinkedHashSet<>(dto.getAwards()));
-        if (Objects.nonNull(dto.getLots()) && !dto.getLots().isEmpty())
-            release.getTender().setLots(dto.getLots());
-        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
+        if (Objects.nonNull(dto.getLots()) && !dto.getLots()
+                                                  .isEmpty())
+            release.getTender()
+                   .setLots(dto.getLots());
+        if (Objects.nonNull(dto.getBids()) && !dto.getBids()
+                                                  .isEmpty())
             release.setBids(new Bids(null, dto.getBids()));
         releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
@@ -183,20 +213,25 @@ public class ReleaseServiceImpl implements ReleaseService {
         final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, jsonUtil.toJson(data));
         /*MS*/
         final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getByCpIdAndOcId(cpid, cpid))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                               .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final Ms ms = jsonUtil.toObject(Ms.class, msEntity.getJsonData());
         ms.setDate(releaseDate);
         ms.setId(getReleaseId(ms.getOcid()));
-        ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
+        ms.getTender()
+          .setStatusDetails(TenderStatusDetails.PRESELECTED);
         releaseDao.saveTender(getMSEntity(ms.getOcid(), ms));
         /*PS-PQ*/
         final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                                    .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR +
+                                                                                              stage));
         final PsPq tender = jsonUtil.toObject(PsPq.class, releaseEntity.getJsonData());
-        tender.setDate(dto.getStandstillPeriod().getEndDate());
+        tender.setDate(dto.getStandstillPeriod()
+                          .getEndDate());
         tender.setId(getReleaseId(tender.getOcid()));
-        tender.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
-        tender.getTender().setStandstillPeriod(dto.getStandstillPeriod());
+        tender.getTender()
+              .setStatusDetails(TenderStatusDetails.PRESELECTED);
+        tender.getTender()
+              .setStandstillPeriod(dto.getStandstillPeriod());
         updateLots(tender, dto.getLots());
         releaseDao.saveTender(getReleaseEntity(tender.getOcid(), stage, tender));
         return getResponseDto(cpid, tender.getOcid());
@@ -209,43 +244,39 @@ public class ReleaseServiceImpl implements ReleaseService {
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
         final StartNewStageDto dto = jsonUtil.toObject(StartNewStageDto.class, jsonUtil.toJson(data));
-        final LocalDateTime startDate = dto.getTender().getTenderPeriod().getStartDate();
         /*MS*/
         final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getByCpIdAndOcId(cpid, cpid))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                               .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
         final Ms ms = jsonUtil.toObject(Ms.class, msEntity.getJsonData());
         ms.setDate(releaseDate);
         ms.setId(getReleaseId(ms.getOcid()));
-        ms.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
+        ms.getTender()
+          .setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
         releaseDao.saveTender(getMSEntity(cpid, ms));
         /*PS*/
         final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, previousStage))
-                .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR + stage));
+                                                    .orElseThrow(() -> new ErrorException(RELEASE_NOT_FOUND_ERROR +
+                                                                                              stage));
         final PsPq prevRelease = jsonUtil.toObject(PsPq.class, releaseEntity.getJsonData());
         prevRelease.setDate(releaseDate);
         prevRelease.setId(getReleaseId(prevRelease.getOcid()));
-        prevRelease.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        prevRelease.getTender()
+                   .setStatusDetails(TenderStatusDetails.COMPLETE);
         releaseDao.saveTender(getReleaseEntity(cpid, stage, prevRelease));
         /*PQ*/
         final PsPq release = prevRelease;
-        release.setOcid(getOcId(cpid, stage));
-        release.setId(getReleaseId(prevRelease.getOcid()));
+
         release.setDate(releaseDate);
         release.setTag(Arrays.asList(Tag.COMPILED));
-        release.setInitiationType(InitiationType.TENDER);
-        release.getTender().setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
-        release.setAwards(new LinkedHashSet<>());
-        release.getTender().setAwardPeriod(null);
-        release.getTender().setStandstillPeriod(null);
-        release.getTender().setEnquiries(new ArrayList<>());
+        release.setId(getReleaseId(prevRelease.getOcid()));
+
+        release.getTender()
+               .setStatusDetails(TenderStatusDetails.PREQUALIFICATION);
+
         release.setRelatedProcesses(new LinkedHashSet<>());
-        if (Objects.nonNull(dto.getTender().getTenderPeriod()))
-            release.getTender().setTenderPeriod(dto.getTender().getTenderPeriod());
-        if (Objects.nonNull(dto.getTender().getEnquiryPeriod()))
-            release.getTender().setEnquiryPeriod(dto.getTender().getEnquiryPeriod());
-        if (Objects.nonNull(dto.getBids()) && !dto.getBids().isEmpty())
-            release.setBids(new Bids(null, dto.getBids()));
-//        addRelatedProcessToMs(ms, release.getOcid(), RelatedProcess.RelatedProcessType.X_PREQUALIFICATION);
+
+        relatedProcessService.addRelatedProcessToPq(release, ms);
+
         relatedProcessService.addMsRelatedProcess(release, ms.getOcid());
         releaseDao.saveTender(getReleaseEntity(cpid, stage, release));
 
@@ -275,8 +306,9 @@ public class ReleaseServiceImpl implements ReleaseService {
     private void updateAward(final PsPq release, final Award award) {
         final Set<Award> awards = release.getAwards();
         final Optional<Award> awardOptional = awards.stream()
-                .filter(a -> a.getId().equals(award.getId()))
-                .findFirst();
+                                                    .filter(a -> a.getId()
+                                                                  .equals(award.getId()))
+                                                    .findFirst();
         if (awardOptional.isPresent()) {
             final Award updatableAward = awardOptional.get();
             if (Objects.nonNull(award.getDate()))
@@ -285,7 +317,8 @@ public class ReleaseServiceImpl implements ReleaseService {
                 updatableAward.setDescription(award.getDescription());
             if (Objects.nonNull(award.getStatusDetails()))
                 updatableAward.setStatusDetails(award.getStatusDetails());
-            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments().isEmpty())
+            if (Objects.nonNull(award.getDocuments()) && !award.getDocuments()
+                                                               .isEmpty())
                 updatableAward.setDocuments(award.getDocuments());
             release.setAwards(awards);
         } else {
@@ -294,29 +327,35 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     private void updateBid(final PsPq release, final Bid bid) {
-        final List<Bid> bids = release.getBids().getDetails();
+        final List<Bid> bids = release.getBids()
+                                      .getDetails();
         final Optional<Bid> bidOptional = bids.stream()
-                .filter(b -> b.getId().equals(bid.getId()))
-                .findFirst();
+                                              .filter(b -> b.getId()
+                                                            .equals(bid.getId()))
+                                              .findFirst();
         if (bidOptional.isPresent()) {
             final Bid updatableBid = bidOptional.get();
             if (Objects.nonNull(bid.getDate()))
                 updatableBid.setDate(bid.getDate());
             if (Objects.nonNull(bid.getStatusDetails()))
                 updatableBid.setStatusDetails(bid.getStatusDetails());
-            release.getBids().setDetails(bids);
+            release.getBids()
+                   .setDetails(bids);
         } else {
             throw new ErrorException(BID_NOT_FOUND_ERROR);
         }
     }
 
     private void updateLots(final PsPq release, final List<Lot> lotsDto) {
-        final List<Lot> lots = release.getTender().getLots();
+        final List<Lot> lots = release.getTender()
+                                      .getLots();
         if (lots.isEmpty()) throw new ErrorException(LOTS_NOT_FOUND_ERROR);
         final Map<String, Lot> updatableLots = new HashMap<>();
         lots.forEach(lot -> updatableLots.put(lot.getId(), lot));
-        lotsDto.forEach(lotDto -> updatableLots.get(lotDto.getId()).setStatusDetails(lotDto.getStatusDetails()));
-        release.getTender().setLots(new ArrayList<>(updatableLots.values()));
+        lotsDto.forEach(lotDto -> updatableLots.get(lotDto.getId())
+                                               .setStatusDetails(lotDto.getStatusDetails()));
+        release.getTender()
+               .setLots(new ArrayList<>(updatableLots.values()));
     }
 
     private ResponseDto getResponseDto(final String cpid, final String ocid) {
@@ -325,5 +364,4 @@ public class ReleaseServiceImpl implements ReleaseService {
         jsonForResponse.put("ocid", ocid);
         return new ResponseDto<>(true, null, jsonForResponse);
     }
-
 }
