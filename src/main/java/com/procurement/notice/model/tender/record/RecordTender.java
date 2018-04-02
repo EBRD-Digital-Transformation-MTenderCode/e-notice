@@ -3,7 +3,7 @@ package com.procurement.notice.model.tender.record;
 import com.fasterxml.jackson.annotation.*;
 import com.procurement.notice.exception.EnumException;
 import com.procurement.notice.model.ocds.*;
-import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
+import com.procurement.notice.model.tender.enquiry.RecordEnquiry;
 import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,7 +60,7 @@ public class RecordTender {
     private final Boolean hasEnquiries;
 
     @JsonProperty("enquiries")
-    private List<PsPqEnquiry> enquiries;
+    private List<RecordEnquiry> enquiries;
 
     @JsonProperty("amendments")
     private final List<Amendment> amendments;
@@ -99,7 +99,7 @@ public class RecordTender {
     private Period awardPeriod;
 
     @JsonProperty("documents")
-    private final List<Document> documents;
+    private List<Document> documents;
 
     @JsonCreator
     public RecordTender(@JsonProperty("id") final String id,
@@ -114,7 +114,7 @@ public class RecordTender {
                         @JsonProperty("tenderPeriod") final Period tenderPeriod,
                         @JsonProperty("enquiryPeriod") final Period enquiryPeriod,
                         @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
-                        @JsonProperty("enquiries") final List<PsPqEnquiry> enquiries,
+                        @JsonProperty("enquiries") final List<RecordEnquiry> enquiries,
                         @JsonProperty("documents") final List<Document> documents,
                         @JsonProperty("amendments") final List<Amendment> amendments,
                         @JsonProperty("lots") final List<Lot> lots,

@@ -35,7 +35,7 @@ import lombok.Setter;
         "buyer",
         "relatedProcesses"
 })
-public class ReleaseEI {
+public class EI {
 
     @JsonProperty("ocid")
     private String ocid;
@@ -80,19 +80,19 @@ public class ReleaseEI {
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
-    public ReleaseEI(@JsonProperty("ocid") final String ocid,
-                     @JsonProperty("id") final String id,
-                     @JsonProperty("date") final LocalDateTime date,
-                     @JsonProperty("tag") final List<Tag> tag,
-                     @JsonProperty("initiationType") final InitiationType initiationType,
-                     @JsonProperty("title") final String title,
-                     @JsonProperty("description") final String description,
-                     @JsonProperty("language") final String language,
-                     @JsonProperty("tender") final Tender tender,
-                     @JsonProperty("buyer") final OrganizationReference buyer,
-                     @JsonProperty("parties") final Set<Organization> parties,
-                     @JsonProperty("planning") final EiPlanning planning,
-                     @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
+    public EI(@JsonProperty("ocid") final String ocid,
+              @JsonProperty("id") final String id,
+              @JsonProperty("date") final LocalDateTime date,
+              @JsonProperty("tag") final List<Tag> tag,
+              @JsonProperty("initiationType") final InitiationType initiationType,
+              @JsonProperty("title") final String title,
+              @JsonProperty("description") final String description,
+              @JsonProperty("language") final String language,
+              @JsonProperty("tender") final Tender tender,
+              @JsonProperty("buyer") final OrganizationReference buyer,
+              @JsonProperty("parties") final Set<Organization> parties,
+              @JsonProperty("planning") final EiPlanning planning,
+              @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

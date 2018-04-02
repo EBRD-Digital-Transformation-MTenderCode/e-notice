@@ -35,7 +35,7 @@ import lombok.Setter;
         "planning",
         "relatedProcesses"
 })
-public class ReleaseFS {
+public class FS {
 
     @JsonProperty("ocid")
     private String ocid;
@@ -82,20 +82,20 @@ public class ReleaseFS {
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
-    public ReleaseFS(@JsonProperty("ocid") final String ocid,
-                     @JsonProperty("id") final String id,
-                     @JsonProperty("date") final LocalDateTime date,
-                     @JsonProperty("tag") final List<Tag> tag,
-                     @JsonProperty("initiationType") final InitiationType initiationType,
-                     @JsonProperty("title") final String title,
-                     @JsonProperty("description") final String description,
-                     @JsonProperty("language") final String language,
-                     @JsonProperty("tender") final Tender tender,
-                     @JsonProperty("funder") final OrganizationReference funder,
-                     @JsonProperty("payer") final OrganizationReference payer,
-                     @JsonProperty("parties") final HashSet<Organization> parties,
-                     @JsonProperty("planning") final FsPlanning planning,
-                     @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
+    public FS(@JsonProperty("ocid") final String ocid,
+              @JsonProperty("id") final String id,
+              @JsonProperty("date") final LocalDateTime date,
+              @JsonProperty("tag") final List<Tag> tag,
+              @JsonProperty("initiationType") final InitiationType initiationType,
+              @JsonProperty("title") final String title,
+              @JsonProperty("description") final String description,
+              @JsonProperty("language") final String language,
+              @JsonProperty("tender") final Tender tender,
+              @JsonProperty("funder") final OrganizationReference funder,
+              @JsonProperty("payer") final OrganizationReference payer,
+              @JsonProperty("parties") final HashSet<Organization> parties,
+              @JsonProperty("planning") final FsPlanning planning,
+              @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
 
         this.id = id;
         this.ocid = ocid;

@@ -1,15 +1,15 @@
 package com.procurement.notice.service;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.procurement.notice.model.budget.ReleaseEI;
-import com.procurement.notice.model.budget.ReleaseFS;
+import com.procurement.notice.model.budget.EI;
+import com.procurement.notice.model.budget.FS;
 import com.procurement.notice.model.ocds.RelatedProcess;
 import com.procurement.notice.model.ocds.RelatedProcessScheme;
 import com.procurement.notice.model.ocds.RelatedProcessType;
 import com.procurement.notice.model.tender.dto.CheckFsDto;
 import com.procurement.notice.model.tender.ms.Ms;
 import com.procurement.notice.model.tender.record.Record;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +24,10 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     private String tenderUri;
 
     @Override
-    public void addFsRelatedProcessToEi(final ReleaseEI ei, final String fsOcId) {
+    public void addFsRelatedProcessToEi(final EI ei, final String fsOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcessType.X_FINANCE_SOURCE),
+                Collections.singletonList(RelatedProcessType.X_FINANCE_SOURCE),
                 RelatedProcessScheme.OCID,
                 fsOcId,
                 getBudgetUri(fsOcId)
@@ -39,10 +39,10 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addEiRelatedProcessToFs(final ReleaseFS fs, final String eiOcId) {
+    public void addEiRelatedProcessToFs(final FS fs, final String eiOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcessType.PARENT),
+                Collections.singletonList(RelatedProcessType.PARENT),
                 RelatedProcessScheme.OCID,
                 eiOcId,
                 getBudgetUri(eiOcId)
@@ -54,10 +54,10 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addMsRelatedProcessToEi(final ReleaseEI ei, final String msOcId) {
+    public void addMsRelatedProcessToEi(final EI ei, final String msOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcessType.X_EXECUTION),
+                Collections.singletonList(RelatedProcessType.X_EXECUTION),
                 RelatedProcessScheme.OCID,
                 msOcId,
                 getTenderUri(msOcId)
@@ -69,10 +69,10 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addMsRelatedProcessToFs(final ReleaseFS fs, final String msOcId) {
+    public void addMsRelatedProcessToFs(final FS fs, final String msOcId) {
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcessType.X_EXECUTION),
+                Collections.singletonList(RelatedProcessType.X_EXECUTION),
                 RelatedProcessScheme.OCID,
                 msOcId,
                 getTenderUri(msOcId)
@@ -84,17 +84,17 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addRelatedProcessToMs(final Ms ms,
-                                      final CheckFsDto checkFs,
-                                      final String ocId,
-                                      final RelatedProcessType recordProcessType) {
+    public void addEiFsRecordRelatedProcessToMs(final Ms ms,
+                                                final CheckFsDto checkFs,
+                                                final String ocId,
+                                                final RelatedProcessType recordProcessType) {
         if (Objects.isNull(ms.getRelatedProcesses())) {
             ms.setRelatedProcesses(new LinkedHashSet<>());
         }
         /*record*/
         ms.getRelatedProcesses().add(new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(recordProcessType),
+                Collections.singletonList(recordProcessType),
                 RelatedProcessScheme.OCID,
                 ocId,
                 getTenderUri(ocId)));
@@ -102,7 +102,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
         checkFs.getEi().forEach(eiCpId ->
                 ms.getRelatedProcesses().add(new RelatedProcess(
                         UUIDs.timeBased().toString(),
-                        Arrays.asList(RelatedProcessType.X_EXPENDITURE_ITEM),
+                        Collections.singletonList(RelatedProcessType.X_EXPENDITURE_ITEM),
                         RelatedProcessScheme.OCID,
                         eiCpId,
                         getBudgetUri(eiCpId))
@@ -112,7 +112,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
         ms.getPlanning().getBudget().getBudgetBreakdown().forEach(fs ->
                 ms.getRelatedProcesses().add(new RelatedProcess(
                         UUIDs.timeBased().toString(),
-                        Arrays.asList(RelatedProcessType.X_BUDGET),
+                        Collections.singletonList(RelatedProcessType.X_BUDGET),
                         RelatedProcessScheme.OCID,
                         fs.getId(),
                         getBudgetUri(fs.getId()))
@@ -121,26 +121,40 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addMsRelatedProcess(final Record release, final String msOcId) {
+    public void addMsRelatedProcessToRecord(final Record record, final String msOcId) {
         /*ms*/
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
-                Arrays.asList(RelatedProcessType.PARENT),
+                Collections.singletonList(RelatedProcessType.PARENT),
                 RelatedProcessScheme.OCID,
                 msOcId,
                 getTenderUri(msOcId));
-        if (Objects.isNull(release.getRelatedProcesses())) {
-            release.setRelatedProcesses(new LinkedHashSet<>());
+        if (Objects.isNull(record.getRelatedProcesses())) {
+            record.setRelatedProcesses(new LinkedHashSet<>());
         }
-        release.getRelatedProcesses().add(relatedProcess);
+        record.getRelatedProcesses().add(relatedProcess);
     }
 
     @Override
-    public void addRelatedProcessToPq(Record release, Ms ms) {
-        release.getRelatedProcesses()
-               .add(new RelatedProcess(UUIDs.timeBased()
-                                            .toString(), Arrays.asList(RelatedProcessType.X_PREQUALIFICATION),
-                                       RelatedProcessScheme.OCID,ms.getOcid(),getTenderUri(ms.getOcid())));
+    public void addRecordRelatedProcessToMs(final Record record, final String msOcId, final RelatedProcessType recordProcessType) {
+        record.getRelatedProcesses()
+                .add(new RelatedProcess(
+                        UUIDs.timeBased().toString(),
+                        Collections.singletonList(recordProcessType),
+                        RelatedProcessScheme.OCID,
+                        msOcId,
+                        getTenderUri(msOcId)));
+    }
+
+    @Override
+    public void addPervRecordRelatedProcessToRecord(final Record record, final String prevRecordOcId) {
+        record.getRelatedProcesses()
+                .add(new RelatedProcess(
+                        UUIDs.timeBased().toString(),
+                        Collections.singletonList(RelatedProcessType.X_PRESELECTION),
+                        RelatedProcessScheme.OCID,
+                        prevRecordOcId,
+                        getTenderUri(prevRecordOcId)));
     }
 
     private String getBudgetUri(final String id) {

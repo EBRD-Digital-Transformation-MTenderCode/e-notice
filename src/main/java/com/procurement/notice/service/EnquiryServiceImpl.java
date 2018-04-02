@@ -8,7 +8,7 @@ import com.procurement.notice.exception.ErrorType;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.ReleaseEntity;
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto;
-import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
+import com.procurement.notice.model.tender.enquiry.RecordEnquiry;
 import com.procurement.notice.model.tender.record.Record;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
@@ -46,12 +46,12 @@ public class EnquiryServiceImpl implements EnquiryService {
                                      final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
-        final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
+        final RecordEnquiry enquiry = jsonUtil.toObject(RecordEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
         addEnquiryToTender(release, enquiry);
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
-        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -62,12 +62,12 @@ public class EnquiryServiceImpl implements EnquiryService {
                                  final JsonNode data) {
         final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
-        final PsPqEnquiry enquiry = jsonUtil.toObject(PsPqEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
+        final RecordEnquiry enquiry = jsonUtil.toObject(RecordEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
         addAnswerToEnquiry(release, enquiry);
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
-        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
@@ -80,23 +80,23 @@ public class EnquiryServiceImpl implements EnquiryService {
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
         final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));
-        final PsPqEnquiry enquiry = dto.getEnquiry();
+        final RecordEnquiry enquiry = dto.getEnquiry();
         addAnswerToEnquiry(release, enquiry);
         release.setDate(releaseDate);
         release.setId(getReleaseId(release.getOcid()));
         release.getTender().setStatusDetails(dto.getTender().getStatusDetails());
         release.getTender().setTenderPeriod(dto.getTenderPeriod());
         release.getTender().setEnquiryPeriod(dto.getEnquiryPeriod());
-        releaseDao.saveTender(releaseService.getReleaseEntity(cpid, stage, release));
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release));
         return getResponseDto(cpid, release.getOcid());
     }
 
-    private void addEnquiryToTender(final Record release, final PsPqEnquiry enquiry) {
-        List<PsPqEnquiry> enquiries = release.getTender().getEnquiries();
+    private void addEnquiryToTender(final Record release, final RecordEnquiry enquiry) {
+        List<RecordEnquiry> enquiries = release.getTender().getEnquiries();
         if (Objects.isNull(enquiries)) {
             enquiries = new ArrayList<>();
         }
-        final Optional<PsPqEnquiry> enquiryOptional = enquiries.stream()
+        final Optional<RecordEnquiry> enquiryOptional = enquiries.stream()
                 .filter(e -> e.getId().equals(enquiry.getId()))
                 .findFirst();
         if (!enquiryOptional.isPresent()) {
@@ -105,13 +105,13 @@ public class EnquiryServiceImpl implements EnquiryService {
         }
     }
 
-    private void addAnswerToEnquiry(final Record release, final PsPqEnquiry enquiry) {
-        final List<PsPqEnquiry> enquiries = release.getTender().getEnquiries();
-        final Optional<PsPqEnquiry> enquiryOptional = enquiries.stream()
+    private void addAnswerToEnquiry(final Record release, final RecordEnquiry enquiry) {
+        final List<RecordEnquiry> enquiries = release.getTender().getEnquiries();
+        final Optional<RecordEnquiry> enquiryOptional = enquiries.stream()
                 .filter(e -> e.getId().equals(enquiry.getId()))
                 .findFirst();
         if (enquiryOptional.isPresent()) {
-            final PsPqEnquiry updatableEnquiry = enquiryOptional.get();
+            final RecordEnquiry updatableEnquiry = enquiryOptional.get();
             updatableEnquiry.setAnswer(enquiry.getAnswer());
             release.getTender().setEnquiries(enquiries);
         } else {

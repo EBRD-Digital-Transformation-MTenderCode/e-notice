@@ -31,7 +31,7 @@ public class ReleaseDaoImpl implements ReleaseDao {
     }
 
     @Override
-    public void saveTender(final ReleaseEntity releaseEntity) {
+    public void saveRelease(final ReleaseEntity releaseEntity) {
         final Insert insert = insertInto(TENDER_TABLE);
         insert
                 .value(CP_ID, releaseEntity.getCpId())

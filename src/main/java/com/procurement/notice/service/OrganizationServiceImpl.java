@@ -1,18 +1,20 @@
 package com.procurement.notice.service;
 
-import com.procurement.notice.model.budget.ReleaseEI;
-import com.procurement.notice.model.budget.ReleaseFS;
+import com.procurement.notice.model.budget.EI;
+import com.procurement.notice.model.budget.FS;
+import com.procurement.notice.model.ocds.Bids;
 import com.procurement.notice.model.ocds.Organization;
 import com.procurement.notice.model.ocds.OrganizationReference;
 import com.procurement.notice.model.tender.dto.CheckFsDto;
 import com.procurement.notice.model.tender.ms.Ms;
+import com.procurement.notice.model.tender.record.Record;
 import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
 
-    public void processEiParties(final ReleaseEI ei) {
+    public void processEiParties(final EI ei) {
         final OrganizationReference buyer = ei.getBuyer();
         if (Objects.nonNull(buyer)) {
             final Organization partyBuyer = new Organization(
@@ -34,7 +36,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
     }
 
-    public void processFsParties(final ReleaseFS fs) {
+    public void processFsParties(final FS fs) {
         /*funder*/
         final OrganizationReference funder = fs.getFunder();
         if (Objects.nonNull(funder)) {
@@ -92,6 +94,18 @@ public class OrganizationServiceImpl implements OrganizationService {
         checkFs.getBuyer().forEach(buyer -> addParty(parties, buyer, Organization.PartyRole.BUYER));
         checkFs.getFunder().forEach(funder -> addParty(parties, funder, Organization.PartyRole.FUNDER));
         checkFs.getPayer().forEach(payer -> addParty(parties, payer, Organization.PartyRole.PAYER));
+    }
+
+
+    @Override
+    public void processPartiesFromBids(final Record record, final Bids bids) {
+        if (Objects.isNull(record.getParties())) {
+            record.setParties(new LinkedHashSet<>());
+        }
+        bids.getDetails()
+                .stream()
+                .flatMap(b -> b.getTenderers().stream())
+                .forEach(t -> addParty(record.getParties(), t, Organization.PartyRole.TENDERER));
     }
 
     private void addParty(final Set<Organization> parties,

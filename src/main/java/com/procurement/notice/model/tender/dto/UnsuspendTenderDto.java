@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.notice.model.ocds.Period;
-import com.procurement.notice.model.tender.enquiry.PsPqEnquiry;
+import com.procurement.notice.model.tender.enquiry.RecordEnquiry;
 import lombok.Getter;
 
 @Getter
@@ -17,7 +17,7 @@ import lombok.Getter;
 public class UnsuspendTenderDto {
 
     @JsonProperty("enquiry")
-    private final PsPqEnquiry enquiry;
+    private final RecordEnquiry enquiry;
 
     @JsonProperty("tender")
     private final TenderDto tender;
@@ -29,7 +29,7 @@ public class UnsuspendTenderDto {
     private final Period enquiryPeriod;
 
     @JsonCreator
-    public UnsuspendTenderDto(@JsonProperty("enquiry") final PsPqEnquiry enquiry,
+    public UnsuspendTenderDto(@JsonProperty("enquiry") final RecordEnquiry enquiry,
                               @JsonProperty("tender") final TenderDto tender,
                               @JsonProperty("tenderPeriod") final Period tenderPeriod,
                               @JsonProperty("enquiryPeriod") final Period enquiryPeriod) {

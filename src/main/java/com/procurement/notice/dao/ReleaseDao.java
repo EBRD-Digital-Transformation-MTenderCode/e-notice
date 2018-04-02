@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ReleaseDao {
 
-    void saveTender(ReleaseEntity entity);
+    void saveRelease(ReleaseEntity entity);
 
     ReleaseEntity getByCpId(String cpId);
 

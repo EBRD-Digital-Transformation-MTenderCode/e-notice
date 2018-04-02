@@ -1,7 +1,7 @@
 package com.procurement.notice.service;
 
-import com.procurement.notice.model.budget.ReleaseEI;
-import com.procurement.notice.model.budget.ReleaseFS;
+import com.procurement.notice.model.budget.EI;
+import com.procurement.notice.model.budget.FS;
 import com.procurement.notice.model.ocds.RelatedProcessType;
 import com.procurement.notice.model.tender.dto.CheckFsDto;
 import com.procurement.notice.model.tender.ms.Ms;
@@ -11,18 +11,20 @@ import org.springframework.stereotype.Service;
 @Service
 public interface RelatedProcessService {
 
-    void addFsRelatedProcessToEi(ReleaseEI ei, String fsOcId);
+    void addFsRelatedProcessToEi(EI ei, String fsOcId);
 
-    void addEiRelatedProcessToFs(ReleaseFS fs, String eiOcId);
+    void addEiRelatedProcessToFs(FS fs, String eiOcId);
 
-    void addMsRelatedProcessToEi(ReleaseEI ei, String msOcId);
+    void addMsRelatedProcessToEi(EI ei, String msOcId);
 
-    void addMsRelatedProcessToFs(ReleaseFS fs, String msOcId);
+    void addMsRelatedProcessToFs(FS fs, String msOcId);
 
-    void addRelatedProcessToMs(Ms ms, CheckFsDto checkFs, String ocId, RelatedProcessType recordProcessType);
+    void addEiFsRecordRelatedProcessToMs(Ms ms, CheckFsDto checkFs, String ocId, RelatedProcessType recordProcessType);
 
-    void addMsRelatedProcess(Record release, String cpId);
+    void addMsRelatedProcessToRecord(Record record, String cpId);
 
-    void addRelatedProcessToPq(Record release, Ms ms);
+    void addRecordRelatedProcessToMs(Record record, String msOcId, RelatedProcessType recordProcessType);
+
+    void addPervRecordRelatedProcessToRecord(Record record, String prevRecordOcId);
 
 }

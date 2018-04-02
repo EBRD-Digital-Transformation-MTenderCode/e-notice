@@ -62,10 +62,10 @@ public class Record {
     private final PurposeOfNotice purposeOfNotice;
 
     @JsonProperty("tender")
-    private final RecordTender tender;
+    private RecordTender tender;
 
     @JsonProperty("parties")
-    private final Set<Organization> parties;
+    private Set<Organization> parties;
 
     @JsonProperty("bids")
     private Bids bids;

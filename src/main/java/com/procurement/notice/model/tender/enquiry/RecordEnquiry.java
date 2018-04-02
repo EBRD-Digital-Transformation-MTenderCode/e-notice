@@ -26,7 +26,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "relatedItem",
         "relatedLot"
 })
-public class PsPqEnquiry {
+public class RecordEnquiry {
     @JsonProperty("id")
     @JsonPropertyDescription("A unique identifier for the enquiry.")
     private final String id;
@@ -69,15 +69,15 @@ public class PsPqEnquiry {
     private final String relatedLot;
 
     @JsonCreator
-    public PsPqEnquiry(@JsonProperty("id") final String id,
-                       @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
-                       @JsonProperty("author") final EnquiryAuthor author,
-                       @JsonProperty("title") final String title,
-                       @JsonProperty("description") final String description,
-                       @JsonProperty("answer") final String answer,
-                       @JsonProperty("dateAnswered") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dateAnswered,
-                       @JsonProperty("relatedItem") final String relatedItem,
-                       @JsonProperty("relatedLot") final String relatedLot) {
+    public RecordEnquiry(@JsonProperty("id") final String id,
+                         @JsonProperty("date") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime date,
+                         @JsonProperty("author") final EnquiryAuthor author,
+                         @JsonProperty("title") final String title,
+                         @JsonProperty("description") final String description,
+                         @JsonProperty("answer") final String answer,
+                         @JsonProperty("dateAnswered") @JsonDeserialize(using = LocalDateTimeDeserializer.class) final LocalDateTime dateAnswered,
+                         @JsonProperty("relatedItem") final String relatedItem,
+                         @JsonProperty("relatedLot") final String relatedLot) {
         this.id = id;
         this.date = date;
         this.author = author;
@@ -108,10 +108,10 @@ public class PsPqEnquiry {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof PsPqEnquiry)) {
+        if (!(other instanceof RecordEnquiry)) {
             return false;
         }
-        final PsPqEnquiry rhs = (PsPqEnquiry) other;
+        final RecordEnquiry rhs = (RecordEnquiry) other;
         return new EqualsBuilder().append(id, rhs.id)
                 .append(date, rhs.date)
                 .append(author, rhs.author)
