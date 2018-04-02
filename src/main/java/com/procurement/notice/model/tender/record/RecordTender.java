@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender.pspq;
+package com.procurement.notice.model.tender.record;
 
 import com.fasterxml.jackson.annotation.*;
 import com.procurement.notice.exception.EnumException;
@@ -36,7 +36,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "awardPeriod",
         "documents"
 })
-public class PsPqTender {
+public class RecordTender {
 
     @JsonProperty("id")
     private final String id;
@@ -102,28 +102,28 @@ public class PsPqTender {
     private final List<Document> documents;
 
     @JsonCreator
-    public PsPqTender(@JsonProperty("id") final String id,
-                      @JsonProperty("title") final String title,
-                      @JsonProperty("description") final String description,
-                      @JsonProperty("status") final TenderStatus status,
-                      @JsonProperty("statusDetails") final TenderStatusDetails statusDetails,
-                      @JsonProperty("items") final LinkedHashSet<Item> items,
-                      @JsonProperty("awardCriteria") final AwardCriteria awardCriteria,
-                      @JsonProperty("submissionMethod") final List<SubmissionMethod> submissionMethod,
-                      @JsonProperty("submissionMethodDetails") final String submissionMethodDetails,
-                      @JsonProperty("tenderPeriod") final Period tenderPeriod,
-                      @JsonProperty("enquiryPeriod") final Period enquiryPeriod,
-                      @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
-                      @JsonProperty("enquiries") final List<PsPqEnquiry> enquiries,
-                      @JsonProperty("documents") final List<Document> documents,
-                      @JsonProperty("amendments") final List<Amendment> amendments,
-                      @JsonProperty("lots") final List<Lot> lots,
-                      @JsonProperty("lotGroups") final List<LotGroup> lotGroups,
-                      @JsonProperty("standstillPeriod") final Period standstillPeriod,
-                      @JsonProperty("awardPeriod") final Period awardPeriod,
-                      @JsonProperty("submissionMethodRationale") final List<SubmissionMethodRationale>
+    public RecordTender(@JsonProperty("id") final String id,
+                        @JsonProperty("title") final String title,
+                        @JsonProperty("description") final String description,
+                        @JsonProperty("status") final TenderStatus status,
+                        @JsonProperty("statusDetails") final TenderStatusDetails statusDetails,
+                        @JsonProperty("items") final LinkedHashSet<Item> items,
+                        @JsonProperty("awardCriteria") final AwardCriteria awardCriteria,
+                        @JsonProperty("submissionMethod") final List<SubmissionMethod> submissionMethod,
+                        @JsonProperty("submissionMethodDetails") final String submissionMethodDetails,
+                        @JsonProperty("tenderPeriod") final Period tenderPeriod,
+                        @JsonProperty("enquiryPeriod") final Period enquiryPeriod,
+                        @JsonProperty("hasEnquiries") final Boolean hasEnquiries,
+                        @JsonProperty("enquiries") final List<PsPqEnquiry> enquiries,
+                        @JsonProperty("documents") final List<Document> documents,
+                        @JsonProperty("amendments") final List<Amendment> amendments,
+                        @JsonProperty("lots") final List<Lot> lots,
+                        @JsonProperty("lotGroups") final List<LotGroup> lotGroups,
+                        @JsonProperty("standstillPeriod") final Period standstillPeriod,
+                        @JsonProperty("awardPeriod") final Period awardPeriod,
+                        @JsonProperty("submissionMethodRationale") final List<SubmissionMethodRationale>
                               submissionMethodRationale,
-                      @JsonProperty("requiresElectronicCatalogue") final Boolean requiresElectronicCatalogue) {
+                        @JsonProperty("requiresElectronicCatalogue") final Boolean requiresElectronicCatalogue) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -178,10 +178,10 @@ public class PsPqTender {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof PsPqTender)) {
+        if (!(other instanceof RecordTender)) {
             return false;
         }
-        final PsPqTender rhs = (PsPqTender) other;
+        final RecordTender rhs = (RecordTender) other;
         return new EqualsBuilder().append(id, rhs.id)
                 .append(title, rhs.title)
                 .append(description, rhs.description)

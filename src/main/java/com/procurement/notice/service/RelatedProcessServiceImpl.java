@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.RelatedProcessScheme;
 import com.procurement.notice.model.ocds.RelatedProcessType;
 import com.procurement.notice.model.tender.dto.CheckFsDto;
 import com.procurement.notice.model.tender.ms.Ms;
-import com.procurement.notice.model.tender.pspq.PsPq;
+import com.procurement.notice.model.tender.record.Record;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -121,7 +121,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addMsRelatedProcess(final PsPq release, final String msOcId) {
+    public void addMsRelatedProcess(final Record release, final String msOcId) {
         /*ms*/
         final RelatedProcess relatedProcess = new RelatedProcess(
                 UUIDs.timeBased().toString(),
@@ -136,7 +136,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
     }
 
     @Override
-    public void addRelatedProcessToPq(PsPq release,Ms ms) {
+    public void addRelatedProcessToPq(Record release, Ms ms) {
         release.getRelatedProcesses()
                .add(new RelatedProcess(UUIDs.timeBased()
                                             .toString(), Arrays.asList(RelatedProcessType.X_PREQUALIFICATION),

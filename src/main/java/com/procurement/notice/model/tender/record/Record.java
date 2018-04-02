@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender.pspq;
+package com.procurement.notice.model.tender.record;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,7 +34,7 @@ import lombok.Setter;
         "awards",
         "relatedProcesses"
 })
-public class PsPq {
+public class Record {
     @JsonProperty("ocid")
     private String ocid;
 
@@ -62,7 +62,7 @@ public class PsPq {
     private final PurposeOfNotice purposeOfNotice;
 
     @JsonProperty("tender")
-    private final PsPqTender tender;
+    private final RecordTender tender;
 
     @JsonProperty("parties")
     private final Set<Organization> parties;
@@ -77,19 +77,19 @@ public class PsPq {
     private Set<RelatedProcess> relatedProcesses;
 
     @JsonCreator
-    public PsPq(@JsonProperty("ocid") final String ocid,
-                @JsonProperty("id") final String id,
-                @JsonProperty("date") final LocalDateTime date,
-                @JsonProperty("tag") final List<Tag> tag,
-                @JsonProperty("initiationType") final InitiationType initiationType,
-                @JsonProperty("language") final String language,
-                @JsonProperty("parties") final HashSet<Organization> parties,
-                @JsonProperty("tender") final PsPqTender tender,
-                @JsonProperty("awards") final HashSet<Award> awards,
-                @JsonProperty("bids") final Bids bids,
-                @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
-                @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
-                @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
+    public Record(@JsonProperty("ocid") final String ocid,
+                  @JsonProperty("id") final String id,
+                  @JsonProperty("date") final LocalDateTime date,
+                  @JsonProperty("tag") final List<Tag> tag,
+                  @JsonProperty("initiationType") final InitiationType initiationType,
+                  @JsonProperty("language") final String language,
+                  @JsonProperty("parties") final HashSet<Organization> parties,
+                  @JsonProperty("tender") final RecordTender tender,
+                  @JsonProperty("awards") final HashSet<Award> awards,
+                  @JsonProperty("bids") final Bids bids,
+                  @JsonProperty("hasPreviousNotice") final Boolean hasPreviousNotice,
+                  @JsonProperty("purposeOfNotice") final PurposeOfNotice purposeOfNotice,
+                  @JsonProperty("relatedProcesses") final HashSet<RelatedProcess> relatedProcesses) {
         this.ocid = ocid;
         this.id = id;
         this.date = date;

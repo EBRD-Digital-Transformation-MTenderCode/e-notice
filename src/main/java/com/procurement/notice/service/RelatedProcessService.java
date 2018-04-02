@@ -5,7 +5,7 @@ import com.procurement.notice.model.budget.ReleaseFS;
 import com.procurement.notice.model.ocds.RelatedProcessType;
 import com.procurement.notice.model.tender.dto.CheckFsDto;
 import com.procurement.notice.model.tender.ms.Ms;
-import com.procurement.notice.model.tender.pspq.PsPq;
+import com.procurement.notice.model.tender.record.Record;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +21,8 @@ public interface RelatedProcessService {
 
     void addRelatedProcessToMs(Ms ms, CheckFsDto checkFs, String ocId, RelatedProcessType recordProcessType);
 
-    void addMsRelatedProcess(PsPq release, String cpId);
+    void addMsRelatedProcess(Record release, String cpId);
 
-    void addRelatedProcessToPq(PsPq release,Ms ms);
+    void addRelatedProcessToPq(Record release, Ms ms);
 
 }

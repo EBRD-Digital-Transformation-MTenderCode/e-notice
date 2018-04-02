@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Document {
     @JsonProperty("id")
     @JsonPropertyDescription("A local, unique identifier for this document. This field is used to keep track of " +
-            "multiple revisions of a document through the compilation from release to pspq mechanism.")
+            "multiple revisions of a document through the compilation from release to record mechanism.")
     @Size(min = 1)
     @NotNull
     private final String id;

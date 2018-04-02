@@ -3,7 +3,7 @@ package com.procurement.notice.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.procurement.notice.model.bpe.ResponseDto;
 import com.procurement.notice.model.entity.ReleaseEntity;
-import com.procurement.notice.model.tender.pspq.PsPq;
+import com.procurement.notice.model.tender.record.Record;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public interface ReleaseService {
 
     ReleaseEntity getReleaseEntity(String cpId,
                                    String stage,
-                                   PsPq tender);
+                                   Record tender);
 
     ResponseDto createCn(String cpid,
                          String stage,

@@ -61,7 +61,7 @@ public class Transaction {
     private final OrganizationReference payee;
 
     @JsonProperty("uri")
-    @JsonPropertyDescription("A URI pointing directly to a machine-readable pspq about this spending transaction.")
+    @JsonPropertyDescription("A URI pointing directly to a machine-readable record about this spending transaction.")
     private final String uri;
 
     @JsonProperty("amount")

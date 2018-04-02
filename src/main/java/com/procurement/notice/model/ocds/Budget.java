@@ -52,7 +52,7 @@ public class Budget {
     private final String projectID;
 
     @JsonProperty("uri")
-    @JsonPropertyDescription("A URI pointing directly to a machine-readable pspq about the budget line-item or " +
+    @JsonPropertyDescription("A URI pointing directly to a machine-readable record about the budget line-item or " +
             "line-items that fund this contracting process. Information may be provided in a range of formats, including " +
             "using IATI, the Open Fiscal Data Standard or any other standard which provides structured data on budget " +
             "sources. Human readable documents can be included using the planning.documents block.")

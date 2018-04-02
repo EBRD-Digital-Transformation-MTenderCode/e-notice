@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Milestone {
     @JsonProperty("id")
     @JsonPropertyDescription("A local identifier for this milestone, unique within this block. This field is used to " +
-            "keep track of multiple revisions of a milestone through the compilation from release to pspq mechanism.")
+            "keep track of multiple revisions of a milestone through the compilation from release to record mechanism.")
     @Size(min = 1)
     @NotNull
     private final String id;
