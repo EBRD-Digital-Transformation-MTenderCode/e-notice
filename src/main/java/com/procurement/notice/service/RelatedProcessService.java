@@ -23,4 +23,6 @@ public interface RelatedProcessService {
 
     void addMsRelatedProcess(PsPq release, String cpId);
 
+    void addRelatedProcessToPq(PsPq release,Ms ms);
+
 }

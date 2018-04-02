@@ -135,6 +135,14 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
         release.getRelatedProcesses().add(relatedProcess);
     }
 
+    @Override
+    public void addRelatedProcessToPq(PsPq release,Ms ms) {
+        release.getRelatedProcesses()
+               .add(new RelatedProcess(UUIDs.timeBased()
+                                            .toString(), Arrays.asList(RelatedProcessType.X_PREQUALIFICATION),
+                                       RelatedProcessScheme.OCID,ms.getOcid(),getTenderUri(ms.getOcid())));
+    }
+
     private String getBudgetUri(final String id) {
         return budgetUri + id;
     }
