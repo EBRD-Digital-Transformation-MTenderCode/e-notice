@@ -1,6 +1,5 @@
 package com.procurement.notice.dao;
 
-import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
@@ -63,6 +62,17 @@ public class BudgetDaoImpl implements BudgetDao {
     }
 
     @Override
+    public Double getTotalAmountByCpId(final String cpId) {
+        final Statement query = select().sum(AMOUNT).as(AMOUNT)
+                .from(BUDGET_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId));
+        final Row row = session.execute(query).one();
+        if (row != null)
+            return row.getDouble(AMOUNT);
+        return null;
+    }
+
+    @Override
     public BudgetEntity getByCpId(final String cpId) {
         final Statement query = select()
                 .all()
@@ -101,14 +111,5 @@ public class BudgetDaoImpl implements BudgetDao {
                     row.getDouble(AMOUNT),
                     row.getString(JSON_DATA));
         return null;
-    }
-
-    @Override
-    public Double getTotalAmountByCpId(final String cpId) {
-        final Statement query = select().sum(AMOUNT).as(AMOUNT)
-                .from(BUDGET_COMPILED_TABLE)
-                .where(eq(CP_ID, cpId));
-        final ResultSet rows = session.execute(query);
-        return rows.one().getDouble(AMOUNT);
     }
 }

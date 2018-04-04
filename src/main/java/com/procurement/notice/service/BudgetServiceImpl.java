@@ -14,9 +14,12 @@ import com.procurement.notice.model.ocds.InitiationType;
 import com.procurement.notice.model.ocds.Tag;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -168,7 +171,7 @@ public class BudgetServiceImpl implements BudgetService {
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final EI ei = jsonUtil.toObject(EI.class, entity.getJsonData());
         final Double totalAmount = budgetDao.getTotalAmountByCpId(eiCpId);
-        ei.getPlanning().getBudget().getAmount().setAmount(totalAmount);
+        ei.getPlanning().getBudget().getAmount().setAmount(round2(totalAmount));
         ei.setId(getReleaseId(eiCpId));
         ei.setDate(dateUtil.localNowUTC());
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId);
@@ -195,6 +198,13 @@ public class BudgetServiceImpl implements BudgetService {
         entity.setStage(stage);
         entity.setJsonData(jsonUtil.toJson(ei));
         return entity;
+    }
+
+    private Double round2(final Double val) {
+        if (Objects.nonNull(val))
+            return new BigDecimal(val.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        else
+            return null;
     }
 
     private String getReleaseId(final String ocId) {
