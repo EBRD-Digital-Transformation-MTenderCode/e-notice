@@ -85,7 +85,7 @@ public class BudgetServiceImpl implements BudgetService {
         final FS fs = jsonUtil.toObject(FS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
         fs.setDate(releaseDate);
-        fs.setTag(Arrays.asList(Tag.COMPILED));
+        fs.setTag(Arrays.asList(Tag.PLANNING));
         fs.setInitiationType(InitiationType.TENDER);
         organizationService.processFsParties(fs);
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid);
@@ -141,8 +141,9 @@ public class BudgetServiceImpl implements BudgetService {
             final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpIdAndOcId(eiCpId, br.getId()))
                     .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
             final FS fs = jsonUtil.toObject(FS.class, entity.getJsonData());
-            fs.setId(getReleaseId(eiCpId));
+            fs.setId(getReleaseId(fs.getOcid()));
             fs.setDate(dateTime);
+            fs.setTag(Arrays.asList(Tag.PLANNING_UPDATE));
             relatedProcessService.addMsRelatedProcessToFs(fs, msCpId);
             budgetDao.saveBudget(getFsEntity(entity.getCpId(), fs, entity.getStage(), entity.getAmount()));
         });
