@@ -75,9 +75,12 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.setDate(releaseDate);
         record.setOcid(getOcId(cpid, stage));
         record.setId(getReleaseId(record.getOcid()));
-        record.setTag(Collections.singletonList(Tag.COMPILED));
+        record.setTag(Collections.singletonList(Tag.TENDER));
         record.setInitiationType(InitiationType.TENDER);
         record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
+        record.getTender().setTitle("Preselection");
+        record.getTender().setDescription("Preselection stage of contracting process");
+        record.getPurposeOfNotice().setIsACallForCompetition(true);
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
         releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));

@@ -2,10 +2,12 @@ package com.procurement.notice.model.ocds;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "reducesTimeLimits",
@@ -20,7 +22,7 @@ public class PurposeOfNotice {
 
     @JsonProperty("isACallForCompetition")
     @JsonPropertyDescription("A True/False field to indicate whether this notice is a call for competition")
-    private final Boolean isACallForCompetition;
+    private Boolean isACallForCompetition;
 
     @JsonProperty("socialOrOtherSpecificServices")
     @JsonPropertyDescription("A True/False field to indicate whether this notice is for social or other specific " +

@@ -42,10 +42,10 @@ public class RecordTender {
     private final String id;
 
     @JsonProperty("title")
-    private final String title;
+    private String title;
 
     @JsonProperty("description")
-    private final String description;
+    private String description;
 
     @JsonProperty("status")
     private TenderStatus status;
