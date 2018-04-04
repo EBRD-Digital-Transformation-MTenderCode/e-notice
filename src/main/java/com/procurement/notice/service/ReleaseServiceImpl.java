@@ -235,14 +235,13 @@ public class ReleaseServiceImpl implements ReleaseService {
         /* previous record*/
         final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, previousStage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
-        final Record prevRecord = jsonUtil.toObject(Record.class, releaseEntity.getJsonData());
-        prevRecord.setDate(releaseDate);
-        prevRecord.setId(getReleaseId(prevRecord.getOcid()));
-        prevRecord.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, prevRecord));
+        final Record record = jsonUtil.toObject(Record.class, releaseEntity.getJsonData());
+        record.setDate(releaseDate);
+        record.setId(getReleaseId(record.getOcid()));
+        record.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
+        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
         /*new record*/
-        final Record record = prevRecord;
-        final String prevRecordOcId = prevRecord.getOcid();
+        final String prevRecordOcId = record.getOcid();
         record.setDate(releaseDate);
         record.setTag(Collections.singletonList(Tag.COMPILED));
         record.setOcid(getOcId(cpid, stage));

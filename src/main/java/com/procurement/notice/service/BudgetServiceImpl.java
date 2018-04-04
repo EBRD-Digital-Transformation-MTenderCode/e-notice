@@ -17,10 +17,7 @@ import com.procurement.notice.utils.JsonUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,7 +51,7 @@ public class BudgetServiceImpl implements BudgetService {
         final EI ei = jsonUtil.toObject(EI.class, data.toString());
         ei.setId(getReleaseId(cpid));
         ei.setDate(releaseDate);
-        ei.setTag(Arrays.asList(Tag.COMPILED));
+        ei.setTag(Collections.singletonList(Tag.COMPILED));
         ei.setInitiationType(InitiationType.TENDER);
         organizationService.processEiParties(ei);
         budgetDao.saveBudget(getEiEntity(ei, stage));
@@ -85,7 +82,7 @@ public class BudgetServiceImpl implements BudgetService {
         final FS fs = jsonUtil.toObject(FS.class, data.toString());
         fs.setId(getReleaseId(fs.getOcid()));
         fs.setDate(releaseDate);
-        fs.setTag(Arrays.asList(Tag.PLANNING));
+        fs.setTag(Collections.singletonList(Tag.PLANNING));
         fs.setInitiationType(InitiationType.TENDER);
         organizationService.processFsParties(fs);
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid);
@@ -143,7 +140,7 @@ public class BudgetServiceImpl implements BudgetService {
             final FS fs = jsonUtil.toObject(FS.class, entity.getJsonData());
             fs.setId(getReleaseId(fs.getOcid()));
             fs.setDate(dateTime);
-            fs.setTag(Arrays.asList(Tag.PLANNING_UPDATE));
+            fs.setTag(Collections.singletonList(Tag.PLANNING_UPDATE));
             relatedProcessService.addMsRelatedProcessToFs(fs, msCpId);
             budgetDao.saveBudget(getFsEntity(entity.getCpId(), fs, entity.getStage(), entity.getAmount()));
         });
@@ -167,7 +164,7 @@ public class BudgetServiceImpl implements BudgetService {
         fs.setPlanning(updateFs.getPlanning());
     }
 
-    public void createEiByFs(final String eiCpId, final String fsOcId) {
+    private void createEiByFs(final String eiCpId, final String fsOcId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final EI ei = jsonUtil.toObject(EI.class, entity.getJsonData());
@@ -179,7 +176,7 @@ public class BudgetServiceImpl implements BudgetService {
         budgetDao.saveBudget(getEiEntity(ei, entity.getStage()));
     }
 
-    public void updateEiAmountByFs(final String eiCpId) {
+    private void updateEiAmountByFs(final String eiCpId) {
         final BudgetEntity entity = Optional.ofNullable(budgetDao.getByCpId(eiCpId))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final EI ei = jsonUtil.toObject(EI.class, entity.getJsonData());
