@@ -253,7 +253,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         organizationService.processPartiesFromBids(record, dto.getBids());
         relatedProcessService.addRecordRelatedProcessToMs(record, ms.getOcid(), relatedProcessType);
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId);
+        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.getOcid());
         releaseDao.saveRelease(getMSEntity(cpid, stage, ms));
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
         return getResponseDto(cpid, record.getOcid());

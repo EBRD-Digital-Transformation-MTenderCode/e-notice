@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RelatedProcessServiceImpl implements RelatedProcessService {
 
+    private static final String FS_SEPARATOR = "-FS-";
+    private static final String URI_SEPARATOR = "/";
+
     @Value("${uri.budget}")
     private String budgetUri;
     @Value("${uri.tender}")
@@ -30,7 +33,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(RelatedProcessType.X_FINANCE_SOURCE),
                 RelatedProcessScheme.OCID,
                 fsOcId,
-                getBudgetUri(fsOcId)
+                getBudgetUri(ei.getOcid(), fsOcId)
         );
         if (Objects.isNull(ei.getRelatedProcesses())) {
             ei.setRelatedProcesses(new LinkedHashSet<>());
@@ -45,7 +48,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(RelatedProcessType.PARENT),
                 RelatedProcessScheme.OCID,
                 eiOcId,
-                getBudgetUri(eiOcId)
+                getBudgetUri(eiOcId, eiOcId)
         );
         if (Objects.isNull(fs.getRelatedProcesses())) {
             fs.setRelatedProcesses(new LinkedHashSet<>());
@@ -60,7 +63,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(RelatedProcessType.X_EXECUTION),
                 RelatedProcessScheme.OCID,
                 msOcId,
-                getTenderUri(msOcId)
+                getTenderUri(msOcId, msOcId)
         );
         if (Objects.isNull(ei.getRelatedProcesses())) {
             ei.setRelatedProcesses(new LinkedHashSet<>());
@@ -75,7 +78,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(RelatedProcessType.X_EXECUTION),
                 RelatedProcessScheme.OCID,
                 msOcId,
-                getTenderUri(msOcId)
+                getTenderUri(msOcId, msOcId)
         );
         if (Objects.isNull(fs.getRelatedProcesses())) {
             fs.setRelatedProcesses(new LinkedHashSet<>());
@@ -97,7 +100,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(recordProcessType),
                 RelatedProcessScheme.OCID,
                 ocId,
-                getTenderUri(ocId)));
+                getTenderUri(ms.getOcid(), ocId)));
         /*expenditure items*/
         checkFs.getEi().forEach(eiCpId ->
                 ms.getRelatedProcesses().add(new RelatedProcess(
@@ -105,7 +108,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                         Collections.singletonList(RelatedProcessType.X_EXPENDITURE_ITEM),
                         RelatedProcessScheme.OCID,
                         eiCpId,
-                        getBudgetUri(eiCpId))
+                        getBudgetUri(eiCpId, eiCpId))
                 )
         );
         /*financial sources*/
@@ -115,7 +118,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                         Collections.singletonList(RelatedProcessType.X_BUDGET),
                         RelatedProcessScheme.OCID,
                         fs.getId(),
-                        getBudgetUri(fs.getId()))
+                        getBudgetUri(getEiCpIdFromOcId(fs.getId()), fs.getId()))
                 )
         );
     }
@@ -128,7 +131,7 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                 Collections.singletonList(RelatedProcessType.PARENT),
                 RelatedProcessScheme.OCID,
                 msOcId,
-                getTenderUri(msOcId));
+                getTenderUri(msOcId, msOcId));
         if (Objects.isNull(record.getRelatedProcesses())) {
             record.setRelatedProcesses(new LinkedHashSet<>());
         }
@@ -142,26 +145,31 @@ public class RelatedProcessServiceImpl implements RelatedProcessService {
                         UUIDs.timeBased().toString(),
                         Collections.singletonList(recordProcessType),
                         RelatedProcessScheme.OCID,
-                        msOcId,
-                        getTenderUri(msOcId)));
+                        record.getOcid(),
+                        getTenderUri(msOcId, record.getOcid())));
     }
 
     @Override
-    public void addPervRecordRelatedProcessToRecord(final Record record, final String prevRecordOcId) {
+    public void addPervRecordRelatedProcessToRecord(final Record record, final String prevRecordOcId, final String msOcId) {
         record.getRelatedProcesses()
                 .add(new RelatedProcess(
                         UUIDs.timeBased().toString(),
                         Collections.singletonList(RelatedProcessType.X_PRESELECTION),
                         RelatedProcessScheme.OCID,
                         prevRecordOcId,
-                        getTenderUri(prevRecordOcId)));
+                        getTenderUri(msOcId, prevRecordOcId)));
     }
 
-    private String getBudgetUri(final String id) {
-        return budgetUri + id;
+    private String getEiCpIdFromOcId(final String ocId) {
+        final int pos = ocId.indexOf(FS_SEPARATOR);
+        return ocId.substring(0, pos);
     }
 
-    private String getTenderUri(final String id) {
-        return tenderUri + id;
+    private String getBudgetUri(final String cpId, final String ocId) {
+        return budgetUri + cpId + URI_SEPARATOR + ocId;
+    }
+
+    private String getTenderUri(final String cpId, final String ocId) {
+        return tenderUri + cpId + URI_SEPARATOR + ocId;
     }
 }

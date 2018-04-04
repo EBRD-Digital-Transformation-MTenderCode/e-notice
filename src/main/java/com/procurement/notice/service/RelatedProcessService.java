@@ -25,6 +25,6 @@ public interface RelatedProcessService {
 
     void addRecordRelatedProcessToMs(Record record, String msOcId, RelatedProcessType recordProcessType);
 
-    void addPervRecordRelatedProcessToRecord(Record record, String prevRecordOcId);
+    void addPervRecordRelatedProcessToRecord(Record record, String prevRecordOcId, String msOcId);
 
 }
