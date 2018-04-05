@@ -19,6 +19,16 @@ public interface ReleaseService {
                          LocalDateTime releaseDate,
                          JsonNode data);
 
+    ResponseDto createPn(String cpid,
+                         String stage,
+                         LocalDateTime releaseDate,
+                         JsonNode data);
+
+    ResponseDto createPin(String cpid,
+                         String stage,
+                         LocalDateTime releaseDate,
+                         JsonNode data);
+
     ResponseDto tenderPeriodEnd(String cpid,
                                 String stage,
                                 LocalDateTime releaseDate,

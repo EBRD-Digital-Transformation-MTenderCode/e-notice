@@ -49,6 +49,10 @@ public class MainServiceImpl implements MainService {
                 return budgetService.updateFs(cpId, ocId, stage, releaseDate, data);
             case CREATE_CN:
                 return releaseService.createCn(cpId, stage, releaseDate, data);
+            case CREATE_PN:
+                return releaseService.createPn(cpId, stage, releaseDate, data);
+            case CREATE_PIN:
+                return releaseService.createPin(cpId, stage, releaseDate, data);
             case UPDATE_CN:
                 throw new ErrorException(ErrorType.IMPLEMENTATION_ERROR);
             case CREATE_ENQUIRY:
@@ -81,6 +85,8 @@ public class MainServiceImpl implements MainService {
         CREATE_FS("createFS"),
         UPDATE_FS("updateFS"),
         CREATE_CN("createCN"),
+        CREATE_PN("createPN"),
+        CREATE_PIN("createPIN"),
         UPDATE_CN("updateCN"),
         CREATE_ENQUIRY("createEnquiry"),
         ADD_ANSWER("addAnswer"),
