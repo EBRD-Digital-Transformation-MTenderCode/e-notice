@@ -83,7 +83,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.getTender().setTitle(TenderTitle.valueOf(stage.toUpperCase()).getText());
         record.getTender().setDescription(TenderDescription.valueOf(stage.toUpperCase()).getText());
         record.getPurposeOfNotice().setIsACallForCompetition(true);
-        switch (Stage.fromValue(stage.toUpperCase())) {
+        switch (Stage.valueOf(stage.toUpperCase())) {
             case PS:
                 relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(),
                         RelatedProcessType.X_PRESELECTION);
@@ -231,7 +231,7 @@ public class ReleaseServiceImpl implements ReleaseService {
 
         TenderStatusDetails statusDetails = null;
         RelatedProcessType relatedProcessType = null;
-        switch (Stage.fromValue(stage)) {
+        switch (Stage.valueOf(stage.toUpperCase())) {
             case PQ: {
                 statusDetails = TenderStatusDetails.PREQUALIFICATION;
                 relatedProcessType = RelatedProcessType.X_PREQUALIFICATION;
