@@ -11,6 +11,8 @@ import com.procurement.notice.model.ocds.*;
 import com.procurement.notice.model.tender.dto.*;
 import com.procurement.notice.model.tender.ms.Ms;
 import com.procurement.notice.model.tender.record.Record;
+import com.procurement.notice.model.tender.record.TenderDescription;
+import com.procurement.notice.model.tender.record.TenderTitle;
 import com.procurement.notice.utils.DateUtil;
 import com.procurement.notice.utils.JsonUtil;
 import java.time.LocalDateTime;
@@ -78,10 +80,27 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.setTag(Collections.singletonList(Tag.TENDER));
         record.setInitiationType(InitiationType.TENDER);
         record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        record.getTender().setTitle("Preselection");
-        record.getTender().setDescription("Preselection stage of contracting process");
+        record.getTender().setTitle(TenderTitle.valueOf(stage.toUpperCase()).getText());
+        record.getTender().setDescription(TenderDescription.valueOf(stage.toUpperCase()).getText());
         record.getPurposeOfNotice().setIsACallForCompetition(true);
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
+        switch (Stage.fromValue(stage.toUpperCase())) {
+            case PS:
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(),
+                        RelatedProcessType.X_PRESELECTION);
+                break;
+            case PQ:
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(),
+                        RelatedProcessType.X_PRESELECTION);
+                break;
+            case PN:
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(),
+                        RelatedProcessType.PLANNING);
+                break;
+            case PIN:
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(),
+                        RelatedProcessType.PRIOR);
+                break;
+        }
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
         releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));
         releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
@@ -259,7 +278,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         return getResponseDto(cpid, record.getOcid());
     }
 
-    private void processDocuments(final Record record, final StartNewStageDto dto){
+    private void processDocuments(final Record record, final StartNewStageDto dto) {
         final Set<String> docIds = dto.getTender().getDocuments().stream().map(Document::getId).collect(toSet());
         final List<Document> validDocuments =
                 record.getTender().getDocuments()
