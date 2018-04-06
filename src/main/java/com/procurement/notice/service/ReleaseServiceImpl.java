@@ -58,77 +58,10 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public ResponseDto createCn(final String cpid,
-                                final String stage,
-                                final LocalDateTime releaseDate,
-                                final JsonNode data) {
-        final CheckFsDto checkFs = jsonUtil.toObject(CheckFsDto.class, data.toString());
-        final Ms ms = jsonUtil.toObject(Ms.class, data.toString());
-        ms.setOcid(cpid);
-        ms.setDate(releaseDate);
-        ms.setId(getReleaseId(cpid));
-        ms.setTag(Collections.singletonList(Tag.COMPILED));
-        ms.setInitiationType(InitiationType.TENDER);
-        ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        organizationService.processMsParties(ms, checkFs);
-        final Record record = jsonUtil.toObject(Record.class, data.toString());
-        record.setDate(releaseDate);
-        record.setOcid(getOcId(cpid, stage));
-        record.setId(getReleaseId(record.getOcid()));
-        record.setTag(Collections.singletonList(Tag.TENDER));
-        record.setInitiationType(InitiationType.TENDER);
-        record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        record.getTender().setTitle("Preselection");
-        record.getTender().setDescription("Preselection stage of contracting process");
-        record.getPurposeOfNotice().setIsACallForCompetition(true);
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
-        relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));
-        releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
-        budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
-        budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
-        return getResponseDto(ms.getOcid(), record.getOcid());
-    }
-
-
-    @Override
-    public ResponseDto createPn(final String cpid,
-                                final String stage,
-                                final LocalDateTime releaseDate,
-                                final JsonNode data) {
-        final CheckFsDto checkFs = jsonUtil.toObject(CheckFsDto.class, data.toString());
-        final Ms ms = jsonUtil.toObject(Ms.class, data.toString());
-        ms.setOcid(cpid);
-        ms.setDate(releaseDate);
-        ms.setId(getReleaseId(cpid));
-        ms.setTag(Collections.singletonList(Tag.COMPILED));
-        ms.setInitiationType(InitiationType.TENDER);
-        ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        organizationService.processMsParties(ms, checkFs);
-        final Record record = jsonUtil.toObject(Record.class, data.toString());
-        record.setDate(releaseDate);
-        record.setOcid(getOcId(cpid, stage));
-        record.setId(getReleaseId(record.getOcid()));
-        record.setTag(Collections.singletonList(Tag.TENDER));
-        record.setInitiationType(InitiationType.TENDER);
-        record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTION);
-        record.getTender().setTitle("Preselection");
-        record.getTender().setDescription("Preselection stage of contracting process");
-        record.getPurposeOfNotice().setIsACallForCompetition(true);
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.getOcid(), RelatedProcessType.X_PRESELECTION);
-        relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));
-        releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
-        budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
-        budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
-        return getResponseDto(ms.getOcid(), record.getOcid());
-    }
-
-    @Override
-    public ResponseDto createPin(final String cpid,
-                                 final String stage,
-                                 final LocalDateTime releaseDate,
-                                 final JsonNode data) {
+    public ResponseDto createCnPnPin(final String cpid,
+                                     final String stage,
+                                     final LocalDateTime releaseDate,
+                                     final JsonNode data) {
         final CheckFsDto checkFs = jsonUtil.toObject(CheckFsDto.class, data.toString());
         final Ms ms = jsonUtil.toObject(Ms.class, data.toString());
         ms.setOcid(cpid);
