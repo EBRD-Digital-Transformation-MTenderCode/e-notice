@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
+    private static final String MS = "MS";
     private static final String SEPARATOR = "-";
     private final ReleaseDao releaseDao;
     private final BudgetService budgetService;
@@ -200,7 +201,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                            final JsonNode data) {
         final StandstillPeriodEndDto dto = jsonUtil.toObject(StandstillPeriodEndDto.class, jsonUtil.toJson(data));
         /*MS*/
-        final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getByCpIdAndOcId(cpid, cpid))
+        final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, MS))
                 .orElseThrow(() -> new ErrorException(ErrorType.MS_NOT_FOUND));
         final Ms ms = jsonUtil.toObject(Ms.class, msEntity.getJsonData());
         ms.setDate(releaseDate);
@@ -243,7 +244,7 @@ public class ReleaseServiceImpl implements ReleaseService {
             }
         }
         /*Multi stage*/
-        final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getByCpIdAndOcId(cpid, cpid))
+        final ReleaseEntity msEntity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, MS))
                 .orElseThrow(() -> new ErrorException(ErrorType.MS_NOT_FOUND));
         final Ms ms = jsonUtil.toObject(Ms.class, msEntity.getJsonData());
         ms.setDate(releaseDate);
@@ -293,7 +294,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                 cpId,
                 ms.getOcid(),
                 ms.getId(),
-                "MS",
+                MS,
                 dateUtil.localToDate(ms.getDate()),
                 jsonUtil.toJson(ms)
         );
