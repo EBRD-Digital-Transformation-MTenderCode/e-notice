@@ -278,12 +278,14 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     private void processDocuments(final Record record, final StartNewStageDto dto) {
-        final Set<String> docIds = dto.getTender().getDocuments().stream().map(Document::getId).collect(toSet());
-        final List<Document> validDocuments =
-                record.getTender().getDocuments()
-                        .stream()
-                        .filter(d -> docIds.contains(d.getId())).collect(toList());
-        record.getTender().setDocuments(validDocuments);
+        if (Objects.nonNull(dto.getTender().getDocuments())) {
+            final Set<String> docIds = dto.getTender().getDocuments().stream().map(Document::getId).collect(toSet());
+            final List<Document> validDocuments =
+                    record.getTender().getDocuments()
+                            .stream()
+                            .filter(d -> docIds.contains(d.getId())).collect(toList());
+            record.getTender().setDocuments(validDocuments);
+        }
     }
 
     private ReleaseEntity getMSEntity(final String cpId, final Ms ms) {
