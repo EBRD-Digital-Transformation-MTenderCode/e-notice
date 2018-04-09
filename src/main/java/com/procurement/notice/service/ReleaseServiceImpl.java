@@ -102,7 +102,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                 break;
         }
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(),, ms));
+        releaseDao.saveRelease(getMSEntity(ms.getOcid(), ms));
         releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
         budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
         budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
