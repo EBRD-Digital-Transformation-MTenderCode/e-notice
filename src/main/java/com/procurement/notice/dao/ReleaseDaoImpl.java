@@ -60,25 +60,6 @@ public class ReleaseDaoImpl implements ReleaseDao {
     }
 
     @Override
-    public ReleaseEntity getByCpId(final String cpId) {
-        final Statement query = select()
-                .all()
-                .from(TENDER_COMPILED_TABLE)
-                .where(eq(CP_ID, cpId))
-                .limit(1);
-        final Row row = session.execute(query).one();
-        if (row != null)
-            return new ReleaseEntity(
-                    row.getString(CP_ID),
-                    row.getString(OC_ID),
-                    row.getTimestamp(RELEASE_DATE),
-                    row.getString(RELEASE_ID),
-                    row.getString(STAGE),
-                    row.getString(JSON_DATA));
-        return null;
-    }
-
-    @Override
     public ReleaseEntity getByCpIdAndOcId(final String cpId, final String ocId) {
         final Statement query = select()
                 .all()
@@ -99,7 +80,7 @@ public class ReleaseDaoImpl implements ReleaseDao {
     }
 
     @Override
-    public ReleaseEntity getByCpIdAndStage(final String cpId, final String stage) {
+    public ReleaseEntity getRecordByCpIdAndStage(final String cpId, final String stage) {
         final Statement query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)

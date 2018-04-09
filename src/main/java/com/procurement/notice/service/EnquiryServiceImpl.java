@@ -44,7 +44,7 @@ public class EnquiryServiceImpl implements EnquiryService {
                                      final String stage,
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final RecordEnquiry enquiry = jsonUtil.toObject(RecordEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
@@ -60,7 +60,7 @@ public class EnquiryServiceImpl implements EnquiryService {
                                  final String stage,
                                  final LocalDateTime releaseDate,
                                  final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final RecordEnquiry enquiry = jsonUtil.toObject(RecordEnquiry.class, jsonUtil.toJson(data.get(ENQUIRY_JSON)));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
@@ -76,7 +76,7 @@ public class EnquiryServiceImpl implements EnquiryService {
                                        final String stage,
                                        final LocalDateTime releaseDate,
                                        final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record release = jsonUtil.toObject(Record.class, entity.getJsonData());
         final UnsuspendTenderDto dto = jsonUtil.toObject(UnsuspendTenderDto.class, jsonUtil.toJson(data));

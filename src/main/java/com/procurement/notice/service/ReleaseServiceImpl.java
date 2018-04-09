@@ -102,7 +102,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                 break;
         }
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));
+        releaseDao.saveRelease(getMSEntity(ms.getOcid(),, ms));
         releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
         budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
         budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
@@ -114,7 +114,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                        final String stage,
                                        final LocalDateTime releaseDate,
                                        final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, entity.getJsonData());
         final TenderPeriodEndDto dto = jsonUtil.toObject(TenderPeriodEndDto.class, data.toString());
@@ -140,7 +140,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                      final String stage,
                                      final LocalDateTime releaseDate,
                                      final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, entity.getJsonData());
         final SuspendTenderDto dto = jsonUtil.toObject(SuspendTenderDto.class, jsonUtil.toJson(data));
@@ -156,7 +156,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                   final String stage,
                                   final LocalDateTime releaseDate,
                                   final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, entity.getJsonData());
         final AwardByBidDto dto = jsonUtil.toObject(AwardByBidDto.class, jsonUtil.toJson(data));
@@ -174,7 +174,7 @@ public class ReleaseServiceImpl implements ReleaseService {
                                       final String stage,
                                       final LocalDateTime releaseDate,
                                       final JsonNode data) {
-        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity entity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, entity.getJsonData());
         final AwardPeriodEndDto dto = jsonUtil.toObject(AwardPeriodEndDto.class, data.toString());
@@ -206,9 +206,9 @@ public class ReleaseServiceImpl implements ReleaseService {
         ms.setDate(releaseDate);
         ms.setId(getReleaseId(ms.getOcid()));
         ms.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(), stage, ms));
+        releaseDao.saveRelease(getMSEntity(ms.getOcid(), ms));
         /*Record*/
-        final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, stage))
+        final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, stage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, releaseEntity.getJsonData());
         record.setDate(dto.getStandstillPeriod().getEndDate());
@@ -252,7 +252,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         ms.setTag(Collections.singletonList(Tag.COMPILED));
         ms.getTender().setStatusDetails(statusDetails);
         /* previous record*/
-        final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getByCpIdAndStage(cpid, previousStage))
+        final ReleaseEntity releaseEntity = Optional.ofNullable(releaseDao.getRecordByCpIdAndStage(cpid, previousStage))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         final Record record = jsonUtil.toObject(Record.class, releaseEntity.getJsonData());
         record.setDate(releaseDate);
@@ -273,7 +273,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         relatedProcessService.addRecordRelatedProcessToMs(record, ms.getOcid(), relatedProcessType);
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(cpid, stage, ms));
+        releaseDao.saveRelease(getMSEntity(cpid, ms));
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
         return getResponseDto(cpid, record.getOcid());
     }
@@ -287,12 +287,12 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.getTender().setDocuments(validDocuments);
     }
 
-    private ReleaseEntity getMSEntity(final String cpId, final String stage, final Ms ms) {
+    private ReleaseEntity getMSEntity(final String cpId, final Ms ms) {
         return getEntity(
                 cpId,
                 ms.getOcid(),
                 ms.getId(),
-                stage,
+                "MS",
                 dateUtil.localToDate(ms.getDate()),
                 jsonUtil.toJson(ms)
         );
