@@ -1,0 +1,34 @@
+{
+  "award": {
+    "id": "07cfac70-3bff-11e8-a7a2-4bc93b1ec7b9",
+    "date": "2018-04-09T14:34:14Z",
+    "description": "Award description",
+    "status": "pending",
+    "statusDetails": "active",
+    "relatedLots": [
+      "9cbbde91-3bfe-11e8-a841-f319a68622c6"
+    ],
+    "relatedBid": "9d217e30-3bfe-11e8-8694-8df0a5285949",
+    "suppliers": [
+      {
+        "id": "UA-EDR-747-24-4868",
+        "name": "Richmond PLC"
+      }
+    ]
+  },
+  "bid": {
+    "id": "9d217e30-3bfe-11e8-8694-8df0a5285949",
+    "date": "2018-04-09T14:34:14Z",
+    "status": "pending",
+    "statusDetails": "valid",
+    "tenderers": [
+      {
+        "id": "UA-EDR-747-24-4868",
+        "name": "Richmond PLC"
+      }
+    ],
+    "relatedLots": [
+      "9cbbde91-3bfe-11e8-a841-f319a68622c6"
+    ]
+  }
+}
