@@ -103,8 +103,8 @@ public class ReleaseServiceImpl implements ReleaseService {
                 break;
         }
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.getOcid());
-        releaseDao.saveRelease(getMSEntity(ms.getOcid(), ms));
-        releaseDao.saveRelease(getReleaseEntity(ms.getOcid(), stage, record));
+        releaseDao.saveRelease(getMSEntity(cpid, ms));
+        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
         budgetService.createEiByMs(checkFs.getEi(), cpid, releaseDate);
         budgetService.createFsByMs(ms.getPlanning().getBudget().getBudgetBreakdown(), cpid, releaseDate);
         return getResponseDto(ms.getOcid(), record.getOcid());
@@ -217,7 +217,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.getTender().setStatusDetails(TenderStatusDetails.PRESELECTED);
         record.getTender().setStandstillPeriod(dto.getStandstillPeriod());
         updateLots(record, dto.getLots());
-        releaseDao.saveRelease(getReleaseEntity(record.getOcid(), stage, record));
+        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
         return getResponseDto(cpid, record.getOcid());
     }
 
@@ -258,7 +258,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         record.setDate(releaseDate);
         record.setId(getReleaseId(record.getOcid()));
         record.getTender().setStatusDetails(TenderStatusDetails.COMPLETE);
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record));
+        releaseDao.saveRelease(getReleaseEntity(cpid, previousStage, record));
         /*new record*/
         final String prevRecordOcId = record.getOcid();
         record.setDate(releaseDate);
@@ -301,14 +301,14 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     private ReleaseEntity getEntity(final String cpId,
-                                    final String ocID,
+                                    final String ocId,
                                     final String releaseId,
                                     final String stage,
                                     final Date releaseDate,
                                     final String json) {
         final ReleaseEntity entity = new ReleaseEntity();
         entity.setCpId(cpId);
-        entity.setOcId(ocID);
+        entity.setOcId(ocId);
         entity.setReleaseId(releaseId);
         entity.setStage(stage);
         entity.setReleaseDate(releaseDate);
