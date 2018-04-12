@@ -91,30 +91,30 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> {
                 ms.tender.statusDetails = TenderStatusDetails.PRESELECTION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PRESELECTION)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.X_PRESELECTION)
             }
             Stage.PQ -> {
                 ms.tender.statusDetails = TenderStatusDetails.PREQUALIFICATION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PREQUALIFICATION)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.X_PREQUALIFICATION)
             }
             Stage.PN -> {
                 ms.tender.statusDetails = TenderStatusDetails.PLANNING_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PLANNING)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.PLANNING)
             }
             Stage.PIN -> {
                 ms.tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PRIOR)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.PRIOR)
             }
             Stage.EV -> {
                 throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
             }
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
-        relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
-        releaseDao.saveRelease(getMSEntity(cpid, ms))
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        budgetService.createEiByMs(checkFs.ei, cpid, releaseDate)
-        budgetService.createFsByMs(ms.planning!!.budget!!.budgetBreakdown!!, cpid, releaseDate)
+        relatedProcessService.addMsRelatedProcessToRecord(record = record, msOcId = ms.ocid!!)
+        releaseDao.saveRelease(getMSEntity(cpId = cpid, ms = ms))
+        releaseDao.saveRelease(getReleaseEntity(cpId = cpid, stage = stage, record = record))
+        budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
+        budgetService.createFsByMs(budgetBreakdown = ms.planning!!.budget!!.budgetBreakdown!!, msCpId = cpid, dateTime = releaseDate)
         return getResponseDto(cpid = ms.ocid!!, ocid = record.ocid!!)
     }
 

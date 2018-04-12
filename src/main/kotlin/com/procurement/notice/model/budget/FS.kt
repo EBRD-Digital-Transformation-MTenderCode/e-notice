@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.procurement.notice.databinding.LocalDateTimeDeserializer
 import com.procurement.notice.model.ocds.*
+import com.procurement.point.databinding.JsonDateDeserializer
 import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,7 +33,7 @@ data class FS(
         var id: String?,
 
         @JsonProperty("date")
-        @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+        @JsonDeserialize(using = JsonDateDeserializer::class)
         var date: LocalDateTime?,
 
         @JsonProperty("tag")

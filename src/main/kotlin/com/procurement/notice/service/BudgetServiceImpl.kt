@@ -73,7 +73,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         fs.initiationType = InitiationType.TENDER
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
-        val amount = fs.planning?.budget?.amount?.amount ?: Double.NaN
+        val amount = fs.planning?.budget?.amount?.amount ?: 0.00
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
         createEiByFs(cpid, fs.ocid)
         return getResponseDto(cpid, fs.ocid)
@@ -83,8 +83,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateFs = toObject(FS::class.java, data.toString())
         val fs = toObject(FS::class.java, entity.jsonData)
-        val updateAmount = updateFs.planning?.budget?.amount?.amount ?: Double.NaN
-        val amount = fs.planning?.budget?.amount?.amount ?: Double.NaN
+        val updateAmount = updateFs.planning?.budget?.amount?.amount ?: 0.00
+        val amount = fs.planning?.budget?.amount?.amount ?: 0.00
         fs.id = getReleaseId(ocid)
         fs.date = releaseDate
         updateFsDto(fs, updateFs)
