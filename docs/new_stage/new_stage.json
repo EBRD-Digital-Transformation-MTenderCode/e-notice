@@ -1,15 +1,105 @@
 {
+  "tenderPeriod": {
+    "startDate": "",
+    "endDate": ""
+  },
+  "enquiryPeriod": {
+    "startDate": "",
+    "endDate": ""
+  },
+  "planning": {
+    "rationale": "",
+    "budget": {
+      "description": "",
+      "amount": {
+        "amount": 0,
+        "currency": ""
+      },
+      "isEuropenUnionFunded": false,
+      "europenUnionFunding": {
+        "projectIdentifier": "",
+        "projectName": ""
+        "uri": ""
+      },
+      "budgetBreakdown": [
+        {
+          "id": "",
+          "description": "",
+          "amount": {
+            "amount": 0,
+            "currency": ""
+          },
+          "period": {
+            "startDate": "",
+            "endDate": ""
+          },
+          "sourceParty": {
+            "name": "",
+            "id": ""
+          }
+        }
+      ]
+    }
+  },
   "tender": {
-    "id": "ocds-t1s2t3-TEST-1523291473969",
-    "title": "North rule quite win party develop.",
-    "description": "Series executive generation you here third dream.",
-    "status": "active",
-    "statusDetails": "empty",
+    "id": "",
+    "title": "",
+    "description": "",
     "classification": {
-      "scheme": "CPV",
-      "id": "92312120-8",
-      "description": "Singer group entertainment services"
+      "scheme": "",
+      "description": "",
+      "id": ""
     },
+    "status": "",
+    "statusDetails": "",
+    "value": {
+      "amount": 0,
+      "currency": ""
+    },
+    "procuringEntity": {
+      "id": "",
+      "name": "",
+      "identifier": {
+        "scheme": "",
+        "id": "",
+        "legalName": "",
+        "uri": ""
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "",
+          "id": "",
+          "legalName": "",
+          "uri": ""
+        }
+      ],
+      "address": {
+        "streetAddress": "",
+        "locality": "",
+        "region": "",
+        "postalCode": "",
+        "countryName": ""
+      },
+      "contactPoint": {
+        "name": "",
+        "email": "",
+        "telephone": "",
+        "faxNumber": "",
+        "url": ""
+      }
+    },
+    "procurementMethod": "",
+    "procurementMethodDetails": "",
+    "procurementMethodRationale": "",
+    "procurementMethodAdditionalInfo": "",
+    "mainProcurementCategory": "",
+    "additionalProcurementCategories": [
+      ""
+    ],
+    "eligibilityCriteria": "",
+    "submissionLanguages": [
+      ""
+    ],
     "acceleratedProcedure": {
       "isAcceleratedProcedure": false
     },
@@ -33,56 +123,7 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
-    "procurementMethod": "selective",
-    "procurementMethodDetails": "Red physical since thousand.",
-    "procurementMethodRationale": "All instead others generation contain region painting. Politics size current. Imagine first free increase either collection stop.",
-    "procurementMethodAdditionalInfo": "Understand drive mean little. Describe truth certain modern vote check. Include mention herself least though agreement poor.",
-    "mainProcurementCategory": "works",
-    "additionalProcurementCategories": [
-      "consultingServices"
-    ],
-    "eligibilityCriteria": "Do down production different new benefit someone. Unit PM himself we.",
-    "contractPeriod": {
-      "startDate": "2018-04-09T16:31:13Z",
-      "endDate": "2018-09-19T14:00:50Z"
-    },
-    "procuringEntity": {
-      "name": "Montgomery, Bartlett and Smith",
-      "id": "UA-EDR-884-76-1897",
-      "identifier": {
-        "id": "884-76-1897",
-        "scheme": "UA-EDR",
-        "legalName": "Montgomery, Bartlett and Smith Ltd",
-        "uri": "http://www.johnson.com/terms/"
-      },
-      "address": {
-        "streetAddress": "344 Peterson Road Suite 549",
-        "locality": "Weavershire",
-        "region": "Michigan",
-        "postalCode": "05582-7430",
-        "countryName": "Ireland"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "531-70-4617",
-          "scheme": "UA-EDR",
-          "legalName": "Montgomery, Bartlett and Smith Group",
-          "uri": "https://smith.com/search/"
-        }
-      ],
-      "contactPoint": {
-        "name": "Mary Cardenas",
-        "email": "bradleyyoung@hotmail.com",
-        "telephone": "(560)497-9846x4966",
-        "faxNumber": "269.088.1582x651",
-        "url": "https://www.webb.info/author.asp"
-      }
-    },
-    "value": {
-      "amount": 1.01101146424E9,
-      "currency": "ARP"
-    },
+    "legalBasis": "",
     "lotGroups": [
       {
         "optionToCombine": false
@@ -90,97 +131,131 @@
     ],
     "lots": [
       {
-        "id": "6b753a11-3c13-11e8-a841-f319a68622c6",
-        "title": "None someone person next technology student.",
-        "description": "Run put today citizen difference rule discuss agree. Way old large article task environmental what.",
-        "status": "active",
-        "statusDetails": "empty",
+        "id": "",
+        "title": "",
+        "description": "",
+        "status": "",
+        "statusDetails": "",
         "value": {
-          "amount": 9.447366412122116E13,
-          "currency": "ARP"
+          "amount": 0,
+          "currency": ""
         },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
+        "options": {
+          "hasOptions": false
+        },
+        "variants": {
+          "hasVariants": false
+        },
+        "renewals": {
+          "hasRenewals": false
+        },
+        "recurrentProcurement": {
+          "isRecurrent": false
+        },
         "contractPeriod": {
-          "startDate": "2018-04-09T16:31:13Z",
-          "endDate": "2018-08-25T14:45:55Z"
+          "startDate": "",
+          "endDate": ""
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "747 Austin Mills",
-            "locality": "New Patriciastad",
-            "region": "Kentucky",
-            "postalCode": "16686-2693",
-            "countryName": "Jersey"
+            "streetAddress": "",
+            "locality": "",
+            "region": "",
+            "postalCode": "",
+            "countryName": ""
           },
-          "description": "Each speech give score specific girl. Customer develop best bank avoid."
+          "description": ""
         }
       }
     ],
     "items": [
       {
-        "id": "6b753a10-3c13-11e8-a841-f319a68622c6",
-        "description": "Ago through though poor position. Doctor full quality six team attention next.",
+        "id": "",
         "classification": {
-          "scheme": "CPV",
-          "id": "92312120-8",
-          "description": "Singer group entertainment services"
+          "scheme": "",
+          "description": "",
+          "id": ""
         },
         "additionalClassifications": [
           {
-            "scheme": "CPV",
-            "id": "33742100-4",
-            "description": "Nail clippers"
+            "scheme": "",
+            "description": "",
+            "id": ""
           }
         ],
-        "quantity": 4.9023429357E9,
+        "quantity": 0,
         "unit": {
-          "id": "BX",
-          "name": "box"
+          "id": "",
+          "name": ""
         },
-        "relatedLot": "6b753a11-3c13-11e8-a841-f319a68622c6"
+        "description": "",
+        "relatedLot": ""
       }
     ],
-    "awardCriteria": "singleBidOnly",
+    "awardCriteria": "",
     "requiresElectronicCatalogue": false,
     "submissionMethod": [
-      "electronicSubmission"
+      ""
     ],
     "submissionMethodRationale": [
-      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"
+      ""
     ],
-    "submissionMethodDetails": "Sometimes firm land natural recently. Itself hair television son particular specific.",
-    "submissionLanguages": [
-      "ga"
-    ],
-    "tenderPeriod": {
-      "startDate": "2018-04-09T16:40:38Z",
-      "endDate": "2018-04-30T17:55:32Z"
+    "submissionMethodDetails": "",
+    "contractPeriod": {
+      "startDate": "",
+      "endDate": ""
     },
-    "enquiryPeriod": {
-      "startDate": "2018-04-09T16:40:38Z",
-      "endDate": "2018-04-30T17:54:32Z"
-    }
+    "documents": [
+      {
+        "id": ""
+      }
+    ]
   },
   "bids": {
-    "details": []
+    "details": [
+      {
+        "id": "",
+        "date": "",
+        "status": "",
+        "statusDetails": "",
+        "tenderers": [
+          {
+            "id": "",
+            "name": "",
+            "identifier": {
+              "scheme": "",
+              "id": "",
+              "legalName": "",
+              "uri": ""
+            },
+            "additionalIdentifiers": [
+              {
+                "scheme": "",
+                "id": "",
+                "legalName": "",
+                "uri": ""
+              }
+            ],
+            "address": {
+              "streetAddress": "",
+              "locality": "",
+              "region": "",
+              "postalCode": "",
+              "countryName": ""
+            },
+            "contactPoint": {
+              "name": "",
+              "email": "",
+              "telephone": "",
+              "faxNumber": "",
+              "url": ""
+            }
+          }
+        ],
+        "relatedLots": [
+          ""
+        ]
+      }
+    ]
   }
 }

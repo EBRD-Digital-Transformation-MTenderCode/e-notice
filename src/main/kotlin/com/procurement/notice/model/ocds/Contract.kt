@@ -1,0 +1,99 @@
+package com.procurement.notice.model.ocds
+
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.procurement.point.databinding.JsonDateDeserializer
+import java.time.LocalDateTime
+
+@JsonPropertyOrder(
+        "id",
+        "awardID",
+        "extendsContractID",
+        "title",
+        "description",
+        "status",
+        "period",
+        "value",
+        "items",
+        "dateSigned",
+        "documents",
+        "implementation",
+        "relatedProcesses",
+        "milestones",
+        "amendments",
+        "amendment",
+        "requirementResponses",
+        "countryOfOrigin",
+        "lotVariant",
+        "valueBreakdown",
+        "isFrameworkOrDynamic")
+data class Contract(
+
+        @JsonProperty("id")
+        val id: String?,
+
+        @JsonProperty("awardID")
+        val awardID: String?,
+
+        @JsonProperty("extendsContractID")
+        val extendsContractID: String?,
+
+        @JsonProperty("title")
+        val title: String?,
+
+        @JsonProperty("description")
+        val description: String?,
+
+        @JsonProperty("status")
+        val status: ContractStatus?,
+
+        @JsonProperty("period")
+        val period: Period?,
+
+        @JsonProperty("value")
+        val value: Value?,
+
+        @JsonProperty("items")
+        val items: HashSet<Item>?,
+
+        @JsonProperty("dateSigned")
+        @JsonDeserialize(using = JsonDateDeserializer::class)
+        val dateSigned: LocalDateTime?,
+
+        @JsonProperty("documents")
+        val documents: HashSet<Document>?,
+
+        @JsonProperty("implementation")
+        val implementation: Implementation?,
+
+        @JsonProperty("relatedProcesses")
+        val relatedProcesses: HashSet<RelatedProcess>?,
+
+        @JsonProperty("milestones")
+        val milestones: List<Milestone>?,
+
+        @JsonProperty("amendments")
+        val amendments: List<Amendment>?,
+
+        @JsonProperty("amendment")
+        val amendment: Amendment?,
+
+        @JsonProperty("requirementResponses")
+        val requirementResponses: HashSet<RequirementResponse>?,
+
+        @JsonProperty("countryOfOrigin")
+        val countryOfOrigin: String?,
+
+        @JsonProperty("lotVariant")
+        val lotVariant: HashSet<String>?,
+
+        @JsonProperty("valueBreakdown")
+        val valueBreakdown: HashSet<ValueBreakdown>?,
+
+        @JsonProperty("isFrameworkOrDynamic")
+        val isFrameworkOrDynamic: Boolean?
+)
+
+
+
