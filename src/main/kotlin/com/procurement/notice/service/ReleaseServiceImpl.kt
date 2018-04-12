@@ -72,16 +72,16 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         with(ms) {
             ocid = cpid
             date = releaseDate
-            id = getReleaseId(ocId = cpid)
+            id = getReleaseId(cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
-            organizationService.processMsParties(ms = ms, checkFs = checkFs)
+            organizationService.processMsParties(ms, checkFs)
         }
         val record = toObject(Record::class.java, data.toString())
         with(record) {
             date = releaseDate
-            ocid = getOcId(cpId = cpid, stage = stage)
-            id = getReleaseId(ocId = record.ocid!!)
+            ocid = getOcId(cpid, stage)
+            id = getReleaseId(record.ocid!!)
             tag = listOf(Tag.TENDER)
             initiationType = InitiationType.TENDER
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
@@ -91,31 +91,31 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> {
                 ms.tender.statusDetails = TenderStatusDetails.PRESELECTION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.X_PRESELECTION)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PRESELECTION)
             }
             Stage.PQ -> {
                 ms.tender.statusDetails = TenderStatusDetails.PREQUALIFICATION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.X_PREQUALIFICATION)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PREQUALIFICATION)
             }
             Stage.PN -> {
                 ms.tender.statusDetails = TenderStatusDetails.PLANNING_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.PLANNING)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PLANNING)
             }
             Stage.PIN -> {
                 ms.tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = record.ocid!!, processType = RelatedProcessType.PRIOR)
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PRIOR)
             }
             Stage.EV -> {
                 throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
             }
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
-        relatedProcessService.addMsRelatedProcessToRecord(record = record, msOcId = ms.ocid!!)
-        releaseDao.saveRelease(getMSEntity(cpId = cpid, ms = ms))
-        releaseDao.saveRelease(getReleaseEntity(cpId = cpid, stage = stage, record = record))
-        budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
-        budgetService.createFsByMs(budgetBreakdown = ms.planning!!.budget!!.budgetBreakdown!!, msCpId = cpid, dateTime = releaseDate)
-        return getResponseDto(cpid = ms.ocid!!, ocid = record.ocid!!)
+        relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
+        releaseDao.saveRelease(getMSEntity(cpid, ms))
+        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+        budgetService.createEiByMs(checkFs.ei, cpid, releaseDate)
+        budgetService.createFsByMs(ms.planning!!.budget!!.budgetBreakdown!!, cpid, releaseDate)
+        return getResponseDto(ms.ocid!!, record.ocid!!)
     }
 
     override fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -123,7 +123,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
         with(record) {
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tag = listOf(Tag.AWARD)
             tender.awardPeriod = dto.awardPeriod
@@ -132,7 +132,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -140,12 +140,12 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val dto = toObject(SuspendTenderDto::class.java, toJson(data))
         val record = toObject(Record::class.java, entity.jsonData)
         with(record) {
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -156,11 +156,11 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(record.ocid!!)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
-            updateAward(record = this, award = dto.award)
-            updateBid(record = this, bid = dto.bid)
+            updateAward(this, dto.award)
+            updateBid(this, dto.bid)
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -168,7 +168,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
         with(record) {
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
@@ -177,7 +177,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun standstillPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -186,7 +186,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val msEntity = releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         with(ms) {
-            id = getReleaseId(ocId = cpid)
+            id = getReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = TenderStatusDetails.PRESELECTED
@@ -197,14 +197,14 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, releaseEntity.jsonData)
         with(record) {
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = dto.standstillPeriod.endDate
             tender.statusDetails = TenderStatusDetails.PRESELECTED
             tender.standstillPeriod = dto.standstillPeriod
             updateLots(this, dto.lots)
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun startNewStage(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -226,7 +226,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val msEntity = releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         with(ms) {
-            id = getReleaseId(ocId = ms.ocid!!)
+            id = getReleaseId(ms.ocid!!)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
@@ -237,27 +237,27 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val prevRecordOcId = record.ocid!!
         with(record) {
             /* previous record*/
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpId = cpid, stage = stage, record = record))
+            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
             /*new record*/
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
-            ocid = getOcId(cpId = cpid, stage = stage)
+            ocid = getOcId(cpid, stage)
             tender = dto.tender
             bids = dto.bids
-            processDocuments(record = this, dto = dto)
-            organizationService.processPartiesFromBids(record = this, bids = dto.bids)
+            processDocuments(this, dto)
+            organizationService.processPartiesFromBids(this, dto.bids)
         }
         relatedProcessService.addRecordRelatedProcessToMs(record, ms.ocid!!, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.ocid!!)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     override fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -268,7 +268,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
         with(ms) {
-            id = getReleaseId(ocId = ms.ocid!!)
+            id = getReleaseId(ms.ocid!!)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -281,15 +281,15 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val prevRecordOcId = record.ocid!!
         with(record) {
             /* previous record*/
-            id = getReleaseId(ocId = record.ocid!!)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpId = cpid, stage = stage, record = record))
+            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
             /*new record*/
-            ocid = getOcId(cpId = cpid, stage = stage)
-            id = getReleaseId(ocId = record.ocid!!)
+            ocid = getOcId(cpid, stage)
+            id = getReleaseId(record.ocid!!)
             date = releaseDate
             tag = listOf(Tag.PLANNING)
             initiationType = InitiationType.TENDER
@@ -304,7 +304,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.ocid!!)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
-        return getResponseDto(cpid = cpid, ocid = record.ocid!!)
+        return getResponseDto(cpid, record.ocid!!)
     }
 
     private fun processDocuments(record: Record, dto: StartNewStageDto) {
