@@ -77,7 +77,7 @@ data class MsTender(
         val contractPeriod: Period?,
 
         @JsonProperty("procuringEntity")
-        val procuringEntity: OrganizationReference?,
+        var procuringEntity: OrganizationReference?,
 
         @JsonProperty("amendments")
         val amendments: List<Amendment>?,

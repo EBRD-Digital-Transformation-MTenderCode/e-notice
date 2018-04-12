@@ -37,7 +37,7 @@ data class Ms(
         val planning: MsPlanning?,
 
         @JsonProperty("tender")
-        val tender: MsTender,
+        var tender: MsTender,
 
         @JsonProperty("parties")
         val parties: HashSet<Organization>?,

@@ -56,7 +56,7 @@ data class Record(
         var bids: Bids?,
 
         @JsonProperty("hasPreviousNotice")
-        val hasPreviousNotice: Boolean?,
+        var hasPreviousNotice: Boolean?,
 
         @JsonProperty("purposeOfNotice")
         val purposeOfNotice: PurposeOfNotice?,

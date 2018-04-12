@@ -89,7 +89,7 @@ class OrganizationServiceImpl : OrganizationService {
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         val parties = ms.parties ?: hashSetOf()
         addMsParty(parties, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
-        clearOrganizationReference(ms.tender.procuringEntity)
+        clearOrganizationReference(ms.tender.procuringEntity!!)
         checkFs.buyer.forEach { addMsParty(parties, it, PartyRole.BUYER) }
         checkFs.payer.forEach { addMsParty(parties, it, PartyRole.PAYER) }
         checkFs.funder.forEach { addMsParty(parties, it, PartyRole.FUNDER) }

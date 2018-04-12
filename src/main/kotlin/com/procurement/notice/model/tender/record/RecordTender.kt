@@ -39,7 +39,7 @@ data class RecordTender(
         var description: String?,
 
         @JsonProperty("status")
-        val status: TenderStatus?,
+        var status: TenderStatus?,
 
         @JsonProperty("statusDetails")
         var statusDetails: TenderStatusDetails?,

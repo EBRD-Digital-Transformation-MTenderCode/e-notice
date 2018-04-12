@@ -52,8 +52,8 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.AWARD_BY_BID -> return releaseService.awardByBid(cpId, newStage, releaseDate, data)
             Operation.AWARD_PERIOD_END -> return releaseService.awardPeriodEnd(cpId, newStage, releaseDate, data)
             Operation.STANDSTILL_PERIOD_END -> return releaseService.standstillPeriodEnd(cpId, newStage, releaseDate, data)
-            Operation.START_NEW_STAGE -> return releaseService.startNewStage(cpId, newStage, previousStage!!,
-                    releaseDate, data)
+            Operation.START_NEW_STAGE -> return releaseService.startNewStage(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.CREATE_PIN_ON_PN -> return releaseService.createPinOnPn(cpId, newStage, previousStage!!, releaseDate, data)
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }
@@ -75,7 +75,8 @@ class MainServiceImpl(private val budgetService: BudgetService,
         AWARD_BY_BID("awardByBid"),
         AWARD_PERIOD_END("awardPeriodEnd"),
         STANDSTILL_PERIOD_END("standstillPeriodEnd"),
-        START_NEW_STAGE("startNewStage");
+        START_NEW_STAGE("startNewStage"),
+        CREATE_PIN_ON_PN("createPINonPN");
 
         companion object {
             private val CONSTANTS = HashMap<String, Operation>()
