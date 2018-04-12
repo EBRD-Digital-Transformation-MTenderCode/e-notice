@@ -1297,6 +1297,8 @@ enum class TenderStatusDetails constructor(private val value: String) {
     PRESELECTED("preselected"),
     PREQUALIFICATION("prequalification"),
     PREQUALIFIED("prequalified"),
+    PLANNING_NOTICE("planning notice"),
+    PRIOR_NOTICE("prior notice"),
     EVALUATION("evaluation"),
     EVALUATED("evaluated"),
     EXECUTION("execution"),
