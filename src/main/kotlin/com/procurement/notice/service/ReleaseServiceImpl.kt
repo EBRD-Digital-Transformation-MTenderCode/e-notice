@@ -69,7 +69,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId = cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
-            tender.statusDetails = TenderStatusDetails.PRESELECTION
             organizationService.processMsParties(ms = ms, checkFs = checkFs)
         }
         val record = toObject(Record::class.java, data.toString())
@@ -79,16 +78,34 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId = record.ocid!!)
             tag = listOf(Tag.TENDER)
             initiationType = InitiationType.TENDER
-            tender.statusDetails = TenderStatusDetails.PRESELECTION
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
             tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
             purposeOfNotice?.isACallForCompetition = true
         }
         when (Stage.valueOf(stage.toUpperCase())) {
-            Stage.PS -> relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PRESELECTION)
-            Stage.PQ -> relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PRESELECTION)
-            Stage.PN -> relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PLANNING)
-            Stage.PIN -> relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PRIOR)
+            Stage.PS -> {
+                ms.tender.statusDetails = TenderStatusDetails.PRESELECTION
+                record.tender.statusDetails = TenderStatusDetails.PRESELECTION
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PRESELECTION)
+            }
+            Stage.PQ -> {
+                ms.tender.statusDetails = TenderStatusDetails.PREQUALIFICATION
+                record.tender.statusDetails = TenderStatusDetails.PREQUALIFICATION
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.X_PREQUALIFICATION)
+            }
+            Stage.PN -> {
+                ms.tender.statusDetails = TenderStatusDetails.PLANNING_NOTICE
+                record.tender.statusDetails = TenderStatusDetails.PLANNING_NOTICE
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PLANNING)
+            }
+            Stage.PIN -> {
+                ms.tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
+                record.tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
+                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, record.ocid!!, RelatedProcessType.PRIOR)
+            }
+            Stage.EV -> { throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+            }
+
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
@@ -108,7 +125,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tag = listOf(Tag.AWARD)
             tender.awardPeriod = dto.awardPeriod
-            date = dto.awardPeriod.startDate
             if (dto.awards.isNotEmpty()) awards = HashSet(dto.awards)
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
@@ -213,12 +229,12 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
         }
-        /* previous record*/
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
         val prevRecordOcId = record.ocid!!
         with(record) {
+            /* previous record*/
             id = getReleaseId(ocId = record.ocid!!)
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
