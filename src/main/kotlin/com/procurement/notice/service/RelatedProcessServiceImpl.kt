@@ -42,57 +42,53 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     private val tenderUri: String? = null
 
     override fun addFsRelatedProcessToEi(ei: EI, fsOcId: String) {
-        val relatedProcesses = ei.relatedProcesses ?: hashSetOf()
-        val relatedProcess = RelatedProcess(
+        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        ei.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.X_FINANCE_SOURCE),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = fsOcId,
                 uri = getBudgetUri(ei.ocid, fsOcId)
-        )
-        relatedProcesses.add(relatedProcess)
+        ))
     }
 
     override fun addEiRelatedProcessToFs(fs: FS, eiOcId: String) {
-        val relatedProcesses = fs.relatedProcesses ?: hashSetOf()
-        val relatedProcess = RelatedProcess(
+        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        fs.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.PARENT),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = eiOcId,
                 uri = getBudgetUri(eiOcId, eiOcId)
-        )
-        relatedProcesses.add(relatedProcess)
+        ))
     }
 
     override fun addMsRelatedProcessToEi(ei: EI, msOcId: String) {
-        val relatedProcesses = ei.relatedProcesses ?: hashSetOf()
-        val relatedProcess = RelatedProcess(
+        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        ei.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.X_EXECUTION),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = msOcId,
                 uri = getTenderUri(msOcId, msOcId)
-        )
-        relatedProcesses.add(relatedProcess)
+        ))
     }
 
     override fun addMsRelatedProcessToFs(fs: FS, msOcId: String) {
-        val relatedProcesses = fs.relatedProcesses ?: hashSetOf()
-        val relatedProcess = RelatedProcess(
+        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        fs.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.X_EXECUTION),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = msOcId,
                 uri = getTenderUri(msOcId, msOcId)
-        )
-        relatedProcesses.add(relatedProcess)
+        ))
     }
 
     override fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType) {
-        val relatedProcesses = ms.relatedProcesses ?: hashSetOf()
+        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
         /*record*/
-        relatedProcesses.add(RelatedProcess(
+        ms.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
@@ -100,7 +96,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(ms.ocid!!, ocId)))
         /*expenditure items*/
         checkFs.ei.asSequence().forEach { eiCpId ->
-            relatedProcesses.add(RelatedProcess(
+            ms.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(RelatedProcessType.X_EXPENDITURE_ITEM),
                     scheme = RelatedProcessScheme.OCID,
@@ -110,7 +106,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         }
         /*financial sources*/
         ms.planning?.budget?.budgetBreakdown?.asSequence()?.forEach {
-            relatedProcesses.add(RelatedProcess(
+            ms.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(RelatedProcessType.X_BUDGET),
                     scheme = RelatedProcessScheme.OCID,
@@ -120,9 +116,8 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     }
 
     override fun addMsRelatedProcessToRecord(record: Record, msOcId: String) {
-        val relatedProcesses = record.relatedProcesses ?: hashSetOf()
-        /*ms*/
-        relatedProcesses.add(RelatedProcess(
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.PARENT),
                 scheme = RelatedProcessScheme.OCID,
@@ -131,8 +126,8 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     }
 
     override fun addRecordRelatedProcessToMs(record: Record, msOcId: String, processType: RelatedProcessType) {
-        val relatedProcesses = record.relatedProcesses ?: hashSetOf()
-        relatedProcesses.add(RelatedProcess(
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
@@ -141,8 +136,8 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     }
 
     override fun addPervRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String) {
-        val relatedProcesses = record.relatedProcesses ?: hashSetOf()
-        relatedProcesses.add(RelatedProcess(
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.X_PRESELECTION),
                 scheme = RelatedProcessScheme.OCID,

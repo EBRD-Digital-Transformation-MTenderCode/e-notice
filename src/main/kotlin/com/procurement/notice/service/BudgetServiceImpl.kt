@@ -67,7 +67,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val fs = toObject(FS::class.java, data.toString())
-        fs.id = getReleaseId(fs.ocid!!)
+        fs.id = getReleaseId(fs.ocid)
         fs.date = releaseDate
         fs.tag = listOf(Tag.PLANNING)
         fs.initiationType = InitiationType.TENDER
@@ -139,7 +139,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         val totalAmount = budgetDao.getTotalAmountByCpId(eiCpId)
-        if (totalAmount != null) ei.planning?.budget?.amount?.amount = round2(totalAmount)
+        if (totalAmount != null) ei.planning?.budget?.amount?.amount = totalAmount.toFixed(2)
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
@@ -150,7 +150,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         val totalAmount = budgetDao.getTotalAmountByCpId(eiCpId)
-        if (totalAmount != null) ei.planning?.budget?.amount?.amount = round2(totalAmount)
+        if (totalAmount != null) ei.planning?.budget?.amount?.amount = totalAmount.toFixed(2)
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
@@ -158,7 +158,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     private fun getEiEntity(ei: EI, stage: String): BudgetEntity {
         return BudgetEntity(
-                cpId = ei.ocid!!,
+                cpId = ei.ocid,
                 ocId = ei.ocid,
                 releaseDate = ei.date!!.toDate(),
                 releaseId = ei.id!!,
@@ -168,10 +168,6 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         )
     }
 
-    private fun round2(amount: Double): Double {
-        return BigDecimal(amount.toString()).setScale(2, RoundingMode.HALF_UP).toDouble()
-    }
-
     private fun getReleaseId(ocId: String): String {
         return ocId + SEPARATOR + milliNowUTC()
     }
@@ -179,7 +175,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: Double?): BudgetEntity {
         return BudgetEntity(
                 cpId = cpId,
-                ocId = fs.ocid!!,
+                ocId = fs.ocid,
                 releaseDate = fs.date!!.toDate(),
                 releaseId = fs.id!!,
                 stage = stage,

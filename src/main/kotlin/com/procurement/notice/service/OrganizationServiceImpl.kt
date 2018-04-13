@@ -27,7 +27,6 @@ interface OrganizationService {
 class OrganizationServiceImpl : OrganizationService {
 
     override fun processEiParties(ei: EI) {
-        ei.parties ?: hashSetOf()
         val buyer = ei.buyer
         if (buyer != null) {
             val partyBuyer = Organization(
@@ -41,13 +40,13 @@ class OrganizationServiceImpl : OrganizationService {
                     details = buyer.details,
                     buyerProfile = buyer.buyerProfile
             )
+            if (ei.parties == null) ei.parties = hashSetOf()
             ei.parties?.add(partyBuyer)
             clearOrganizationReference(buyer)
         }
     }
 
     override fun processFsParties(fs: FS) {
-        fs.parties ?: hashSetOf()
         val funder = fs.funder
         if (funder != null) {
             val partyFunder = Organization(
@@ -61,14 +60,16 @@ class OrganizationServiceImpl : OrganizationService {
                     details = null,
                     buyerProfile = null
             )
+            if (fs.parties == null) fs.parties = hashSetOf()
             fs.parties?.add(partyFunder)
             fs.funder = null
         }
         val payer = fs.payer
         if (payer != null) {
-            val partyPresent = getParty(fs.parties!!, payer.id!!)
-            if (partyPresent != null) partyPresent.roles.add(PartyRole.PAYER)
-            else {
+            val partyPresent = fs.parties?.let { getParty(fs.parties!!, payer.id!!) }
+            if (partyPresent != null) {
+                partyPresent.roles.add(PartyRole.PAYER)
+            } else {
                 val partyPayer = Organization(
                         id = payer.id,
                         name = payer.name,
@@ -80,6 +81,7 @@ class OrganizationServiceImpl : OrganizationService {
                         details = null,
                         buyerProfile = null
                 )
+                if (fs.parties == null) fs.parties = hashSetOf()
                 fs.parties?.add(partyPayer)
             }
             fs.payer = null
@@ -87,12 +89,12 @@ class OrganizationServiceImpl : OrganizationService {
     }
 
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
-        val parties = ms.parties ?: hashSetOf()
-        addMsParty(parties, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
+        if (ms.parties == null) ms.parties = hashSetOf()
+        addMsParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
         clearOrganizationReference(ms.tender.procuringEntity!!)
-        checkFs.buyer.forEach { addMsParty(parties, it, PartyRole.BUYER) }
-        checkFs.payer.forEach { addMsParty(parties, it, PartyRole.PAYER) }
-        checkFs.funder.forEach { addMsParty(parties, it, PartyRole.FUNDER) }
+        checkFs.buyer.forEach { addMsParty(ms.parties!!, it, PartyRole.BUYER) }
+        checkFs.payer.forEach { addMsParty(ms.parties!!, it, PartyRole.PAYER) }
+        checkFs.funder.forEach { addMsParty(ms.parties!!, it, PartyRole.FUNDER) }
     }
 
     private fun addMsParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
@@ -115,10 +117,10 @@ class OrganizationServiceImpl : OrganizationService {
     }
 
     override fun processPartiesFromBids(record: Record, bids: Bids) {
-        val parties = record.parties ?: hashSetOf()
+        if (record.parties == null) record.parties = hashSetOf()
         bids.details!!.asSequence()
                 .flatMap { it.tenderers!!.asSequence() }
-                .forEach { addMsParty(parties, it, PartyRole.TENDERER) }
+                .forEach { addMsParty(record.parties!!, it, PartyRole.TENDERER) }
     }
 
     private fun getParty(parties: HashSet<Organization>, partyId: String): Organization? {

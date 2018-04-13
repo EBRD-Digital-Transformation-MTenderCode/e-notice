@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.point.databinding.JsonDateDeserializer
+import com.procurement.point.databinding.JsonDateSerializer
 import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,6 +25,7 @@ data class Ms(
 
         @JsonProperty("date")
         @JsonDeserialize(using = JsonDateDeserializer::class)
+        @JsonSerialize(using = JsonDateSerializer::class)
         var date: LocalDateTime?,
 
         @JsonProperty("tag")
@@ -41,8 +44,8 @@ data class Ms(
         var tender: MsTender,
 
         @JsonProperty("parties")
-        val parties: HashSet<Organization>?,
+        var parties: HashSet<Organization>?,
 
         @JsonProperty("relatedProcesses")
-        val relatedProcesses: HashSet<RelatedProcess>?
+        var relatedProcesses: HashSet<RelatedProcess>?
 )

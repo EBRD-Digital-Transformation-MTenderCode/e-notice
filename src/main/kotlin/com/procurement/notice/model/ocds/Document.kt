@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.procurement.point.databinding.JsonDateDeserializer
+import com.procurement.point.databinding.JsonDateSerializer
 import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,10 +30,12 @@ data class Document(
 
         @JsonProperty("datePublished")
         @JsonDeserialize(using = JsonDateDeserializer::class)
+        @JsonSerialize(using = JsonDateSerializer::class)
         val datePublished: LocalDateTime?,
 
         @JsonProperty("dateModified")
         @JsonDeserialize(using = JsonDateDeserializer::class)
+        @JsonSerialize(using = JsonDateSerializer::class)
         val dateModified: LocalDateTime?,
 
         @JsonProperty("format")
