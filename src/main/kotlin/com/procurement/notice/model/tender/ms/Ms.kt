@@ -1,5 +1,6 @@
 package com.procurement.notice.model.tender.ms
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -10,7 +11,7 @@ import com.procurement.notice.model.ocds.Tag
 import com.procurement.point.databinding.JsonDateDeserializer
 import java.time.LocalDateTime
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("ocid", "id", "date", "tag", "initiationType", "language", "planning", "tender", "parties", "relatedProcesses")
 data class Ms(
 

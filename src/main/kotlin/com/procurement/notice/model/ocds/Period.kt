@@ -1,5 +1,6 @@
 package com.procurement.notice.model.ocds
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -8,6 +9,7 @@ import com.procurement.point.databinding.JsonDateDeserializer
 import com.procurement.point.databinding.JsonDateSerializer
 import java.time.LocalDateTime
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("startDate", "endDate", "maxExtentDate", "durationInDays")
 data class Period(
 

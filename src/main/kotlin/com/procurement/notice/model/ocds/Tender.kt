@@ -1,9 +1,11 @@
 package com.procurement.notice.model.ocds
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import java.util.*
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("id", "title", "description", "status", "statusDetails", "items", "minValue", "value", "procurementMethod", "procurementMethodDetails", "procurementMethodRationale", "mainProcurementCategory", "additionalProcurementCategories", "awardCriteria", "awardCriteriaDetails", "submissionMethod", "submissionMethodDetails", "tenderPeriod", "enquiryPeriod", "hasEnquiries", "enquiries", "eligibilityCriteria", "awardPeriod", "contractPeriod", "numberOfTenderers", "tenderers", "procuringEntity", "documents", "milestones", "amendments", "amendment", "lots", "lotDetails", "lotGroups", "participationFees", "criteria", "acceleratedProcedure", "classification", "designContest", "electronicWorkflows", "jointProcurement", "legalBasis", "objectives", "procedureOutsourcing", "procurementMethodAdditionalInfo", "reviewParties", "reviewPeriod", "standstillPeriod", "submissionLanguages", "submissionMethodRationale", "dynamicPurchasingSystem", "framework", "requiresElectronicCatalogue")
 data class Tender(
 

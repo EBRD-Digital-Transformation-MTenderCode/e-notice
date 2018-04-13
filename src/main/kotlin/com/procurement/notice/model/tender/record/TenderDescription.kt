@@ -6,4 +6,5 @@ enum class TenderDescription(val text: String) {
     PQ("Preselection stage of contracting process"),
     PN("Contracting process is planned"),
     PIN("Date of tender launch is determined")
+
 }

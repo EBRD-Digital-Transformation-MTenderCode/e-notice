@@ -1,11 +1,13 @@
 package com.procurement.notice.model.ocds
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.point.databinding.JsonDateDeserializer
 import java.time.LocalDateTime
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("id", "documentType", "title", "description", "url", "datePublished", "dateModified", "format", "language", "relatedLots")
 data class Document(
 
