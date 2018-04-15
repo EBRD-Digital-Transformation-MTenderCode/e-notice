@@ -42,7 +42,7 @@ data class Document(
         val format: String?,
 
         @JsonProperty("language")
-        val language: String?,
+        val language: String? = "en",
 
         @JsonProperty("relatedLots")
         val relatedLots: List<String>?

@@ -46,7 +46,7 @@ data class Record(
         var initiationType: InitiationType?,
 
         @JsonProperty("language")
-        val language: String?,
+        val language: String? = "en",
 
         @JsonProperty("parties")
         var parties: HashSet<Organization>?,

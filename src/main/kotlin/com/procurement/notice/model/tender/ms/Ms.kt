@@ -35,7 +35,7 @@ data class Ms(
         var initiationType: InitiationType?,
 
         @JsonProperty("language")
-        val language: String?,
+        val language: String? = "en",
 
         @JsonProperty("planning")
         val planning: MsPlanning?,
