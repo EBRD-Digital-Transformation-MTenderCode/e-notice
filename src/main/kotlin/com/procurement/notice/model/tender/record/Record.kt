@@ -65,7 +65,7 @@ data class Record(
         var hasPreviousNotice: Boolean?,
 
         @JsonProperty("purposeOfNotice")
-        val purposeOfNotice: PurposeOfNotice?,
+        var purposeOfNotice: PurposeOfNotice?,
 
         @JsonProperty("relatedProcesses")
         var relatedProcesses: HashSet<RelatedProcess>?

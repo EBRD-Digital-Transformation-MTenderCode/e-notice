@@ -86,7 +86,9 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             initiationType = InitiationType.TENDER
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
             tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
-            purposeOfNotice?.isACallForCompetition = true
+            tender.hasEnquiries = false
+            hasPreviousNotice = false
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = true)
         }
         when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> {
