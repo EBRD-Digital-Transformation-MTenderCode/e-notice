@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class PurposeOfNotice(
 
         @JsonProperty("reducesTimeLimits")
+        @get:JsonProperty("reducesTimeLimits")
         val reducesTimeLimits: Boolean?,
 
         @JsonProperty("isACallForCompetition")
+        @get:JsonProperty("isACallForCompetition")
         var isACallForCompetition: Boolean?,
 
         @JsonProperty("socialOrOtherSpecificServices")
+        @get:JsonProperty("socialOrOtherSpecificServices")
         val socialOrOtherSpecificServices: Boolean?
 )

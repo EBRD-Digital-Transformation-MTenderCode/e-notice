@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class Renewal(
 
         @JsonProperty("hasRenewals")
+        @get:JsonProperty("hasRenewals")
         val hasRenewals: Boolean?,
 
         @JsonProperty("maxNumber")

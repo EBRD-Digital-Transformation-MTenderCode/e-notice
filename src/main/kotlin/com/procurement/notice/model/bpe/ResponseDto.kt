@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class ResponseDto<out T>(
 
         @JsonProperty("success")
+        @get:JsonProperty("success")
         val success: Boolean,
 
         @JsonProperty("details")

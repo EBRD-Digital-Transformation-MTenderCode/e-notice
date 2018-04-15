@@ -1,48 +1,84 @@
 {
-  "ocid": "ocds-t1s2t3-UA-1523605173954",
-  "id": "ocds-t1s2t3-UA-1523605173954-1523610848579",
-  "date": "2018-04-13T07:39:33",
+  "ocid": "ocds-t1s2t3-MD-1523801742965",
+  "id": "ocds-t1s2t3-MD-1523801742965-1523803340935",
+  "date": "2018-04-13T09:33:06Z",
   "tag": [
     "compiled"
   ],
   "initiationType": "tender",
+  "language": "en",
   "planning": {
     "budget": {
-      "id": "CPV code*--- Test scenario for EI-13/04/2018",
+      "id": "33600000-6",
       "period": {
-        "startDate": "2018-04-13T01:00:00Z",
-        "endDate": "2018-04-20T01:00:01Z",
-        "maxExtentDate": null,
-        "durationInDays": null
+        "startDate": "2018-03-28T00:00:00Z",
+        "endDate": "2018-04-27T00:00:01Z"
       },
       "amount": {
-        "amount": null,
-        "currency": "ERN"
+        "currency": "UAH"
       }
     },
-    "rationale": "Rationale --- Test scenario for EI-13/04/2018"
+    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
   },
   "tender": {
-    "id": "ocds-t1s2t3-UA-1523605173954",
-    "title": "Tender/Title (definition of type of object)*--- Test scenario for EI-13/04/2018",
-    "description": "Short description --- Test scenario for EI-13/04/2018",
+    "id": "ocds-t1s2t3-MD-1523801742965",
+    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
+    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
     "status": "planning",
     "statusDetails": "empty",
     "classification": {
-      "scheme": "UNSPSC",
-      "id": "CPV code*--- Test scenario for EI-13/04/2018",
-      "description": "CPV name*--- Test scenario for EI-13/04/2018",
-      "uri": null
+      "scheme": "CPV",
+      "id": "33600000-6",
+      "description": "Фармацевтична продукція"
     }
   },
+  "parties": [
+    {
+      "name": "EI Byuer Новороздільська міська лікарня",
+      "id": "UA-EDR-20764314",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "20764314",
+        "legalName": "EI Byuer Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "77764777",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
+      "address": {
+        "streetAddress": "вул. Винниченка, 37",
+        "locality": "місто Новий Розділ",
+        "region": "Львівська область",
+        "postalCode": "7770777",
+        "countryName": "Україна"
+      },
+      "contactPoint": {
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "test3@test.test"
+      },
+      "roles": [
+        "buyer"
+      ],
+      "details": {
+        "typeOfBuyer": "BODY_PUBLIC",
+        "mainGeneralActivity": "DEFENCE",
+        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+        "isACentralPurchasingBody": true,
+        "scale": "micro"
+      },
+      "buyerProfile": "https://jsonlint.com/"
+    }
+  ],
   "buyer": {
-    "name": "Official Name* Test scenario for EI-13/04/2018",
-    "id": "Identifier Scheme  Test scenario for EI-13/04/2018-Identification ID* Test scenario for EI-13/04/2018",
-    "identifier": null,
-    "address": null,
-    "additionalIdentifiers": null,
-    "contactPoint": null,
-    "details": null,
-    "buyerProfile": null
+    "name": "EI Byuer Новороздільська міська лікарня",
+    "id": "UA-EDR-20764314"
   }
 }

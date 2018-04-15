@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class ProcedureOutsourcing(
 
         @JsonProperty("procedureOutsourced")
+        @get:JsonProperty("procedureOutsourced")
         val procedureOutsourced: Boolean?,
 
         @JsonProperty("outsourcedTo")

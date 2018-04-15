@@ -33,6 +33,7 @@ data class Budget(
         val europeanUnionFunding: EuropeanUnionFunding?,
 
         @JsonProperty("isEuropeanUnionFunded")
+        @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean?,
 
         @JsonProperty("budgetBreakdown")

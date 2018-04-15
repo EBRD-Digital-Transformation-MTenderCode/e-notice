@@ -51,7 +51,7 @@ data class EI(
         val description: String?,
 
         @JsonProperty("language")
-        val language: String?,
+        val language: String? = "en",
 
         @JsonProperty("tender")
         var tender: Tender?,

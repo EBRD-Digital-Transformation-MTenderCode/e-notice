@@ -37,9 +37,11 @@ data class FsBudget(
         val europeanUnionFunding: EuropeanUnionFunding?,
 
         @JsonProperty("isEuropeanUnionFunded")
+        @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean?,
 
         @JsonProperty("verified")
+        @get:JsonProperty("verified")
         val verified: Boolean?,
 
         @JsonProperty("sourceEntity")

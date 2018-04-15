@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class AcceleratedProcedure(
 
         @JsonProperty("isAcceleratedProcedure")
+        @get:JsonProperty("isAcceleratedProcedure")
         val isAcceleratedProcedure: Boolean?,
 
         @JsonProperty("acceleratedProcedureJustification")

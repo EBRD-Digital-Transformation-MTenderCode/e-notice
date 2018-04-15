@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class RecurrentProcurement(
 
         @JsonProperty("isRecurrent")
+        @get:JsonProperty("isRecurrent")
         val isRecurrent: Boolean?,
 
         @JsonProperty("dates")

@@ -15,6 +15,7 @@ data class LotGroup(
         val relatedLots: List<String>?,
 
         @JsonProperty("optionToCombine")
+        @get:JsonProperty("optionToCombine")
         val optionToCombine: Boolean?,
 
         @JsonProperty("maximumValue")

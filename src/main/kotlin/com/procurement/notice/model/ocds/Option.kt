@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class Option(
 
         @JsonProperty("hasOptions")
+        @get:JsonProperty("hasOptions")
         val hasOptions: Boolean?,
 
         @JsonProperty("optionDetails")

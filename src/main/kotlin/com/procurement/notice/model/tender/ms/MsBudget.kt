@@ -19,7 +19,9 @@ data class MsBudget(
 
         @JsonProperty("amount")
         val amount: Value?,
+
         @JsonProperty("isEuropeanUnionFunded")
+        @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean?,
 
         @JsonProperty("europeanUnionFunding")

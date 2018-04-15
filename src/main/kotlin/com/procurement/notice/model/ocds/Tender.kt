@@ -67,6 +67,7 @@ data class Tender(
         val enquiryPeriod: Period?,
 
         @JsonProperty("hasEnquiries")
+        @get:JsonProperty("hasEnquiries")
         val hasEnquiries: Boolean?,
 
         @JsonProperty("enquiries")
@@ -166,5 +167,6 @@ data class Tender(
         val framework: Framework?,
 
         @JsonProperty("requiresElectronicCatalogue")
+        @get:JsonProperty("requiresElectronicCatalogue")
         val requiresElectronicCatalogue: Boolean?
 )

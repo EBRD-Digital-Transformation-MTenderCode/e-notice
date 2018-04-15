@@ -97,6 +97,7 @@ data class Contract(
         val valueBreakdown: HashSet<ValueBreakdown>?,
 
         @JsonProperty("isFrameworkOrDynamic")
+        @get:JsonProperty("isFrameworkOrDynamic")
         val isFrameworkOrDynamic: Boolean?
 )
 

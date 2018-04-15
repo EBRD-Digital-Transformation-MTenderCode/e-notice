@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class DesignContest(
 
         @JsonProperty("hasPrizes")
+        @get:JsonProperty("hasPrizes")
         val hasPrizes: Boolean?,
 
         @JsonProperty("prizes")
@@ -18,8 +19,11 @@ data class DesignContest(
         val paymentsToParticipants: String?,
 
         @JsonProperty("serviceContractAward")
+        @get:JsonProperty("serviceContractAward")
         val serviceContractAward: Boolean?,
+
         @JsonProperty("juryDecisionBinding")
+        @get:JsonProperty("juryDecisionBinding")
         val juryDecisionBinding: Boolean?,
 
         @JsonProperty("juryMembers")

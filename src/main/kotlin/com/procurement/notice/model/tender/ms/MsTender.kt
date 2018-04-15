@@ -70,6 +70,7 @@ data class MsTender(
         val additionalProcurementCategories: List<ExtendedProcurementCategory>?,
 
         @JsonProperty("hasEnquiries")
+        @get:JsonProperty("hasEnquiries")
         val hasEnquiries: Boolean?,
 
         @JsonProperty("eligibilityCriteria")

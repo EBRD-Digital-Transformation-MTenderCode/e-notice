@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class ReviewProceedings(
 
         @JsonProperty("buyerProcedureReview")
+        @get:JsonProperty("buyerProcedureReview")
         val buyerProcedureReview: Boolean?,
 
         @JsonProperty("reviewBodyChallenge")
+        @get:JsonProperty("reviewBodyChallenge")
         val reviewBodyChallenge: Boolean?,
 
         @JsonProperty("legalProcedures")

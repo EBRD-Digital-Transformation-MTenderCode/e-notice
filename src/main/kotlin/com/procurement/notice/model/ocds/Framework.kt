@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class Framework(
 
         @JsonProperty("isAFramework")
+        @get:JsonProperty("isAFramework")
         val isAFramework: Boolean?,
 
         @JsonProperty("typeOfFramework")

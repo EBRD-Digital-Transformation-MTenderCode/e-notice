@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class JointProcurement(
 
         @JsonProperty("isJointProcurement")
+        @get:JsonProperty("isJointProcurement")
         val isJointProcurement: Boolean?,
 
         @JsonProperty("country")

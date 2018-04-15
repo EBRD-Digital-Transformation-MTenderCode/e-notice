@@ -61,6 +61,7 @@ data class Record(
         var bids: Bids?,
 
         @JsonProperty("hasPreviousNotice")
+        @get:JsonProperty("hasPreviousNotice")
         var hasPreviousNotice: Boolean?,
 
         @JsonProperty("purposeOfNotice")

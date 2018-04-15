@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class Variant(
 
         @JsonProperty("hasVariants")
+        @get:JsonProperty("hasVariants")
         val hasVariants: Boolean?,
 
         @JsonProperty("variantDetails")

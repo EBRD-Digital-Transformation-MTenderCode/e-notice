@@ -68,6 +68,7 @@ data class RecordTender(
         var awardPeriod: Period?,
 
         @JsonProperty("hasEnquiries")
+        @get:JsonProperty("hasEnquiries")
         val hasEnquiries: Boolean?,
 
         @JsonProperty("enquiries")
@@ -92,6 +93,7 @@ data class RecordTender(
         val submissionMethodRationale: List<SubmissionMethodRationale>?,
 
         @JsonProperty("requiresElectronicCatalogue")
+        @get:JsonProperty("requiresElectronicCatalogue")
         val requiresElectronicCatalogue: Boolean?
 )
 
