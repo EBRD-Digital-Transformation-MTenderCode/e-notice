@@ -247,19 +247,18 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+            releaseDao.saveRelease(getReleaseEntity(cpid, prevStage, record))
             /*new record*/
-            id = getReleaseId(record.ocid!!)
+            ocid = getOcId(cpid, stage)
+            id = getReleaseId(ocid!!)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
-            ocid = getOcId(cpid, stage)
             tender = dto.tender
             bids = dto.bids
             processDocuments(this, dto)
             organizationService.processMsPartiesFromBids(this, dto.bids)
         }
         relatedProcessService.addRecordRelatedProcessToMs(record, ms.ocid!!, relatedProcessType)
-        relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.ocid!!)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
