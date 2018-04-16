@@ -2,10 +2,7 @@ package com.procurement.notice.service
 
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
-import com.procurement.notice.model.ocds.Bids
-import com.procurement.notice.model.ocds.Organization
-import com.procurement.notice.model.ocds.OrganizationReference
-import com.procurement.notice.model.ocds.PartyRole
+import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
@@ -20,7 +17,11 @@ interface OrganizationService {
 
     fun processMsParties(ms: Ms, checkFs: CheckFsDto)
 
-    fun processPartiesFromBids(record: Record, bids: Bids)
+    fun processMsPartiesFromBids(record: Record, bids: Bids)
+
+    fun processRecordPartiesFromAwards(record: Record, awards: List<Award>)
+
+    fun processRecordPartiesFromBids(record: Record, tenderers: List<OrganizationReference>)
 }
 
 @Service
@@ -90,22 +91,25 @@ class OrganizationServiceImpl : OrganizationService {
 
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
-        addMsParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
+        addParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
         clearOrganizationReference(ms.tender.procuringEntity!!)
-        checkFs.buyer.forEach { addMsParty(ms.parties!!, it, PartyRole.BUYER) }
-        checkFs.payer.forEach { addMsParty(ms.parties!!, it, PartyRole.PAYER) }
-        checkFs.funder.forEach { addMsParty(ms.parties!!, it, PartyRole.FUNDER) }
+        checkFs.buyer.forEach { addParty(ms.parties!!, it, PartyRole.BUYER) }
+        checkFs.payer.forEach { addParty(ms.parties!!, it, PartyRole.PAYER) }
+        checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
     }
 
-    private fun addMsParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
+    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
         val partyPresent = getParty(parties, organization.id!!)
         if (partyPresent != null) partyPresent.roles.add(role)
         else {
+            val additionalIdentifiers = organization.additionalIdentifiers?.let {
+                HashSet(organization.additionalIdentifiers)
+            }
             val party = Organization(
                     id = organization.id,
                     name = organization.name,
                     identifier = organization.identifier,
-                    additionalIdentifiers = HashSet(organization.additionalIdentifiers!!),
+                    additionalIdentifiers = additionalIdentifiers,
                     address = organization.address,
                     contactPoint = organization.contactPoint,
                     roles = setOf(role).toHashSet(),
@@ -116,11 +120,24 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processPartiesFromBids(record: Record, bids: Bids) {
+    override fun processMsPartiesFromBids(record: Record, bids: Bids) {
         if (record.parties == null) record.parties = hashSetOf()
         bids.details!!.asSequence()
                 .flatMap { it.tenderers!!.asSequence() }
-                .forEach { addMsParty(record.parties!!, it, PartyRole.TENDERER) }
+                .forEach { addParty(record.parties!!, it, PartyRole.TENDERER) }
+    }
+
+    override fun processRecordPartiesFromAwards(record: Record, awards: List<Award>) {
+        if (record.parties == null) record.parties = hashSetOf()
+        awards.asSequence()
+                .flatMap { it.suppliers!!.asSequence() }
+                .forEach { addParty(record.parties!!, it, PartyRole.SUPPLIER) }
+    }
+
+    override fun processRecordPartiesFromBids(record: Record, tenderers: List<OrganizationReference>) {
+        if (record.parties == null) record.parties = hashSetOf()
+        tenderers.asSequence()
+                .forEach { addParty(record.parties!!, it, PartyRole.TENDERER) }
     }
 
     private fun getParty(parties: HashSet<Organization>, partyId: String): Organization? {

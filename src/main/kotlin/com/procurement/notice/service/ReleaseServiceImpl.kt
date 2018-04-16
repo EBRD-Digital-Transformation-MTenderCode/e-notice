@@ -133,6 +133,10 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
+
+        organizationService.processRecordPartiesFromAwards(record, dto.awards)
+        organizationService.processRecordPartiesFromBids(record, dto.tenderers)
+
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, record.ocid!!)
     }
@@ -185,7 +189,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     override fun standstillPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val dto = toObject(StandstillPeriodEndDto::class.java, toJson(data))
         /*MS*/
-        val msEntity = releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         with(ms) {
             id = getReleaseId(cpid)
@@ -225,7 +229,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
         /*Multi stage*/
-        val msEntity = releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         with(ms) {
             id = getReleaseId(ms.ocid!!)
@@ -252,7 +256,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tender = dto.tender
             bids = dto.bids
             processDocuments(this, dto)
-            organizationService.processPartiesFromBids(this, dto.bids)
+            organizationService.processMsPartiesFromBids(this, dto.bids)
         }
         relatedProcessService.addRecordRelatedProcessToMs(record, ms.ocid!!, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
@@ -266,7 +270,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
         /*Multi stage*/
-        val msEntity = releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
         with(ms) {

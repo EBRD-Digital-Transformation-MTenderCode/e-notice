@@ -47,7 +47,7 @@ data class RecordTender(
         var statusDetails: TenderStatusDetails?,
 
         @JsonProperty("items")
-        val items: HashSet<Item>,
+        val items: HashSet<Item>?,
 
         @JsonProperty("lots")
         var lots: List<Lot>?,
