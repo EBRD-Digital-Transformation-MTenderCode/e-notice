@@ -27,7 +27,7 @@ interface RelatedProcessService {
 
     fun addMsRelatedProcessToRecord(record: Record, msOcId: String)
 
-    fun addRecordRelatedProcessToMs(record: Record, msOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType)
 
     fun addPervRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String)
 
@@ -125,14 +125,14 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(msOcId, msOcId)))
     }
 
-    override fun addRecordRelatedProcessToMs(record: Record, msOcId: String, processType: RelatedProcessType) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
-        record.relatedProcesses?.add(RelatedProcess(
+    override fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType) {
+        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        ms.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = record.ocid,
-                uri = getTenderUri(msOcId, record.ocid)))
+                identifier = recordOcId,
+                uri = getTenderUri(ms.ocid!!, recordOcId)))
     }
 
     override fun addPervRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String) {

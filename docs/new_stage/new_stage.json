@@ -1,105 +1,15 @@
 {
-  "tenderPeriod": {
-    "startDate": "",
-    "endDate": ""
-  },
-  "enquiryPeriod": {
-    "startDate": "",
-    "endDate": ""
-  },
-  "planning": {
-    "rationale": "",
-    "budget": {
-      "description": "",
-      "amount": {
-        "amount": 0,
-        "currency": ""
-      },
-      "isEuropenUnionFunded": false,
-      "europenUnionFunding": {
-        "projectIdentifier": "",
-        "projectName": ""
-        "uri": ""
-      },
-      "budgetBreakdown": [
-        {
-          "id": "",
-          "description": "",
-          "amount": {
-            "amount": 0,
-            "currency": ""
-          },
-          "period": {
-            "startDate": "",
-            "endDate": ""
-          },
-          "sourceParty": {
-            "name": "",
-            "id": ""
-          }
-        }
-      ]
-    }
-  },
   "tender": {
-    "id": "",
-    "title": "",
-    "description": "",
+    "id": "ocds-t1s2t3-TEST-1523881130487",
+    "title": "White tax away type industry real.",
+    "description": "Account teach those. Current discover quickly these follow general. Public billion forward response prove.",
+    "status": "active",
+    "statusDetails": "empty",
     "classification": {
-      "scheme": "",
-      "description": "",
-      "id": ""
+      "scheme": "CPV",
+      "id": "79311200-9",
+      "description": "Survey conduction services"
     },
-    "status": "",
-    "statusDetails": "",
-    "value": {
-      "amount": 0,
-      "currency": ""
-    },
-    "procuringEntity": {
-      "id": "",
-      "name": "",
-      "identifier": {
-        "scheme": "",
-        "id": "",
-        "legalName": "",
-        "uri": ""
-      },
-      "additionalIdentifiers": [
-        {
-          "scheme": "",
-          "id": "",
-          "legalName": "",
-          "uri": ""
-        }
-      ],
-      "address": {
-        "streetAddress": "",
-        "locality": "",
-        "region": "",
-        "postalCode": "",
-        "countryName": ""
-      },
-      "contactPoint": {
-        "name": "",
-        "email": "",
-        "telephone": "",
-        "faxNumber": "",
-        "url": ""
-      }
-    },
-    "procurementMethod": "",
-    "procurementMethodDetails": "",
-    "procurementMethodRationale": "",
-    "procurementMethodAdditionalInfo": "",
-    "mainProcurementCategory": "",
-    "additionalProcurementCategories": [
-      ""
-    ],
-    "eligibilityCriteria": "",
-    "submissionLanguages": [
-      ""
-    ],
     "acceleratedProcedure": {
       "isAcceleratedProcedure": false
     },
@@ -123,7 +33,56 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "",
+    "legalBasis": "DIRECTIVE_2014_24_EU",
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Performance themselves reality trial too pass girl.",
+    "procurementMethodRationale": "Eat organization some major project land. Spring line inside interest reach. Leg help true into himself.",
+    "procurementMethodAdditionalInfo": "Response although politics character notice hundred kind. Far money although kid hand investment. Ability finish sell sport maintain push. Man truth last a environmental amount marriage.",
+    "mainProcurementCategory": "services",
+    "additionalProcurementCategories": [
+      "goods"
+    ],
+    "eligibilityCriteria": "At yourself name mention experience coach reason. Film figure in need.",
+    "contractPeriod": {
+      "startDate": "2018-04-16T12:18:49Z",
+      "endDate": "2018-05-26T15:48:46Z"
+    },
+    "procuringEntity": {
+      "name": "Moreno, Hernandez and Davis",
+      "id": "UA-EDR-505-31-7208",
+      "identifier": {
+        "id": "505-31-7208",
+        "scheme": "UA-EDR",
+        "legalName": "Moreno, Hernandez and Davis Group",
+        "uri": "https://www.walters.org/homepage.htm"
+      },
+      "address": {
+        "streetAddress": "54617 Samantha Crossing",
+        "locality": "Port Christopher",
+        "region": "Tennessee",
+        "postalCode": "77413-7017",
+        "countryName": "Cote d'Ivoire"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "219-52-9850",
+          "scheme": "UA-EDR",
+          "legalName": "Moreno, Hernandez and Davis LLC",
+          "uri": "https://www.ward.net/main.asp"
+        }
+      ],
+      "contactPoint": {
+        "name": "Courtney Butler",
+        "email": "elizabethanderson@hotmail.com",
+        "telephone": "210-012-8749x751",
+        "faxNumber": "1-939-457-4456",
+        "url": "http://lopez.com/home.html"
+      }
+    },
+    "value": {
+      "amount": 3.89810478E7,
+      "currency": "ESA"
+    },
     "lotGroups": [
       {
         "optionToCombine": false
@@ -131,131 +90,93 @@
     ],
     "lots": [
       {
-        "id": "",
-        "title": "",
-        "description": "",
-        "status": "",
-        "statusDetails": "",
+        "id": "5221a780-4170-11e8-8fab-13cf59033386",
+        "title": "Page traditional writer community majority speak discuss call.",
+        "description": "Mention method reflect actually easy program system option. Student class nice lawyer leader young.",
+        "status": "active",
+        "statusDetails": "empty",
         "value": {
-          "amount": 0,
-          "currency": ""
+          "amount": 3561135.57,
+          "currency": "ESA"
         },
-        "options": {
-          "hasOptions": false
-        },
-        "variants": {
-          "hasVariants": false
-        },
-        "renewals": {
-          "hasRenewals": false
-        },
-        "recurrentProcurement": {
-          "isRecurrent": false
-        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
         "contractPeriod": {
-          "startDate": "",
-          "endDate": ""
+          "startDate": "2018-04-16T12:18:49Z",
+          "endDate": "2018-10-08T20:50:50Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "",
-            "locality": "",
-            "region": "",
-            "postalCode": "",
-            "countryName": ""
+            "streetAddress": "78507 Jessica Fields",
+            "locality": "Joshuafort",
+            "region": "Oklahoma",
+            "postalCode": "76761-2580",
+            "countryName": "Peru"
           },
-          "description": ""
+          "description": "Meeting stock since window artist. Bed form father deal know account recognize cause. Begin goal understand when save serious."
         }
       }
     ],
     "items": [
       {
-        "id": "",
+        "id": "52218070-4170-11e8-8fab-13cf59033386",
+        "description": "Much lose mean certain investment energy read best. Rock maybe case fall before. I end popular.",
         "classification": {
-          "scheme": "",
-          "description": "",
-          "id": ""
+          "scheme": "CPV",
+          "id": "79311200-9",
+          "description": "Survey conduction services"
         },
         "additionalClassifications": [
           {
-            "scheme": "",
-            "description": "",
-            "id": ""
+            "scheme": "CPV",
+            "id": "24221000-9",
+            "description": "Dyeing extracts"
           }
         ],
-        "quantity": 0,
+        "quantity": 61622.66,
         "unit": {
-          "id": "",
-          "name": ""
+          "id": "MLT",
+          "name": "millilitre"
         },
-        "description": "",
-        "relatedLot": ""
+        "relatedLot": "5221a780-4170-11e8-8fab-13cf59033386"
       }
     ],
-    "awardCriteria": "",
+    "awardCriteria": "bestValueToGovernment",
     "requiresElectronicCatalogue": false,
     "submissionMethod": [
-      ""
+      "written"
     ],
     "submissionMethodRationale": [
-      ""
+      "PHYSICAL_MODEL"
     ],
-    "submissionMethodDetails": "",
-    "contractPeriod": {
-      "startDate": "",
-      "endDate": ""
-    },
-    "documents": [
-      {
-        "id": ""
-      }
-    ]
+    "submissionMethodDetails": "For people himself style hospital PM. Sign season him.",
+    "submissionLanguages": [
+      "fi"
+    ],
+    "tenderPeriod": {
+      "startDate": "2018-04-16T12:34:01Z",
+      "endDate": "2018-04-16T12:53:00Z"
+    }
   },
   "bids": {
-    "details": [
-      {
-        "id": "",
-        "date": "",
-        "status": "",
-        "statusDetails": "",
-        "tenderers": [
-          {
-            "id": "",
-            "name": "",
-            "identifier": {
-              "scheme": "",
-              "id": "",
-              "legalName": "",
-              "uri": ""
-            },
-            "additionalIdentifiers": [
-              {
-                "scheme": "",
-                "id": "",
-                "legalName": "",
-                "uri": ""
-              }
-            ],
-            "address": {
-              "streetAddress": "",
-              "locality": "",
-              "region": "",
-              "postalCode": "",
-              "countryName": ""
-            },
-            "contactPoint": {
-              "name": "",
-              "email": "",
-              "telephone": "",
-              "faxNumber": "",
-              "url": ""
-            }
-          }
-        ],
-        "relatedLots": [
-          ""
-        ]
-      }
-    ]
+    "details": []
   }
 }

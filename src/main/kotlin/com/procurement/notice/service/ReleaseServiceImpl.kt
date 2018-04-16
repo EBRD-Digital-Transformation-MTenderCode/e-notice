@@ -237,29 +237,37 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
         }
+        /*prev record*/
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = toObject(Record::class.java, recordEntity.jsonData)
-        val prevRecordOcId = record.ocid!!
-        with(record) {
-            /* previous record*/
-            id = getReleaseId(record.ocid!!)
+        val prevRecord = toObject(Record::class.java, recordEntity.jsonData)
+        with(prevRecord) {
+            id = getReleaseId(ocid!!)
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpid, prevStage, record))
-            /*new record*/
-            ocid = getOcId(cpid, stage)
-            id = getReleaseId(ocid!!)
-            date = releaseDate
-            tag = listOf(Tag.COMPILED)
-            tender = dto.tender
-            bids = dto.bids
-            processDocuments(this, dto)
-            organizationService.processMsPartiesFromBids(this, dto.bids)
+            releaseDao.saveRelease(getReleaseEntity(cpid, prevStage, prevRecord))
         }
-        relatedProcessService.addRecordRelatedProcessToMs(record, ms.ocid!!, relatedProcessType)
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.ocid!!)
+        /*new record*/
+        val ocid = getOcId(cpid, stage)
+        val record = Record(
+                ocid = ocid,
+                id = getReleaseId(ocid),
+                date = releaseDate,
+                tag = listOf(Tag.COMPILED),
+                initiationType = InitiationType.TENDER,
+                parties = null,
+                tender = dto.tender,
+                awards = null,
+                bids = dto.bids,
+                hasPreviousNotice = prevRecord.hasPreviousNotice,
+                purposeOfNotice = prevRecord.purposeOfNotice,
+                relatedProcesses = null)
+        processDocuments(record, dto)
+        organizationService.processMsPartiesFromBids(record, dto.bids)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, record.ocid!!, relatedProcessType)
+        relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
+        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecord.ocid!!, ms.ocid!!)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, record.ocid!!)
@@ -304,7 +312,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = true
             purposeOfNotice?.isACallForCompetition = false
         }
-        relatedProcessService.addRecordRelatedProcessToMs(record, ms.ocid!!, RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, record.ocid!!, RelatedProcessType.PRIOR)
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecordOcId, ms.ocid!!)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
