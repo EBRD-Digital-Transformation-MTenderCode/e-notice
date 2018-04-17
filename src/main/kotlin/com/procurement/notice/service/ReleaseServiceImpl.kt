@@ -129,7 +129,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tag = listOf(Tag.AWARD)
             tender.awardPeriod = dto.awardPeriod
-            if (dto.awards.isNotEmpty()) awards = HashSet(dto.awards)
+            if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
@@ -176,7 +176,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
-            if (dto.awards.isNotEmpty()) awards = HashSet(dto.awards)
+            if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }

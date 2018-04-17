@@ -12,5 +12,5 @@ data class StandstillPeriodEndDto(
         val standstillPeriod: Period,
 
         @JsonProperty("lots")
-        val lots: List<Lot>
+        val lots: HashSet<Lot>
 )

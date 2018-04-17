@@ -50,7 +50,7 @@ data class RecordTender(
         val items: HashSet<Item>?,
 
         @JsonProperty("lots")
-        var lots: List<Lot>?,
+        var lots: HashSet<Lot>?,
 
         @JsonProperty("lotGroups")
         val lotGroups: List<LotGroup>?,

@@ -3,6 +3,7 @@ package com.procurement.notice.model.tender.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.notice.model.ocds.*
+import java.util.HashSet
 
 @JsonPropertyOrder("tenderPeriod", "awardPeriod", "awards", "lots", "bids")
 data class TenderPeriodEndDto(
@@ -14,11 +15,11 @@ data class TenderPeriodEndDto(
         val awardPeriod: Period,
 
         @JsonProperty("awards")
-        val awards: List<Award>,
+        val awards: HashSet<Award>,
 
         @JsonProperty("lots")
-        val lots: List<Lot>,
+        val lots: HashSet<Lot>,
 
         @JsonProperty("bids")
-        val bids: List<Bid>
+        val bids: HashSet<Bid>
 )

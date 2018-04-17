@@ -6,6 +6,7 @@ import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
+import java.util.HashSet
 
 @JsonPropertyOrder("awardPeriod", "awards", "lots", "bids")
 data class AwardPeriodEndDto(
@@ -14,11 +15,11 @@ data class AwardPeriodEndDto(
         val awardPeriod: Period,
 
         @JsonProperty("awards")
-        val awards: List<Award>,
+        val awards: HashSet<Award>,
 
         @JsonProperty("lots")
-        val lots: List<Lot>,
+        val lots: HashSet<Lot>,
 
         @JsonProperty("bids")
-        val bids: List<Bid>
+        val bids: HashSet<Bid>
 )
