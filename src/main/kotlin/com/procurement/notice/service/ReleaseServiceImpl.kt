@@ -384,14 +384,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         }
     }
 
-    private fun updateLots(record: Record, lotsDto: List<Lot>) {
-        val lots = record.tender.lots
-        if (lots == null || lots.isEmpty()) throw ErrorException(ErrorType.LOT_NOT_FOUND)
-        val updatableLots = lots.asSequence().map { it.id!! to it }.toMap()
-        lotsDto.asSequence().forEach { updatableLots[it.id]?.statusDetails = it.statusDetails }
-        record.tender.lots = updatableLots.values.toList()
-    }
-
     private fun getResponseDto(cpid: String, ocid: String): ResponseDto<*> {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
