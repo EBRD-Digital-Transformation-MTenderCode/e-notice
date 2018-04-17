@@ -207,7 +207,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = dto.standstillPeriod.endDate
             tender.statusDetails = TenderStatusDetails.PRESELECTED
             tender.standstillPeriod = dto.standstillPeriod
-            tender.lots = dto.lots
+            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, record.ocid!!)

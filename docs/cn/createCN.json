@@ -1,244 +1,309 @@
 {
-  "bids": [
-    {
-      "id": "a1ebb020-4243-11e8-957e-c79f93d3f564",
-      "date": "2018-04-17T13:31:28Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-137-71-7692",
-          "name": "Hays-Floyd",
-          "identifier": {
-            "id": "137-71-7692",
-            "scheme": "UA-EDR",
-            "legalName": "Hays-Floyd PLC",
-            "uri": "https://shaffer-padilla.com/post.htm"
-          },
-          "address": {
-            "streetAddress": "34925 Zachary Throughway",
-            "locality": "Parksland",
-            "region": "Kentucky",
-            "postalCode": "77114",
-            "countryName": "United States of America"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "317-38-2790",
-              "scheme": "UA-EDR",
-              "legalName": "Hays-Floyd PLC",
-              "uri": "https://francis.com/wp-content/category/category/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Stephanie Scott",
-            "email": "davidsmith@yahoo.com",
-            "telephone": "+04(5)0771436607",
-            "faxNumber": "048.847.1561",
-            "url": "https://www.phillips.com/main/main/terms/"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ]
+  "tender": {
+    "id": "ocds-t1s2t3-TEST-1523983461936",
+    "title": "Including catch evening first shoulder people message.",
+    "description": "Difference risk our during chance power man. Huge boy move hope raise.",
+    "status": "active",
+    "statusDetails": "empty",
+    "classification": {
+      "scheme": "CPV",
+      "id": "34113200-4",
+      "description": "All-terrain vehicles"
     },
-    {
-      "id": "a1ebb021-4243-11e8-957e-c79f93d3f564",
-      "date": "2018-04-17T13:31:28Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-008-38-9906",
-          "name": "Delgado Inc",
-          "identifier": {
-            "id": "008-38-9906",
-            "scheme": "UA-EDR",
-            "legalName": "Delgado Inc LLC",
-            "uri": "https://wells.com/privacy.php"
-          },
-          "address": {
-            "streetAddress": "29148 Hernandez Village",
-            "locality": "Cruzside",
-            "region": "New York",
-            "postalCode": "66709",
-            "countryName": "Finland"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "423-28-0007",
-              "scheme": "UA-EDR",
-              "legalName": "Delgado Inc Ltd",
-              "uri": "https://bonilla-lynch.com/wp-content/categories/category/privacy.htm"
-            }
-          ],
-          "contactPoint": {
-            "name": "Jennifer Ward DVM",
-            "email": "johnpeterson@hotmail.com",
-            "telephone": "415-110-6547x39464",
-            "faxNumber": "206-146-7179x8866",
-            "url": "https://www.mason.com/home/"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ]
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": false
     },
-    {
-      "id": "a1f57420-4243-11e8-957e-c79f93d3f564",
-      "date": "2018-04-17T13:31:28Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-619-77-8088",
-          "name": "Jackson LLC",
-          "identifier": {
-            "id": "619-77-8088",
-            "scheme": "UA-EDR",
-            "legalName": "Jackson LLC LLC",
-            "uri": "https://www.hill.com/"
-          },
-          "address": {
-            "streetAddress": "07760 Martha Shoal",
-            "locality": "Jamiemouth",
-            "region": "Pennsylvania",
-            "postalCode": "44780-7541",
-            "countryName": "Uruguay"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "142-51-0456",
-              "scheme": "UA-EDR",
-              "legalName": "Jackson LLC LLC",
-              "uri": "https://park-cook.com/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Joyce Williams",
-            "email": "dominique17@hotmail.com",
-            "telephone": "666-097-1560x3243",
-            "faxNumber": "(998)605-9633",
-            "url": "http://coleman-murphy.com/list/categories/author.php"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ]
-    }
-  ],
-  "lots": [
-    {
-      "id": "a12b9471-4243-11e8-8fab-13cf59033386",
-      "title": "Effort north consider citizen.",
-      "description": "Town director community accept product open yet. Summer effort student maintain can. Ask either I between. Get large stock teach notice.",
-      "status": "active",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 1.489632074996E12,
-        "currency": "MVR"
+    "designContest": {
+      "serviceContractAward": false
+    },
+    "electronicWorkflows": {
+      "useOrdering": false,
+      "usePayment": false,
+      "acceptInvoicing": false
+    },
+    "jointProcurement": {
+      "isJointProcurement": false
+    },
+    "procedureOutsourcing": {
+      "procedureOutsourced": false
+    },
+    "framework": {
+      "isAFramework": false
+    },
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": false
+    },
+    "legalBasis": "DIRECTIVE_2014_24_EU",
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Simply land population have eye class.",
+    "procurementMethodRationale": "More often usually various.",
+    "procurementMethodAdditionalInfo": "Personal political central left left. Artist surface whether myself including evidence. Rate nature car general individual.",
+    "mainProcurementCategory": "goods",
+    "additionalProcurementCategories": [
+      "goods"
+    ],
+    "eligibilityCriteria": "Determine gas property audience perhaps explain. Body allow difference yes poor decision. Response couple dark nearly clear perhaps lot.",
+    "contractPeriod": {
+      "startDate": "2018-04-17T16:44:21Z",
+      "endDate": "2018-06-18T07:08:33Z"
+    },
+    "procuringEntity": {
+      "name": "Green, Ferguson and Drake",
+      "id": "UA-EDR-702-77-0225",
+      "identifier": {
+        "id": "702-77-0225",
+        "scheme": "UA-EDR",
+        "legalName": "Green, Ferguson and Drake and Sons",
+        "uri": "http://www.cooper-mack.com/register.php"
       },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {
-          "hasRenewals": false
-        }
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-04-17T13:31:25Z",
-        "endDate": "2018-07-22T17:49:07Z"
+      "address": {
+        "streetAddress": "437 David Meadow Suite 166",
+        "locality": "Bryantmouth",
+        "region": "West Virginia",
+        "postalCode": "82080",
+        "countryName": "Holy See (Vatican City State)"
       },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "495 Robertson Course",
-          "locality": "Wallerbury",
-          "region": "West Virginia",
-          "postalCode": "99995-2482",
-          "countryName": "Guam"
-        },
-        "description": "Image support something paper individual themselves Mrs. Wish magazine table forget medical give. Many card him up number strong."
+      "additionalIdentifiers": [
+        {
+          "id": "706-96-5599",
+          "scheme": "UA-EDR",
+          "legalName": "Green, Ferguson and Drake LLC",
+          "uri": "https://www.walton-harrington.com/"
+        }
+      ],
+      "contactPoint": {
+        "name": "Michelle Moss",
+        "email": "rtaylor@gmail.com",
+        "telephone": "1-800-628-6241x693",
+        "faxNumber": "(399)648-2642x17816",
+        "url": "https://wagner-lowe.info/search/"
       }
+    },
+    "value": {
+      "amount": 7.537423123394E10,
+      "currency": "NAD"
+    },
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "lots": [
+      {
+        "id": "946d7301-425e-11e8-a16c-1fc08e3a3cc8",
+        "title": "Involve herself result price recent summer.",
+        "description": "Choice pretty look beautiful. Consumer behavior too politics trade. Year look degree manage other certain.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 308.45,
+          "currency": "NAD"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-04-17T16:44:21Z",
+          "endDate": "2018-07-04T15:48:16Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "6725 Alex Mission Suite 332",
+            "locality": "Drakeberg",
+            "region": "West Virginia",
+            "postalCode": "19285-8790",
+            "countryName": "Nicaragua"
+          },
+          "description": "Party military place assume. Book guy now."
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "946d7300-425e-11e8-a16c-1fc08e3a3cc8",
+        "description": "Crime degree major. Would western talk of along. Center administration machine sister site front choose.",
+        "classification": {
+          "scheme": "CPV",
+          "id": "34113200-4",
+          "description": "All-terrain vehicles"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPV",
+            "id": "19434000-7",
+            "description": "Flax yarn"
+          }
+        ],
+        "quantity": 6.8735707967196E12,
+        "unit": {
+          "id": "E51",
+          "name": "job"
+        },
+        "relatedLot": "946d7301-425e-11e8-a16c-1fc08e3a3cc8"
+      }
+    ],
+    "awardCriteria": "bestValueToGovernment",
+    "requiresElectronicCatalogue": false,
+    "submissionMethod": [
+      "inPerson"
+    ],
+    "submissionMethodRationale": [
+      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"
+    ],
+    "submissionMethodDetails": "Need out specific window. Year place create stand large third. Begin they product put.",
+    "submissionLanguages": [
+      "ga"
+    ],
+    "tenderPeriod": {
+      "startDate": "2018-04-17T16:49:40Z",
+      "endDate": "2018-04-17T17:53:00Z"
     }
-  ],
-  "awardPeriod": {
-    "startDate": "2018-04-17T13:34:26Z"
   },
-  "awards": [
-    {
-      "id": "0c8285d0-4244-11e8-a7a2-4bc93b1ec7b9",
-      "token": "04f0219e-54f1-43c6-9e4b-d8991f6cefc7",
-      "date": "2018-04-17T13:34:26Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ],
-      "relatedBid": "a1ebb020-4243-11e8-957e-c79f93d3f564",
-      "suppliers": [
-        {
-          "id": "UA-EDR-137-71-7692",
-          "name": "Hays-Floyd"
-        }
-      ]
-    },
-    {
-      "id": "0c8285d1-4244-11e8-a7a2-4bc93b1ec7b9",
-      "token": "c3dfd068-8f03-4536-bbba-dbce0c7eb9ff",
-      "date": "2018-04-17T13:34:26Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ],
-      "relatedBid": "a1ebb021-4243-11e8-957e-c79f93d3f564",
-      "suppliers": [
-        {
-          "id": "UA-EDR-008-38-9906",
-          "name": "Delgado Inc"
-        }
-      ]
-    },
-    {
-      "id": "0c8285d2-4244-11e8-a7a2-4bc93b1ec7b9",
-      "token": "ff1d4903-8cd9-4da0-9c93-9bbe1291fbe2",
-      "date": "2018-04-17T13:34:26Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a12b9471-4243-11e8-8fab-13cf59033386"
-      ],
-      "relatedBid": "a1f57420-4243-11e8-957e-c79f93d3f564",
-      "suppliers": [
-        {
-          "id": "UA-EDR-619-77-8088",
-          "name": "Jackson LLC"
-        }
-      ]
-    }
-  ],
-  "unsuccessfulLots": [],
-  "tenderPeriod": {
-    "startDate": "2018-04-17T13:31:26Z",
-    "endDate": "2018-04-17T13:34:25Z"
+  "bids": {
+    "details": [
+      {
+        "id": "967e0380-425e-11e8-bb1f-bbca57607d01",
+        "date": "2018-04-17T16:49:41Z",
+        "status": "invited",
+        "tenderers": [
+          {
+            "id": "UA-EDR-213-81-7472",
+            "name": "Lynch, Richard and Clark",
+            "identifier": {
+              "id": "213-81-7472",
+              "scheme": "UA-EDR",
+              "legalName": "Lynch, Richard and Clark LLC",
+              "uri": "http://young-travis.biz/privacy/"
+            },
+            "address": {
+              "streetAddress": "1798 Weber Points Apt. 557",
+              "locality": "Mcconnellberg",
+              "region": "New Mexico",
+              "postalCode": "67107-1362",
+              "countryName": "Falkland Islands (Malvinas)"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "007-41-9299",
+                "scheme": "UA-EDR",
+                "legalName": "Lynch, Richard and Clark LLC",
+                "uri": "http://www.hall-odom.com/list/homepage.asp"
+              }
+            ],
+            "contactPoint": {
+              "name": "Jessica Moon",
+              "email": "johnbriggs@gmail.com",
+              "telephone": "+55(4)0075844096",
+              "faxNumber": "(649)765-2949",
+              "url": "http://www.fuller.com/faq/"
+            }
+          }
+        ],
+        "relatedLots": [
+          "946d7301-425e-11e8-a16c-1fc08e3a3cc8"
+        ]
+      },
+      {
+        "id": "95bd72a0-425e-11e8-bb1f-bbca57607d01",
+        "date": "2018-04-17T16:49:41Z",
+        "status": "invited",
+        "tenderers": [
+          {
+            "id": "UA-EDR-291-83-9777",
+            "name": "Harris and Sons",
+            "identifier": {
+              "id": "291-83-9777",
+              "scheme": "UA-EDR",
+              "legalName": "Harris and Sons Ltd",
+              "uri": "http://villegas-hayes.com/homepage/"
+            },
+            "address": {
+              "streetAddress": "59979 Mackenzie Ridges",
+              "locality": "East Tiffanyview",
+              "region": "Maine",
+              "postalCode": "18331",
+              "countryName": "Korea"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "669-81-8128",
+                "scheme": "UA-EDR",
+                "legalName": "Harris and Sons Inc",
+                "uri": "http://www.cohen.org/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Benjamin Gomez",
+              "email": "elizabeth07@hotmail.com",
+              "telephone": "335.768.1038",
+              "faxNumber": "982.257.2276",
+              "url": "http://www.peters.com/home/"
+            }
+          }
+        ],
+        "relatedLots": [
+          "946d7301-425e-11e8-a16c-1fc08e3a3cc8"
+        ]
+      },
+      {
+        "id": "951af110-425e-11e8-bb1f-bbca57607d01",
+        "date": "2018-04-17T16:49:41Z",
+        "status": "invited",
+        "tenderers": [
+          {
+            "id": "UA-EDR-685-37-1324",
+            "name": "Taylor, Gutierrez and Cruz",
+            "identifier": {
+              "id": "685-37-1324",
+              "scheme": "UA-EDR",
+              "legalName": "Taylor, Gutierrez and Cruz and Sons",
+              "uri": "http://hickman.info/"
+            },
+            "address": {
+              "streetAddress": "4303 Alex Lake Apt. 774",
+              "locality": "Mccannville",
+              "region": "Colorado",
+              "postalCode": "61362-2789",
+              "countryName": "Burkina Faso"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "425-71-4612",
+                "scheme": "UA-EDR",
+                "legalName": "Taylor, Gutierrez and Cruz PLC",
+                "uri": "https://dean-buck.com/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Andrew Williamson",
+              "email": "garnerkevin@yahoo.com",
+              "telephone": "231-149-6654x197",
+              "faxNumber": "1-094-257-2389x1536",
+              "url": "http://www.charles-house.com/"
+            }
+          }
+        ],
+        "relatedLots": [
+          "946d7301-425e-11e8-a16c-1fc08e3a3cc8"
+        ]
+      }
+    ]
   }
 }
