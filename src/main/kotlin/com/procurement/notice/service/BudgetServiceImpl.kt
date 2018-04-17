@@ -28,7 +28,7 @@ interface BudgetService {
 
     fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
-    fun createEiByMs(eiIds: List<String>, msCpId: String, dateTime: LocalDateTime)
+    fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime)
 
     fun createFsByMs(budgetBreakdown: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime)
 }
@@ -93,7 +93,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return getResponseDto(cpid, fs.ocid)
     }
 
-    override fun createEiByMs(eiIds: List<String>, msCpId: String, dateTime: LocalDateTime) {
+    override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
         eiIds.forEach { eiCpId ->
             val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)

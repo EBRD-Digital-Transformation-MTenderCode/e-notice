@@ -8,14 +8,14 @@ import com.procurement.notice.model.ocds.OrganizationReference
 data class CheckFsDto(
 
         @JsonProperty("ei")
-        val ei: List<String>,
+        val ei: HashSet<String>,
 
         @JsonProperty("buyer")
-        val buyer: List<OrganizationReference>,
+        val buyer: HashSet<OrganizationReference>,
 
         @JsonProperty("funder")
-        val funder: List<OrganizationReference>,
+        val funder: HashSet<OrganizationReference>,
 
         @JsonProperty("payer")
-        val payer: List<OrganizationReference>
+        val payer: HashSet<OrganizationReference>
 )
