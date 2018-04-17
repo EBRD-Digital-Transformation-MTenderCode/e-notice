@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.notice.model.ocds.*
 
-@JsonPropertyOrder("tenderPeriod", "awardPeriod", "awards", "lots", "tenderers", "bids")
+@JsonPropertyOrder("tenderPeriod", "awardPeriod", "awards", "lots", "bids")
 data class TenderPeriodEndDto(
 
         @JsonProperty("tenderPeriod")
@@ -18,9 +18,6 @@ data class TenderPeriodEndDto(
 
         @JsonProperty("lots")
         val lots: List<Lot>,
-
-        @JsonProperty("tenderers")
-        val tenderers: List<OrganizationReference>,
 
         @JsonProperty("bids")
         val bids: List<Bid>

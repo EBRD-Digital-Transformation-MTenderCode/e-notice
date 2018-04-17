@@ -2,7 +2,9 @@ package com.procurement.notice.service
 
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
@@ -17,11 +19,9 @@ interface OrganizationService {
 
     fun processMsParties(ms: Ms, checkFs: CheckFsDto)
 
-    fun processMsPartiesFromBids(record: Record, bids: Bids)
+    fun processRecordPartiesFromBids(record: Record)
 
-    fun processRecordPartiesFromAwards(record: Record, awards: List<Award>)
-
-    fun processRecordPartiesFromBids(record: Record, tenderers: List<OrganizationReference>)
+    fun processRecordPartiesFromAwards(record: Record)
 }
 
 @Service
@@ -34,7 +34,7 @@ class OrganizationServiceImpl : OrganizationService {
                     id = buyer.id,
                     name = buyer.name,
                     identifier = buyer.identifier,
-                    additionalIdentifiers = HashSet(buyer.additionalIdentifiers),
+                    additionalIdentifiers = buyer.additionalIdentifiers,
                     address = buyer.address,
                     contactPoint = buyer.contactPoint,
                     roles = setOf(PartyRole.BUYER).toHashSet(),
@@ -54,7 +54,7 @@ class OrganizationServiceImpl : OrganizationService {
                     id = funder.id,
                     name = funder.name,
                     identifier = funder.identifier,
-                    additionalIdentifiers = HashSet(funder.additionalIdentifiers),
+                    additionalIdentifiers = funder.additionalIdentifiers,
                     address = funder.address,
                     contactPoint = funder.contactPoint,
                     roles = setOf(PartyRole.FUNDER).toHashSet(),
@@ -75,7 +75,7 @@ class OrganizationServiceImpl : OrganizationService {
                         id = payer.id,
                         name = payer.name,
                         identifier = payer.identifier,
-                        additionalIdentifiers = HashSet(payer.additionalIdentifiers),
+                        additionalIdentifiers = payer.additionalIdentifiers,
                         address = payer.address,
                         contactPoint = payer.contactPoint,
                         roles = setOf(PartyRole.PAYER).toHashSet(),
@@ -91,8 +91,10 @@ class OrganizationServiceImpl : OrganizationService {
 
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
-        addParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
-        clearOrganizationReference(ms.tender.procuringEntity!!)
+        if (ms.tender.procuringEntity != null) {
+            addParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
+            clearOrganizationReference(ms.tender.procuringEntity!!)
+        }
         checkFs.buyer.forEach { addParty(ms.parties!!, it, PartyRole.BUYER) }
         checkFs.payer.forEach { addParty(ms.parties!!, it, PartyRole.PAYER) }
         checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
@@ -102,14 +104,11 @@ class OrganizationServiceImpl : OrganizationService {
         val partyPresent = getParty(parties, organization.id!!)
         if (partyPresent != null) partyPresent.roles.add(role)
         else {
-            val additionalIdentifiers = organization.additionalIdentifiers?.let {
-                HashSet(organization.additionalIdentifiers)
-            }
             val party = Organization(
                     id = organization.id,
                     name = organization.name,
                     identifier = organization.identifier,
-                    additionalIdentifiers = additionalIdentifiers,
+                    additionalIdentifiers = organization.additionalIdentifiers,
                     address = organization.address,
                     contactPoint = organization.contactPoint,
                     roles = setOf(role).toHashSet(),
@@ -120,24 +119,28 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processMsPartiesFromBids(record: Record, bids: Bids) {
+    override fun processRecordPartiesFromBids(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
-        bids.details!!.asSequence()
-                .flatMap { it.tenderers!!.asSequence() }
-                .forEach { addParty(record.parties!!, it, PartyRole.TENDERER) }
+        if (record.bids?.details != null) {
+            record.bids!!.details!!.asSequence()
+                    .flatMap { it.tenderers!!.asSequence() }
+                    .forEach {
+                        addParty(record.parties!!, it, PartyRole.TENDERER)
+                        clearOrganizationReference(it)
+                    }
+        }
     }
 
-    override fun processRecordPartiesFromAwards(record: Record, awards: List<Award>) {
+    override fun processRecordPartiesFromAwards(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
-        awards.asSequence()
-                .flatMap { it.suppliers!!.asSequence() }
-                .forEach { addParty(record.parties!!, it, PartyRole.SUPPLIER) }
-    }
-
-    override fun processRecordPartiesFromBids(record: Record, tenderers: List<OrganizationReference>) {
-        if (record.parties == null) record.parties = hashSetOf()
-        tenderers.asSequence()
-                .forEach { addParty(record.parties!!, it, PartyRole.TENDERER) }
+        if (record.awards != null) {
+            record.awards!!.asSequence()
+                    .flatMap { it.suppliers!!.asSequence() }
+                    .forEach {
+                        addParty(record.parties!!, it, PartyRole.SUPPLIER)
+                        clearOrganizationReference(it)
+                    }
+        }
     }
 
     private fun getParty(parties: HashSet<Organization>, partyId: String): Organization? {

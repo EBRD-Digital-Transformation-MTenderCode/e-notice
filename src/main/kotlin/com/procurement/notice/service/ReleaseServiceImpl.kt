@@ -133,8 +133,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
-        organizationService.processRecordPartiesFromBids(record, dto.tenderers)
-        organizationService.processRecordPartiesFromAwards(record, dto.awards)
+        organizationService.processRecordPartiesFromBids(record)
+        organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, record.ocid!!)
     }
@@ -205,7 +205,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = dto.standstillPeriod.endDate
             tender.statusDetails = TenderStatusDetails.PRESELECTED
             tender.standstillPeriod = dto.standstillPeriod
-            updateLots(this, dto.lots)
+            tender.lots = dto.lots
         }
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, record.ocid!!)
@@ -262,7 +262,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 purposeOfNotice = prevRecord.purposeOfNotice,
                 relatedProcesses = null)
         processDocuments(record, dto)
-        organizationService.processMsPartiesFromBids(record, dto.bids)
+        organizationService.processRecordPartiesFromBids(record)
         relatedProcessService.addRecordRelatedProcessToMs(ms, record.ocid!!, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, ms.ocid!!)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prevRecord.ocid!!, ms.ocid!!)
