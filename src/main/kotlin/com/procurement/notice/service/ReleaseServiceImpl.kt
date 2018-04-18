@@ -68,29 +68,18 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     override fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto<*> {
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
         val ms = toObject(Ms::class.java, data.toString())
-        var recordTag: List<Tag> = listOf(Tag.TENDER)
-        var isACallForCompetition: Boolean  = true
-        when (operation) {
-            Operation.CREATE_CN -> {
-                recordTag = listOf(Tag.TENDER)
-                isACallForCompetition = true
-            }
-            Operation.CREATE_PN -> {
-                recordTag = listOf(Tag.PLANNING)
-                isACallForCompetition = false
-            }
-
-            Operation.CREATE_PIN -> {
-                recordTag = listOf(Tag.PLANNING)
-                isACallForCompetition = false
-            }
-        }
+        val params = getParamsForOperation(operation, Stage.valueOf(stage.toUpperCase()))
+        val msStatusDetails = params["msStatusDetails"] as TenderStatusDetails
+        val recordTag = params["recordTag"] as List<Tag>
+        val isACallForCompetition = params["isACallForCompetition"] as Boolean
+        val relatedProcessType = params["relatedProcessType"] as RelatedProcessType
         with(ms) {
             ocid = cpid
             date = releaseDate
             id = getReleaseId(cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
+            tender.statusDetails = msStatusDetails
             organizationService.processMsParties(ms, checkFs)
         }
 
@@ -108,28 +97,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = false
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = isACallForCompetition)
         }
-        when (Stage.valueOf(stage.toUpperCase())) {
-            Stage.PS -> {
-                ms.tender.statusDetails = TenderStatusDetails.PRESELECTION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, RelatedProcessType.X_PRESELECTION)
-            }
-            Stage.PQ -> {
-                ms.tender.statusDetails = TenderStatusDetails.PREQUALIFICATION
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, RelatedProcessType.X_PREQUALIFICATION)
-            }
-            Stage.PN -> {
-                ms.tender.statusDetails = TenderStatusDetails.PLANNING_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, RelatedProcessType.PLANNING)
-            }
-            Stage.PIN -> {
-                ms.tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
-                relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, RelatedProcessType.PRIOR)
-            }
-            Stage.EV -> {
-                throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
-            }
-            else -> throw ErrorException(ErrorType.STAGE_ERROR)
-        }
+        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
@@ -137,6 +105,45 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns, cpid, releaseDate)
         return getResponseDto(cpid, ocId)
+    }
+
+    fun getParamsForOperation(operation: Operation, stage: Stage): HashMap<String, Any> {
+        val params: HashMap<String, Any> = hashMapOf()
+        when (operation) {
+            Operation.CREATE_CN -> {
+                params["recordTag"] = listOf(Tag.TENDER)
+                params["isACallForCompetition"] = true
+            }
+            Operation.CREATE_PN -> {
+                params["recordTag"] = listOf(Tag.PLANNING)
+                params["isACallForCompetition"] = false
+            }
+            Operation.CREATE_PIN -> {
+                params["recordTag"] = listOf(Tag.PLANNING)
+                params["isACallForCompetition"] = false
+            }
+            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+        }
+        when (stage) {
+            Stage.PS -> {
+                params["msStatusDetails"] = TenderStatusDetails.PRESELECTION
+                params["relatedProcessType"] = RelatedProcessType.X_PRESELECTION
+            }
+            Stage.PQ -> {
+                params["msStatusDetails"] = TenderStatusDetails.PREQUALIFICATION
+                params["relatedProcessType"] = RelatedProcessType.X_PREQUALIFICATION
+            }
+            Stage.PN -> {
+                params["msStatusDetails"] = TenderStatusDetails.PLANNING_NOTICE
+                params["relatedProcessType"] = RelatedProcessType.PLANNING
+            }
+            Stage.PIN -> {
+                params["msStatusDetails"] = TenderStatusDetails.PRIOR_NOTICE
+                params["relatedProcessType"] = RelatedProcessType.PRIOR
+            }
+            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+        }
+        return params
     }
 
     override fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
