@@ -130,7 +130,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     override fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
-        /*Multi stage*/
+        /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
@@ -142,6 +142,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
             tender.procuringEntity = prevProcuringEntity
         }
+        /*record*/
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
@@ -178,7 +179,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     override fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
-        /*Multi stage*/
+        /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
@@ -229,7 +230,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     override fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
-        /*Multi stage*/
+        /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity

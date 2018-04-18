@@ -124,8 +124,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             }
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
-
-        /*MS*/
+        /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS)
                 ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
@@ -136,7 +135,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             tender.statusDetails = statusDetails
         }
         releaseDao.saveRelease(getMSEntity(cpid, ms))
-        /*Record*/
+        /*record*/
         val releaseEntity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, releaseEntity.jsonData)
@@ -167,7 +166,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             }
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
-        /*Multi stage*/
+        /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS)
                 ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
