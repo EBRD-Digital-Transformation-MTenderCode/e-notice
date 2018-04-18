@@ -160,7 +160,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
-        organizationService.processRecordPartiesFromBids(record)
+        if (Stage.valueOf(stage.toUpperCase()) == Stage.PS)
+            organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
