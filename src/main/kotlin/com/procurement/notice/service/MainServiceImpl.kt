@@ -24,6 +24,7 @@ interface MainService {
 @Service
 class MainServiceImpl(private val budgetService: BudgetService,
                       private val releaseService: ReleaseService,
+                      private val tenderService: TenderService,
                       private val enquiryService: EnquiryService) : MainService {
 
     override fun createRelease(cpId: String,
@@ -42,17 +43,19 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.CREATE_CN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_CN)
             Operation.CREATE_PN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PN)
             Operation.CREATE_PIN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PIN)
+            Operation.CREATE_PIN_ON_PN -> return releaseService.createPinOnPn(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.CREATE_CN_ON_PN -> return releaseService.createCnOnPn(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.CREATE_CN_ON_PIN -> return releaseService.createCnOnPin(cpId, newStage, previousStage!!, releaseDate, data)
             Operation.UPDATE_CN -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
             Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(cpId, newStage, releaseDate, data)
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
             Operation.UNSUSPEND_TENDER -> return enquiryService.unsuspendTender(cpId, newStage, releaseDate, data)
-            Operation.TENDER_PERIOD_END -> return releaseService.tenderPeriodEnd(cpId, newStage, releaseDate, data)
-            Operation.SUSPEND_TENDER -> return releaseService.suspendTender(cpId, newStage, releaseDate, data)
-            Operation.AWARD_BY_BID -> return releaseService.awardByBid(cpId, newStage, releaseDate, data)
-            Operation.AWARD_PERIOD_END -> return releaseService.awardPeriodEnd(cpId, newStage, releaseDate, data)
-            Operation.STANDSTILL_PERIOD -> return releaseService.standstillPeriod(cpId, newStage, releaseDate, data)
-            Operation.START_NEW_STAGE -> return releaseService.startNewStage(cpId, newStage, previousStage!!, releaseDate, data)
-            Operation.CREATE_PIN_ON_PN -> return releaseService.createPinOnPn(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.AWARD_BY_BID -> return tenderService.awardByBid(cpId, newStage, releaseDate, data)
+            Operation.SUSPEND_TENDER -> return tenderService.suspendTender(cpId, newStage, releaseDate, data)
+            Operation.START_NEW_STAGE -> return tenderService.startNewStage(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(cpId, newStage, releaseDate, data)
+            Operation.STANDSTILL_PERIOD -> return tenderService.standstillPeriod(cpId, newStage, releaseDate, data)
+            Operation.AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(cpId, newStage, releaseDate, data)
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }

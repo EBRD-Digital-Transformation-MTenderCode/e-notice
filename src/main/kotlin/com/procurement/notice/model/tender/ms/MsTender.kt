@@ -71,7 +71,7 @@ data class MsTender(
 
         @JsonProperty("hasEnquiries")
         @get:JsonProperty("hasEnquiries")
-        val hasEnquiries: Boolean?,
+        var hasEnquiries: Boolean?,
 
         @JsonProperty("eligibilityCriteria")
         val eligibilityCriteria: String?,

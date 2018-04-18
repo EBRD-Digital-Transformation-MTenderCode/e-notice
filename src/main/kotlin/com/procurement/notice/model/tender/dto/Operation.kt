@@ -21,7 +21,9 @@ enum class Operation(val value: String) {
     AWARD_PERIOD_END("awardPeriodEnd"),
     STANDSTILL_PERIOD("standstillPeriod"),
     START_NEW_STAGE("startNewStage"),
-    CREATE_PIN_ON_PN("createPINonPN");
+    CREATE_PIN_ON_PN("createPINonPN"),
+    CREATE_CN_ON_PN("createCNonPN"),
+    CREATE_CN_ON_PIN("createCNonPIN");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()
