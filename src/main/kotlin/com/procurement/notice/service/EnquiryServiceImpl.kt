@@ -35,42 +35,43 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
     }
 
     override fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val entity = releaseDao.getByCpIdAndStage(cpid, stage)
-                ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
-        val release = toObject(Record::class.java, entity.jsonData)
-        addEnquiryToTender(release, enquiry)
-        release.id = getReleaseId(release.ocid!!)
-        release.date = releaseDate
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release))
-        return getResponseDto(cpid, release.ocid!!)
+        val record = toObject(Record::class.java, entity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        addEnquiryToTender(record, enquiry)
+        record.id = getReleaseId(ocId)
+        record.date = releaseDate
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
     }
 
     override fun addAnswer(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val entity = releaseDao.getByCpIdAndStage(cpid, stage)
-                ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
-        val release = toObject(Record::class.java, entity.jsonData)
-        addAnswerToEnquiry(release, enquiry)
-        release.id = getReleaseId(release.ocid!!)
-        release.date = releaseDate
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release))
-        return getResponseDto(cpid, release.ocid!!)
+        val record = toObject(Record::class.java, entity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        addAnswerToEnquiry(record, enquiry)
+        record.id = getReleaseId(ocId)
+        record.date = releaseDate
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
     }
 
     override fun unsuspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
-        val release = toObject(Record::class.java, entity.jsonData)
+        val record = toObject(Record::class.java, entity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
-        addAnswerToEnquiry(release, dto.enquiry)
-        release.date = releaseDate
-        release.id = getReleaseId(release.ocid!!)
-        release.tender.statusDetails = dto.tender.statusDetails
-        release.tender.tenderPeriod = dto.tenderPeriod
-        release.tender.enquiryPeriod = dto.enquiryPeriod
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, release))
-        return getResponseDto(cpid, release.ocid!!)
+        addAnswerToEnquiry(record, dto.enquiry)
+        record.date = releaseDate
+        record.id = getReleaseId(ocId)
+        record.tender.statusDetails = dto.tender.statusDetails
+        record.tender.tenderPeriod = dto.tenderPeriod
+        record.tender.enquiryPeriod = dto.enquiryPeriod
+        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
     }
 
     private fun addEnquiryToTender(release: Record, enquiry: RecordEnquiry) {

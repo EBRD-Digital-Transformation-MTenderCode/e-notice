@@ -9,5 +9,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     AWARD_NOT_FOUND("00.06", "Award not found."),
     BID_NOT_FOUND("00.07", "Bid not found."),
     LOT_NOT_FOUND("00.08", "Lot not found."),
-    STAGE_ERROR("00.09", "Stage invalid for this type of operation.")
+    STAGE_ERROR("00.09", "Stage invalid for this type of operation."),
+    BREAKDOWN_ERROR("00.10", "Budget breakdown is empty."),
+    OCID_ERROR("00.11", "OCID is empty.")
 }

@@ -23,7 +23,7 @@ class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(NullPointerException::class)
     fun nullPointer(e: NullPointerException) =
-            ResponseDto(false, getErrors(e.javaClass.name, e.message), null)
+            ResponseDto(false, getErrors("null", "NullPointerException"), null)
 
     @ResponseBody
     @ResponseStatus(OK)
@@ -41,26 +41,26 @@ class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(JsonMappingException::class)
     fun jsonMapping(e: JsonMappingException) =
-            ResponseDto(false, getErrors(e.javaClass.name, e.message), null)
+            ResponseDto(false, getErrors("JsonMappingException", e.message), null)
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(IllegalArgumentException::class)
     fun illegalArgument(e: IllegalArgumentException) =
-            ResponseDto(false, getErrors(e.javaClass.name, e.message), null)
+            ResponseDto(false, getErrors("IllegalArgumentException", e.message), null)
 
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun methodArgumentTypeMismatch(e: MethodArgumentTypeMismatchException) =
-            ResponseDto(false, getErrors(e.javaClass.name, e.message), null)
+            ResponseDto(false, getErrors("MethodArgumentTypeMismatchException", e.message), null)
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(ServletException::class)
     fun servlet(e: ServletException) =
-            ResponseDto(false, getErrors(e.javaClass.name, e.message), null)
+            ResponseDto(false, getErrors("ServletException", e.message), null)
 
     @ResponseBody
     @ResponseStatus(OK)

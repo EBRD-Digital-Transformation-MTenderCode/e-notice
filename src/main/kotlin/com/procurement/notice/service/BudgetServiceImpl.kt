@@ -13,8 +13,6 @@ import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.time.LocalDateTime
 
 @Service
