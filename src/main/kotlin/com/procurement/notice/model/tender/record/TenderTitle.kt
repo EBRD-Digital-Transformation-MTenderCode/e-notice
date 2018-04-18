@@ -3,8 +3,9 @@ package com.procurement.notice.model.tender.record
 enum class TenderTitle(val text: String) {
 
     PS("Preselection"),
-    PQ("Preselection"),
+    PQ("Prequalification"),
     PN("Planning Notice"),
-    PIN("Prior Notice")
+    PIN("Prior Notice"),
+    EV("Evaluation")
 
 }
