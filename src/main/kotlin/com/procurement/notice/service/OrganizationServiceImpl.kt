@@ -123,6 +123,7 @@ class OrganizationServiceImpl : OrganizationService {
         if (record.parties == null) record.parties = hashSetOf()
         if (record.bids?.details != null) {
             record.bids!!.details!!.asSequence()
+                    .filter { it.tenderers != null }
                     .flatMap { it.tenderers!!.asSequence() }
                     .forEach {
                         addParty(record.parties!!, it, PartyRole.TENDERER)
@@ -135,6 +136,7 @@ class OrganizationServiceImpl : OrganizationService {
         if (record.parties == null) record.parties = hashSetOf()
         if (record.awards != null) {
             record.awards!!.asSequence()
+                    .filter { it.suppliers != null }
                     .flatMap { it.suppliers!!.asSequence() }
                     .forEach {
                         addParty(record.parties!!, it, PartyRole.SUPPLIER)

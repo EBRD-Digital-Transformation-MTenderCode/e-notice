@@ -23,7 +23,7 @@ class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(NullPointerException::class)
     fun nullPointer(e: NullPointerException) =
-            ResponseDto(false, getErrors("null", "NullPointerException"), null)
+            ResponseDto(false, getErrors("NullPointerException", "NullPointerException"), null)
 
     @ResponseBody
     @ResponseStatus(OK)

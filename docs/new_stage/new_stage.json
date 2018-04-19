@@ -1,182 +1,354 @@
 {
-  "tender": {
-    "id": "ocds-t1s2t3-TEST-1523881130487",
-    "title": "White tax away type industry real.",
-    "description": "Account teach those. Current discover quickly these follow general. Public billion forward response prove.",
-    "status": "active",
-    "statusDetails": "empty",
-    "classification": {
-      "scheme": "CPV",
-      "id": "79311200-9",
-      "description": "Survey conduction services"
-    },
-    "acceleratedProcedure": {
-      "isAcceleratedProcedure": false
-    },
-    "designContest": {
-      "serviceContractAward": false
-    },
-    "electronicWorkflows": {
-      "useOrdering": false,
-      "usePayment": false,
-      "acceptInvoicing": false
-    },
-    "jointProcurement": {
-      "isJointProcurement": false
-    },
-    "procedureOutsourcing": {
-      "procedureOutsourced": false
-    },
-    "framework": {
-      "isAFramework": false
-    },
-    "dynamicPurchasingSystem": {
-      "hasDynamicPurchasingSystem": false
-    },
-    "legalBasis": "DIRECTIVE_2014_24_EU",
-    "procurementMethod": "selective",
-    "procurementMethodDetails": "Performance themselves reality trial too pass girl.",
-    "procurementMethodRationale": "Eat organization some major project land. Spring line inside interest reach. Leg help true into himself.",
-    "procurementMethodAdditionalInfo": "Response although politics character notice hundred kind. Far money although kid hand investment. Ability finish sell sport maintain push. Man truth last a environmental amount marriage.",
-    "mainProcurementCategory": "services",
-    "additionalProcurementCategories": [
-      "goods"
-    ],
-    "eligibilityCriteria": "At yourself name mention experience coach reason. Film figure in need.",
-    "contractPeriod": {
-      "startDate": "2018-04-16T12:18:49Z",
-      "endDate": "2018-05-26T15:48:46Z"
-    },
-    "procuringEntity": {
-      "name": "Moreno, Hernandez and Davis",
-      "id": "UA-EDR-505-31-7208",
-      "identifier": {
-        "id": "505-31-7208",
-        "scheme": "UA-EDR",
-        "legalName": "Moreno, Hernandez and Davis Group",
-        "uri": "https://www.walters.org/homepage.htm"
-      },
-      "address": {
-        "streetAddress": "54617 Samantha Crossing",
-        "locality": "Port Christopher",
-        "region": "Tennessee",
-        "postalCode": "77413-7017",
-        "countryName": "Cote d'Ivoire"
-      },
-      "additionalIdentifiers": [
+  "bids": [
+    {
+      "id": "08daae00-43b9-11e8-b742-2d522df22a44",
+      "date": "2018-04-19T10:07:06Z",
+      "status": "withdrawn",
+      "statusDetails": "empty",
+      "tenderers": [
         {
-          "id": "219-52-9850",
-          "scheme": "UA-EDR",
-          "legalName": "Moreno, Hernandez and Davis LLC",
-          "uri": "https://www.ward.net/main.asp"
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7",
+          "identifier": {
+            "id": "987654321",
+            "scheme": "UA-EDR",
+            "legalName": "TEST Provider 7 LEGAL",
+            "uri": "https://test1.ua"
+          },
+          "address": {
+            "streetAddress": "Street 45",
+            "locality": "Locality",
+            "region": "Region",
+            "postalCode": "123456",
+            "countryName": "Country"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "987654377",
+              "scheme": "UA-EDR",
+              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
+              "uri": "https://add.test1.ua"
+            }
+          ],
+          "contactPoint": {
+            "name": "WHO ARE YOU",
+            "email": "test1@test.test",
+            "telephone": "+38022222222",
+            "faxNumber": "+38022222222",
+            "url": "https://cp.test1.ua"
+          }
         }
       ],
-      "contactPoint": {
-        "name": "Courtney Butler",
-        "email": "elizabethanderson@hotmail.com",
-        "telephone": "210-012-8749x751",
-        "faxNumber": "1-939-457-4456",
-        "url": "http://lopez.com/home.html"
-      }
-    },
-    "value": {
-      "amount": 3.89810478E7,
-      "currency": "ESA"
-    },
-    "lotGroups": [
-      {
-        "optionToCombine": false
-      }
-    ],
-    "lots": [
-      {
-        "id": "5221a780-4170-11e8-8fab-13cf59033386",
-        "title": "Page traditional writer community majority speak discuss call.",
-        "description": "Mention method reflect actually easy program system option. Student class nice lawyer leader young.",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 3561135.57,
-          "currency": "ESA"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-04-16T12:18:49Z",
-          "endDate": "2018-10-08T20:50:50Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "78507 Jessica Fields",
-            "locality": "Joshuafort",
-            "region": "Oklahoma",
-            "postalCode": "76761-2580",
-            "countryName": "Peru"
-          },
-          "description": "Meeting stock since window artist. Bed form father deal know account recognize cause. Begin goal understand when save serious."
+      "documents": [
+        {
+          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+          "documentType": "tenderNotice",
+          "title": "Title Test CN document to tender",
+          "description": "Description Test CN document to tender",
+          "language": "ro",
+          "relatedLots": [
+            "0452d161-43b8-11e8-befd-373bd8d530b4"
+          ],
+          "datePublished": "2018-04-19T10:07:05Z"
         }
-      }
-    ],
-    "items": [
-      {
-        "id": "52218070-4170-11e8-8fab-13cf59033386",
-        "description": "Much lose mean certain investment energy read best. Rock maybe case fall before. I end popular.",
-        "classification": {
-          "scheme": "CPV",
-          "id": "79311200-9",
-          "description": "Survey conduction services"
-        },
-        "additionalClassifications": [
-          {
-            "scheme": "CPV",
-            "id": "24221000-9",
-            "description": "Dyeing extracts"
+      ],
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d530b4"
+      ]
+    },
+    {
+      "id": "1141b610-43b9-11e8-b742-2d522df22a44",
+      "date": "2018-04-19T10:04:37Z",
+      "status": "pending",
+      "statusDetails": "empty",
+      "tenderers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7",
+          "identifier": {
+            "id": "987654321",
+            "scheme": "UA-EDR",
+            "legalName": "TEST Provider 7 LEGAL",
+            "uri": "https://test1.ua"
+          },
+          "address": {
+            "streetAddress": "Street 45",
+            "locality": "Locality",
+            "region": "Region",
+            "postalCode": "123456",
+            "countryName": "Country"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "987654377",
+              "scheme": "UA-EDR",
+              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
+              "uri": "https://add.test1.ua"
+            }
+          ],
+          "contactPoint": {
+            "name": "WHO ARE YOU",
+            "email": "test1@test.test",
+            "telephone": "+38022222222",
+            "faxNumber": "+38022222222",
+            "url": "https://cp.test1.ua"
           }
-        ],
-        "quantity": 61622.66,
-        "unit": {
-          "id": "MLT",
-          "name": "millilitre"
-        },
-        "relatedLot": "5221a780-4170-11e8-8fab-13cf59033386"
-      }
-    ],
-    "awardCriteria": "bestValueToGovernment",
-    "requiresElectronicCatalogue": false,
-    "submissionMethod": [
-      "written"
-    ],
-    "submissionMethodRationale": [
-      "PHYSICAL_MODEL"
-    ],
-    "submissionMethodDetails": "For people himself style hospital PM. Sign season him.",
-    "submissionLanguages": [
-      "fi"
-    ],
-    "tenderPeriod": {
-      "startDate": "2018-04-16T12:34:01Z",
-      "endDate": "2018-04-16T12:53:00Z"
+        }
+      ],
+      "documents": [
+        {
+          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+          "documentType": "tenderNotice",
+          "title": "Title Test CN document to tender",
+          "description": "Description Test CN document to tender",
+          "language": "ro",
+          "relatedLots": [
+            "0452d161-43b8-11e8-befd-373bd8d530b4"
+          ],
+          "datePublished": "2018-04-19T10:07:05Z"
+        }
+      ],
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ]
+    },
+    {
+      "id": "488708a0-43b9-11e8-b742-2d522df22a44",
+      "date": "2018-04-19T10:06:09Z",
+      "status": "pending",
+      "statusDetails": "empty",
+      "tenderers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7",
+          "identifier": {
+            "id": "987654321",
+            "scheme": "UA-EDR",
+            "legalName": "TEST Provider 7 LEGAL",
+            "uri": "https://test1.ua"
+          },
+          "address": {
+            "streetAddress": "Street 45",
+            "locality": "Locality",
+            "region": "Region",
+            "postalCode": "123456",
+            "countryName": "Country"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "987654377",
+              "scheme": "UA-EDR",
+              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
+              "uri": "https://add.test1.ua"
+            }
+          ],
+          "contactPoint": {
+            "name": "WHO ARE YOU",
+            "email": "test1@test.test",
+            "telephone": "+38022222222",
+            "faxNumber": "+38022222222",
+            "url": "https://cp.test1.ua"
+          }
+        }
+      ],
+      "documents": [
+        {
+          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+          "documentType": "tenderNotice",
+          "title": "Title Test CN document to tender",
+          "description": "Description Test CN document to tender",
+          "language": "ro",
+          "relatedLots": [
+            "0452d161-43b8-11e8-befd-373bd8d530b4"
+          ],
+          "datePublished": "2018-04-19T10:07:05Z"
+        }
+      ],
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ]
+    },
+    {
+      "id": "67aef490-43b9-11e8-b742-2d522df22a44",
+      "date": "2018-04-19T10:07:02Z",
+      "status": "pending",
+      "statusDetails": "empty",
+      "tenderers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7",
+          "identifier": {
+            "id": "987654321",
+            "scheme": "UA-EDR",
+            "legalName": "TEST Provider 7 LEGAL",
+            "uri": "https://test1.ua"
+          },
+          "address": {
+            "streetAddress": "Street 45",
+            "locality": "Locality",
+            "region": "Region",
+            "postalCode": "123456",
+            "countryName": "Country"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "987654377",
+              "scheme": "UA-EDR",
+              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
+              "uri": "https://add.test1.ua"
+            }
+          ],
+          "contactPoint": {
+            "name": "WHO ARE YOU",
+            "email": "test1@test.test",
+            "telephone": "+38022222222",
+            "faxNumber": "+38022222222",
+            "url": "https://cp.test1.ua"
+          }
+        }
+      ],
+      "documents": [
+        {
+          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
+          "documentType": "tenderNotice",
+          "title": "Title Test CN document to tender",
+          "description": "Description Test CN document to tender",
+          "language": "ro",
+          "relatedLots": [
+            "0452d161-43b8-11e8-befd-373bd8d530b4"
+          ],
+          "datePublished": "2018-04-19T10:07:05Z"
+        }
+      ],
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ]
     }
+  ],
+  "lots": [
+    {
+      "id": "0452d161-43b8-11e8-befd-373bd8d530b4",
+      "title": "Traditional partner without ago six yard loss community.",
+      "description": "I realize item debate job above. Over ok scene. Perform though audience.",
+      "status": "unsuccessful",
+      "statusDetails": "empty",
+      "value": {
+        "amount": 3041338.25,
+        "currency": "MOP"
+      },
+      "options": [
+        {
+          "hasOptions": false
+        }
+      ],
+      "recurrentProcurement": [
+        {
+          "isRecurrent": false
+        }
+      ],
+      "renewals": [
+        {
+          "hasRenewals": false
+        }
+      ],
+      "variants": [
+        {
+          "hasVariants": false
+        }
+      ],
+      "contractPeriod": {
+        "startDate": "2018-04-19T09:57:05Z",
+        "endDate": "2018-09-05T20:06:46Z"
+      },
+      "placeOfPerformance": {
+        "address": {
+          "streetAddress": "235 Jennifer Forks",
+          "locality": "Lake Xavier",
+          "region": "Maryland",
+          "postalCode": "94958",
+          "countryName": "Morocco"
+        },
+        "description": "Discover special free. Occur purpose while receive accept may carry."
+      }
+    }
+  ],
+  "awardPeriod": {
+    "startDate": "2018-04-19T10:07:05Z"
   },
-  "bids": {
-    "details": []
+  "awards": [
+    {
+      "id": "6a145bd0-43b9-11e8-bd9f-93da4697d57e",
+      "token": "04e682f1-15aa-4d5d-896f-89850045d36b",
+      "date": "2018-04-19T10:07:06Z",
+      "description": "",
+      "status": "pending",
+      "statusDetails": "empty",
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ],
+      "relatedBid": "1141b610-43b9-11e8-b742-2d522df22a44",
+      "suppliers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7"
+        }
+      ]
+    },
+    {
+      "id": "6a145bd1-43b9-11e8-bd9f-93da4697d57e",
+      "token": "74fc5839-8048-425e-85ea-f46829e12f6b",
+      "date": "2018-04-19T10:07:06Z",
+      "description": "",
+      "status": "pending",
+      "statusDetails": "empty",
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ],
+      "relatedBid": "488708a0-43b9-11e8-b742-2d522df22a44",
+      "suppliers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7"
+        }
+      ]
+    },
+    {
+      "id": "6a145bd2-43b9-11e8-bd9f-93da4697d57e",
+      "token": "2099dc68-b663-4402-87d5-bbd9539d5640",
+      "date": "2018-04-19T10:07:06Z",
+      "description": "",
+      "status": "pending",
+      "statusDetails": "empty",
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d5304"
+      ],
+      "relatedBid": "67aef490-43b9-11e8-b742-2d522df22a44",
+      "suppliers": [
+        {
+          "id": "UA-EDR-987654321",
+          "name": "TEST Provider 7"
+        }
+      ]
+    },
+    {
+      "id": "6a145bd3-43b9-11e8-bd9f-93da4697d57e",
+      "token": "2af1a6eb-8414-43a3-9dc2-c16bd1789cfa",
+      "date": "2018-04-19T10:07:06Z",
+      "description": "",
+      "status": "unsuccessful",
+      "statusDetails": "empty",
+      "relatedLots": [
+        "0452d161-43b8-11e8-befd-373bd8d530b4"
+      ]
+    }
+  ],
+  "unsuccessfulLots": [
+    {
+      "id": "0452d161-43b8-11e8-befd-373bd8d530b4"
+    }
+  ],
+  "tenderPeriod": {
+    "startDate": "2018-04-19T09:57:05Z",
+    "endDate": "2018-04-19T10:07:05Z"
   }
 }
