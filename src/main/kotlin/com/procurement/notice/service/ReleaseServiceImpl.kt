@@ -272,7 +272,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
 
 
     fun getParamsForUpdateCnOnPnPin(stage: Stage): Params {
-        var params = Params()
+        val params = Params()
         when (stage) {
             Stage.PS -> {
                 params.statusDetails = TenderStatusDetails.PRESELECTION
