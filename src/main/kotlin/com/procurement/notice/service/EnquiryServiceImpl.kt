@@ -81,11 +81,9 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
     }
 
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
-        enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }
-                .apply {
-                    if (this != null) this.answer = enquiry.answer
-                    else throw ErrorException(ErrorType.DATA_NOT_FOUND)
-                }
+        enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
+            this.answer = enquiry.answer
+        } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
     }
 
     private fun getReleaseId(ocId: String): String {

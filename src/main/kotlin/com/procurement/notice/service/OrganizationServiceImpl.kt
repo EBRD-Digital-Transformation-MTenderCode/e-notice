@@ -146,7 +146,7 @@ class OrganizationServiceImpl : OrganizationService {
     }
 
     private fun getParty(parties: HashSet<Organization>, partyId: String): Organization? {
-        return parties.asSequence().filter { it.id == partyId }.firstOrNull()
+        return parties.asSequence().firstOrNull { it.id == partyId }
     }
 
     private fun clearOrganizationReference(organization: OrganizationReference) {

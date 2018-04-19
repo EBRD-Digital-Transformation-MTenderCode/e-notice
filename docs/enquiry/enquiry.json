@@ -1,0 +1,42 @@
+{
+  "token": "679ec287-7609-47f4-ab75-403a3c6f357c",
+  "enquiry": {
+    "id": "4d57c360-43e1-11e8-9581-41f4e93c73cf",
+    "date": "2018-04-19T14:52:37Z",
+    "author": {
+      "id": "UA-EDR-7777777",
+      "name": "My ORG",
+      "identifier": {
+        "id": "7777777",
+        "scheme": "UA-EDR",
+        "legalName": "My Legal ORG",
+        "uri": "http://org.com"
+      },
+      "address": {
+        "streetAddress": "Vozdvyjenska",
+        "locality": "Kyiv",
+        "region": "Kyiv",
+        "postalCode": "01000",
+        "countryName": "Ukraine"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "88888888",
+          "scheme": "UA-EDR",
+          "legalName": "My Additional Legal Name ORG",
+          "uri": "http://my.add.org.com"
+        }
+      ],
+      "contactPoint": {
+        "name": "What Is My Name",
+        "email": "test@test.test",
+        "telephone": "+3802222222",
+        "faxNumber": "+38022222222",
+        "url": "http://mycontactpointpage.com"
+      }
+    },
+    "title": "What is title for my question",
+    "description": "Ohhhh... this is description for my question",
+    "answer": "answer"
+  }
+}
