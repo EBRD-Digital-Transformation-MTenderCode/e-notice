@@ -43,10 +43,12 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val ei = toObject(EI::class.java, data.toString())
-        ei.id = getReleaseId(cpid)
-        ei.date = releaseDate
-        ei.tag = listOf(Tag.COMPILED)
-        ei.initiationType = InitiationType.TENDER
+        ei.apply {
+            id = getReleaseId(cpid)
+            date = releaseDate
+            tag = listOf(Tag.COMPILED)
+            initiationType = InitiationType.TENDER
+        }
         organizationService.processEiParties(ei)
         budgetDao.saveBudget(getEiEntity(ei, stage))
         return getResponseDto(ei.ocid, ei.ocid)
@@ -56,19 +58,25 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val entity = budgetDao.getByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateEi = toObject(EI::class.java, data.toString())
         val ei = toObject(EI::class.java, entity.jsonData)
-        ei.id = getReleaseId(cpid)
-        ei.date = releaseDate
-        updateEiDto(ei, updateEi)
+        ei.apply {
+            id = getReleaseId(cpid)
+            date = releaseDate
+            title = updateEi.title
+            planning = updateEi.planning
+            tender = updateEi.tender
+        }
         budgetDao.saveBudget(getEiEntity(ei, stage))
         return getResponseDto(ei.ocid, ei.ocid)
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val fs = toObject(FS::class.java, data.toString())
-        fs.id = getReleaseId(fs.ocid)
-        fs.date = releaseDate
-        fs.tag = listOf(Tag.PLANNING)
-        fs.initiationType = InitiationType.TENDER
+        fs.apply {
+            id = getReleaseId(fs.ocid)
+            date = releaseDate
+            tag = listOf(Tag.PLANNING)
+            initiationType = InitiationType.TENDER
+        }
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
         val amount = fs.planning?.budget?.amount?.amount ?: 0.00
@@ -83,9 +91,14 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val fs = toObject(FS::class.java, entity.jsonData)
         val updateAmount = updateFs.planning?.budget?.amount?.amount ?: 0.00
         val amount = fs.planning?.budget?.amount?.amount ?: 0.00
-        fs.id = getReleaseId(ocid)
-        fs.date = releaseDate
-        updateFsDto(fs, updateFs)
+        fs.apply {
+            id = getReleaseId(ocid)
+            date = releaseDate
+            title = updateFs.title
+            tender = updateFs.tender
+            parties = updateFs.parties
+            planning = updateFs.planning
+        }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
         if (updateAmount != amount) updateEiAmountByFs(cpid)
         return getResponseDto(cpid, fs.ocid)
@@ -115,22 +128,13 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
     }
 
+    private fun getReleaseId(ocId: String): String {
+        return ocId + SEPARATOR + milliNowUTC()
+    }
+
     private fun getCpIdFromOcId(ocId: String): String {
         val pos = ocId.indexOf(FS_SEPARATOR)
         return ocId.substring(0, pos)
-    }
-
-    private fun updateEiDto(ei: EI, updateEi: EI) {
-        ei.title = updateEi.title
-        ei.planning = updateEi.planning
-        ei.tender = updateEi.tender
-    }
-
-    private fun updateFsDto(fs: FS, updateFs: FS) {
-        fs.title = updateFs.title
-        fs.tender = updateFs.tender
-        fs.parties = updateFs.parties
-        fs.planning = updateFs.planning
     }
 
     private fun createEiByFs(eiCpId: String, fsOcId: String) {
@@ -164,10 +168,6 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
                 amount = ei.planning?.budget?.amount?.amount,
                 jsonData = toJson(ei)
         )
-    }
-
-    private fun getReleaseId(ocId: String): String {
-        return ocId + SEPARATOR + milliNowUTC()
     }
 
     private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: Double?): BudgetEntity {
