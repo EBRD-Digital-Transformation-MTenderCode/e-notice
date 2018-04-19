@@ -72,7 +72,7 @@ data class RecordTender(
         var hasEnquiries: Boolean?,
 
         @JsonProperty("enquiries")
-        val enquiries: ArrayList<RecordEnquiry>?,
+        var enquiries: HashSet<RecordEnquiry>?,
 
         @JsonProperty("amendments")
         val amendments: List<Amendment>?,

@@ -1,4 +1,4 @@
-package com.procurement.notice.service
+package com.procurement.notice.model.tender.record
 
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Tag

@@ -11,10 +11,7 @@ import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.dto.Operation
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
-import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
-import com.procurement.notice.model.tender.record.TenderDescription
-import com.procurement.notice.model.tender.record.TenderTitle
+import com.procurement.notice.model.tender.record.*
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime

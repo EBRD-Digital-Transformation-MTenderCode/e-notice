@@ -8,6 +8,7 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.createObjectNode
 import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toJson
@@ -39,9 +40,9 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val record = toObject(Record::class.java, entity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        addEnquiryToTender(record, enquiry)
         record.id = getReleaseId(ocId)
         record.date = releaseDate
+        addEnquiryToTender(record.tender, enquiry)
         releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
@@ -51,9 +52,9 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val record = toObject(Record::class.java, entity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        addAnswerToEnquiry(record, enquiry)
         record.id = getReleaseId(ocId)
         record.date = releaseDate
+        addAnswerToEnquiry(record.tender.enquiries, enquiry)
         releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
@@ -64,30 +65,27 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val record = toObject(Record::class.java, entity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
-        addAnswerToEnquiry(record, dto.enquiry)
         record.date = releaseDate
         record.id = getReleaseId(ocId)
         record.tender.statusDetails = dto.tender.statusDetails
         record.tender.tenderPeriod = dto.tenderPeriod
         record.tender.enquiryPeriod = dto.enquiryPeriod
+        addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
         releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
-    private fun addEnquiryToTender(release: Record, enquiry: RecordEnquiry) {
-        if (release.tender.enquiries != null) {
-            val index = release.tender.enquiries!!.indexOfFirst { it.id == enquiry.id }
-            if (index != -1) release.tender.enquiries!![index] = enquiry
-            else release.tender.enquiries!!.add(enquiry)
-        }
+    private fun addEnquiryToTender(tender: RecordTender, enquiry: RecordEnquiry) {
+        if (tender.enquiries == null) tender.enquiries = hashSetOf()
+        tender.enquiries!!.add(enquiry)
     }
 
-    private fun addAnswerToEnquiry(release: Record, enquiry: RecordEnquiry) {
-        if (release.tender.enquiries != null) {
-            val index = release.tender.enquiries!!.indexOfFirst { it.id == enquiry.id }
-            if (index != -1) release.tender.enquiries!![index].answer = enquiry.answer
-            else throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        }
+    private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
+        enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }
+                .apply {
+                    if (this != null) this.answer = enquiry.answer
+                    else throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                }
     }
 
     private fun getReleaseId(ocId: String): String {
