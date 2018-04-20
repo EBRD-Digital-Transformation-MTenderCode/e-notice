@@ -69,7 +69,7 @@ data class RecordTender(
 
         @JsonProperty("hasEnquiries")
         @get:JsonProperty("hasEnquiries")
-        var hasEnquiries: Boolean?,
+        var hasEnquiries: Boolean? = false,
 
         @JsonProperty("enquiries")
         var enquiries: HashSet<RecordEnquiry>?,

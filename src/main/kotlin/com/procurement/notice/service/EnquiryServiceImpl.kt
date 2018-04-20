@@ -76,7 +76,6 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         record.id = getReleaseId(ocId)
         record.date = releaseDate
-        record.date = releaseDate
         record.tender.enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply { this.answer = enquiry.answer }
                 ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
