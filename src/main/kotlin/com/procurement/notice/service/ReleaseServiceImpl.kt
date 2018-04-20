@@ -69,7 +69,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             initiationType = InitiationType.TENDER
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
             tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
-            tender.hasEnquiries = false
             hasPreviousNotice = false
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition!!)
         }
@@ -99,8 +98,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tender.procuringEntity = prevProcuringEntity
         }
         /*record*/
-        val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
         val prOcId = record.ocid!!
         val ocId = getOcId(cpid, stage)
@@ -126,7 +124,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         }
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.PRIOR)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
+        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -175,9 +173,9 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = true
             purposeOfNotice?.isACallForCompetition = true
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
+        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -226,9 +224,9 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = true
             purposeOfNotice?.isACallForCompetition = true
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
+        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PRIOR)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -274,12 +272,15 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         when (stage) {
             Stage.PS -> {
                 params.statusDetails = TenderStatusDetails.PRESELECTION
+                params.relatedProcessType = RelatedProcessType.X_PRESELECTION
             }
             Stage.PQ -> {
                 params.statusDetails = TenderStatusDetails.PREQUALIFICATION
+                params.relatedProcessType = RelatedProcessType.X_PREQUALIFICATION
             }
             Stage.EV -> {
                 params.statusDetails = TenderStatusDetails.EVALUATION
+                params.relatedProcessType = RelatedProcessType.X_EVALUATION
             }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
