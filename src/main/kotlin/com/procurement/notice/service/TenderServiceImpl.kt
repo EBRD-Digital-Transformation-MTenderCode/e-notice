@@ -231,22 +231,20 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
 
     private fun updateAward(record: Record, award: Award) {
         if (record.awards != null) {
-            val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id }
-                    ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
-            award.date?.let { updatableAward.date = award.date }
-            award.description?.let { updatableAward.description = award.description }
-            award.statusDetails?.let { updatableAward.statusDetails = award.statusDetails }
-            award.documents?.isNotEmpty().let { updatableAward.documents = award.documents }
-            award.statusDetails?.let { updatableAward.statusDetails = award.statusDetails }
+            val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id } ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
+            if (award.date != null) updatableAward.date = award.date
+            if (award.description != null) updatableAward.description = award.description
+            if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
+            if (award.documents != null) updatableAward.documents = award.documents
+            if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
         }
     }
 
     private fun updateBid(record: Record, bid: Bid) {
         if (record.bids?.details != null) {
-            val updatableBid = record.bids!!.details!!.asSequence().firstOrNull { it.id == bid.id }
-                    ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
-            bid.date?.let { updatableBid.date = bid.date }
-            bid.statusDetails?.let { updatableBid.statusDetails = bid.statusDetails }
+            val updatableBid = record.bids!!.details!!.asSequence().firstOrNull { it.id == bid.id } ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            if (bid.date != null) updatableBid.date = bid.date
+            if (bid.statusDetails != null) updatableBid.statusDetails = bid.statusDetails
         }
     }
 
