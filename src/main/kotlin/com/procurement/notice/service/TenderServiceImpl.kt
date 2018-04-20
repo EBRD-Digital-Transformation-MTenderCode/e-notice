@@ -33,7 +33,6 @@ interface TenderService {
 
 @Service
 class TenderServiceImpl(private val releaseDao: ReleaseDao,
-                        private val budgetService: BudgetService,
                         private val organizationService: OrganizationService,
                         private val relatedProcessService: RelatedProcessService) : TenderService {
 

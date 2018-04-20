@@ -28,6 +28,7 @@ interface EnquiryService {
 
 @Service
 class EnquiryServiceImpl(private val releaseService: ReleaseService,
+                         private val organizationService: OrganizationService,
                          private val releaseDao: ReleaseDao) : EnquiryService {
 
     companion object {
@@ -42,7 +43,9 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         record.id = getReleaseId(ocId)
         record.date = releaseDate
+        record.tender.hasEnquiries = true
         addEnquiryToTender(record.tender, enquiry)
+        organizationService.processRecordPartiesFromEnquiry(record, enquiry)
         releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }

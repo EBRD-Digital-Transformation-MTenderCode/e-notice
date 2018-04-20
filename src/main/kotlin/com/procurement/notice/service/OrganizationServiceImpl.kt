@@ -6,6 +6,7 @@ import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
+import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
@@ -22,6 +23,8 @@ interface OrganizationService {
     fun processRecordPartiesFromBids(record: Record)
 
     fun processRecordPartiesFromAwards(record: Record)
+
+    fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry)
 }
 
 @Service
@@ -100,25 +103,6 @@ class OrganizationServiceImpl : OrganizationService {
         checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
     }
 
-    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
-        val partyPresent = getParty(parties, organization.id!!)
-        if (partyPresent != null) partyPresent.roles.add(role)
-        else {
-            val party = Organization(
-                    id = organization.id,
-                    name = organization.name,
-                    identifier = organization.identifier,
-                    additionalIdentifiers = organization.additionalIdentifiers,
-                    address = organization.address,
-                    contactPoint = organization.contactPoint,
-                    roles = setOf(role).toHashSet(),
-                    details = organization.details,
-                    buyerProfile = organization.buyerProfile
-            )
-            parties.add(party)
-        }
-    }
-
     override fun processRecordPartiesFromBids(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
         if (record.bids?.details != null) {
@@ -142,6 +126,33 @@ class OrganizationServiceImpl : OrganizationService {
                         addParty(record.parties!!, it, PartyRole.SUPPLIER)
                         clearOrganizationReference(it)
                     }
+        }
+    }
+
+    override fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
+        if (record.parties == null) record.parties = hashSetOf()
+        if (enquiry.author != null) {
+            addParty(record.parties!!, enquiry.author, PartyRole.ENQUIRER)
+            clearOrganizationReference(enquiry.author)
+        }
+    }
+
+    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
+        val partyPresent = getParty(parties, organization.id!!)
+        if (partyPresent != null) partyPresent.roles.add(role)
+        else {
+            val party = Organization(
+                    id = organization.id,
+                    name = organization.name,
+                    identifier = organization.identifier,
+                    additionalIdentifiers = organization.additionalIdentifiers,
+                    address = organization.address,
+                    contactPoint = organization.contactPoint,
+                    roles = setOf(role).toHashSet(),
+                    details = organization.details,
+                    buyerProfile = organization.buyerProfile
+            )
+            parties.add(party)
         }
     }
 

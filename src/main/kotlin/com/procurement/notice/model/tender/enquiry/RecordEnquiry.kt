@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.point.databinding.JsonDateDeserializer
 import com.procurement.point.databinding.JsonDateSerializer
 import java.time.LocalDateTime
@@ -22,7 +23,7 @@ data class RecordEnquiry(
         val date: LocalDateTime?,
 
         @JsonProperty("author")
-        val author: EnquiryAuthor?,
+        val author: OrganizationReference?,
 
         @JsonProperty("title")
         val title: String?,
