@@ -165,7 +165,6 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
                 releaseDate = ei.date!!.toDate(),
                 releaseId = ei.id!!,
                 stage = stage,
-                amount = ei.planning?.budget?.amount?.amount,
                 jsonData = toJson(ei)
         )
     }

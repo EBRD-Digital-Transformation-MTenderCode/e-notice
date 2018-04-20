@@ -14,7 +14,7 @@ data class BudgetEntity(
 
         var stage: String,
 
-        var amount: Double?,
+        var amount: Double? = 0.00,
 
         var jsonData: String
 )
