@@ -98,7 +98,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tender.procuringEntity = prevProcuringEntity
         }
         /*record*/
-        val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
         val prOcId = record.ocid!!
         val ocId = getOcId(cpid, stage)

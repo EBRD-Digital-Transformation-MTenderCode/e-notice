@@ -6,7 +6,7 @@ import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
-import java.util.HashSet
+import java.util.*
 
 @JsonPropertyOrder("awardPeriod", "awards", "lots", "bids")
 data class AwardPeriodEndDto(

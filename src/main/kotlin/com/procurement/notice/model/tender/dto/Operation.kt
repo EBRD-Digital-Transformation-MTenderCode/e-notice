@@ -1,7 +1,7 @@
 package com.procurement.notice.model.tender.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import java.util.HashMap
+import java.util.*
 
 enum class Operation(val value: String) {
     CREATE_EI("createEI"),

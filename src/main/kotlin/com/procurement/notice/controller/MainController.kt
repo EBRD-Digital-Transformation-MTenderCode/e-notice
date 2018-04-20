@@ -13,7 +13,7 @@ import javax.validation.Valid
 
 @Validated
 @RestController
-@RequestMapping(value = ["/release"])
+@RequestMapping("/release")
 class MainController(private val mainService: MainService) {
 
     @PostMapping
