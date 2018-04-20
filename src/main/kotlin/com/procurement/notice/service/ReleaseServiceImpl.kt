@@ -183,6 +183,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     }
 
     override fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+        /*dto*/
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
         /*ms*/

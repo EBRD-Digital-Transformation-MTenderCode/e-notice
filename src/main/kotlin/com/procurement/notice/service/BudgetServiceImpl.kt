@@ -54,10 +54,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return getResponseDto(ei.ocid, ei.ocid)
     }
 
-    override fun updateEi(cpid: String,
-                          stage: String,
-                          releaseDate: LocalDateTime,
-                          data: JsonNode): ResponseDto<*> {
+    override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = budgetDao.getByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateEi = toObject(EI::class.java, data.toString())
         val ei = toObject(EI::class.java, entity.jsonData)
