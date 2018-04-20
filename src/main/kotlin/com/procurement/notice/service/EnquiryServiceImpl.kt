@@ -5,10 +5,11 @@ import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
+import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.createObjectNode
 import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toJson
@@ -34,6 +35,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
     companion object {
         private val SEPARATOR = "-"
         private val ENQUIRY_JSON = "enquiry"
+        private val MS = "MS"
     }
 
     override fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -41,12 +43,29 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val record = toObject(Record::class.java, entity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        /*record*/
         record.id = getReleaseId(ocId)
         record.date = releaseDate
         record.tender.hasEnquiries = true
-        addEnquiryToTender(record.tender, enquiry)
-        organizationService.processRecordPartiesFromEnquiry(record, enquiry)
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        /*add enquiry*/
+        var enquiries = record.tender.enquiries ?: hashSetOf()
+        if (enquiries.asSequence().none { it.id == enquiry.id }) {
+            enquiries.add(enquiry)
+            organizationService.processRecordPartiesFromEnquiry(record, enquiry)
+            record.tender.enquiries = enquiries
+            /*ms*/
+            if (enquiries.size == 1) {
+                val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+                val ms = toObject(Ms::class.java, msEntity.jsonData).apply {
+                    id = getReleaseId(cpid)
+                    date = releaseDate
+                    tag = listOf(Tag.COMPILED)
+                    tender.hasEnquiries = true
+                }
+                releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
+            }
+        }
+        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -57,8 +76,10 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         record.id = getReleaseId(ocId)
         record.date = releaseDate
-        addAnswerToEnquiry(record.tender.enquiries, enquiry)
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        record.date = releaseDate
+        record.tender.enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply { this.answer = enquiry.answer }
+                ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
+        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -74,13 +95,8 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         record.tender.tenderPeriod = dto.tenderPeriod
         record.tender.enquiryPeriod = dto.enquiryPeriod
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
-        releaseDao.saveRelease(releaseService.getReleaseEntity(cpid, stage, record))
+        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
-    }
-
-    private fun addEnquiryToTender(tender: RecordTender, enquiry: RecordEnquiry) {
-        if (tender.enquiries == null) tender.enquiries = hashSetOf()
-        tender.enquiries!!.add(enquiry)
     }
 
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {

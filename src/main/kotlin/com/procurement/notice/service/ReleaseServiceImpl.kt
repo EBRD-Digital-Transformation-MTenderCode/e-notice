@@ -28,7 +28,9 @@ interface ReleaseService {
 
     fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
-    fun getReleaseEntity(cpId: String, stage: String, record: Record): ReleaseEntity
+    fun getRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity
+
+    fun getMSEntity(cpId: String, ms: Ms): ReleaseEntity
 }
 
 
@@ -74,7 +76,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, params.relatedProcessType!!)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         budgetService.createEiByMs(checkFs.ei, cpid, releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns, cpid, releaseDate)
@@ -109,7 +111,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+            releaseDao.saveRelease(getRecordEntity(cpid, prevStage, record))
             /*new record*/
             ocid = ocId
             id = getReleaseId(ocId)
@@ -126,7 +128,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -159,7 +161,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.COMPILED)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+            releaseDao.saveRelease(getRecordEntity(cpid, prevStage, record))
             /*new record*/
             ocid = ocId
             id = getReleaseId(ocId)
@@ -177,7 +179,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -210,7 +212,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+            releaseDao.saveRelease(getRecordEntity(cpid, prevStage, record))
             /*new record*/
             ocid = ocId
             id = getReleaseId(ocId)
@@ -228,7 +230,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
-        releaseDao.saveRelease(getReleaseEntity(cpid, stage, record))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -267,7 +269,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return params
     }
 
-
     fun getParamsForUpdateCnOnPnPin(stage: Stage): Params {
         val params = Params()
         when (stage) {
@@ -285,7 +286,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return params
     }
 
-    override fun getReleaseEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
+    override fun getRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
         return getEntity(
                 cpId = cpId,
                 ocId = record.ocid!!,
@@ -296,7 +297,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         )
     }
 
-    private fun getMSEntity(cpId: String, ms: Ms): ReleaseEntity {
+    override fun getMSEntity(cpId: String, ms: Ms): ReleaseEntity {
         return getEntity(
                 cpId = cpId,
                 ocId = cpId,
