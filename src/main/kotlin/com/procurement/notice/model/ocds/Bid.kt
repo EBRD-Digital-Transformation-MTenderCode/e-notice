@@ -22,7 +22,7 @@ data class Bid(
         var date: LocalDateTime?,
 
         @JsonProperty("status")
-        val status: BidStatus?,
+        var status: BidStatus?,
 
         @JsonProperty("statusDetails")
         var statusDetails: BidStatusDetails?,

@@ -39,7 +39,7 @@ data class Award(
         var description: String?,
 
         @JsonProperty("status")
-        val status: AwardStatus?,
+        var status: AwardStatus?,
 
         @JsonProperty("statusDetails")
         var statusDetails: AwardStatus?,

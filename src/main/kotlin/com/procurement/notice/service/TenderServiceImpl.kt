@@ -15,6 +15,7 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 interface TenderService {
@@ -104,9 +105,9 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
-            if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
+            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
+            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
         }
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
@@ -229,6 +230,26 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         }
     }
 
+    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
+        for (award in recordAwards) {
+            dtoAwards.firstOrNull { it.id == award.id }?.apply {
+                award.date = this.date
+                award.status = this.status
+                award.statusDetails = this.statusDetails
+            }
+        }
+    }
+
+    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+        for (bid in recordBids) {
+            dtoBids.firstOrNull { it.id == bid.id }?.apply {
+                bid.date = this.date
+                bid.status = this.status
+                bid.statusDetails = this.statusDetails
+            }
+        }
+    }
+
     private fun updateAward(record: Record, award: Award) {
         if (record.awards != null) {
             val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id } ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
@@ -236,7 +257,6 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             if (award.description != null) updatableAward.description = award.description
             if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
             if (award.documents != null) updatableAward.documents = award.documents
-            if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
         }
     }
 
