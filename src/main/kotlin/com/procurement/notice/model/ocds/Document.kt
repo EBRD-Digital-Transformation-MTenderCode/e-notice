@@ -26,12 +26,12 @@ data class Document(
         val description: String?,
 
         @JsonProperty("url")
-        val url: String?,
+        var url: String?,
 
         @JsonProperty("datePublished")
         @JsonDeserialize(using = JsonDateDeserializer::class)
         @JsonSerialize(using = JsonDateSerializer::class)
-        val datePublished: LocalDateTime?,
+        var datePublished: LocalDateTime?,
 
         @JsonProperty("dateModified")
         @JsonDeserialize(using = JsonDateDeserializer::class)

@@ -34,7 +34,7 @@ data class Bid(
         val value: Value?,
 
         @JsonProperty("documents")
-        val documents: HashSet<Document>?,
+        var documents: HashSet<Document>?,
 
         @JsonProperty("relatedLots")
         val relatedLots: List<String>?,

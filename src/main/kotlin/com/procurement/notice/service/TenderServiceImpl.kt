@@ -56,10 +56,11 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             tender.awardPeriod = dto.awardPeriod
             if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
+            if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
+
         }
-        if (Stage.valueOf(stage.toUpperCase()) == Stage.PS)
-            organizationService.processRecordPartiesFromBids(record)
+        if (Stage.valueOf(stage.toUpperCase()) == Stage.PS) organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -250,9 +251,18 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         }
     }
 
+    private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
+        for (bid in bids) if (bid.documents != null) for (document in documents)
+            bid.documents!!.firstOrNull { it.id == document.id }?.apply {
+                datePublished = document.datePublished
+                url = document.url
+            }
+    }
+
     private fun updateAward(record: Record, award: Award) {
         if (record.awards != null) {
-            val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id } ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
+            val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id }
+                    ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
             if (award.date != null) updatableAward.date = award.date
             if (award.description != null) updatableAward.description = award.description
             if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
@@ -262,7 +272,8 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
 
     private fun updateBid(record: Record, bid: Bid) {
         if (record.bids?.details != null) {
-            val updatableBid = record.bids!!.details!!.asSequence().firstOrNull { it.id == bid.id } ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            val updatableBid = record.bids!!.details!!.asSequence().firstOrNull { it.id == bid.id }
+                    ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
             if (bid.date != null) updatableBid.date = bid.date
             if (bid.statusDetails != null) updatableBid.statusDetails = bid.statusDetails
         }
