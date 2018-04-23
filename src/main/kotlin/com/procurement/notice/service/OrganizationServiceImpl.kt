@@ -98,9 +98,9 @@ class OrganizationServiceImpl : OrganizationService {
             addParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
             clearOrganizationReference(ms.tender.procuringEntity!!)
         }
-        checkFs.buyer.forEach { addParty(ms.parties!!, it, PartyRole.BUYER) }
-        checkFs.payer.forEach { addParty(ms.parties!!, it, PartyRole.PAYER) }
-        checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
+        if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { addParty(ms.parties!!, it, PartyRole.BUYER) }
+        if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { addParty(ms.parties!!, it, PartyRole.PAYER) }
+        if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
     }
 
     override fun processRecordPartiesFromBids(record: Record) {
@@ -137,22 +137,24 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference, role: PartyRole) {
-        val partyPresent = getParty(parties, organization.id!!)
-        if (partyPresent != null) partyPresent.roles.add(role)
-        else {
-            val party = Organization(
-                    id = organization.id,
-                    name = organization.name,
-                    identifier = organization.identifier,
-                    additionalIdentifiers = organization.additionalIdentifiers,
-                    address = organization.address,
-                    contactPoint = organization.contactPoint,
-                    roles = setOf(role).toHashSet(),
-                    details = organization.details,
-                    buyerProfile = organization.buyerProfile
-            )
-            parties.add(party)
+    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference?, role: PartyRole) {
+        if (organization != null){
+            val partyPresent = getParty(parties, organization.id!!)
+            if (partyPresent != null) partyPresent.roles.add(role)
+            else {
+                val party = Organization(
+                        id = organization.id,
+                        name = organization.name,
+                        identifier = organization.identifier,
+                        additionalIdentifiers = organization.additionalIdentifiers,
+                        address = organization.address,
+                        contactPoint = organization.contactPoint,
+                        roles = setOf(role).toHashSet(),
+                        details = organization.details,
+                        buyerProfile = organization.buyerProfile
+                )
+                parties.add(party)
+            }
         }
     }
 
