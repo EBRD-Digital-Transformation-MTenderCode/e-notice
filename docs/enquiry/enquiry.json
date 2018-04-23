@@ -1,8 +1,8 @@
 {
-  "token": "679ec287-7609-47f4-ab75-403a3c6f357c",
+  "allAnswered": true,
   "enquiry": {
-    "id": "4d57c360-43e1-11e8-9581-41f4e93c73cf",
-    "date": "2018-04-19T14:52:37Z",
+    "id": "30da9f60-4642-11e8-9581-41f4e93c73cf",
+    "date": "2018-04-22T15:40:49Z",
     "author": {
       "id": "UA-EDR-7777777",
       "name": "My ORG",
@@ -35,8 +35,21 @@
         "url": "http://mycontactpointpage.com"
       }
     },
-    "title": "What is title for my question",
-    "description": "Ohhhh... this is description for my question",
-    "answer": "answer"
+    "title": "What is title for my question 2",
+    "description": "Ohhhh... this is description for my question 2",
+    "answer": "This is an answer to your question",
+    "dateAnswered": "2018-04-22T15:40:49Z"
+  },
+  "tender": {
+    "status": "active",
+    "statusDetails": "empty",
+    "tenderPeriod": {
+      "startDate": "2018-04-22T15:40:49Z",
+      "endDate": "2018-05-02T15:40:49Z"
+    },
+    "enquiryPeriod": {
+      "startDate": "2018-04-22T15:40:49Z",
+      "endDate": "2018-05-02T15:39:49Z"
+    }
   }
 }

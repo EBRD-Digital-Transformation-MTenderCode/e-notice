@@ -91,8 +91,8 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         record.date = releaseDate
         record.id = getReleaseId(ocId)
         record.tender.statusDetails = dto.tender.statusDetails
-        record.tender.tenderPeriod = dto.tenderPeriod
-        record.tender.enquiryPeriod = dto.enquiryPeriod
+        record.tender.tenderPeriod = dto.tender.tenderPeriod
+        record.tender.enquiryPeriod = dto.tender.enquiryPeriod
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)

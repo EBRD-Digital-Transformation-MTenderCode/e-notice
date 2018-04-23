@@ -124,7 +124,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             purposeOfNotice?.isACallForCompetition = false
         }
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.PRIOR)
-        relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -175,7 +174,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             purposeOfNotice?.isACallForCompetition = true
         }
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
-        relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -227,7 +225,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             purposeOfNotice?.isACallForCompetition = true
         }
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
-        relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PRIOR)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))

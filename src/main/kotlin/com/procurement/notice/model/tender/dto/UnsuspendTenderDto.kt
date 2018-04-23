@@ -12,11 +12,5 @@ data class UnsuspendTenderDto(
         val enquiry: RecordEnquiry,
 
         @JsonProperty("tender")
-        val tender: TenderDto,
-
-        @JsonProperty("tenderPeriod")
-        val tenderPeriod: Period,
-
-        @JsonProperty("enquiryPeriod")
-        val enquiryPeriod: Period
+        val tender: TenderDto
 )
