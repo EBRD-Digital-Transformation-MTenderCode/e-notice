@@ -8,9 +8,6 @@ import java.util.*
 @JsonPropertyOrder("tenderPeriod", "awardPeriod", "awards", "lots", "bids")
 data class TenderPeriodEndDto(
 
-        @JsonProperty("tenderPeriod")
-        val tenderPeriod: Period,
-
         @JsonProperty("awardPeriod")
         val awardPeriod: Period,
 
