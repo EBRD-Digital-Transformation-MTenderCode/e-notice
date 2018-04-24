@@ -25,6 +25,7 @@ interface MainService {
 class MainServiceImpl(private val budgetService: BudgetService,
                       private val releaseService: ReleaseService,
                       private val tenderService: TenderService,
+                      private val tenderServiceEv: TenderServiceEv,
                       private val enquiryService: EnquiryService) : MainService {
 
     override fun createRelease(cpId: String,
@@ -55,9 +56,11 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.SUSPEND_TENDER -> return tenderService.suspendTender(cpId, newStage, releaseDate, data)
             Operation.START_NEW_STAGE -> return tenderService.startNewStage(cpId, newStage, previousStage!!, releaseDate, data)
             Operation.TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(cpId, newStage, releaseDate, data)
-            Operation.TENDER_PERIOD_END_EV -> return tenderService.tenderPeriodEnd(cpId, newStage, releaseDate, data)
+            Operation.TENDER_PERIOD_END_EV -> return tenderServiceEv.tenderPeriodEndEv(cpId, newStage, releaseDate, data)
             Operation.STANDSTILL_PERIOD -> return tenderService.standstillPeriod(cpId, newStage, releaseDate, data)
+            Operation.STANDSTILL_PERIOD_EV -> return tenderServiceEv.standstillPeriodEv(cpId, newStage, releaseDate, data)
             Operation.AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(cpId, newStage, releaseDate, data)
+            Operation.AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(cpId, newStage, releaseDate, data)
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }
