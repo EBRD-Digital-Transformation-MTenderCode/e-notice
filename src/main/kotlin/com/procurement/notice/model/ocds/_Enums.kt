@@ -148,7 +148,8 @@ enum class ContractStatus constructor(private val value: String) {
     PENDING("pending"),
     ACTIVE("active"),
     CANCELLED("cancelled"),
-    TERMINATED("terminated");
+    TERMINATED("terminated"),
+    EMPTY("empty");
 
     override fun toString(): String {
         return this.value

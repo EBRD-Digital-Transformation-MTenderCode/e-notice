@@ -25,8 +25,8 @@ data class AwardPeriodEndEvDto(
         val documents: HashSet<Document>,
 
         @JsonProperty("cans")
-        val cans: HashSet<Document>,
+        val cans: Can,
 
         @JsonProperty("contracts")
-        val contracts: HashSet<Document>
+        val contracts: HashSet<Contract>
 )

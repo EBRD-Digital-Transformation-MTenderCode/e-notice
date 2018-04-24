@@ -17,6 +17,7 @@ import java.time.LocalDateTime
         "title",
         "description",
         "status",
+        "statusDetails",
         "period",
         "value",
         "items",
@@ -40,9 +41,6 @@ data class Contract(
         @JsonProperty("awardID")
         val awardID: String?,
 
-        @JsonProperty("extendsContractID")
-        val extendsContractID: String?,
-
         @JsonProperty("title")
         val title: String?,
 
@@ -50,7 +48,13 @@ data class Contract(
         val description: String?,
 
         @JsonProperty("status")
-        val status: ContractStatus?,
+        var status: ContractStatus,
+
+        @JsonProperty("statusDetails")
+        var statusDetails: ContractStatus,
+
+        @JsonProperty("extendsContractID")
+        val extendsContractID: String?,
 
         @JsonProperty("period")
         val period: Period?,

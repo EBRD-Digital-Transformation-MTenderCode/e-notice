@@ -25,6 +25,7 @@ import java.util.*
         "parties",
         "bids",
         "awards",
+        "contracts",
         "relatedProcesses")
 data class Record(
 
@@ -59,6 +60,9 @@ data class Record(
 
         @JsonProperty("bids")
         var bids: Bids?,
+
+        @JsonProperty("contracts")
+        var contracts : HashSet<Contract>?,
 
         @JsonProperty("hasPreviousNotice")
         @get:JsonProperty("hasPreviousNotice")
