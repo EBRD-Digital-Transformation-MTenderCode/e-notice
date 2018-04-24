@@ -51,7 +51,7 @@ data class Contract(
         var status: ContractStatus,
 
         @JsonProperty("statusDetails")
-        var statusDetails: ContractStatus,
+        var statusDetails: ContractStatusDetails,
 
         @JsonProperty("extendsContractID")
         val extendsContractID: String?,

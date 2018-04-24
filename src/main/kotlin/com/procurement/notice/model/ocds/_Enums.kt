@@ -148,8 +148,9 @@ enum class ContractStatus constructor(private val value: String) {
     PENDING("pending"),
     ACTIVE("active"),
     CANCELLED("cancelled"),
+    COMPLETE("complete"),
     TERMINATED("terminated"),
-    EMPTY("empty");
+    UNSUCCESSFUL("unsuccessful");
 
     override fun toString(): String {
         return this.value
@@ -171,6 +172,41 @@ enum class ContractStatus constructor(private val value: String) {
 
         @JsonCreator
         fun fromValue(value: String): ContractStatus {
+            return CONSTANTS[value] ?: throw IllegalArgumentException(value)
+        }
+    }
+}
+
+enum class ContractStatusDetails constructor(private val value: String) {
+    CONTRACT_PROJECT("contractProject"),
+    ACTIVE("active"),
+    VERIFIED("verified"),
+    CANCELLED("cancelled"),
+    COMPLETE("complete"),
+    UNSUCCESSFUL("unsuccessful"),
+    EMPTY("empty");
+
+    override fun toString(): String {
+        return this.value
+    }
+
+    @JsonValue
+    fun value(): String {
+        return this.value
+    }
+
+    companion object {
+
+        private val CONSTANTS = HashMap<String, ContractStatusDetails>()
+
+        init {
+            for (c in values()) {
+                CONSTANTS[c.value] = c
+            }
+        }
+
+        @JsonCreator
+        fun fromValue(value: String): ContractStatusDetails {
             return CONSTANTS[value] ?: throw IllegalArgumentException(value)
         }
     }
