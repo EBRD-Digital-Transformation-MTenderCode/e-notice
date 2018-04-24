@@ -255,6 +255,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
                 tender = dto.tender,
                 awards = null,
                 bids = dto.bids,
+                contracts = null,
                 hasPreviousNotice = prevRecord.hasPreviousNotice,
                 purposeOfNotice = prevRecord.purposeOfNotice,
                 relatedProcesses = null)
