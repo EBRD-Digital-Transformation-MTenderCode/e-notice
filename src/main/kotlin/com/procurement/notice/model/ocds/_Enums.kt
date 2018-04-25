@@ -980,7 +980,8 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_EVALUATION("x_evaluation"),
     X_EXECUTION("x_execution"),
     X_PLANNED("x_planned"),
-    X_BUDGET("x_budget");
+    X_BUDGET("x_budget"),
+    X_CONTRACT("x_contract");
 
     override fun toString(): String {
         return this.value

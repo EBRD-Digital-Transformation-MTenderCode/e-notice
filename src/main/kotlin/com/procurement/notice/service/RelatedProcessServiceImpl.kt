@@ -8,6 +8,7 @@ import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -29,7 +30,11 @@ interface RelatedProcessService {
 
     fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType)
 
-    fun addPervRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType)
+
+    fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String)
+
+    fun addRecordRelatedProcessToContract(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType)
 
 }
 
@@ -135,7 +140,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(ms.ocid!!, recordOcId)))
     }
 
-    override fun addPervRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType) {
+    override fun addRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -143,6 +148,27 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 scheme = RelatedProcessScheme.OCID,
                 identifier = prevRecordOcId,
                 uri = getTenderUri(msOcId, prevRecordOcId)))
+    }
+
+    override fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String) {
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        record.relatedProcesses?.add(RelatedProcess(
+                id = UUIDs.timeBased().toString(),
+                relationship = listOf(RelatedProcessType.PARENT),
+                scheme = RelatedProcessScheme.OCID,
+                identifier = msOcId,
+                uri = getTenderUri(msOcId, msOcId)))
+    }
+
+    override fun addRecordRelatedProcessToContract(record: ContractRecord, recordOcId: String, msOcId: String,
+                                                   processType: RelatedProcessType) {
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        record.relatedProcesses?.add(RelatedProcess(
+                id = UUIDs.timeBased().toString(),
+                relationship = listOf(processType),
+                scheme = RelatedProcessScheme.OCID,
+                identifier = recordOcId,
+                uri = getTenderUri(msOcId, recordOcId)))
     }
 
     private fun getEiCpIdFromOcId(ocId: String): String {

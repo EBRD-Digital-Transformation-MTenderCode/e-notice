@@ -263,7 +263,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         organizationService.processRecordPartiesFromBids(record)
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        relatedProcessService.addPervRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.X_PRESELECTION)
+        relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.X_PRESELECTION)
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)

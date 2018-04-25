@@ -5,14 +5,16 @@ import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.dto.*
+import com.procurement.notice.model.tender.dto.AwardByBidEvDto
+import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
+import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
+import com.procurement.notice.model.tender.dto.TenderPeriodEndDto
 import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.utils.createObjectNode
-import com.procurement.notice.utils.milliNowUTC
-import com.procurement.notice.utils.toJson
-import com.procurement.notice.utils.toObject
+import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -32,13 +34,14 @@ interface TenderServiceEv {
 
 @Service
 class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
-                        private val releaseService: ReleaseService,
-                        private val organizationService: OrganizationService,
-                        private val relatedProcessService: RelatedProcessService) : TenderServiceEv {
+                          private val releaseService: ReleaseService,
+                          private val organizationService: OrganizationService,
+                          private val relatedProcessService: RelatedProcessService) : TenderServiceEv {
 
     companion object {
         private val SEPARATOR = "-"
         private val MS = "MS"
+        private val CN = "CN"
     }
 
     override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode):
@@ -56,7 +59,6 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
-
         }
         if (Stage.valueOf(stage.toUpperCase()) == Stage.PS) organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
@@ -120,13 +122,12 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = TenderStatusDetails.EXECUTION
         }
-        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
 
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
-        val record = toObject(Record::class.java, entity.jsonData)
-        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        record.apply {
+        val recordEv = toObject(Record::class.java, entity.jsonData)
+        val ocId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        recordEv.apply {
             id = getReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
@@ -137,8 +138,37 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
             if (dto.cans.contracts.isNotEmpty()) updateContracts(contracts!!, dto.cans.contracts)
         }
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
+        if (dto.cans.contracts.isNotEmpty()) {
+            for (contract in dto.cans.contracts) {
+                /*new record Contract*/
+                val ocIdCAN = getOcId(cpid, CN)
+                val award = dto.awards.asSequence().first { it.id == contract.awardID }
+                val recordCAN = ContractRecord(
+                        ocid = ocIdCAN,
+                        id = getReleaseId(ocIdCAN),
+                        date = releaseDate,
+                        tag = listOf(Tag.CONTRACT),
+                        initiationType = recordEv.initiationType,
+                        parties = null,
+                        awards = setOf(award).toHashSet(),
+                        contracts = setOf(contract).toHashSet(),
+                        relatedProcesses = null)
+
+                relatedProcessService.addMsRelatedProcessToContract(recordCAN, cpid)
+                relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdCAN, RelatedProcessType.X_CONTRACT)
+                relatedProcessService.addRecordRelatedProcessToContract(recordCAN, recordEv.ocid!!, cpid,  RelatedProcessType.X_EVALUATION)
+                relatedProcessService.addRecordRelatedProcessToRecord(recordEv, ocIdCAN, cpid, RelatedProcessType.X_CONTRACT)
+                releaseDao.saveRelease(getRecordEntity(cpid, CN, recordCAN))
+            }
+        }
+        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.X_EVALUATION)
+        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
+        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, recordEv))
         return getResponseDto(cpid, ocId)
+    }
+
+    private fun getOcId(cpId: String, stage: String): String {
+        return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
     }
 
     private fun getReleaseId(ocId: String): String {
@@ -196,5 +226,33 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
         return ResponseDto(true, null, jsonForResponse)
+    }
+
+
+    fun getRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+        return getEntity(
+                cpId = cpId,
+                ocId = record.ocid!!,
+                releaseDate = record.date!!.toDate(),
+                releaseId = record.id!!,
+                stage = stage,
+                json = toJson(record)
+        )
+    }
+
+    private fun getEntity(cpId: String,
+                          ocId: String,
+                          releaseDate: Date,
+                          releaseId: String,
+                          stage: String,
+                          json: String): ReleaseEntity {
+        return ReleaseEntity(
+                cpId = cpId,
+                ocId = ocId,
+                releaseDate = releaseDate,
+                releaseId = releaseId,
+                stage = stage,
+                jsonData = json
+        )
     }
 }
