@@ -37,7 +37,7 @@ data class RecordEnquiry(
         @JsonProperty("dateAnswered")
         @JsonDeserialize(using = JsonDateDeserializer::class)
         @JsonSerialize(using = JsonDateSerializer::class)
-        val dateAnswered: LocalDateTime?,
+        var dateAnswered: LocalDateTime?,
 
         @JsonProperty("relatedItem")
         val relatedItem: String?,
