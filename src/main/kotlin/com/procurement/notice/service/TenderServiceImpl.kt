@@ -235,6 +235,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val prevRecord = toObject(Record::class.java, recordEntity.jsonData)
+        dto.tender.documents = prevRecord.tender.documents
         val prOcId = prevRecord.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         prevRecord.apply {
             id = getReleaseId(prOcId)
