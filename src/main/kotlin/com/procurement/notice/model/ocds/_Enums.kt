@@ -113,8 +113,11 @@ enum class BidStatus constructor(private val value: String) {
 }
 
 enum class BidStatusDetails constructor(private val value: String) {
+    INVITED("invited"),
+    PENDING("pending"),
     VALID("valid"),
     DISQUALIFIED("disqualified"),
+    WITHDRAWN("withdrawn"),
     EMPTY("empty");
 
     override fun toString(): String {
