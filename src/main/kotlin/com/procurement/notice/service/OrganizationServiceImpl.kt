@@ -71,7 +71,8 @@ class OrganizationServiceImpl : OrganizationService {
         }
         val payer = fs.payer
         if (payer != null) {
-            val partyPresent = fs.parties?.let { getParty(fs.parties!!, payer.id!!) }
+            val payerId = payer.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+            val partyPresent = fs.parties?.let { getParty(it, payerId) }
             if (partyPresent != null) {
                 partyPresent.roles.add(PartyRole.PAYER)
             } else {
