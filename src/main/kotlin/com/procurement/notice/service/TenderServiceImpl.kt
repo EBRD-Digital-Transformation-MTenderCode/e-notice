@@ -9,6 +9,7 @@ import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.createObjectNode
 import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toJson
@@ -271,12 +272,12 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
 
     private fun processDocuments(record: Record, prevRecord: Record) {
         /*tender documents*/
-        record.tender.documents = prevRecord.tender.documents
+        if (prevRecord.tender.documents != null) updateTenderDocuments(record.tender, prevRecord.tender.documents!!)
         /*bids documents*/
         if (prevRecord.bids?.details != null) {
-            for (bid in record.bids?.details!!){
+            for (bid in record.bids?.details!!) {
                 prevRecord.bids?.details?.firstOrNull { it.id == bid.id }?.apply {
-                    bid.documents = this.documents
+                    if (this.documents != null) updateBidDocuments(bid, this.documents!!)
                 }
             }
         }
@@ -317,6 +318,22 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
                 recordLots.plus(this)
             }
         }
+    }
+
+    private fun updateTenderDocuments(tender: RecordTender, documents: HashSet<Document>) {
+        if (tender.documents != null) for (document in documents)
+            tender.documents!!.firstOrNull { it.id == document.id }?.apply {
+                datePublished = document.datePublished
+                url = document.url
+            }
+    }
+
+    private fun updateBidDocuments(bid: Bid, documents: HashSet<Document>) {
+        if (bid.documents != null) for (document in documents)
+            bid.documents!!.firstOrNull { it.id == document.id }?.apply {
+                datePublished = document.datePublished
+                url = document.url
+            }
     }
 
     private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {

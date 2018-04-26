@@ -78,7 +78,7 @@ data class RecordTender(
         val amendments: List<Amendment>?,
 
         @JsonProperty("documents")
-        var documents: List<Document>?,
+        var documents: HashSet<Document>?,
 
         @JsonProperty("awardCriteria")
         val awardCriteria: AwardCriteria?,
