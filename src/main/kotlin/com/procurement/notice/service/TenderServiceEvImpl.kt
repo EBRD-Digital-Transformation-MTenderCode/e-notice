@@ -60,7 +60,6 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
-        if (Stage.valueOf(stage.toUpperCase()) == Stage.PS) organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)

@@ -48,6 +48,7 @@ enum class AwardStatus constructor(private val value: String) {
     ACTIVE("active"),
     CANCELLED("cancelled"),
     UNSUCCESSFUL("unsuccessful"),
+    CONSIDERATION("consideration"),
     EMPTY("empty");
 
     override fun toString(): String {
