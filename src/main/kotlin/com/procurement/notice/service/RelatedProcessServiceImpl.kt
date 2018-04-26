@@ -1,6 +1,8 @@
 package com.procurement.notice.service
 
 import com.datastax.driver.core.utils.UUIDs
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.ocds.RelatedProcess
@@ -13,7 +15,6 @@ import com.procurement.notice.model.tender.record.Record
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
-@Service
 interface RelatedProcessService {
 
     fun addFsRelatedProcessToEi(ei: EI, fsOcId: String)
@@ -35,7 +36,6 @@ interface RelatedProcessService {
     fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String)
 
     fun addRecordRelatedProcessToContract(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType)
-
 }
 
 @Service
@@ -92,13 +92,14 @@ class RelatedProcessServiceImpl : RelatedProcessService {
 
     override fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         /*record*/
         ms.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = ocId,
-                uri = getTenderUri(ms.ocid!!, ocId)))
+                uri = getTenderUri(msOcId, ocId)))
         /*expenditure items*/
         checkFs.ei.asSequence().forEach { eiCpId ->
             ms.relatedProcesses?.add(RelatedProcess(
@@ -116,7 +117,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                     relationship = listOf(RelatedProcessType.X_BUDGET),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = it.id,
-                    uri = getBudgetUri(getEiCpIdFromOcId(it.id!!), it.id)))
+                    uri = getBudgetUri(getEiCpIdFromOcId(it.id), it.id)))
         }
     }
 
@@ -132,12 +133,13 @@ class RelatedProcessServiceImpl : RelatedProcessService {
 
     override fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         ms.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = recordOcId,
-                uri = getTenderUri(ms.ocid!!, recordOcId)))
+                uri = getTenderUri(msOcId, recordOcId)))
     }
 
     override fun addRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType) {

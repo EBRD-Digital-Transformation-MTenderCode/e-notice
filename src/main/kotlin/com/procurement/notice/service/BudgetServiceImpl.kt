@@ -15,7 +15,6 @@ import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-@Service
 interface BudgetService {
 
     fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
@@ -117,7 +116,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun createFsByMs(budgetBreakdown: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
         budgetBreakdown.forEach {
-            val eiCpId = getCpIdFromOcId(it.id!!)
+            val eiCpId = getCpIdFromOcId(it.id)
             val entity = budgetDao.getByCpIdAndOcId(eiCpId, it.id) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             fs.id = getReleaseId(it.id)

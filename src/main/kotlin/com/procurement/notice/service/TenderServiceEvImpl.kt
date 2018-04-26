@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-@Service
 interface TenderServiceEv {
 
     fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
@@ -60,6 +59,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
+        organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -74,11 +74,9 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
-            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
-            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
-            if (dto.lots != null && dto.lots.isNotEmpty()) {
-                tender.lots?.let { updateLots(it, dto.lots) }
-            }
+            if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
+            if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
+            if (dto.lots != null && dto.lots.isNotEmpty()) tender.lots?.let { updateLots(it, dto.lots) }
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -125,17 +123,17 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val recordEv = toObject(Record::class.java, entity.jsonData)
-        val ocId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        val recordEvOcId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         recordEv.apply {
-            id = getReleaseId(ocId)
+            id = getReleaseId(recordEvOcId)
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
-            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
-            if (dto.cans.contracts.isNotEmpty()) updateContracts(contracts!!, dto.cans.contracts)
+            if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
+            if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
+            if (dto.cans.contracts.isNotEmpty()) contracts?.let { updateContracts(it, dto.cans.contracts) }
         }
         if (dto.cans.contracts.isNotEmpty()) {
             for (contract in dto.cans.contracts) {
@@ -155,15 +153,15 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
 
                 relatedProcessService.addMsRelatedProcessToContract(recordCAN, cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdCAN, RelatedProcessType.X_CONTRACT)
-                relatedProcessService.addRecordRelatedProcessToContract(recordCAN, recordEv.ocid!!, cpid,  RelatedProcessType.X_EVALUATION)
+                relatedProcessService.addRecordRelatedProcessToContract(recordCAN, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addRecordRelatedProcessToRecord(recordEv, ocIdCAN, cpid, RelatedProcessType.X_CONTRACT)
                 releaseDao.saveRelease(getRecordEntity(cpid, CN, recordCAN))
             }
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, RelatedProcessType.X_EVALUATION)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, recordEvOcId, RelatedProcessType.X_EVALUATION)
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, recordEv))
-        return getResponseDto(cpid, ocId)
+        return getResponseDto(cpid, recordEvOcId)
     }
 
     private fun getOcId(cpId: String, stage: String): String {
@@ -214,7 +212,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
 
     private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
         for (bid in bids) if (bid.documents != null) for (document in documents)
-            bid.documents!!.firstOrNull { it.id == document.id }?.apply {
+            bid.documents?.firstOrNull { it.id == document.id }?.apply {
                 datePublished = document.datePublished
                 url = document.url
             }
@@ -229,11 +227,14 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
 
 
     fun getRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
-                ocId = record.ocid!!,
-                releaseDate = record.date!!.toDate(),
-                releaseId = record.id!!,
+                ocId = ocId,
+                releaseDate = releaseDate.toDate(),
+                releaseId = releaseId,
                 stage = stage,
                 json = toJson(record)
         )

@@ -6,8 +6,8 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 
 
 data class Params(
-        var statusDetails: TenderStatusDetails? = null,
-        var tag: List<Tag>? = null,
-        var isACallForCompetition: Boolean? = null,
-        var relatedProcessType: RelatedProcessType? = null
+        var statusDetails: TenderStatusDetails = TenderStatusDetails.PRESELECTION,
+        var tag: List<Tag> = listOf(),
+        var isACallForCompetition: Boolean = false,
+        var relatedProcessType: RelatedProcessType = RelatedProcessType.X_PRESELECTION
 )

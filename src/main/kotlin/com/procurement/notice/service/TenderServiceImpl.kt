@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-@Service
 interface TenderService {
 
     fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
@@ -108,8 +107,8 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
-            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
+            if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
+            if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
         }
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
@@ -173,8 +172,9 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS)
                 ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
+        val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         ms.apply {
-            id = getReleaseId(ms.ocid!!)
+            id = getReleaseId(msOcId)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
@@ -218,17 +218,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
     }
 
     private fun processTenderDocuments(record: Record, prevRecord: Record) {
-        if (prevRecord.tender.documents != null) updateTenderDocuments(record.tender, prevRecord.tender.documents!!)
-    }
-
-    private fun processBidsDocuments(record: Record, prevRecord: Record) {
-         if (prevRecord.bids?.details != null) {
-            for (bid in record.bids?.details!!) {
-                prevRecord.bids?.details?.firstOrNull { it.id == bid.id }?.apply {
-                    if (this.documents != null) updateBidDocuments(bid, this.documents!!)
-                }
-            }
-        }
+        prevRecord.tender.documents?.let { updateTenderDocuments(record.tender, it) }
     }
 
     private fun getOcId(cpId: String, stage: String): String {
@@ -269,46 +259,57 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
     }
 
     private fun updateTenderDocuments(tender: RecordTender, documents: HashSet<Document>) {
-        if (tender.documents != null) for (document in documents)
-            tender.documents!!.firstOrNull { it.id == document.id }?.apply {
-                datePublished = document.datePublished
-                url = document.url
+        tender.documents?.let { tenderDocuments ->
+            documents.forEach { document ->
+                tenderDocuments.firstOrNull { it.id == document.id }?.apply {
+                    datePublished = document.datePublished
+                    url = document.url
+                }
             }
+        }
     }
 
     private fun updateBidDocuments(bid: Bid, documents: HashSet<Document>) {
-        if (bid.documents != null) for (document in documents)
-            bid.documents!!.firstOrNull { it.id == document.id }?.apply {
-                datePublished = document.datePublished
-                url = document.url
+        bid.documents?.let { bidDocuments ->
+            documents.forEach { document ->
+                bidDocuments.firstOrNull { it.id == document.id }?.apply {
+                    datePublished = document.datePublished
+                    url = document.url
+                }
             }
+        }
     }
 
     private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
-        for (bid in bids) if (bid.documents != null) for (document in documents)
-            bid.documents!!.firstOrNull { it.id == document.id }?.apply {
-                datePublished = document.datePublished
-                url = document.url
+        bids.forEach { bid ->
+            bid.documents?.let { bidDocuments ->
+                documents.forEach { document ->
+                    bidDocuments.firstOrNull { it.id == document.id }?.apply {
+                        datePublished = document.datePublished
+                        url = document.url
+                    }
+                }
             }
+        }
     }
 
     private fun updateAward(record: Record, award: Award) {
-        if (record.awards != null) {
-            val updatableAward = record.awards!!.asSequence().firstOrNull { it.id == award.id }
+        record.awards?.let { awards ->
+            val upAward = awards.asSequence().firstOrNull { it.id == award.id }
                     ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
-            if (award.date != null) updatableAward.date = award.date
-            if (award.description != null) updatableAward.description = award.description
-            if (award.statusDetails != null) updatableAward.statusDetails = award.statusDetails
-            if (award.documents != null) updatableAward.documents = award.documents
+            award.date?.let { upAward.date = it }
+            award.description?.let { upAward.description = it }
+            award.statusDetails?.let { upAward.statusDetails = it }
+            award.documents?.let { upAward.documents = it }
         }
     }
 
     private fun updateBid(record: Record, bid: Bid) {
-        if (record.bids?.details != null) {
-            val updatableBid = record.bids!!.details!!.asSequence().firstOrNull { it.id == bid.id }
+        record.bids?.details?.let { bids ->
+            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }
                     ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
-            if (bid.date != null) updatableBid.date = bid.date
-            if (bid.statusDetails != null) updatableBid.statusDetails = bid.statusDetails
+            bid.date?.let { upBid.date = it }
+            bid.statusDetails?.let { upBid.statusDetails = it }
         }
     }
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 data class BudgetBreakdown(
 
         @JsonProperty("id")
-        val id: String?,
+        val id: String,
 
         @JsonProperty("description")
         val description: String?,

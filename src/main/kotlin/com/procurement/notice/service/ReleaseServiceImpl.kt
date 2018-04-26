@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-@Service
 interface ReleaseService {
 
     fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto<*>
@@ -56,7 +55,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
-            tender.statusDetails = params.statusDetails!!
+            tender.statusDetails = params.statusDetails
             organizationService.processMsParties(this, checkFs)
         }
         val record = toObject(Record::class.java, data.toString())
@@ -70,9 +69,9 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
             tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
             hasPreviousNotice = false
-            purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition!!)
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition)
         }
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, params.relatedProcessType!!)
+        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -101,7 +100,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
-        val prOcId = record.ocid!!
+        val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val ocId = getOcId(cpid, stage)
         record.apply {
             /* previous record*/
@@ -143,14 +142,14 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
-            tender.statusDetails = params.statusDetails!!
+            tender.statusDetails = params.statusDetails
             tender.procuringEntity = prevProcuringEntity
             tender.hasEnquiries = false
         }
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
-        val prOcId = record.ocid!!
+        val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val ocId = getOcId(cpid, stage)
         record.apply {
             /* previous record*/
@@ -173,7 +172,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = true
             purposeOfNotice?.isACallForCompetition = true
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -194,14 +193,14 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
-            tender.statusDetails = params.statusDetails!!
+            tender.statusDetails = params.statusDetails
             tender.procuringEntity = prevProcuringEntity
             tender.hasEnquiries = false
         }
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
-        val prOcId = record.ocid!!
+        val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val ocId = getOcId(cpid, stage)
         record.apply {
             /* previous record*/
@@ -224,7 +223,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             hasPreviousNotice = true
             purposeOfNotice?.isACallForCompetition = true
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType!!)
+        relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PRIOR)
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -287,22 +286,27 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     }
 
     override fun getRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
-                ocId = record.ocid!!,
-                releaseDate = record.date!!.toDate(),
-                releaseId = record.id!!,
+                ocId = ocId,
+                releaseDate = releaseDate.toDate(),
+                releaseId = releaseId,
                 stage = stage,
                 json = toJson(record)
         )
     }
 
     override fun getMSEntity(cpId: String, ms: Ms): ReleaseEntity {
+        val releaseDate = ms.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseId = ms.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
                 ocId = cpId,
-                releaseDate = ms.date!!.toDate(),
-                releaseId = ms.id!!,
+                releaseDate = releaseDate.toDate(),
+                releaseId = releaseId,
                 stage = MS,
                 json = toJson(ms)
         )

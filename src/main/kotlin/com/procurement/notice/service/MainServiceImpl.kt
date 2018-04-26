@@ -8,7 +8,6 @@ import com.procurement.notice.model.tender.dto.Operation
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-@Service
 interface MainService {
 
     fun createRelease(cpId: String,

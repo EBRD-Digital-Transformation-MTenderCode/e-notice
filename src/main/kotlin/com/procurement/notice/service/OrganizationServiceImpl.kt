@@ -13,7 +13,6 @@ import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
 
-@Service
 interface OrganizationService {
 
     fun processEiParties(ei: EI)
