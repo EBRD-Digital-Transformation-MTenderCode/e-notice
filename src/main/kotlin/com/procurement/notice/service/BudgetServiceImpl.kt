@@ -140,8 +140,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     private fun createEiByFs(eiCpId: String, fsOcId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        val totalAmount = budgetDao.getTotalAmountByCpId(eiCpId)
-        if (totalAmount != null) ei.planning?.budget?.amount?.amount = totalAmount.toFixed(2)
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it.toFixed(2) }
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
@@ -151,8 +150,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     private fun updateEiAmountByFs(eiCpId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        val totalAmount = budgetDao.getTotalAmountByCpId(eiCpId)
-        if (totalAmount != null) ei.planning?.budget?.amount?.amount = totalAmount.toFixed(2)
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it.toFixed(2) }
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
