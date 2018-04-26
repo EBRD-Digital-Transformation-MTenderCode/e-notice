@@ -1,5 +1,7 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.ocds.Organization
@@ -138,8 +140,9 @@ class OrganizationServiceImpl : OrganizationService {
     }
 
     private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference?, role: PartyRole) {
-        if (organization != null){
-            val partyPresent = getParty(parties, organization.id!!)
+        if (organization != null) {
+            organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+            val partyPresent = getParty(parties, organization.id)
             if (partyPresent != null) partyPresent.roles.add(role)
             else {
                 val party = Organization(
