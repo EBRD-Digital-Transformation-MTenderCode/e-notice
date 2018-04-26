@@ -27,11 +27,7 @@ interface TenderService {
 
     fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
-    fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
-
     fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
-
-    fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
     fun standstillPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
@@ -101,58 +97,9 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val dto = toObject(AwardByBidEvDto::class.java, toJson(data))
-        val record = toObject(Record::class.java, entity.jsonData)
-        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        record.apply {
-            id = getReleaseId(ocId)
-            tag = listOf(Tag.AWARD_UPDATE)
-            date = releaseDate
-            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
-            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
-            if (dto.lots != null && dto.lots.isNotEmpty()) {
-                tender.lots?.let { updateLots(it, dto.lots) }
-            }
-        }
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
-        return getResponseDto(cpid, ocId)
-    }
-
     override fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
-        val record = toObject(Record::class.java, entity.jsonData)
-        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        record.apply {
-            id = getReleaseId(ocId)
-            date = releaseDate
-            tender.statusDetails = TenderStatusDetails.COMPLETE
-            tender.awardPeriod = dto.awardPeriod
-            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.awards.isNotEmpty()) updateAwards(awards!!, dto.awards)
-            if (dto.bids.isNotEmpty()) updateBids(bids?.details!!, dto.bids)
-        }
-        organizationService.processRecordPartiesFromBids(record)
-        organizationService.processRecordPartiesFromAwards(record)
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
-        return getResponseDto(cpid, ocId)
-    }
-
-    override fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
-        val ms = toObject(Ms::class.java, msEntity.jsonData)
-        ms.apply {
-            id = getReleaseId(cpid)
-            date = releaseDate
-            tag = listOf(Tag.COMPILED)
-            tender.statusDetails = TenderStatusDetails.EXECUTION
-        }
-        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
-
-        val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         record.apply {
@@ -260,7 +207,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
                 hasPreviousNotice = prevRecord.hasPreviousNotice,
                 purposeOfNotice = prevRecord.purposeOfNotice,
                 relatedProcesses = null)
-        processDocuments(record, prevRecord)
+        processTenderDocuments(record, prevRecord)
         organizationService.processRecordPartiesFromBids(record)
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
@@ -270,11 +217,12 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    private fun processDocuments(record: Record, prevRecord: Record) {
-        /*tender documents*/
+    private fun processTenderDocuments(record: Record, prevRecord: Record) {
         if (prevRecord.tender.documents != null) updateTenderDocuments(record.tender, prevRecord.tender.documents!!)
-        /*bids documents*/
-        if (prevRecord.bids?.details != null) {
+    }
+
+    private fun processBidsDocuments(record: Record, prevRecord: Record) {
+         if (prevRecord.bids?.details != null) {
             for (bid in record.bids?.details!!) {
                 prevRecord.bids?.details?.firstOrNull { it.id == bid.id }?.apply {
                     if (this.documents != null) updateBidDocuments(bid, this.documents!!)

@@ -1,33 +1,4 @@
 {
-  "planning": {
-    "budget": {
-      "description": "Trip car offer before structure. Believe tough detail lawyer six. Direction learn none require.",
-      "amount": {
-        "amount": 750.55,
-        "currency": "XBB"
-      },
-      "isEuropeanUnionFunded": false,
-      "budgetBreakdown": [
-        {
-          "id": "ocds-t1s2t3-TEST-1524731345380-FS-1524731354637",
-          "description": "Him professor easy chance. Control agent financial some TV too strategy before.",
-          "amount": {
-            "amount": 750.55,
-            "currency": "XBB"
-          },
-          "period": {
-            "startDate": "2018-04-26T08:29:03Z",
-            "endDate": "2018-07-02T12:18:21Z"
-          },
-          "sourceParty": {
-            "name": "Avila, Cox and Carson",
-            "id": "UA-EDR-230-80-2285"
-          }
-        }
-      ]
-    },
-    "rationale": "Lose bag room."
-  },
   "tender": {
     "id": "ocds-t1s2t3-TEST-1524731362063",
     "title": "Drug page all case lose.",
@@ -203,10 +174,6 @@
         "documentType": "environmentalImpact",
         "title": "Book none apply wish piece much defense.",
         "description": "Most say might fall writer machine. Suddenly successful she sing. Class yourself eat deal white add.",
-        "url": "http://bpe.eprocurement.systems/api/v1/storage/get/ea970fb0-492b-11e8-bcee-fd2243130aae",
-        "datePublished": "2018-04-26T08:29:20Z",
-        "dateModified": null,
-        "format": null,
         "language": "sl",
         "relatedLots": [
           "eba46100-492b-11e8-8e46-3774229333d2"
@@ -217,125 +184,184 @@
       "lv"
     ],
     "tenderPeriod": {
-      "startDate": "2018-04-26T08:29:20Z",
-      "endDate": "2018-04-26T08:32:20Z"
-    },
-    "enquiryPeriod": {
-      "startDate": "2018-04-26T08:29:20Z",
-      "endDate": "2018-04-26T08:31:20Z"
+      "startDate": "2018-04-26T08:32:24Z",
+      "endDate": "2018-04-26T08:35:24Z"
     }
   },
-  "ei": [
-    "ocds-t1s2t3-TEST-1524731345380"
-  ],
-  "buyer": [
-    {
-      "name": "Nelson PLC",
-      "id": "UA-EDR-617-38-5631",
-      "identifier": {
-        "id": "617-38-5631",
-        "scheme": "UA-EDR",
-        "legalName": "Nelson PLC Ltd",
-        "uri": "https://www.carey.com/login/"
+  "bids": {
+    "details": [
+      {
+        "id": "ed74db40-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-625-67-5011",
+            "name": "Silva-Crosby",
+            "identifier": {
+              "id": "625-67-5011",
+              "scheme": "UA-EDR",
+              "legalName": "Silva-Crosby LLC",
+              "uri": "http://ortega-reid.com/login/"
+            },
+            "address": {
+              "streetAddress": "107 Marissa Points",
+              "locality": "North Xavierfurt",
+              "region": "Iowa",
+              "postalCode": "89926-4005",
+              "countryName": "Cuba"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "349-82-4180",
+                "scheme": "UA-EDR",
+                "legalName": "Silva-Crosby Ltd",
+                "uri": "https://www.cantrell.com/app/search/faq.htm"
+              }
+            ],
+            "contactPoint": {
+              "name": "Melissa Johnson",
+              "email": "alexanderriley@gmail.com",
+              "telephone": "1-346-558-9457x35124",
+              "faxNumber": "03199490416",
+              "url": "http://baker.biz/post.asp"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
       },
-      "address": {
-        "streetAddress": "5317 Jeffrey Forks Suite 184",
-        "locality": "Lake Leslie",
-        "region": "Arkansas",
-        "postalCode": "47137-6843",
-        "countryName": "Dominican Republic"
+      {
+        "id": "ecfb8c90-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-728-05-8831",
+            "name": "Knapp-Mitchell",
+            "identifier": {
+              "id": "728-05-8831",
+              "scheme": "UA-EDR",
+              "legalName": "Knapp-Mitchell PLC",
+              "uri": "https://www.meyers.net/blog/home/"
+            },
+            "address": {
+              "streetAddress": "9915 Hensley Turnpike",
+              "locality": "Lake Rodney",
+              "region": "Colorado",
+              "postalCode": "02127",
+              "countryName": "Antarctica (the territory South of 60 deg S)"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "524-76-2938",
+                "scheme": "UA-EDR",
+                "legalName": "Knapp-Mitchell PLC",
+                "uri": "https://www.eaton.info/faq/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Susan Evans",
+              "email": "jhopkins@yahoo.com",
+              "telephone": "1-833-107-6654",
+              "faxNumber": "1-299-942-8563x1437",
+              "url": "https://www.rosario.biz/posts/list/index.html"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
       },
-      "additionalIdentifiers": [
-        {
-          "id": "727-58-3639",
-          "scheme": "UA-EDR",
-          "legalName": "Nelson PLC Group",
-          "uri": "https://www.perry.info/app/category/"
-        }
-      ],
-      "contactPoint": {
-        "name": "Sierra Hughes",
-        "email": "kellyhall@hotmail.com",
-        "telephone": "+36(2)9276215295",
-        "faxNumber": "305-805-3959",
-        "url": "https://www.walsh.org/search/register.asp"
+      {
+        "id": "ed28b710-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-127-49-3240",
+            "name": "Lewis, Costa and Miller",
+            "identifier": {
+              "id": "127-49-3240",
+              "scheme": "UA-EDR",
+              "legalName": "Lewis, Costa and Miller Group",
+              "uri": "https://farrell.com/category.htm"
+            },
+            "address": {
+              "streetAddress": "235 Danielle Knolls Suite 943",
+              "locality": "Dianafurt",
+              "region": "Rhode Island",
+              "postalCode": "77130",
+              "countryName": "Nigeria"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "422-43-1650",
+                "scheme": "UA-EDR",
+                "legalName": "Lewis, Costa and Miller LLC",
+                "uri": "http://www.crawford-patel.com/author/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Jasmine Wilson",
+              "email": "williamgraham@gmail.com",
+              "telephone": "(601)999-8522x7245",
+              "faxNumber": "555-632-2319",
+              "url": "https://www.graham.com/explore/tags/categories/faq.htm"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
       },
-      "details": {
-        "typeOfBuyer": "NATIONAL_AGENCY",
-        "mainGeneralActivity": "HEALTH",
-        "mainSectoralActivity": "ELECTRICITY",
-        "isACentralPurchasingBody": false,
-        "scale": ""
-      },
-      "buyerProfile": "https://www.sullivan-gonzalez.org/list/blog/homepage.html"
-    }
-  ],
-  "funder": [
-    {
-      "id": "UA-EDR-230-80-2285",
-      "name": "Avila, Cox and Carson",
-      "identifier": {
-        "id": "230-80-2285",
-        "scheme": "UA-EDR",
-        "legalName": "Avila, Cox and Carson LLC",
-        "uri": "http://www.lopez.biz/list/terms.asp"
-      },
-      "address": {
-        "streetAddress": "60924 Amanda Courts Apt. 581",
-        "locality": "Millerhaven",
-        "region": "Nevada",
-        "postalCode": "59803-1527",
-        "countryName": "Japan"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "485-80-3308",
-          "scheme": "UA-EDR",
-          "legalName": "Avila, Cox and Carson LLC",
-          "uri": "https://powers.com/main/privacy.jsp"
-        }
-      ],
-      "contactPoint": {
-        "name": "Nancy Smith",
-        "email": "kwells@yahoo.com",
-        "telephone": "965-016-0879x336",
-        "faxNumber": "079-472-8639",
-        "url": "https://www.bell.org/tag/app/blog/main/"
+      {
+        "id": "ecd60330-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-423-87-9132",
+            "name": "Armstrong, Moore and Webster",
+            "identifier": {
+              "id": "423-87-9132",
+              "scheme": "UA-EDR",
+              "legalName": "Armstrong, Moore and Webster Group",
+              "uri": "http://www.castaneda.com/blog/search.asp"
+            },
+            "address": {
+              "streetAddress": "6105 Brittany Curve",
+              "locality": "Port Elizabeth",
+              "region": "Minnesota",
+              "postalCode": "32656-3526",
+              "countryName": "United States of America"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "863-08-8830",
+                "scheme": "UA-EDR",
+                "legalName": "Armstrong, Moore and Webster Inc",
+                "uri": "http://johnson.biz/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Jason Smith",
+              "email": "rogersstephanie@yahoo.com",
+              "telephone": "(157)860-8072",
+              "faxNumber": "395-701-1892x881",
+              "url": "https://www.armstrong.com/app/categories/home/"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
       }
-    }
-  ],
-  "payer": [
-    {
-      "id": "UA-EDR-230-80-2285",
-      "name": "Avila, Cox and Carson",
-      "identifier": {
-        "id": "230-80-2285",
-        "scheme": "UA-EDR",
-        "legalName": "Avila, Cox and Carson LLC",
-        "uri": "http://www.lopez.biz/list/terms.asp"
-      },
-      "address": {
-        "streetAddress": "60924 Amanda Courts Apt. 581",
-        "locality": "Millerhaven",
-        "region": "Nevada",
-        "postalCode": "59803-1527",
-        "countryName": "Japan"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "485-80-3308",
-          "scheme": "UA-EDR",
-          "legalName": "Avila, Cox and Carson LLC",
-          "uri": "https://powers.com/main/privacy.jsp"
-        }
-      ],
-      "contactPoint": {
-        "name": "Nancy Smith",
-        "email": "kwells@yahoo.com",
-        "telephone": "965-016-0879x336",
-        "faxNumber": "079-472-8639",
-        "url": "https://www.bell.org/tag/app/blog/main/"
-      }
-    }
-  ]
+    ]
+  }
 }

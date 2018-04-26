@@ -1,354 +1,371 @@
 {
-  "bids": [
-    {
-      "id": "08daae00-43b9-11e8-b742-2d522df22a44",
-      "date": "2018-04-19T10:07:06Z",
-      "status": "withdrawn",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7",
-          "identifier": {
-            "id": "987654321",
-            "scheme": "UA-EDR",
-            "legalName": "TEST Provider 7 LEGAL",
-            "uri": "https://test1.ua"
-          },
-          "address": {
-            "streetAddress": "Street 45",
-            "locality": "Locality",
-            "region": "Region",
-            "postalCode": "123456",
-            "countryName": "Country"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "987654377",
-              "scheme": "UA-EDR",
-              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
-              "uri": "https://add.test1.ua"
-            }
-          ],
-          "contactPoint": {
-            "name": "WHO ARE YOU",
-            "email": "test1@test.test",
-            "telephone": "+38022222222",
-            "faxNumber": "+38022222222",
-            "url": "https://cp.test1.ua"
-          }
-        }
-      ],
-      "documents": [
-        {
-          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
-          "documentType": "tenderNotice",
-          "title": "Title Test CN document to tender",
-          "description": "Description Test CN document to tender",
-          "language": "ro",
-          "relatedLots": [
-            "0452d161-43b8-11e8-befd-373bd8d530b4"
-          ],
-          "datePublished": "2018-04-19T10:07:05Z"
-        }
-      ],
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d530b4"
-      ]
+  "tender": {
+    "id": "ocds-t1s2t3-TEST-1524731362063",
+    "title": "Drug page all case lose.",
+    "description": "Season life fast raise its detail manager. Their any Mr recent land federal scene.",
+    "status": "active",
+    "statusDetails": "empty",
+    "classification": {
+      "scheme": "CPV",
+      "id": "24954200-8",
+      "description": "Regenerated activated carbon"
     },
-    {
-      "id": "1141b610-43b9-11e8-b742-2d522df22a44",
-      "date": "2018-04-19T10:04:37Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7",
-          "identifier": {
-            "id": "987654321",
-            "scheme": "UA-EDR",
-            "legalName": "TEST Provider 7 LEGAL",
-            "uri": "https://test1.ua"
-          },
-          "address": {
-            "streetAddress": "Street 45",
-            "locality": "Locality",
-            "region": "Region",
-            "postalCode": "123456",
-            "countryName": "Country"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "987654377",
-              "scheme": "UA-EDR",
-              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
-              "uri": "https://add.test1.ua"
-            }
-          ],
-          "contactPoint": {
-            "name": "WHO ARE YOU",
-            "email": "test1@test.test",
-            "telephone": "+38022222222",
-            "faxNumber": "+38022222222",
-            "url": "https://cp.test1.ua"
-          }
-        }
-      ],
-      "documents": [
-        {
-          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
-          "documentType": "tenderNotice",
-          "title": "Title Test CN document to tender",
-          "description": "Description Test CN document to tender",
-          "language": "ro",
-          "relatedLots": [
-            "0452d161-43b8-11e8-befd-373bd8d530b4"
-          ],
-          "datePublished": "2018-04-19T10:07:05Z"
-        }
-      ],
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ]
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": false
     },
-    {
-      "id": "488708a0-43b9-11e8-b742-2d522df22a44",
-      "date": "2018-04-19T10:06:09Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7",
-          "identifier": {
-            "id": "987654321",
-            "scheme": "UA-EDR",
-            "legalName": "TEST Provider 7 LEGAL",
-            "uri": "https://test1.ua"
-          },
-          "address": {
-            "streetAddress": "Street 45",
-            "locality": "Locality",
-            "region": "Region",
-            "postalCode": "123456",
-            "countryName": "Country"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "987654377",
-              "scheme": "UA-EDR",
-              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
-              "uri": "https://add.test1.ua"
-            }
-          ],
-          "contactPoint": {
-            "name": "WHO ARE YOU",
-            "email": "test1@test.test",
-            "telephone": "+38022222222",
-            "faxNumber": "+38022222222",
-            "url": "https://cp.test1.ua"
-          }
-        }
-      ],
-      "documents": [
-        {
-          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
-          "documentType": "tenderNotice",
-          "title": "Title Test CN document to tender",
-          "description": "Description Test CN document to tender",
-          "language": "ro",
-          "relatedLots": [
-            "0452d161-43b8-11e8-befd-373bd8d530b4"
-          ],
-          "datePublished": "2018-04-19T10:07:05Z"
-        }
-      ],
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ]
+    "designContest": {
+      "serviceContractAward": false
     },
-    {
-      "id": "67aef490-43b9-11e8-b742-2d522df22a44",
-      "date": "2018-04-19T10:07:02Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7",
-          "identifier": {
-            "id": "987654321",
-            "scheme": "UA-EDR",
-            "legalName": "TEST Provider 7 LEGAL",
-            "uri": "https://test1.ua"
-          },
-          "address": {
-            "streetAddress": "Street 45",
-            "locality": "Locality",
-            "region": "Region",
-            "postalCode": "123456",
-            "countryName": "Country"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "987654377",
-              "scheme": "UA-EDR",
-              "legalName": "ADDITIONAL TEST Provider 7 LEGAL",
-              "uri": "https://add.test1.ua"
-            }
-          ],
-          "contactPoint": {
-            "name": "WHO ARE YOU",
-            "email": "test1@test.test",
-            "telephone": "+38022222222",
-            "faxNumber": "+38022222222",
-            "url": "https://cp.test1.ua"
-          }
-        }
-      ],
-      "documents": [
-        {
-          "id": "385104e0-2901-11e8-b1c7-dff3c5406c1d",
-          "documentType": "tenderNotice",
-          "title": "Title Test CN document to tender",
-          "description": "Description Test CN document to tender",
-          "language": "ro",
-          "relatedLots": [
-            "0452d161-43b8-11e8-befd-373bd8d530b4"
-          ],
-          "datePublished": "2018-04-19T10:07:05Z"
-        }
-      ],
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ]
-    }
-  ],
-  "lots": [
-    {
-      "id": "0452d161-43b8-11e8-befd-373bd8d530b4",
-      "title": "Traditional partner without ago six yard loss community.",
-      "description": "I realize item debate job above. Over ok scene. Perform though audience.",
-      "status": "unsuccessful",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 3041338.25,
-        "currency": "MOP"
+    "electronicWorkflows": {
+      "useOrdering": false,
+      "usePayment": false,
+      "acceptInvoicing": false
+    },
+    "jointProcurement": {
+      "isJointProcurement": false
+    },
+    "procedureOutsourcing": {
+      "procedureOutsourced": false
+    },
+    "framework": {
+      "isAFramework": false
+    },
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": false
+    },
+    "legalBasis": "NULL",
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Sister probably loss look over able goal.",
+    "procurementMethodRationale": "However sometimes want true. Coach book might represent about successful.",
+    "procurementMethodAdditionalInfo": "It story race player together. Herself quickly piece pass crime hour effect. Consumer room foreign oil affect identify responsibility.",
+    "mainProcurementCategory": "services",
+    "additionalProcurementCategories": [
+      "services"
+    ],
+    "eligibilityCriteria": "Represent be their court include. Investment certain put fight final affect work. Push protect ago kind learn trade look.",
+    "contractPeriod": {
+      "startDate": "2018-04-26T08:29:20Z",
+      "endDate": "2018-09-12T07:19:17Z"
+    },
+    "procuringEntity": {
+      "name": "Brown, Chapman and Tran",
+      "id": "UA-EDR-308-27-7102",
+      "identifier": {
+        "id": "308-27-7102",
+        "scheme": "UA-EDR",
+        "legalName": "Brown, Chapman and Tran Inc",
+        "uri": "https://liu.info/home.htm"
       },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {
-          "hasRenewals": false
-        }
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-04-19T09:57:05Z",
-        "endDate": "2018-09-05T20:06:46Z"
+      "address": {
+        "streetAddress": "173 Kimberly Greens Suite 975",
+        "locality": "Stephenburgh",
+        "region": "Rhode Island",
+        "postalCode": "68152-2169",
+        "countryName": "Mauritius"
       },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "235 Jennifer Forks",
-          "locality": "Lake Xavier",
-          "region": "Maryland",
-          "postalCode": "94958",
-          "countryName": "Morocco"
-        },
-        "description": "Discover special free. Occur purpose while receive accept may carry."
+      "additionalIdentifiers": [
+        {
+          "id": "767-40-2723",
+          "scheme": "UA-EDR",
+          "legalName": "Brown, Chapman and Tran and Sons",
+          "uri": "https://bishop.com/"
+        }
+      ],
+      "contactPoint": {
+        "name": "Erin Smith",
+        "email": "stephen82@hotmail.com",
+        "telephone": "1-975-311-5081x9477",
+        "faxNumber": "(505)261-6701",
+        "url": "http://gillespie-carroll.info/homepage/"
       }
+    },
+    "value": {
+      "amount": 7.45,
+      "currency": "XBB"
+    },
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "lots": [
+      {
+        "id": "eba46100-492b-11e8-8e46-3774229333d2",
+        "title": "Method American institution each difference.",
+        "description": "Chair kid very resource politics later level him. Relationship area drop check give still. Design quickly send together focus send often. Only age write particular product.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 7.18385481E7,
+          "currency": "XBB"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-04-26T08:29:20Z",
+          "endDate": "2018-07-11T22:54:31Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "4767 Flores Stravenue",
+            "locality": "Hallfort",
+            "region": "Kentucky",
+            "postalCode": "62665-7777",
+            "countryName": "Ethiopia"
+          },
+          "description": "Around pull bring traditional. Morning market seven this must. World plan away week argue long few ever."
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "eba439f0-492b-11e8-8e46-3774229333d2",
+        "description": "Hit local paper close rock the worry. Standard because about represent use. Standard resource ask next. Around whatever hotel happen.",
+        "classification": {
+          "scheme": "CPV",
+          "id": "24954200-8",
+          "description": "Regenerated activated carbon"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPV",
+            "id": "15961000-2",
+            "description": "Beer"
+          }
+        ],
+        "quantity": 188606.36,
+        "unit": {
+          "id": "RO",
+          "name": "roll"
+        },
+        "relatedLot": "eba46100-492b-11e8-8e46-3774229333d2"
+      }
+    ],
+    "awardCriteria": "lowestCost",
+    "requiresElectronicCatalogue": false,
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionMethodRationale": [
+      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"
+    ],
+    "submissionMethodDetails": "Down type government put allow. Human project policy. Threat once gas recent social government. House include here fear.",
+    "documents": [
+      {
+        "id": "ea970fb0-492b-11e8-bcee-fd2243130aae",
+        "documentType": "environmentalImpact",
+        "title": "Book none apply wish piece much defense.",
+        "description": "Most say might fall writer machine. Suddenly successful she sing. Class yourself eat deal white add.",
+        "language": "sl",
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
+      }
+    ],
+    "submissionLanguages": [
+      "lv"
+    ],
+    "tenderPeriod": {
+      "startDate": "2018-04-26T08:32:24Z",
+      "endDate": "2018-04-26T08:35:24Z"
+    },
+    "enquiryPeriod": {
+      "startDate": "2018-04-26T08:32:24Z",
+      "endDate": "2018-04-26T08:34:24Z"
     }
-  ],
-  "awardPeriod": {
-    "startDate": "2018-04-19T10:07:05Z"
   },
-  "awards": [
-    {
-      "id": "6a145bd0-43b9-11e8-bd9f-93da4697d57e",
-      "token": "04e682f1-15aa-4d5d-896f-89850045d36b",
-      "date": "2018-04-19T10:07:06Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ],
-      "relatedBid": "1141b610-43b9-11e8-b742-2d522df22a44",
-      "suppliers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7"
-        }
-      ]
-    },
-    {
-      "id": "6a145bd1-43b9-11e8-bd9f-93da4697d57e",
-      "token": "74fc5839-8048-425e-85ea-f46829e12f6b",
-      "date": "2018-04-19T10:07:06Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ],
-      "relatedBid": "488708a0-43b9-11e8-b742-2d522df22a44",
-      "suppliers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7"
-        }
-      ]
-    },
-    {
-      "id": "6a145bd2-43b9-11e8-bd9f-93da4697d57e",
-      "token": "2099dc68-b663-4402-87d5-bbd9539d5640",
-      "date": "2018-04-19T10:07:06Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d5304"
-      ],
-      "relatedBid": "67aef490-43b9-11e8-b742-2d522df22a44",
-      "suppliers": [
-        {
-          "id": "UA-EDR-987654321",
-          "name": "TEST Provider 7"
-        }
-      ]
-    },
-    {
-      "id": "6a145bd3-43b9-11e8-bd9f-93da4697d57e",
-      "token": "2af1a6eb-8414-43a3-9dc2-c16bd1789cfa",
-      "date": "2018-04-19T10:07:06Z",
-      "description": "",
-      "status": "unsuccessful",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "0452d161-43b8-11e8-befd-373bd8d530b4"
-      ]
-    }
-  ],
-  "unsuccessfulLots": [
-    {
-      "id": "0452d161-43b8-11e8-befd-373bd8d530b4"
-    }
-  ],
-  "tenderPeriod": {
-    "startDate": "2018-04-19T09:57:05Z",
-    "endDate": "2018-04-19T10:07:05Z"
+  "bids": {
+    "details": [
+      {
+        "id": "ed74db40-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-625-67-5011",
+            "name": "Silva-Crosby",
+            "identifier": {
+              "id": "625-67-5011",
+              "scheme": "UA-EDR",
+              "legalName": "Silva-Crosby LLC",
+              "uri": "http://ortega-reid.com/login/"
+            },
+            "address": {
+              "streetAddress": "107 Marissa Points",
+              "locality": "North Xavierfurt",
+              "region": "Iowa",
+              "postalCode": "89926-4005",
+              "countryName": "Cuba"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "349-82-4180",
+                "scheme": "UA-EDR",
+                "legalName": "Silva-Crosby Ltd",
+                "uri": "https://www.cantrell.com/app/search/faq.htm"
+              }
+            ],
+            "contactPoint": {
+              "name": "Melissa Johnson",
+              "email": "alexanderriley@gmail.com",
+              "telephone": "1-346-558-9457x35124",
+              "faxNumber": "03199490416",
+              "url": "http://baker.biz/post.asp"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
+      },
+      {
+        "id": "ecfb8c90-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-728-05-8831",
+            "name": "Knapp-Mitchell",
+            "identifier": {
+              "id": "728-05-8831",
+              "scheme": "UA-EDR",
+              "legalName": "Knapp-Mitchell PLC",
+              "uri": "https://www.meyers.net/blog/home/"
+            },
+            "address": {
+              "streetAddress": "9915 Hensley Turnpike",
+              "locality": "Lake Rodney",
+              "region": "Colorado",
+              "postalCode": "02127",
+              "countryName": "Antarctica (the territory South of 60 deg S)"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "524-76-2938",
+                "scheme": "UA-EDR",
+                "legalName": "Knapp-Mitchell PLC",
+                "uri": "https://www.eaton.info/faq/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Susan Evans",
+              "email": "jhopkins@yahoo.com",
+              "telephone": "1-833-107-6654",
+              "faxNumber": "1-299-942-8563x1437",
+              "url": "https://www.rosario.biz/posts/list/index.html"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
+      },
+      {
+        "id": "ed28b710-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-127-49-3240",
+            "name": "Lewis, Costa and Miller",
+            "identifier": {
+              "id": "127-49-3240",
+              "scheme": "UA-EDR",
+              "legalName": "Lewis, Costa and Miller Group",
+              "uri": "https://farrell.com/category.htm"
+            },
+            "address": {
+              "streetAddress": "235 Danielle Knolls Suite 943",
+              "locality": "Dianafurt",
+              "region": "Rhode Island",
+              "postalCode": "77130",
+              "countryName": "Nigeria"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "422-43-1650",
+                "scheme": "UA-EDR",
+                "legalName": "Lewis, Costa and Miller LLC",
+                "uri": "http://www.crawford-patel.com/author/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Jasmine Wilson",
+              "email": "williamgraham@gmail.com",
+              "telephone": "(601)999-8522x7245",
+              "faxNumber": "555-632-2319",
+              "url": "https://www.graham.com/explore/tags/categories/faq.htm"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
+      },
+      {
+        "id": "ecd60330-492b-11e8-8127-9b7779a939ff",
+        "date": "2018-04-26T08:32:24Z",
+        "status": "invited",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "UA-EDR-423-87-9132",
+            "name": "Armstrong, Moore and Webster",
+            "identifier": {
+              "id": "423-87-9132",
+              "scheme": "UA-EDR",
+              "legalName": "Armstrong, Moore and Webster Group",
+              "uri": "http://www.castaneda.com/blog/search.asp"
+            },
+            "address": {
+              "streetAddress": "6105 Brittany Curve",
+              "locality": "Port Elizabeth",
+              "region": "Minnesota",
+              "postalCode": "32656-3526",
+              "countryName": "United States of America"
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "863-08-8830",
+                "scheme": "UA-EDR",
+                "legalName": "Armstrong, Moore and Webster Inc",
+                "uri": "http://johnson.biz/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Jason Smith",
+              "email": "rogersstephanie@yahoo.com",
+              "telephone": "(157)860-8072",
+              "faxNumber": "395-701-1892x881",
+              "url": "https://www.armstrong.com/app/categories/home/"
+            }
+          }
+        ],
+        "relatedLots": [
+          "eba46100-492b-11e8-8e46-3774229333d2"
+        ]
+      }
+    ]
   }
 }
