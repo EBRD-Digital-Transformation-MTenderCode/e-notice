@@ -10,6 +10,8 @@ import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
+import com.procurement.notice.model.tender.record.TenderDescription
+import com.procurement.notice.model.tender.record.TenderTitle
 import com.procurement.notice.utils.createObjectNode
 import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toJson
@@ -168,6 +170,11 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             }
             else -> throw ErrorException(ErrorType.STAGE_ERROR)
         }
+        val prRelatedProcessType = when (Stage.valueOf(prevStage.toUpperCase())) {
+            Stage.PS -> RelatedProcessType.X_PRESELECTION
+            Stage.PQ -> RelatedProcessType.X_PREQUALIFICATION
+            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+        }
         /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS)
                 ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
@@ -187,6 +194,8 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         prevRecord.apply {
             id = getReleaseId(prOcId)
             date = releaseDate
+            tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
+            tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
             releaseDao.saveRelease(releaseService.getRecordEntity(cpid, prevStage, prevRecord))
@@ -211,7 +220,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         organizationService.processRecordPartiesFromBids(record)
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.X_PRESELECTION)
+        relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, prRelatedProcessType)
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
