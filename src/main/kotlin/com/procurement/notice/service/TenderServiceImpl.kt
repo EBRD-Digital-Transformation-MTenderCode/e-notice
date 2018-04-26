@@ -235,7 +235,6 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, prevStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val prevRecord = toObject(Record::class.java, recordEntity.jsonData)
-        dto.tender.documents = prevRecord.tender.documents
         val prOcId = prevRecord.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         prevRecord.apply {
             id = getReleaseId(prOcId)
@@ -260,7 +259,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
                 hasPreviousNotice = prevRecord.hasPreviousNotice,
                 purposeOfNotice = prevRecord.purposeOfNotice,
                 relatedProcesses = null)
-        processDocuments(record, dto)
+        processDocuments(record, prevRecord)
         organizationService.processRecordPartiesFromBids(record)
         relatedProcessService.addRecordRelatedProcessToMs(ms, ocId, relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
@@ -270,20 +269,25 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
+    private fun processDocuments(record: Record, prevRecord: Record) {
+        /*tender documents*/
+        record.tender.documents = prevRecord.tender.documents
+        /*bids documents*/
+        if (prevRecord.bids?.details != null) {
+            for (bid in record.bids?.details!!){
+                prevRecord.bids?.details?.firstOrNull { it.id == bid.id }?.apply {
+                    bid.documents = this.documents
+                }
+            }
+        }
+    }
+
     private fun getOcId(cpId: String, stage: String): String {
         return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
     }
 
     private fun getReleaseId(ocId: String): String {
         return ocId + SEPARATOR + milliNowUTC()
-    }
-
-    private fun processDocuments(record: Record, dto: StartNewStageDto) {
-        if (dto.tender.documents != null) {
-            val docIds = dto.tender.documents!!.asSequence().map { it.id!! }.toSet()
-            record.tender.documents = dto.tender.documents!!.asSequence()
-                    .filter { docIds.contains(it.id) }.toList()
-        }
     }
 
     private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
