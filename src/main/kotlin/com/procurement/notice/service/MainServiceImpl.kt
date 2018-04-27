@@ -39,13 +39,25 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.CREATE_EI -> return budgetService.createEi(cpId, newStage, releaseDate, data)
             Operation.UPDATE_EI -> return budgetService.updateEi(cpId, newStage, releaseDate, data)
             Operation.CREATE_FS -> return budgetService.createFs(cpId, newStage, releaseDate, data)
-            Operation.UPDATE_FS -> return budgetService.updateFs(cpId, ocId!!, newStage, releaseDate, data)
+            Operation.UPDATE_FS -> {
+                val ocId = ocId ?: throw ErrorException(ErrorType.OCID_ERROR)
+                return budgetService.updateFs(cpId, ocId, newStage, releaseDate, data)
+            }
             Operation.CREATE_CN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_CN)
             Operation.CREATE_PN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PN)
             Operation.CREATE_PIN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PIN)
-            Operation.CREATE_PIN_ON_PN -> return releaseService.createPinOnPn(cpId, newStage, previousStage!!, releaseDate, data)
-            Operation.CREATE_CN_ON_PN -> return releaseService.createCnOnPn(cpId, newStage, previousStage!!, releaseDate, data)
-            Operation.CREATE_CN_ON_PIN -> return releaseService.createCnOnPin(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.CREATE_PIN_ON_PN -> {
+                val previousStage = previousStage ?: throw ErrorException(ErrorType.STAGE_ERROR)
+                return releaseService.createPinOnPn(cpId, newStage, previousStage, releaseDate, data)
+            }
+            Operation.CREATE_CN_ON_PN -> {
+                val previousStage = previousStage ?: throw ErrorException(ErrorType.STAGE_ERROR)
+                return releaseService.createCnOnPn(cpId, newStage, previousStage, releaseDate, data)
+            }
+            Operation.CREATE_CN_ON_PIN -> {
+                val previousStage = previousStage ?: throw ErrorException(ErrorType.STAGE_ERROR)
+                return releaseService.createCnOnPin(cpId, newStage, previousStage, releaseDate, data)
+            }
             Operation.UPDATE_CN -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
             Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(cpId, newStage, releaseDate, data)
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
@@ -59,7 +71,10 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.STANDSTILL_PERIOD_EV -> return tenderServiceEv.standstillPeriodEv(cpId, newStage, releaseDate, data)
             Operation.AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(cpId, newStage, releaseDate, data)
             Operation.AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(cpId, newStage, releaseDate, data)
-            Operation.START_NEW_STAGE -> return tenderService.startNewStage(cpId, newStage, previousStage!!, releaseDate, data)
+            Operation.START_NEW_STAGE -> {
+                val previousStage = previousStage ?: throw ErrorException(ErrorType.STAGE_ERROR)
+                return tenderService.startNewStage(cpId, newStage, previousStage, releaseDate, data)
+            }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }

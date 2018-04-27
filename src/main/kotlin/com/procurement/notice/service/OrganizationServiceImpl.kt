@@ -96,46 +96,50 @@ class OrganizationServiceImpl : OrganizationService {
 
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
-        if (ms.tender.procuringEntity != null) {
-            addParty(ms.parties!!, ms.tender.procuringEntity!!, PartyRole.PROCURING_ENTITY)
-            clearOrganizationReference(ms.tender.procuringEntity!!)
+
+        ms.parties?.let { parties ->
+            ms.tender.procuringEntity?.let { procuringEntity ->
+                addParty(parties, procuringEntity, PartyRole.PROCURING_ENTITY)
+                clearOrganizationReference(procuringEntity)
+            }
+            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties, buyer, PartyRole.BUYER) }
+            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties, payer, PartyRole.PAYER) }
+            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties, funder, PartyRole.FUNDER) }
         }
-        if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { addParty(ms.parties!!, it, PartyRole.BUYER) }
-        if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { addParty(ms.parties!!, it, PartyRole.PAYER) }
-        if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { addParty(ms.parties!!, it, PartyRole.FUNDER) }
     }
 
     override fun processRecordPartiesFromBids(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
-        if (record.bids?.details != null) {
-            record.bids!!.details!!.asSequence()
-                    .filter { it.tenderers != null }
-                    .flatMap { it.tenderers!!.asSequence() }
-                    .forEach {
-                        addParty(record.parties!!, it, PartyRole.TENDERER)
-                        clearOrganizationReference(it)
+        record.bids?.details?.let { bids ->
+            bids.forEach { bid ->
+                bid.tenderers?.let { tenderers ->
+                    tenderers.forEach { tenderer ->
+                        record.parties?.let { addParty(it, tenderer, PartyRole.TENDERER) }
                     }
+                }
+            }
         }
     }
 
     override fun processRecordPartiesFromAwards(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
-        if (record.awards != null) {
-            record.awards!!.asSequence()
-                    .filter { it.suppliers != null }
-                    .flatMap { it.suppliers!!.asSequence() }
-                    .forEach {
-                        addParty(record.parties!!, it, PartyRole.SUPPLIER)
-                        clearOrganizationReference(it)
+        record.awards?.let { awards ->
+            awards.forEach { award ->
+                award.suppliers?.let { suppliers ->
+                    suppliers.forEach { supplier ->
+                        record.parties?.let { addParty(it, supplier, PartyRole.SUPPLIER) }
+                        clearOrganizationReference(supplier)
                     }
+                }
+            }
         }
     }
 
     override fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
         if (record.parties == null) record.parties = hashSetOf()
-        if (enquiry.author != null) {
-            addParty(record.parties!!, enquiry.author, PartyRole.ENQUIRER)
-            clearOrganizationReference(enquiry.author)
+       enquiry.author?.let{ author ->
+            record.parties?.let { addParty(it, author, PartyRole.ENQUIRER) }
+            clearOrganizationReference(author)
         }
     }
 
