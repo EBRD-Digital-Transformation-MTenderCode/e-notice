@@ -12,6 +12,6 @@ data class StandstillPeriodEndEvDto(
         @JsonProperty("standstillPeriod")
         val standstillPeriod: Period,
 
-        @JsonProperty("contracts")
-        val contracts: HashSet<Contract>
+        @JsonProperty("cans")
+        val cans: HashSet<Can>
 )

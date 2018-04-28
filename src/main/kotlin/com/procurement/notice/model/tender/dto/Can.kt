@@ -5,6 +5,6 @@ import com.procurement.notice.model.ocds.Contract
 
 data class Can(
 
-        @JsonProperty("contracts")
-        val contracts: HashSet<Contract>
+        @JsonProperty("contract")
+        val contract: Contract
 )

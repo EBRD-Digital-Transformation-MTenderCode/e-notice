@@ -77,7 +77,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
             dto.lot?.let { lot -> updateLot(this, lot) }
-            dto.nextAward?.let { award ->  updateAward(this, award)}
+            dto.nextAward?.let { award -> updateAward(this, award) }
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -105,7 +105,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             tender.standstillPeriod = dto.standstillPeriod
-            if (dto.contracts.isNotEmpty()) contracts = dto.contracts
+            if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -125,6 +125,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val recordEv = toObject(Record::class.java, entity.jsonData)
         val recordEvOcId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        val contractsDto = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
         recordEv.apply {
             id = getReleaseId(recordEvOcId)
             date = releaseDate
@@ -134,10 +135,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.cans.contracts.isNotEmpty()) contracts?.let { updateContracts(it, dto.cans.contracts) }
+            if (contractsDto.isNotEmpty()) contracts?.let { updateContracts(it, contractsDto) }
         }
-        if (dto.cans.contracts.isNotEmpty()) {
-            for (contract in dto.cans.contracts) {
+        if (contractsDto.isNotEmpty()) {
+            for (contract in contractsDto) {
                 /*new record Contract*/
                 val ocIdCAN = getOcId(cpid, CN)
                 val award = dto.awards.asSequence().first { it.id == contract.awardID }
