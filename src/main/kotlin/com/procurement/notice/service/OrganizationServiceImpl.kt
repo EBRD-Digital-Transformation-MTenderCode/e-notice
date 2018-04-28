@@ -115,6 +115,7 @@ class OrganizationServiceImpl : OrganizationService {
                 bid.tenderers?.let { tenderers ->
                     tenderers.forEach { tenderer ->
                         record.parties?.let { addParty(it, tenderer, PartyRole.TENDERER) }
+                        clearOrganizationReference(tenderer)
                     }
                 }
             }

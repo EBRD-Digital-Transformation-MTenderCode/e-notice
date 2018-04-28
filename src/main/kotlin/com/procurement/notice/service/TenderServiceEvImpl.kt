@@ -74,9 +74,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
-            if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
-            if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.lots != null && dto.lots.isNotEmpty()) tender.lots?.let { updateLots(it, dto.lots) }
+            updateAward(this, dto.award)
+            updateBid(this, dto.bid)
+            dto.lot?.let { lot -> updateLot(this, lot) }
+            dto.nextAward?.let { award ->  updateAward(this, award)}
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -178,6 +179,34 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                 contract.status = this.status
                 contract.statusDetails = this.statusDetails
             }
+        }
+    }
+
+    private fun updateAward(record: Record, award: Award) {
+        record.awards?.let { awards ->
+            val upAward = awards.asSequence().firstOrNull { it.id == award.id }
+                    ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
+            award.date?.let { upAward.date = it }
+            award.description?.let { upAward.description = it }
+            award.statusDetails?.let { upAward.statusDetails = it }
+            award.documents?.let { upAward.documents = it }
+        }
+    }
+
+    private fun updateBid(record: Record, bid: Bid) {
+        record.bids?.details?.let { bids ->
+            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }
+                    ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            bid.date?.let { upBid.date = it }
+            bid.statusDetails?.let { upBid.statusDetails = it }
+        }
+    }
+
+    private fun updateLot(record: Record, lot: Lot) {
+        record.tender.lots?.let { lots ->
+            val upLot = lots.asSequence().firstOrNull { it.id == lot.id }
+                    ?: throw ErrorException(ErrorType.LOT_NOT_FOUND)
+            lot.statusDetails?.let { upLot.statusDetails = it }
         }
     }
 

@@ -194,14 +194,14 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         prevRecord.apply {
             id = getReleaseId(prOcId)
             date = releaseDate
-            tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
-            tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
             releaseDao.saveRelease(releaseService.getRecordEntity(cpid, prevStage, prevRecord))
         }
         /*new record*/
         val ocId = getOcId(cpid, stage)
+        dto.tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
+        dto.tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
         val record = Record(
                 ocid = ocId,
                 id = getReleaseId(ocId),

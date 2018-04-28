@@ -10,12 +10,15 @@ import java.util.*
 @JsonPropertyOrder("awards", "bids", "lots")
 data class AwardByBidEvDto(
 
-        @JsonProperty("awards")
-        val awards: HashSet<Award>,
+        @JsonProperty("award")
+        val award: Award,
 
-        @JsonProperty("bids")
-        val bids: HashSet<Bid>,
+        @JsonProperty("nextAward")
+        val nextAward: Award?,
 
-        @JsonProperty("lots")
-        val lots: HashSet<Lot>?
+        @JsonProperty("bid")
+        val bid: Bid,
+
+        @JsonProperty("lot")
+        val lot: Lot?
 )
