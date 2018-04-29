@@ -260,6 +260,10 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 params.statusDetails = TenderStatusDetails.PRIOR_NOTICE
                 params.relatedProcessType = RelatedProcessType.PRIOR
             }
+            Stage.EV -> {
+                params.statusDetails = TenderStatusDetails.EVALUATION
+                params.relatedProcessType = RelatedProcessType.X_EVALUATION
+            }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
         return params
