@@ -77,7 +77,7 @@ data class Contract(
         val implementation: Implementation?,
 
         @JsonProperty("relatedProcesses")
-        val relatedProcesses: HashSet<RelatedProcess>?,
+        var relatedProcesses: HashSet<RelatedProcess>?,
 
         @JsonProperty("milestones")
         val milestones: List<Milestone>?,

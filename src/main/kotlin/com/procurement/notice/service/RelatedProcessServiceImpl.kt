@@ -5,6 +5,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
@@ -35,7 +36,9 @@ interface RelatedProcessService {
 
     fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String)
 
-    fun addRecordRelatedProcessToContract(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType)
+
+    fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract)
 }
 
 @Service
@@ -162,8 +165,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(msOcId, msOcId)))
     }
 
-    override fun addRecordRelatedProcessToContract(record: ContractRecord, recordOcId: String, msOcId: String,
-                                                   processType: RelatedProcessType) {
+    override fun addRecordRelatedProcessToContractRecord(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -171,6 +173,21 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 scheme = RelatedProcessScheme.OCID,
                 identifier = recordOcId,
                 uri = getTenderUri(msOcId, recordOcId)))
+    }
+
+    override fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract) {
+        record.contracts?.let { cans ->
+            val can = cans.asSequence().firstOrNull { it.awardID == contract.awardID }
+            can?.let { can ->
+                if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
+                can.relatedProcesses?.add(RelatedProcess(
+                        id = UUIDs.timeBased().toString(),
+                        relationship = listOf(RelatedProcessType.X_CONTRACT),
+                        scheme = RelatedProcessScheme.OCID,
+                        identifier = ocIdContract,
+                        uri = getTenderUri(msOcId, ocIdContract)))
+            }
+        }
     }
 
     private fun getEiCpIdFromOcId(ocId: String): String {

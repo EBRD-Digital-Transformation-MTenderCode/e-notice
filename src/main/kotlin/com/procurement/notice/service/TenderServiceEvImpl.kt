@@ -117,7 +117,6 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         ms.apply {
             id = getReleaseId(cpid)
             date = releaseDate
-            tag = listOf(Tag.COMPILED)
             tender.statusDetails = TenderStatusDetails.EXECUTION
         }
 
@@ -140,11 +139,11 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         if (contractsDto.isNotEmpty()) {
             for (contract in contractsDto) {
                 /*new record Contract*/
-                val ocIdCAN = getOcId(cpid, CN)
+                val ocIdContract = getOcId(cpid, CN)
                 val award = dto.awards.asSequence().first { it.id == contract.awardID }
-                val recordCAN = ContractRecord(
-                        ocid = ocIdCAN,
-                        id = getReleaseId(ocIdCAN),
+                val recordContract = ContractRecord(
+                        ocid = ocIdContract,
+                        id = getReleaseId(ocIdContract),
                         date = releaseDate,
                         tag = listOf(Tag.CONTRACT),
                         initiationType = recordEv.initiationType,
@@ -152,15 +151,13 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                         awards = setOf(award).toHashSet(),
                         contracts = setOf(contract).toHashSet(),
                         relatedProcesses = null)
-
-                relatedProcessService.addMsRelatedProcessToContract(recordCAN, cpid)
-                relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdCAN, RelatedProcessType.X_CONTRACT)
-                relatedProcessService.addRecordRelatedProcessToContract(recordCAN, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
-                relatedProcessService.addRecordRelatedProcessToRecord(recordEv, ocIdCAN, cpid, RelatedProcessType.X_CONTRACT)
-                releaseDao.saveRelease(getRecordEntity(cpid, CN, recordCAN))
+                relatedProcessService.addMsRelatedProcessToContract(recordContract, cpid)
+                relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdContract, RelatedProcessType.X_CONTRACT)
+                relatedProcessService.addRecordRelatedProcessToContractRecord(recordContract, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
+                relatedProcessService.addContractRelatedProcessToCAN(recordEv, ocIdContract, cpid, contract)
+                releaseDao.saveRelease(getRecordEntity(cpid, CN, recordContract))
             }
         }
-        relatedProcessService.addRecordRelatedProcessToMs(ms, recordEvOcId, RelatedProcessType.X_EVALUATION)
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, recordEv))
         return getResponseDto(cpid, recordEvOcId)
