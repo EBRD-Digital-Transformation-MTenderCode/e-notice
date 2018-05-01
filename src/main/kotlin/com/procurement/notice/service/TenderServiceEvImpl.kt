@@ -112,6 +112,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
     }
 
     override fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+        val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
         ms.apply {
@@ -121,7 +122,6 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         }
 
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val recordEv = toObject(Record::class.java, entity.jsonData)
         val recordEvOcId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
         val contractsDto = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
@@ -136,8 +136,8 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
             if (contractsDto.isNotEmpty()) contracts?.let { updateContracts(it, contractsDto) }
         }
-        if (contractsDto.isNotEmpty()) {
-            for (contract in contractsDto) {
+        if (dto.contracts.isNotEmpty()) {
+            for (contract in dto.contracts) {
                 /*new record Contract*/
                 val ocIdContract = getOcId(cpid, CN)
                 val award = dto.awards.asSequence().first { it.id == contract.awardID }
