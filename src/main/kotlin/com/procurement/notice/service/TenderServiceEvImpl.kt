@@ -123,7 +123,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = toObject(Record::class.java, entity.jsonData)
         val recordEvOcId = recordEv.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
-        val contractsDto = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
+
         recordEv.apply {
             id = getReleaseId(recordEvOcId)
             date = releaseDate
@@ -133,7 +133,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
-            if (contractsDto.isNotEmpty()) contracts?.let { updateContracts(it, contractsDto) }
+            if (dto.cans.isNotEmpty()) {
+                val contractsDto = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
+                contracts?.let { updateContracts(it, contractsDto) }
+            }
         }
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
