@@ -20,9 +20,6 @@ data class AwardPeriodEndEvDto(
         @JsonProperty("awards")
         val awards: HashSet<Award>,
 
-        @JsonProperty("documents")
-        val documents: HashSet<Document>,
-
         @JsonProperty("cans")
         val cans: HashSet<Can>,
 

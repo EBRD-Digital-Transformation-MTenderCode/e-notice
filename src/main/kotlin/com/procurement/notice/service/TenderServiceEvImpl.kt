@@ -43,8 +43,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         private val CN = "CN"
     }
 
-    override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode):
-            ResponseDto<*> {
+    override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
@@ -140,7 +139,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             for (contract in dto.contracts) {
                 /*new record Contract*/
                 val ocIdContract = getOcId(cpid, CN)
-                val award = dto.awards.asSequence().first { it.id == contract.awardID }
+                val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
                         id = getReleaseId(ocIdContract),

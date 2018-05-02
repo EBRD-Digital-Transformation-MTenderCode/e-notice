@@ -21,7 +21,7 @@ enum class Operation(val value: String) {
     AWARD_BY_BID("awardByBid"),
     AWARD_BY_BID_EV("awardByBidEv"),
     AWARD_PERIOD_END("awardPeriodEnd"),
-    AWARD_PERIOD_END_EV("awardPeriodEndEV"),
+    AWARD_PERIOD_END_EV("awardPeriodEndEv"),
     STANDSTILL_PERIOD("standstillPeriod"),
     STANDSTILL_PERIOD_EV("standstillPeriodEv"),
     START_NEW_STAGE("startNewStage"),

@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder(
         "id",
+        "date",
         "awardID",
         "extendsContractID",
         "title",
@@ -38,8 +39,13 @@ data class Contract(
         @JsonProperty("id")
         val id: String?,
 
-        @JsonProperty("awardID")
-        val awardID: String?,
+        @JsonProperty("date")
+        @JsonDeserialize(using = JsonDateDeserializer::class)
+        @JsonSerialize(using = JsonDateSerializer::class)
+        val date: LocalDateTime?,
+
+        @JsonProperty("awardId")
+        val awardId: String?,
 
         @JsonProperty("title")
         val title: String?,

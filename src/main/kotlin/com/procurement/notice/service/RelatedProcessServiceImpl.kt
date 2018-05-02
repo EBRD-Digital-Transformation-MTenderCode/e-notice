@@ -177,7 +177,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
 
     override fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract) {
         record.contracts?.let { cans ->
-            val can = cans.asSequence().firstOrNull { it.awardID == contract.awardID }
+            val can = cans.asSequence().firstOrNull { it.awardId == contract.awardId }
             can?.let { can ->
                 if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
                 can.relatedProcesses?.add(RelatedProcess(
