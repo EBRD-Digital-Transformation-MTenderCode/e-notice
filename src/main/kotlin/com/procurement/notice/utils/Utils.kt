@@ -44,9 +44,9 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
     }
 }
 
-/*Double utils*/
-fun Double.toFixed(s: Int): Double {
-    if (s == 0) return round(this)
-    val power = (10.0).pow(s)
-    return round(this * power) / power
-}
+///*Double utils*/
+//fun Double.toFixed(s: Int): Double {
+//    if (s == 0) return round(this)
+//    val power = (10.0).pow(s)
+//    return round(this * power) / power
+//}

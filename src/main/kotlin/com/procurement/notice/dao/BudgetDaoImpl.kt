@@ -5,13 +5,14 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder.*
 import com.procurement.notice.model.entity.BudgetEntity
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 interface BudgetDao {
 
     fun saveBudget(entity: BudgetEntity)
 
-    fun getTotalAmountByCpId(cpId: String): Double?
+    fun getTotalAmountByCpId(cpId: String): BigDecimal?
 
     fun getByCpId(cpId: String): BudgetEntity?
 
@@ -51,12 +52,12 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         session.execute(batch)
     }
 
-    override fun getTotalAmountByCpId(cpId: String): Double? {
+    override fun getTotalAmountByCpId(cpId: String): BigDecimal? {
         val query = select().sum(AMOUNT).`as`(AMOUNT)
                 .from(BUDGET_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
         val row = session.execute(query).one()
-        return row?.getDouble(AMOUNT)
+        return row?.getDouble(AMOUNT)?.toBigDecimal()
     }
 
     override fun getByCpId(cpId: String): BudgetEntity? {
@@ -72,7 +73,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
-                row.getDouble(AMOUNT),
+                row.getDecimal(AMOUNT),
                 row.getString(JSON_DATA)) else null
     }
 
@@ -90,7 +91,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
-                row.getDouble(AMOUNT),
+                row.getDecimal(AMOUNT),
                 row.getString(JSON_DATA)) else null
     }
 

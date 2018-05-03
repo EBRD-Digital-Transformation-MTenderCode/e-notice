@@ -13,6 +13,7 @@ import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 interface BudgetService {
@@ -78,7 +79,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
-        val amount = fs.planning?.budget?.amount?.amount ?: 0.00
+        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
         createEiByFs(cpid, fs.ocid)
         return getResponseDto(cpid, fs.ocid)
@@ -88,8 +89,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateFs = toObject(FS::class.java, data.toString())
         val fs = toObject(FS::class.java, entity.jsonData)
-        val updateAmount = updateFs.planning?.budget?.amount?.amount ?: 0.00
-        val amount = fs.planning?.budget?.amount?.amount ?: 0.00
+        val updateAmount: BigDecimal = updateFs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
+        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         fs.apply {
             id = getReleaseId(ocid)
             date = releaseDate
@@ -139,7 +140,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     private fun createEiByFs(eiCpId: String, fsOcId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it.toFixed(2) }
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
@@ -149,7 +150,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     private fun updateEiAmountByFs(eiCpId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it.toFixed(2) }
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
         ei.id = getReleaseId(eiCpId)
         ei.date = localNowUTC()
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
@@ -161,14 +162,14 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return BudgetEntity(
                 cpId = ei.ocid,
                 ocId = ei.ocid,
-                releaseDate =releaseDate.toDate(),
+                releaseDate = releaseDate.toDate(),
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = toJson(ei)
         )
     }
 
-    private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: Double?): BudgetEntity {
+    private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: BigDecimal?): BudgetEntity {
         val releaseDate = fs.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = fs.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return BudgetEntity(

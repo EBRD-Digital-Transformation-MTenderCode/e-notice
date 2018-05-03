@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS ocds.notice_budget_compiled_release (
        release_date timestamp,
        release_id text,
        stage text,
-       amount double,
+       amount decimal,
        json_data text,
        primary key(cp_id, oc_id)
 )WITH CLUSTERING ORDER BY (oc_id ASC);

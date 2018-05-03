@@ -1,5 +1,6 @@
 package com.procurement.notice.model.entity
 
+import java.math.BigDecimal
 import java.util.*
 
 data class BudgetEntity(
@@ -14,7 +15,7 @@ data class BudgetEntity(
 
         var stage: String,
 
-        var amount: Double? = 0.00,
+        var amount: BigDecimal? = BigDecimal.valueOf(0.00),
 
         var jsonData: String
 )
