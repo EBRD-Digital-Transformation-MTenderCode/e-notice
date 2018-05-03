@@ -1,5 +1,6 @@
 package com.procurement.notice.config
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Configuration
 import java.time.format.DateTimeFormatter
@@ -21,6 +22,8 @@ class JsonConfig(private val mapper: ObjectMapper) {
         lateinit var mapper: ObjectMapper
         fun init(objectMapper: ObjectMapper) {
             mapper = objectMapper
+            mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
+            mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
         }
     }
 
