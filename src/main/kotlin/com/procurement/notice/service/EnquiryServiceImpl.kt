@@ -103,6 +103,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
         enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
             this.answer = enquiry.answer
+            this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
     }
 
