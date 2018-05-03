@@ -24,7 +24,6 @@ data class Item(
         val additionalClassifications: HashSet<Classification>?,
 
         @JsonProperty("quantity")
-        @JsonDeserialize(using = MoneyDeserializer::class)
         val quantity: BigDecimal?,
 
         @JsonProperty("unit")
