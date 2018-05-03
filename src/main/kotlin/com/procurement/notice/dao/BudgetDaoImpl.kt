@@ -57,7 +57,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
                 .from(BUDGET_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
         val row = session.execute(query).one()
-        return row?.getDouble(AMOUNT)?.toBigDecimal()
+        return row?.getDecimal(AMOUNT)
     }
 
     override fun getByCpId(cpId: String): BudgetEntity? {
