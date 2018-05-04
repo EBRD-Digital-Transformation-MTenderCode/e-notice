@@ -1,84 +1,67 @@
 {
-  "ocid": "ocds-t1s2t3-MD-1523801742965",
-  "id": "ocds-t1s2t3-MD-1523801742965-1523803340935",
-  "date": "2018-04-13T09:33:06Z",
-  "tag": [
-    "compiled"
-  ],
-  "initiationType": "tender",
-  "language": "en",
-  "planning": {
-    "budget": {
-      "id": "33600000-6",
-      "period": {
-        "startDate": "2018-03-28T00:00:00Z",
-        "endDate": "2018-04-27T00:00:01Z"
-      },
-      "amount": {
-        "currency": "UAH"
-      }
-    },
-    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
-  },
+  "ocid": "ocds-t1s2t3-TEST-1525419379069",
   "tender": {
-    "id": "ocds-t1s2t3-MD-1523801742965",
-    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
-    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
+    "id": "ocds-t1s2t3-TEST-1525419379069",
+    "title": "Short off throughout somebody eye onto statement.",
+    "description": "Company member idea college third health century watch perhaps place live air option eight opportunity song dark cell test save pass so probably allow budget second every fund difficult language general east city.",
     "status": "planning",
     "statusDetails": "empty",
     "classification": {
+      "id": "43325100-8",
       "scheme": "CPV",
-      "id": "33600000-6",
-      "description": "Фармацевтична продукція"
+      "description": "Grounds-maintenance equipment"
     }
   },
-  "parties": [
-    {
-      "name": "EI Byuer Новороздільська міська лікарня",
-      "id": "UA-EDR-20764314",
-      "identifier": {
-        "scheme": "UA-EDR",
-        "id": "20764314",
-        "legalName": "EI Byuer Новороздільська міська лікарня",
-        "uri": "http://buyerTestLink.ua"
+  "planning": {
+    "budget": {
+      "id": "43325100-8",
+      "period": {
+        "startDate": "2018-09-14T20:00:17Z",
+        "endDate": "2018-09-15T13:14:39Z"
       },
-      "additionalIdentifiers": [
-        {
-          "scheme": "UA-EDR",
-          "id": "77764777",
-          "legalName": "Додатково Новороздільська міська лікарня",
-          "uri": "http://additionalBuyerTestLink.ua"
-        }
-      ],
-      "address": {
-        "streetAddress": "вул. Винниченка, 37",
-        "locality": "місто Новий Розділ",
-        "region": "Львівська область",
-        "postalCode": "7770777",
-        "countryName": "Україна"
-      },
-      "contactPoint": {
-        "name": "Осипових Сергій Олександрович",
-        "email": "test2@test.test",
-        "telephone": "+380222222222",
-        "faxNumber": "+380222222222",
-        "url": "test3@test.test"
-      },
-      "roles": [
-        "buyer"
-      ],
-      "details": {
-        "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "DEFENCE",
-        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-        "isACentralPurchasingBody": true,
-        "scale": "micro"
-      },
-      "buyerProfile": "https://jsonlint.com/"
-    }
-  ],
+      "amount": {
+        "currency": "LSL"
+      }
+    },
+    "rationale": "Probably agent surface future stand individual among."
+  },
   "buyer": {
-    "name": "EI Byuer Новороздільська міська лікарня",
-    "id": "UA-EDR-20764314"
+    "name": "Quinn-Duncan",
+    "id": "UA-EDR-402-11-9835",
+    "identifier": {
+      "id": "402-11-9835",
+      "scheme": "UA-EDR",
+      "legalName": "Quinn-Duncan PLC",
+      "uri": "http://soto-diaz.info/posts/app/post/"
+    },
+    "address": {
+      "streetAddress": "86590 Megan Rapids",
+      "locality": "Melissaton",
+      "region": "North Dakota",
+      "postalCode": "14129-5092",
+      "countryName": "Isle of Man"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "038-48-8288",
+        "scheme": "UA-EDR",
+        "legalName": "Quinn-Duncan Inc",
+        "uri": "https://www.morgan.info/tags/main.html"
+      }
+    ],
+    "contactPoint": {
+      "name": "Kathryn Barton",
+      "email": "combsjustin@yahoo.com",
+      "telephone": "1-223-731-8001x5119",
+      "faxNumber": "576-644-7378x65401",
+      "url": "https://davila.org/home/"
+    },
+    "details": {
+      "typeOfBuyer": "NATIONAL_AGENCY",
+      "mainGeneralActivity": "SOCIAL_PROTECTION",
+      "mainSectoralActivity": "WATER",
+      "isACentralPurchasingBody": true,
+      "scale": "micro"
+    }
   }
 }
