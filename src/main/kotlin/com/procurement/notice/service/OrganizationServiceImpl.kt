@@ -27,7 +27,7 @@ interface OrganizationService {
 
     fun processRecordPartiesFromAwards(record: Record)
 
-    fun processContractRecordPartiesFromAwards(record: ContractRecord, award: Award)
+    fun processContractRecordPartiesFromAwards(record: ContractRecord)
 
     fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry)
 }
@@ -140,15 +140,18 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processContractRecordPartiesFromAwards(record: ContractRecord, award: Award) {
+    override fun processContractRecordPartiesFromAwards(record: ContractRecord) {
         if (record.parties == null) record.parties = hashSetOf()
-        award.suppliers?.let { suppliers ->
-            suppliers.forEach { supplier ->
-                record.parties?.let {
-                    addParty(it, supplier, PartyRole.SUPPLIER)
-                    addParty(it, supplier, PartyRole.PAYEE)
+        record.awards?.let { awards ->
+            awards.forEach { award ->
+                award.suppliers?.let { suppliers ->
+                    suppliers.forEach { supplier ->
+                        record.parties?.let {
+                            addParty(it, supplier, PartyRole.SUPPLIER)
+                            addParty(it, supplier, PartyRole.PAYEE)}
+                        clearOrganizationReference(supplier)
+                    }
                 }
-                clearOrganizationReference(supplier)
             }
         }
     }

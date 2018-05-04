@@ -153,7 +153,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                         awards = setOf(award).toHashSet(),
                         contracts = setOf(contract).toHashSet(),
                         relatedProcesses = null)
-                organizationService.processContractRecordPartiesFromAwards(recordContract, award)
+                organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(recordContract, cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdContract, RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(recordContract, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
