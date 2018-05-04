@@ -4,12 +4,14 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
 
@@ -24,6 +26,8 @@ interface OrganizationService {
     fun processRecordPartiesFromBids(record: Record)
 
     fun processRecordPartiesFromAwards(record: Record)
+
+    fun processContractRecordPartiesFromAwards(record: ContractRecord, award: Award)
 
     fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry)
 }
@@ -136,9 +140,22 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
+    override fun processContractRecordPartiesFromAwards(record: ContractRecord, award: Award) {
+        if (record.parties == null) record.parties = hashSetOf()
+        award.suppliers?.let { suppliers ->
+            suppliers.forEach { supplier ->
+                record.parties?.let {
+                    addParty(it, supplier, PartyRole.SUPPLIER)
+                    addParty(it, supplier, PartyRole.PAYEE)
+                }
+                clearOrganizationReference(supplier)
+            }
+        }
+    }
+
     override fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
         if (record.parties == null) record.parties = hashSetOf()
-       enquiry.author?.let{ author ->
+        enquiry.author?.let { author ->
             record.parties?.let { addParty(it, author, PartyRole.ENQUIRER) }
             clearOrganizationReference(author)
         }
