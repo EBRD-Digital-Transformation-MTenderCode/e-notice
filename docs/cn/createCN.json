@@ -1,46 +1,17 @@
 {
-  "planning": {
-    "budget": {
-      "description": "Trip car offer before structure. Believe tough detail lawyer six. Direction learn none require.",
-      "amount": {
-        "amount": 750.55,
-        "currency": "XBB"
-      },
-      "isEuropeanUnionFunded": false,
-      "budgetBreakdown": [
-        {
-          "id": "ocds-t1s2t3-TEST-1524731345380-FS-1524731354637",
-          "description": "Him professor easy chance. Control agent financial some TV too strategy before.",
-          "amount": {
-            "amount": 750.55,
-            "currency": "XBB"
-          },
-          "period": {
-            "startDate": "2018-04-26T08:29:03Z",
-            "endDate": "2018-07-02T12:18:21Z"
-          },
-          "sourceParty": {
-            "name": "Avila, Cox and Carson",
-            "id": "UA-EDR-230-80-2285"
-          }
-        }
-      ]
-    },
-    "rationale": "Lose bag room."
-  },
   "tender": {
-    "id": "ocds-t1s2t3-TEST-1524731362063",
-    "title": "Drug page all case lose.",
-    "description": "Season life fast raise its detail manager. Their any Mr recent land federal scene.",
+    "id": "ocds-t1s2t3-TEST-1525437296757",
+    "title": "II.1) Information about lots/Title",
+    "description": "II.1) Information about lots\n\n\n\n\n\n\nShort description*\n",
     "status": "active",
     "statusDetails": "empty",
     "classification": {
-      "scheme": "CPV",
-      "id": "24954200-8",
-      "description": "Regenerated activated carbon"
+      "id": "03300000-2",
+      "description": "Farming, hunting and fishing products",
+      "scheme": "CPV"
     },
     "acceleratedProcedure": {
-      "isAcceleratedProcedure": false
+      "isAcceleratedProcedure": true
     },
     "designContest": {
       "serviceContractAward": false
@@ -51,7 +22,7 @@
       "acceptInvoicing": false
     },
     "jointProcurement": {
-      "isJointProcurement": false
+      "isJointProcurement": true
     },
     "procedureOutsourcing": {
       "procedureOutsourced": false
@@ -62,55 +33,55 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "NULL",
-    "procurementMethod": "limited",
-    "procurementMethodDetails": "Sister probably loss look over able goal.",
-    "procurementMethodRationale": "However sometimes want true. Coach book might represent about successful.",
-    "procurementMethodAdditionalInfo": "It story race player together. Herself quickly piece pass crime hour effect. Consumer room foreign oil affect identify responsibility.",
+    "legalBasis": "DIRECTIVE_2014_24_EU",
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open Tender",
     "mainProcurementCategory": "services",
-    "additionalProcurementCategories": [
-      "services"
-    ],
-    "eligibilityCriteria": "Represent be their court include. Investment certain put fight final affect work. Push protect ago kind learn trade look.",
     "contractPeriod": {
-      "startDate": "2018-04-26T08:29:20Z",
-      "endDate": "2018-09-12T07:19:17Z"
+      "startDate": "2018-05-09T21:00:00Z",
+      "endDate": "2018-05-16T21:00:00Z"
     },
     "procuringEntity": {
-      "name": "Brown, Chapman and Tran",
-      "id": "UA-EDR-308-27-7102",
+      "name": "ei Official Name*",
+      "id": "ei Identification Scheme*-ei Identifier*",
       "identifier": {
-        "id": "308-27-7102",
-        "scheme": "UA-EDR",
-        "legalName": "Brown, Chapman and Tran Inc",
-        "uri": "https://liu.info/home.htm"
+        "id": "ei Identifier*",
+        "scheme": "ei Identification Scheme*",
+        "legalName": "ei Legal Name*",
+        "uri": "ei URI*"
       },
       "address": {
-        "streetAddress": "173 Kimberly Greens Suite 975",
-        "locality": "Stephenburgh",
-        "region": "Rhode Island",
-        "postalCode": "68152-2169",
-        "countryName": "Mauritius"
+        "streetAddress": "ei Street Address*",
+        "locality": "ei Locality*",
+        "region": "ei 1",
+        "postalCode": "ei Postal Code",
+        "countryName": "ei Republic of Moldova"
       },
       "additionalIdentifiers": [
         {
-          "id": "767-40-2723",
-          "scheme": "UA-EDR",
-          "legalName": "Brown, Chapman and Tran and Sons",
-          "uri": "https://bishop.com/"
+          "id": "2Additional identifier ID*",
+          "scheme": "2Additional identifier scheme*",
+          "legalName": "2Additional identifier legal name*",
+          "uri": "2Additional identifier URI*"
+        },
+        {
+          "id": "1Additional identifier ID*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*",
+          "uri": "1Additional identifier URI*"
         }
       ],
       "contactPoint": {
-        "name": "Erin Smith",
-        "email": "stephen82@hotmail.com",
-        "telephone": "1-975-311-5081x9477",
-        "faxNumber": "(505)261-6701",
-        "url": "http://gillespie-carroll.info/homepage/"
+        "name": "ei Name*",
+        "email": "ei E-mail*",
+        "telephone": "ei Telephone*",
+        "faxNumber": "ei Fax*",
+        "url": "ei URL*"
       }
     },
     "value": {
-      "amount": 7.45,
-      "currency": "XBB"
+      "amount": 1E+2,
+      "currency": "UAH"
     },
     "lotGroups": [
       {
@@ -119,14 +90,14 @@
     ],
     "lots": [
       {
-        "id": "eba46100-492b-11e8-8e46-3774229333d2",
-        "title": "Method American institution each difference.",
-        "description": "Chair kid very resource politics later level him. Relationship area drop check give still. Design quickly send together focus send often. Only age write particular product.",
+        "id": "8d821a51-4f97-11e8-8d79-9595250b0767",
+        "title": "Added lots #1/Title of lot*",
+        "description": "Added lots #1\n Short description of lot*\n",
         "status": "active",
         "statusDetails": "empty",
         "value": {
-          "amount": 7.18385481E7,
-          "currency": "XBB"
+          "amount": 1E+2,
+          "currency": "UAH"
         },
         "options": [
           {
@@ -143,198 +114,212 @@
             "hasRenewals": false
           }
         ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
         "contractPeriod": {
-          "startDate": "2018-04-26T08:29:20Z",
-          "endDate": "2018-07-11T22:54:31Z"
+          "startDate": "2018-05-09T21:00:00Z",
+          "endDate": "2018-05-16T21:00:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "4767 Flores Stravenue",
-            "locality": "Hallfort",
-            "region": "Kentucky",
-            "postalCode": "62665-7777",
-            "countryName": "Ethiopia"
+            "streetAddress": "1Kolomiyska st",
+            "locality": "Added lotsLocality*",
+            "region": "1Cherkasska obl",
+            "postalCode": "1Test postal code",
+            "countryName": "1Ukraine"
           },
-          "description": "Around pull bring traditional. Morning market seven this must. World plan away week argue long few ever."
+          "description": "Added lots #1\n Description\n"
         }
       }
     ],
     "items": [
       {
-        "id": "eba439f0-492b-11e8-8e46-3774229333d2",
-        "description": "Hit local paper close rock the worry. Standard because about represent use. Standard resource ask next. Around whatever hotel happen.",
+        "id": "8d821a50-4f97-11e8-8d79-9595250b0767",
+        "description": "Nomenclature of lot #1\nShort description of item\n",
         "classification": {
-          "scheme": "CPV",
-          "id": "24954200-8",
-          "description": "Regenerated activated carbon"
+          "id": "03300000-2",
+          "description": "Farming, hunting and fishing products",
+          "scheme": "CPV"
         },
-        "additionalClassifications": [
-          {
-            "scheme": "CPV",
-            "id": "15961000-2",
-            "description": "Beer"
-          }
-        ],
-        "quantity": 188606.36,
+        "quantity": 10,
         "unit": {
-          "id": "RO",
-          "name": "roll"
+          "id": "Unit id*",
+          "name": "Unit name*"
         },
-        "relatedLot": "eba46100-492b-11e8-8e46-3774229333d2"
+        "relatedLot": "8d821a51-4f97-11e8-8d79-9595250b0767"
       }
     ],
-    "awardCriteria": "lowestCost",
+    "awardCriteria": "priceOnly",
     "requiresElectronicCatalogue": false,
     "submissionMethod": [
       "electronicSubmission"
     ],
-    "submissionMethodRationale": [
-      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE"
-    ],
-    "submissionMethodDetails": "Down type government put allow. Human project policy. Threat once gas recent social government. House include here fear.",
     "documents": [
       {
-        "id": "ea970fb0-492b-11e8-bcee-fd2243130aae",
-        "documentType": "environmentalImpact",
-        "title": "Book none apply wish piece much defense.",
-        "description": "Most say might fall writer machine. Suddenly successful she sing. Class yourself eat deal white add.",
-        "url": "http://bpe.eprocurement.systems/api/v1/storage/get/ea970fb0-492b-11e8-bcee-fd2243130aae",
-        "datePublished": "2018-04-26T08:29:20Z",
+        "id": "92261a30-4f87-11e8-bcee-fd2243130aae",
+        "documentType": "eligibilityCriteria",
+        "title": "Documents of Lot The document title",
+        "description": "Documents of Lot\nA short description of the document\n",
+        "url": "http://bpe.eprocurement.systems/api/v1/storage/get/92261a30-4f87-11e8-bcee-fd2243130aae",
+        "datePublished": "2018-05-04T10:41:47Z",
         "dateModified": null,
         "format": null,
-        "language": "sl",
+        "language": "Documents of Lot Language*",
         "relatedLots": [
-          "eba46100-492b-11e8-8e46-3774229333d2"
+          "8d821a51-4f97-11e8-8d79-9595250b0767"
         ]
       }
     ],
     "submissionLanguages": [
-      "lv"
+      "sv"
     ],
     "tenderPeriod": {
-      "startDate": "2018-04-26T08:29:20Z",
-      "endDate": "2018-04-26T08:32:20Z"
+      "startDate": "2018-05-04T12:34:56Z",
+      "endDate": "2018-05-23T21:00:00Z"
     },
     "enquiryPeriod": {
-      "startDate": "2018-04-26T08:29:20Z",
-      "endDate": "2018-04-26T08:31:20Z"
+      "startDate": "2018-05-04T12:34:56Z",
+      "endDate": "2018-05-23T20:59:00Z"
+    }
+  },
+  "planning": {
+    "budget": {
+      "amount": {
+        "amount": 1E+2,
+        "currency": "UAH"
+      },
+      "isEuropeanUnionFunded": false,
+      "budgetBreakdown": [
+        {
+          "id": "ocds-t1s2t3-MD-1525419889681-FS-1525421058634",
+          "amount": {
+            "amount": 1E+2,
+            "currency": "UAH"
+          },
+          "period": {
+            "startDate": "2018-03-25T21:00:00Z",
+            "endDate": "2018-04-22T21:00:00Z"
+          },
+          "sourceParty": {
+            "name": "ei Official Name*",
+            "id": "ei Identification Scheme*-ei Identifier*"
+          }
+        }
+      ]
     }
   },
   "ei": [
-    "ocds-t1s2t3-TEST-1524731345380"
+    "ocds-t1s2t3-MD-1525419889681"
   ],
   "buyer": [
     {
-      "name": "Nelson PLC",
-      "id": "UA-EDR-617-38-5631",
+      "name": "ei Official Name*",
+      "id": "ei Identification Scheme*-ei Identifier*",
       "identifier": {
-        "id": "617-38-5631",
-        "scheme": "UA-EDR",
-        "legalName": "Nelson PLC Ltd",
-        "uri": "https://www.carey.com/login/"
+        "id": "ei Identifier*",
+        "scheme": "ei Identification Scheme*",
+        "legalName": "ei Legal Name*",
+        "uri": "ei URI*"
       },
       "address": {
-        "streetAddress": "5317 Jeffrey Forks Suite 184",
-        "locality": "Lake Leslie",
-        "region": "Arkansas",
-        "postalCode": "47137-6843",
-        "countryName": "Dominican Republic"
+        "streetAddress": "ei Street Address*",
+        "locality": "ei Locality*",
+        "region": "ei 1",
+        "postalCode": "ei Postal Code",
+        "countryName": "ei Republic of Moldova"
       },
       "additionalIdentifiers": [
         {
-          "id": "727-58-3639",
-          "scheme": "UA-EDR",
-          "legalName": "Nelson PLC Group",
-          "uri": "https://www.perry.info/app/category/"
+          "id": "1Additional identifier ID*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*",
+          "uri": "1Additional identifier URI*"
+        },
+        {
+          "id": "2Additional identifier ID*",
+          "scheme": "2Additional identifier scheme*",
+          "legalName": "2Additional identifier legal name*",
+          "uri": "2Additional identifier URI*"
         }
       ],
       "contactPoint": {
-        "name": "Sierra Hughes",
-        "email": "kellyhall@hotmail.com",
-        "telephone": "+36(2)9276215295",
-        "faxNumber": "305-805-3959",
-        "url": "https://www.walsh.org/search/register.asp"
+        "name": "ei Name*",
+        "email": "ei E-mail*",
+        "telephone": "ei Telephone*",
+        "faxNumber": "ei Fax*",
+        "url": "ei URL*"
       },
       "details": {
-        "typeOfBuyer": "NATIONAL_AGENCY",
-        "mainGeneralActivity": "HEALTH",
-        "mainSectoralActivity": "ELECTRICITY",
-        "isACentralPurchasingBody": false,
-        "scale": ""
+        "typeOfBuyer": "REGIONAL_AUTHORITY",
+        "mainGeneralActivity": "SOCIAL_PROTECTION",
+        "mainSectoralActivity": "WATER",
+        "isACentralPurchasingBody": true,
+        "scale": "large"
       },
-      "buyerProfile": "https://www.sullivan-gonzalez.org/list/blog/homepage.html"
+      "buyerProfile": "ei Buyer Profile"
     }
   ],
   "funder": [
     {
-      "id": "UA-EDR-230-80-2285",
-      "name": "Avila, Cox and Carson",
+      "id": "ei Identification Scheme*-ei Identifier*",
+      "name": "ei Official Name*",
       "identifier": {
-        "id": "230-80-2285",
-        "scheme": "UA-EDR",
-        "legalName": "Avila, Cox and Carson LLC",
-        "uri": "http://www.lopez.biz/list/terms.asp"
+        "id": "ei Identifier*",
+        "scheme": "ei Identification Scheme*",
+        "legalName": "ei Legal Name*",
+        "uri": "ei URI*"
       },
       "address": {
-        "streetAddress": "60924 Amanda Courts Apt. 581",
-        "locality": "Millerhaven",
-        "region": "Nevada",
-        "postalCode": "59803-1527",
-        "countryName": "Japan"
+        "streetAddress": "ei Street Address*",
+        "locality": "ei Locality*",
+        "region": "ei 1",
+        "postalCode": "ei Postal Code",
+        "countryName": "ei Republic of Moldova"
       },
       "additionalIdentifiers": [
         {
-          "id": "485-80-3308",
-          "scheme": "UA-EDR",
-          "legalName": "Avila, Cox and Carson LLC",
-          "uri": "https://powers.com/main/privacy.jsp"
+          "id": "1Additional identifier ID*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*",
+          "uri": "1Additional identifier URI*"
+        },
+        {
+          "id": "2Additional identifier ID*",
+          "scheme": "2Additional identifier scheme*",
+          "legalName": "2Additional identifier legal name*",
+          "uri": "2Additional identifier URI*"
         }
       ],
       "contactPoint": {
-        "name": "Nancy Smith",
-        "email": "kwells@yahoo.com",
-        "telephone": "965-016-0879x336",
-        "faxNumber": "079-472-8639",
-        "url": "https://www.bell.org/tag/app/blog/main/"
+        "name": "ei Name*",
+        "email": "ei E-mail*",
+        "telephone": "ei Telephone*",
+        "faxNumber": "ei Fax*",
+        "url": "ei URL*"
       }
     }
   ],
   "payer": [
     {
-      "id": "UA-EDR-230-80-2285",
-      "name": "Avila, Cox and Carson",
+      "id": "2 fs Identifier-2 fs Identifier",
+      "name": "2 fs Official Name*Third Party",
       "identifier": {
-        "id": "230-80-2285",
-        "scheme": "UA-EDR",
-        "legalName": "Avila, Cox and Carson LLC",
-        "uri": "http://www.lopez.biz/list/terms.asp"
+        "id": "2 fs Identifier",
+        "scheme": "2 fs Identifier",
+        "legalName": "2 fs Identifier",
+        "uri": "2 fs URI*"
       },
       "address": {
-        "streetAddress": "60924 Amanda Courts Apt. 581",
-        "locality": "Millerhaven",
-        "region": "Nevada",
-        "postalCode": "59803-1527",
-        "countryName": "Japan"
+        "streetAddress": "2 fs Kolomiyska st",
+        "locality": "2 fs Locality*",
+        "region": "2 fs Cherkasskiy region",
+        "postalCode": "2 fs Test postal code",
+        "countryName": "2 fs Ukraine"
       },
-      "additionalIdentifiers": [
-        {
-          "id": "485-80-3308",
-          "scheme": "UA-EDR",
-          "legalName": "Avila, Cox and Carson LLC",
-          "uri": "https://powers.com/main/privacy.jsp"
-        }
-      ],
       "contactPoint": {
-        "name": "Nancy Smith",
-        "email": "kwells@yahoo.com",
-        "telephone": "965-016-0879x336",
-        "faxNumber": "079-472-8639",
-        "url": "https://www.bell.org/tag/app/blog/main/"
+        "name": "2 fs Test Name",
+        "email": "2 fs Test@email.com",
+        "telephone": "2 fs Test prone",
+        "faxNumber": "2 fs fax",
+        "url": "2 fs url"
       }
     }
   ]

@@ -9,29 +9,30 @@ import java.util.*
 @JsonPropertyOrder("name", "id", "identifier", "additionalIdentifiers", "address", "contactPoint", "roles", "details", "buyerProfile")
 data class Organization(
 
-        @JsonProperty("id") val id: String?,
+        @JsonProperty("id")
+        var id: String?,
 
         @JsonProperty("name")
-        val name: String?,
+        var name: String?,
 
         @JsonProperty("identifier")
-        val identifier: Identifier?,
+        var identifier: Identifier?,
 
         @JsonProperty("additionalIdentifiers")
-        val additionalIdentifiers: HashSet<Identifier>?,
+        var additionalIdentifiers: HashSet<Identifier>?,
 
         @JsonProperty("address")
-        val address: Address?,
+        var address: Address?,
 
         @JsonProperty("contactPoint")
-        val contactPoint: ContactPoint?,
+        var contactPoint: ContactPoint?,
 
         @JsonProperty("roles")
-        val roles: HashSet<PartyRole>,
+        var roles: HashSet<PartyRole>,
 
         @JsonProperty("details")
-        val details: Details?,
+        var details: Details?,
 
         @JsonProperty("buyerProfile")
-        val buyerProfile: String?
+        var buyerProfile: String?
 )

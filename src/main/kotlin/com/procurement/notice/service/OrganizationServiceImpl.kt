@@ -66,7 +66,7 @@ class OrganizationServiceImpl : OrganizationService {
                     address = funder.address,
                     contactPoint = funder.contactPoint,
                     roles = setOf(PartyRole.FUNDER).toHashSet(),
-                    details = null,
+                    details = funder.details,
                     buyerProfile = null
             )
             if (fs.parties == null) fs.parties = hashSetOf()
@@ -88,7 +88,7 @@ class OrganizationServiceImpl : OrganizationService {
                         address = payer.address,
                         contactPoint = payer.contactPoint,
                         roles = setOf(PartyRole.PAYER).toHashSet(),
-                        details = null,
+                        details = payer.details,
                         buyerProfile = null
                 )
                 if (fs.parties == null) fs.parties = hashSetOf()
@@ -100,15 +100,14 @@ class OrganizationServiceImpl : OrganizationService {
 
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
-
         ms.parties?.let { parties ->
+            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties, buyer, PartyRole.BUYER) }
+            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties, payer, PartyRole.PAYER) }
+            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties, funder, PartyRole.FUNDER) }
             ms.tender.procuringEntity?.let { procuringEntity ->
                 addParty(parties, procuringEntity, PartyRole.PROCURING_ENTITY)
                 clearOrganizationReference(procuringEntity)
             }
-            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties, buyer, PartyRole.BUYER) }
-            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties, payer, PartyRole.PAYER) }
-            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties, funder, PartyRole.FUNDER) }
         }
     }
 
@@ -168,8 +167,17 @@ class OrganizationServiceImpl : OrganizationService {
         if (organization != null) {
             organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
             val partyPresent = getParty(parties, organization.id)
-            if (partyPresent != null) partyPresent.roles.add(role)
-            else {
+            if (partyPresent != null) {
+                partyPresent.roles.add(role)
+                if (partyPresent.id.isNullOrEmpty()) partyPresent.id = organization.id
+                if (partyPresent.name.isNullOrEmpty()) partyPresent.name = organization.name
+                if (partyPresent.identifier == null) partyPresent.identifier = organization.identifier
+                if (partyPresent.additionalIdentifiers == null) partyPresent.additionalIdentifiers = organization.additionalIdentifiers
+                if (partyPresent.address == null) partyPresent.address = organization.address
+                if (partyPresent.contactPoint == null) partyPresent.contactPoint = organization.contactPoint
+                if (partyPresent.details == null) partyPresent.details = organization.details
+                if (partyPresent.buyerProfile.isNullOrEmpty()) partyPresent.buyerProfile = organization.buyerProfile
+            } else {
                 val party = Organization(
                         id = organization.id,
                         name = organization.name,
