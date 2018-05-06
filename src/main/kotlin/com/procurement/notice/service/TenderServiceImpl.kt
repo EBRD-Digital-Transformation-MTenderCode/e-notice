@@ -62,7 +62,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
 
         }
-        if (Stage.valueOf(stage.toUpperCase()) == Stage.PS) organizationService.processRecordPartiesFromBids(record)
+        organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
