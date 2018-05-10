@@ -22,6 +22,7 @@ class JsonConfig(private val mapper: ObjectMapper) {
     object JsonMapper {
         lateinit var mapper: ObjectMapper
         fun init(objectMapper: ObjectMapper) {
+            objectMapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
             objectMapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
             objectMapper.nodeFactory = JsonNodeFactory.withExactBigDecimals(true)
             mapper = objectMapper
