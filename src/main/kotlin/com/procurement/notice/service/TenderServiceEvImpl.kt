@@ -40,7 +40,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
     companion object {
         private val SEPARATOR = "-"
         private val MS = "MS"
-        private val CN = "CN"
+        private val AC = "AC"
     }
 
     override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
@@ -141,7 +141,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
                 /*new record Contract*/
-                val ocIdContract = getOcId(cpid, CN)
+                val ocIdContract = getOcId(cpid, AC)
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
@@ -158,7 +158,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                 relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdContract, RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(recordContract, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(recordEv, ocIdContract, cpid, contract)
-                releaseDao.saveRelease(getRecordEntity(cpid, CN, recordContract))
+                releaseDao.saveRelease(getRecordEntity(cpid, AC, recordContract))
             }
         }
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
