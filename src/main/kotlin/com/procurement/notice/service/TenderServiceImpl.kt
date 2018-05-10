@@ -90,7 +90,6 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         ms.apply {
             id = getReleaseId(cpid)
             date = releaseDate
-            tag = listOf(Tag.TENDER)
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
