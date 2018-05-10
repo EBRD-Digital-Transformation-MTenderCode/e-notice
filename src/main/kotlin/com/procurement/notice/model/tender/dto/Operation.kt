@@ -15,6 +15,7 @@ enum class Operation(val value: String) {
     CREATE_ENQUIRY("createEnquiry"),
     ADD_ANSWER("addAnswer"),
     UNSUSPEND_TENDER("unsuspendTender"),
+    UNSUCCESSFUL_TENDER("tenderUnsuccessful"),
     TENDER_PERIOD_END("tenderPeriodEnd"),
     TENDER_PERIOD_END_EV("tenderPeriodEndEv"),
     SUSPEND_TENDER("suspendTender"),

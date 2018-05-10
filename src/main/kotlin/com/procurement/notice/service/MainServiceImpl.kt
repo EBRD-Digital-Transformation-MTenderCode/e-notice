@@ -63,6 +63,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
             Operation.SUSPEND_TENDER -> return tenderService.suspendTender(cpId, newStage, releaseDate, data)
             Operation.UNSUSPEND_TENDER -> return enquiryService.unsuspendTender(cpId, newStage, releaseDate, data)
+            Operation.UNSUCCESSFUL_TENDER -> return tenderService.tenderUnsuccessful(cpId, newStage, releaseDate, data)
             Operation.TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(cpId, newStage, releaseDate, data)
             Operation.TENDER_PERIOD_END_EV -> return tenderServiceEv.tenderPeriodEndEv(cpId, newStage, releaseDate, data)
             Operation.AWARD_BY_BID -> return tenderService.awardByBid(cpId, newStage, releaseDate, data)

@@ -26,6 +26,8 @@ interface TenderService {
 
     fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
+    fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+
     fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
 
     fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
@@ -76,6 +78,33 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId)
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
+        }
+        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
+    }
+
+    override fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+        /*ms*/
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val ms = toObject(Ms::class.java, msEntity.jsonData)
+        ms.apply {
+            id = getReleaseId(cpid)
+            date = releaseDate
+            tag = listOf(Tag.TENDER)
+            tender.status = TenderStatus.UNSUCCESSFUL
+            tender.statusDetails = TenderStatusDetails.EMPTY
+        }
+        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
+        /*record*/
+        val releaseEntity = releaseDao.getByCpIdAndStage(cpid, stage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = toObject(Record::class.java, releaseEntity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        record.apply {
+            id = getReleaseId(ocId)
+            date = releaseDate
+            tender.status = TenderStatus.UNSUCCESSFUL
+            tender.statusDetails = TenderStatusDetails.EMPTY
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
