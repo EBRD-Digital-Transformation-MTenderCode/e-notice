@@ -108,7 +108,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.tender.lots != null) tender.lots = dto.tender.lots
+            if (dto.tender?.lots != null) tender.lots = dto.tender?.lots
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)

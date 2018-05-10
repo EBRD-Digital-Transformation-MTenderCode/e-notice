@@ -8,7 +8,7 @@ import java.util.*
 data class UnsuccessfulTenderDto(
 
         @JsonProperty("tender")
-        var tender: RecordTender,
+        var tender: RecordTender?,
 
         @JsonProperty("bids")
         val bids: HashSet<Bid>?
