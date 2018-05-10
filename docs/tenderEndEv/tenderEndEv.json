@@ -1,396 +1,199 @@
 {
-  "bids": [
-    {
-      "id": "a9a99b00-4956-11e8-90c7-6b4da7d6f3d2",
-      "date": "2018-04-26T13:51:59Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-240-94-3030",
-          "name": "Parker-Jacobson",
-          "identifier": {
-            "id": "240-94-3030",
-            "scheme": "UA-EDR",
-            "legalName": "Parker-Jacobson LLC",
-            "uri": "https://www.nolan.info/"
-          },
-          "address": {
-            "streetAddress": "337 Anthony Springs Suite 581",
-            "locality": "North Timothy",
-            "region": "Kansas",
-            "postalCode": "38579-5989",
-            "countryName": "Jamaica"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "648-28-7270",
-              "scheme": "UA-EDR",
-              "legalName": "Parker-Jacobson LLC",
-              "uri": "http://aguilar.net/wp-content/index/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Michael Robinson",
-            "email": "anthony62@hotmail.com",
-            "telephone": "1-152-794-4107x555",
-            "faxNumber": "(731)102-4228x884",
-            "url": "http://www.valdez-lane.com/"
-          }
-        }
-      ],
-      "value": {
-        "amount": 0.123,
+  "ocid": "ocds-t1s2t3-TEST-1525704819499",
+  "planning": {
+    "budget": {
+      "amount": {
+        "amount": 3E+4,
         "currency": "UAH"
       },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ]
-    },
-    {
-      "id": "aa6f34f0-4956-11e8-90c7-6b4da7d6f3d2",
-      "date": "2018-04-26T13:51:59Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
+      "isEuropeanUnionFunded": false,
+      "budgetBreakdown": [
         {
-          "id": "UA-EDR-660-39-2583",
-          "name": "White-Sanchez",
-          "identifier": {
-            "id": "660-39-2583",
-            "scheme": "UA-EDR",
-            "legalName": "White-Sanchez Group",
-            "uri": "http://www.smith-mcdonald.com/"
+          "id": "ocds-t1s2t3-MD-1525702415630-FS-1525702455330",
+          "amount": {
+            "amount": 1E+4,
+            "currency": "UAH"
           },
-          "address": {
-            "streetAddress": "7759 West Forks Apt. 723",
-            "locality": "Clarkville",
-            "region": "Rhode Island",
-            "postalCode": "99606",
-            "countryName": "Saint Lucia"
+          "period": {
+            "startDate": "2018-04-30T21:00:00Z",
+            "endDate": "2018-05-29T21:00:00Z"
           },
-          "additionalIdentifiers": [
-            {
-              "id": "397-66-0936",
-              "scheme": "UA-EDR",
-              "legalName": "White-Sanchez Inc",
-              "uri": "http://hubbard.biz/faq/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Michael Russell",
-            "email": "christopherhuffman@gmail.com",
-            "telephone": "790.867.8376x897",
-            "faxNumber": "00155722876",
-            "url": "http://www.cross-burton.com/author.php"
+          "sourceParty": {
+            "name": "Official Name*",
+            "id": "Identification Scheme*-Identifier*"
           }
-        }
-      ],
-      "value": {
-        "amount": 0.123,
-        "currency": "UAH"
-      },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ]
-    },
-    {
-      "id": "aad1c750-4956-11e8-90c7-6b4da7d6f3d2",
-      "date": "2018-04-26T13:51:59Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-896-75-3289",
-          "name": "Freeman LLC",
-          "identifier": {
-            "id": "896-75-3289",
-            "scheme": "UA-EDR",
-            "legalName": "Freeman LLC LLC",
-            "uri": "http://www.mcneil.com/blog/list/categories/category/"
-          },
-          "address": {
-            "streetAddress": "2843 Jessica Run",
-            "locality": "Parkerport",
-            "region": "Alabama",
-            "postalCode": "76726",
-            "countryName": "Portugal"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "523-92-9119",
-              "scheme": "UA-EDR",
-              "legalName": "Freeman LLC and Sons",
-              "uri": "http://www.miller.biz/app/blog/tag/privacy/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Judy Smith",
-            "email": "awilson@gmail.com",
-            "telephone": "587-251-4822x48206",
-            "faxNumber": "322.295.4191x1321",
-            "url": "https://www.gillespie.org/author/"
-          }
-        }
-      ],
-      "value": {
-        "amount": 456.123,
-        "currency": "UAH"
-      },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ]
-    },
-    {
-      "id": "ab3a7430-4956-11e8-90c7-6b4da7d6f3d2",
-      "date": "2018-04-26T14:20:29Z",
-      "status": "withdrawn",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "UA-EDR-398-81-2666",
-          "name": "Roberts-Hopkins",
-          "identifier": {
-            "id": "398-81-2666",
-            "scheme": "UA-EDR",
-            "legalName": "Roberts-Hopkins LLC",
-            "uri": "http://rodriguez-bush.com/"
-          },
-          "address": {
-            "streetAddress": "008 Autumn Cove",
-            "locality": "Luisberg",
-            "region": "South Carolina",
-            "postalCode": "13393-2934",
-            "countryName": "Martinique"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "566-31-8143",
-              "scheme": "UA-EDR",
-              "legalName": "Roberts-Hopkins Group",
-              "uri": "https://www.moore-goodman.com/register/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Todd Bonilla",
-            "email": "ellisonjohn@hotmail.com",
-            "telephone": "(395)279-5893",
-            "faxNumber": "584-771-8581",
-            "url": "https://horn-gonzalez.org/"
-          }
-        }
-      ],
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ]
-    }
-  ],
-  "lots": [
-    {
-      "id": "3dfce881-4956-11e8-8e46-3774229333d2",
-      "title": "Interview try explain wish authority.",
-      "description": "Lot region somebody manage. Focus pattern property but. Assume far near get population size.",
-      "status": "active",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 9.86165803285453E13,
-        "currency": "ILS"
-      },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {
-          "hasRenewals": false
-        }
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-04-26T13:32:14Z",
-        "endDate": "2018-09-08T02:44:16Z"
-      },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "491 Carr Greens Apt. 407",
-          "locality": "Mitchellshire",
-          "region": "Maine",
-          "postalCode": "98279",
-          "countryName": "Thailand"
         },
-        "description": "Never four notice clearly go economic. Religious party continue form add fire. Community yourself large painting phone physical interview usually."
+        {
+          "id": "ocds-t1s2t3-MD-1525702415630-FS-1525702439531",
+          "amount": {
+            "amount": 2E+4,
+            "currency": "UAH"
+          },
+          "period": {
+            "startDate": "2018-04-30T21:00:00Z",
+            "endDate": "2018-05-30T21:00:00Z"
+          },
+          "sourceParty": {
+            "name": "Official Name*",
+            "id": "Identification Scheme*-Identifier*"
+          }
+        }
+      ]
+    }
+  },
+  "tender": {
+    "id": "ocds-t1s2t3-TEST-1525704819499",
+    "title": "lots",
+    "description": "hghghgh",
+    "status": "unsuccessful",
+    "statusDetails": "empty",
+    "classification": {
+      "id": "03000000-1",
+      "description": "Agricultural, farming, fishing, forestry and related products",
+      "scheme": "CPV"
+    },
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": false
+    },
+    "designContest": {
+      "serviceContractAward": false
+    },
+    "electronicWorkflows": {
+      "useOrdering": false,
+      "usePayment": false,
+      "acceptInvoicing": false
+    },
+    "jointProcurement": {
+      "isJointProcurement": false
+    },
+    "procedureOutsourcing": {
+      "procedureOutsourced": false
+    },
+    "framework": {
+      "isAFramework": false
+    },
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": false
+    },
+    "legalBasis": "DIRECTIVE_2014_24_EU",
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted Tender",
+    "mainProcurementCategory": "works",
+    "contractPeriod": {
+      "startDate": "2018-05-02T21:00:00Z",
+      "endDate": "2018-05-14T21:00:00Z"
+    },
+    "procuringEntity": {
+      "name": "Official Name*",
+      "id": "Identification Scheme*-Identifier*",
+      "identifier": {
+        "id": "Identifier*",
+        "scheme": "Identification Scheme*",
+        "legalName": "Legal Name*",
+        "uri": "URI*"
+      },
+      "address": {
+        "streetAddress": "Street Address*",
+        "locality": "Locality*",
+        "region": "1",
+        "postalCode": "Postal Code",
+        "countryName": "Republic of Moldova"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "1Additional identifier ID*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*",
+          "uri": "1Additional identifier URI*"
+        }
+      ],
+      "contactPoint": {
+        "name": "Name*",
+        "email": "E-mail*",
+        "telephone": "Telephone*",
+        "faxNumber": "Fax*",
+        "url": "URL*"
       }
-    }
-  ],
-  "awardPeriod": {
-    "startDate": "2018-04-26T14:18:55Z"
-  },
-  "awards": [
-    {
-      "id": "d68ffe63-495c-11e8-9c55-fd51a12c4627",
-      "token": "cb9d628b-2c1d-455b-ab82-a9c8bcf656f6",
-      "date": "2018-04-26T14:19:32Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "consideration",
-      "value": {
-        "amount": 0.123,
-        "currency": "UAH"
-      },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ],
-      "relatedBid": "a9a99b00-4956-11e8-90c7-6b4da7d6f3d2",
-      "suppliers": [
-        {
-          "id": "UA-EDR-240-94-3030",
-          "name": "Parker-Jacobson",
-          "identifier": {
-            "id": "240-94-3030",
-            "scheme": "UA-EDR",
-            "legalName": "Parker-Jacobson LLC",
-            "uri": "https://www.nolan.info/"
-          },
-          "address": {
-            "streetAddress": "337 Anthony Springs Suite 581",
-            "locality": "North Timothy",
-            "region": "Kansas",
-            "postalCode": "38579-5989",
-            "countryName": "Jamaica"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "648-28-7270",
-              "scheme": "UA-EDR",
-              "legalName": "Parker-Jacobson LLC",
-              "uri": "http://aguilar.net/wp-content/index/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Michael Robinson",
-            "email": "anthony62@hotmail.com",
-            "telephone": "1-152-794-4107x555",
-            "faxNumber": "(731)102-4228x884",
-            "url": "http://www.valdez-lane.com/"
-          }
-        }
-      ]
     },
-    {
-      "id": "d68ffe64-495c-11e8-9c55-fd51a12c4627",
-      "token": "93ef0207-891c-4d30-9eb4-c4cb9ce4c814",
-      "date": "2018-04-26T14:19:32Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 0.123,
-        "currency": "UAH"
-      },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ],
-      "relatedBid": "aa6f34f0-4956-11e8-90c7-6b4da7d6f3d2",
-      "suppliers": [
-        {
-          "id": "UA-EDR-660-39-2583",
-          "name": "White-Sanchez",
-          "identifier": {
-            "id": "660-39-2583",
-            "scheme": "UA-EDR",
-            "legalName": "White-Sanchez Group",
-            "uri": "http://www.smith-mcdonald.com/"
-          },
-          "address": {
-            "streetAddress": "7759 West Forks Apt. 723",
-            "locality": "Clarkville",
-            "region": "Rhode Island",
-            "postalCode": "99606",
-            "countryName": "Saint Lucia"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "397-66-0936",
-              "scheme": "UA-EDR",
-              "legalName": "White-Sanchez Inc",
-              "uri": "http://hubbard.biz/faq/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Michael Russell",
-            "email": "christopherhuffman@gmail.com",
-            "telephone": "790.867.8376x897",
-            "faxNumber": "00155722876",
-            "url": "http://www.cross-burton.com/author.php"
-          }
-        }
-      ]
+    "value": {
+      "amount": 3E+4,
+      "currency": "UAH"
     },
-    {
-      "id": "d68ffe65-495c-11e8-9c55-fd51a12c4627",
-      "token": "924e2df5-20fd-4e71-a946-6c7eca87330f",
-      "date": "2018-04-26T14:19:32Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 456.123,
-        "currency": "UAH"
-      },
-      "relatedLots": [
-        "3dfce881-4956-11e8-8e46-3774229333d2"
-      ],
-      "relatedBid": "aad1c750-4956-11e8-90c7-6b4da7d6f3d2",
-      "suppliers": [
-        {
-          "id": "UA-EDR-896-75-3289",
-          "name": "Freeman LLC",
-          "identifier": {
-            "id": "896-75-3289",
-            "scheme": "UA-EDR",
-            "legalName": "Freeman LLC LLC",
-            "uri": "http://www.mcneil.com/blog/list/categories/category/"
-          },
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "lots": [
+      {
+        "id": "6d80d041-5206-11e8-a2f4-a91d96b44f10",
+        "title": "lot1",
+        "description": "fghfgh",
+        "status": "unsuccessful",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 3E+4,
+          "currency": "UAH"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-05-02T21:00:00Z",
+          "endDate": "2018-05-14T21:00:00Z"
+        },
+        "placeOfPerformance": {
           "address": {
-            "streetAddress": "2843 Jessica Run",
-            "locality": "Parkerport",
-            "region": "Alabama",
-            "postalCode": "76726",
-            "countryName": "Portugal"
-          },
-          "additionalIdentifiers": [
-            {
-              "id": "523-92-9119",
-              "scheme": "UA-EDR",
-              "legalName": "Freeman LLC and Sons",
-              "uri": "http://www.miller.biz/app/blog/tag/privacy/"
-            }
-          ],
-          "contactPoint": {
-            "name": "Judy Smith",
-            "email": "awilson@gmail.com",
-            "telephone": "587-251-4822x48206",
-            "faxNumber": "322.295.4191x1321",
-            "url": "https://www.gillespie.org/author/"
+            "streetAddress": "fhgfhg",
+            "locality": "hfg",
+            "region": "hghfg",
+            "postalCode": "fhfg",
+            "countryName": "md"
           }
         }
-      ]
-    }
-  ],
-  "unsuccessfulLots": [],
-  "tenderPeriod": {
-    "startDate": "2018-04-26T13:51:58Z",
-    "endDate": "2018-04-26T14:00:00Z"
-  },
-  "documents": []
+      }
+    ],
+    "items": [
+      {
+        "id": "6d80d040-5206-11e8-a2f4-a91d96b44f10",
+        "classification": {
+          "id": "03000000-1",
+          "description": "Agricultural, farming, fishing, forestry and related products",
+          "scheme": "CPV"
+        },
+        "quantity": 123,
+        "unit": {
+          "id": "fhghgf",
+          "name": "hfghfg"
+        },
+        "relatedLot": "6d80d041-5206-11e8-a2f4-a91d96b44f10"
+      }
+    ],
+    "awardCriteria": "priceOnly",
+    "requiresElectronicCatalogue": false,
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionLanguages": [
+      "el",
+      "ga"
+    ]
+  }
 }

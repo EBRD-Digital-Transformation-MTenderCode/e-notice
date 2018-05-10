@@ -90,11 +90,13 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         ms.apply {
             id = getReleaseId(cpid)
             date = releaseDate
+            tag = listOf(Tag.COMPILED)
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
         /*record*/
+        val dto = toObject(UnsuccessfulTenderDto::class.java, data.toString())
         val releaseEntity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, releaseEntity.jsonData)
@@ -102,8 +104,11 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         record.apply {
             id = getReleaseId(ocId)
             date = releaseDate
+            tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
+            if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
+            if (dto.tender.lots != null) tender.lots = dto.tender.lots
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
