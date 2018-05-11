@@ -107,8 +107,9 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
+            if (dto.lots != null) tender.lots?.let { updateLots(it, dto.lots) }
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.tender?.lots != null) tender.lots = dto.tender?.lots
+            if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
         }
         releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
@@ -293,8 +294,8 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
     private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
         for (lot in recordLots) {
             dtoLots.firstOrNull { it.id == lot.id }?.apply {
-                recordLots.minus(lot)
-                recordLots.plus(this)
+                lot.status = this.status
+                lot.statusDetails = this.statusDetails
             }
         }
     }

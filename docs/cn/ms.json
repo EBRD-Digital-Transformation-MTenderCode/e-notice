@@ -1,358 +1,154 @@
 {
-  "tender": {
-    "id": "ocds-t1s2t3-MD-1522930513008",
-    "title": "Tender title",
-    "description": "Tender description",
-    "status": "active",
-    "statusDetails": "empty",
-    "classification": {
-      "scheme": "CPV",
-      "id": "45343000-2",
-      "description": "Fire-prevention installation works"
-    },
-    "acceleratedProcedure": {
-      "isAcceleratedProcedure": false
-    },
-    "designContest": {
-      "serviceContractAward": false
-    },
-    "electronicWorkflows": {
-      "useOrdering": false,
-      "usePayment": false,
-      "acceptInvoicing": false
-    },
-    "jointProcurement": {
-      "isJointProcurement": false
-    },
-    "procedureOutsourcing": {
-      "procedureOutsourced": false
-    },
-    "framework": {
-      "isAFramework": false
-    },
-    "dynamicPurchasingSystem": {
-      "hasDynamicPurchasingSystem": false
-    },
-    "legalBasis": "DIRECTIVE_2014_24_EU",
-    "procurementMethod": "open",
-    "procurementMethodDetails": "Open Procurement",
-    "procurementMethodRationale": "Rationale of procurement method, especially in the case of Limited tendering.",
-    "procurementMethodAdditionalInfo": "Additional information about the procurement method.",
-    "mainProcurementCategory": "goods",
-    "additionalProcurementCategories": [
-      "goods"
-    ],
-    "eligibilityCriteria": "A description of any eligibility criteria for potential suppliers.",
-    "contractPeriod": {
-      "startDate": "2018-09-27T00:00:00Z",
-      "endDate": "2018-08-13T11:32:10Z"
-    },
-    "procuringEntity": {
-      "name": "Новороздільська міська лікарня",
-      "id": "UA-EDR-20764777",
-      "identifier": {
-        "id": "20764777",
-        "scheme": "UA-EDR",
-        "legalName": "Новороздільська міська лікарня",
-        "uri": "http://buyerTestLink.ua"
-      },
-      "address": {
-        "streetAddress": "вул. Винниченка, 37",
-        "locality": "місто Новий Розділ",
-        "region": "Львівська область",
-        "postalCode": "7770777",
-        "countryName": "Україна"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "123123123",
-          "scheme": "UA-EDR",
-          "legalName": "Додатково Новороздільська міська лікарня",
-          "uri": "http://additionalBuyerTestLink.ua"
-        }
-      ],
-      "contactPoint": {
-        "name": "Осипових Сергій Олександрович",
-        "email": "test2@test.test",
-        "telephone": "+380222222222",
-        "faxNumber": "+380222222222",
-        "url": "http://test.ua"
-      }
-    },
-    "value": {
-      "amount": 2.07872268165E9,
-      "currency": "KHR"
-    },
-    "lotGroups": [
-      {
-        "optionToCombine": false
-      }
-    ],
-    "lots": [
-      {
-        "id": "fdf59701-38ca-11e8-bbe5-f516c066baa5",
-        "title": "A title for this lot.",
-        "description": "A description of this lot.",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 2.07872268165E9,
-          "currency": "KHR"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-09-27T00:00:00Z",
-          "endDate": "2018-11-27T00:00:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "149-159 High Street",
-            "locality": "Birmingham",
-            "region": "Digbeth",
-            "postalCode": "B12 0JU",
-            "countryName": "United Kingdom"
-          },
-          "description": "Further description of the place of performance of the contract. Required by EU."
-        }
-      }
-    ],
-    "items": [
-      {
-        "id": "fdf59700-38ca-11e8-bbe5-f516c066baa5",
-        "description": "A description of the goods, services to be provided.",
-        "classification": {
-          "scheme": "CPV",
-          "id": "45343000-2",
-          "description": "Fire-prevention installation works"
-        },
-        "additionalClassifications": [
-          {
-            "scheme": "CPVS",
-            "id": "CPVs-id-12341234",
-            "description": "A textual description or title for the code."
-          }
-        ],
-        "quantity": 10.0,
-        "unit": {
-          "id": "0971",
-          "name": "kg"
-        },
-        "relatedLot": "fdf59701-38ca-11e8-bbe5-f516c066baa5"
-      }
-    ],
-    "awardCriteria": "priceOnly",
-    "requiresElectronicCatalogue": false,
-    "submissionMethod": [
-      "electronicSubmission"
-    ],
-    "submissionMethodRationale": [
-      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE",
-      "IPR_ISSUES"
-    ],
-    "submissionMethodDetails": "Any detailed or further information on the submission method. This may include the address, e-mail address or online service to which bids should be submitted, and any special requirements to be followed for submissions.",
-    "documents": [
-      {
-        "id": "e81f4e60-3813-11e8-ac76-4940f127948b",
-        "documentType": "tenderNotice",
-        "title": "Title Test CN document to tender",
-        "description": "Description Test CN document to tender",
-        "language": "ro",
-        "relatedLots": [
-          "fdf59701-38ca-11e8-bbe5-f516c066baa5"
-        ]
-      }
-    ],
-    "tenderPeriod": {
-      "startDate": "2018-04-05T12:15:12Z",
-      "endDate": "2018-05-26T15:58:30Z"
-    },
-    "submissionLanguages": [
-      "pl",
-      "ro"
-    ],
-    "enquiryPeriod": {
-      "startDate": "2018-04-05T12:15:12Z",
-      "endDate": "2018-05-20T15:58:30Z"
-    }
-  },
-  "ei": [
-    "ocds-t1s2t3-MD-1522846786438"
-  ],
-  "buyer": [
+  "awards": [
     {
-      "name": "EI Byuer Новороздільська міська лікарня",
-      "id": "UA-EDR-20764314",
-      "identifier": {
-        "id": "20764314",
-        "scheme": "UA-EDR",
-        "legalName": "EI Byuer Новороздільська міська лікарня",
-        "uri": "http://buyerTestLink.ua"
+      "id": "45a977e3-5493-11e8-99a2-8b0b0437e4e6",
+      "date": "2018-05-10T20:57:41Z",
+      "status": "unsuccessful",
+      "statusDetails": "empty",
+      "value": {
+        "amount": 80032.77,
+        "currency": "BUK"
       },
-      "address": {
-        "streetAddress": "вул. Винниченка, 37",
-        "locality": "місто Новий Розділ",
-        "region": "Львівська область",
-        "postalCode": "7770777",
-        "countryName": "Україна"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "77764777",
-          "scheme": "UA-EDR",
-          "legalName": "Додатково Новороздільська міська лікарня",
-          "uri": "http://additionalBuyerTestLink.ua"
-        }
-      ],
-      "contactPoint": {
-        "name": "Осипових Сергій Олександрович",
-        "email": "test2@test.test",
-        "telephone": "+380222222222",
-        "faxNumber": "+380222222222",
-        "url": "test3@test.test"
-      },
-      "details": {
-        "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "DEFENCE",
-        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-        "isACentralPurchasingBody": true,
-        "scale": "micro"
-      },
-      "buyerProfile": "https://jsonlint.com/"
-    }
-  ],
-  "funder": [
-    {
-      "id": "UA-EDR-987654321",
-      "name": "FS Buyer Биківнянська міська лікарня",
-      "identifier": {
-        "id": "987654321",
-        "scheme": "UA-EDR",
-        "legalName": "FS Buyer Биківнянська міська лікарня",
-        "uri": "http://FSbuyerTestLink.ua"
-      },
-      "address": {
-        "streetAddress": "вул. Ефесівська, 37",
-        "locality": "місто Новий Ефес",
-        "region": "Одеська область",
-        "postalCode": "12345",
-        "countryName": "Україна"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "99999999",
-          "scheme": "UA-EDR",
-          "legalName": "Додатково Биківнянська міська лікарня",
-          "uri": "http://FSadditionalBuyerTestLink.ua"
-        }
-      ],
-      "contactPoint": {
-        "name": "Ефесенко Ефес Ефесович",
-        "email": "test3@test.test",
-        "telephone": "+380333333333",
-        "faxNumber": "+38033333333",
-        "url": "test3@test.test"
-      }
-    }
-  ],
-  "payer": [
-    {
-      "id": "UA-EDR-987654321",
-      "name": "FS Procuring Entity Name",
-      "identifier": {
-        "id": "987654321",
-        "scheme": "UA-EDR",
-        "legalName": "Legal FS Procuring Entity Name",
-        "uri": "http://FS.PE.com"
-      },
-      "address": {
-        "streetAddress": "FS PE Address",
-        "locality": "FS PE locality",
-        "region": "FS PE region",
-        "postalCode": "11111",
-        "countryName": "FS PE country"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "987123654",
-          "scheme": "UA-EDR",
-          "legalName": "Additional Legal FS Procuring Entity Name",
-          "uri": "http://additional.FS.PE.com"
-        }
-      ],
-      "contactPoint": {
-        "name": "FS PE name",
-        "email": "fs.pe@test.test",
-        "telephone": "+38022000000",
-        "faxNumber": "+38022000000",
-        "url": "http://contactFS.PE.com"
-      }
-    }
-  ],
-  "documents": [
-    {
-      "id": "e81f4e60-3813-11e8-ac76-4940f127948b",
-      "documentType": "tenderNotice",
-      "title": "Title Test CN document to tender",
-      "description": "Description Test CN document to tender",
-      "url": "http://bpe.eprocurement.systems/api/v1/storage/get/e81f4e60-3813-11e8-ac76-4940f127948b",
-      "datePublished": "2018-04-04T17:33:36Z",
-      "language": "ro",
       "relatedLots": [
-        "fdf59701-38ca-11e8-bbe5-f516c066baa5"
-      ]
-    }
-  ],
-  "planning": {
-    "budget": {
-      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
-      "amount": {
-        "amount": 2.07872268165E9,
-        "currency": "KHR"
-      },
-      "europeanUnionFunding": {
-        "projectIdentifier": "proj-cn-12346",
-        "projectName": "test proj name",
-        "uri": "https://jwt.io"
-      },
-      "isEuropeanUnionFunded": true,
-      "budgetBreakdown": [
+        "b998a567-5491-11e8-a59a-4b12a58457ae"
+      ],
+      "relatedBid": "b9dc1700-5491-11e8-82d1-aba607341064",
+      "suppliers": [
         {
-          "id": "ocds-t1s2t3-MD-1522846786438-FS-1522846845222",
-          "description": "1 A short free text description of this budget entry.",
-          "amount": {
-            "amount": 5.0,
-            "currency": "KHR"
+          "id": "UA-EDR-337-04-2290",
+          "name": "Morrison PLC",
+          "identifier": {
+            "id": "337-04-2290",
+            "scheme": "UA-EDR",
+            "legalName": "Morrison PLC LLC",
+            "uri": "http://www.johnson.net/"
           },
-          "period": {
-            "startDate": "2018-03-28T13:30:27Z",
-            "endDate": "2018-05-02T17:48:10Z"
+          "address": {
+            "streetAddress": "954 Mckay Loaf",
+            "locality": "West Angelahaven",
+            "region": "Connecticut",
+            "postalCode": "00542",
+            "countryName": "Cyprus"
           },
-          "sourceParty": {
-            "name": "FS Buyer Биківнянська міська лікарня",
-            "id": "UA-EDR-987654321"
+          "additionalIdentifiers": [
+            {
+              "id": "131-95-7790",
+              "scheme": "UA-EDR",
+              "legalName": "Morrison PLC and Sons",
+              "uri": "http://www.mendoza.com/"
+            }
+          ],
+          "contactPoint": {
+            "name": "Stephanie Cohen",
+            "email": "vargasjeffrey@gmail.com",
+            "telephone": "320-333-5153",
+            "faxNumber": "1-908-241-4226",
+            "url": "http://morris-clark.net/"
           }
         }
       ]
     },
-    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
-  }
+    {
+      "id": "45a977e4-5493-11e8-99a2-8b0b0437e4e6",
+      "date": "2018-05-10T20:57:41Z",
+      "status": "unsuccessful",
+      "statusDetails": "empty",
+      "value": {
+        "amount": 140808.33,
+        "currency": "BUK"
+      },
+      "relatedLots": [
+        "b998a567-5491-11e8-a59a-4b12a58457ae"
+      ],
+      "relatedBid": "b9fbacf0-5491-11e8-82d1-aba607341064",
+      "suppliers": [
+        {
+          "id": "UA-EDR-047-30-5658",
+          "name": "Carr-Larsen",
+          "identifier": {
+            "id": "047-30-5658",
+            "scheme": "UA-EDR",
+            "legalName": "Carr-Larsen PLC",
+            "uri": "https://horton-hurley.com/app/home/"
+          },
+          "address": {
+            "streetAddress": "24165 Myers Station Suite 244",
+            "locality": "Johnhaven",
+            "region": "Texas",
+            "postalCode": "24580-3263",
+            "countryName": "Namibia"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "039-86-9630",
+              "scheme": "UA-EDR",
+              "legalName": "Carr-Larsen Inc",
+              "uri": "https://www.guzman.com/"
+            }
+          ],
+          "contactPoint": {
+            "name": "Stephanie Parsons",
+            "email": "whitemichelle@yahoo.com",
+            "telephone": "329.345.0555",
+            "faxNumber": "173.319.7399x02227",
+            "url": "http://stone.com/index.jsp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "45a977e5-5493-11e8-99a2-8b0b0437e4e6",
+      "date": "2018-05-10T20:57:41Z",
+      "description": "Award description",
+      "status": "active",
+      "statusDetails": "empty",
+      "value": {
+        "amount": 30217.16,
+        "currency": "BUK"
+      },
+      "relatedLots": [
+        "b998a567-5491-11e8-a59a-4b12a58457ae"
+      ],
+      "relatedBid": "ba418f90-5491-11e8-82d1-aba607341064",
+      "suppliers": [
+        {
+          "id": "UA-EDR-765-49-2043",
+          "name": "Wagner, Gray and Kim",
+          "identifier": {
+            "id": "765-49-2043",
+            "scheme": "UA-EDR",
+            "legalName": "Wagner, Gray and Kim Group",
+            "uri": "https://www.morales-johnson.net/post/"
+          },
+          "address": {
+            "streetAddress": "9613 Rodriguez Parkway",
+            "locality": "West Eric",
+            "region": "Mississippi",
+            "postalCode": "69011",
+            "countryName": "Croatia"
+          },
+          "additionalIdentifiers": [
+            {
+              "id": "146-26-2290",
+              "scheme": "UA-EDR",
+              "legalName": "Wagner, Gray and Kim LLC",
+              "uri": "https://johnson.com/wp-content/blog/list/register.asp"
+            }
+          ],
+          "contactPoint": {
+            "name": "Michelle Stafford",
+            "email": "donnathompson@yahoo.com",
+            "telephone": "+73(7)0804263625",
+            "faxNumber": "+36(7)1256452467",
+            "url": "http://www.reynolds-thompson.info/privacy.php"
+          }
+        }
+      ]
+    }
+  ],
+  "awardPeriod": {
+    "startDate": "2018-05-10T20:46:53Z",
+    "endDate": "2018-05-10T20:57:41Z"
+  },
+  "unsuccessfulLots": []
 }

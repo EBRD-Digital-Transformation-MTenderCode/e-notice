@@ -18,7 +18,7 @@ data class Lot(
         val description: String?,
 
         @JsonProperty("status")
-        val status: TenderStatus?,
+        var status: TenderStatus?,
 
         @JsonProperty("statusDetails")
         var statusDetails: TenderStatusDetails?,
