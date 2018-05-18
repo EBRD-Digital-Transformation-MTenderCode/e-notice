@@ -8,8 +8,6 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
-import kotlin.math.pow
-import kotlin.math.round
 
 /*Date utils*/
 fun LocalDateTime.toDate(): Date {
@@ -43,10 +41,3 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
         throw IllegalArgumentException(e)
     }
 }
-
-///*Double utils*/
-//fun Double.toFixed(s: Int): Double {
-//    if (s == 0) return round(this)
-//    val power = (10.0).pow(s)
-//    return round(this * power) / power
-//}
