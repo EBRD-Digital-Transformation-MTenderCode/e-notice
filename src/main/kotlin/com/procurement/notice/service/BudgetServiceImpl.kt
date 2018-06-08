@@ -99,11 +99,12 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             date = releaseDate
             title = updateFs.title
             tender = updateFs.tender
-            parties = updateFs.parties
             planning = updateFs.planning
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
-        if (updateAmount != amount) updateEiAmountByFs(cpid, dto.totalAmount)
+        dto.totalAmount?.let{
+            if (updateAmount != amount) updateEiAmountByFs(cpid, dto.totalAmount)
+        }
         return getResponseDto(cpid, fs.ocid)
     }
 
