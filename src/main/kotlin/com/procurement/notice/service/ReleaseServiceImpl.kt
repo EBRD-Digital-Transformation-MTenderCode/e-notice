@@ -291,12 +291,10 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
 
     override fun getRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        val releaseDate = record.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
                 ocId = ocId,
-                releaseDate = releaseDate.toDate(),
                 releaseId = releaseId,
                 stage = stage,
                 json = toJson(record)
@@ -304,12 +302,10 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
     }
 
     override fun getMSEntity(cpId: String, ms: Ms): ReleaseEntity {
-        val releaseDate = ms.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = ms.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
                 ocId = cpId,
-                releaseDate = releaseDate.toDate(),
                 releaseId = releaseId,
                 stage = MS,
                 json = toJson(ms)
@@ -318,14 +314,13 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
 
     private fun getEntity(cpId: String,
                           ocId: String,
-                          releaseDate: Date,
                           releaseId: String,
                           stage: String,
                           json: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
-                releaseDate = releaseDate,
+                releaseDate = localNowUTC().toDate(),
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = json
