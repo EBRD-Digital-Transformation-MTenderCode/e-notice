@@ -258,12 +258,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
 
     fun getRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        val releaseDate = record.date ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return getEntity(
                 cpId = cpId,
                 ocId = ocId,
-                releaseDate = releaseDate.toDate(),
                 releaseId = releaseId,
                 stage = stage,
                 json = toJson(record)
@@ -272,14 +270,13 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
 
     private fun getEntity(cpId: String,
                           ocId: String,
-                          releaseDate: Date,
                           releaseId: String,
                           stage: String,
                           json: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
-                releaseDate = releaseDate,
+                releaseDate = localNowUTC().toDate(),
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = json
