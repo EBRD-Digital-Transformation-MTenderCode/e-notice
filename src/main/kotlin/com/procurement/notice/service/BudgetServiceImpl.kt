@@ -7,6 +7,7 @@ import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.budget.FsDto
 import com.procurement.notice.model.entity.BudgetEntity
 import com.procurement.notice.model.ocds.BudgetBreakdown
 import com.procurement.notice.model.ocds.InitiationType
@@ -70,7 +71,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val fs = toObject(FS::class.java, data.toString())
+        val dto = toObject(FsDto::class.java, toJson(data))
+        val fs = dto.fs
         fs.apply {
             id = getReleaseId(fs.ocid)
             date = releaseDate
@@ -79,16 +81,17 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
-        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
+        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
-        createEiByFs(cpid, fs.ocid)
+        createEiByFs(cpid, fs.ocid, dto.totalAmount)
         return getResponseDto(cpid, fs.ocid)
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        val updateFs = toObject(FS::class.java, data.toString())
+        val dto = toObject(FsDto::class.java, toJson(data))
         val fs = toObject(FS::class.java, entity.jsonData)
+        val updateFs = dto.fs
         val updateAmount: BigDecimal = updateFs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         fs.apply {
@@ -100,7 +103,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             planning = updateFs.planning
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
-        if (updateAmount != amount) updateEiAmountByFs(cpid)
+        if (updateAmount != amount) updateEiAmountByFs(cpid, dto.totalAmount)
         return getResponseDto(cpid, fs.ocid)
     }
 
@@ -137,22 +140,26 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ocId.substring(0, pos)
     }
 
-    private fun createEiByFs(eiCpId: String, fsOcId: String) {
+    private fun createEiByFs(eiCpId: String, fsOcId: String, totalAmount: BigDecimal) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
-        ei.id = getReleaseId(eiCpId)
-        ei.date = localNowUTC()
+        ei.apply {
+            id = getReleaseId(eiCpId)
+            date = localNowUTC()
+            planning?.budget?.amount?.amount = totalAmount
+        }
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
 
-    private fun updateEiAmountByFs(eiCpId: String) {
+    private fun updateEiAmountByFs(eiCpId: String, totalAmount: BigDecimal) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
-        ei.id = getReleaseId(eiCpId)
-        ei.date = localNowUTC()
+        ei.apply {
+            id = getReleaseId(eiCpId)
+            date = localNowUTC()
+            planning?.budget?.amount?.amount = totalAmount
+        }
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
 
