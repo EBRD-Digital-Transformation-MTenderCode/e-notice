@@ -7,7 +7,6 @@ import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
-import com.procurement.notice.model.budget.FsDto
 import com.procurement.notice.model.entity.BudgetEntity
 import com.procurement.notice.model.ocds.BudgetBreakdown
 import com.procurement.notice.model.ocds.InitiationType
@@ -71,8 +70,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val dto = toObject(FsDto::class.java, toJson(data))
-        val fs = dto.fs
+        val fs = toObject(FS::class.java, data.toString())
         fs.apply {
             id = getReleaseId(fs.ocid)
             date = releaseDate
@@ -81,17 +79,16 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
-        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
+        val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
-        createEiByFs(cpid, fs.ocid, dto.totalAmount)
+        createEiByFs(cpid, fs.ocid)
         return getResponseDto(cpid, fs.ocid)
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        val dto = toObject(FsDto::class.java, toJson(data))
+        val updateFs = toObject(FS::class.java, data.toString())
         val fs = toObject(FS::class.java, entity.jsonData)
-        val updateFs = dto.fs
         val updateAmount: BigDecimal = updateFs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
         fs.apply {
@@ -99,12 +96,11 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             date = releaseDate
             title = updateFs.title
             tender = updateFs.tender
+            parties = updateFs.parties
             planning = updateFs.planning
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
-        dto.totalAmount?.let{
-            if (updateAmount != amount) updateEiAmountByFs(cpid, dto.totalAmount)
-        }
+        if (updateAmount != amount) updateEiAmountByFs(cpid)
         return getResponseDto(cpid, fs.ocid)
     }
 
@@ -141,26 +137,22 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ocId.substring(0, pos)
     }
 
-    private fun createEiByFs(eiCpId: String, fsOcId: String, totalAmount: BigDecimal) {
+    private fun createEiByFs(eiCpId: String, fsOcId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        ei.apply {
-            id = getReleaseId(eiCpId)
-            date = localNowUTC()
-            planning?.budget?.amount?.amount = totalAmount
-        }
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
+        ei.id = getReleaseId(eiCpId)
+        ei.date = localNowUTC()
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
 
-    private fun updateEiAmountByFs(eiCpId: String, totalAmount: BigDecimal) {
+    private fun updateEiAmountByFs(eiCpId: String) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
-        ei.apply {
-            id = getReleaseId(eiCpId)
-            date = localNowUTC()
-            planning?.budget?.amount?.amount = totalAmount
-        }
+        budgetDao.getTotalAmountByCpId(eiCpId)?.let { ei.planning?.budget?.amount?.amount = it}
+        ei.id = getReleaseId(eiCpId)
+        ei.date = localNowUTC()
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
 
