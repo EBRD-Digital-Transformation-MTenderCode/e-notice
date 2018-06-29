@@ -55,22 +55,5 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_budget_offset (
     primary key(cp_id)
 );
 
-CREATE INDEX budget_date_index ON ocds.notice_budget_offset (release_date);
-
-SELECT * FROM ocds.notice_release;
-SELECT * FROM ocds.notice_compiled_release;
-SELECT * FROM ocds.notice_offset;
-SELECT * FROM ocds.notice_budget_compiled_release;
-SELECT * FROM ocds.notice_budget_release;
-SELECT * FROM ocds.notice_budget_offset;
-SELECT * FROM ocds.notice_budget_offset WHERE release_date < '2017-12-11 18:31:51' AND release_date > '2017-12-11 18:31:00' LIMIT 2 ALLOW FILTERING;
-
-TRUNCATE ocds.notice_release;
-TRUNCATE ocds.notice_compiled_release;
-TRUNCATE ocds.notice_offset;
-TRUNCATE ocds.notice_budget_release;
-TRUNCATE ocds.notice_budget_compiled_release;
-TRUNCATE ocds.notice_budget_offset;
-
 
 
