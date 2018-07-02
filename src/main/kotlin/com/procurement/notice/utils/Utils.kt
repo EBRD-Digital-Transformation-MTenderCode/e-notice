@@ -1,6 +1,7 @@
 package com.procurement.notice.utils
 
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.procurement.notice.config.JsonConfig
 import java.io.IOException
@@ -37,6 +38,14 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
     Objects.requireNonNull(json)
     try {
         return JsonConfig.JsonMapper.mapper.readValue(json, clazz)
+    } catch (e: IOException) {
+        throw IllegalArgumentException(e)
+    }
+}
+
+fun <T> toObject(clazz: Class<T>, json: JsonNode): T {
+    try {
+        return JsonConfig.JsonMapper.mapper.treeToValue(json, clazz)
     } catch (e: IOException) {
         throw IllegalArgumentException(e)
     }

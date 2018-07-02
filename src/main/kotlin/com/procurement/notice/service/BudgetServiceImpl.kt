@@ -43,7 +43,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val ei = toObject(EI::class.java, data.toString())
+        val ei = toObject(EI::class.java, data)
         ei.apply {
             id = getReleaseId(cpid)
             date = releaseDate
@@ -57,7 +57,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = budgetDao.getByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        val updateEi = toObject(EI::class.java, data.toString())
+        val updateEi = toObject(EI::class.java, data)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
             id = getReleaseId(cpid)
@@ -71,7 +71,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
-        val dto = toObject(FsDto::class.java, toJson(data))
+        val dto = toObject(FsDto::class.java, data)
         val fs = dto.fs
         fs.apply {
             id = getReleaseId(fs.ocid)
@@ -89,7 +89,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
         val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        val dto = toObject(FsDto::class.java, toJson(data))
+        val dto = toObject(FsDto::class.java, data)
         val fs = toObject(FS::class.java, entity.jsonData)
         val updateFs = dto.fs
         val updateAmount: BigDecimal = updateFs.planning?.budget?.amount?.amount ?: BigDecimal.valueOf(0.00)
