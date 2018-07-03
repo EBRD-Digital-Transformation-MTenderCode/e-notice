@@ -177,16 +177,17 @@ class RelatedProcessServiceImpl : RelatedProcessService {
 
     override fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract) {
         record.contracts?.let { cans ->
-            val can = cans.asSequence().firstOrNull { it.awardId == contract.awardId }
-            can?.let { can ->
-                if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
-                can.relatedProcesses?.add(RelatedProcess(
-                        id = UUIDs.timeBased().toString(),
-                        relationship = listOf(RelatedProcessType.X_CONTRACT),
-                        scheme = RelatedProcessScheme.OCID,
-                        identifier = ocIdContract,
-                        uri = getTenderUri(msOcId, ocIdContract)))
-            }
+            cans.asSequence()
+                    .firstOrNull { it.awardId == contract.awardId }
+                    ?.let { can ->
+                        if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
+                        can.relatedProcesses?.add(RelatedProcess(
+                                id = UUIDs.timeBased().toString(),
+                                relationship = listOf(RelatedProcessType.X_CONTRACT),
+                                scheme = RelatedProcessScheme.OCID,
+                                identifier = ocIdContract,
+                                uri = getTenderUri(msOcId, ocIdContract)))
+                    }
         }
     }
 
