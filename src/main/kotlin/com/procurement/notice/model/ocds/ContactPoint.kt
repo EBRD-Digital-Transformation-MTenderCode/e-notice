@@ -1,25 +1,16 @@
 package com.procurement.notice.model.ocds
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.fasterxml.jackson.annotation.JsonCreator
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder("name", "email", "telephone", "faxNumber", "url")
-data class ContactPoint(
+data class ContactPoint @JsonCreator constructor(
 
-        @JsonProperty("name")
         val name: String?,
 
-        @JsonProperty("email")
         val email: String?,
 
-        @JsonProperty("telephone")
         val telephone: String?,
 
-        @JsonProperty("faxNumber")
         val faxNumber: String?,
 
-        @JsonProperty("url")
         val url: String?
 )

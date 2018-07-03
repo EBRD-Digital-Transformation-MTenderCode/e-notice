@@ -8,24 +8,24 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CheckFsDto
-import com.procurement.notice.model.tender.dto.Operation
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
-import com.procurement.notice.model.tender.record.*
+import com.procurement.notice.model.tender.record.Params
+import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.*
 
 interface ReleaseService {
 
-    fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto<*>
+    fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto
 
-    fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
     fun getRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity
 
@@ -45,7 +45,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         private val MS = "MS"
     }
 
-    override fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto<*> {
+    override fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto {
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
         val ms = toObject(Ms::class.java, data.toString())
         val params = getParamsForCreateCnPnPin(operation, Stage.valueOf(stage.toUpperCase()))
@@ -81,7 +81,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
         /*ms*/
@@ -129,7 +129,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
         /*ms*/
@@ -179,7 +179,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         /*dto*/
         val msTender = toObject(MsTender::class.java, toJson(data.get(TENDER_JSON)))
         val recordTender = toObject(RecordTender::class.java, toJson(data.get(TENDER_JSON)))
@@ -335,7 +335,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         return ocId + SEPARATOR + milliNowUTC()
     }
 
-    private fun getResponseDto(cpid: String, ocid: String): ResponseDto<*> {
+    private fun getResponseDto(cpid: String, ocid: String): ResponseDto {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)

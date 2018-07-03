@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
-import com.procurement.notice.model.tender.dto.Operation
+import com.procurement.notice.model.ocds.Operation
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -17,7 +17,7 @@ interface MainService {
                       operation: String,
                       phase: String?,
                       releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto<*>
+                      data: JsonNode): ResponseDto
 }
 
 @Service
@@ -34,7 +34,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                                operation: String,
                                phase: String?,
                                releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto<*> {
+                               data: JsonNode): ResponseDto {
         when (Operation.fromValue(operation)) {
             Operation.CREATE_EI -> return budgetService.createEi(cpId, newStage, releaseDate, data)
             Operation.UPDATE_EI -> return budgetService.updateEi(cpId, newStage, releaseDate, data)

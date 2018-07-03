@@ -1,22 +1,14 @@
 package com.procurement.notice.model.ocds
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.fasterxml.jackson.annotation.JsonCreator
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder("scheme", "id", "description", "uri")
-data class Classification(
+data class Classification @JsonCreator constructor(
 
-        @JsonProperty("scheme")
         val scheme: ClassificationScheme?,
 
-        @JsonProperty("id")
         val id: String?,
 
-        @JsonProperty("description")
         val description: String?,
 
-        @JsonProperty("uri")
         val uri: String?
 )

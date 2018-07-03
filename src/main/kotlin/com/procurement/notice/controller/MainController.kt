@@ -25,7 +25,7 @@ class MainController(private val mainService: MainService) {
                       @RequestParam(required = false) phase: String?,
                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                       @RequestParam releaseDate: LocalDateTime,
-                      @Valid @RequestBody data: JsonNode): ResponseEntity<ResponseDto<*>> {
+                      @Valid @RequestBody data: JsonNode): ResponseEntity<ResponseDto> {
         return ResponseEntity(
                 mainService.createRelease(
                         cpId = cpId,

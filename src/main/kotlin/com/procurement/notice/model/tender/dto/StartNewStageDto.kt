@@ -1,14 +1,12 @@
 package com.procurement.notice.model.tender.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.notice.model.ocds.Bids
 import com.procurement.notice.model.tender.record.RecordTender
 
-data class StartNewStageDto(
+data class StartNewStageDto @JsonCreator constructor(
 
-        @JsonProperty("tender")
         val tender: RecordTender,
 
-        @JsonProperty("bids")
         val bids: Bids
 )

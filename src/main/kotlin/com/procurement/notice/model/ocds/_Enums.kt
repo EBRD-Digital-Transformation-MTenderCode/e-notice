@@ -1269,6 +1269,24 @@ enum class Tag constructor(private val value: String) {
     }
 }
 
+enum class TenderDescription(val text: String) {
+
+    PS("Preselection stage of contracting process"),
+    PQ("Prequalification stage of contracting process"),
+    EV("Evaluation stage of contracting process"),
+    PN("Contracting process is planned"),
+    PIN("Date of tender launch is determined")
+}
+
+enum class TenderTitle(val text: String) {
+
+    PS("Preselection"),
+    PQ("Prequalification"),
+    EV("Evaluation"),
+    PN("Planning Notice"),
+    PIN("Prior Notice")
+}
+
 enum class TypeOfFramework constructor(private val value: String) {
     WITH_REOPENING_OF_COMPETITION("WITH_REOPENING_OF_COMPETITION"),
     WITHOUT_REOPENING_OF_COMPETITION("WITHOUT_REOPENING_OF_COMPETITION"),
@@ -1718,4 +1736,47 @@ enum class Stage {
     PIN,
     EV,
     CT
+}
+
+enum class Operation(val value: String) {
+    CREATE_EI("createEI"),
+    UPDATE_EI("updateEI"),
+    CREATE_FS("createFS"),
+    UPDATE_FS("updateFS"),
+    CREATE_CN("createCN"),
+    CREATE_PN("createPN"),
+    CREATE_PIN("createPIN"),
+    UPDATE_CN("updateCN"),
+    CREATE_ENQUIRY("createEnquiry"),
+    ADD_ANSWER("addAnswer"),
+    UNSUSPEND_TENDER("unsuspendTender"),
+    UNSUCCESSFUL_TENDER("tenderUnsuccessful"),
+    TENDER_PERIOD_END("tenderPeriodEnd"),
+    TENDER_PERIOD_END_EV("tenderPeriodEndEv"),
+    SUSPEND_TENDER("suspendTender"),
+    AWARD_BY_BID("awardByBid"),
+    AWARD_BY_BID_EV("awardByBidEv"),
+    AWARD_PERIOD_END("awardPeriodEnd"),
+    AWARD_PERIOD_END_EV("awardPeriodEndEv"),
+    STANDSTILL_PERIOD("standstillPeriod"),
+    STANDSTILL_PERIOD_EV("standstillPeriodEv"),
+    START_NEW_STAGE("startNewStage"),
+    CREATE_PIN_ON_PN("createPINonPN"),
+    CREATE_CN_ON_PN("createCNonPN"),
+    CREATE_CN_ON_PIN("createCNonPIN");
+
+    companion object {
+        private val CONSTANTS = HashMap<String, Operation>()
+
+        init {
+            for (c in Operation.values()) {
+                CONSTANTS[c.value] = c
+            }
+        }
+
+        @JsonCreator
+        fun fromValue(value: String): Operation {
+            return CONSTANTS[value] ?: throw IllegalArgumentException(value)
+        }
+    }
 }

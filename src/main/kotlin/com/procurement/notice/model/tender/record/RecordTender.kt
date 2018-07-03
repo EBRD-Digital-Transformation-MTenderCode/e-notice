@@ -1,98 +1,54 @@
 package com.procurement.notice.model.tender.record
 
-import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder(
-        "id",
-        "title",
-        "description",
-        "status",
-        "statusDetails",
-        "lots",
-        "lotGroups",
-        "items",
-        "tenderPeriod",
-        "enquiryPeriod",
-        "standstillPeriod",
-        "awardPeriod",
-        "hasEnquiries",
-        "enquiries",
-        "amendments",
-        "documents",
-        "awardCriteria",
-        "submissionMethod",
-        "submissionMethodDetails",
-        "submissionMethodRationale",
-        "requiresElectronicCatalogue")
-data class RecordTender(
 
-        @JsonProperty("id")
+data class RecordTender @JsonCreator constructor(
+
         val id: String?,
 
-        @JsonProperty("title")
         var title: String?,
 
-        @JsonProperty("description")
         var description: String?,
 
-        @JsonProperty("status")
         var status: TenderStatus?,
 
-        @JsonProperty("statusDetails")
         var statusDetails: TenderStatusDetails?,
 
-        @JsonProperty("items")
         val items: HashSet<Item>?,
 
-        @JsonProperty("lots")
         var lots: HashSet<Lot>?,
 
-        @JsonProperty("lotGroups")
         val lotGroups: List<LotGroup>?,
 
-        @JsonProperty("tenderPeriod")
         var tenderPeriod: Period?,
 
-        @JsonProperty("enquiryPeriod")
         var enquiryPeriod: Period?,
 
-        @JsonProperty("standstillPeriod")
         var standstillPeriod: Period?,
 
-        @JsonProperty("awardPeriod")
         var awardPeriod: Period?,
 
-        @JsonProperty("hasEnquiries")
         @get:JsonProperty("hasEnquiries")
         var hasEnquiries: Boolean? = false,
 
-        @JsonProperty("enquiries")
         var enquiries: HashSet<RecordEnquiry>?,
 
-        @JsonProperty("amendments")
         val amendments: List<Amendment>?,
 
-        @JsonProperty("documents")
         var documents: HashSet<Document>?,
 
-        @JsonProperty("awardCriteria")
         val awardCriteria: AwardCriteria?,
 
-        @JsonProperty("submissionMethod")
         val submissionMethod: List<SubmissionMethod>?,
 
-        @JsonProperty("submissionMethodDetails")
         val submissionMethodDetails: String?,
 
-        @JsonProperty("submissionMethodRationale")
         val submissionMethodRationale: List<SubmissionMethodRationale>?,
 
-        @JsonProperty("requiresElectronicCatalogue")
         @get:JsonProperty("requiresElectronicCatalogue")
         val requiresElectronicCatalogue: Boolean?
 )
