@@ -1,9 +1,11 @@
 package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Milestone @JsonCreator constructor(
 
         private val id: String?,

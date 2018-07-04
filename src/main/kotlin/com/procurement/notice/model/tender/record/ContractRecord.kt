@@ -1,10 +1,12 @@
 package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.*
 import java.time.LocalDateTime
 import java.util.*
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContractRecord @JsonCreator constructor(
 
         var ocid: String?,

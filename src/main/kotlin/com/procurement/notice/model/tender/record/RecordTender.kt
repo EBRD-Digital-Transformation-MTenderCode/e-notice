@@ -1,11 +1,12 @@
 package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class RecordTender @JsonCreator constructor(
 
         val id: String?,

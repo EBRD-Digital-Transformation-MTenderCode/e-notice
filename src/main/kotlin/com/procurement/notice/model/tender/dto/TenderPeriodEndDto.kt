@@ -1,9 +1,11 @@
 package com.procurement.notice.model.tender.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.*
 import java.util.*
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class TenderPeriodEndDto @JsonCreator constructor(
 
         val awardPeriod: Period,

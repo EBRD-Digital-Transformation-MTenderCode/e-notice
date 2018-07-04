@@ -1,8 +1,10 @@
 package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import java.math.BigDecimal
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Item @JsonCreator constructor(
 
         val id: String?,

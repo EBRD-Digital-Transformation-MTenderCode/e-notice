@@ -1,9 +1,11 @@
 package com.procurement.notice.model.budget
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.*
 import java.time.LocalDateTime
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class FS @JsonCreator constructor(
 
         val ocid: String,
