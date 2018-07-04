@@ -1,342 +1,84 @@
 {
-  "bids": [
-    {
-      "id": "c32d6d30-786e-11e8-bb46-078a3a5be043",
-      "date": "2018-06-25T11:56:15Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "Scegmfe-Ifg*",
-          "name": "Nmgfe*",
-          "identifier": {
-            "id": "Ifg*",
-            "scheme": "Scegmfe",
-            "legalName": "Lega gNAfme",
-            "uri": "gUfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "url": "URI URI"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ]
-    },
-    {
-      "id": "ca8d8c90-786e-11e8-bb46-078a3a5be043",
-      "date": "2018-06-25T11:56:27Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "Scedgmfe-Ifdg*",
-          "name": "Nmdgfe*",
-          "identifier": {
-            "id": "Ifdg*",
-            "scheme": "Scedgmfe",
-            "legalName": "Legdda gNAfme",
-            "uri": "gUfdRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "url": "URI URI"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ]
-    },
-    {
-      "id": "d0e9d080-786e-11e8-bb46-078a3a5be043",
-      "date": "2018-06-25T11:56:38Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "Scsdedgmfe-Ifsdfdg*",
-          "name": "Nmdsdgfe*",
-          "identifier": {
-            "id": "Ifsdfdg*",
-            "scheme": "Scsdedgmfe",
-            "legalName": "Legdsdfda gNAfme",
-            "uri": "gUfdsdfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "url": "URI URI"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ]
-    },
-    {
-      "id": "d6d81060-786e-11e8-bb46-078a3a5be043",
-      "date": "2018-06-25T11:56:48Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "Scsdedsgmfe-Ifsdfdgs*",
-          "name": "Nmsdsdgfe*",
-          "identifier": {
-            "id": "Ifsdfdgs*",
-            "scheme": "Scsdedsgmfe",
-            "legalName": "Legdsdfdsa gNAfme",
-            "uri": "gUfdsdsfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "url": "URI URI"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ]
-    }
+  "ocid": "ocds-t1s2t3-MD-1530699021588",
+  "id": "ocds-t1s2t3-MD-1530699021588-1530705398675",
+  "date": "2018-07-04T10:10:21Z",
+  "tag": [
+    "compiled"
   ],
-  "lots": [
-    {
-      "id": "a20ce591-786e-11e8-a3d0-d50c8aaf8216",
-      "title": "Title",
-      "description": "description",
-      "status": "active",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 150.00,
-        "currency": "MDL"
-      },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {}
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-04-30T21:00:00Z",
-        "endDate": "2018-09-20T21:00:00Z"
-      },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "Street",
-          "locality": "Locality",
-          "region": "Region",
-          "postalCode": "20001",
-          "countryName": "Republic of Moldova"
-        },
-        "description": "Description"
-      }
+  "initiationType": "tender",
+  "language": "en",
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1530699021588",
+    "title": "Hand become put day with west join.",
+    "description": "Break along kitchen whom trip choice seem class adult travel high throughout government room receive second former family girl base same son democratic itself public girl say week.",
+    "status": "planning",
+    "statusDetails": "empty",
+    "classification": {
+      "scheme": "CPV",
+      "id": "48760000-3",
+      "description": "Virus protection software package"
     }
-  ],
-  "awardPeriod": null,
-  "awards": [
-    {
-      "token": "9a7a3ded-01e0-4fac-aa6c-6562f0ec7677",
-      "id": "e5cefa40-7894-11e8-b9b2-b59c98f203b0",
-      "date": "2018-06-25T16:29:14Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ],
-      "relatedBid": "c32d6d30-786e-11e8-bb46-078a3a5be043",
-      "suppliers": [
-        {
-          "id": "Scegmfe-Ifg*",
-          "name": "Nmgfe*",
-          "identifier": {
-            "id": "Ifg*",
-            "scheme": "Scegmfe",
-            "legalName": "Lega gNAfme",
-            "uri": "gUfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "postalCode": null,
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "faxNumber": null,
-            "url": "URI URI"
-          }
-        }
-      ]
-    },
-    {
-      "token": "9a74ed65-1fb3-434a-b554-efc780d0d6a6",
-      "id": "e5cefa41-7894-11e8-b9b2-b59c98f203b0",
-      "date": "2018-06-25T16:29:14Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ],
-      "relatedBid": "ca8d8c90-786e-11e8-bb46-078a3a5be043",
-      "suppliers": [
-        {
-          "id": "Scedgmfe-Ifdg*",
-          "name": "Nmdgfe*",
-          "identifier": {
-            "id": "Ifdg*",
-            "scheme": "Scedgmfe",
-            "legalName": "Legdda gNAfme",
-            "uri": "gUfdRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "postalCode": null,
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "faxNumber": null,
-            "url": "URI URI"
-          }
-        }
-      ]
-    },
-    {
-      "token": "162b6fa9-0a2a-4c99-a2ac-177c98351c7e",
-      "id": "e5cefa42-7894-11e8-b9b2-b59c98f203b0",
-      "date": "2018-06-25T16:29:14Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ],
-      "relatedBid": "d0e9d080-786e-11e8-bb46-078a3a5be043",
-      "suppliers": [
-        {
-          "id": "Scsdedgmfe-Ifsdfdg*",
-          "name": "Nmdsdgfe*",
-          "identifier": {
-            "id": "Ifsdfdg*",
-            "scheme": "Scsdedgmfe",
-            "legalName": "Legdsdfda gNAfme",
-            "uri": "gUfdsdfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "postalCode": null,
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "faxNumber": null,
-            "url": "URI URI"
-          }
-        }
-      ]
-    },
-    {
-      "token": "3188663c-bf19-431c-9577-86f4ec50181a",
-      "id": "e5cefa43-7894-11e8-b9b2-b59c98f203b0",
-      "date": "2018-06-25T16:29:14Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "a20ce591-786e-11e8-a3d0-d50c8aaf8216"
-      ],
-      "relatedBid": "d6d81060-786e-11e8-bb46-078a3a5be043",
-      "suppliers": [
-        {
-          "id": "Scsdedsgmfe-Ifsdfdgs*",
-          "name": "Nmsdsdgfe*",
-          "identifier": {
-            "id": "Ifsdfdgs*",
-            "scheme": "Scsdedsgmfe",
-            "legalName": "Legdsdfdsa gNAfme",
-            "uri": "gUfdsdsfRI*"
-          },
-          "address": {
-            "streetAddress": "street",
-            "locality": "locality",
-            "region": "region",
-            "postalCode": null,
-            "countryName": "country"
-          },
-          "contactPoint": {
-            "name": "Name*",
-            "email": "bububu",
-            "telephone": "09090709887576",
-            "faxNumber": null,
-            "url": "URI URI"
-          }
-        }
-      ]
-    }
-  ],
-  "unsuccessfulLots": [],
-  "tenderPeriod": {
-    "startDate": "2018-06-25T11:55:19Z",
-    "endDate": "2018-06-25T12:05:00Z"
   },
-  "documents": []
+  "buyer": {
+    "name": "Burns-Davis",
+    "id": "UA-EDR-354-37-1072"
+  },
+  "parties": [
+    {
+      "id": "UA-EDR-354-37-1072",
+      "name": "Burns-Davis",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "354-37-1072",
+        "legalName": "Burns-Davis PLC",
+        "uri": "http://edwards.net/"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "713-49-7544",
+          "legalName": "Burns-Davis PLC",
+          "uri": "http://baker.com/posts/about.asp"
+        }
+      ],
+      "address": {
+        "streetAddress": "077 Shaw Plaza Apt. 268",
+        "locality": "Sethtown",
+        "region": "Kansas",
+        "postalCode": "72091-7701",
+        "countryName": "Pakistan"
+      },
+      "contactPoint": {
+        "name": "Jacqueline Soto",
+        "email": "tiffanygutierrez@yahoo.com",
+        "telephone": "724-095-3938x237",
+        "faxNumber": "897-612-1545",
+        "url": "http://hudson.biz/explore/list/category/"
+      },
+      "roles": [
+        "buyer"
+      ],
+      "details": {
+        "typeOfBuyer": "MINISTRY",
+        "mainGeneralActivity": "HEALTH",
+        "mainSectoralActivity": "WATER",
+        "isACentralPurchasingBody": false,
+        "scale": "sme"
+      },
+      "buyerProfile": "http://ray.com/"
+    }
+  ],
+  "planning": {
+    "budget": {
+      "id": "48760000-3",
+      "period": {
+        "startDate": "2018-04-22T09:00:00Z",
+        "endDate": "2018-08-22T09:00:00Z"
+      },
+      "amount": {
+        "currency": "LVL"
+      }
+    },
+    "rationale": "Ground national key nothing you sometimes."
+  }
 }
