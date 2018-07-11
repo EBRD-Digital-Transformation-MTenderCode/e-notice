@@ -9,8 +9,7 @@ import java.math.BigDecimal
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsDto @JsonCreator constructor(
 
-        @field:JsonDeserialize(using = MoneyDeserializer::class)
-        val totalAmount: BigDecimal,
+        val ei: EiForFs?,
 
         val fs: FS
 )

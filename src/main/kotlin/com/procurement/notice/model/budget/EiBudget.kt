@@ -12,5 +12,5 @@ data class EiBudget @JsonCreator constructor(
 
         val period: Period?,
 
-        val amount: Value?
+        var amount: Value?
 )

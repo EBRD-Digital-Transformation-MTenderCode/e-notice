@@ -6,6 +6,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
+import com.procurement.notice.model.budget.EiForFs
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.budget.FsDto
 import com.procurement.notice.model.entity.BudgetEntity
@@ -83,7 +84,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
-        createEiByFs(cpid, fs.ocid, dto.totalAmount)
+        dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
         return getResponseDto(cpid, fs.ocid)
     }
 
@@ -103,7 +104,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             planning = updateFs.planning
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
-        if (updateAmount != amount) updateEiAmountByFs(cpid, dto.totalAmount)
+        if (updateAmount != amount && dto.ei != null) updateEiAmountByFs(cpid, dto.ei)
         return getResponseDto(cpid, fs.ocid)
     }
 
@@ -140,25 +141,25 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ocId.substring(0, pos)
     }
 
-    private fun createEiByFs(eiCpId: String, fsOcId: String, totalAmount: BigDecimal) {
+    private fun createEiByFs(eiCpId: String, fsOcId: String, eiForFs: EiForFs) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
             id = getReleaseId(eiCpId)
             date = localNowUTC()
-            planning?.budget?.amount?.amount = totalAmount
+            planning?.budget?.amount = eiForFs.planning.budget.amount
         }
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
 
-    private fun updateEiAmountByFs(eiCpId: String, totalAmount: BigDecimal) {
+    private fun updateEiAmountByFs(eiCpId: String, eiForFs: EiForFs) {
         val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
             id = getReleaseId(eiCpId)
             date = localNowUTC()
-            planning?.budget?.amount?.amount = totalAmount
+            planning?.budget?.amount = eiForFs.planning.budget.amount
         }
         budgetDao.saveBudget(getEiEntity(ei, entity.stage))
     }
