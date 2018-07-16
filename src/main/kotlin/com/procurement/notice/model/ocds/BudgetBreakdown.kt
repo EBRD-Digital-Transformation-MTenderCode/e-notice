@@ -14,5 +14,7 @@ data class BudgetBreakdown @JsonCreator constructor(
 
         val period: Period?,
 
-        val sourceParty: OrganizationReference?
+        val sourceParty: OrganizationReference?,
+
+        val europeanUnionFunding: EuropeanUnionFunding?
 )

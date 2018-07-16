@@ -19,7 +19,5 @@ data class MsBudget @JsonCreator constructor(
         @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean?,
 
-        val europeanUnionFunding: EuropeanUnionFunding?,
-
         val budgetBreakdown: List<BudgetBreakdown>?
 )
