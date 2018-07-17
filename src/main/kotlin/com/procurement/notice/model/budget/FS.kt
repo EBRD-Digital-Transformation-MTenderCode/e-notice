@@ -22,7 +22,7 @@ data class FS @JsonCreator constructor(
 
         val description: String?,
 
-        val language: String? = "en",
+        val language: String? = "ro",
 
         var tender: Tender?,
 

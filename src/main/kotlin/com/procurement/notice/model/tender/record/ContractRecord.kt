@@ -19,7 +19,7 @@ data class ContractRecord @JsonCreator constructor(
 
         var initiationType: InitiationType?,
 
-        val language: String? = "en",
+        val language: String? = "ro",
 
         var parties: HashSet<Organization>?,
 

@@ -23,7 +23,7 @@ data class Document @JsonCreator constructor(
 
         val format: String?,
 
-        val language: String? = "en",
+        val language: String? = "ro",
 
         val relatedLots: List<String>?
 )
