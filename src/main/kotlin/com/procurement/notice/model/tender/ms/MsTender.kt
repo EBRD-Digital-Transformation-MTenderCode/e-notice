@@ -20,15 +20,15 @@ data class MsTender @JsonCreator constructor(
 
         val value: Value?,
 
-        val procurementMethod: ProcurementMethod?,
+        val procurementMethod: String?,
 
         val procurementMethodDetails: String?,
 
         val procurementMethodRationale: String?,
 
-        val mainProcurementCategory: MainProcurementCategory?,
+        val mainProcurementCategory: String?,
 
-        val additionalProcurementCategories: List<ExtendedProcurementCategory>?,
+        val additionalProcurementCategories: List<String>?,
 
         @get:JsonProperty("hasEnquiries")
         var hasEnquiries: Boolean? = false,
@@ -51,13 +51,13 @@ data class MsTender @JsonCreator constructor(
 
         val jointProcurement: JointProcurement?,
 
-        val legalBasis: LegalBasis?,
+        val legalBasis: String?,
 
         val procedureOutsourcing: ProcedureOutsourcing?,
 
         val procurementMethodAdditionalInfo: String?,
 
-        val submissionLanguages: List<SubmissionLanguage>?,
+        val submissionLanguages: List<String>?,
 
         val dynamicPurchasingSystem: DynamicPurchasingSystem?,
 

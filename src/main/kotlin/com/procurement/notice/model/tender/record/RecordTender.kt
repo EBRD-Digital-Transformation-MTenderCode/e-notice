@@ -42,13 +42,13 @@ data class RecordTender @JsonCreator constructor(
 
         var documents: HashSet<Document>?,
 
-        val awardCriteria: AwardCriteria?,
+        val awardCriteria: String?,
 
-        val submissionMethod: List<SubmissionMethod>?,
+        val submissionMethod: List<String>?,
 
         val submissionMethodDetails: String?,
 
-        val submissionMethodRationale: List<SubmissionMethodRationale>?,
+        val submissionMethodRationale: List<String>?,
 
         @get:JsonProperty("requiresElectronicCatalogue")
         val requiresElectronicCatalogue: Boolean?

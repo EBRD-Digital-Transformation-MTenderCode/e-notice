@@ -24,21 +24,21 @@ data class Tender @JsonCreator constructor(
 
         val value: Value?,
 
-        val procurementMethod: ProcurementMethod?,
+        val procurementMethod: String?,
 
         val procurementMethodDetails: String?,
 
         val procurementMethodRationale: String?,
 
-        val mainProcurementCategory: MainProcurementCategory?,
+        val mainProcurementCategory: String?,
 
-        val additionalProcurementCategories: List<ExtendedProcurementCategory>?,
+        val additionalProcurementCategories: List<String>?,
 
-        val awardCriteria: AwardCriteria?,
+        val awardCriteria: String?,
 
         val awardCriteriaDetails: String?,
 
-        val submissionMethod: List<SubmissionMethod>?,
+        val submissionMethod: List<String>?,
 
         val submissionMethodDetails: String?,
 
@@ -105,9 +105,9 @@ data class Tender @JsonCreator constructor(
 
         val standstillPeriod: Period?,
 
-        val submissionLanguages: List<SubmissionLanguage>?,
+        val submissionLanguages: List<String>?,
 
-        val submissionMethodRationale: List<SubmissionMethodRationale>?,
+        val submissionMethodRationale: List<String>?,
 
         val dynamicPurchasingSystem: DynamicPurchasingSystem?,
 
