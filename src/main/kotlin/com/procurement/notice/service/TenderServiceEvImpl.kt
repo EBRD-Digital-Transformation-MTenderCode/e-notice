@@ -158,7 +158,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                 relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdContract, RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(recordContract, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(recordEv, ocIdContract, cpid, contract)
-                releaseDao.saveRelease(getRecordEntity(cpid, AC, recordContract))
+                releaseDao.saveRelease(getContractRecordEntity(cpid, AC, recordContract))
             }
         }
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
@@ -256,10 +256,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
     }
 
 
-    fun getRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+    fun getContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        return getEntity(
+        return getContractEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseId = releaseId,
@@ -268,11 +268,11 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         )
     }
 
-    private fun getEntity(cpId: String,
-                          ocId: String,
-                          releaseId: String,
-                          stage: String,
-                          json: String): ReleaseEntity {
+    private fun getContractEntity(cpId: String,
+                                  ocId: String,
+                                  releaseId: String,
+                                  stage: String,
+                                  json: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
