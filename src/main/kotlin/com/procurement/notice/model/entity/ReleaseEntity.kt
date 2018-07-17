@@ -14,7 +14,9 @@ data class ReleaseEntity(
 
         var stage: String,
 
-        var jsonData: String
+        var jsonData: String,
+
+        var status: String? = ""
 )
 
 

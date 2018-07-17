@@ -297,7 +297,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 ocId = ocId,
                 releaseId = releaseId,
                 stage = stage,
-                json = toJson(record)
+                json = toJson(record),
+                status = record.tender.status.toString()
         )
     }
 
@@ -308,7 +309,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 ocId = cpId,
                 releaseId = releaseId,
                 stage = MS,
-                json = toJson(ms)
+                json = toJson(ms),
+                status = ms.tender.status.toString()
         )
     }
 
@@ -316,14 +318,16 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                           ocId: String,
                           releaseId: String,
                           stage: String,
-                          json: String): ReleaseEntity {
+                          json: String,
+                          status: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseDate = localNowUTC().toDate(),
                 releaseId = releaseId,
                 stage = stage,
-                jsonData = json
+                jsonData = json,
+                status = status
         )
     }
 

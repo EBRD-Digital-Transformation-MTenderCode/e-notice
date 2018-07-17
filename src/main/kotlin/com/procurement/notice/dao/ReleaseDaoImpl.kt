@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 interface ReleaseDao {
 
-    fun saveRelease(releaseEntity: ReleaseEntity, status: String)
+    fun saveRelease(releaseEntity: ReleaseEntity)
 
     fun getByCpId(cpId: String): ReleaseEntity?
 
@@ -21,7 +21,7 @@ interface ReleaseDao {
 @Service
 class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
 
-    override fun saveRelease(releaseEntity: ReleaseEntity, status: String) {
+    override fun saveRelease(releaseEntity: ReleaseEntity) {
         val insert = insertInto(TENDER_TABLE)
         insert
                 .value(CP_ID, releaseEntity.cpId)
@@ -44,7 +44,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         insertOffset
                 .value(CP_ID, releaseEntity.cpId)
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
-                .value(STATUS, status)
+                .value(STATUS, releaseEntity.status)
 
         val batch = QueryBuilder.batch(insert, insertCompiled, insertOffset)
         session.execute(batch)
