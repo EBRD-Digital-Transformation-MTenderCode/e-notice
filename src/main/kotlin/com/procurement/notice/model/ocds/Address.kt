@@ -2,6 +2,8 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import javax.validation.Valid
+import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Address @JsonCreator constructor(
@@ -16,45 +18,53 @@ data class Address @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class AddressDetails(
 
-        val country: Country?,
+        @field:Valid @field:NotNull
+        val country: CountryDetails,
 
-        val region: Region?,
+        @field:Valid @field:NotNull
+        val region: RegionDetails,
 
-        val locality: Locality?
+        @field:Valid @field:NotNull
+        val locality: LocalityDetails
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Country(
+data class CountryDetails(
 
-        val scheme: String?,
+        var scheme: String?,
 
-        val id: String?,
+        @field:NotNull
+        val id: String,
 
-        val description: String?,
+        var description: String?,
 
-        val uri: String?
+        var uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Region(
+data class RegionDetails(
 
-        val scheme: String?,
+        var scheme: String?,
 
-        val id: String?,
+        @field:NotNull
+        val id: String,
 
-        val description: String?,
+        var description: String?,
 
-        val uri: String?
+        var uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Locality(
+data class LocalityDetails(
 
-        val scheme: String?,
+        @field:NotNull
+        var scheme: String,
 
-        val id: String?,
+        @field:NotNull
+        val id: String,
 
-        val description: String?,
+        @field:NotNull
+        var description: String,
 
-        val uri: String?
+        var uri: String?
 )
