@@ -10,7 +10,7 @@ data class Unit @JsonCreator constructor(
 
         val value: Value?,
 
-        val scheme: UnitScheme?,
+        val scheme: String?,
 
         val id: String?,
 

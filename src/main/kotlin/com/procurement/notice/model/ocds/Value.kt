@@ -12,5 +12,5 @@ data class Value @JsonCreator constructor(
         @field:JsonDeserialize(using = MoneyDeserializer::class)
         var amount: BigDecimal?,
 
-        var currency: Currency?
+        var currency: String?
 )
