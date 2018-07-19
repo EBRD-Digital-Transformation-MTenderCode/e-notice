@@ -4,7 +4,6 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
-import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
@@ -147,7 +146,8 @@ class OrganizationServiceImpl : OrganizationService {
                     suppliers.forEach { supplier ->
                         record.parties?.let {
                             addParty(it, supplier, PartyRole.SUPPLIER)
-                            addParty(it, supplier, PartyRole.PAYEE)}
+                            addParty(it, supplier, PartyRole.PAYEE)
+                        }
                         clearOrganizationReference(supplier)
                     }
                 }

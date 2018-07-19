@@ -21,13 +21,13 @@ import java.util.*
 
 interface TenderServiceEv {
 
-    fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun standstillPeriodEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun standstillPeriodEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
 }
 
@@ -43,7 +43,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         private val AC = "AC"
     }
 
-    override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
@@ -64,7 +64,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun awardByBidEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardByBidEvDto::class.java, toJson(data))
         val record = toObject(Record::class.java, entity.jsonData)
@@ -82,7 +82,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun standstillPeriodEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun standstillPeriodEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(StandstillPeriodEndEvDto::class.java, toJson(data))
         /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
@@ -110,7 +110,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun awardPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
@@ -158,7 +158,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                 relatedProcessService.addRecordRelatedProcessToMs(ms, ocIdContract, RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(recordContract, recordEvOcId, cpid, RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(recordEv, ocIdContract, cpid, contract)
-                releaseDao.saveRelease(getRecordEntity(cpid, AC, recordContract))
+                releaseDao.saveRelease(getContractRecordEntity(cpid, AC, recordContract))
             }
         }
         releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
@@ -248,7 +248,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             }
     }
 
-    private fun getResponseDto(cpid: String, ocid: String): ResponseDto<*> {
+    private fun getResponseDto(cpid: String, ocid: String): ResponseDto {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
@@ -256,10 +256,10 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
     }
 
 
-    fun getRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+    fun getContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        return getEntity(
+        return getContractEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseId = releaseId,
@@ -268,11 +268,11 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         )
     }
 
-    private fun getEntity(cpId: String,
-                          ocId: String,
-                          releaseId: String,
-                          stage: String,
-                          json: String): ReleaseEntity {
+    private fun getContractEntity(cpId: String,
+                                  ocId: String,
+                                  releaseId: String,
+                                  stage: String,
+                                  json: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,

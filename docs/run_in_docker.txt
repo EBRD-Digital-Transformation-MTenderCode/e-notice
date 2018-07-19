@@ -1,38 +1,3 @@
-#*****************************#
-# Create Network if not exist #
-#*****************************#
-
-docker network create \
-  --driver bridge \
-  --subnet 192.168.100.0/24 \
-  --gateway 192.168.100.1 \
-  ocds-network
-
-
-#****************************************#
-# Run E-NOTICE                           #
-# Need assign uri, username and password #
-#****************************************#
 
 mvn clean package docker:build
-docker push docker-registry.eprocurement.systems/e-notice:17.12.1
-
-docker login https://docker-registry.eprocurement.systems
-Username: docker
-Password: 3FFcKYtMxzmwFMa
-
-
-
-docker run -d --name=notice-1 \
-  --env __PROP_spring_cloud_config_uri=http://config-server-1:8700 \
-  --env __PROP_spring_profiles_active=default \
-  --env __PROP_spring_cloud_config_label=3d88c9f \
-  --publish 9041:8080 \
-  --network ocds-network \
-  --dns 10.0.10.115 \
-  docker-registry.eprocurement.systems/e-notice:17.12.1
-
-docker logs notice-1
-
-docker rm notice-1
-
+docker push docker-registry.eprocurement.systems/e-notice:18.06.1

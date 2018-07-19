@@ -44,6 +44,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         insertOffset
                 .value(CP_ID, releaseEntity.cpId)
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
+                .value(STATUS, releaseEntity.status)
 
         val batch = QueryBuilder.batch(insert, insertCompiled, insertOffset)
         session.execute(batch)
@@ -109,6 +110,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         private val RELEASE_DATE = "release_date"
         private val RELEASE_ID = "release_id"
         private val STAGE = "stage"
+        private val STATUS = "status"
         private val JSON_DATA = "json_data"
     }
 }

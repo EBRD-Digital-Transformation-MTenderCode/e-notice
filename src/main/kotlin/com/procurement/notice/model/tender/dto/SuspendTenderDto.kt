@@ -1,9 +1,10 @@
 package com.procurement.notice.model.tender.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 
-data class SuspendTenderDto(
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class SuspendTenderDto @JsonCreator constructor(
 
-        @JsonProperty("tender")
         val tender: TenderDto
 )

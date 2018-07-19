@@ -1,21 +1,17 @@
 package com.procurement.notice.model.tender.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.OrganizationReference
 
-@JsonPropertyOrder("ei", "buyer", "funder", "payer")
-data class CheckFsDto(
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class CheckFsDto @JsonCreator constructor(
 
-        @JsonProperty("ei")
         val ei: HashSet<String>,
 
-        @JsonProperty("buyer")
         val buyer: HashSet<OrganizationReference>,
 
-        @JsonProperty("funder")
         val funder: HashSet<OrganizationReference>,
 
-        @JsonProperty("payer")
         val payer: HashSet<OrganizationReference>
 )

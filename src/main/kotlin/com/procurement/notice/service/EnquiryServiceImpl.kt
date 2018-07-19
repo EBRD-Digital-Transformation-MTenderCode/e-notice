@@ -19,11 +19,11 @@ import java.time.LocalDateTime
 
 interface EnquiryService {
 
-    fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun addAnswer(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun addAnswer(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun unsuspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun unsuspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 }
 
 @Service
@@ -37,7 +37,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         private val MS = "MS"
     }
 
-    override fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val record = toObject(Record::class.java, entity.jsonData)
@@ -68,7 +68,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun addAnswer(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun addAnswer(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val record = toObject(Record::class.java, entity.jsonData)
@@ -84,7 +84,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun unsuspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun unsuspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw  ErrorException(ErrorType.DATA_NOT_FOUND)
         val record = toObject(Record::class.java, entity.jsonData)
@@ -111,7 +111,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         return ocId + SEPARATOR + milliNowUTC()
     }
 
-    private fun getResponseDto(cpid: String, ocid: String): ResponseDto<*> {
+    private fun getResponseDto(cpid: String, ocid: String): ResponseDto {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)

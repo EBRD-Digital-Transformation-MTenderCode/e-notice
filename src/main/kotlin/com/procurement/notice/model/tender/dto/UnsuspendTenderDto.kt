@@ -1,16 +1,13 @@
 package com.procurement.notice.model.tender.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
-import com.procurement.notice.model.ocds.Period
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
-@JsonPropertyOrder("enquiry", "tender", "tenderPeriod", "enquiryPeriod")
-data class UnsuspendTenderDto(
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class UnsuspendTenderDto @JsonCreator constructor(
 
-        @JsonProperty("enquiry")
         val enquiry: RecordEnquiry,
 
-        @JsonProperty("tender")
         val tender: TenderDto
 )

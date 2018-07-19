@@ -10,8 +10,6 @@ import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
-import com.procurement.notice.model.tender.record.TenderDescription
-import com.procurement.notice.model.tender.record.TenderTitle
 import com.procurement.notice.utils.createObjectNode
 import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toJson
@@ -22,19 +20,19 @@ import java.util.*
 
 interface TenderService {
 
-    fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun standstillPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun standstillPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
-    fun startNewStage(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*>
+    fun startNewStage(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 }
 
 @Service
@@ -48,7 +46,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         private val MS = "MS"
     }
 
-    override fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
@@ -69,7 +67,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun suspendTender(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(SuspendTenderDto::class.java, toJson(data))
         val record = toObject(Record::class.java, entity.jsonData)
@@ -83,7 +81,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun tenderUnsuccessful(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
@@ -115,7 +113,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun awardByBid(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardByBidDto::class.java, toJson(data))
         val record = toObject(Record::class.java, entity.jsonData)
@@ -131,7 +129,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun awardPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = releaseDao.getByCpIdAndStage(cpid, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
         val record = toObject(Record::class.java, entity.jsonData)
@@ -151,7 +149,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun standstillPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun standstillPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(StandstillPeriodEndDto::class.java, toJson(data))
         val statusDetails = when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> {
@@ -188,7 +186,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         return getResponseDto(cpid, ocId)
     }
 
-    override fun startNewStage(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto<*> {
+    override fun startNewStage(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(StartNewStageDto::class.java, toJson(data))
         var statusDetails: TenderStatusDetails?
         var relatedProcessType: RelatedProcessType?
@@ -355,7 +353,7 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
         }
     }
 
-    private fun getResponseDto(cpid: String, ocid: String): ResponseDto<*> {
+    private fun getResponseDto(cpid: String, ocid: String): ResponseDto {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
