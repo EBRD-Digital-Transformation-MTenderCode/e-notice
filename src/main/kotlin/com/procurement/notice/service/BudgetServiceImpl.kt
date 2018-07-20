@@ -100,7 +100,6 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             date = releaseDate
             title = updateFs.title
             tender = updateFs.tender
-            parties = updateFs.parties
             planning = updateFs.planning
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
