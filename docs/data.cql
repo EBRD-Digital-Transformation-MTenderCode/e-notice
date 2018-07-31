@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS ocds.notice_compiled_release (
        release_date timestamp,
        release_id text,
        stage text,
+       status text,
        json_data text,
        primary key(cp_id, oc_id, stage)
 )WITH CLUSTERING ORDER BY (oc_id ASC);

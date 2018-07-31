@@ -38,6 +38,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
                 .value(RELEASE_ID, releaseEntity.releaseId)
                 .value(STAGE, releaseEntity.stage)
+                .value(STATUS, releaseEntity.status)
                 .value(JSON_DATA, releaseEntity.jsonData)
 
         val insertOffset = insertInto(TENDER_OFFSET_TABLE)
