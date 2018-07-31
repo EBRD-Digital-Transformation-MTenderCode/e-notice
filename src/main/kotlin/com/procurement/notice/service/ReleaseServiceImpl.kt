@@ -298,7 +298,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 releaseId = releaseId,
                 stage = stage,
                 json = toJson(record),
-                status = record.tender.status.toString()
+                status = ""
         )
     }
 
