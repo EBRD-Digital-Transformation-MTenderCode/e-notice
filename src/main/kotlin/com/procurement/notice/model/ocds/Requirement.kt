@@ -12,7 +12,7 @@ data class Requirement @JsonCreator constructor(
 
         val description: String?,
 
-        val dataType: DataType?,
+        val dataType: String?,
 
         val pattern: String?,
 

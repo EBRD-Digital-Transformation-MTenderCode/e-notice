@@ -91,7 +91,7 @@ data class Tender @JsonCreator constructor(
 
         val jointProcurement: JointProcurement?,
 
-        val legalBasis: LegalBasis?,
+        val legalBasis: String?,
 
         val objectives: Objectives?,
 

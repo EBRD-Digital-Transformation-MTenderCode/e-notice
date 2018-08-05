@@ -12,7 +12,7 @@ data class Milestone @JsonCreator constructor(
 
         val title: String?,
 
-        val type: MilestoneType?,
+        val type: String?,
 
         val description: String?,
 
@@ -24,7 +24,7 @@ data class Milestone @JsonCreator constructor(
 
         val dateModified: LocalDateTime?,
 
-        val status: MilestoneStatus?,
+        val status: String?,
 
         val documents: HashSet<Document>?,
 

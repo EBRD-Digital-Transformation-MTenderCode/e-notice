@@ -7,16 +7,16 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Details @JsonCreator constructor(
 
-        val typeOfBuyer: TypeOfBuyer?,
+        val typeOfBuyer: String?,
 
-        val mainGeneralActivity: MainGeneralActivity?,
+        val mainGeneralActivity: String?,
 
-        val mainSectoralActivity: MainSectoralActivity?,
+        val mainSectoralActivity: String?,
 
         @get:JsonProperty("isACentralPurchasingBody")
         val isACentralPurchasingBody: Boolean?,
 
         val nutsCode: String?,
 
-        val scale: Scale?
+        val scale: String?
 )

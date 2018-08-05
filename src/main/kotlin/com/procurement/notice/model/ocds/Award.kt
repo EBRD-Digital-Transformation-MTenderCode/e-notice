@@ -13,9 +13,9 @@ data class Award @JsonCreator constructor(
 
         var description: String?,
 
-        var status: AwardStatus?,
+        var status: String?,
 
-        var statusDetails: AwardStatus?,
+        var statusDetails: String?,
 
         var date: LocalDateTime?,
 

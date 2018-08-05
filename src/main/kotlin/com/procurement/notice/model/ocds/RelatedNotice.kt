@@ -8,9 +8,9 @@ data class RelatedNotice @JsonCreator constructor(
 
         val id: String?,
 
-        val scheme: RelatedNoticeScheme?,
+        val scheme: String?,
 
-        val relationship: Relationship?,
+        val relationship: String?,
 
         val objectOfProcurementInPIN: String?,
 

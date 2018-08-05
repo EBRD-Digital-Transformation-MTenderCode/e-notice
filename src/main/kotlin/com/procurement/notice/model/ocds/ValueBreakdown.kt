@@ -8,7 +8,7 @@ data class ValueBreakdown @JsonCreator constructor(
 
         val id: String?,
 
-        val type: List<ValueBreakdownType>?,
+        val type: List<String>?,
 
         val description: String?,
 

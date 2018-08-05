@@ -12,9 +12,9 @@ data class Criterion @JsonCreator constructor(
 
         val description: String?,
 
-        val source: Source?,
+        val source: String?,
 
-        val relatesTo: RelatesTo?,
+        val relatesTo: String?,
 
         val relatedItem: String?,
 

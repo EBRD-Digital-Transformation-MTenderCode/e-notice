@@ -10,7 +10,7 @@ data class Framework @JsonCreator constructor(
         @get:JsonProperty("isAFramework")
         val isAFramework: Boolean?,
 
-        val typeOfFramework: TypeOfFramework?,
+        val typeOfFramework: String?,
 
         val maxSuppliers: Int?,
 

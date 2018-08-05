@@ -11,9 +11,9 @@ data class Bid @JsonCreator constructor(
 
         var date: LocalDateTime?,
 
-        var status: BidStatus?,
+        var status: String?,
 
-        var statusDetails: BidStatusDetails?,
+        var statusDetails: String?,
 
         val tenderers: List<OrganizationReference>?,
 

@@ -18,9 +18,9 @@ data class Contract @JsonCreator constructor(
 
         val description: String?,
 
-        var status: ContractStatus,
+        var status: String,
 
-        var statusDetails: ContractStatusDetails,
+        var statusDetails: String,
 
         val extendsContractID: String?,
 

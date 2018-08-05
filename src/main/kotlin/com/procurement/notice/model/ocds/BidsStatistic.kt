@@ -9,7 +9,7 @@ data class BidsStatistic @JsonCreator constructor(
 
         val id: String?,
 
-        val measure: Measure?,
+        val measure: String?,
 
         val date: LocalDateTime?,
 

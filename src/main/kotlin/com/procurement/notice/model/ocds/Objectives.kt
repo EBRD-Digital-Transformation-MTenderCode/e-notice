@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Objectives @JsonCreator constructor(
 
-        val types: List<ObjectivesType>?,
+        val types: List<String>?,
 
         val additionalInformation: String?
 )
