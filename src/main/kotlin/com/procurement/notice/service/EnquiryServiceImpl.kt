@@ -32,9 +32,9 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                          private val releaseDao: ReleaseDao) : EnquiryService {
 
     companion object {
-        private val SEPARATOR = "-"
-        private val ENQUIRY_JSON = "enquiry"
-        private val MS = "MS"
+        private const val SEPARATOR = "-"
+        private const val ENQUIRY_JSON = "enquiry"
+        private const val MS = "MS"
     }
 
     override fun createEnquiry(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {

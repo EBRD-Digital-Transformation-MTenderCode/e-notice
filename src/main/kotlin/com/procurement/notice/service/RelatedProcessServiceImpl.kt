@@ -205,7 +205,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     }
 
     companion object {
-        private val FS_SEPARATOR = "-FS-"
-        private val URI_SEPARATOR = "/"
+        private const val FS_SEPARATOR = "-FS-"
+        private const val URI_SEPARATOR = "/"
     }
 }

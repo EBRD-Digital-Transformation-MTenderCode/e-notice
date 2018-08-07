@@ -16,8 +16,13 @@ import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 interface ReleaseService {
+
+    fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
+
+    fun updateTenderPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
     fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto
 
@@ -40,9 +45,66 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                          private val relatedProcessService: RelatedProcessService) : ReleaseService {
 
     companion object {
-        private val SEPARATOR = "-"
-        private val TENDER_JSON = "tender"
-        private val MS = "MS"
+        private const val SEPARATOR = "-"
+        private const val TENDER_JSON = "tender"
+        private const val MS = "MS"
+    }
+
+
+    override fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val msReq = toObject(Ms::class.java, data.toString())
+        val recordReq = toObject(Record::class.java, data.toString())
+        /*ms*/
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val ms = toObject(Ms::class.java, msEntity.jsonData)
+        ms.apply {
+            id = getReleaseId(cpid)
+            date = releaseDate
+        }
+        /*record*/
+        val recordEntity = releaseDao.getByCpIdAndStage(cpid, stage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = toObject(Record::class.java, recordEntity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        record.apply {
+            /* previous record*/
+            id = getReleaseId(ocId)
+            date = releaseDate
+        }
+        releaseDao.saveRelease(getMSEntity(cpid, ms))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
+    }
+
+    override fun updateTenderPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val recordTender = toObject(RecordTender::class.java, toJson(data.get(ReleaseServiceImpl.TENDER_JSON)))
+        /*record*/
+        val recordEntity = releaseDao.getByCpIdAndStage(cpid, stage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = toObject(Record::class.java, recordEntity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.OCID_ERROR)
+        val actualReleaseID = record.id
+        val newReleaseID = getReleaseId(ocId)
+        val amendments = record.tender.amendments?.toMutableList()
+        amendments?.add(Amendment(
+                id = UUID.randomUUID().toString(),
+                amendsReleaseID = actualReleaseID,
+                releaseID = newReleaseID,
+                date = releaseDate,
+                changes = null,
+                description = null,
+                rationale = null
+        ))
+        record.apply {
+            id = getReleaseId(ocId)
+            date = releaseDate
+            tag = listOf(Tag.TENDER_AMENDMENT)
+            tender.tenderPeriod = recordTender.tenderPeriod
+            tender.enquiryPeriod = recordTender.enquiryPeriod
+            tender.amendments = amendments
+        }
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
     }
 
     override fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto {
@@ -229,6 +291,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
+
 
     fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params {
         val params = Params()

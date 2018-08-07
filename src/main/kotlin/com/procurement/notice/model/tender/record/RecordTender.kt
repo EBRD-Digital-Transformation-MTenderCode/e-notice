@@ -38,7 +38,7 @@ data class RecordTender @JsonCreator constructor(
 
         var enquiries: HashSet<RecordEnquiry>?,
 
-        val amendments: List<Amendment>?,
+        var amendments: List<Amendment>?,
 
         var documents: HashSet<Document>?,
 

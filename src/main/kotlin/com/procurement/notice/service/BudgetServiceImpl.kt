@@ -39,8 +39,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
                         private val relatedProcessService: RelatedProcessService) : BudgetService {
 
     companion object {
-        private val SEPARATOR = "-"
-        private val FS_SEPARATOR = "-FS-"
+        private const val SEPARATOR = "-"
+        private const val FS_SEPARATOR = "-FS-"
     }
 
     override fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {

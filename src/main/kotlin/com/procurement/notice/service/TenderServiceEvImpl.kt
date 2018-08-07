@@ -14,6 +14,7 @@ import com.procurement.notice.model.tender.dto.TenderPeriodEndDto
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -29,6 +30,7 @@ interface TenderServiceEv {
 
     fun standstillPeriodEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
+
 }
 
 @Service
@@ -38,9 +40,9 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                           private val relatedProcessService: RelatedProcessService) : TenderServiceEv {
 
     companion object {
-        private val SEPARATOR = "-"
-        private val MS = "MS"
-        private val AC = "AC"
+        private const val SEPARATOR = "-"
+        private const val MS = "MS"
+        private const val AC = "AC"
     }
 
     override fun tenderPeriodEndEv(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {

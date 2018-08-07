@@ -58,7 +58,8 @@ class MainServiceImpl(private val budgetService: BudgetService,
                 if (previousStage == null) throw ErrorException(ErrorType.STAGE_ERROR)
                 return releaseService.createCnOnPin(cpId, newStage, previousStage, releaseDate, data)
             }
-            Operation.UPDATE_CN -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+            Operation.UPDATE_CN -> return releaseService.updateCn(cpId, newStage, releaseDate, data)
+            Operation.UPDATE_TENDER_PERIOD -> return releaseService.updateTenderPeriod(cpId, newStage, releaseDate, data)
             Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(cpId, newStage, releaseDate, data)
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
             Operation.SUSPEND_TENDER -> return tenderService.suspendTender(cpId, newStage, releaseDate, data)

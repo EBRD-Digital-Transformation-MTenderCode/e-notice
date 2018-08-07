@@ -23,7 +23,7 @@ data class Ms @JsonCreator constructor(
 
         val language: String? = "ro",
 
-        val planning: MsPlanning?,
+        var planning: MsPlanning?,
 
         var tender: MsTender,
 

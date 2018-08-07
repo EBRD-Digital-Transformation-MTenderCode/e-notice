@@ -42,8 +42,8 @@ class TenderServiceImpl(private val releaseDao: ReleaseDao,
                         private val relatedProcessService: RelatedProcessService) : TenderService {
 
     companion object {
-        private val SEPARATOR = "-"
-        private val MS = "MS"
+        private const val SEPARATOR = "-"
+        private const val MS = "MS"
     }
 
     override fun tenderPeriodEnd(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
