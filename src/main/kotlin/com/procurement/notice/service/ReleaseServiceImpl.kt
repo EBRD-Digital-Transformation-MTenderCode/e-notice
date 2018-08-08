@@ -57,19 +57,58 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
+        msReq.tender.apply {
+            id = ms.tender.id
+            status = ms.tender.status
+            statusDetails = ms.tender.statusDetails
+            hasEnquiries = ms.tender.hasEnquiries
+            procuringEntity = ms.tender.procuringEntity
+        }
         ms.apply {
             id = getReleaseId(cpid)
             date = releaseDate
+            planning = msReq.planning
+            tender = msReq.tender
         }
         /*record*/
         val recordEntity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        recordReq.tender.apply {
+            title = record.tender.title
+            description = record.tender.description
+        }
+        val actualReleaseID = record.id
+        val newReleaseID = getReleaseId(ocId)
+        val amendments = record.tender.amendments?.toMutableList()
+        var relatedLots: Set<String>? = null
+        var rationale = "General change of Contract Notice"
+        val canceledLots = recordReq.tender.lots?.asSequence()
+                ?.filter { it.statusDetails == TenderStatusDetails.CANCELLED }
+                ?.map { it.id }
+                ?.toSet()
+        if (canceledLots != null && canceledLots.isNotEmpty()) {
+            relatedLots = canceledLots
+            rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
+        }
+        amendments?.add(Amendment(
+                id = UUID.randomUUID().toString(),
+                amendsReleaseID = actualReleaseID,
+                releaseID = newReleaseID,
+                date = releaseDate,
+                relatedLots = relatedLots,
+                rationale = rationale,
+                changes = null,
+                description = null
+        ))
         record.apply {
             /* previous record*/
             id = getReleaseId(ocId)
             date = releaseDate
+            tag = listOf(Tag.TENDER_AMENDMENT)
+            tender = recordReq.tender
+            tender.amendments = amendments
         }
         releaseDao.saveRelease(getMSEntity(cpid, ms))
         releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
@@ -91,9 +130,10 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
+                relatedLots = null,
+                rationale = null,
                 changes = null,
-                description = null,
-                rationale = null
+                description = null
         ))
         record.apply {
             id = getReleaseId(ocId)

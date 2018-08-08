@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class MsTender @JsonCreator constructor(
 
-        val id: String?,
+        var id: String?,
 
         val title: String?,
 
