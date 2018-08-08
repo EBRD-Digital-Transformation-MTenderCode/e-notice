@@ -1,558 +1,410 @@
 {
-  "bids": [
-    {
-      "id": "a12c5e90-94d3-11e8-8af3-c93687c12749",
-      "date": "2018-07-31T15:08:49Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "MD-IDNO-3010000fhfgf5555hggg5505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf5555hggg5505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
-          },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ],
-      "value": {
-        "amount": 500.00,
+  "ocid": "ocds-t1s2t3-MD-1533744064233",
+  "planning": {
+    "budget": {
+      "amount": {
+        "amount": 2400.00,
         "currency": "MDL"
       },
-      "documents": [
+      "isEuropeanUnionFunded": true,
+      "budgetBreakdown": [
         {
-          "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-          "documentType": "submissionDocuments",
-          "title": "doc1",
-          "relatedLots": [
-            "789b63e3-94d3-11e8-9422-df4968e00e7b"
-          ]
-        }
-      ],
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
-    },
-    {
-      "id": "a6ff9c60-94d3-11e8-8af3-c93687c12749",
-      "date": "2018-07-31T15:08:59Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "MD-IDNO-3010000fhfgf5555hggg555505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf5555hggg555505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
+          "id": "ocds-t1s2t3-MD-1533733635083-FS-1533733752757",
+          "description": "Hello world!",
+          "amount": {
+            "amount": 900.00,
+            "currency": "MDL"
           },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
+          "period": {
+            "startDate": "2018-05-25T21:00:00Z",
+            "endDate": "2018-12-26T21:00:00Z"
           },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
+          "sourceParty": {
+            "id": "MD-IDNO-Enotis",
+            "name": "Edward-Company2"
           },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ],
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "documents": [
-        {
-          "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-          "documentType": "submissionDocuments",
-          "title": "doc1",
-          "relatedLots": [
-            "789b63e3-94d3-11e8-9422-df4968e00e7b"
-          ]
-        }
-      ],
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
-    },
-    {
-      "id": "aae56210-94d3-11e8-8af3-c93687c12749",
-      "date": "2018-07-31T15:09:05Z",
-      "status": "pending",
-      "statusDetails": "empty",
-      "tenderers": [
-        {
-          "id": "MD-IDNO-3010000fhfgf555505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf555505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
-          },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ],
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "documents": [
-        {
-          "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-          "documentType": "submissionDocuments",
-          "title": "doc1",
-          "relatedLots": [
-            "789b63e3-94d3-11e8-9422-df4968e00e7b"
-          ]
-        }
-      ],
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
-    }
-  ],
-  "lots": [
-    {
-      "id": "789b63e2-94d3-11e8-9422-df4968e00e7b",
-      "title": "lot1",
-      "description": "looot",
-      "status": "active",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 200.00,
-        "currency": "MDL"
-      },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {
-          "hasRenewals": false
-        }
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-11-19T14:45:00Z",
-        "endDate": "2018-12-25T14:45:00Z"
-      },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "",
-          "postalCode": "",
-          "addressDetails": {
-            "country": {
-              "id": "MD"
-            },
-            "region": {
-              "id": "MD-AN"
-            },
-            "locality": {
-              "scheme": "gfgf",
-              "id": "gfg",
-              "description": "gfg"
-            }
-          }
-        }
-      }
-    },
-    {
-      "id": "789b63e3-94d3-11e8-9422-df4968e00e7b",
-      "title": "lot2",
-      "description": "looot",
-      "status": "active",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "options": [
-        {
-          "hasOptions": false
-        }
-      ],
-      "recurrentProcurement": [
-        {
-          "isRecurrent": false
-        }
-      ],
-      "renewals": [
-        {
-          "hasRenewals": false
-        }
-      ],
-      "variants": [
-        {
-          "hasVariants": false
-        }
-      ],
-      "contractPeriod": {
-        "startDate": "2018-11-21T14:45:00Z",
-        "endDate": "2018-12-22T14:45:00Z"
-      },
-      "placeOfPerformance": {
-        "address": {
-          "streetAddress": "",
-          "postalCode": "",
-          "addressDetails": {
-            "country": {
-              "id": "MD"
-            },
-            "region": {
-              "id": "MD-AN"
-            },
-            "locality": {
-              "scheme": "UN/LOCODE",
-              "id": "MD AIN",
-              "description": "gfg5555"
-            }
+          "europeanUnionFunding": {
+            "projectIdentifier": "PJINDET",
+            "projectName": "PJNAME",
+            "uri": "uri4"
           }
         },
-        "description": "2"
-      }
-    }
-  ],
-  "awardPeriod": null,
-  "awards": [
-    {
-      "token": "3e8c408b-0fd5-44b0-888c-fa4495f5654b",
-      "id": "cbe96100-94d3-11e8-b75f-ed4b5a7e7b97",
-      "date": "2018-07-31T15:10:01Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "consideration",
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ],
-      "relatedBid": "a12c5e90-94d3-11e8-8af3-c93687c12749",
-      "suppliers": [
         {
-          "id": "MD-IDNO-3010000fhfgf5555hggg5505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf5555hggg5505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
+          "id": "ocds-t1s2t3-MD-1533733635083-FS-1533733752757",
+          "description": "Hello world!",
+          "amount": {
+            "amount": 800.00,
+            "currency": "MDL"
           },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
+          "period": {
+            "startDate": "2018-05-25T21:00:00Z",
+            "endDate": "2018-12-26T21:00:00Z"
           },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
+          "sourceParty": {
+            "id": "MD-IDNO-Enotis",
+            "name": "Edward-Company2"
           },
-          "details": {
-            "scale": "sme"
+          "europeanUnionFunding": {
+            "projectIdentifier": "PJINDET",
+            "projectName": "PJNAME",
+            "uri": "uri4"
           }
         }
-      ]
-    },
-    {
-      "token": "c2e9122f-ea81-4349-89d2-90ba43d7b3ca",
-      "id": "cbe96101-94d3-11e8-b75f-ed4b5a7e7b97",
-      "date": "2018-07-31T15:10:01Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ],
-      "relatedBid": "a6ff9c60-94d3-11e8-8af3-c93687c12749",
-      "suppliers": [
-        {
-          "id": "MD-IDNO-3010000fhfgf5555hggg555505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf5555hggg555505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
-          },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ]
-    },
-    {
-      "token": "df2f1fdd-e479-4d6c-bd56-a73d7d2222bb",
-      "id": "cbe96102-94d3-11e8-b75f-ed4b5a7e7b97",
-      "date": "2018-07-31T15:10:01Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 500.00,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ],
-      "relatedBid": "aae56210-94d3-11e8-8af3-c93687c12749",
-      "suppliers": [
-        {
-          "id": "MD-IDNO-3010000fhfgf555505-0",
-          "name": "Googlehfhhfghg12",
-          "identifier": {
-            "id": "3010000fhfgf555505-0",
-            "scheme": "MD-IDNO",
-            "legalName": "Google Big Brother",
-            "uri": "hhtps://google.com"
-          },
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "8700000",
-                "description": "Taraclia",
-                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "111",
-            "email": "222",
-            "telephone": "333",
-            "url": "444"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ]
-    },
-    {
-      "id": "cbe9af20-94d3-11e8-b75f-ed4b5a7e7b97",
-      "date": "2018-07-31T15:10:01Z",
-      "description": "",
-      "status": "unsuccessful",
-      "statusDetails": "empty",
-      "relatedLots": [
-        "789b63e2-94d3-11e8-9422-df4968e00e7b"
       ]
     }
-  ],
-  "unsuccessfulLots": [],
-  "tenderPeriod": {
-    "startDate": "2018-07-31T15:07:41Z",
-    "endDate": "2018-07-31T15:10:00Z"
   },
-  "documents": [
-    {
-      "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "documentType": "submissionDocuments",
-      "title": "doc1",
-      "description": null,
-      "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "datePublished": "2018-07-31T15:10:00Z",
-      "dateModified": null,
-      "format": null,
-      "language": null,
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1533744064233",
+    "title": "gav",
+    "description": "gav gav",
+    "status": "active",
+    "statusDetails": "empty",
+    "classification": {
+      "scheme": "CPV",
+      "id": "30199200-2",
+      "description": "Plicuri, cărţi poştale şi cărţi poştale neilustrate"
     },
-    {
-      "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "documentType": "submissionDocuments",
-      "title": "doc1",
-      "description": null,
-      "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "datePublished": "2018-07-31T15:10:00Z",
-      "dateModified": null,
-      "format": null,
-      "language": null,
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
+    "mainProcurementCategory": "goods",
+    "procurementMethod": "open",
+    "procurementMethodDetails": "test",
+    "procurementMethodAdditionalInfo": "fsdfsdf",
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionMethodDetails": "submissionMethodDetails",
+    "submissionMethodRationale": [
+      "submissionMethodRationale"
+    ],
+    "eligibilityCriteria": "eligibilityCriteria",
+    "acceleratedProcedure": {
+      "isAcceleratedProcedure": false
     },
-    {
-      "id": "0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "documentType": "submissionDocuments",
-      "title": "doc1",
-      "description": null,
-      "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/0e3ba160-949f-11e8-9318-61ca1098e80e",
-      "datePublished": "2018-07-31T15:10:00Z",
-      "dateModified": null,
-      "format": null,
-      "language": null,
-      "relatedLots": [
-        "789b63e3-94d3-11e8-9422-df4968e00e7b"
-      ]
-    }
-  ]
+    "designContest": {
+      "serviceContractAward": false
+    },
+    "electronicWorkflows": {
+      "useOrdering": false,
+      "usePayment": false,
+      "acceptInvoicing": false
+    },
+    "jointProcurement": {
+      "isJointProcurement": false
+    },
+    "procedureOutsourcing": {
+      "procedureOutsourced": false
+    },
+    "framework": {
+      "isAFramework": false
+    },
+    "dynamicPurchasingSystem": {
+      "hasDynamicPurchasingSystem": false
+    },
+    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+    "procuringEntity": {
+      "id": "MD-IDNO-gggg",
+      "name": "Edward-Compan",
+      "identifier": {
+        "id": "gggg",
+        "scheme": "MD-IDNO",
+        "legalName": "fff",
+        "uri": "hhh"
+      },
+      "address": {
+        "streetAddress": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "CUAM",
+            "id": "1001001",
+            "description": "dgfdfg"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "hgfh",
+        "email": "hfgh",
+        "telephone": "hgfhfh",
+        "faxNumber": "hgfh",
+        "url": "hgfhgf"
+      }
+    },
+    "awardCriteria": "priceOnly",
+    "requiresElectronicCatalogue": false,
+    "contractPeriod": {
+      "startDate": "2018-11-19T14:45:00Z",
+      "endDate": "2018-12-25T14:45:00Z"
+    },
+    "tenderPeriod": {
+      "startDate": "2018-08-08T16:01:03Z",
+      "endDate": "2018-08-08T16:15:00Z"
+    },
+    "value": {
+      "amount": 900.00,
+      "currency": "MDL"
+    },
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "lots": [
+      {
+        "id": "40c12d93-9b24-11e8-b024-e3205dc72880",
+        "title": "lot1",
+        "description": "looot",
+        "status": "cancelled",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 200.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-11-19T14:45:00Z",
+          "endDate": "2018-12-25T14:45:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "id": "Ml"
+              },
+              "region": {
+                "id": "MD-AN"
+              },
+              "locality": {
+                "scheme": "gfgf",
+                "id": "gfg",
+                "description": "gfg"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "40c12d94-9b24-11e8-b024-e3205dc72880",
+        "title": "lot2",
+        "description": "looot",
+        "status": "cancelled",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 500.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-11-21T14:45:00Z",
+          "endDate": "2018-12-22T14:45:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "id": "MD"
+              },
+              "region": {
+                "id": "MD-AN"
+              },
+              "locality": {
+                "scheme": "UN/LOCODE",
+                "id": "MD AIN",
+                "description": "gfg5555"
+              }
+            }
+          },
+          "description": "2"
+        }
+      },
+      {
+        "id": "40c12d95-9b24-11e8-b024-e3205dc72880",
+        "title": "lot3",
+        "description": "looot",
+        "status": "cancelled",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 200.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-11-19T14:45:00Z",
+          "endDate": "2018-12-25T14:45:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "id": "MD"
+              },
+              "region": {
+                "id": "MD-AN"
+              },
+              "locality": {
+                "scheme": "gfgf",
+                "id": "gfg",
+                "description": "gfg"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "5b627ff0-9b24-11e8-b024-e3205dc72880",
+        "description": "",
+        "classification": {
+          "scheme": "CPV",
+          "id": "30199230-1",
+          "description": "Plicuri"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "86",
+          "name": " Milion metri patrati spatiu locativ "
+        },
+        "relatedLot": "5b627ff4-9b24-11e8-b024-e3205dc72880"
+      },
+      {
+        "id": "5b627ff1-9b24-11e8-b024-e3205dc72880",
+        "description": "",
+        "classification": {
+          "scheme": "CPV",
+          "id": "30199230-1",
+          "description": "Plicuri"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "86",
+          "name": " Milion metri patrati spatiu locativ "
+        },
+        "relatedLot": "5b627ff5-9b24-11e8-b024-e3205dc72880"
+      },
+      {
+        "id": "5b627ff2-9b24-11e8-b024-e3205dc72880",
+        "description": "",
+        "classification": {
+          "scheme": "CPV",
+          "id": "30199220-8",
+          "description": "Cărţi poştale neilustrate"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "86",
+          "name": " Milion metri patrati spatiu locativ "
+        },
+        "relatedLot": "5b627ff3-9b24-11e8-b024-e3205dc72880"
+      }
+    ],
+    "documents": [
+      {
+        "id": "70ce9a70-970c-11e8-9318-61ca1098e80e",
+        "documentType": "tenderNotice",
+        "title": "doc1",
+        "description": null,
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/70ce9a70-970c-11e8-9318-61ca1098e80e",
+        "datePublished": "2018-08-03T11:02:31Z",
+        "dateModified": null,
+        "format": null,
+        "language": null,
+        "relatedLots": null
+      }
+    ]
+  },
+  "bids": []
 }

@@ -53,7 +53,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
 
     override fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val msReq = toObject(Ms::class.java, data.toString())
-        val recordReq = toObject(Record::class.java, data.toString())
+        val recordTender = toObject(RecordTender::class.java, toJson(data.get(ReleaseServiceImpl.TENDER_JSON)))
         /*ms*/
         val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
         val ms = toObject(Ms::class.java, msEntity.jsonData)
@@ -75,7 +75,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = toObject(Record::class.java, recordEntity.jsonData)
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        recordReq.tender.apply {
+        recordTender.apply {
             title = record.tender.title
             description = record.tender.description
         }
@@ -84,7 +84,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         val amendments = record.tender.amendments?.toMutableList()
         var relatedLots: Set<String>? = null
         var rationale = "General change of Contract Notice"
-        val canceledLots = recordReq.tender.lots?.asSequence()
+        val canceledLots = recordTender.lots?.asSequence()
                 ?.filter { it.statusDetails == TenderStatusDetails.CANCELLED }
                 ?.map { it.id }
                 ?.toSet()
@@ -107,7 +107,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             id = getReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
-            tender = recordReq.tender
+            tender = recordTender
             tender.amendments = amendments
         }
         releaseDao.saveRelease(getMSEntity(cpid, ms))
