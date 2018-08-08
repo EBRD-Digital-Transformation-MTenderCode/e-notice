@@ -131,7 +131,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
                 releaseID = newReleaseID,
                 date = releaseDate,
                 relatedLots = null,
-                rationale = null,
+                rationale = "Extension of tender period",
                 changes = null,
                 description = null
         ))
