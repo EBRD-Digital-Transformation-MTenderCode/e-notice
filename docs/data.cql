@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_offset (
     cp_id text,
     release_date timestamp,
     status text,
-    primary key(cp_id, status)
+    primary key(cp_id)
 );
 
 CREATE INDEX date_index ON ocds.notice_offset (release_date);
