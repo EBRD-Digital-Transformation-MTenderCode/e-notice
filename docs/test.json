@@ -1,73 +1,54 @@
 {
-  "ocid": "ocds-t1s2t3-MD-1533744064233",
   "planning": {
     "budget": {
+      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
       "amount": {
-        "amount": 2400.00,
+        "amount": 5.00,
         "currency": "MDL"
       },
       "isEuropeanUnionFunded": true,
       "budgetBreakdown": [
         {
-          "id": "ocds-t1s2t3-MD-1533733635083-FS-1533733752757",
-          "description": "Hello world!",
+          "id": "ocds-t1s2t3-MD-1533894794927-FS-1533895016719",
+          "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project",
           "amount": {
-            "amount": 900.00,
+            "amount": 5.00,
             "currency": "MDL"
           },
           "period": {
-            "startDate": "2018-05-25T21:00:00Z",
-            "endDate": "2018-12-26T21:00:00Z"
+            "startDate": "2018-08-08T10:30:27Z",
+            "endDate": "2018-10-16T17:48:10Z"
           },
           "sourceParty": {
-            "id": "MD-IDNO-Enotis",
-            "name": "Edward-Company2"
+            "id": "MD-IDNO-987654321",
+            "name": "FS Buyer Биківнянська міська лікарня"
           },
           "europeanUnionFunding": {
-            "projectIdentifier": "PJINDET",
-            "projectName": "PJNAME",
-            "uri": "uri4"
-          }
-        },
-        {
-          "id": "ocds-t1s2t3-MD-1533733635083-FS-1533733752757",
-          "description": "Hello world!",
-          "amount": {
-            "amount": 800.00,
-            "currency": "MDL"
-          },
-          "period": {
-            "startDate": "2018-05-25T21:00:00Z",
-            "endDate": "2018-12-26T21:00:00Z"
-          },
-          "sourceParty": {
-            "id": "MD-IDNO-Enotis",
-            "name": "Edward-Company2"
-          },
-          "europeanUnionFunding": {
-            "projectIdentifier": "PJINDET",
-            "projectName": "PJNAME",
-            "uri": "uri4"
+            "projectIdentifier": "PROJ-ID-1234-5678-0987",
+            "projectName": "Name or other national identification of the project providing full or partial funding",
+            "uri": "https://test.funding.org"
           }
         }
       ]
-    }
+    },
+    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
   },
   "tender": {
-    "id": "ocds-t1s2t3-MD-1533744064233",
-    "title": "gav",
-    "description": "gav gav",
+    "id": "ocds-t1s2t3-MD-1533895140103",
+    "title": "Tender title",
+    "description": "Tender description",
     "status": "active",
     "statusDetails": "empty",
     "classification": {
       "scheme": "CPV",
-      "id": "30199200-2",
-      "description": "Plicuri, cărţi poştale şi cărţi poştale neilustrate"
+      "id": "33611000-6",
+      "description": "Medicamente împotriva tulburărilor provocate de hiperaciditate"
     },
     "mainProcurementCategory": "goods",
     "procurementMethod": "open",
     "procurementMethodDetails": "test",
-    "procurementMethodAdditionalInfo": "fsdfsdf",
+    "procurementMethodRationale": "Rationale of procurement method, especially in the case of Limited tendering.",
+    "procurementMethodAdditionalInfo": "Additional information about the procurement method.",
     "submissionMethod": [
       "electronicSubmission"
     ],
@@ -99,18 +80,19 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+    "legalBasis": "DIRECTIVE_2014_24_EU",
     "procuringEntity": {
-      "id": "MD-IDNO-gggg",
-      "name": "Edward-Compan",
+      "id": "MD-IDNO-20764777",
+      "name": "Новороздільська міська лікарня",
       "identifier": {
-        "id": "gggg",
+        "id": "20764777",
         "scheme": "MD-IDNO",
-        "legalName": "fff",
-        "uri": "hhh"
+        "legalName": "Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
       },
       "address": {
         "streetAddress": "",
+        "postalCode": "",
         "addressDetails": {
           "country": {
             "scheme": "iso-alpha2",
@@ -120,37 +102,45 @@
           },
           "region": {
             "scheme": "CUATM",
-            "id": "1000000",
-            "description": "Anenii Noi",
+            "id": "3800000",
+            "description": "Dubăsari",
             "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
           },
           "locality": {
-            "scheme": "CUAM",
-            "id": "1001001",
-            "description": "dgfdfg"
+            "scheme": "other",
+            "id": "",
+            "description": ""
           }
         }
       },
+      "additionalIdentifiers": [
+        {
+          "id": "123123123",
+          "scheme": "MD-IDNO",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
       "contactPoint": {
-        "name": "hgfh",
-        "email": "hfgh",
-        "telephone": "hgfhfh",
-        "faxNumber": "hgfh",
-        "url": "hgfhgf"
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "http://test.ua"
       }
     },
     "awardCriteria": "priceOnly",
     "requiresElectronicCatalogue": false,
     "contractPeriod": {
-      "startDate": "2018-11-19T14:45:00Z",
-      "endDate": "2018-12-25T14:45:00Z"
+      "startDate": "2018-09-16T00:00:00Z",
+      "endDate": "2018-11-16T00:00:00Z"
     },
     "tenderPeriod": {
-      "startDate": "2018-08-08T16:01:03Z",
-      "endDate": "2018-08-08T16:15:00Z"
+      "startDate": "2018-08-10T09:58:59Z",
+      "endDate": "2018-08-10T11:30:00Z"
     },
     "value": {
-      "amount": 900.00,
+      "amount": 1.65,
       "currency": "MDL"
     },
     "lotGroups": [
@@ -160,13 +150,13 @@
     ],
     "lots": [
       {
-        "id": "40c12d93-9b24-11e8-b024-e3205dc72880",
-        "title": "lot1",
-        "description": "looot",
-        "status": "cancelled",
+        "id": "00fd8171-9c84-11e8-bb93-dd33f3fce7cb",
+        "title": "A title for this lot.",
+        "description": "A description of this lot.",
+        "status": "active",
         "statusDetails": "empty",
         "value": {
-          "amount": 200.00,
+          "amount": 1.65,
           "currency": "MDL"
         },
         "options": [
@@ -190,62 +180,8 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-19T14:45:00Z",
-          "endDate": "2018-12-25T14:45:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "id": "Ml"
-              },
-              "region": {
-                "id": "MD-AN"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          }
-        }
-      },
-      {
-        "id": "40c12d94-9b24-11e8-b024-e3205dc72880",
-        "title": "lot2",
-        "description": "looot",
-        "status": "cancelled",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 500.00,
-          "currency": "MDL"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-11-21T14:45:00Z",
-          "endDate": "2018-12-22T14:45:00Z"
+          "startDate": "2018-09-16T00:00:00Z",
+          "endDate": "2018-11-16T00:00:00Z"
         },
         "placeOfPerformance": {
           "address": {
@@ -256,155 +192,220 @@
                 "id": "MD"
               },
               "region": {
-                "id": "MD-AN"
+                "id": "3400000"
               },
               "locality": {
-                "scheme": "UN/LOCODE",
-                "id": "MD AIN",
-                "description": "gfg5555"
+                "scheme": "other",
+                "id": "",
+                "description": ""
               }
             }
           },
-          "description": "2"
-        }
-      },
-      {
-        "id": "40c12d95-9b24-11e8-b024-e3205dc72880",
-        "title": "lot3",
-        "description": "looot",
-        "status": "cancelled",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 200.00,
-          "currency": "MDL"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-11-19T14:45:00Z",
-          "endDate": "2018-12-25T14:45:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "",
-            "postalCode": "",
-            "addressDetails": {
-              "country": {
-                "id": "MD"
-              },
-              "region": {
-                "id": "MD-AN"
-              },
-              "locality": {
-                "scheme": "gfgf",
-                "id": "gfg",
-                "description": "gfg"
-              }
-            }
-          }
+          "description": "Further description of the place of performance of the contract. Required by EU."
         }
       }
     ],
     "items": [
       {
-        "id": "5b627ff0-9b24-11e8-b024-e3205dc72880",
-        "description": "",
+        "id": "00fd8170-9c84-11e8-bb93-dd33f3fce7cb",
+        "description": "A description of the goods, services to be provided.",
         "classification": {
           "scheme": "CPV",
-          "id": "30199230-1",
-          "description": "Plicuri"
+          "id": "33611000-6",
+          "description": "Medicamente împotriva tulburărilor provocate de hiperaciditate"
         },
         "additionalClassifications": [
           {
             "scheme": "CPVS",
-            "id": "AB06-7",
-            "description": "Plastic"
+            "id": "AA01-1",
+            "description": "Metal"
           }
         ],
-        "quantity": 1.00,
+        "quantity": 10.00,
         "unit": {
-          "id": "86",
-          "name": " Milion metri patrati spatiu locativ "
+          "id": "118",
+          "name": " Decilitru "
         },
-        "relatedLot": "5b627ff4-9b24-11e8-b024-e3205dc72880"
-      },
-      {
-        "id": "5b627ff1-9b24-11e8-b024-e3205dc72880",
-        "description": "",
-        "classification": {
-          "scheme": "CPV",
-          "id": "30199230-1",
-          "description": "Plicuri"
-        },
-        "additionalClassifications": [
-          {
-            "scheme": "CPVS",
-            "id": "AB06-7",
-            "description": "Plastic"
-          }
-        ],
-        "quantity": 1.00,
-        "unit": {
-          "id": "86",
-          "name": " Milion metri patrati spatiu locativ "
-        },
-        "relatedLot": "5b627ff5-9b24-11e8-b024-e3205dc72880"
-      },
-      {
-        "id": "5b627ff2-9b24-11e8-b024-e3205dc72880",
-        "description": "",
-        "classification": {
-          "scheme": "CPV",
-          "id": "30199220-8",
-          "description": "Cărţi poştale neilustrate"
-        },
-        "additionalClassifications": [
-          {
-            "scheme": "CPVS",
-            "id": "AB06-7",
-            "description": "Plastic"
-          }
-        ],
-        "quantity": 1.00,
-        "unit": {
-          "id": "86",
-          "name": " Milion metri patrati spatiu locativ "
-        },
-        "relatedLot": "5b627ff3-9b24-11e8-b024-e3205dc72880"
+        "relatedLot": "00fd8171-9c84-11e8-bb93-dd33f3fce7cb"
       }
     ],
     "documents": [
       {
-        "id": "70ce9a70-970c-11e8-9318-61ca1098e80e",
+        "id": "aaf7c220-9974-11e8-9318-61ca1098e80e",
         "documentType": "tenderNotice",
-        "title": "doc1",
-        "description": null,
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/70ce9a70-970c-11e8-9318-61ca1098e80e",
-        "datePublished": "2018-08-03T11:02:31Z",
+        "title": "File for test",
+        "description": "test file ",
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/aaf7c220-9974-11e8-9318-61ca1098e80e",
+        "datePublished": "2018-08-06T12:35:51Z",
         "dateModified": null,
         "format": null,
-        "language": null,
-        "relatedLots": null
+        "language": "en",
+        "relatedLots": [
+          "00fd8171-9c84-11e8-bb93-dd33f3fce7cb"
+        ]
       }
-    ]
+    ],
+    "enquiryPeriod": {
+      "startDate": "2018-08-10T09:58:59Z",
+      "endDate": "2018-08-10T11:29:00Z"
+    }
   },
-  "bids": []
+  "ei": [
+    "ocds-t1s2t3-MD-1533894794927"
+  ],
+  "buyer": [
+    {
+      "id": "MD-IDNO-20764314",
+      "name": "EI Byuer Новороздільська міська лікарня",
+      "identifier": {
+        "id": "20764314",
+        "scheme": "MD-IDNO",
+        "legalName": "EI Byuer Новороздільська міська лікарня",
+        "uri": "http://buyerTestLink.ua"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "0101000",
+            "description": "mun.Chişinău",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "0112000",
+            "description": "TEST"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "77764777",
+          "scheme": "UA-EDR",
+          "legalName": "Додатково Новороздільська міська лікарня",
+          "uri": "http://additionalBuyerTestLink.ua"
+        }
+      ],
+      "contactPoint": {
+        "name": "Осипових Сергій Олександрович",
+        "email": "test2@test.test",
+        "telephone": "+380222222222",
+        "faxNumber": "+380222222222",
+        "url": "test3@test.test"
+      },
+      "details": {
+        "typeOfBuyer": "BODY_PUBLIC",
+        "mainGeneralActivity": "DEFENCE",
+        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES"
+      }
+    }
+  ],
+  "funder": [
+    {
+      "id": "MD-IDNO-987654321",
+      "name": "FS Buyer Биківнянська міська лікарня",
+      "identifier": {
+        "id": "987654321",
+        "scheme": "MD-IDNO",
+        "legalName": "FS Buyer Биківнянська міська лікарня",
+        "uri": "http://FSbuyerTestLink.ua"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "0101000",
+            "description": "mun.Chişinău",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "",
+            "description": ""
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "99999999",
+          "scheme": "MD-IDNO",
+          "legalName": "Додатково Биківнянська міська лікарня",
+          "uri": "http://FSadditionalBuyerTestLink.ua"
+        }
+      ],
+      "contactPoint": {
+        "name": "Ефесенко Ефес Ефесович",
+        "email": "test3@test.test",
+        "telephone": "+380333333333",
+        "faxNumber": "+38033333333",
+        "url": "test3@test.test"
+      }
+    }
+  ],
+  "payer": [
+    {
+      "id": "MD-IDNO-987654321",
+      "name": "FS Procuring Entity Name",
+      "identifier": {
+        "id": "987654321",
+        "scheme": "MD-IDNO",
+        "legalName": "Legal FS Procuring Entity Name",
+        "uri": "http://FS.PE.com"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "2700000",
+            "description": "Căuşeni",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "",
+            "description": ""
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "987123654",
+          "scheme": "MD-IDNO",
+          "legalName": "Additional Legal FS Procuring Entity Name",
+          "uri": "http://additional.FS.PE.com"
+        }
+      ],
+      "contactPoint": {
+        "name": "FS PE name",
+        "email": "fs.pe@test.test",
+        "telephone": "+38022000000",
+        "faxNumber": "+38022000000",
+        "url": "http://contactFS.PE.com"
+      }
+    }
+  ]
 }
