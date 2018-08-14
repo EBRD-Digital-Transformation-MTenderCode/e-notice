@@ -79,6 +79,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
             title = record.tender.title
             description = record.tender.description
             enquiries = record.tender.enquiries
+            hasEnquiries = record.tender.hasEnquiries
         }
         val actualReleaseID = record.id
         val newReleaseID = getReleaseId(ocId)
