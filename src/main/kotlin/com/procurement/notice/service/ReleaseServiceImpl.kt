@@ -22,6 +22,8 @@ interface ReleaseService {
 
     fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
+    fun updatePn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
+
     fun updateTenderPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
     fun createCnPnPin(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode, operation: Operation): ResponseDto
@@ -93,6 +95,69 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao,
         if (canceledLots != null && canceledLots.isNotEmpty()) {
             relatedLots = canceledLots
             rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
+        }
+        amendments?.add(Amendment(
+                id = UUID.randomUUID().toString(),
+                amendsReleaseID = actualReleaseID,
+                releaseID = newReleaseID,
+                date = releaseDate,
+                relatedLots = relatedLots,
+                rationale = rationale,
+                changes = null,
+                description = null
+        ))
+        record.apply {
+            /* previous record*/
+            id = getReleaseId(ocId)
+            date = releaseDate
+            tag = listOf(Tag.TENDER_AMENDMENT)
+            tender = recordTender
+            tender.amendments = amendments
+        }
+        releaseDao.saveRelease(getMSEntity(cpid, ms))
+        releaseDao.saveRelease(getRecordEntity(cpid, stage, record))
+        return getResponseDto(cpid, ocId)
+    }
+
+    override fun updatePn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val msReq = toObject(Ms::class.java, data.toString())
+        val recordTender = toObject(RecordTender::class.java, toJson(data.get(ReleaseServiceImpl.TENDER_JSON)))
+        /*ms*/
+        val msEntity = releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        val ms = toObject(Ms::class.java, msEntity.jsonData)
+        msReq.tender.apply {
+            id = ms.tender.id
+            status = ms.tender.status
+            statusDetails = ms.tender.statusDetails
+            procuringEntity = ms.tender.procuringEntity
+        }
+        ms.apply {
+            id = getReleaseId(cpid)
+            date = releaseDate
+            planning = msReq.planning
+            tender = msReq.tender
+        }
+        /*record*/
+        val recordEntity = releaseDao.getByCpIdAndStage(cpid, stage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = toObject(Record::class.java, recordEntity.jsonData)
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        recordTender.apply {
+            title = record.tender.title
+            description = record.tender.description
+        }
+        val actualReleaseID = record.id
+        val newReleaseID = getReleaseId(ocId)
+        val amendments = record.tender.amendments?.toMutableList()
+        var relatedLots: Set<String>? = null
+        var rationale = "General change of Planning Notice"
+        val canceledLots = recordTender.lots?.asSequence()
+                ?.filter { it.statusDetails == TenderStatusDetails.CANCELLED }
+                ?.map { it.id }
+                ?.toSet()
+        if (canceledLots != null && canceledLots.isNotEmpty()) {
+            relatedLots = canceledLots
+            rationale = "Changing of Planning Notice due to the need of cancelling lot / lots"
         }
         amendments?.add(Amendment(
                 id = UUID.randomUUID().toString(),

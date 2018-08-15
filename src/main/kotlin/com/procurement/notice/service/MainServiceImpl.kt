@@ -59,6 +59,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                 return releaseService.createCnOnPin(cpId, newStage, previousStage, releaseDate, data)
             }
             Operation.UPDATE_CN -> return releaseService.updateCn(cpId, newStage, releaseDate, data)
+            Operation.UPDATE_PN -> return releaseService.updatePn(cpId, newStage, releaseDate, data)
             Operation.UPDATE_TENDER_PERIOD -> return releaseService.updateTenderPeriod(cpId, newStage, releaseDate, data)
             Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(cpId, newStage, releaseDate, data)
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
