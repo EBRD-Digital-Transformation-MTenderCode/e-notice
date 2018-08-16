@@ -98,6 +98,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             status = ms.tender.status
             statusDetails = ms.tender.statusDetails
             procuringEntity = ms.tender.procuringEntity
+            hasEnquiries = ms.tender.hasEnquiries
         }
         ms.apply {
             id = releaseService.getNewReleaseId(cpid)
@@ -117,7 +118,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             /* previous record*/
             id = releaseService.getNewReleaseId(ocId)
             date = releaseDate
-            tag = listOf(Tag.TENDER_AMENDMENT)
+            tag = listOf(Tag.PLANNING_UPDATE)
             tender = recordTender
         }
         releaseService.saveMs(cpid, ms)
