@@ -22,7 +22,8 @@ interface MainService {
 
 @Service
 class MainServiceImpl(private val budgetService: BudgetService,
-                      private val releaseService: ReleaseService,
+                      private val createReleaseService: CreateReleaseService,
+                      private val updateReleaseService: UpdateReleaseService,
                       private val tenderService: TenderService,
                       private val tenderServiceEv: TenderServiceEv,
                       private val enquiryService: EnquiryService) : MainService {
@@ -43,24 +44,24 @@ class MainServiceImpl(private val budgetService: BudgetService,
                 if (ocId == null) throw ErrorException(ErrorType.OCID_ERROR)
                 return budgetService.updateFs(cpId, ocId, newStage, releaseDate, data)
             }
-            Operation.CREATE_CN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_CN)
-            Operation.CREATE_PN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PN)
-            Operation.CREATE_PIN -> return releaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PIN)
+            Operation.CREATE_CN -> return createReleaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_CN)
+            Operation.CREATE_PN -> return createReleaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PN)
+            Operation.CREATE_PIN -> return createReleaseService.createCnPnPin(cpId, newStage, releaseDate, data, Operation.CREATE_PIN)
             Operation.CREATE_PIN_ON_PN -> {
                 if (previousStage == null) throw ErrorException(ErrorType.STAGE_ERROR)
-                return releaseService.createPinOnPn(cpId, newStage, previousStage, releaseDate, data)
+                return createReleaseService.createPinOnPn(cpId, newStage, previousStage, releaseDate, data)
             }
             Operation.CREATE_CN_ON_PN -> {
                 if (previousStage == null) throw ErrorException(ErrorType.STAGE_ERROR)
-                return releaseService.createCnOnPn(cpId, newStage, previousStage, releaseDate, data)
+                return createReleaseService.createCnOnPn(cpId, newStage, previousStage, releaseDate, data)
             }
             Operation.CREATE_CN_ON_PIN -> {
                 if (previousStage == null) throw ErrorException(ErrorType.STAGE_ERROR)
-                return releaseService.createCnOnPin(cpId, newStage, previousStage, releaseDate, data)
+                return createReleaseService.createCnOnPin(cpId, newStage, previousStage, releaseDate, data)
             }
-            Operation.UPDATE_CN -> return releaseService.updateCn(cpId, newStage, releaseDate, data)
-            Operation.UPDATE_PN -> return releaseService.updatePn(cpId, newStage, releaseDate, data)
-            Operation.UPDATE_TENDER_PERIOD -> return releaseService.updateTenderPeriod(cpId, newStage, releaseDate, data)
+            Operation.UPDATE_CN -> return updateReleaseService.updateCn(cpId, newStage, releaseDate, data)
+            Operation.UPDATE_PN -> return updateReleaseService.updatePn(cpId, newStage, releaseDate, data)
+            Operation.UPDATE_TENDER_PERIOD -> return updateReleaseService.updateTenderPeriod(cpId, newStage, releaseDate, data)
             Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(cpId, newStage, releaseDate, data)
             Operation.ADD_ANSWER -> return enquiryService.addAnswer(cpId, newStage, releaseDate, data)
             Operation.SUSPEND_TENDER -> return tenderService.suspendTender(cpId, newStage, releaseDate, data)

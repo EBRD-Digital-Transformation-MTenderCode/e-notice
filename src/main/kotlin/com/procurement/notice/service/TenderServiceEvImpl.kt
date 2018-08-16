@@ -14,7 +14,6 @@ import com.procurement.notice.model.tender.dto.TenderPeriodEndDto
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -62,7 +61,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
         }
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
+        releaseDao.saveRelease(releaseService.getNewRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -80,7 +79,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAward?.let { award -> updateAward(this, award) }
         }
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
+        releaseDao.saveRelease(releaseService.getNewRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -95,7 +94,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = TenderStatusDetails.EVALUATED
         }
-        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
+        releaseDao.saveRelease(releaseService.getNewMSEntity(cpid, ms))
         /*record*/
         val releaseEntity = releaseDao.getByCpIdAndStage(cpid, stage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
@@ -108,7 +107,7 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
         }
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, record))
+        releaseDao.saveRelease(releaseService.getNewRecordEntity(cpid, stage, record))
         return getResponseDto(cpid, ocId)
     }
 
@@ -163,8 +162,8 @@ class TenderServiceEvImpl(private val releaseDao: ReleaseDao,
                 releaseDao.saveRelease(getContractRecordEntity(cpid, AC, recordContract))
             }
         }
-        releaseDao.saveRelease(releaseService.getMSEntity(cpid, ms))
-        releaseDao.saveRelease(releaseService.getRecordEntity(cpid, stage, recordEv))
+        releaseDao.saveRelease(releaseService.getNewMSEntity(cpid, ms))
+        releaseDao.saveRelease(releaseService.getNewRecordEntity(cpid, stage, recordEv))
         return getResponseDto(cpid, recordEvOcId)
     }
 
