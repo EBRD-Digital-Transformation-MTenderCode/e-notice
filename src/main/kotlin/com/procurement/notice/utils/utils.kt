@@ -10,6 +10,12 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
+
+fun String.toLocalDateTime(): LocalDateTime {
+    return LocalDateTime.parse(this, JsonConfig.DateFormatter.formatter)
+}
+
+
 /*Date utils*/
 fun LocalDateTime.toDate(): Date {
     return Date.from(this.toInstant(ZoneOffset.UTC))

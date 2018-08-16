@@ -4,25 +4,41 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
+import com.procurement.notice.model.ocds.TenderStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
 interface UpdateReleaseService {
 
-    fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
+    fun updateCn(cpid: String,
+                 ocid: String,
+                 stage: String,
+                 releaseDate: LocalDateTime,
+                 data: JsonNode): ResponseDto
 
-    fun updatePn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
+    fun updatePn(cpid: String,
+                 ocid: String,
+                 stage: String,
+                 releaseDate: LocalDateTime,
+                 data: JsonNode): ResponseDto
 
-    fun updateTenderPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
+    fun updateTenderPeriod(cpid: String,
+                           ocid: String,
+                           stage: String,
+                           releaseDate: LocalDateTime,
+                           data: JsonNode): ResponseDto
 }
 
 
 @Service
 class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : UpdateReleaseService {
 
-    override fun updateCn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    override fun updateCn(cpid: String,
+                          ocid: String,
+                          stage: String,
+                          releaseDate: LocalDateTime,
+                          data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
         /*ms*/
@@ -36,15 +52,14 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             procuringEntity = ms.tender.procuringEntity
         }
         ms.apply {
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             date = releaseDate
             planning = msReq.planning
             tender = msReq.tender
         }
         /*record*/
-        val recordEntity = releaseService.getRecordEntity(cpid, stage)
+        val recordEntity = releaseService.getRecordEntity(cpid, cpid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        val ocId = record.ocid!!
         recordTender.apply {
             title = record.tender.title
             description = record.tender.description
@@ -52,12 +67,12 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             hasEnquiries = record.tender.hasEnquiries
         }
         val actualReleaseID = record.id
-        val newReleaseID = releaseService.getNewReleaseId(ocId)
+        val newReleaseID = releaseService.newReleaseId(ocid)
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         var relatedLots: Set<String>? = null
         var rationale = "General change of Contract Notice"
         val canceledLots = recordTender.lots?.asSequence()
-                ?.filter { it.statusDetails == TenderStatusDetails.CANCELLED }
+                ?.filter { it.status == TenderStatus.CANCELLED }
                 ?.map { it.id }
                 ?.toSet()
         if (canceledLots != null && canceledLots.isNotEmpty()) {
@@ -76,7 +91,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         ))
         record.apply {
             /* previous record*/
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender = recordTender
@@ -84,10 +99,14 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocid)
     }
 
-    override fun updatePn(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    override fun updatePn(cpid: String,
+                          ocid: String,
+                          stage: String,
+                          releaseDate: LocalDateTime,
+                          data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
         /*ms*/
@@ -101,39 +120,41 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             hasEnquiries = ms.tender.hasEnquiries
         }
         ms.apply {
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             date = releaseDate
             planning = msReq.planning
             tender = msReq.tender
         }
         /*record*/
-        val recordEntity = releaseService.getRecordEntity(cpid, stage)
+        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        val ocId = record.ocid!!
-        recordTender.apply {
+         recordTender.apply {
             title = record.tender.title
             description = record.tender.description
         }
         record.apply {
             /* previous record*/
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender = recordTender
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocid)
     }
 
-    override fun updateTenderPeriod(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    override fun updateTenderPeriod(cpid: String,
+                                    ocid: String,
+                                    stage: String,
+                                    releaseDate: LocalDateTime,
+                                    data: JsonNode): ResponseDto {
         val recordTender = releaseService.getRecordTender(data)
         /*record*/
-        val recordEntity = releaseService.getRecordEntity(cpid, stage)
+        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        val ocId = record.ocid!!
         val actualReleaseID = record.id
-        val newReleaseID = releaseService.getNewReleaseId(ocId)
+        val newReleaseID = releaseService.newReleaseId(ocid)
         val amendments = record.tender.amendments?.toMutableList()
         amendments?.add(Amendment(
                 id = UUID.randomUUID().toString(),
@@ -146,7 +167,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
                 description = null
         ))
         record.apply {
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender.tenderPeriod = recordTender.tenderPeriod
@@ -154,7 +175,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             tender.amendments = amendments
         }
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocid)
     }
 
 }

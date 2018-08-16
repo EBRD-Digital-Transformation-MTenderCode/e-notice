@@ -35,18 +35,18 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         ms.apply {
             ocid = cpid
             date = releaseDate
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
             tender.statusDetails = params.statusDetails
             organizationService.processMsParties(this, checkFs)
         }
         val record = releaseService.getRecord(data)
-        val ocId = releaseService.getNewOcId(cpid, stage)
+        val ocId = releaseService.newOcId(cpid, stage)
         record.apply {
             date = releaseDate
             ocid = ocId
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocId)
             tag = params.tag
             initiationType = InitiationType.TENDER
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
@@ -61,7 +61,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         budgetService.createEiByMs(checkFs.ei, cpid, releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns, cpid, releaseDate)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocId)
     }
 
     override fun createPinOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -72,7 +72,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val ms = releaseService.getMs(msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
         ms.apply {
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -83,10 +83,10 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        val ocId = releaseService.getNewOcId(cpid, stage)
+        val ocId = releaseService.newOcId(cpid, stage)
         record.apply {
             /* previous record*/
-            id = releaseService.getNewReleaseId(prOcId)
+            id = releaseService.newReleaseId(prOcId)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
@@ -94,7 +94,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             releaseService.saveRecord(cpid, prevStage, record)
             /*new record*/
             ocid = ocId
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.PLANNING)
             initiationType = InitiationType.TENDER
@@ -108,7 +108,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocId)
     }
 
     override fun createCnOnPn(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -120,7 +120,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val prevProcuringEntity = ms.tender.procuringEntity
         val params = releaseService.getParamsForUpdateCnOnPnPin(Stage.valueOf(stage.toUpperCase()))
         ms.apply {
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -131,10 +131,10 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        val ocId = releaseService.getNewOcId(cpid, stage)
+        val ocId = releaseService.newOcId(cpid, stage)
         record.apply {
             /* previous record*/
-            id = releaseService.getNewReleaseId(prOcId)
+            id = releaseService.newReleaseId(prOcId)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.status = TenderStatus.COMPLETE
@@ -142,7 +142,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             releaseService.saveRecord(cpid, prevStage, record)
             /*new record*/
             ocid = ocId
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER)
             initiationType = InitiationType.TENDER
@@ -157,7 +157,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PLANNING)
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocId)
     }
 
     override fun createCnOnPin(cpid: String, stage: String, prevStage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -170,7 +170,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val prevProcuringEntity = ms.tender.procuringEntity
         val params = releaseService.getParamsForUpdateCnOnPnPin(Stage.valueOf(stage.toUpperCase()))
         ms.apply {
-            id = releaseService.getNewReleaseId(cpid)
+            id = releaseService.newReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -181,10 +181,10 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val prOcId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        val ocId = releaseService.getNewOcId(cpid, stage)
+        val ocId = releaseService.newOcId(cpid, stage)
         record.apply {
             /* previous record*/
-            id = releaseService.getNewReleaseId(prOcId)
+            id = releaseService.newReleaseId(prOcId)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
@@ -192,7 +192,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             releaseService.saveRecord(cpid, prevStage, record)
             /*new record*/
             ocid = ocId
-            id = releaseService.getNewReleaseId(ocId)
+            id = releaseService.newReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER)
             initiationType = InitiationType.TENDER
@@ -207,7 +207,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         relatedProcessService.addRecordRelatedProcessToRecord(record, prOcId, cpid, RelatedProcessType.PRIOR)
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
-        return releaseService.getResponseDto(cpid, ocId)
+        return releaseService.responseDto(cpid, ocId)
     }
 
 }

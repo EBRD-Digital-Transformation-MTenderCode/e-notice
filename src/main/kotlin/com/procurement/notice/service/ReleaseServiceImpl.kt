@@ -9,6 +9,7 @@ import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
+import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Params
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
@@ -30,19 +31,22 @@ interface ReleaseService {
     fun getRecord(data: String): Record
 
 
-    fun getNewReleaseId(ocId: String): String
-
-    fun getNewOcId(cpId: String, stage: String): String
-
-    fun getRecordEntity(cpId: String, stage: String): ReleaseEntity
-
-    fun getNewRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity
+    fun getRecordEntity(cpId: String, ocId: String): ReleaseEntity
 
     fun getMsEntity(cpid: String): ReleaseEntity
 
-    fun getNewMSEntity(cpId: String, ms: Ms): ReleaseEntity
 
-    fun getEntity(cpId: String,
+    fun newReleaseId(ocId: String): String
+
+    fun newOcId(cpId: String, stage: String): String
+
+    fun newRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity
+
+    fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity
+
+    fun newMSEntity(cpId: String, ms: Ms): ReleaseEntity
+
+    fun newEntity(cpId: String,
                   ocId: String,
                   releaseId: String,
                   stage: String,
@@ -53,7 +57,9 @@ interface ReleaseService {
 
     fun saveRecord(cpId: String, stage: String, record: Record)
 
-    fun getResponseDto(cpid: String, ocid: String): ResponseDto
+    fun saveContractRecord(cpId: String, stage: String, record: ContractRecord)
+
+    fun responseDto(cpid: String, ocid: String): ResponseDto
 
     fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params
 
@@ -85,13 +91,17 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
 
 
     override fun getMsEntity(cpid: String): ReleaseEntity {
-        return releaseDao.getByCpIdAndStage(cpid, MS) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
+        return releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
     }
 
-    override fun getNewRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
+    override fun getRecordEntity(cpId: String, ocId: String): ReleaseEntity {
+        return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+    }
+
+    override fun newRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        return getEntity(
+        return newEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseId = releaseId,
@@ -101,13 +111,9 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
         )
     }
 
-    override fun getRecordEntity(cpId: String, stage: String): ReleaseEntity {
-        return releaseDao.getByCpIdAndStage(cpId, stage) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-    }
-
-    override fun getNewMSEntity(cpId: String, ms: Ms): ReleaseEntity {
+    override fun newMSEntity(cpId: String, ms: Ms): ReleaseEntity {
         val releaseId = ms.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-        return getEntity(
+        return newEntity(
                 cpId = cpId,
                 ocId = cpId,
                 releaseId = releaseId,
@@ -117,7 +123,20 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
         )
     }
 
-    override fun getEntity(cpId: String,
+    override fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+        val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        return newEntity(
+                cpId = cpId,
+                ocId = ocId,
+                releaseId = releaseId,
+                stage = stage,
+                json = toJson(record),
+                status = ""
+        )
+    }
+
+    override fun newEntity(cpId: String,
                            ocId: String,
                            releaseId: String,
                            stage: String,
@@ -134,29 +153,26 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
         )
     }
 
-    override fun getNewOcId(cpId: String, stage: String): String {
+    override fun newOcId(cpId: String, stage: String): String {
         return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
     }
 
-    override fun getNewReleaseId(ocId: String): String {
+    override fun newReleaseId(ocId: String): String {
         return ocId + SEPARATOR + milliNowUTC()
     }
 
 
     override fun saveMs(cpId: String, ms: Ms) {
-        releaseDao.saveRelease(getNewMSEntity(cpId, ms))
+        releaseDao.saveRelease(newMSEntity(cpId, ms))
 
     }
 
     override fun saveRecord(cpId: String, stage: String, record: Record) {
-        releaseDao.saveRelease(getNewRecordEntity(cpId, stage, record))
+        releaseDao.saveRelease(newRecordEntity(cpId, stage, record))
     }
 
-    override fun getResponseDto(cpid: String, ocid: String): ResponseDto {
-        val jsonForResponse = createObjectNode()
-        jsonForResponse.put("cpid", cpid)
-        jsonForResponse.put("ocid", ocid)
-        return ResponseDto(true, null, jsonForResponse)
+    override fun saveContractRecord(cpId: String, stage: String, record: ContractRecord) {
+        releaseDao.saveRelease(newContractRecordEntity(cpId, stage, record))
     }
 
     override fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params {
@@ -216,6 +232,13 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
         return params
+    }
+
+    override fun responseDto(cpid: String, ocid: String): ResponseDto {
+        val jsonForResponse = createObjectNode()
+        jsonForResponse.put("cpid", cpid)
+        jsonForResponse.put("ocid", ocid)
+        return ResponseDto(data = jsonForResponse)
     }
 
 }

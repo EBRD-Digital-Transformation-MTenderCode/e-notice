@@ -15,7 +15,7 @@ interface ReleaseDao {
 
     fun getByCpIdAndOcId(cpId: String, ocId: String): ReleaseEntity?
 
-    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity?
+//    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity?
 }
 
 @Service
@@ -84,23 +84,23 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
-        val query = select()
-                .all()
-                .from(TENDER_COMPILED_TABLE)
-                .where(eq(CP_ID, cpId))
-                .and(eq(STAGE, stage))
-                .allowFiltering()
-                .limit(1)
-        val row = session.execute(query).one()
-        return if (row != null) ReleaseEntity(
-                row.getString(CP_ID),
-                row.getString(OC_ID),
-                row.getTimestamp(RELEASE_DATE),
-                row.getString(RELEASE_ID),
-                row.getString(STAGE),
-                row.getString(JSON_DATA)) else null
-    }
+//    override fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
+//        val query = select()
+//                .all()
+//                .from(TENDER_COMPILED_TABLE)
+//                .where(eq(CP_ID, cpId))
+//                .and(eq(STAGE, stage))
+//                .allowFiltering()
+//                .limit(1)
+//        val row = session.execute(query).one()
+//        return if (row != null) ReleaseEntity(
+//                row.getString(CP_ID),
+//                row.getString(OC_ID),
+//                row.getTimestamp(RELEASE_DATE),
+//                row.getString(RELEASE_ID),
+//                row.getString(STAGE),
+//                row.getString(JSON_DATA)) else null
+//    }
 
     companion object {
         private val TENDER_TABLE = "notice_release"
