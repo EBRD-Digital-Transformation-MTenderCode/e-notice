@@ -53,7 +53,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         val actualReleaseID = record.id
         val newReleaseID = releaseService.getNewReleaseId(ocId)
-        val amendments = record.tender.amendments?.toMutableList()
+        val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         var relatedLots: Set<String>? = null
         var rationale = "General change of Contract Notice"
         val canceledLots = recordTender.lots?.asSequence()
@@ -64,7 +64,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             relatedLots = canceledLots
             rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
         }
-        amendments?.add(Amendment(
+        amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
@@ -113,36 +113,12 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             title = record.tender.title
             description = record.tender.description
         }
-        val actualReleaseID = record.id
-        val newReleaseID = releaseService.getNewReleaseId(ocId)
-        val amendments = record.tender.amendments?.toMutableList()
-        var relatedLots: Set<String>? = null
-        var rationale = "General change of Planning Notice"
-        val canceledLots = recordTender.lots?.asSequence()
-                ?.filter { it.statusDetails == TenderStatusDetails.CANCELLED }
-                ?.map { it.id }
-                ?.toSet()
-        if (canceledLots != null && canceledLots.isNotEmpty()) {
-            relatedLots = canceledLots
-            rationale = "Changing of Planning Notice due to the need of cancelling lot / lots"
-        }
-        amendments?.add(Amendment(
-                id = UUID.randomUUID().toString(),
-                amendsReleaseID = actualReleaseID,
-                releaseID = newReleaseID,
-                date = releaseDate,
-                relatedLots = relatedLots,
-                rationale = rationale,
-                changes = null,
-                description = null
-        ))
         record.apply {
             /* previous record*/
             id = releaseService.getNewReleaseId(ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender = recordTender
-            tender.amendments = amendments
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, stage, record)
