@@ -18,9 +18,8 @@ data class CommandMessage @JsonCreator constructor(
 
 data class Context @JsonCreator constructor(
         val operationId: String?,
-        val requestId: String?,
         val cpid: String,
-        val ocid: String,
+        val ocid: String?,
         val stage: String,
         val prevStage: String?,
         val processType: String?,
@@ -30,11 +29,8 @@ data class Context @JsonCreator constructor(
         val country: String?,
         val language: String?,
         val pmd: String?,
-        val token: String?,
-        val access: String?,
         val startDate: String,
-        val endDate: String?,
-        val bidId: String?
+        val endDate: String?
 )
 
 enum class CommandType(private val value: String) {

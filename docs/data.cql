@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_offset (
     primary key(cp_id)
 );
 
-CREATE INDEX date_index ON ocds.notice_offset (release_date);
-
 CREATE TABLE IF NOT EXISTS  ocds.notice_budget_release (
     cp_id text,
     oc_id text,
