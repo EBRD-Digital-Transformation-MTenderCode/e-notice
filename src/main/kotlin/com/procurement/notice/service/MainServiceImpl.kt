@@ -5,6 +5,7 @@ import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Operation
+import com.procurement.notice.model.ocds.Operation.*
 import com.procurement.notice.utils.toLocalDateTime
 import org.springframework.stereotype.Service
 
@@ -35,36 +36,53 @@ class MainServiceImpl(private val budgetService: BudgetService,
 
         when (Operation.fromValue(operationType)) {
 
-            Operation.CREATE_EI -> return budgetService.createEi(cpid = cpId, stage = stage, releaseDate = releaseDate, data = data)
+            CREATE_EI -> return budgetService.createEi(
+                    cpid = cpId,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
 
-            Operation.UPDATE_EI -> return budgetService.updateEi(cpid = cpId, stage = stage, releaseDate = releaseDate, data = data)
+            UPDATE_EI -> return budgetService.updateEi(
+                    cpid = cpId,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
 
-            Operation.CREATE_FS -> return budgetService.createFs(cpid = cpId, stage = stage, releaseDate = releaseDate, data = data)
+            CREATE_FS -> return budgetService.createFs(
+                    cpid = cpId,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
 
-            Operation.UPDATE_FS -> return budgetService.updateFs(cpid = cpId, ocid = ocId!!, stage = stage, releaseDate = releaseDate, data = data)
+            UPDATE_FS -> return budgetService.updateFs(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
 
-            Operation.CREATE_CN -> return createReleaseService.createCnPnPin(
+            CREATE_CN -> return createReleaseService.createCnPnPin(
                     cpid = cpId,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data,
-                    operation = Operation.CREATE_CN)
+                    operation = CREATE_CN)
 
-            Operation.CREATE_PN -> return createReleaseService.createCnPnPin(
+            CREATE_PN -> return createReleaseService.createCnPnPin(
                     cpid = cpId,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data,
-                    operation = Operation.CREATE_PN)
+                    operation = CREATE_PN)
 
-            Operation.CREATE_PIN -> return createReleaseService.createCnPnPin(
+            CREATE_PIN -> return createReleaseService.createCnPnPin(
                     cpid = cpId,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data,
-                    operation = Operation.CREATE_PIN)
+                    operation = CREATE_PIN)
 
-            Operation.CREATE_PIN_ON_PN -> return createReleaseService.createPinOnPn(
+            CREATE_PIN_ON_PN -> return createReleaseService.createPinOnPn(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
@@ -72,7 +90,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.CREATE_CN_ON_PN -> return createReleaseService.createCnOnPn(
+            CREATE_CN_ON_PN -> return createReleaseService.createCnOnPn(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
@@ -80,7 +98,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.CREATE_CN_ON_PIN -> return createReleaseService.createCnOnPin(
+            CREATE_CN_ON_PIN -> return createReleaseService.createCnOnPin(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
@@ -88,119 +106,119 @@ class MainServiceImpl(private val budgetService: BudgetService,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.UPDATE_CN -> return updateReleaseService.updateCn(
+            UPDATE_CN -> return updateReleaseService.updateCn(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.UPDATE_PN -> return updateReleaseService.updatePn(
+            UPDATE_PN -> return updateReleaseService.updatePn(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.UPDATE_TENDER_PERIOD -> return updateReleaseService.updateTenderPeriod(
+            UPDATE_TENDER_PERIOD -> return updateReleaseService.updateTenderPeriod(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.CREATE_ENQUIRY -> return enquiryService.createEnquiry(
+            CREATE_ENQUIRY -> return enquiryService.createEnquiry(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.ADD_ANSWER -> return enquiryService.addAnswer(
+            ADD_ANSWER -> return enquiryService.addAnswer(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.SUSPEND_TENDER -> return tenderService.suspendTender(
+            SUSPEND_TENDER -> return tenderService.suspendTender(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.UNSUSPEND_TENDER -> return enquiryService.unsuspendTender(
+            UNSUSPEND_TENDER -> return enquiryService.unsuspendTender(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.UNSUCCESSFUL_TENDER -> return tenderService.tenderUnsuccessful(
+            UNSUCCESSFUL_TENDER -> return tenderService.tenderUnsuccessful(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(
+            TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.TENDER_PERIOD_END_EV -> return tenderServiceEv.tenderPeriodEndEv(
+            TENDER_PERIOD_END_EV -> return tenderServiceEv.tenderPeriodEndEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.AWARD_BY_BID -> return tenderService.awardByBid(
+            AWARD_BY_BID -> return tenderService.awardByBid(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.AWARD_BY_BID_EV -> return tenderServiceEv.awardByBidEv(
+            AWARD_BY_BID_EV -> return tenderServiceEv.awardByBidEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.STANDSTILL_PERIOD -> return tenderService.standstillPeriod(
+            STANDSTILL_PERIOD -> return tenderService.standstillPeriod(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.STANDSTILL_PERIOD_EV -> return tenderServiceEv.standstillPeriodEv(
+            STANDSTILL_PERIOD_EV -> return tenderServiceEv.standstillPeriodEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(
+            AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(
+            AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 
-            Operation.START_NEW_STAGE -> return tenderService.startNewStage(
+            START_NEW_STAGE -> return tenderService.startNewStage(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,

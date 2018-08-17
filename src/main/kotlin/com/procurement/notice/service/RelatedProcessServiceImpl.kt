@@ -28,17 +28,17 @@ interface RelatedProcessService {
 
     fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType)
 
-    fun addMsRelatedProcessToRecord(record: Record, msOcId: String)
+    fun addMsRelatedProcessToRecord(record: Record, cpId: String)
 
-    fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType)
 
-    fun addRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType)
 
-    fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String)
+    fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String)
 
-    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType)
+    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType)
 
-    fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract)
+    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract)
 }
 
 @Service
@@ -56,7 +56,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 relationship = listOf(RelatedProcessType.X_FINANCE_SOURCE),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = fsOcId,
-                uri = getBudgetUri(ei.ocid, fsOcId)
+                uri = getBudgetUri(cpId = ei.ocid, ocId = fsOcId)
         ))
     }
 
@@ -67,7 +67,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 relationship = listOf(RelatedProcessType.PARENT),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = eiOcId,
-                uri = getBudgetUri(eiOcId, eiOcId)
+                uri = getBudgetUri(cpId = eiOcId, ocId = eiOcId)
         ))
     }
 
@@ -78,7 +78,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 relationship = listOf(RelatedProcessType.X_EXECUTION),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = msOcId,
-                uri = getTenderUri(msOcId, msOcId)
+                uri = getTenderUri(cpId = msOcId, ocId = msOcId)
         ))
     }
 
@@ -89,7 +89,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 relationship = listOf(RelatedProcessType.X_EXECUTION),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = msOcId,
-                uri = getTenderUri(msOcId, msOcId)
+                uri = getTenderUri(cpId = msOcId, ocId = msOcId)
         ))
     }
 
@@ -102,7 +102,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = ocId,
-                uri = getTenderUri(msOcId, ocId)))
+                uri = getTenderUri(cpId = msOcId, ocId = ocId)))
         /*expenditure items*/
         checkFs.ei.asSequence().forEach { eiCpId ->
             ms.relatedProcesses?.add(RelatedProcess(
@@ -110,7 +110,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                     relationship = listOf(RelatedProcessType.X_EXPENDITURE_ITEM),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = eiCpId,
-                    uri = getBudgetUri(eiCpId, eiCpId))
+                    uri = getBudgetUri(cpId = eiCpId, ocId = eiCpId))
             )
         }
         /*financial sources*/
@@ -120,62 +120,62 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                     relationship = listOf(RelatedProcessType.X_BUDGET),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = it.id,
-                    uri = getBudgetUri(getEiCpIdFromOcId(it.id), it.id)))
+                    uri = getBudgetUri(cpId = getEiCpIdFromOcId(it.id), ocId = it.id)))
         }
     }
 
-    override fun addMsRelatedProcessToRecord(record: Record, msOcId: String) {
+    override fun addMsRelatedProcessToRecord(record: Record, cpId: String) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.PARENT),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = msOcId,
-                uri = getTenderUri(msOcId, msOcId)))
+                identifier = cpId,
+                uri = getTenderUri(cpId = cpId, ocId = cpId)))
     }
 
-    override fun addRecordRelatedProcessToMs(ms: Ms, recordOcId: String, processType: RelatedProcessType) {
+    override fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         ms.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = recordOcId,
-                uri = getTenderUri(msOcId, recordOcId)))
+                identifier = ocid,
+                uri = getTenderUri(cpId = msOcId, ocId = ocid)))
     }
 
-    override fun addRecordRelatedProcessToRecord(record: Record, prevRecordOcId: String, msOcId: String, processType: RelatedProcessType) {
+    override fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = prevRecordOcId,
-                uri = getTenderUri(msOcId, prevRecordOcId)))
+                identifier = ocId,
+                uri = getTenderUri(cpId = cpId, ocId = ocId)))
     }
 
-    override fun addMsRelatedProcessToContract(record: ContractRecord, msOcId: String) {
+    override fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(RelatedProcessType.PARENT),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = msOcId,
-                uri = getTenderUri(msOcId, msOcId)))
+                identifier = cpId,
+                uri = getTenderUri(cpId = cpId, ocId = cpId)))
     }
 
-    override fun addRecordRelatedProcessToContractRecord(record: ContractRecord, recordOcId: String, msOcId: String, processType: RelatedProcessType) {
+    override fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
                 relationship = listOf(processType),
                 scheme = RelatedProcessScheme.OCID,
-                identifier = recordOcId,
-                uri = getTenderUri(msOcId, recordOcId)))
+                identifier = ocId,
+                uri = getTenderUri(cpId = cpId, ocId = ocId)))
     }
 
-    override fun addContractRelatedProcessToCAN(record: Record, ocIdContract: String, msOcId: String, contract: Contract) {
+    override fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract) {
         record.contracts?.let { cans ->
             cans.asSequence()
                     .firstOrNull { it.awardId == contract.awardId }
@@ -185,8 +185,8 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                                 id = UUIDs.timeBased().toString(),
                                 relationship = listOf(RelatedProcessType.X_CONTRACT),
                                 scheme = RelatedProcessScheme.OCID,
-                                identifier = ocIdContract,
-                                uri = getTenderUri(msOcId, ocIdContract)))
+                                identifier = ocId,
+                                uri = getTenderUri(cpId = cpId, ocId = ocId)))
                     }
         }
     }

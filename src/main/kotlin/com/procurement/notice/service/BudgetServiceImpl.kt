@@ -30,7 +30,7 @@ interface BudgetService {
 
     fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime)
 
-    fun createFsByMs(budgetBreakdown: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime)
+    fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime)
 }
 
 @Service
@@ -118,8 +118,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
     }
 
-    override fun createFsByMs(budgetBreakdown: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
-        budgetBreakdown.forEach {
+    override fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
+        budgetBreakdowns.forEach {
             val eiCpId = getCpIdFromOcId(it.id)
             val entity = budgetDao.getByCpIdAndOcId(eiCpId, it.id) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)

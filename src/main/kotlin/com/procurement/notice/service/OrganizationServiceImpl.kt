@@ -75,7 +75,7 @@ class OrganizationServiceImpl : OrganizationService {
         val payer = fs.payer
         if (payer != null) {
             val payerId = payer.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-            val partyPresent = fs.parties?.let { getParty(it, payerId) }
+            val partyPresent = fs.parties?.let { getParty(parties = it, partyId = payerId) }
             if (partyPresent != null) {
                 partyPresent.roles.add(PartyRole.PAYER)
             } else {
@@ -100,11 +100,11 @@ class OrganizationServiceImpl : OrganizationService {
     override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
         ms.parties?.let { parties ->
-            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties, buyer, PartyRole.BUYER) }
-            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties, payer, PartyRole.PAYER) }
-            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties, funder, PartyRole.FUNDER) }
+            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties = parties, organization = buyer, role = PartyRole.BUYER) }
+            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties = parties, organization = payer, role = PartyRole.PAYER) }
+            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties = parties, organization = funder, role = PartyRole.FUNDER) }
             ms.tender.procuringEntity?.let { procuringEntity ->
-                addParty(parties, procuringEntity, PartyRole.PROCURING_ENTITY)
+                addParty(parties = parties, organization = procuringEntity, role = PartyRole.PROCURING_ENTITY)
                 clearOrganizationReference(procuringEntity)
             }
         }
@@ -116,7 +116,7 @@ class OrganizationServiceImpl : OrganizationService {
             bids.forEach { bid ->
                 bid.tenderers?.let { tenderers ->
                     tenderers.forEach { tenderer ->
-                        record.parties?.let { addParty(it, tenderer, PartyRole.TENDERER) }
+                        record.parties?.let { addParty(parties = it, organization = tenderer, role = PartyRole.TENDERER) }
                         clearOrganizationReference(tenderer)
                     }
                 }
@@ -130,7 +130,7 @@ class OrganizationServiceImpl : OrganizationService {
             awards.forEach { award ->
                 award.suppliers?.let { suppliers ->
                     suppliers.forEach { supplier ->
-                        record.parties?.let { addParty(it, supplier, PartyRole.SUPPLIER) }
+                        record.parties?.let { addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER) }
                         clearOrganizationReference(supplier)
                     }
                 }
@@ -145,8 +145,8 @@ class OrganizationServiceImpl : OrganizationService {
                 award.suppliers?.let { suppliers ->
                     suppliers.forEach { supplier ->
                         record.parties?.let {
-                            addParty(it, supplier, PartyRole.SUPPLIER)
-                            addParty(it, supplier, PartyRole.PAYEE)
+                            addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER)
+                            addParty(parties = it, organization = supplier, role = PartyRole.PAYEE)
                         }
                         clearOrganizationReference(supplier)
                     }
@@ -158,7 +158,7 @@ class OrganizationServiceImpl : OrganizationService {
     override fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
         if (record.parties == null) record.parties = hashSetOf()
         enquiry.author?.let { author ->
-            record.parties?.let { addParty(it, author, PartyRole.ENQUIRER) }
+            record.parties?.let { addParty(parties = it, organization = author, role = PartyRole.ENQUIRER) }
             clearOrganizationReference(author)
         }
     }

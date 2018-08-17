@@ -65,7 +65,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             organizationService.processMsParties(this, checkFs)
         }
         val record = releaseService.getRecord(data)
-        val ocId = releaseService.newOcId(cpid, stage)
+        val ocId = releaseService.newOcId(cpId = cpid, stage = stage)
         record.apply {
             date = releaseDate
             ocid = ocId
@@ -77,14 +77,14 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             hasPreviousNotice = false
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition)
         }
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms, checkFs, ocId, params.relatedProcessType)
-        relatedProcessService.addMsRelatedProcessToRecord(record, cpid)
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpid, stage, record)
-        budgetService.createEiByMs(checkFs.ei, cpid, releaseDate)
+        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
+        relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
+        releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
-        budgetService.createFsByMs(budgetBreakdowns, cpid, releaseDate)
-        return releaseService.responseDto(cpid, ocId)
+        budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
+        return releaseService.responseDto(cpid = cpid, ocid = ocId)
     }
 
     override fun createPinOnPn(cpid: String,
@@ -106,7 +106,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.statusDetails = TenderStatusDetails.PRIOR_NOTICE
             tender.procuringEntity = prevProcuringEntity
         }
-        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -115,7 +115,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
-        val newOcId = releaseService.newOcId(cpid, stage)
+        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
                 id = releaseService.newReleaseId(newOcId),
                 date = releaseDate,
@@ -128,12 +128,12 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 hasPreviousNotice = true,
                 purposeOfNotice = PurposeOfNotice(false)
         )
-        relatedProcessService.addRecordRelatedProcessToMs(ms, newOcId, RelatedProcessType.PRIOR)
-        relatedProcessService.addRecordRelatedProcessToRecord(newRecord, ocid, cpid, RelatedProcessType.PLANNING)
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpid, prevStage, record)
-        releaseService.saveRecord(cpid, stage, newRecord)
-        return releaseService.responseDto(cpid, newOcId)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
+        releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
     override fun createCnOnPn(cpid: String,
@@ -157,7 +157,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.procuringEntity = prevProcuringEntity
             tender.hasEnquiries = false
         }
-        val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -166,7 +166,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
-        val newOcId = releaseService.newOcId(cpid, stage)
+        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
                 id = releaseService.newReleaseId(newOcId),
                 date = releaseDate,
@@ -180,8 +180,8 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 hasPreviousNotice = true,
                 purposeOfNotice = PurposeOfNotice(true)
         )
-        relatedProcessService.addRecordRelatedProcessToMs(ms, newOcId, params.relatedProcessType)
-        relatedProcessService.addRecordRelatedProcessToRecord(newRecord, ocid, cpid, RelatedProcessType.PLANNING)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpid, prevStage, record)
         releaseService.saveRecord(cpid, stage, newRecord)
@@ -232,12 +232,12 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 hasPreviousNotice = true,
                 purposeOfNotice = PurposeOfNotice(true)
         )
-        relatedProcessService.addRecordRelatedProcessToMs(ms, newOcId, params.relatedProcessType)
-        relatedProcessService.addRecordRelatedProcessToRecord(newRecord, ocid, cpid, RelatedProcessType.PRIOR)
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpid, prevStage, record)
-        releaseService.saveRecord(cpid, stage, newRecord)
-        return releaseService.responseDto(cpid, newOcId)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PRIOR)
+        releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
 }

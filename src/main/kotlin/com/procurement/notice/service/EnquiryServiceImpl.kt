@@ -47,7 +47,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                                releaseDate: LocalDateTime,
                                data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
-        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -57,7 +57,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         var enquiries = record.tender.enquiries ?: hashSetOf()
         if (enquiries.asSequence().none { it.id == enquiry.id }) {
             enquiries.add(enquiry)
-            organizationService.processRecordPartiesFromEnquiry(record, enquiry)
+            organizationService.processRecordPartiesFromEnquiry(record = record, enquiry = enquiry)
             record.tender.enquiries = enquiries
             if (enquiries.size == 1) {
                 val msEntity = releaseService.getMsEntity(cpid)
@@ -68,11 +68,11 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                     tag = listOf(Tag.COMPILED)
                     tender.hasEnquiries = true
                 }
-                releaseService.saveMs(cpid, ms)
+                releaseService.saveMs(cpId = cpid, ms = ms)
             }
         }
-        releaseService.saveRecord(cpid, stage, record)
-        return releaseService.responseDto(cpid, ocid)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }
 
     override fun addAnswer(cpid: String,
@@ -81,7 +81,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                            releaseDate: LocalDateTime,
                            data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
-        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -91,8 +91,8 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             this.answer = enquiry.answer
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
-        releaseService.saveRecord(cpid, stage, record)
-        return releaseService.responseDto(cpid, ocid)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }
 
     override fun unsuspendTender(cpid: String,
@@ -111,8 +111,8 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             tender.enquiryPeriod = dto.tender.enquiryPeriod
         }
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
-        releaseService.saveRecord(cpid, stage, record)
-        return releaseService.responseDto(cpid, ocid)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }
 
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {

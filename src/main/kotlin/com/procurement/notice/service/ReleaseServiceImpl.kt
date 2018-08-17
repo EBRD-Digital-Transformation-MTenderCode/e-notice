@@ -30,11 +30,9 @@ interface ReleaseService {
 
     fun getRecord(data: String): Record
 
-
     fun getRecordEntity(cpId: String, ocId: String): ReleaseEntity
 
     fun getMsEntity(cpid: String): ReleaseEntity
-
 
     fun newReleaseId(ocId: String): String
 
@@ -163,16 +161,16 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
 
 
     override fun saveMs(cpId: String, ms: Ms) {
-        releaseDao.saveRelease(newMSEntity(cpId, ms))
+        releaseDao.saveRelease(newMSEntity(cpId = cpId, ms = ms))
 
     }
 
     override fun saveRecord(cpId: String, stage: String, record: Record) {
-        releaseDao.saveRelease(newRecordEntity(cpId, stage, record))
+        releaseDao.saveRelease(newRecordEntity(cpId = cpId, stage = stage, record = record))
     }
 
     override fun saveContractRecord(cpId: String, stage: String, record: ContractRecord) {
-        releaseDao.saveRelease(newContractRecordEntity(cpId, stage, record))
+        releaseDao.saveRelease(newContractRecordEntity(cpId = cpId, stage = stage, record = record))
     }
 
     override fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params {
