@@ -66,6 +66,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
 
             Operation.CREATE_PIN_ON_PN -> return createReleaseService.createPinOnPn(
                     cpid = cpId,
+                    ocid = ocId!!,
                     stage = stage,
                     prevStage = prevStage!!,
                     releaseDate = releaseDate,
@@ -73,6 +74,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
 
             Operation.CREATE_CN_ON_PN -> return createReleaseService.createCnOnPn(
                     cpid = cpId,
+                    ocid = ocId!!,
                     stage = stage,
                     prevStage = prevStage!!,
                     releaseDate = releaseDate,
@@ -80,6 +82,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
 
             Operation.CREATE_CN_ON_PIN -> return createReleaseService.createCnOnPin(
                     cpid = cpId,
+                    ocid = ocId!!,
                     stage = stage,
                     prevStage = prevStage!!,
                     releaseDate = releaseDate,

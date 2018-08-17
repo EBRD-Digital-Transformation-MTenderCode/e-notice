@@ -11,7 +11,8 @@ import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.TenderPeriodEndDto
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.utils.*
+import com.procurement.notice.utils.toJson
+import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*

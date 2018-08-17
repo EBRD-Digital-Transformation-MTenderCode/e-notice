@@ -123,7 +123,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-         recordTender.apply {
+        recordTender.apply {
             title = record.tender.title
             description = record.tender.description
         }
@@ -172,7 +172,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
     }
 
 
-    fun getCanceledLotsIds(lots: HashSet<Lot>?): Set<String>?{
+    fun getCanceledLotsIds(lots: HashSet<Lot>?): Set<String>? {
         return lots?.asSequence()
                 ?.filter { it.status == TenderStatus.CANCELLED }
                 ?.map { it.id }

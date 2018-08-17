@@ -1,7 +1,6 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
