@@ -182,10 +182,10 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpid, prevStage, record)
-        releaseService.saveRecord(cpid, stage, newRecord)
-        return releaseService.responseDto(cpid, newOcId)
+        releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
     override fun createCnOnPin(cpid: String,
@@ -209,7 +209,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.procuringEntity = prevProcuringEntity
             tender.hasEnquiries = false
         }
-        val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -218,7 +218,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
-        val newOcId = releaseService.newOcId(cpid, stage)
+        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
                 id = releaseService.newReleaseId(newOcId),
                 date = releaseDate,
