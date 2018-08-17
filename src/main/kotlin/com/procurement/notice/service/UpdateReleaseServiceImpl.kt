@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatus
 import org.springframework.stereotype.Service
@@ -41,7 +42,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
                           data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
-        /*ms*/
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         msReq.tender.apply {
@@ -57,7 +57,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             planning = msReq.planning
             tender = msReq.tender
         }
-        /*record*/
         val recordEntity = releaseService.getRecordEntity(cpid, cpid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         recordTender.apply {
@@ -71,10 +70,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         var relatedLots: Set<String>? = null
         var rationale = "General change of Contract Notice"
-        val canceledLots = recordTender.lots?.asSequence()
-                ?.filter { it.status == TenderStatus.CANCELLED }
-                ?.map { it.id }
-                ?.toSet()
+        val canceledLots = getCanceledLotsIds(recordTender.lots)
         if (canceledLots != null && canceledLots.isNotEmpty()) {
             relatedLots = canceledLots
             rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
@@ -91,7 +87,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         ))
         record.apply {
             /* previous record*/
-            id = releaseService.newReleaseId(ocid)
+            id = newReleaseID
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender = recordTender
@@ -125,7 +121,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             planning = msReq.planning
             tender = msReq.tender
         }
-        /*record*/
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
          recordTender.apply {
@@ -133,7 +128,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             description = record.tender.description
         }
         record.apply {
-            /* previous record*/
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
@@ -150,7 +144,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
                                     releaseDate: LocalDateTime,
                                     data: JsonNode): ResponseDto {
         val recordTender = releaseService.getRecordTender(data)
-        /*record*/
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val actualReleaseID = record.id
@@ -167,7 +160,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
                 description = null
         ))
         record.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = newReleaseID
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender.tenderPeriod = recordTender.tenderPeriod
@@ -176,6 +169,14 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveRecord(cpid, stage, record)
         return releaseService.responseDto(cpid, ocid)
+    }
+
+
+    fun getCanceledLotsIds(lots: HashSet<Lot>?): Set<String>?{
+        return lots?.asSequence()
+                ?.filter { it.status == TenderStatus.CANCELLED }
+                ?.map { it.id }
+                ?.toSet()
     }
 
 }

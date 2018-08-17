@@ -212,7 +212,6 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         val recordEntity = releaseService.getRecordEntity(cpid, prevStage)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
-            /* previous record*/
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
