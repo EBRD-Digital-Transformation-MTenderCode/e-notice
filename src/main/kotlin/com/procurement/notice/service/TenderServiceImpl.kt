@@ -220,8 +220,8 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
                                releaseDate: LocalDateTime,
                                data: JsonNode): ResponseDto {
         val dto = toObject(StartNewStageDto::class.java, toJson(data))
-        var statusDetails: TenderStatusDetails?
-        var relatedProcessType: RelatedProcessType?
+        val statusDetails: TenderStatusDetails?
+        val relatedProcessType: RelatedProcessType?
         when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PQ -> {
                 statusDetails = TenderStatusDetails.PREQUALIFICATION
