@@ -96,15 +96,15 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
     }
 
     companion object {
-        private val BUDGET_TABLE = "notice_budget_release"
-        private val BUDGET_COMPILED_TABLE = "notice_budget_compiled_release"
-        private val BUDGET_OFFSET_TABLE = "notice_budget_offset"
-        private val CP_ID = "cp_id"
-        private val OC_ID = "oc_id"
-        private val RELEASE_DATE = "release_date"
-        private val RELEASE_ID = "release_id"
-        private val STAGE = "stage"
-        private val JSON_DATA = "json_data"
-        private val AMOUNT = "amount"
+        private const val BUDGET_TABLE = "notice_budget_release"
+        private const val BUDGET_COMPILED_TABLE = "notice_budget_compiled_release"
+        private const val BUDGET_OFFSET_TABLE = "notice_budget_offset"
+        private const val CP_ID = "cp_id"
+        private const val OC_ID = "oc_id"
+        private const val RELEASE_DATE = "release_date"
+        private const val RELEASE_ID = "release_id"
+        private const val STAGE = "stage"
+        private const val JSON_DATA = "json_data"
+        private const val AMOUNT = "amount"
     }
 }

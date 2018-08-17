@@ -15,7 +15,7 @@ interface ReleaseDao {
 
     fun getByCpIdAndOcId(cpId: String, ocId: String): ReleaseEntity?
 
-//    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity?
+    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity?
 }
 
 @Service
@@ -84,34 +84,34 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 row.getString(JSON_DATA)) else null
     }
 
-//    override fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
-//        val query = select()
-//                .all()
-//                .from(TENDER_COMPILED_TABLE)
-//                .where(eq(CP_ID, cpId))
-//                .and(eq(STAGE, stage))
-//                .allowFiltering()
-//                .limit(1)
-//        val row = session.execute(query).one()
-//        return if (row != null) ReleaseEntity(
-//                row.getString(CP_ID),
-//                row.getString(OC_ID),
-//                row.getTimestamp(RELEASE_DATE),
-//                row.getString(RELEASE_ID),
-//                row.getString(STAGE),
-//                row.getString(JSON_DATA)) else null
-//    }
+    override fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
+        val query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpId))
+                .and(eq(STAGE, stage))
+                .allowFiltering()
+                .limit(1)
+        val row = session.execute(query).one()
+        return if (row != null) ReleaseEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getString(JSON_DATA)) else null
+    }
 
     companion object {
-        private val TENDER_TABLE = "notice_release"
-        private val TENDER_COMPILED_TABLE = "notice_compiled_release"
-        private val TENDER_OFFSET_TABLE = "notice_offset"
-        private val CP_ID = "cp_id"
-        private val OC_ID = "oc_id"
-        private val RELEASE_DATE = "release_date"
-        private val RELEASE_ID = "release_id"
-        private val STAGE = "stage"
-        private val STATUS = "status"
-        private val JSON_DATA = "json_data"
+        private const val TENDER_TABLE = "notice_release"
+        private const val TENDER_COMPILED_TABLE = "notice_compiled_release"
+        private const val TENDER_OFFSET_TABLE = "notice_offset"
+        private const val CP_ID = "cp_id"
+        private const val OC_ID = "oc_id"
+        private const val RELEASE_DATE = "release_date"
+        private const val RELEASE_ID = "release_id"
+        private const val STAGE = "stage"
+        private const val STATUS = "status"
+        private const val JSON_DATA = "json_data"
     }
 }
