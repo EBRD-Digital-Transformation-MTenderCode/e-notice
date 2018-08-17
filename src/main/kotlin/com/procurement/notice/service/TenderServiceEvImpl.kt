@@ -114,7 +114,6 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = TenderStatusDetails.EVALUATED
         }
-        releaseService.saveMs(cpid, ms)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -124,6 +123,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
         }
+        releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }

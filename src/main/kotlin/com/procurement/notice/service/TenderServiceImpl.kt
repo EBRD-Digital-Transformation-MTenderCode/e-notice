@@ -121,7 +121,6 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             tender.status = TenderStatus.UNSUCCESSFUL
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
-        releaseService.saveMs(cpid, ms)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -134,6 +133,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
         }
+        releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }
@@ -199,7 +199,6 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -209,6 +208,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
         }
+        releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return releaseService.responseDto(cpid = cpid, ocid = ocid)
     }
@@ -254,7 +254,6 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
-            releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord)
         }
         /*new record*/
         val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
@@ -280,6 +279,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
         relatedProcessService.addRecordRelatedProcessToRecord(record = record, ocId = ocid, cpId = cpid, processType = prRelatedProcessType)
         releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }

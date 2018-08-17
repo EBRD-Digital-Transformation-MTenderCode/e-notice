@@ -54,7 +54,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             date = releaseDate
             tender.hasEnquiries = true
         }
-        var enquiries = record.tender.enquiries ?: hashSetOf()
+        val enquiries = record.tender.enquiries ?: hashSetOf()
         if (enquiries.asSequence().none { it.id == enquiry.id }) {
             enquiries.add(enquiry)
             organizationService.processRecordPartiesFromEnquiry(record = record, enquiry = enquiry)
