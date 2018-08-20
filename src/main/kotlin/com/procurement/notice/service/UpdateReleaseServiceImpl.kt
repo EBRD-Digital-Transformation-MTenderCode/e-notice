@@ -95,7 +95,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds)
     }
 
     override fun updatePn(cpid: String,
@@ -148,8 +149,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val record = releaseService.getRecord(recordEntity.jsonData)
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
-        val amendments = record.tender.amendments?.toMutableList()
-        amendments?.add(Amendment(
+        val amendments = record.tender.amendments?.toMutableList()?: mutableListOf()
+        amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
@@ -168,7 +169,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             tender.amendments = amendments
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds)
     }
 
 

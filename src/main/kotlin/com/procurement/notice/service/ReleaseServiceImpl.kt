@@ -57,7 +57,7 @@ interface ReleaseService {
 
     fun saveContractRecord(cpId: String, stage: String, record: ContractRecord)
 
-    fun responseDto(cpid: String, ocid: String): ResponseDto
+    fun responseDto(cpid: String, ocid: String, amendments: Set<String>? = null): ResponseDto
 
     fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params
 
@@ -233,11 +233,12 @@ class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessServic
         return params
     }
 
-    override fun responseDto(cpid: String, ocid: String): ResponseDto {
+    override fun responseDto(cpid: String, ocid: String, amendments: Set<String>?): ResponseDto {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
         jsonForResponse.put("url", relatedProcessService.getTenderUri(cpid, ocid))
+        if (amendments!=null) jsonForResponse.put("amendments", toJson(amendments))
         return ResponseDto(data = jsonForResponse)
     }
 
