@@ -39,6 +39,10 @@ interface RelatedProcessService {
     fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType)
 
     fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract)
+
+    fun getBudgetUri(cpId: String?, ocId: String?): String
+
+    fun getTenderUri(cpId: String, ocId: String?): String
 }
 
 @Service
@@ -196,11 +200,11 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         return ocId.substring(0, pos)
     }
 
-    private fun getBudgetUri(cpId: String?, ocId: String?): String {
+    override fun getBudgetUri(cpId: String?, ocId: String?): String {
         return budgetUri + cpId + URI_SEPARATOR + ocId
     }
 
-    private fun getTenderUri(cpId: String, ocId: String?): String {
+    override fun getTenderUri(cpId: String, ocId: String?): String {
         return tenderUri + cpId + URI_SEPARATOR + ocId
     }
 

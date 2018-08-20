@@ -67,7 +67,8 @@ interface ReleaseService {
 
 
 @Service
-class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
+class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessService,
+                         private val releaseDao: ReleaseDao) : ReleaseService {
 
     companion object {
         private const val SEPARATOR = "-"
@@ -236,6 +237,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
+        jsonForResponse.put("url", relatedProcessService.getTenderUri(cpid, ocid))
         return ResponseDto(data = jsonForResponse)
     }
 

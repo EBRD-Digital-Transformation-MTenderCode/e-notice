@@ -192,6 +192,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val jsonForResponse = createObjectNode()
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
+        jsonForResponse.put("url", relatedProcessService.getBudgetUri(cpId = cpid, ocId = ocid))
         return ResponseDto(data = jsonForResponse)
     }
 }

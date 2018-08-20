@@ -1,71 +1,380 @@
 {
-  "token": "da490e37-7b99-4068-b155-92b37b94ce77",
-  "ocid": "ocds-t1s2t3-MD-1534500857539",
-  "tender": {
-    "id": "ocds-t1s2t3-MD-1534500857539",
-    "title": "title",
-    "description": "decsript",
-    "status": "planning",
-    "statusDetails": "empty",
-    "classification": {
-      "id": "98900000-2",
-      "scheme": "CPV",
-      "description": "Servicii prestate de organizaţii şi de organisme extrateritoriale"
-    },
-    "mainProcurementCategory": "services"
-  },
   "planning": {
     "budget": {
-      "id": "98900000-2",
-      "period": {
-        "startDate": "2018-07-08T00:00:00Z",
-        "endDate": "2019-09-08T00:00:00Z"
-      }
+      "description": "e",
+      "amount": {
+        "amount": 4000.00,
+        "currency": "MDL"
+      },
+      "isEuropeanUnionFunded": true,
+      "budgetBreakdown": [
+        {
+          "id": "ocds-t1s2t3-MD-1534505645576-FS-1534505682097",
+          "description": "description",
+          "amount": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-07-30T00:00:00Z",
+            "endDate": "2019-01-01T00:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-7787-9898-88ppp",
+            "name": "name-of-fs-buyer"
+          },
+          "europeanUnionFunding": {
+            "projectName": "Name of this marvelous project",
+            "projectIdentifier": "projectIdentifier",
+            "uri": "uriuri"
+          }
+        },
+        {
+          "id": "ocds-t1s2t3-MD-1534500857539-FS-1534500908472",
+          "description": "description",
+          "amount": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-07-30T00:00:00Z",
+            "endDate": "2019-01-01T00:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-7787-9898-88ppp",
+            "name": "name-of-fs-buyer"
+          },
+          "europeanUnionFunding": {
+            "projectName": "Name of this marvelous project",
+            "projectIdentifier": "projectIdentifier",
+            "uri": "uriuri"
+          }
+        },
+        {
+          "id": "ocds-t1s2t3-MD-1534505645576-FS-1534505682097",
+          "description": "description",
+          "amount": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-07-30T00:00:00Z",
+            "endDate": "2019-01-01T00:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-7787-9898-88ppp",
+            "name": "name-of-fs-buyer"
+          },
+          "europeanUnionFunding": {
+            "projectName": "Name of this marvelous project",
+            "projectIdentifier": "projectIdentifier",
+            "uri": "uriuri"
+          }
+        },
+        {
+          "id": "ocds-t1s2t3-MD-1534500857539-FS-1534500908472",
+          "description": "description",
+          "amount": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-07-30T00:00:00Z",
+            "endDate": "2019-01-01T00:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-7787-9898-88ppp",
+            "name": "name-of-fs-buyer"
+          },
+          "europeanUnionFunding": {
+            "projectName": "Name of this marvelous project",
+            "projectIdentifier": "projectIdentifier",
+            "uri": "uriuri"
+          }
+        }
+      ]
     },
     "rationale": "rationale"
   },
-  "buyer": {
-    "id": "MD-IDNO-rserre",
-    "name": "BUYER",
-    "identifier": {
-      "id": "rserre",
-      "scheme": "MD-IDNO",
-      "legalName": "string",
-      "uri": "uri*"
+  "tender": {
+    "title": "TITLE",
+    "description": "d",
+    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+    "procurementMethodRationale": "",
+    "procurementMethodAdditionalInfo": "",
+    "tenderPeriod": {
+      "endDate": "2018-08-20T08:35:00Z",
+      "startDate": "2018-08-20T08:27:59Z"
     },
-    "address": {
-      "streetAddress": "ukukyuk",
-      "postalCode": "4545454",
-      "addressDetails": {
-        "country": {
-          "scheme": "iso-alpha2",
-          "id": "MD",
-          "description": "MOLDOVA",
-          "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-        },
-        "region": {
-          "scheme": "CUATM",
-          "id": "1700000",
-          "description": "Cahul",
-          "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
-        },
-        "locality": {
-          "scheme": "CUATM",
-          "id": "1701000",
-          "description": "mun.Cahul"
+    "procuringEntity": {
+      "name": "Name of CN pE",
+      "address": {
+        "streetAddress": "address of pe",
+        "postalCode": "00000",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "0101000",
+            "description": "mun.Chişinău",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "0101000",
+            "description": "mun.Chişinău"
+          }
         }
+      },
+      "identifier": {
+        "id": "555-555",
+        "scheme": "MD-IDNO",
+        "legalName": "legal name of pe",
+        "uri": "g"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "tre",
+          "scheme": "ert",
+          "legalName": "etr",
+          "uri": "ter"
+        }
+      ],
+      "contactPoint": {
+        "name": "contact name",
+        "email": "email",
+        "telephone": "4521",
+        "faxNumber": "45",
+        "url": "d"
       }
     },
-    "contactPoint": {
-      "name": "1",
-      "email": "string",
-      "telephone": "string",
-      "url": "string"
+    "lots": [
+      {
+        "id": "1",
+        "title": "1",
+        "description": "1",
+        "value": {
+          "amount": 100.00,
+          "currency": "MDL"
+        },
+        "contractPeriod": {
+          "startDate": "2018-10-20T10:40:00Z",
+          "endDate": "2018-11-24T12:00:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "Steet",
+            "postalCode": "5",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi",
+                "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+              },
+              "locality": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi"
+              }
+            }
+          },
+          "description": "decr"
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "4",
+        "description": "p",
+        "classification": {
+          "id": "98910000-5",
+          "description": "Servicii specifice organizaţiilor şi organismelor internaţionale",
+          "scheme": "CPV"
+        },
+        "quantity": 10.00,
+        "unit": {
+          "id": "120",
+          "name": " Milion decalitri "
+        },
+        "relatedLot": "1"
+      }
+    ],
+    "documents": [
+      {
+        "documentType": "tenderNotice",
+        "id": "0a326080-a058-11e8-9318-61ca1098e80e"
+      }
+    ],
+    "classification": {
+      "id": "98910000-5",
+      "scheme": "CPV",
+      "description": "Servicii specifice organizaţiilor şi organismelor internaţionale"
     },
-    "details": {
-      "typeOfBuyer": "EU_INSTITUTION",
-      "mainGeneralActivity": "ENVIRONMENT",
-      "mainSectoralActivity": "WATER"
+    "submissionMethodRationale": [
+      "submissionMethodRationale"
+    ],
+    "submissionMethodDetails": "submissionMethodDetails",
+    "procurementMethodDetails": "test",
+    "eligibilityCriteria": "eligibilityCriteria",
+    "mainProcurementCategory": "services"
+  },
+  "ei": [
+    "ocds-t1s2t3-MD-1534505645576",
+    "ocds-t1s2t3-MD-1534500857539"
+  ],
+  "buyer": [
+    {
+      "id": "MD-IDNO-rserre",
+      "name": "BUYER",
+      "identifier": {
+        "id": "rserre",
+        "scheme": "MD-IDNO",
+        "legalName": "string",
+        "uri": "uri*"
+      },
+      "address": {
+        "streetAddress": "ukukyuk",
+        "postalCode": "4545454",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1700000",
+            "description": "Cahul",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "1701000",
+            "description": "mun.Cahul"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "1",
+        "email": "string",
+        "telephone": "string",
+        "url": "string"
+      },
+      "details": {
+        "typeOfBuyer": "EU_INSTITUTION",
+        "mainGeneralActivity": "ENVIRONMENT",
+        "mainSectoralActivity": "WATER"
+      }
     }
-  }
+  ],
+  "funder": [
+    {
+      "id": "MD-IDNO-7787-9898-88ppp",
+      "name": "name-of-fs-buyer",
+      "identifier": {
+        "id": "7787-9898-88ppp",
+        "scheme": "MD-IDNO",
+        "legalName": "pop",
+        "uri": "uri*()"
+      },
+      "address": {
+        "streetAddress": " street",
+        "postalCode": "tyt",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "8700000",
+            "description": "Taraclia",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "j",
+            "description": "j"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "757532",
+          "scheme": "752",
+          "legalName": "72",
+          "uri": "strin7g"
+        },
+        {
+          "id": "string",
+          "scheme": "string",
+          "legalName": "string",
+          "uri": "string"
+        }
+      ],
+      "contactPoint": {
+        "name": "string",
+        "email": "string",
+        "telephone": "string",
+        "faxNumber": "string",
+        "url": "string"
+      }
+    }
+  ],
+  "payer": [
+    {
+      "id": "MD-IDNO-7787-9898-88",
+      "name": "NAME OF PE2",
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "LN",
+        "uri": "http://454.to"
+      },
+      "address": {
+        "streetAddress": "street",
+        "postalCode": "785412",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "3400000",
+            "description": "Donduşeni",
+            "uri": "www.statistica.md/public/files/Clasificatoare/CUATM_rom.zip"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "3401000",
+            "description": "or.Donduşeni (r-l Donduşeni)"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "NAME of contact person",
+        "email": "string@mail.ccc",
+        "telephone": "987987",
+        "url": "string"
+      }
+    }
+  ]
 }
