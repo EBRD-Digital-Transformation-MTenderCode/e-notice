@@ -27,5 +27,11 @@ data class FsBudget @JsonCreator constructor(
         @get:JsonProperty("verified")
         val verified: Boolean?,
 
-        val sourceEntity: OrganizationReference?
+        val sourceEntity: OrganizationReference?,
+
+        val project: String?,
+
+        val projectID: String?,
+
+        val uri: String?
 )
