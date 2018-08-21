@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_offset (
     cp_id text,
     release_date timestamp,
     status text,
+    stage text,
     primary key(cp_id)
 );
 

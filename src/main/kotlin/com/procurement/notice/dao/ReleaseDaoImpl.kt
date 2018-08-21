@@ -46,6 +46,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 .value(CP_ID, releaseEntity.cpId)
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
                 .value(STATUS, releaseEntity.status)
+                .value(STAGE, releaseEntity.stage)
 
         val batch = QueryBuilder.batch(insert, insertCompiled, insertOffset)
         session.execute(batch)
