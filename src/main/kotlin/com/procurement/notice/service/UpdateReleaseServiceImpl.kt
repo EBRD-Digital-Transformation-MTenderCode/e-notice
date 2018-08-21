@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Lot
@@ -33,7 +34,8 @@ interface UpdateReleaseService {
 
 
 @Service
-class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : UpdateReleaseService {
+class UpdateReleaseServiceImpl(private val releaseService: ReleaseService,
+                               private val relatedProcessService: RelatedProcessService) : UpdateReleaseService {
 
     override fun updateCn(cpid: String,
                           ocid: String,
@@ -96,7 +98,13 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds)
+        return ResponseDto(
+                data = DataResponseDto(
+                        ocid = ocid,
+                        url = relatedProcessService.getTenderUri(cpid, ocid),
+                        amendments = amendmentsIds
+                )
+        )
     }
 
     override fun updatePn(cpid: String,
@@ -136,7 +144,13 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return ResponseDto(
+                data = DataResponseDto(
+                        ocid = ocid,
+                        url = relatedProcessService.getTenderUri(cpid, ocid),
+                        amendments = null
+                )
+        )
     }
 
     override fun updateTenderPeriod(cpid: String,
@@ -149,7 +163,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val record = releaseService.getRecord(recordEntity.jsonData)
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
-        val amendments = record.tender.amendments?.toMutableList()?: mutableListOf()
+        val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
@@ -170,7 +184,13 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds)
+        return ResponseDto(
+                data = DataResponseDto(
+                        ocid = ocid,
+                        url = relatedProcessService.getTenderUri(cpid, ocid),
+                        amendments = amendmentsIds
+                )
+        )
     }
 
 
