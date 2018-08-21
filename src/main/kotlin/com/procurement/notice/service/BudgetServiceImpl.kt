@@ -54,7 +54,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         organizationService.processEiParties(ei)
         budgetDao.saveBudget(getEiEntity(ei, stage))
-        return getResponseDto(ei.ocid, ei.ocid)
+        return getResponseDto(ei.ocid)
     }
 
     override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -86,7 +86,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
         dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
-        return getFsResponseDto(cpid, fs.ocid)
+        return getResponseDto(cpid)
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -105,7 +105,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
         if (updateAmount != amount && dto.ei != null) updateEiAmountByFs(cpid, dto.ei)
-        return getFsResponseDto(cpid, fs.ocid)
+        return getResponseDto(cpid, fs.ocid)
     }
 
     override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
@@ -189,23 +189,22 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         )
     }
 
-    private fun getResponseDto(cpid: String?, ocid: String?): ResponseDto {
+    private fun getResponseDto(cpid: String?): ResponseDto {
         return ResponseDto(
                 data = DataResponseDto(
-                        cpid = cpid,
-                        ocid = ocid,
-                        url = relatedProcessService.getBudgetUri(cpid, ocid),
+                        ocid = cpid,
+                        url = relatedProcessService.getBudgetUri(cpid),
                         amendments = null
                 )
         )
     }
 
-    private fun getFsResponseDto(cpid: String?, ocid: String?): ResponseDto {
+
+    private fun getResponseDto(cpid: String?, ocid: String?): ResponseDto {
         return ResponseDto(
                 data = DataResponseDto(
-                        cpid = cpid,
                         ocid = ocid,
-                        url = relatedProcessService.getBudgetUri(cpid, null),
+                        url = relatedProcessService.getBudgetUri(cpid, ocid),
                         amendments = null
                 )
         )

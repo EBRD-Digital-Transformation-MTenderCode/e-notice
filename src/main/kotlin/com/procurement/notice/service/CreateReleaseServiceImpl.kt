@@ -84,7 +84,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
-        return releaseService.responseDto(cpid = cpid, ocid = ocId)
+        return releaseService.responseDto(cpid = cpid)
     }
 
     override fun createPinOnPn(cpid: String,
@@ -133,7 +133,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
+        return releaseService.responseDto(cpid = cpid)
     }
 
     override fun createCnOnPn(cpid: String,
@@ -185,7 +185,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
+        return releaseService.responseDto(cpid = cpid)
     }
 
     override fun createCnOnPin(cpid: String,
@@ -237,7 +237,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
+        return releaseService.responseDto(cpid = cpid)
     }
 
 }
