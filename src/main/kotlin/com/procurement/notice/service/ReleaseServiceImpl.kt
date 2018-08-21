@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.*
@@ -234,12 +235,14 @@ class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessServic
     }
 
     override fun responseDto(cpid: String, ocid: String, amendments: Set<String>?): ResponseDto {
-        val jsonForResponse = createObjectNode()
-        jsonForResponse.put("cpid", cpid)
-        jsonForResponse.put("ocid", ocid)
-        jsonForResponse.put("url", relatedProcessService.getTenderUri(cpid, ocid))
-        if (amendments!=null) jsonForResponse.put("amendments", toJson(amendments))
-        return ResponseDto(data = jsonForResponse)
+        return ResponseDto(
+                data = DataResponseDto(
+                        cpid = cpid,
+                        ocid = ocid,
+                        url = relatedProcessService.getTenderUri(cpid, ocid),
+                        amendments = amendments
+                )
+        )
     }
 
 }

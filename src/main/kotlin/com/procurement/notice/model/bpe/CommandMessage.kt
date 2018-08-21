@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.utils.createObjectNode
 
 data class CommandMessage @JsonCreator constructor(
 
@@ -64,8 +65,17 @@ enum class ApiVersion(private val value: String) {
 data class ResponseDto(
 
         val errors: List<ResponseErrorDto>? = null,
-        val data: Any? = null,
+        val data: DataResponseDto? = null,
         val id: String? = null
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class DataResponseDto(
+
+        val cpid: String? = null,
+        val ocid: String? = null,
+        val url: String? = null,
+        val amendments: Set<String>? = null
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

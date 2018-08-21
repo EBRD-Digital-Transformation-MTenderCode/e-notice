@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.EiForFs
@@ -189,10 +190,13 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     private fun getResponseDto(cpid: String?, ocid: String?): ResponseDto {
-        val jsonForResponse = createObjectNode()
-        jsonForResponse.put("cpid", cpid)
-        jsonForResponse.put("ocid", ocid)
-        jsonForResponse.put("url", relatedProcessService.getBudgetUri(cpId = cpid, ocId = ocid))
-        return ResponseDto(data = jsonForResponse)
+        return ResponseDto(
+                data = DataResponseDto(
+                        cpid = cpid,
+                        ocid = ocid,
+                        url = relatedProcessService.getBudgetUri(cpid, ocid),
+                        amendments = null
+                )
+        )
     }
 }
