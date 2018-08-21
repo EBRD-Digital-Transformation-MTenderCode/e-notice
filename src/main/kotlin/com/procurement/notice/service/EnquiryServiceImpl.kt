@@ -72,7 +72,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, id = ocid)
     }
 
     override fun addAnswer(cpid: String,
@@ -92,7 +92,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, id = ocid)
     }
 
     override fun unsuspendTender(cpid: String,
@@ -112,7 +112,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         }
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, id = ocid)
     }
 
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {

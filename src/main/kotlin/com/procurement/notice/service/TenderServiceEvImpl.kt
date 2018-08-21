@@ -76,7 +76,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
     }
 
     override fun awardByBidEv(cpid: String,
@@ -97,7 +97,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             dto.nextAward?.let { award -> updateAward(this, award) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
     }
 
     override fun standstillPeriodEv(cpid: String,
@@ -125,7 +125,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
     }
 
     override fun awardPeriodEndEv(cpid: String,
@@ -181,7 +181,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid)
+        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
     }
 
     private fun updateContracts(recordContracts: HashSet<Contract>, dtoContracts: HashSet<Contract>) {

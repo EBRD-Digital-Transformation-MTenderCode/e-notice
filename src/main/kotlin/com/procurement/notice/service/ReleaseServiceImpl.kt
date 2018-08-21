@@ -60,7 +60,7 @@ interface ReleaseService {
 
     fun responseDto(cpid: String): ResponseDto
 
-    fun responseDto(cpid: String, ocid: String): ResponseDto
+    fun responseDto(cpid: String, id: String): ResponseDto
 
     fun responseDto(cpid: String, ocid: String, amendments: Set<String>? = null): ResponseDto
 
@@ -248,11 +248,11 @@ class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessServic
         )
     }
 
-    override fun responseDto(cpid: String, ocid: String): ResponseDto {
+    override fun responseDto(cpid: String, id: String): ResponseDto {
         return ResponseDto(
                 data = DataResponseDto(
                         ocid = cpid,
-                        id = ocid,
+                        id = id,
                         url = relatedProcessService.getTenderUri(cpid),
                         amendments = null
                 )
