@@ -238,7 +238,7 @@ class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessServic
         jsonForResponse.put("cpid", cpid)
         jsonForResponse.put("ocid", ocid)
         jsonForResponse.put("url", relatedProcessService.getTenderUri(cpid, ocid))
-        if (amendments!=null) jsonForResponse.put("amendments", amendments.toString())
+        if (amendments!=null) jsonForResponse.put("amendments", toJson(amendments))
         return ResponseDto(data = jsonForResponse)
     }
 
