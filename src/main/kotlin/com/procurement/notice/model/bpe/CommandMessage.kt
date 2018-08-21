@@ -72,6 +72,7 @@ data class ResponseDto(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class DataResponseDto(
         val ocid: String? = null,
+        val id: String? = null,
         val url: String? = null,
         val amendments: Set<String>? = null
 )

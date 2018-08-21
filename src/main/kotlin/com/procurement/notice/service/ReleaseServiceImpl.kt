@@ -60,6 +60,8 @@ interface ReleaseService {
 
     fun responseDto(cpid: String): ResponseDto
 
+    fun responseDto(cpid: String, ocid: String): ResponseDto
+
     fun responseDto(cpid: String, ocid: String, amendments: Set<String>? = null): ResponseDto
 
     fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params
@@ -240,6 +242,17 @@ class ReleaseServiceImpl(private val relatedProcessService: RelatedProcessServic
         return ResponseDto(
                 data = DataResponseDto(
                         ocid = cpid,
+                        url = relatedProcessService.getTenderUri(cpid),
+                        amendments = null
+                )
+        )
+    }
+
+    override fun responseDto(cpid: String, ocid: String): ResponseDto {
+        return ResponseDto(
+                data = DataResponseDto(
+                        ocid = cpid,
+                        id = ocid,
                         url = relatedProcessService.getTenderUri(cpid),
                         amendments = null
                 )

@@ -133,7 +133,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
     override fun createCnOnPn(cpid: String,
@@ -185,7 +185,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
     override fun createCnOnPin(cpid: String,
@@ -237,7 +237,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return releaseService.responseDto(cpid = cpid)
+        return releaseService.responseDto(cpid = cpid, ocid = newOcId)
     }
 
 }
