@@ -86,7 +86,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
         dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
-        return getResponseDto(cpid, fs.ocid)
+        return getFsResponseDto(cpid, fs.ocid)
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -105,7 +105,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
         if (updateAmount != amount && dto.ei != null) updateEiAmountByFs(cpid, dto.ei)
-        return getResponseDto(cpid, fs.ocid)
+        return getFsResponseDto(cpid, fs.ocid)
     }
 
     override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
@@ -195,6 +195,17 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
                         cpid = cpid,
                         ocid = ocid,
                         url = relatedProcessService.getBudgetUri(cpid, ocid),
+                        amendments = null
+                )
+        )
+    }
+
+    private fun getFsResponseDto(cpid: String?, ocid: String?): ResponseDto {
+        return ResponseDto(
+                data = DataResponseDto(
+                        cpid = cpid,
+                        ocid = ocid,
+                        url = relatedProcessService.getBudgetUri(cpid, null),
                         amendments = null
                 )
         )

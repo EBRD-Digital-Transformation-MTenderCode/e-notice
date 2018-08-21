@@ -201,7 +201,11 @@ class RelatedProcessServiceImpl : RelatedProcessService {
     }
 
     override fun getBudgetUri(cpId: String?, ocId: String?): String {
-        return budgetUri + cpId + URI_SEPARATOR + ocId
+        var uri = budgetUri + cpId
+        if (ocId != null) {
+            uri = uri + URI_SEPARATOR + ocId
+        }
+        return uri
     }
 
     override fun getTenderUri(cpId: String, ocId: String?): String {
