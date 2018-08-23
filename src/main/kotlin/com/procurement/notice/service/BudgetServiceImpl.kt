@@ -70,7 +70,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         budgetDao.saveBudget(getEiEntity(ei, stage))
         val amendmentIds = null
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ids = amendmentIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, amendments = amendmentIds))
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {

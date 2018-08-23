@@ -97,7 +97,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds))
     }
 
     override fun updatePn(cpid: String,
@@ -138,7 +138,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = null
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds))
     }
 
     override fun updateTenderPeriod(cpid: String,
@@ -172,7 +172,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds))
     }
 
 
