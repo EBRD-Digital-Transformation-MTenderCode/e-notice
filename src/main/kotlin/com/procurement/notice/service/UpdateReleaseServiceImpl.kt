@@ -34,8 +34,7 @@ interface UpdateReleaseService {
 
 
 @Service
-class UpdateReleaseServiceImpl(private val releaseService: ReleaseService,
-                               private val relatedProcessService: RelatedProcessService) : UpdateReleaseService {
+class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : UpdateReleaseService {
 
     override fun updateCn(cpid: String,
                           ocid: String,
@@ -98,13 +97,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = ocid,
-                        url = relatedProcessService.getTenderUri(cpid, ocid),
-                        amendments = amendmentsIds
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
     }
 
     override fun updatePn(cpid: String,
@@ -144,13 +137,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = ocid,
-                        url = relatedProcessService.getTenderUri(cpid, ocid),
-                        amendments = null
-                )
-        )
+        val amendmentsIds = null
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
     }
 
     override fun updateTenderPeriod(cpid: String,
@@ -184,13 +172,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = ocid,
-                        url = relatedProcessService.getTenderUri(cpid, ocid),
-                        amendments = amendmentsIds
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, ids = amendmentsIds))
     }
 
 

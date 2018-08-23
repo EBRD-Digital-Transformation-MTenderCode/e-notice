@@ -54,14 +54,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         organizationService.processEiParties(ei)
         budgetDao.saveBudget(getEiEntity(ei, stage))
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = cpid,
-                        url = relatedProcessService.getBudgetUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid))
     }
 
     override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -76,13 +69,8 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             tender = updateEi.tender
         }
         budgetDao.saveBudget(getEiEntity(ei, stage))
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        url = relatedProcessService.getBudgetUri(cpid),
-                        amendments = null
-                )
-        )
+        val amendmentIds = null
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ids = amendmentIds))
     }
 
     override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -99,14 +87,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
         dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = fs.ocid,
-                        url = relatedProcessService.getBudgetUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -125,13 +106,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
         budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
         if (updateAmount != amount && dto.ei != null) updateEiAmountByFs(cpid, dto.ei)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = fs.ocid,
-                        url = relatedProcessService.getBudgetUri(cpid, fs.ocid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
 
     override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {

@@ -85,14 +85,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = ocId,
-                        url = relatedProcessService.getTenderUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
     }
 
     override fun createPinOnPn(cpid: String,
@@ -141,14 +134,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = newOcId,
-                        url = relatedProcessService.getTenderUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
     override fun createCnOnPn(cpid: String,
@@ -200,14 +186,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = newOcId,
-                        url = relatedProcessService.getTenderUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
     override fun createCnOnPin(cpid: String,
@@ -259,14 +238,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
-        return ResponseDto(
-                data = DataResponseDto(
-                        ocid = cpid,
-                        id = newOcId,
-                        url = relatedProcessService.getTenderUri(cpid),
-                        amendments = null
-                )
-        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
 }

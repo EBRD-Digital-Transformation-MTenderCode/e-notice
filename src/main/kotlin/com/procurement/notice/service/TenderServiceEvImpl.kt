@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.AwardByBidEvDto
@@ -76,7 +77,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun awardByBidEv(cpid: String,
@@ -97,7 +98,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             dto.nextAward?.let { award -> updateAward(this, award) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun standstillPeriodEv(cpid: String,
@@ -125,7 +126,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun awardPeriodEndEv(cpid: String,
@@ -159,7 +160,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         }
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
-                val ocIdContract = releaseService.newOcId(cpid, AC)
+                val ocIdContract = contract.id!!
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
@@ -177,11 +178,12 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
                 releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
+
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     private fun updateContracts(recordContracts: HashSet<Contract>, dtoContracts: HashSet<Contract>) {

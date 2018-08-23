@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.*
@@ -86,7 +87,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun suspendTender(cpid: String,
@@ -103,7 +104,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             tender.statusDetails = dto.tender.statusDetails
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun tenderUnsuccessful(cpid: String,
@@ -135,7 +136,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpid, ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun awardByBid(cpid: String,
@@ -154,7 +155,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             updateBid(this, dto.bid)
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun awardPeriodEnd(cpid: String,
@@ -177,7 +178,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun standstillPeriod(cpid: String,
@@ -210,7 +211,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun startNewStage(cpid: String,
@@ -281,7 +282,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, id = newOcId)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     private fun processTenderDocuments(record: Record, prevRecord: Record) {

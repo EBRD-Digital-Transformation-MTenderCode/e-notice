@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto
@@ -72,7 +73,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun addAnswer(cpid: String,
@@ -92,7 +93,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun unsuspendTender(cpid: String,
@@ -112,7 +113,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         }
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return releaseService.responseDto(cpid = cpid, ocid = ocid, amendments = null)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
