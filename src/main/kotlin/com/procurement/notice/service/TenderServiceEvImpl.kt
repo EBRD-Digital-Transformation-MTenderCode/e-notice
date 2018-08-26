@@ -178,7 +178,6 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
                 releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
-
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
