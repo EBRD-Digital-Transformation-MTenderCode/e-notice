@@ -21,6 +21,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                       private val updateReleaseService: UpdateReleaseService,
                       private val tenderService: TenderService,
                       private val tenderServiceEv: TenderServiceEv,
+                      private val tenderCancellationService: TenderCancellationService,
                       private val enquiryService: EnquiryService) : MainService {
 
 
@@ -223,6 +224,20 @@ class MainServiceImpl(private val budgetService: BudgetService,
                     ocid = ocId!!,
                     stage = stage,
                     prevStage = prevStage!!,
+                    releaseDate = releaseDate,
+                    data = data)
+
+            CANCEL_STANDSTILL -> return tenderCancellationService.cancellationStandstillPeriod(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
+            CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> return tenderCancellationService.tenderCancellation(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
                     releaseDate = releaseDate,
                     data = data)
 

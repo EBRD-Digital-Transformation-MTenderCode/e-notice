@@ -258,6 +258,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     COMPLETE("complete"),
     WITHDRAWN("withdrawn"),
     SUSPENDED("suspended"),
+    STANDSTILL("standStill"),
     EMPTY("empty");
 
     override fun toString(): String {
@@ -324,7 +325,11 @@ enum class Operation(val value: String) {
     START_NEW_STAGE("startNewStage"),
     CREATE_PIN_ON_PN("createPINonPN"),
     CREATE_CN_ON_PN("createCNonPN"),
-    CREATE_CN_ON_PIN("createCNonPIN");
+    CREATE_CN_ON_PIN("createCNonPIN"),
+    CANCEL_TENDER("cancelTender"),
+    CANCEL_TENDER_EV("cancelTenderEv"),
+    CANCEL_PLAN("cancelPlan"),
+    CANCEL_STANDSTILL("cancellationStandstillPeriod");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()
