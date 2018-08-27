@@ -95,7 +95,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
             dto.lot?.let { lot -> updateLot(this, lot) }
-            dto.nextAward?.let { award -> updateAward(this, award) }
+            dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
