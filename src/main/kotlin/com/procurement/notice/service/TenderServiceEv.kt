@@ -158,6 +158,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 contracts?.let { updateContracts(it, contractsDto) }
             }
         }
+
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
@@ -177,11 +178,11 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
+                releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
                 releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

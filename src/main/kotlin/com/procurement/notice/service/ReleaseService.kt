@@ -84,7 +84,6 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
 
     override fun getRecord(data: String): Record = toObject(Record::class.java, data)
 
-
     override fun getMsEntity(cpid: String): ReleaseEntity {
         return releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
     }
