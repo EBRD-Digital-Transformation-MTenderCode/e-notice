@@ -9,7 +9,6 @@ import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.AwardByBidEvDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
-import com.procurement.notice.model.tender.dto.TenderPeriodEndDto
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toJson
@@ -20,7 +19,7 @@ import java.util.*
 
 interface TenderServiceEv {
 
-   fun awardByBidEv(cpid: String,
+    fun awardByBidEv(cpid: String,
                      ocid: String,
                      stage: String,
                      releaseDate: LocalDateTime,
@@ -128,6 +127,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 contracts?.let { updateContracts(it, contractsDto) }
             }
         }
+        val contractRecords = mutableListOf<ContractRecord>()
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
@@ -147,10 +147,13 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
-                releaseService.saveMs(cpId = cpid, ms = ms)
-                releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-                releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
+                contractRecords.add(recordContract)
             }
+        }
+        releaseService.saveMs(cpId = cpid, ms = ms)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        contractRecords.forEach { recordContract ->
+            releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
         }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
