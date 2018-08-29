@@ -163,12 +163,13 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
-            tag = listOf(Tag.COMPILED)
+            tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
+                ocid = newOcId,
                 id = releaseService.newReleaseId(newOcId),
                 date = releaseDate,
                 tag = listOf(Tag.TENDER),
@@ -179,7 +180,8 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 ),
                 initiationType = InitiationType.TENDER,
                 hasPreviousNotice = true,
-                purposeOfNotice = PurposeOfNotice(true)
+                purposeOfNotice = PurposeOfNotice(true),
+                parties = null
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
