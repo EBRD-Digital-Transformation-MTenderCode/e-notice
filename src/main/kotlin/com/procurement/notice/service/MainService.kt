@@ -170,7 +170,7 @@ class MainServiceImpl(private val budgetService: BudgetService,
                     releaseDate = releaseDate,
                     data = data)
 
-            TENDER_PERIOD_END_EV -> return tenderServiceEv.tenderPeriodEndEv(
+            TENDER_PERIOD_END_EV -> return tenderService.tenderPeriodEnd(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service
 @Service
 interface ReleaseDao {
 
-    fun saveRelease(releaseEntity: ReleaseEntity)
+    fun saveMs(releaseEntity: ReleaseEntity)
+
+    fun saveRecord(releaseEntity: ReleaseEntity)
 
     fun getByCpId(cpId: String): ReleaseEntity?
 
@@ -21,7 +23,31 @@ interface ReleaseDao {
 @Service
 class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
 
-    override fun saveRelease(releaseEntity: ReleaseEntity) {
+    override fun saveMs(releaseEntity: ReleaseEntity) {
+        val insert = insertInto(TENDER_TABLE)
+        insert
+                .value(CP_ID, releaseEntity.cpId)
+                .value(OC_ID, releaseEntity.ocId)
+                .value(RELEASE_DATE, releaseEntity.releaseDate)
+                .value(RELEASE_ID, releaseEntity.releaseId)
+                .value(STAGE, releaseEntity.stage)
+                .value(JSON_DATA, releaseEntity.jsonData)
+
+        val insertCompiled = insertInto(TENDER_COMPILED_TABLE)
+        insertCompiled
+                .value(CP_ID, releaseEntity.cpId)
+                .value(OC_ID, releaseEntity.ocId)
+                .value(RELEASE_DATE, releaseEntity.releaseDate)
+                .value(RELEASE_ID, releaseEntity.releaseId)
+                .value(STAGE, releaseEntity.stage)
+                .value(STATUS, releaseEntity.status)
+                .value(JSON_DATA, releaseEntity.jsonData)
+
+        val batch = QueryBuilder.batch(insert, insertCompiled)
+        session.execute(batch)
+    }
+
+    override fun saveRecord(releaseEntity: ReleaseEntity) {
         val insert = insertInto(TENDER_TABLE)
         insert
                 .value(CP_ID, releaseEntity.cpId)

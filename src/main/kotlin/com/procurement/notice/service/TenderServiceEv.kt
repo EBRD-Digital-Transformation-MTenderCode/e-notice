@@ -20,13 +20,7 @@ import java.util.*
 
 interface TenderServiceEv {
 
-    fun tenderPeriodEndEv(cpid: String,
-                          ocid: String,
-                          stage: String,
-                          releaseDate: LocalDateTime,
-                          data: JsonNode): ResponseDto
-
-    fun awardByBidEv(cpid: String,
+   fun awardByBidEv(cpid: String,
                      ocid: String,
                      stage: String,
                      releaseDate: LocalDateTime,
@@ -54,30 +48,6 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
 
     companion object {
         private const val AC = "AC"
-    }
-
-    override fun tenderPeriodEndEv(cpid: String,
-                                   ocid: String,
-                                   stage: String,
-                                   releaseDate: LocalDateTime,
-                                   data: JsonNode): ResponseDto {
-        val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.AWARD)
-            tender.awardPeriod = dto.awardPeriod
-            if (dto.awards.isNotEmpty()) awards = dto.awards
-            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
-            if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
-        }
-        organizationService.processRecordPartiesFromBids(record)
-        organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     override fun awardByBidEv(cpid: String,
@@ -158,7 +128,6 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 contracts?.let { updateContracts(it, contractsDto) }
             }
         }
-
         if (dto.contracts.isNotEmpty()) {
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
@@ -178,11 +147,11 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACT)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
+                releaseService.saveMs(cpId = cpid, ms = ms)
                 releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
                 releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
             }
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
