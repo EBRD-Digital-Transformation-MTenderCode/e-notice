@@ -80,7 +80,19 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
 
     override fun getRecordTender(data: JsonNode): RecordTender = toObject(RecordTender::class.java, data.get(TENDER_JSON))
 
-    override fun getRecord(data: JsonNode): Record = toObject(Record::class.java, data)
+    override fun getRecord(data: JsonNode): Record {
+        val record = toObject(Record::class.java, data)
+        if (record.tender.items != null && record.tender.items!!.isEmpty()) {
+            record.tender.items = null
+        }
+        if (record.tender.lots != null && record.tender.lots!!.isEmpty()) {
+            record.tender.lots = null
+        }
+        if (record.tender.documents != null && record.tender.documents!!.isEmpty()) {
+            record.tender.documents = null
+        }
+        return record
+    }
 
     override fun getRecord(data: String): Record = toObject(Record::class.java, data)
 

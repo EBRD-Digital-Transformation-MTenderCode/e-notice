@@ -19,7 +19,7 @@ data class RecordTender @JsonCreator constructor(
 
         var statusDetails: TenderStatusDetails?,
 
-        val items: HashSet<Item>?,
+        var items: HashSet<Item>?,
 
         var lots: HashSet<Lot>?,
 
