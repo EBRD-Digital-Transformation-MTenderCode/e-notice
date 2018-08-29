@@ -53,16 +53,15 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         val newReleaseID = releaseService.newReleaseId(ocid)
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         val relatedLots = dto.lots?.map { it.id }?.toSet()
-        val rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
                 relatedLots = relatedLots,
-                rationale = rationale,
+                rationale = dto.amendments.rationale,
                 changes = null,
-                description = null
+                description = dto.amendments.description
         ))
         record.apply {
             id = releaseService.newReleaseId(ocid)
