@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_release (
     stage text,
     json_data text,
     primary key(cp_id, oc_id, release_id)
-)WITH CLUSTERING ORDER BY (oc_id ASC, release_date ASC);
+)WITH CLUSTERING ORDER BY (oc_id ASC);
 
 CREATE TABLE IF NOT EXISTS ocds.notice_compiled_release (
        cp_id text,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_budget_release (
     stage text,
     json_data text,
     primary key(cp_id, oc_id, release_id)
-)WITH CLUSTERING ORDER BY (oc_id ASC, release_date ASC);
+)WITH CLUSTERING ORDER BY (oc_id ASC);
 
 CREATE TABLE IF NOT EXISTS ocds.notice_budget_compiled_release (
        cp_id text,
