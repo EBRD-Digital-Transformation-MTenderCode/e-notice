@@ -51,18 +51,19 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         val record = releaseService.getRecord(recordEntity.jsonData)
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
-        val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
+        var amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         val relatedLots = dto.lots?.map { it.id }?.toSet()
+        if (dto.amendments.isNotEmpty()){
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
                 relatedLots = relatedLots,
-                rationale = dto.amendments.rationale,
+                rationale = dto.amendments[0].rationale,
                 changes = null,
-                description = dto.amendments.description
-        ))
+                description = dto.amendments[0].description
+        ))}
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
@@ -76,7 +77,7 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendments = amendmentsIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
     override fun tenderCancellation(cpid: String,

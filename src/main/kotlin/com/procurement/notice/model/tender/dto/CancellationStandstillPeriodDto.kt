@@ -7,7 +7,7 @@ import com.procurement.notice.model.ocds.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class CancellationStandstillPeriodDto @JsonCreator constructor(
 
-        val amendments: Amendment,
+        val amendments: List<Amendment>,
 
         val standstillPeriod: Period,
 

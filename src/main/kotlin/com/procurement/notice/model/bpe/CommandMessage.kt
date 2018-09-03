@@ -75,7 +75,7 @@ data class DataResponseDto(
 
         val ocid: String? = null,
 
-        val amendments: Set<String>? = null
+        val amendmentsIds: Set<String>? = null
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
