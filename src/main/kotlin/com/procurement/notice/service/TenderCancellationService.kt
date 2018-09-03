@@ -53,7 +53,7 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         val newReleaseID = releaseService.newReleaseId(ocid)
         var amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         val relatedLots = dto.lots?.map { it.id }?.toSet()
-        if (dto.amendments.isNotEmpty()){
+        if (dto.amendments!= null && dto.amendments.isNotEmpty()){
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
