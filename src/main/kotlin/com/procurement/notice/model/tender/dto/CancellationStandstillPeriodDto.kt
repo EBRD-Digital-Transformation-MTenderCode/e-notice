@@ -9,7 +9,7 @@ data class CancellationStandstillPeriodDto @JsonCreator constructor(
 
         val amendments: List<Amendment>?,
 
-        val standstillPeriod: Period,
+        val standstillPeriod: Period?,
 
         val lots: HashSet<Lot>?,
 

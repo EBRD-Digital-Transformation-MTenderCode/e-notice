@@ -1,11 +1,11 @@
 {
-  "id": "2217257c-31d9-4347-ad75-c2f81fd81281",
+  "id": "2217257c-31d9-4347-ad75-c2f81fd81287",
   "command": "createRelease",
   "context": {
-    "operationId": "2217257c-31d9-4347-ad75-c2f81fd81281",
-    "requestId": "bba129e0-af86-11e8-8850-bd4eb36c4943",
-    "cpid": "ocds-t1s2t3-MD-1535985361749",
-    "ocid": "ocds-t1s2t3-MD-1535985361749-EV-1535985361894",
+    "operationId": "2217257c-31d9-4347-ad75-c2f81fd81287",
+    "requestId": "9d2a0470-af93-11e8-9c72-2dc5c81f75f2",
+    "cpid": "ocds-t1s2t3-MD-1535990890845",
+    "ocid": "ocds-t1s2t3-MD-1535990890845-EV-1535990891450",
     "stage": "EV",
     "prevStage": "EV",
     "processType": "tenderCancellation",
@@ -15,35 +15,35 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "200d18f0-5f36-479d-a774-6ee7efe7878b",
+    "token": "19c43998-3102-4980-a3dc-ca0debd2ade7",
     "outcomes": [
       {
-        "id": "0843f7af-09ce-4938-b2b2-6180e3cb2621"
+        "id": "b5a98230-664b-4de7-b4da-a8fbdba4b61f"
       }
     ],
-    "startDate": "2018-09-03T14:36:24Z",
-    "endDate": "2018-09-03T14:36:29Z",
+    "startDate": "2018-09-03T16:08:36Z",
+    "endDate": "2018-09-03T16:08:41Z",
     "setExtendedPeriod": false
   },
   "data": {
-    "cpid": "ocds-t1s2t3-MD-1535985361749",
-    "ocid": "ocds-t1s2t3-MD-1535985361749-EV-1535985361894",
-    "amendments": [
-      "0843f7af-09ce-4938-b2b2-6180e3cb2621"
+    "cpid": "ocds-t1s2t3-MD-1535990890845",
+    "ocid": "ocds-t1s2t3-MD-1535990890845-EV-1535990891450",
+    "amendmentsIds": [
+      "b5a98230-664b-4de7-b4da-a8fbdba4b61f"
     ],
     "lots": [
       {
-        "id": "ae2d6853-af86-11e8-9585-9ddf35c205e9",
+        "id": "8dc680d3-af93-11e8-9585-9ddf35c205e9",
         "status": "cancelled",
         "statusDetails": "cancelled"
       },
       {
-        "id": "ae2d6854-af86-11e8-9585-9ddf35c205e9",
+        "id": "8dc680d4-af93-11e8-9585-9ddf35c205e9",
         "status": "cancelled",
         "statusDetails": "cancelled"
       },
       {
-        "id": "ae2d6855-af86-11e8-9585-9ddf35c205e9",
+        "id": "8dc680d5-af93-11e8-9585-9ddf35c205e9",
         "status": "cancelled",
         "statusDetails": "cancelled"
       }
