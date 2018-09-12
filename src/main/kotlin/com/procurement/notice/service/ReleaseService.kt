@@ -227,18 +227,19 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
                 params.statusDetails = TenderStatusDetails.PREQUALIFICATION
                 params.relatedProcessType = RelatedProcessType.X_PREQUALIFICATION
             }
+            Stage.EV -> {
+                params.statusDetails = TenderStatusDetails.EVALUATION
+                params.relatedProcessType = RelatedProcessType.X_EVALUATION
+            }
             Stage.PN -> {
                 params.statusDetails = TenderStatusDetails.PLANNING_NOTICE
                 params.relatedProcessType = RelatedProcessType.PLANNING
             }
             Stage.PIN -> {
                 params.statusDetails = TenderStatusDetails.PRIOR_NOTICE
-                params.relatedProcessType = RelatedProcessType.PRIOR
+                params.relatedProcessType = RelatedProcessType.X_PLANNED
             }
-            Stage.EV -> {
-                params.statusDetails = TenderStatusDetails.EVALUATION
-                params.relatedProcessType = RelatedProcessType.X_EVALUATION
-            }
+
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
         return params

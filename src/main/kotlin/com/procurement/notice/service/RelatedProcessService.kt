@@ -57,7 +57,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
         ei.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
-                relationship = listOf(RelatedProcessType.X_FINANCE_SOURCE),
+                relationship = listOf(RelatedProcessType.X_FUNDING_SOURCE),
                 scheme = RelatedProcessScheme.OCID,
                 identifier = fsOcId,
                 uri = getBudgetUri(cpId = ei.ocid, ocId = fsOcId)
@@ -121,7 +121,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         ms.planning?.budget?.budgetBreakdown?.asSequence()?.forEach {
             ms.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
-                    relationship = listOf(RelatedProcessType.X_BUDGET),
+                    relationship = listOf(RelatedProcessType.X_FUNDING_SOURCE),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = it.id,
                     uri = getBudgetUri(cpId = getEiCpIdFromOcId(it.id), ocId = it.id)))
@@ -187,7 +187,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                         if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
                         can.relatedProcesses?.add(RelatedProcess(
                                 id = UUIDs.timeBased().toString(),
-                                relationship = listOf(RelatedProcessType.X_CONTRACT),
+                                relationship = listOf(RelatedProcessType.X_CONTRACTING),
                                 scheme = RelatedProcessScheme.OCID,
                                 identifier = ocId,
                                 uri = getTenderUri(cpId = cpId, ocId = ocId)))

@@ -99,23 +99,17 @@ enum class RelatedProcessScheme constructor(private val value: String) {
 }
 
 enum class RelatedProcessType constructor(private val value: String) {
-    FRAMEWORK("framework"),
-    PLANNING("planning"),
-    PARENT("parent"),
-    PRIOR("prior"),
-    UNSUCCESSFUL_PROCESS("unsuccessfulProcess"),
-    REPLACEMENT_PROCESS("replacementProcess"),
-    RENEWAL_PROCESS("renewalProcess"),
-    SUB_CONTRACT("subContract"),
+
+    X_EXECUTION("x_execution"),
     X_EXPENDITURE_ITEM("x_expenditureItem"),
-    X_FINANCE_SOURCE("x_financeSource"),
+    X_FUNDING_SOURCE("x_fundingSource"),
+    PARENT("parent"),
     X_PRESELECTION("x_preselection"),
     X_PREQUALIFICATION("x_prequalification"),
     X_EVALUATION("x_evaluation"),
-    X_EXECUTION("x_execution"),
+    PLANNING("planning"),
     X_PLANNED("x_planned"),
-    X_BUDGET("x_budget"),
-    X_CONTRACT("x_contract");
+    X_CONTRACTING("x_contracting");
 
     override fun toString(): String {
         return this.value

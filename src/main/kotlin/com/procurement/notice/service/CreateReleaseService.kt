@@ -129,7 +129,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 hasPreviousNotice = true,
                 purposeOfNotice = PurposeOfNotice(false)
         )
-        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = RelatedProcessType.X_PLANNED)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
@@ -236,7 +236,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
                 purposeOfNotice = PurposeOfNotice(true)
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
-        relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PRIOR)
+        relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_PLANNED)
         releaseService.saveMs(cpId = cpid, ms = ms)
         releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)

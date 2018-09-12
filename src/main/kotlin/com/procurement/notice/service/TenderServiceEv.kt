@@ -144,7 +144,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                         relatedProcesses = null)
                 organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
-                relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACT)
+                relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)
                 relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
                 relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract)
                 contractRecords.add(recordContract)
