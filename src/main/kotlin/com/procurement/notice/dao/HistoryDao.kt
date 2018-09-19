@@ -56,7 +56,7 @@ class HistoryDaoImpl(private val session: Session) : HistoryDao {
         private const val HISTORY_TABLE = "notice_history"
         private const val OPERATION_ID = "operation_id"
         private const val COMMAND = "command"
-        private const val OPERATION_DATE = "OPERATION_date"
+        private const val OPERATION_DATE = "operation_date"
         private const val JSON_DATA = "json_data"
     }
 
