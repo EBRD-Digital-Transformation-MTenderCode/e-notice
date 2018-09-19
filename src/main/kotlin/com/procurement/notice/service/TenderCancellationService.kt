@@ -1,14 +1,10 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.procurement.notice.exception.ErrorException
-import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CancellationStandstillPeriodDto
-import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -53,17 +49,18 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         val newReleaseID = releaseService.newReleaseId(ocid)
         var amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         val relatedLots = dto.lots?.map { it.id }?.toSet()
-        if (dto.amendments!= null && dto.amendments.isNotEmpty()){
-        amendments.add(Amendment(
-                id = UUID.randomUUID().toString(),
-                amendsReleaseID = actualReleaseID,
-                releaseID = newReleaseID,
-                date = releaseDate,
-                relatedLots = relatedLots,
-                rationale = dto.amendments[0].rationale,
-                changes = null,
-                description = dto.amendments[0].description
-        ))}
+        if (dto.amendments != null && dto.amendments.isNotEmpty()) {
+            amendments.add(Amendment(
+                    id = UUID.randomUUID().toString(),
+                    amendsReleaseID = actualReleaseID,
+                    releaseID = newReleaseID,
+                    date = releaseDate,
+                    relatedLots = relatedLots,
+                    rationale = dto.amendments[0].rationale,
+                    changes = null,
+                    description = dto.amendments[0].description
+            ))
+        }
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
