@@ -3,7 +3,7 @@ package com.procurement.notice.controller
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.model.bpe.*
-import com.procurement.notice.service.MainService
+import com.procurement.notice.service.CommandService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/command")
-class CommandController(private val mainService: MainService) {
+class CommandController(private val commandService: CommandService) {
 
     @PostMapping
     fun command(@RequestBody commandMessage: CommandMessage): ResponseEntity<ResponseDto> {
@@ -21,7 +21,7 @@ class CommandController(private val mainService: MainService) {
 
     fun execute(cm: CommandMessage): ResponseDto {
         return when (cm.command) {
-            CommandType.CREATE_RELEASE -> mainService.createRelease(cm)
+            CommandType.CREATE_RELEASE -> commandService.execute(cm)
         }
     }
 
