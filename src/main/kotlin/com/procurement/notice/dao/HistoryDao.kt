@@ -2,8 +2,6 @@ package com.procurement.notice.dao
 
 import com.datastax.driver.core.Session
 import com.datastax.driver.core.querybuilder.QueryBuilder.*
-import com.procurement.notice.exception.ErrorException
-import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.HistoryEntity
 import com.procurement.notice.utils.localNowUTC
@@ -45,17 +43,13 @@ class HistoryDaoImpl(private val session: Session) : HistoryDao {
                 operationDate = localNowUTC().toDate(),
                 jsonData = toJson(response))
 
-        val insert = insertInto(HISTORY_TABLE).ifNotExists()
+        val insert = insertInto(HISTORY_TABLE)
                 .value(OPERATION_ID, entity.operationId)
                 .value(COMMAND, entity.command)
                 .value(OPERATION_DATE, entity.operationDate)
                 .value(JSON_DATA, entity.jsonData)
-        val resultSet = session.execute(insert)
-        return if (!resultSet.wasApplied()) {
-            getHistory(entity.operationId, entity.command) ?: throw ErrorException(ErrorType.HISTORY_ERROR)
-        } else {
-            entity
-        }
+        session.execute(insert)
+        return entity
     }
 
     companion object {
