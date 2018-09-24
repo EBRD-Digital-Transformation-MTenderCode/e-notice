@@ -79,6 +79,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.AWARD)
             tender.awardPeriod = dto.awardPeriod
+            tender.statusDetails = dto.tenderStatusDetails
             if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)

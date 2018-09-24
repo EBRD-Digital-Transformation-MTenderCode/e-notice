@@ -8,6 +8,10 @@ import java.util.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class TenderPeriodEndDto @JsonCreator constructor(
 
+        val tenderStatus: TenderStatus?,
+
+        val tenderStatusDetails: TenderStatusDetails?,
+
         val awardPeriod: Period,
 
         val awards: HashSet<Award>,
