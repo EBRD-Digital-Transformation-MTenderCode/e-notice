@@ -193,6 +193,14 @@ class CommandServiceImpl(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
+            ENQUIRY_PERIOD_END -> return tenderServiceEv.enquiryPeriodEnd(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
+
             AWARD_BY_BID -> return tenderService.awardByBid(
                     cpid = cpId,
                     ocid = ocId!!,

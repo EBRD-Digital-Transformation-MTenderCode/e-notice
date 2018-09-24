@@ -9,6 +9,7 @@ import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.AwardByBidEvDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
+import com.procurement.notice.model.tender.dto.SuspendTenderDto
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toJson
@@ -37,6 +38,7 @@ interface TenderServiceEv {
                            releaseDate: LocalDateTime,
                            data: JsonNode): ResponseDto
 
+    fun enquiryPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
 
 }
 
@@ -155,6 +157,19 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         contractRecords.forEach { recordContract ->
             releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
         }
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    override fun enquiryPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val dto = toObject(SuspendTenderDto::class.java, toJson(data))
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        record.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tender.statusDetails = dto.tender.statusDetails
+        }
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
