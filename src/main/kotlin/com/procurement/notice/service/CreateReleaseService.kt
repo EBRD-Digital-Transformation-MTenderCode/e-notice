@@ -7,7 +7,6 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CheckFsDto
-import com.procurement.notice.utils.dateNow
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -82,8 +81,8 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         }
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
-        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = dateNow())
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = dateNow())
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = releaseDate.toDate())
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = releaseDate.toDate())
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)

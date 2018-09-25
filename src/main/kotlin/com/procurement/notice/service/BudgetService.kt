@@ -54,7 +54,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             initiationType = InitiationType.TENDER
         }
         organizationService.processEiParties(ei)
-        budgetDao.saveBudget(getEiEntity(ei, stage, dateNow()))
+        budgetDao.saveBudget(getEiEntity(ei, stage, releaseDate.toDate()))
         return ResponseDto(data = DataResponseDto(cpid = cpid))
     }
 
@@ -86,7 +86,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
-        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount, dateNow()))
+        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount, releaseDate.toDate()))
         dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }

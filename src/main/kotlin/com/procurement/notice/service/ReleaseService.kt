@@ -202,7 +202,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
     }
 
 
-    override fun saveMs(cpId: String, ms: Ms, publishDate: Date ) {
+    override fun saveMs(cpId: String, ms: Ms, publishDate: Date) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
 
     }
