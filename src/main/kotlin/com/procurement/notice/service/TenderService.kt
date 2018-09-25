@@ -9,6 +9,7 @@ import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
+import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -87,7 +88,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         }
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -104,7 +105,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -135,8 +136,8 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
         }
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -155,7 +156,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -178,7 +179,7 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         }
         organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -210,8 +211,8 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -280,9 +281,9 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
         relatedProcessService.addRecordRelatedProcessToRecord(record = record, ocId = ocid, cpId = cpid, processType = prRelatedProcessType)
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

@@ -8,9 +8,9 @@ data class ReleaseEntity(
 
         var ocId: String,
 
-        var releaseDate: Date,
-
         var publishDate: Date,
+
+        var releaseDate: Date,
 
         var releaseId: String,
 

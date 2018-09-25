@@ -12,6 +12,7 @@ import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.SuspendTenderDto
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -68,7 +69,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -95,8 +96,8 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
         }
-        releaseService.saveMs(cpid, ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -152,10 +153,10 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
                 contractRecords.add(recordContract)
             }
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         contractRecords.forEach { recordContract ->
-            releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract)
+            releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract, publishDate = releaseDate.toDate())
         }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -169,7 +170,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

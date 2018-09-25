@@ -12,8 +12,12 @@ import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Params
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
-import com.procurement.notice.utils.*
+import com.procurement.notice.utils.dateNow
+import com.procurement.notice.utils.milliNowUTC
+import com.procurement.notice.utils.toJson
+import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
+import java.util.*
 
 interface ReleaseService {
 
@@ -37,24 +41,25 @@ interface ReleaseService {
 
     fun newOcId(cpId: String, stage: String): String
 
-    fun newRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity
+    fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity
 
-    fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity
+    fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord, publishDate: Date): ReleaseEntity
 
-    fun newMSEntity(cpId: String, ms: Ms): ReleaseEntity
+    fun newMSEntity(cpId: String, ms: Ms, publishDate: Date): ReleaseEntity
 
     fun newEntity(cpId: String,
                   ocId: String,
                   releaseId: String,
                   stage: String,
                   json: String,
-                  status: String): ReleaseEntity
+                  status: String,
+                  publishDate: Date): ReleaseEntity
 
-    fun saveMs(cpId: String, ms: Ms)
+    fun saveMs(cpId: String, ms: Ms, publishDate: Date)
 
-    fun saveRecord(cpId: String, stage: String, record: Record)
+    fun saveRecord(cpId: String, stage: String, record: Record, publishDate: Date)
 
-    fun saveContractRecord(cpId: String, stage: String, record: ContractRecord)
+    fun saveContractRecord(cpId: String, stage: String, record: ContractRecord, publishDate: Date)
 
     fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params
 
@@ -128,7 +133,7 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
         return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
     }
 
-    override fun newRecordEntity(cpId: String, stage: String, record: Record): ReleaseEntity {
+    override fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
@@ -137,11 +142,12 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
                 releaseId = releaseId,
                 stage = stage,
                 json = toJson(record),
-                status = record.tender.status.toString()
+                status = record.tender.status.toString(),
+                publishDate = publishDate
         )
     }
 
-    override fun newMSEntity(cpId: String, ms: Ms): ReleaseEntity {
+    override fun newMSEntity(cpId: String, ms: Ms, publishDate: Date): ReleaseEntity {
         val releaseId = ms.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
                 cpId = cpId,
@@ -149,11 +155,12 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
                 releaseId = releaseId,
                 stage = "",
                 json = toJson(ms),
-                status = ms.tender.status.toString()
+                status = ms.tender.status.toString(),
+                publishDate = publishDate
         )
     }
 
-    override fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord): ReleaseEntity {
+    override fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
@@ -162,7 +169,8 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
                 releaseId = releaseId,
                 stage = stage,
                 json = toJson(record),
-                status = ""
+                status = "",
+                publishDate = publishDate
         )
     }
 
@@ -171,11 +179,13 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
                            releaseId: String,
                            stage: String,
                            json: String,
-                           status: String): ReleaseEntity {
+                           status: String,
+                           publishDate: Date): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
-                releaseDate = localNowUTC().toDate(),
+                publishDate = publishDate,
+                releaseDate = dateNow(),
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = json,
@@ -192,17 +202,17 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
     }
 
 
-    override fun saveMs(cpId: String, ms: Ms) {
-        releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms))
+    override fun saveMs(cpId: String, ms: Ms, publishDate: Date ) {
+        releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
 
     }
 
-    override fun saveRecord(cpId: String, stage: String, record: Record) {
-        releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, record = record))
+    override fun saveRecord(cpId: String, stage: String, record: Record, publishDate: Date) {
+        releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, record = record, publishDate = publishDate))
     }
 
-    override fun saveContractRecord(cpId: String, stage: String, record: ContractRecord) {
-        releaseDao.saveRecord(newContractRecordEntity(cpId = cpId, stage = stage, record = record))
+    override fun saveContractRecord(cpId: String, stage: String, record: ContractRecord, publishDate: Date) {
+        releaseDao.saveRecord(newContractRecordEntity(cpId = cpId, stage = stage, record = record, publishDate = publishDate))
     }
 
     override fun getParamsForCreateCnPnPin(operation: Operation, stage: Stage): Params {

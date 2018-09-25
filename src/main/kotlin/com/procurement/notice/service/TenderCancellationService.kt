@@ -72,8 +72,8 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
@@ -106,8 +106,8 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

@@ -94,8 +94,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             tender = recordTender
             tender.amendments = amendments
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
@@ -135,8 +135,8 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             tag = listOf(Tag.PLANNING_UPDATE)
             tender = recordTender
         }
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         val amendmentsIds = null
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
@@ -170,7 +170,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             tender.enquiryPeriod = recordTender.enquiryPeriod
             tender.amendments = amendments
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }

@@ -7,6 +7,8 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CheckFsDto
+import com.procurement.notice.utils.dateNow
+import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -80,8 +82,8 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         }
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = dateNow())
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = dateNow())
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
@@ -131,9 +133,9 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = RelatedProcessType.X_PLANNED)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
@@ -185,9 +187,9 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
@@ -237,9 +239,9 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         )
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_PLANNED)
-        releaseService.saveMs(cpId = cpid, ms = ms)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord)
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 

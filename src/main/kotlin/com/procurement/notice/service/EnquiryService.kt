@@ -69,10 +69,10 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                     tag = listOf(Tag.COMPILED)
                     tender.hasEnquiries = true
                 }
-                releaseService.saveMs(cpId = cpid, ms = ms)
+                releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
             }
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -92,7 +92,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             this.answer = enquiry.answer
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -112,7 +112,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
             tender.enquiryPeriod = dto.tender.enquiryPeriod
         }
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

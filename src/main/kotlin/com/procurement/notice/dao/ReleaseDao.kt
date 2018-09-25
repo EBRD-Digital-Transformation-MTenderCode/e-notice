@@ -62,6 +62,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         insertCompiled
                 .value(CP_ID, releaseEntity.cpId)
                 .value(OC_ID, releaseEntity.ocId)
+                .value(PUBLISH_DATE, releaseEntity.publishDate)
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
                 .value(RELEASE_ID, releaseEntity.releaseId)
                 .value(STAGE, releaseEntity.stage)
