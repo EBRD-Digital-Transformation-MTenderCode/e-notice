@@ -18,6 +18,7 @@ import com.procurement.notice.utils.*
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.util.*
 
 interface BudgetService {
 
@@ -53,7 +54,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             initiationType = InitiationType.TENDER
         }
         organizationService.processEiParties(ei)
-        budgetDao.saveBudget(getEiEntity(ei, stage))
+        budgetDao.saveBudget(getEiEntity(ei, stage, dateNow()))
         return ResponseDto(data = DataResponseDto(cpid = cpid))
     }
 
@@ -68,7 +69,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             planning = updateEi.planning
             tender = updateEi.tender
         }
-        budgetDao.saveBudget(getEiEntity(ei, stage))
+        budgetDao.saveBudget(getEiEntity(ei, stage, entity.publishDate))
         val amendmentIds = null
         return ResponseDto(data = DataResponseDto(cpid = cpid, amendmentsIds = amendmentIds))
     }
@@ -85,7 +86,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         organizationService.processFsParties(fs)
         relatedProcessService.addEiRelatedProcessToFs(fs, cpid)
         val amount: BigDecimal = fs.planning?.budget?.amount?.amount ?: BigDecimal.ZERO
-        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount))
+        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, amount, dateNow()))
         dto.ei?.let { createEiByFs(cpid, fs.ocid, dto.ei) }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
@@ -105,7 +106,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             tender = updateFs.tender
             planning = updateFs.planning
         }
-        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount))
+        budgetDao.saveBudget(getFsEntity(cpid, fs, stage, updateAmount, entity.publishDate))
         if (updateAmount != amount && dto.ei != null) updateEiAmountByFs(cpid, dto.ei)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
@@ -117,7 +118,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             ei.id = getReleaseId(eiCpId)
             ei.date = dateTime
             relatedProcessService.addMsRelatedProcessToEi(ei, msCpId)
-            budgetDao.saveBudget(getEiEntity(ei, entity.stage))
+            budgetDao.saveBudget(getEiEntity(ei, entity.stage, entity.publishDate))
         }
     }
 
@@ -130,7 +131,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             fs.date = dateTime
             fs.tag = listOf(Tag.PLANNING_UPDATE)
             relatedProcessService.addMsRelatedProcessToFs(fs, msCpId)
-            budgetDao.saveBudget(getFsEntity(entity.cpId, fs, entity.stage, entity.amount))
+            budgetDao.saveBudget(getFsEntity(entity.cpId, fs, entity.stage, entity.amount, entity.publishDate))
         }
     }
 
@@ -152,7 +153,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             planning?.budget?.amount = eiForFs.planning.budget.amount
         }
         relatedProcessService.addFsRelatedProcessToEi(ei, fsOcId)
-        budgetDao.saveBudget(getEiEntity(ei, entity.stage))
+        budgetDao.saveBudget(getEiEntity(ei, entity.stage, entity.publishDate))
     }
 
     private fun updateEiAmountByFs(eiCpId: String, eiForFs: EiForFs) {
@@ -163,27 +164,29 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
             date = localNowUTC()
             planning?.budget?.amount = eiForFs.planning.budget.amount
         }
-        budgetDao.saveBudget(getEiEntity(ei, entity.stage))
+        budgetDao.saveBudget(getEiEntity(ei, entity.stage, entity.publishDate))
     }
 
-    private fun getEiEntity(ei: EI, stage: String): BudgetEntity {
+    private fun getEiEntity(ei: EI, stage: String, publishDate: Date): BudgetEntity {
         val releaseId = ei.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return BudgetEntity(
                 cpId = ei.ocid,
                 ocId = ei.ocid,
-                releaseDate = localNowUTC().toDate(),
+                publishDate = publishDate,
+                releaseDate = dateNow(),
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = toJson(ei)
         )
     }
 
-    private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: BigDecimal?): BudgetEntity {
+    private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: BigDecimal?, publishDate: Date): BudgetEntity {
         val releaseId = fs.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return BudgetEntity(
                 cpId = cpId,
                 ocId = fs.ocid,
-                releaseDate = localNowUTC().toDate(),
+                publishDate = publishDate,
+                releaseDate = dateNow(),
                 releaseId = releaseId,
                 stage = stage,
                 amount = amount,

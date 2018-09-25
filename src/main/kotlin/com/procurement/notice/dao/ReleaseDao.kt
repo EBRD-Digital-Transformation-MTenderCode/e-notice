@@ -37,6 +37,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         insertCompiled
                 .value(CP_ID, releaseEntity.cpId)
                 .value(OC_ID, releaseEntity.ocId)
+                .value(PUBLISH_DATE, releaseEntity.publishDate)
                 .value(RELEASE_DATE, releaseEntity.releaseDate)
                 .value(RELEASE_ID, releaseEntity.releaseId)
                 .value(STAGE, releaseEntity.stage)
@@ -88,6 +89,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         return if (row != null) ReleaseEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
@@ -105,6 +107,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         return if (row != null) ReleaseEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
@@ -123,6 +126,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         return if (row != null) ReleaseEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
@@ -135,6 +139,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         private const val TENDER_OFFSET_TABLE = "notice_offset"
         private const val CP_ID = "cp_id"
         private const val OC_ID = "oc_id"
+        private const val PUBLISH_DATE = "publish_date"
         private const val RELEASE_DATE = "release_date"
         private const val RELEASE_ID = "release_id"
         private const val STAGE = "stage"

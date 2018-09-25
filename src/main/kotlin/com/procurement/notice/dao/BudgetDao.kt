@@ -37,6 +37,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         insertCompiledRelease
                 .value(CP_ID, entity.cpId)
                 .value(OC_ID, entity.ocId)
+                .value(PUBLISH_DATE, entity.publishDate)
                 .value(RELEASE_DATE, entity.releaseDate)
                 .value(RELEASE_ID, entity.releaseId)
                 .value(STAGE, entity.stage)
@@ -70,6 +71,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         return if (row != null) BudgetEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
@@ -88,6 +90,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         return if (row != null) BudgetEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
                 row.getTimestamp(RELEASE_DATE),
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
@@ -101,6 +104,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         private const val BUDGET_OFFSET_TABLE = "notice_budget_offset"
         private const val CP_ID = "cp_id"
         private const val OC_ID = "oc_id"
+        private const val PUBLISH_DATE = "publish_date"
         private const val RELEASE_DATE = "release_date"
         private const val RELEASE_ID = "release_id"
         private const val STAGE = "stage"

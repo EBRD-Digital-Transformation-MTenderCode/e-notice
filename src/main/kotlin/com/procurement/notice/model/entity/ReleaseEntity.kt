@@ -10,6 +10,8 @@ data class ReleaseEntity(
 
         var releaseDate: Date,
 
+        var publishDate: Date,
+
         var releaseId: String,
 
         var stage: String,

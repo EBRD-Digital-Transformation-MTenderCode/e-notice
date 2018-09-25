@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_release (
 CREATE TABLE IF NOT EXISTS ocds.notice_compiled_release (
        cp_id text,
        oc_id text,
+       publish_date timestamp,
        release_date timestamp,
        release_id text,
        stage text,
@@ -42,6 +43,7 @@ CREATE TABLE IF NOT EXISTS  ocds.notice_budget_release (
 CREATE TABLE IF NOT EXISTS ocds.notice_budget_compiled_release (
        cp_id text,
        oc_id text,
+       publish_date timestamp,
        release_date timestamp,
        release_id text,
        stage text,

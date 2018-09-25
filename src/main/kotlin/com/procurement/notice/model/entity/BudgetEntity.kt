@@ -11,6 +11,8 @@ data class BudgetEntity(
 
         var releaseDate: Date,
 
+        var publishDate: Date,
+
         var releaseId: String,
 
         var stage: String,
@@ -18,6 +20,7 @@ data class BudgetEntity(
         var amount: BigDecimal? = BigDecimal.valueOf(0.00),
 
         var jsonData: String
+
 )
 
 
