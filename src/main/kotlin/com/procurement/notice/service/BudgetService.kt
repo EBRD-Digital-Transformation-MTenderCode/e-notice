@@ -59,7 +59,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val entity = budgetDao.getByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = budgetDao.getEiByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateEi = toObject(EI::class.java, data)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
@@ -92,7 +92,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val entity = budgetDao.getByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = budgetDao.getFsByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val dto = toObject(FsDto::class.java, data)
         val fs = toObject(FS::class.java, entity.jsonData)
         val updateFs = dto.fs
@@ -113,7 +113,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
         eiIds.forEach { eiCpId ->
-            val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val entity = budgetDao.getEiByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
             ei.id = getReleaseId(eiCpId)
             ei.date = dateTime
@@ -125,7 +125,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     override fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
         budgetBreakdowns.forEach {
             val eiCpId = getCpIdFromOcId(it.id)
-            val entity = budgetDao.getByCpIdAndOcId(eiCpId, it.id) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val entity = budgetDao.getFsByCpIdAndOcId(eiCpId, it.id) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             fs.id = getReleaseId(it.id)
             fs.date = dateTime
@@ -145,7 +145,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     private fun createEiByFs(eiCpId: String, fsOcId: String, eiForFs: EiForFs) {
-        val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = budgetDao.getEiByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
             id = getReleaseId(eiCpId)
@@ -157,7 +157,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
     }
 
     private fun updateEiAmountByFs(eiCpId: String, eiForFs: EiForFs) {
-        val entity = budgetDao.getByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        val entity = budgetDao.getEiByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val ei = toObject(EI::class.java, entity.jsonData)
         ei.apply {
             id = getReleaseId(eiCpId)

@@ -14,9 +14,9 @@ interface BudgetDao {
 
     fun getTotalAmountByCpId(cpId: String): BigDecimal?
 
-    fun getByCpId(cpId: String): BudgetEntity?
+    fun getEiByCpId(cpId: String): BudgetEntity?
 
-    fun getByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity?
+    fun getFsByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity?
 
 }
 
@@ -61,11 +61,12 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         return row?.getDecimal(AMOUNT)
     }
 
-    override fun getByCpId(cpId: String): BudgetEntity? {
+    override fun getEiByCpId(cpId: String): BudgetEntity? {
         val query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
+                .and(eq(OC_ID, cpId))
                 .limit(1)
         val row = session.execute(query).one()
         return if (row != null) BudgetEntity(
@@ -79,7 +80,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity? {
+    override fun getFsByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity? {
         val query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)
