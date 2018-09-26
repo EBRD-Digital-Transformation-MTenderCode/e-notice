@@ -65,7 +65,7 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_CANCELLATION)
-            tender.statusDetails = TenderStatusDetails.CANCELLED
+            tender.statusDetails = TenderStatusDetails.CANCELLATION
             tender.standstillPeriod = dto.standstillPeriod
             tender.amendments = amendments
             if (dto.lots != null) tender.lots?.let { updateLots(it, dto.lots) }

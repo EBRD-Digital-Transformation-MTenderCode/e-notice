@@ -242,17 +242,23 @@ enum class TenderStatusDetails constructor(private val value: String) {
     EVALUATED("evaluated"),
     EXECUTION("execution"),
     AWARDED("awarded"),
-    //**//
-    PLANNING("planning"),
-    PLANNED("planned"),
-    ACTIVE("active"),
     BLOCKED("blocked"),
     CANCELLED("cancelled"),
     UNSUCCESSFUL("unsuccessful"),
-    COMPLETE("complete"),
     WITHDRAWN("withdrawn"),
-    SUSPENDED("suspended"),
     STANDSTILL("standStill"),
+    /**/
+    PLANNING("planning"),
+    PLANNED("planned"),
+    CLARIFICATION("clarification"),
+    TENDERING("tendering"),
+    CANCELLATION("cancellation"),
+    SUSPENDED("suspended"),
+    AWARDING("awarding"),
+    AWARDED_STANDSTILL("awardedStandStill"),
+    AWARDED_SUSPENDED("awardedSuspended"),
+    AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
+    COMPLETE("complete"),
     EMPTY("empty");
 
     override fun toString(): String {
@@ -280,6 +286,73 @@ enum class TenderStatusDetails constructor(private val value: String) {
         }
     }
 }
+
+enum class LotStatus constructor(private val value: String) {
+    PLANNING("planning"),
+    PLANNED("planned"),
+    ACTIVE("active"),
+    CANCELLED("cancelled"),
+    UNSUCCESSFUL("unsuccessful"),
+    COMPLETE("complete");
+
+    override fun toString(): String {
+        return this.value
+    }
+
+    @JsonValue
+    fun value(): String {
+        return this.value
+    }
+
+    companion object {
+
+        private val CONSTANTS = HashMap<String, LotStatus>()
+
+        init {
+            for (c in values()) {
+                CONSTANTS[c.value] = c
+            }
+        }
+
+        @JsonCreator
+        fun fromValue(value: String): LotStatus {
+            return CONSTANTS[value] ?: throw IllegalArgumentException(value)
+        }
+    }
+}
+
+enum class LotStatusDetails constructor(private val value: String) {
+    UNSUCCESSFUL("unsuccessful"),
+    AWARDED("awarded"),
+    CANCELLED("cancelled"),
+    EMPTY("empty");
+
+    override fun toString(): String {
+        return this.value
+    }
+
+    @JsonValue
+    fun value(): String {
+        return this.value
+    }
+
+    companion object {
+
+        private val CONSTANTS = HashMap<String, LotStatusDetails>()
+
+        init {
+            for (c in values()) {
+                CONSTANTS[c.value] = c
+            }
+        }
+
+        @JsonCreator
+        fun fromValue(value: String): LotStatusDetails {
+            return CONSTANTS[value] ?: throw IllegalArgumentException(value)
+        }
+    }
+}
+
 
 enum class Stage {
     EI,

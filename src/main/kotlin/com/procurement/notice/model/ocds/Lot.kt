@@ -12,9 +12,9 @@ data class Lot @JsonCreator constructor(
 
         val description: String?,
 
-        var status: TenderStatus?,
+        var status: LotStatus?,
 
-        var statusDetails: TenderStatusDetails?,
+        var statusDetails: LotStatusDetails?,
 
         val value: Value?,
 
