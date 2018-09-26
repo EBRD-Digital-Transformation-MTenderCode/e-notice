@@ -21,10 +21,6 @@ fun LocalDateTime.toDate(): Date {
     return Date.from(this.toInstant(ZoneOffset.UTC))
 }
 
-fun dateNow(): Date {
-    return localNowUTC().toDate()
-}
-
 fun localNowUTC(): LocalDateTime {
     return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
 }

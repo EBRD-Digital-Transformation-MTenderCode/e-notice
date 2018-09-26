@@ -12,8 +12,8 @@ import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Params
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
-import com.procurement.notice.utils.dateNow
 import com.procurement.notice.utils.milliNowUTC
+import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -50,10 +50,11 @@ interface ReleaseService {
     fun newEntity(cpId: String,
                   ocId: String,
                   releaseId: String,
+                  releaseDate: Date,
+                  publishDate: Date,
                   stage: String,
                   json: String,
-                  status: String,
-                  publishDate: Date): ReleaseEntity
+                  status: String): ReleaseEntity
 
     fun saveMs(cpId: String, ms: Ms, publishDate: Date)
 
@@ -136,56 +137,63 @@ class ReleaseServiceImpl(private val releaseDao: ReleaseDao) : ReleaseService {
     override fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseId = releaseId,
+                releaseDate = releaseDate,
+                publishDate = publishDate,
                 stage = stage,
                 json = toJson(record),
-                status = record.tender.status.toString(),
-                publishDate = publishDate
+                status = record.tender.status.toString()
         )
     }
 
     override fun newMSEntity(cpId: String, ms: Ms, publishDate: Date): ReleaseEntity {
         val releaseId = ms.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = ms.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
                 cpId = cpId,
                 ocId = cpId,
                 releaseId = releaseId,
+                releaseDate = releaseDate,
+                publishDate = publishDate,
                 stage = "",
                 json = toJson(ms),
-                status = ms.tender.status.toString(),
-                publishDate = publishDate
+                status = ms.tender.status.toString()
         )
     }
 
     override fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
                 cpId = cpId,
                 ocId = ocId,
                 releaseId = releaseId,
+                releaseDate = releaseDate,
+                publishDate = publishDate,
                 stage = stage,
                 json = toJson(record),
-                status = "",
-                publishDate = publishDate
+                status = ""
         )
     }
 
     override fun newEntity(cpId: String,
                            ocId: String,
                            releaseId: String,
+                           releaseDate: Date,
+                           publishDate: Date,
                            stage: String,
                            json: String,
-                           status: String,
-                           publishDate: Date): ReleaseEntity {
+                           status: String): ReleaseEntity {
         return ReleaseEntity(
                 cpId = cpId,
                 ocId = ocId,
                 publishDate = publishDate,
-                releaseDate = dateNow(),
+                releaseDate = releaseDate,
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = json,

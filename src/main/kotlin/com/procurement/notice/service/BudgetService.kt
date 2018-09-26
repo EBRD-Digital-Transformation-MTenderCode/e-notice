@@ -169,11 +169,12 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     private fun getEiEntity(ei: EI, stage: String, publishDate: Date): BudgetEntity {
         val releaseId = ei.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = ei.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return BudgetEntity(
                 cpId = ei.ocid,
                 ocId = ei.ocid,
                 publishDate = publishDate,
-                releaseDate = dateNow(),
+                releaseDate = releaseDate,
                 releaseId = releaseId,
                 stage = stage,
                 jsonData = toJson(ei)
@@ -182,11 +183,12 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
 
     private fun getFsEntity(cpId: String, fs: FS, stage: String, amount: BigDecimal?, publishDate: Date): BudgetEntity {
         val releaseId = fs.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = fs.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return BudgetEntity(
                 cpId = cpId,
                 ocId = fs.ocid,
                 publishDate = publishDate,
-                releaseDate = dateNow(),
+                releaseDate = releaseDate,
                 releaseId = releaseId,
                 stage = stage,
                 amount = amount,
