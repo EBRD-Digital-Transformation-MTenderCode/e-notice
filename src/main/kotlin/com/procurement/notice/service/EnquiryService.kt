@@ -64,7 +64,7 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
                 val msEntity = releaseService.getMsEntity(cpid)
                 val ms = releaseService.getMs(msEntity.jsonData)
                 ms.apply {
-                    id = releaseService.newReleaseId(ocid)
+                    id = releaseService.newReleaseId(cpid)
                     date = releaseDate
                     tag = listOf(Tag.COMPILED)
                     tender.hasEnquiries = true
