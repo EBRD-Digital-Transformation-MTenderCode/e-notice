@@ -21,8 +21,6 @@ data class Ms @JsonCreator constructor(
 
         var initiationType: InitiationType?,
 
-        val language: String? = "ro",
-
         var planning: MsPlanning?,
 
         var tender: MsTender,

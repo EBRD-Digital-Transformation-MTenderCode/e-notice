@@ -20,8 +20,6 @@ data class Record @JsonCreator constructor(
 
         var initiationType: InitiationType?,
 
-        val language: String? = "ro",
-
         var parties: HashSet<Organization>?,
 
         var tender: RecordTender,
