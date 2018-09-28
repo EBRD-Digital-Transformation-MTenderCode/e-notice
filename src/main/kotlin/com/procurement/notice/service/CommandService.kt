@@ -30,14 +30,14 @@ class CommandServiceImpl(private val historyDao: HistoryDao,
 
 
     override fun execute(cm: CommandMessage): ResponseDto {
-        var historyEntity = historyDao.getHistory(cm.context.operationId, cm.command.value())
+        var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
         if (historyEntity != null) {
             return toObject(ResponseDto::class.java, historyEntity.jsonData)
         }
         val response = when (cm.command) {
             CommandType.CREATE_RELEASE -> createRelease(cm)
         }
-        historyEntity = historyDao.saveHistory(cm.context.operationId, cm.command.value(), response)
+        historyEntity = historyDao.saveHistory(cm.id, cm.command.value(), response)
         return toObject(ResponseDto::class.java, historyEntity.jsonData)
     }
 
