@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
-import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.LotStatus
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -71,11 +70,14 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
         var relatedLots: Set<String>? = null
         var rationale = "General change of Contract Notice"
-        val canceledLots = getCanceledLotsIds(recordTender.lots)
-        if (canceledLots != null && canceledLots.isNotEmpty()) {
-            relatedLots = canceledLots
-            rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
+        recordTender.lots?.let { lots ->
+            val canceledLots = lots.asSequence().filter { it.status == LotStatus.CANCELLED }.map { it.id }.toSet()
+            if (canceledLots.isNotEmpty()) {
+                relatedLots = canceledLots
+                rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
+            }
         }
+
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
@@ -174,13 +176,4 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
-
-
-    fun getCanceledLotsIds(lots: HashSet<Lot>?): Set<String>? {
-        return lots?.asSequence()
-                ?.filter { it.status == TenderStatus.CANCELLED }
-                ?.map { it.id }
-                ?.toSet()
-    }
-
 }
