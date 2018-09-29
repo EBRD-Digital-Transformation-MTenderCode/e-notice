@@ -20,13 +20,13 @@ interface CommandService {
 
 @Service
 class CommandServiceImpl(private val historyDao: HistoryDao,
-                      private val budgetService: BudgetService,
-                      private val createReleaseService: CreateReleaseService,
-                      private val updateReleaseService: UpdateReleaseService,
-                      private val tenderService: TenderService,
-                      private val tenderServiceEv: TenderServiceEv,
-                      private val tenderCancellationService: TenderCancellationService,
-                      private val enquiryService: EnquiryService) : CommandService {
+                         private val budgetService: BudgetService,
+                         private val createReleaseService: CreateReleaseService,
+                         private val updateReleaseService: UpdateReleaseService,
+                         private val tenderService: TenderService,
+                         private val tenderServiceEv: TenderServiceEv,
+                         private val tenderCancellationService: TenderCancellationService,
+                         private val enquiryService: EnquiryService) : CommandService {
 
 
     override fun execute(cm: CommandMessage): ResponseDto {
