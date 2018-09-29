@@ -168,6 +168,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
         val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
                 ocid = newOcId,
@@ -187,7 +188,6 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
@@ -222,6 +222,7 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
         val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
         val newRecord = record.copy(
                 id = releaseService.newReleaseId(newOcId),
@@ -239,7 +240,6 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
         relatedProcessService.addRecordRelatedProcessToRecord(record = newRecord, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_PLANNED)
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = newRecord, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
