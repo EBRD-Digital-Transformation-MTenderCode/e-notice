@@ -26,12 +26,6 @@ interface EnquiryService {
                   stage: String,
                   releaseDate: LocalDateTime,
                   data: JsonNode): ResponseDto
-
-    fun unsuspendTender(cpid: String,
-                        ocid: String,
-                        stage: String,
-                        releaseDate: LocalDateTime,
-                        data: JsonNode): ResponseDto
 }
 
 @Service
@@ -94,32 +88,5 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-    override fun unsuspendTender(cpid: String,
-                                 ocid: String,
-                                 stage: String,
-                                 releaseDate: LocalDateTime,
-                                 data: JsonNode): ResponseDto {
-        val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
-        val recordEntity = releaseService.getRecordEntity(cpid, ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tender.statusDetails = dto.tender.statusDetails
-            tender.tenderPeriod = dto.tender.tenderPeriod
-            tender.enquiryPeriod = dto.tender.enquiryPeriod
-        }
-        addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-    private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
-        enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
-            this.answer = enquiry.answer
-            this.dateAnswered = enquiry.dateAnswered
-        } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
     }
 }

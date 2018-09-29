@@ -1,11 +1,11 @@
 {
-  "id": "12a6b06c-a620-462b-b3c9-dc3320ac6f08",
+  "id": "d000d000-aa00-0000-ae0e-0f000000f408",
   "command": "createRelease",
   "context": {
-    "operationId": "11a6b06c-a620-462b-b3c9-dc3320ac6f08",
-    "requestId": "3eef5900-c3cf-11e8-88b9-77902546d089",
-    "cpid": "ocds-t1s2t3-MD-1538215329458",
-    "ocid": "ocds-t1s2t3-MD-1538215329458-EV-1538215329695",
+    "operationId": "d000d000-aa00-0000-ae0e-0f000000f408",
+    "requestId": "df1c12d0-c3eb-11e8-95bf-1d41f8216f75",
+    "cpid": "ocds-t1s2t3-MD-1538227435053",
+    "ocid": "ocds-t1s2t3-MD-1538227435053-EV-1538227435170",
     "stage": "EV",
     "prevStage": "EV",
     "processType": "answer",
@@ -15,26 +15,26 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "6cca437d-d50d-4005-a277-313bff2bb089",
-    "startDate": "2018-09-29T10:05:51Z",
-    "id": "e388e900-c3ce-11e8-bc3e-dddac214ce82"
+    "token": "9683d797-db18-40bb-8948-70596792960c",
+    "startDate": "2018-09-29T13:30:46Z",
+    "id": "00072800-c3eb-11e8-9821-99f206f0ecb5"
   },
   "data": {
     "enquiry": {
-      "id": "e388e900-c3ce-11e8-bc3e-dddac214ce82",
-      "date": "2018-09-29T10:05:51Z",
+      "id": "00072800-c3eb-11e8-9821-99f206f0ecb5",
+      "date": "2018-09-29T13:30:46Z",
       "author": {
-        "name": "My ORG",
-        "id": "MD-IDNO-7777777",
+        "name": "name123-321",
+        "id": "MD-IDNO-2",
         "identifier": {
           "scheme": "MD-IDNO",
-          "id": "7777777",
-          "legalName": "My Legal ORG",
-          "uri": "http://org.com"
+          "id": "2",
+          "legalName": "1",
+          "uri": "1"
         },
         "address": {
-          "streetAddress": "streetAddress",
-          "postalCode": "09100",
+          "streetAddress": "1",
+          "postalCode": "1",
           "addressDetails": {
             "country": {
               "scheme": "iso-alpha2",
@@ -44,49 +44,41 @@
             },
             "region": {
               "scheme": "CUATM",
-              "id": "3800000",
-              "description": "Dubăsari",
+              "id": "1000000",
+              "description": "Anenii Noi",
               "uri": "http://statistica.md"
             },
             "locality": {
-              "scheme": "other",
-              "id": "",
-              "description": ""
+              "scheme": "CUATM",
+              "id": "1001000",
+              "description": "or.Anenii Noi",
+              "uri": "http://statistica.md"
             }
           }
         },
-        "additionalIdentifiers": [
-          {
-            "scheme": "UA-EDR",
-            "id": "88888888",
-            "legalName": "My Additional Legal Name ORG",
-            "uri": "http://my.add.org.com"
-          }
-        ],
         "contactPoint": {
-          "name": "What Is My Name",
-          "email": "test@test.test",
-          "telephone": "+3802222222",
-          "faxNumber": "+38022222222",
-          "url": "http://mycontactpointpage.com"
+          "name": "1",
+          "email": "1",
+          "telephone": "1",
+          "url": "1"
         },
         "details": {
-          "scale": "sme"
+          "scale": "micro"
         }
       },
-      "title": "What is title for my question",
-      "description": "Ohhhh... this is description for my question",
-      "dateAnswered": "2018-09-29T10:05:51Z",
-      "answer": "This is an answer to your question"
+      "title": "1",
+      "description": "1",
+      "dateAnswered": "2018-09-29T13:30:46Z",
+      "answer": "etot otvet - ne otvet"
     },
     "tender": {
       "enquiryPeriod": {
-        "startDate": "2018-09-29T10:05:51Z",
-        "endDate": "2018-09-29T10:06:51Z"
+        "startDate": "2018-09-29T13:30:46Z",
+        "endDate": "2018-09-29T13:31:46Z"
       },
       "tenderPeriod": {
-        "startDate": "2018-09-29T10:06:51Z",
-        "endDate": "2018-09-29T10:11:51Z"
+        "startDate": "2018-09-29T13:31:46Z",
+        "endDate": "2018-09-30T13:36:46Z"
       }
     }
   },

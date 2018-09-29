@@ -165,7 +165,7 @@ class CommandServiceImpl(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-            UNSUSPEND_TENDER -> return enquiryService.unsuspendTender(
+            UNSUSPEND_TENDER -> return tenderService.unsuspendTender(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
