@@ -77,7 +77,6 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
                 rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
             }
         }
-
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
