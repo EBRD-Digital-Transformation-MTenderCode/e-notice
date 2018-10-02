@@ -1,46 +1,59 @@
 {
-  "ocid": "ocds-t1s2t3-MD-1538383683696",
   "planning": {
     "budget": {
-      "description": "e",
       "amount": {
-        "amount": 500.00,
-        "currency": "USD"
+        "amount": 1700.00,
+        "currency": "MDL"
       },
       "isEuropeanUnionFunded": false,
       "budgetBreakdown": [
         {
-          "id": "ocds-t1s2t3-MD-1538323917753-FS-1538323939133",
-          "description": "description",
+          "id": "ocds-t1s2t3-MD-1538401579732-FS-1538401594242",
+          "description": "Hello world!",
           "amount": {
-            "amount": 500.00,
-            "currency": "USD"
+            "amount": 900.00,
+            "currency": "MDL"
           },
           "period": {
-            "startDate": "2018-10-01T00:00:00Z",
-            "endDate": "2018-12-31T00:00:00Z"
+            "startDate": "2018-05-25T22:00:00Z",
+            "endDate": "2018-12-27T21:00:00Z"
           },
           "sourceParty": {
-            "id": "MD-IDNO-7787-9898-88ty",
-            "name": "nameOfFSbuyer"
+            "id": "MD-IDNO-Enotis2",
+            "name": "BUYER_NAME2"
+          }
+        },
+        {
+          "id": "ocds-t1s2t3-MD-1538401579732-FS-1538401606157",
+          "description": "Hello world!",
+          "amount": {
+            "amount": 800.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-05-25T22:00:00Z",
+            "endDate": "2018-12-27T21:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-Enotis1",
+            "name": "BUYER_NAME1"
           }
         }
       ]
-    },
-    "rationale": "rationale"
+    }
   },
   "tender": {
-    "id": "ocds-t1s2t3-MD-1538383683696",
-    "title": "",
-    "description": "",
-    "status": "active",
-    "statusDetails": "clarification",
+    "id": "ocds-t1s2t3-MD-1538403559845",
+    "title": "gav pn",
+    "description": "gav gav",
+    "status": "planning",
+    "statusDetails": "planning",
     "classification": {
       "scheme": "CPV",
-      "id": "75200000-8",
-      "description": "Prestări de servicii pentru comunitate"
+      "id": "30199200-2",
+      "description": "Plicuri, cărţi poştale şi cărţi poştale neilustrate"
     },
-    "mainProcurementCategory": "services",
+    "mainProcurementCategory": "goods",
     "procurementMethod": "open",
     "procurementMethodDetails": "TEST Licitatia deschisa",
     "submissionMethod": [
@@ -74,19 +87,18 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "DIRECTIVE_2014_23_EU",
+    "legalBasis": "DIRECTIVE_2014_24_EU",
     "procuringEntity": {
-      "id": "MD-IDNO-95486",
-      "name": "NAME of PE",
+      "id": "MD-IDNO-gggg",
+      "name": "PROCURING_ENTITY_FROM_PN",
       "identifier": {
-        "id": "95486",
+        "id": "gggg",
         "scheme": "MD-IDNO",
-        "legalName": "ln",
-        "uri": "qwqw"
+        "legalName": "fff",
+        "uri": "hhh"
       },
       "address": {
-        "streetAddress": "w",
-        "postalCode": "w",
+        "streetAddress": "",
         "addressDetails": {
           "country": {
             "scheme": "iso-alpha2",
@@ -96,50 +108,34 @@
           },
           "region": {
             "scheme": "CUATM",
-            "id": "0301000",
-            "description": "mun.Bălţi",
+            "id": "1000000",
+            "description": "Anenii Noi",
             "uri": "http://statistica.md"
           },
           "locality": {
-            "scheme": "0301000",
-            "id": "0301000",
-            "description": "0301000"
+            "scheme": "CUATM",
+            "id": "1001000",
+            "description": "or.Anenii Noi",
+            "uri": "http://statistica.md"
           }
         }
       },
-      "additionalIdentifiers": [
-        {
-          "id": "qwerty",
-          "scheme": "qwerty",
-          "legalName": "qwerty",
-          "uri": "w"
-        }
-      ],
       "contactPoint": {
-        "name": "0301000",
-        "email": "0301000",
-        "telephone": "0301000",
-        "faxNumber": "0301000",
-        "url": "0301000"
+        "name": "hgfh",
+        "email": "hfgh",
+        "telephone": "hgfhfh",
+        "faxNumber": "hgfh",
+        "url": "hgfhgf"
       }
     },
     "awardCriteria": "priceOnly",
     "requiresElectronicCatalogue": false,
-    "contractPeriod": {
-      "startDate": "2018-11-01T00:01:01Z",
-      "endDate": "2019-01-01T00:00:00Z"
-    },
     "tenderPeriod": {
-      "startDate": "2018-10-01T13:45:00Z",
-      "endDate": "2018-10-15T17:30:00Z"
-    },
-    "enquiryPeriod": {
-      "startDate": "2018-10-01T08:49:23Z",
-      "endDate": "2018-10-01T13:45:00Z"
+      "startDate": "2018-07-01T01:01:01Z"
     },
     "value": {
-      "amount": 20.00,
-      "currency": "USD"
+      "amount": 300.00,
+      "currency": "MDL"
     },
     "lotGroups": [
       {
@@ -148,14 +144,14 @@
     ],
     "lots": [
       {
-        "id": "be84de20-c559-11e8-bd29-0d978c2c6371",
-        "title": "lot2",
-        "description": "2",
-        "status": "active",
+        "id": "fc8ffd53-c584-11e8-a9eb-ddcce7ed1572",
+        "title": "lot1",
+        "description": "looot",
+        "status": "planning",
         "statusDetails": "empty",
         "value": {
-          "amount": 20.00,
-          "currency": "USD"
+          "amount": 100.00,
+          "currency": "MDL"
         },
         "options": [
           {
@@ -178,13 +174,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-01T00:01:01Z",
-          "endDate": "2019-01-01T00:00:00Z"
+          "startDate": "2018-12-29T14:45:00Z",
+          "endDate": "2018-12-30T14:45:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
+            "streetAddress": "6666",
+            "postalCode": "666",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -194,30 +190,28 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
+                "id": "1000000",
+                "description": "Anenii Noi",
                 "uri": "http://statistica.md"
               },
               "locality": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
+                "scheme": "666",
+                "id": "666",
+                "description": "666"
               }
             }
-          },
-          "description": "decr"
+          }
         }
       },
       {
-        "id": "97e91930-c558-11e8-bd29-0d978c2c6371",
+        "id": "fc8ffd54-c584-11e8-a9eb-ddcce7ed1572",
         "title": "lot2",
-        "description": "2",
-        "status": "cancelled",
+        "description": "looot",
+        "status": "planning",
         "statusDetails": "empty",
         "value": {
-          "amount": 20.00,
-          "currency": "USD"
+          "amount": 200.00,
+          "currency": "MDL"
         },
         "options": [
           {
@@ -240,13 +234,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-01T00:01:01Z",
-          "endDate": "2019-01-01T00:00:00Z"
+          "startDate": "2018-12-22T14:45:00Z",
+          "endDate": "2018-12-22T14:45:01Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
+            "streetAddress": "777",
+            "postalCode": "777",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -256,168 +250,350 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
+                "id": "1000000",
+                "description": "Anenii Noi",
                 "uri": "http://statistica.md"
               },
               "locality": {
                 "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
+                "id": "1001001",
+                "description": "s.Albiniţa",
                 "uri": "http://statistica.md"
               }
             }
           },
-          "description": "decr"
-        }
-      },
-      {
-        "id": "43b48210-c557-11e8-bd29-0d978c2c6371",
-        "title": "lot2",
-        "description": "2",
-        "status": "cancelled",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 20.00,
-          "currency": "USD"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-12-01T00:01:01Z",
-          "endDate": "2019-01-01T00:00:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              }
-            }
-          },
-          "description": "decr"
-        }
-      },
-      {
-        "id": "e5556b81-c556-11e8-bd29-0d978c2c6371",
-        "title": "lot2",
-        "description": "2",
-        "status": "cancelled",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 20.00,
-          "currency": "USD"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-12-01T00:01:01Z",
-          "endDate": "2019-12-01T00:00:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              }
-            }
-          },
-          "description": "decr"
+          "description": "2"
         }
       }
     ],
     "items": [
       {
-        "id": "e5556b80-c556-11e8-bd29-0d978c2c6371",
-        "description": "p",
+        "id": "fc8ffd50-c584-11e8-a9eb-ddcce7ed1572",
+        "description": "888-2",
         "classification": {
           "scheme": "CPV",
-          "id": "75200000-8",
-          "description": "Prestări de servicii pentru comunitate"
+          "id": "30199230-1",
+          "description": "Plicuri"
         },
-        "quantity": 100.00,
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 3.00,
         "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
+          "id": "86",
+          "name": "Milion metri patrati spatiu locativ"
         },
-        "relatedLot": "be84de20-c559-11e8-bd29-0d978c2c6371"
-      }
-    ],
-    "documents": [
+        "relatedLot": "fc8ffd54-c584-11e8-a9eb-ddcce7ed1572"
+      },
       {
-        "id": "291cd240-c4cb-11e8-8cbe-a1835757f77d",
-        "documentType": "tenderNotice"
+        "id": "fc8ffd51-c584-11e8-a9eb-ddcce7ed1572",
+        "description": "777-2",
+        "classification": {
+          "scheme": "CPV",
+          "id": "30199230-1",
+          "description": "Plicuri"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 2.00,
+        "unit": {
+          "id": "86",
+          "name": "Milion metri patrati spatiu locativ"
+        },
+        "relatedLot": "fc8ffd54-c584-11e8-a9eb-ddcce7ed1572"
+      },
+      {
+        "id": "fc8ffd52-c584-11e8-a9eb-ddcce7ed1572",
+        "description": "666-2",
+        "classification": {
+          "scheme": "CPV",
+          "id": "30199220-8",
+          "description": "Cărţi poştale neilustrate"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "CPVS",
+            "id": "AB06-7",
+            "description": "Plastic"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "86",
+          "name": "Milion metri patrati spatiu locativ"
+        },
+        "relatedLot": "fc8ffd53-c584-11e8-a9eb-ddcce7ed1572"
       }
     ]
-  }
+  },
+  "ei": [
+    "ocds-t1s2t3-MD-1538401579732"
+  ],
+  "buyer": [
+    {
+      "id": "MD-IDNO-354-37-1072",
+      "name": "Burns-Davis222",
+      "identifier": {
+        "id": "354-37-1072",
+        "scheme": "MD-IDNO",
+        "legalName": "Burns-Davis PLC",
+        "uri": "string"
+      },
+      "address": {
+        "streetAddress": "232323",
+        "postalCode": "424422",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "1001000",
+            "description": "or.Anenii Noi",
+            "uri": "http://statistica.md"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "713-49-7544",
+          "scheme": "MD-ENOTIS",
+          "legalName": "Burns-Davis PLC"
+        },
+        {
+          "id": "713-49-7544",
+          "scheme": "MD-IDNO",
+          "legalName": "Burns-Davis PLC",
+          "uri": "http://baker.com/posts/about.asp"
+        }
+      ],
+      "contactPoint": {
+        "name": "Jacqueline Soto",
+        "email": "tiffanygutierrez@yahoo.com",
+        "telephone": "724-095-3938x237",
+        "faxNumber": "897-612-1545",
+        "url": "http://hudson.biz/explore/list/category/"
+      },
+      "details": {
+        "typeOfBuyer": "MINISTRY",
+        "mainGeneralActivity": "HEALTH",
+        "mainSectoralActivity": "WATER"
+      },
+      "buyerProfile": "http://ray.com/"
+    }
+  ],
+  "funder": [
+    {
+      "id": "MD-IDNO-Enotis1",
+      "name": "BUYER_NAME1",
+      "identifier": {
+        "id": "Enotis1",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "uri"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "CUA",
+            "id": "1001001",
+            "description": "eee"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "string",
+          "scheme": "string",
+          "legalName": "string"
+        }
+      ],
+      "contactPoint": {
+        "name": "string",
+        "email": "string",
+        "telephone": "string",
+        "faxNumber": "string",
+        "url": "string"
+      }
+    },
+    {
+      "id": "MD-IDNO-Enotis2",
+      "name": "BUYER_NAME2",
+      "identifier": {
+        "id": "Enotis2",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "uri"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "CUA",
+            "id": "1001001",
+            "description": "eee"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "string",
+          "scheme": "string",
+          "legalName": "string"
+        }
+      ],
+      "contactPoint": {
+        "name": "string",
+        "email": "string",
+        "telephone": "string",
+        "faxNumber": "string",
+        "url": "string"
+      }
+    }
+  ],
+  "payer": [
+    {
+      "id": "MD-IDNO-Ebudget1",
+      "name": "PROCURING_ENTITY_NAME1",
+      "identifier": {
+        "id": "Ebudget1",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "string"
+      },
+      "address": {
+        "streetAddress": "1",
+        "postalCode": "2",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "1001000",
+            "description": "or.Anenii Noi",
+            "uri": "http://statistica.md"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "id",
+          "scheme": "scheme",
+          "legalName": "legalName2",
+          "uri": "uri2"
+        }
+      ],
+      "contactPoint": {
+        "name": "name",
+        "email": "email",
+        "telephone": "telephone",
+        "faxNumber": "fax",
+        "url": "uri3"
+      }
+    },
+    {
+      "id": "MD-IDNO-Ebudget2",
+      "name": "PROCURING_ENTITY_NAME2",
+      "identifier": {
+        "id": "Ebudget2",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "string"
+      },
+      "address": {
+        "streetAddress": "1",
+        "postalCode": "2",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "CUATM",
+            "id": "1001000",
+            "description": "or.Anenii Noi",
+            "uri": "http://statistica.md"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "id",
+          "scheme": "scheme",
+          "legalName": "legalName2",
+          "uri": "uri2"
+        }
+      ],
+      "contactPoint": {
+        "name": "name",
+        "email": "email",
+        "telephone": "telephone",
+        "faxNumber": "fax",
+        "url": "uri3"
+      }
+    }
+  ]
 }

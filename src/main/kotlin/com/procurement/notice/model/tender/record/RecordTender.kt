@@ -29,6 +29,8 @@ data class RecordTender @JsonCreator constructor(
 
         var enquiryPeriod: Period?,
 
+        var contractPeriod: Period?,
+
         var standstillPeriod: Period?,
 
         var awardPeriod: Period?,
