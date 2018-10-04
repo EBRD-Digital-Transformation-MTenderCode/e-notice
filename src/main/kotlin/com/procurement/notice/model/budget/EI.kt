@@ -22,8 +22,6 @@ data class EI @JsonCreator constructor(
 
         val description: String?,
 
-        val language: String? = "ro",
-
         var tender: Tender?,
 
         val buyer: OrganizationReference?,

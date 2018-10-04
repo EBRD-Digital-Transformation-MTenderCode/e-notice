@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
-import com.procurement.notice.model.ocds.LotStatus
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.tender.dto.UpdateCnDto
+import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -44,6 +45,7 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val recordTender = releaseService.getRecordTender(data)
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
+        val dto = toObject(UpdateCnDto::class.java, data)
         msReq.tender.apply {
             id = ms.tender.id
             status = ms.tender.status
@@ -68,21 +70,19 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
-        var relatedLots: Set<String>? = null
-        var rationale = "General change of Contract Notice"
-        recordTender.lots?.let { lots ->
-            val canceledLots = lots.asSequence().filter { it.status == LotStatus.CANCELLED }.map { it.id }.toSet()
-            if (canceledLots.isNotEmpty()) {
-                relatedLots = canceledLots
-                rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
-            }
+        var rationale: String
+        val canceledLots = dto.amendment?.relatedLots
+        rationale = if (canceledLots != null) {
+            "Changing of Contract Notice due to the need of cancelling lot / lots"
+        } else {
+            "General change of Contract Notice"
         }
         amendments.add(Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
-                relatedLots = relatedLots,
+                relatedLots = canceledLots,
                 rationale = rationale,
                 changes = null,
                 description = null

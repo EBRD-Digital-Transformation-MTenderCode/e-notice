@@ -22,8 +22,6 @@ data class FS @JsonCreator constructor(
 
         val description: String?,
 
-        val language: String? = "ro",
-
         var tender: Tender?,
 
         var funder: OrganizationReference?,
