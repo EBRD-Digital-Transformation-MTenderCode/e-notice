@@ -57,23 +57,3 @@ data class RecordTender @JsonCreator constructor(
 
         val electronicAuctions: ElectronicAuctions?
 )
-
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class ElectronicAuctions @JsonCreator constructor(
-        val details: Set<ElectronicAuctionsDetails>
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class ElectronicAuctionsDetails @JsonCreator constructor(
-        val id: String?,
-        val relatedLot: String?,
-        val auctionPeriod: Period?,
-        val electronicAuctionModalities: Set<ElectronicAuctionModalities>
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class ElectronicAuctionModalities @JsonCreator constructor(
-        val url: String?,
-        val minStep: Value?
-)

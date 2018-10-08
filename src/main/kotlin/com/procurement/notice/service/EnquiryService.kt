@@ -6,7 +6,6 @@ import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.tender.dto.UnsuspendTenderDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
