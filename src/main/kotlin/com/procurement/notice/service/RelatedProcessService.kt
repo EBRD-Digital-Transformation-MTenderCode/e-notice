@@ -16,44 +16,16 @@ import com.procurement.notice.model.tender.record.Record
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
-interface RelatedProcessService {
-
-    fun addFsRelatedProcessToEi(ei: EI, fsOcId: String)
-
-    fun addEiRelatedProcessToFs(fs: FS, eiOcId: String)
-
-    fun addMsRelatedProcessToEi(ei: EI, msOcId: String)
-
-    fun addMsRelatedProcessToFs(fs: FS, msOcId: String)
-
-    fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType)
-
-    fun addMsRelatedProcessToRecord(record: Record, cpId: String)
-
-    fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType)
-
-    fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType)
-
-    fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String)
-
-    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType)
-
-    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract)
-
-    fun getBudgetUri(cpId: String?, ocId: String? = null): String
-
-    fun getTenderUri(cpId: String, ocId: String? = null): String
-}
 
 @Service
-class RelatedProcessServiceImpl : RelatedProcessService {
+class RelatedProcessService {
 
     @Value("\${uri.budget}")
     private val budgetUri: String? = null
     @Value("\${uri.tender}")
     private val tenderUri: String? = null
 
-    override fun addFsRelatedProcessToEi(ei: EI, fsOcId: String) {
+    fun addFsRelatedProcessToEi(ei: EI, fsOcId: String) {
         if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
         ei.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -64,7 +36,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         ))
     }
 
-    override fun addEiRelatedProcessToFs(fs: FS, eiOcId: String) {
+    fun addEiRelatedProcessToFs(fs: FS, eiOcId: String) {
         if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
         fs.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -75,7 +47,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         ))
     }
 
-    override fun addMsRelatedProcessToEi(ei: EI, msOcId: String) {
+    fun addMsRelatedProcessToEi(ei: EI, msOcId: String) {
         if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
         ei.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -86,7 +58,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         ))
     }
 
-    override fun addMsRelatedProcessToFs(fs: FS, msOcId: String) {
+    fun addMsRelatedProcessToFs(fs: FS, msOcId: String) {
         if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
         fs.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -97,7 +69,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         ))
     }
 
-    override fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType) {
+    fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         /*record*/
@@ -128,7 +100,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         }
     }
 
-    override fun addMsRelatedProcessToRecord(record: Record, cpId: String) {
+    fun addMsRelatedProcessToRecord(record: Record, cpId: String) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -138,7 +110,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(cpId = cpId, ocId = cpId)))
     }
 
-    override fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType) {
+    fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         ms.relatedProcesses?.add(RelatedProcess(
@@ -149,7 +121,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(cpId = msOcId, ocId = ocid)))
     }
 
-    override fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
+    fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -159,7 +131,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(cpId = cpId, ocId = ocId)))
     }
 
-    override fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
+    fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -169,7 +141,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(cpId = cpId, ocId = cpId)))
     }
 
-    override fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType) {
+    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         record.relatedProcesses?.add(RelatedProcess(
                 id = UUIDs.timeBased().toString(),
@@ -179,7 +151,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
                 uri = getTenderUri(cpId = cpId, ocId = ocId)))
     }
 
-    override fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract) {
+    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract) {
         record.contracts?.let { cans ->
             cans.asSequence()
                     .firstOrNull { it.awardId == contract.awardId }
@@ -200,7 +172,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         return ocId.substring(0, pos)
     }
 
-    override fun getBudgetUri(cpId: String?, ocId: String?): String {
+    fun getBudgetUri(cpId: String?, ocId: String?): String {
         var uri = budgetUri + cpId
         if (ocId != null) {
             uri = uri + URI_SEPARATOR + ocId
@@ -208,7 +180,7 @@ class RelatedProcessServiceImpl : RelatedProcessService {
         return uri
     }
 
-    override fun getTenderUri(cpId: String, ocId: String?): String {
+    fun getTenderUri(cpId: String, ocId: String?): String {
         var uri = tenderUri + cpId
         if (ocId != null) {
             uri = uri + URI_SEPARATOR + ocId

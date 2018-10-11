@@ -20,32 +20,17 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-interface BudgetService {
-
-    fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
-
-    fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
-
-    fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
-
-    fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
-
-    fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime)
-
-    fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime)
-}
-
 @Service
-class BudgetServiceImpl(private val budgetDao: BudgetDao,
-                        private val organizationService: OrganizationService,
-                        private val relatedProcessService: RelatedProcessService) : BudgetService {
+class BudgetService(private val budgetDao: BudgetDao,
+                    private val organizationService: OrganizationService,
+                    private val relatedProcessService: RelatedProcessService) {
 
     companion object {
         private const val SEPARATOR = "-"
         private const val FS_SEPARATOR = "-FS-"
     }
 
-    override fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val ei = toObject(EI::class.java, data)
         ei.apply {
             id = getReleaseId(cpid)
@@ -58,7 +43,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ResponseDto(data = DataResponseDto(cpid = cpid))
     }
 
-    override fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = budgetDao.getEiByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val updateEi = toObject(EI::class.java, data)
         val ei = toObject(EI::class.java, entity.jsonData)
@@ -74,7 +59,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ResponseDto(data = DataResponseDto(cpid = cpid, amendmentsIds = amendmentIds))
     }
 
-    override fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun createFs(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(FsDto::class.java, data)
         val fs = dto.fs
         fs.apply {
@@ -91,7 +76,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
 
-    override fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun updateFs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = budgetDao.getFsByCpIdAndOcId(cpid, ocid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         val dto = toObject(FsDto::class.java, data)
         val fs = toObject(FS::class.java, entity.jsonData)
@@ -111,7 +96,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
 
-    override fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
+    fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
         eiIds.forEach { eiCpId ->
             val entity = budgetDao.getEiByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
@@ -122,7 +107,7 @@ class BudgetServiceImpl(private val budgetDao: BudgetDao,
         }
     }
 
-    override fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
+    fun createFsByMs(budgetBreakdowns: List<BudgetBreakdown>, msCpId: String, dateTime: LocalDateTime) {
         budgetBreakdowns.forEach {
             val eiCpId = getCpIdFromOcId(it.id)
             val entity = budgetDao.getFsByCpIdAndOcId(eiCpId, it.id) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)

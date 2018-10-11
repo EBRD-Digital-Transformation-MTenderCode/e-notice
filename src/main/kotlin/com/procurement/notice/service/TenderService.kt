@@ -17,68 +17,16 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-interface TenderService {
+@Service
+class TenderService(private val releaseService: ReleaseService,
+                    private val organizationService: OrganizationService,
+                    private val relatedProcessService: RelatedProcessService) {
 
     fun tenderPeriodEnd(cpid: String,
                         ocid: String,
                         stage: String,
                         releaseDate: LocalDateTime,
-                        data: JsonNode): ResponseDto
-
-    fun suspendTender(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto
-
-    fun unsuspendTender(cpid: String,
-                        ocid: String,
-                        stage: String,
-                        releaseDate: LocalDateTime,
-                        data: JsonNode): ResponseDto
-
-    fun tenderUnsuccessful(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto
-
-    fun awardByBid(cpid: String,
-                   ocid: String,
-                   stage: String,
-                   releaseDate: LocalDateTime,
-                   data: JsonNode): ResponseDto
-
-    fun awardPeriodEnd(cpid: String,
-                       ocid: String,
-                       stage: String,
-                       releaseDate: LocalDateTime,
-                       data: JsonNode): ResponseDto
-
-    fun standstillPeriod(cpid: String,
-                         ocid: String,
-                         stage: String,
-                         releaseDate: LocalDateTime,
-                         data: JsonNode): ResponseDto
-
-    fun startNewStage(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      prevStage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto
-}
-
-@Service
-class TenderServiceImpl(private val releaseService: ReleaseService,
-                        private val organizationService: OrganizationService,
-                        private val relatedProcessService: RelatedProcessService) : TenderService {
-
-    override fun tenderPeriodEnd(cpid: String,
-                                 ocid: String,
-                                 stage: String,
-                                 releaseDate: LocalDateTime,
-                                 data: JsonNode): ResponseDto {
+                        data: JsonNode): ResponseDto {
         val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -99,11 +47,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun suspendTender(cpid: String,
-                               ocid: String,
-                               stage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto {
+    fun suspendTender(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val dto = toObject(SuspendTenderDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -116,11 +64,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun unsuspendTender(cpid: String,
-                                 ocid: String,
-                                 stage: String,
-                                 releaseDate: LocalDateTime,
-                                 data: JsonNode): ResponseDto {
+    fun unsuspendTender(cpid: String,
+                        ocid: String,
+                        stage: String,
+                        releaseDate: LocalDateTime,
+                        data: JsonNode): ResponseDto {
         val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -136,11 +84,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun tenderUnsuccessful(cpid: String,
-                                    ocid: String,
-                                    stage: String,
-                                    releaseDate: LocalDateTime,
-                                    data: JsonNode): ResponseDto {
+    fun tenderUnsuccessful(cpid: String,
+                           ocid: String,
+                           stage: String,
+                           releaseDate: LocalDateTime,
+                           data: JsonNode): ResponseDto {
         val dto = toObject(UnsuccessfulTenderDto::class.java, data.toString())
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
@@ -168,11 +116,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun awardByBid(cpid: String,
-                            ocid: String,
-                            stage: String,
-                            releaseDate: LocalDateTime,
-                            data: JsonNode): ResponseDto {
+    fun awardByBid(cpid: String,
+                   ocid: String,
+                   stage: String,
+                   releaseDate: LocalDateTime,
+                   data: JsonNode): ResponseDto {
         val dto = toObject(AwardByBidDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -187,11 +135,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun awardPeriodEnd(cpid: String,
-                                ocid: String,
-                                stage: String,
-                                releaseDate: LocalDateTime,
-                                data: JsonNode): ResponseDto {
+    fun awardPeriodEnd(cpid: String,
+                       ocid: String,
+                       stage: String,
+                       releaseDate: LocalDateTime,
+                       data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -210,11 +158,11 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun standstillPeriod(cpid: String,
-                                  ocid: String,
-                                  stage: String,
-                                  releaseDate: LocalDateTime,
-                                  data: JsonNode): ResponseDto {
+    fun standstillPeriod(cpid: String,
+                         ocid: String,
+                         stage: String,
+                         releaseDate: LocalDateTime,
+                         data: JsonNode): ResponseDto {
         val dto = toObject(StandstillPeriodEndDto::class.java, toJson(data))
         val statusDetails = when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> TenderStatusDetails.PRESELECTED
@@ -243,12 +191,12 @@ class TenderServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun startNewStage(cpid: String,
-                               ocid: String,
-                               stage: String,
-                               prevStage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto {
+    fun startNewStage(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      prevStage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val dto = toObject(StartNewStageDto::class.java, toJson(data))
         val statusDetails: TenderStatusDetails?
         val relatedProcessType: RelatedProcessType?

@@ -14,27 +14,10 @@ import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
 
-interface OrganizationService {
-
-    fun processEiParties(ei: EI)
-
-    fun processFsParties(fs: FS)
-
-    fun processMsParties(ms: Ms, checkFs: CheckFsDto)
-
-    fun processRecordPartiesFromBids(record: Record)
-
-    fun processRecordPartiesFromAwards(record: Record)
-
-    fun processContractRecordPartiesFromAwards(record: ContractRecord)
-
-    fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry)
-}
-
 @Service
-class OrganizationServiceImpl : OrganizationService {
+class OrganizationService {
 
-    override fun processEiParties(ei: EI) {
+    fun processEiParties(ei: EI) {
         val buyer = ei.buyer
         if (buyer != null) {
             val partyBuyer = Organization(
@@ -54,7 +37,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processFsParties(fs: FS) {
+    fun processFsParties(fs: FS) {
         val funder = fs.funder
         if (funder != null) {
             val partyFunder = Organization(
@@ -97,7 +80,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
+    fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
         if (ms.parties == null) ms.parties = hashSetOf()
         ms.parties?.let { parties ->
             if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties = parties, organization = buyer, role = PartyRole.BUYER) }
@@ -110,7 +93,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processRecordPartiesFromBids(record: Record) {
+    fun processRecordPartiesFromBids(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
         record.bids?.details?.let { bids ->
             bids.forEach { bid ->
@@ -124,7 +107,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processRecordPartiesFromAwards(record: Record) {
+    fun processRecordPartiesFromAwards(record: Record) {
         if (record.parties == null) record.parties = hashSetOf()
         record.awards?.let { awards ->
             awards.forEach { award ->
@@ -138,7 +121,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processContractRecordPartiesFromAwards(record: ContractRecord) {
+    fun processContractRecordPartiesFromAwards(record: ContractRecord) {
         if (record.parties == null) record.parties = hashSetOf()
         record.awards?.let { awards ->
             awards.forEach { award ->
@@ -155,7 +138,7 @@ class OrganizationServiceImpl : OrganizationService {
         }
     }
 
-    override fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
+    fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
         if (record.parties == null) record.parties = hashSetOf()
         enquiry.author?.let { author ->
             record.parties?.let { addParty(parties = it, organization = author, role = PartyRole.ENQUIRER) }

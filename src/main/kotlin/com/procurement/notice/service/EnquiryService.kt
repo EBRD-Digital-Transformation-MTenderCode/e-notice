@@ -12,34 +12,19 @@ import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-interface EnquiryService {
-
-    fun createEnquiry(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto
-
-    fun addAnswer(cpid: String,
-                  ocid: String,
-                  stage: String,
-                  releaseDate: LocalDateTime,
-                  data: JsonNode): ResponseDto
-}
-
 @Service
-class EnquiryServiceImpl(private val releaseService: ReleaseService,
-                         private val organizationService: OrganizationService) : EnquiryService {
+class EnquiryService(private val releaseService: ReleaseService,
+                     private val organizationService: OrganizationService) {
 
     companion object {
         private const val ENQUIRY_JSON = "enquiry"
     }
 
-    override fun createEnquiry(cpid: String,
-                               ocid: String,
-                               stage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto {
+    fun createEnquiry(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -69,11 +54,11 @@ class EnquiryServiceImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun addAnswer(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto {
+    fun addAnswer(cpid: String,
+                  ocid: String,
+                  stage: String,
+                  releaseDate: LocalDateTime,
+                  data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)

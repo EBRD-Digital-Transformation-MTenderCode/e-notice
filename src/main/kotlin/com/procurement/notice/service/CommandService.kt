@@ -12,24 +12,18 @@ import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 
-interface CommandService {
-
-    fun execute(cm: CommandMessage): ResponseDto
-
-}
-
 @Service
-class CommandServiceImpl(private val historyDao: HistoryDao,
-                         private val budgetService: BudgetService,
-                         private val createReleaseService: CreateReleaseService,
-                         private val updateReleaseService: UpdateReleaseService,
-                         private val tenderService: TenderService,
-                         private val tenderServiceEv: TenderServiceEv,
-                         private val tenderCancellationService: TenderCancellationService,
-                         private val enquiryService: EnquiryService) : CommandService {
+class CommandService(private val historyDao: HistoryDao,
+                     private val budgetService: BudgetService,
+                     private val createReleaseService: CreateReleaseService,
+                     private val updateReleaseService: UpdateReleaseService,
+                     private val tenderService: TenderService,
+                     private val tenderServiceEv: TenderServiceEv,
+                     private val tenderCancellationService: TenderCancellationService,
+                     private val enquiryService: EnquiryService) {
 
 
-    override fun execute(cm: CommandMessage): ResponseDto {
+    fun execute(cm: CommandMessage): ResponseDto {
 
         val cpId = cm.context.cpid
         val ocId = cm.context.ocid

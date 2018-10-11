@@ -29,5 +29,5 @@ data class ElectronicAuctionModalities @JsonCreator constructor(
 
         val url: String?,
 
-        val minStep: Value?
+        val eligibleMinimumDifference: Value?
 )
