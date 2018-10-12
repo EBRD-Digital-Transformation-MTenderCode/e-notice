@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class EnquiryService(private val releaseService: ReleaseService,
-                     private val organizationService: OrganizationService) {
+class EnquiryService(private val releaseService: ReleaseService) {
 
     companion object {
         private const val ENQUIRY_JSON = "enquiry"
@@ -26,6 +25,7 @@ class EnquiryService(private val releaseService: ReleaseService,
                       releaseDate: LocalDateTime,
                       data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
+        enquiry.author = null
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -36,7 +36,7 @@ class EnquiryService(private val releaseService: ReleaseService,
         val enquiries = record.tender.enquiries ?: hashSetOf()
         if (enquiries.asSequence().none { it.id == enquiry.id }) {
             enquiries.add(enquiry)
-            organizationService.processRecordPartiesFromEnquiry(record = record, enquiry = enquiry)
+//            organizationService.processRecordPartiesFromEnquiry(record = record, enquiry = enquiry)
             record.tender.enquiries = enquiries
             if (enquiries.size == 1) {
                 val msEntity = releaseService.getMsEntity(cpid)
