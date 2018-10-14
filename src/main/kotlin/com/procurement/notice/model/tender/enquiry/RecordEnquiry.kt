@@ -12,7 +12,7 @@ data class RecordEnquiry @JsonCreator constructor(
 
         val date: LocalDateTime?,
 
-        val author: OrganizationReference?,
+        var author: OrganizationReference?,
 
         val title: String?,
 

@@ -19,44 +19,20 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-interface TenderServiceEv {
-
-    fun awardByBidEv(cpid: String,
-                     ocid: String,
-                     stage: String,
-                     releaseDate: LocalDateTime,
-                     data: JsonNode): ResponseDto
-
-    fun awardPeriodEndEv(cpid: String,
-                         ocid: String,
-                         stage: String,
-                         releaseDate: LocalDateTime,
-                         data: JsonNode): ResponseDto
-
-    fun standstillPeriodEv(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto
-
-    fun enquiryPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto
-
-}
-
 @Service
-class TenderServiceEvImpl(private val releaseService: ReleaseService,
-                          private val organizationService: OrganizationService,
-                          private val relatedProcessService: RelatedProcessService) : TenderServiceEv {
+class TenderServiceEv(private val releaseService: ReleaseService,
+                      private val organizationService: OrganizationService,
+                      private val relatedProcessService: RelatedProcessService) {
 
     companion object {
         private const val AC = "AC"
     }
 
-    override fun awardByBidEv(cpid: String,
-                              ocid: String,
-                              stage: String,
-                              releaseDate: LocalDateTime,
-                              data: JsonNode): ResponseDto {
+    fun awardByBidEv(cpid: String,
+                     ocid: String,
+                     stage: String,
+                     releaseDate: LocalDateTime,
+                     data: JsonNode): ResponseDto {
         val dto = toObject(AwardByBidEvDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
@@ -73,11 +49,11 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun standstillPeriodEv(cpid: String,
-                                    ocid: String,
-                                    stage: String,
-                                    releaseDate: LocalDateTime,
-                                    data: JsonNode): ResponseDto {
+    fun standstillPeriodEv(cpid: String,
+                           ocid: String,
+                           stage: String,
+                           releaseDate: LocalDateTime,
+                           data: JsonNode): ResponseDto {
         val dto = toObject(StandstillPeriodEndEvDto::class.java, toJson(data))
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
@@ -101,11 +77,11 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun awardPeriodEndEv(cpid: String,
-                                  ocid: String,
-                                  stage: String,
-                                  releaseDate: LocalDateTime,
-                                  data: JsonNode): ResponseDto {
+    fun awardPeriodEndEv(cpid: String,
+                         ocid: String,
+                         stage: String,
+                         releaseDate: LocalDateTime,
+                         data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
@@ -161,7 +137,7 @@ class TenderServiceEvImpl(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    override fun enquiryPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun enquiryPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(SuspendTenderDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)

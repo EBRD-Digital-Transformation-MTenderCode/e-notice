@@ -11,29 +11,14 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-interface TenderCancellationService {
+@Service
+class TenderCancellationService(private val releaseService: ReleaseService) {
 
     fun cancellationStandstillPeriod(cpid: String,
                                      ocid: String,
                                      stage: String,
                                      releaseDate: LocalDateTime,
-                                     data: JsonNode): ResponseDto
-
-    fun tenderCancellation(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto
-}
-
-@Service
-class TenderCancellationServiceImpl(private val releaseService: ReleaseService) : TenderCancellationService {
-
-    override fun cancellationStandstillPeriod(cpid: String,
-                                              ocid: String,
-                                              stage: String,
-                                              releaseDate: LocalDateTime,
-                                              data: JsonNode): ResponseDto {
+                                     data: JsonNode): ResponseDto {
         val dto = toObject(CancellationStandstillPeriodDto::class.java, toJson(data))
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
@@ -78,11 +63,11 @@ class TenderCancellationServiceImpl(private val releaseService: ReleaseService) 
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
-    override fun tenderCancellation(cpid: String,
-                                    ocid: String,
-                                    stage: String,
-                                    releaseDate: LocalDateTime,
-                                    data: JsonNode): ResponseDto {
+    fun tenderCancellation(cpid: String,
+                           ocid: String,
+                           stage: String,
+                           releaseDate: LocalDateTime,
+                           data: JsonNode): ResponseDto {
         val dto = toObject(CancellationStandstillPeriodDto::class.java, toJson(data))
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)

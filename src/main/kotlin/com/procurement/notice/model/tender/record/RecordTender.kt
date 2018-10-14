@@ -33,6 +33,8 @@ data class RecordTender @JsonCreator constructor(
 
         var awardPeriod: Period?,
 
+        var auctionPeriod: Period?,
+
         @get:JsonProperty("hasEnquiries")
         var hasEnquiries: Boolean? = false,
 
@@ -51,6 +53,9 @@ data class RecordTender @JsonCreator constructor(
         val submissionMethodRationale: List<String>?,
 
         @get:JsonProperty("requiresElectronicCatalogue")
-        val requiresElectronicCatalogue: Boolean?
-)
+        val requiresElectronicCatalogue: Boolean?,
 
+        val procurementMethodModalities: Set<String>?,
+
+        val electronicAuctions: ElectronicAuctions?
+)
