@@ -12,48 +12,17 @@ import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-interface CreateReleaseService {
+@Service
+class CreateReleaseService(private val budgetService: BudgetService,
+                           private val organizationService: OrganizationService,
+                           private val relatedProcessService: RelatedProcessService,
+                           private val releaseService: ReleaseService) {
 
     fun createCnPnPin(cpid: String,
                       stage: String,
                       releaseDate: LocalDateTime,
                       data: JsonNode,
-                      operation: Operation): ResponseDto
-
-    fun createPinOnPn(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      prevStage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto
-
-    fun createCnOnPn(cpid: String,
-                     ocid: String,
-                     stage: String,
-                     prevStage: String,
-                     releaseDate: LocalDateTime,
-                     data: JsonNode): ResponseDto
-
-    fun createCnOnPin(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      prevStage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto
-}
-
-
-@Service
-class CreateReleaseServiceImpl(private val budgetService: BudgetService,
-                               private val organizationService: OrganizationService,
-                               private val relatedProcessService: RelatedProcessService,
-                               private val releaseService: ReleaseService) : CreateReleaseService {
-
-    override fun createCnPnPin(cpid: String,
-                               stage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode,
-                               operation: Operation): ResponseDto {
+                      operation: Operation): ResponseDto {
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
         val ms = releaseService.getMs(data)
         val params = releaseService.getParamsForCreateCnPnPin(operation, Stage.valueOf(stage.toUpperCase()))
@@ -89,12 +58,12 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
     }
 
-    override fun createPinOnPn(cpid: String,
-                               ocid: String,
-                               stage: String,
-                               prevStage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto {
+    fun createPinOnPn(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      prevStage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val msTender = releaseService.getMsTender(data)
         val recordTender = releaseService.getRecordTender(data)
         val msEntity = releaseService.getMsEntity(cpid)
@@ -138,12 +107,12 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
-    override fun createCnOnPn(cpid: String,
-                              ocid: String,
-                              stage: String,
-                              prevStage: String,
-                              releaseDate: LocalDateTime,
-                              data: JsonNode): ResponseDto {
+    fun createCnOnPn(cpid: String,
+                     ocid: String,
+                     stage: String,
+                     prevStage: String,
+                     releaseDate: LocalDateTime,
+                     data: JsonNode): ResponseDto {
         val msTender = releaseService.getMsTender(data)
         val recordTender = releaseService.getRecordTender(data)
         val msEntity = releaseService.getMsEntity(cpid)
@@ -192,12 +161,12 @@ class CreateReleaseServiceImpl(private val budgetService: BudgetService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
-    override fun createCnOnPin(cpid: String,
-                               ocid: String,
-                               stage: String,
-                               prevStage: String,
-                               releaseDate: LocalDateTime,
-                               data: JsonNode): ResponseDto {
+    fun createCnOnPin(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      prevStage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val msTender = releaseService.getMsTender(data)
         val recordTender = releaseService.getRecordTender(data)
         val msEntity = releaseService.getMsEntity(cpid)

@@ -12,24 +12,18 @@ import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 
-interface CommandService {
-
-    fun execute(cm: CommandMessage): ResponseDto
-
-}
-
 @Service
-class CommandServiceImpl(private val historyDao: HistoryDao,
-                         private val budgetService: BudgetService,
-                         private val createReleaseService: CreateReleaseService,
-                         private val updateReleaseService: UpdateReleaseService,
-                         private val tenderService: TenderService,
-                         private val tenderServiceEv: TenderServiceEv,
-                         private val tenderCancellationService: TenderCancellationService,
-                         private val enquiryService: EnquiryService) : CommandService {
+class CommandService(private val historyDao: HistoryDao,
+                     private val budgetService: BudgetService,
+                     private val createReleaseService: CreateReleaseService,
+                     private val updateReleaseService: UpdateReleaseService,
+                     private val tenderService: TenderService,
+                     private val tenderServiceEv: TenderServiceEv,
+                     private val tenderCancellationService: TenderCancellationService,
+                     private val enquiryService: EnquiryService) {
 
 
-    override fun execute(cm: CommandMessage): ResponseDto {
+    fun execute(cm: CommandMessage): ResponseDto {
 
         val cpId = cm.context.cpid
         val ocId = cm.context.ocid
@@ -69,6 +63,7 @@ class CommandServiceImpl(private val historyDao: HistoryDao,
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
         val releaseDate = cm.context.startDate.toLocalDateTime()
+        val isAuction = cm.context.isAuction
         val data = cm.data
 
         when (Operation.fromValue(operationType)) {
@@ -148,6 +143,7 @@ class CommandServiceImpl(private val historyDao: HistoryDao,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
+                    isAuction = isAuction!!,
                     data = data)
 
             UPDATE_PN -> return updateReleaseService.updatePn(

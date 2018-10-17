@@ -8,22 +8,9 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-interface BudgetDao {
+class BudgetDao(private val session: Session) {
 
-    fun saveBudget(entity: BudgetEntity)
-
-    fun getTotalAmountByCpId(cpId: String): BigDecimal?
-
-    fun getEiByCpId(cpId: String): BudgetEntity?
-
-    fun getFsByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity?
-
-}
-
-@Service
-class BudgetDaoImpl(private val session: Session) : BudgetDao {
-
-    override fun saveBudget(entity: BudgetEntity) {
+    fun saveBudget(entity: BudgetEntity) {
         val insertRelease = insertInto(BUDGET_TABLE)
         insertRelease
                 .value(CP_ID, entity.cpId)
@@ -53,7 +40,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         session.execute(batch)
     }
 
-    override fun getTotalAmountByCpId(cpId: String): BigDecimal? {
+    fun getTotalAmountByCpId(cpId: String): BigDecimal? {
         val query = select().sum(AMOUNT).`as`(AMOUNT)
                 .from(BUDGET_COMPILED_TABLE)
                 .where(eq(CP_ID, cpId))
@@ -61,7 +48,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
         return row?.getDecimal(AMOUNT)
     }
 
-    override fun getEiByCpId(cpId: String): BudgetEntity? {
+    fun getEiByCpId(cpId: String): BudgetEntity? {
         val query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)
@@ -80,7 +67,7 @@ class BudgetDaoImpl(private val session: Session) : BudgetDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getFsByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity? {
+    fun getFsByCpIdAndOcId(cpId: String, ocId: String): BudgetEntity? {
         val query = select()
                 .all()
                 .from(BUDGET_COMPILED_TABLE)

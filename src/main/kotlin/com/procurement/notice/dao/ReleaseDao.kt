@@ -7,23 +7,9 @@ import com.procurement.notice.model.entity.ReleaseEntity
 import org.springframework.stereotype.Service
 
 @Service
-interface ReleaseDao {
+class ReleaseDao(private val session: Session) {
 
-    fun saveMs(releaseEntity: ReleaseEntity)
-
-    fun saveRecord(releaseEntity: ReleaseEntity)
-
-    fun getByCpId(cpId: String): ReleaseEntity?
-
-    fun getByCpIdAndOcId(cpId: String, ocId: String): ReleaseEntity?
-
-    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity?
-}
-
-@Service
-class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
-
-    override fun saveMs(releaseEntity: ReleaseEntity) {
+    fun saveMs(releaseEntity: ReleaseEntity) {
         val insert = insertInto(TENDER_TABLE)
         insert
                 .value(CP_ID, releaseEntity.cpId)
@@ -48,7 +34,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         session.execute(batch)
     }
 
-    override fun saveRecord(releaseEntity: ReleaseEntity) {
+    fun saveRecord(releaseEntity: ReleaseEntity) {
         val insert = insertInto(TENDER_TABLE)
         insert
                 .value(CP_ID, releaseEntity.cpId)
@@ -80,7 +66,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
         session.execute(batch)
     }
 
-    override fun getByCpId(cpId: String): ReleaseEntity? {
+    fun getByCpId(cpId: String): ReleaseEntity? {
         val query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)
@@ -97,7 +83,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getByCpIdAndOcId(cpId: String, ocId: String): ReleaseEntity? {
+    fun getByCpIdAndOcId(cpId: String, ocId: String): ReleaseEntity? {
         val query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)
@@ -115,7 +101,7 @@ class ReleaseDaoImpl(private val session: Session) : ReleaseDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
+    fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {
         val query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)

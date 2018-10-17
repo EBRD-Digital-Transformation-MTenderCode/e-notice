@@ -11,36 +11,15 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-interface UpdateReleaseService {
+@Service
+class UpdateReleaseService(private val releaseService: ReleaseService) {
 
     fun updateCn(cpid: String,
                  ocid: String,
                  stage: String,
                  releaseDate: LocalDateTime,
-                 data: JsonNode): ResponseDto
-
-    fun updatePn(cpid: String,
-                 ocid: String,
-                 stage: String,
-                 releaseDate: LocalDateTime,
-                 data: JsonNode): ResponseDto
-
-    fun updateTenderPeriod(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto
-}
-
-
-@Service
-class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : UpdateReleaseService {
-
-    override fun updateCn(cpid: String,
-                          ocid: String,
-                          stage: String,
-                          releaseDate: LocalDateTime,
-                          data: JsonNode): ResponseDto {
+                 isAuction: Boolean,
+                 data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
         val msEntity = releaseService.getMsEntity(cpid)
@@ -66,6 +45,11 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
             description = record.tender.description
             enquiries = record.tender.enquiries
             hasEnquiries = record.tender.hasEnquiries
+            if (!isAuction) {
+                auctionPeriod = record.tender.auctionPeriod
+                procurementMethodModalities = record.tender.procurementMethodModalities
+                electronicAuctions = record.tender.electronicAuctions
+            }
         }
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
@@ -101,11 +85,11 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
-    override fun updatePn(cpid: String,
-                          ocid: String,
-                          stage: String,
-                          releaseDate: LocalDateTime,
-                          data: JsonNode): ResponseDto {
+    fun updatePn(cpid: String,
+                 ocid: String,
+                 stage: String,
+                 releaseDate: LocalDateTime,
+                 data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
         /*ms*/
@@ -142,11 +126,11 @@ class UpdateReleaseServiceImpl(private val releaseService: ReleaseService) : Upd
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
-    override fun updateTenderPeriod(cpid: String,
-                                    ocid: String,
-                                    stage: String,
-                                    releaseDate: LocalDateTime,
-                                    data: JsonNode): ResponseDto {
+    fun updateTenderPeriod(cpid: String,
+                           ocid: String,
+                           stage: String,
+                           releaseDate: LocalDateTime,
+                           data: JsonNode): ResponseDto {
         val recordTender = releaseService.getRecordTender(data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
