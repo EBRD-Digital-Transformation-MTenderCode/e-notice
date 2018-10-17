@@ -78,6 +78,9 @@ class TenderService(private val releaseService: ReleaseService,
             tender.statusDetails = dto.tender.statusDetails
             tender.tenderPeriod = dto.tender.tenderPeriod
             tender.enquiryPeriod = dto.tender.enquiryPeriod
+            tender.auctionPeriod = dto.tender.auctionPeriod
+            tender.procurementMethodModalities = dto.tender.procurementMethodModalities
+            tender.electronicAuctions = dto.tender.electronicAuctions
         }
         addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
