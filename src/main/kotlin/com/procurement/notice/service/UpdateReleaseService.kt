@@ -18,6 +18,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                  ocid: String,
                  stage: String,
                  releaseDate: LocalDateTime,
+                 isAuction: Boolean,
                  data: JsonNode): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
@@ -44,6 +45,11 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             description = record.tender.description
             enquiries = record.tender.enquiries
             hasEnquiries = record.tender.hasEnquiries
+            if (!isAuction) {
+                auctionPeriod = record.tender.auctionPeriod
+                procurementMethodModalities = record.tender.procurementMethodModalities
+                electronicAuctions = record.tender.electronicAuctions
+            }
         }
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)

@@ -63,6 +63,7 @@ class CommandService(private val historyDao: HistoryDao,
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
         val releaseDate = cm.context.startDate.toLocalDateTime()
+        val isAuction = cm.context.isAuction
         val data = cm.data
 
         when (Operation.fromValue(operationType)) {
@@ -142,6 +143,7 @@ class CommandService(private val historyDao: HistoryDao,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
+                    isAuction = isAuction!!,
                     data = data)
 
             UPDATE_PN -> return updateReleaseService.updatePn(
