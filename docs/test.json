@@ -8,7 +8,7 @@
     "ocid": "ocds-t1s2t3-MD-1540115989627-EV-1540115990392",
     "stage": "EV",
     "processType": "tenderPeriodEndAuction",
-    "operationType": "tenderPeriodEndEv",
+    "operationType": "tenderPeriodEndAuction",
     "phase": "auction",
     "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
     "country": "MD",
