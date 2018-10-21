@@ -209,6 +209,13 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
+            AUCTION_PERIOD_END -> return tenderService.auctionPeriodEnd(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
             TENDER_PERIOD_END_EV -> return tenderService.tenderPeriodEnd(
                     cpid = cpId,
                     ocid = ocId!!,

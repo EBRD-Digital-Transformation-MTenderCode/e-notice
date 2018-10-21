@@ -66,6 +66,29 @@ class TenderService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
+
+    fun auctionPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val dto = toObject(AuctionPeriodEndDto::class.java, data.toString())
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        record.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.AWARD)
+            tender.awardPeriod = dto.awardPeriod
+            tender.statusDetails = dto.tenderStatusDetails
+            tender.electronicAuctions = dto.electronicAuctions
+            if (dto.awards.isNotEmpty()) awards = dto.awards
+            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
+            if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
+            if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
+        }
+        organizationService.processRecordPartiesFromBids(record)
+        organizationService.processRecordPartiesFromAwards(record)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
     fun suspendTender(cpid: String,
                       ocid: String,
                       stage: String,
@@ -367,4 +390,5 @@ class TenderService(private val releaseService: ReleaseService,
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
     }
+
 }

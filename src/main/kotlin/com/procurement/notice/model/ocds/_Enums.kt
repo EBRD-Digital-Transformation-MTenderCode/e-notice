@@ -384,6 +384,7 @@ enum class Operation(val value: String) {
     TENDER_PERIOD_END("tenderPeriodEnd"),
     TENDER_PERIOD_END_EV("tenderPeriodEndEv"),
     TENDER_PERIOD_END_AUCTION("tenderPeriodEndAuction"),
+    AUCTION_PERIOD_END("auctionPeriodEnd"),
     ENQUIRY_PERIOD_END("enquiryPeriodEnd"),
     SUSPEND_TENDER("suspendTender"),
     AWARD_BY_BID("awardByBid"),
