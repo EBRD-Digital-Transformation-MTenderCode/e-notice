@@ -48,7 +48,7 @@ class TenderService(private val releaseService: ReleaseService,
     }
 
     fun tenderPeriodEndAuction(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(TenderPeriodEndDto::class.java, data.toString())
+        val dto = toObject(TenderPeriodEndAuctionDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -59,11 +59,8 @@ class TenderService(private val releaseService: ReleaseService,
             tender.statusDetails = dto.tenderStatusDetails
             if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
-            if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
             tender.electronicAuctions = dto.electronicAuctions
         }
-        organizationService.processRecordPartiesFromBids(record)
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
