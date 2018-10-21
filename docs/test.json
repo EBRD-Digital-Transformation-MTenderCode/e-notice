@@ -1,349 +1,322 @@
 {
-  "ocid": "ocds-t1s2t3-MD-1539777665308",
-  "isLotsChanged": false,
-  "planning": {
-    "budget": {
-      "description": "e",
-      "amount": {
-        "amount": 12000.00,
-        "currency": "MDL"
-      },
-      "isEuropeanUnionFunded": false,
-      "budgetBreakdown": [
+  "id": "0c97da90-d518-11e8-a2ae-1f0c2c044d9d",
+  "command": "createRelease",
+  "context": {
+    "operationId": "0c97da90-d518-11e8-a2ae-1f0c2c044d9d",
+    "requestId": "0c97da90-d518-11e8-a2ae-1f0c2c044d9d",
+    "cpid": "ocds-t1s2t3-MD-1540115989627",
+    "ocid": "ocds-t1s2t3-MD-1540115989627-EV-1540115990392",
+    "stage": "EV",
+    "processType": "tenderPeriodEndAuction",
+    "operationType": "tenderPeriodEndEv",
+    "phase": "auction",
+    "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
+    "country": "MD",
+    "language": "ro",
+    "pmd": "TEST_OT",
+    "token": "49650267-eee2-48a7-9489-498a1a1b7393",
+    "outcomes": [
+      {
+        "id": "0cfb61e2-d519-11e8-bfe9-37738f5c7b91",
+        "token": "4dfdc7fe-29d9-4993-9475-49b4f0424072"
+      }
+    ],
+    "startDate": "2018-10-21T10:07:00Z",
+    "timeStamp": 1540116420153147,
+    "isAuction": false
+  },
+  "data": {
+    "bidsData": [
+      {
+        "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
+        "bids": [
+          {
+            "id": "bf869600-d518-11e8-9b10-93caa9b2ae8d",
+            "date": "2018-10-21T10:04:50Z",
+            "createdDate": "2018-10-21T10:04:50Z",
+            "pendingDate": "2018-10-21T10:04:50Z",
+            "value": {
+              "amount": 1.65,
+              "currency": "MDL"
+            },
+            "tenderers": [
+              {
+                "id": "MD-IDNO-987654322",
+                "name": "TEST Provider 2"
+              }
+            ],
+            "relatedLots": [
+              "0c44b180-d518-11e8-ac0d-dd2b0a703f98"
+            ]
+          },
+          {
+            "id": "ca85fc30-d518-11e8-9b10-93caa9b2ae8d",
+            "date": "2018-10-21T10:05:08Z",
+            "createdDate": "2018-10-21T10:05:08Z",
+            "pendingDate": "2018-10-21T10:05:08Z",
+            "value": {
+              "amount": 1.65,
+              "currency": "MDL"
+            },
+            "tenderers": [
+              {
+                "id": "MD-IDNO-987654311",
+                "name": "TEST Provider 1"
+              }
+            ],
+            "relatedLots": [
+              "0c44b180-d518-11e8-ac0d-dd2b0a703f98"
+            ]
+          }
+        ]
+      }
+    ],
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1540115989627",
+      "title": "Tender title",
+      "description": "Tender description",
+      "awardCriteria": "priceOnly",
+      "lots": [
         {
-          "id": "ocds-t1s2t3-MD-1539775531645-FS-1539775561108",
-          "description": "description",
-          "amount": {
-            "amount": 12000.00,
+          "id": "0c446363-d518-11e8-ac0d-dd2b0a703f98",
+          "title": "A title for this lot.",
+          "description": "A description of this lot.",
+          "value": {
+            "amount": 100.00,
             "currency": "MDL"
-          },
-          "period": {
-            "startDate": "2018-09-02T00:00:00Z",
-            "endDate": "2019-01-01T00:00:00Z"
-          },
-          "sourceParty": {
-            "id": "MD-IDNO-7787-9898-88",
-            "name": "nameOfFSbuyer"
+          }
+        },
+        {
+          "id": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+          "title": "A title for this lot.",
+          "description": "A description of this lot.",
+          "value": {
+            "amount": 100.00,
+            "currency": "MDL"
           }
         }
       ]
     },
-    "rationale": "rationale"
-  },
-  "tender": {
-    "id": "ocds-t1s2t3-MD-1539777665308",
-    "title": "TITLE",
-    "description": "d",
-    "status": "active",
-    "statusDetails": "clarification",
-    "classification": {
-      "scheme": "CPV",
-      "id": "03111000-2",
-      "description": "Seminţe"
-    },
-    "mainProcurementCategory": "goods",
-    "procurementMethod": "open",
-    "procurementMethodDetails": "Small-value tender",
-    "submissionMethod": [
-      "electronicSubmission"
-    ],
-    "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
-    "submissionMethodRationale": [
-      "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
-    ],
-    "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
-    "acceleratedProcedure": {
-      "isAcceleratedProcedure": false
-    },
-    "designContest": {
-      "serviceContractAward": false
-    },
-    "electronicWorkflows": {
-      "useOrdering": false,
-      "usePayment": false,
-      "acceptInvoicing": false
-    },
-    "jointProcurement": {
-      "isJointProcurement": false
-    },
-    "procedureOutsourcing": {
-      "procedureOutsourced": false
-    },
-    "framework": {
-      "isAFramework": false
-    },
-    "dynamicPurchasingSystem": {
-      "hasDynamicPurchasingSystem": false
-    },
-    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
-    "procuringEntity": {
-      "id": "MD-IDNO-555-555",
-      "name": "Name of CN pE",
-      "identifier": {
-        "id": "555-555",
-        "scheme": "MD-IDNO",
-        "legalName": "legal name of pe",
-        "uri": "ddededed"
-      },
-      "address": {
-        "streetAddress": "address of pe",
-        "postalCode": "00000",
-        "addressDetails": {
-          "country": {
-            "scheme": "iso-alpha2",
-            "id": "MD",
-            "description": "MOLDOVA",
-            "uri": "http://reference.iatistandard.org"
+    "isAuctionStarted": true,
+    "auctionsLinks": [
+      {
+        "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
+        "links": [
+          {
+            "relatedBid": "bf869600-d518-11e8-9b10-93caa9b2ae8d",
+            "url": "https://eauction.mtender.md/ocds-t1s2t3-MD-1540115989627/0c44b180-d518-11e8-ac0d-dd2b0a703f98?bid_id=bf869600-d518-11e8-9b10-93caa9b2ae8d&sign=2ab85246-aa48-46d7-b017-e4a17a1056cd"
           },
-          "region": {
-            "scheme": "CUATM",
-            "id": "0101000",
-            "description": "mun.Chişinău",
-            "uri": "http://statistica.md"
-          },
-          "locality": {
-            "scheme": "CUATM",
-            "id": "0101000",
-            "description": "mun.Chişinău",
-            "uri": "http://statistica.md"
-          }
-        }
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "tre",
-          "scheme": "ert",
-          "legalName": "etr",
-          "uri": "dfedfsdfsdf"
-        }
-      ],
-      "contactPoint": {
-        "name": "contact name",
-        "email": "email",
-        "telephone": "4521",
-        "faxNumber": "45"
-      }
-    },
-    "awardCriteria": "priceOnly",
-    "requiresElectronicCatalogue": false,
-    "contractPeriod": {
-      "startDate": "2018-11-01T19:40:00Z",
-      "endDate": "2018-12-01T20:45:00Z"
-    },
-    "tenderPeriod": {
-      "startDate": "2018-10-17T12:10:00Z",
-      "endDate": "2018-10-17T12:30:00Z"
-    },
-    "enquiryPeriod": {
-      "startDate": "2018-10-17T12:01:05Z",
-      "endDate": "2018-10-17T12:10:00Z"
-    },
-    "value": {
-      "amount": 5500.00,
-      "currency": "MDL"
-    },
-    "lotGroups": [
-      {
-        "optionToCombine": false
-      }
-    ],
-    "lots": [
-      {
-        "id": "533e15c2-d204-11e8-b482-ff83a50aef66",
-        "title": "lot2",
-        "description": "2",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 2000.00,
-          "currency": "MDL"
-        },
-        "options": [
           {
-            "hasOptions": false
+            "relatedBid": "ca85fc30-d518-11e8-9b10-93caa9b2ae8d",
+            "url": "https://eauction.mtender.md/ocds-t1s2t3-MD-1540115989627/0c44b180-d518-11e8-ac0d-dd2b0a703f98?bid_id=ca85fc30-d518-11e8-9b10-93caa9b2ae8d&sign=7bebb94c-e2e0-4745-b2bf-7b4c69fa74fd"
           }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-12-01T19:40:00Z",
-          "endDate": "2018-12-01T20:45:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              }
-            }
-          },
-          "description": "decr"
-        }
-      },
-      {
-        "id": "533e15c3-d204-11e8-b482-ff83a50aef66",
-        "title": "lot2",
-        "description": "2",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 3500.00,
-          "currency": "MDL"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-11-01T19:40:00Z",
-          "endDate": "2018-11-02T20:45:00Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "Steet",
-            "postalCode": "5",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "CUATM",
-                "id": "0301000",
-                "description": "mun.Bălţi",
-                "uri": "http://statistica.md"
-              }
-            }
-          },
-          "description": "decr"
-        }
-      }
-    ],
-    "items": [
-      {
-        "id": "533e15c0-d204-11e8-b482-ff83a50aef66",
-        "description": "p",
-        "classification": {
-          "scheme": "CPV",
-          "id": "03111300-5",
-          "description": "Seminţe de floarea-soarelui"
-        },
-        "quantity": 10.00,
-        "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
-        },
-        "relatedLot": "533e15c2-d204-11e8-b482-ff83a50aef66"
-      },
-      {
-        "id": "533e15c1-d204-11e8-b482-ff83a50aef66",
-        "description": "p",
-        "classification": {
-          "scheme": "CPV",
-          "id": "03111400-6",
-          "description": "Seminţe de bumbac"
-        },
-        "quantity": 100.00,
-        "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
-        },
-        "relatedLot": "533e15c3-d204-11e8-b482-ff83a50aef66"
-      }
-    ],
-    "documents": [
-      {
-        "id": "3773bc6a-bdf0-413a-8802-7d2da732e995-1539765199040",
-        "documentType": "tenderNotice",
-        "relatedLots": [
-          "533e15c3-d204-11e8-b482-ff83a50aef66"
         ]
       }
-    ],
-    "procurementMethodModalities": [
-      "electronicAuction"
     ],
     "electronicAuctions": {
       "details": [
         {
-          "id": "asasas",
-          "relatedLot": "533e15c3-d204-11e8-b482-ff83a50aef66",
+          "id": "e8e5cce6-b23d-4c59-a481-c50305589e81",
+          "relatedLot": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+          "auctionPeriod": {
+            "startDate": "2018-10-23T11:42:30Z"
+          },
           "electronicAuctionModalities": [
             {
+              "url": "https://eauction.mtender.md/ocds-t1s2t3-MD-1540115989627/0c44b180-d518-11e8-ac0d-dd2b0a703f98",
               "eligibleMinimumDifference": {
-                "amount": 5.00,
-                "currency": "MDL"
-              }
-            }
-          ]
-        },
-        {
-          "id": "asasas",
-          "relatedLot": "533e15c2-d204-11e8-b482-ff83a50aef66",
-          "electronicAuctionModalities": [
-            {
-              "eligibleMinimumDifference": {
-                "amount": 9.00,
+                "amount": 5.0,
                 "currency": "MDL"
               }
             }
           ]
         }
       ]
-    }
-  }
+    },
+    "auctionsData": {
+      "tender": {
+        "id": "ocds-t1s2t3-MD-1540115989627",
+        "title": "Tender title",
+        "description": "Tender description",
+        "lots": [
+          {
+            "id": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+            "title": "A title for this lot.",
+            "description": "A description of this lot.",
+            "eligibleMinimumDifference": 5.0,
+            "value": {
+              "amount": 100.0,
+              "currency": "MDL"
+            },
+            "auctionPeriod": {
+              "startDate": "2018-10-23T11:42:30Z"
+            }
+          }
+        ]
+      },
+      "bids": [
+        {
+          "id": "bf869600-d518-11e8-9b10-93caa9b2ae8d",
+          "value": 1.65,
+          "relatedLot": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+          "pendingDate": "2018-10-21T10:04:50Z",
+          "sign": "2ab85246-aa48-46d7-b017-e4a17a1056cd"
+        },
+        {
+          "id": "ca85fc30-d518-11e8-9b10-93caa9b2ae8d",
+          "value": 1.65,
+          "relatedLot": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+          "pendingDate": "2018-10-21T10:05:08Z",
+          "sign": "7bebb94c-e2e0-4745-b2bf-7b4c69fa74fd"
+        }
+      ]
+    },
+    "awardPeriod": null,
+    "awards": [
+      {
+        "token": "4dfdc7fe-29d9-4993-9475-49b4f0424072",
+        "id": "0cfb61e2-d519-11e8-bfe9-37738f5c7b91",
+        "date": "2018-10-21T10:07:00Z",
+        "description": "Other reasons (discontinuation of procedure)",
+        "title": "The contract/lot is not awarded",
+        "status": "unsuccessful",
+        "statusDetails": "empty",
+        "relatedLots": [
+          "0c446363-d518-11e8-ac0d-dd2b0a703f98"
+        ]
+      }
+    ],
+    "unsuccessfulLots": [
+      {
+        "id": "0c446363-d518-11e8-ac0d-dd2b0a703f98"
+      }
+    ],
+    "lots": [
+      {
+        "id": "0c446363-d518-11e8-ac0d-dd2b0a703f98",
+        "title": "A title for this lot.",
+        "description": "A description of this lot.",
+        "status": "unsuccessful",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 100.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-10-22T00:00:00Z",
+          "endDate": "2018-12-16T00:00:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "3400000",
+                "description": "Donduşeni",
+                "uri": "http://statistica.md"
+              },
+              "locality": {
+                "scheme": "other",
+                "id": "",
+                "description": ""
+              }
+            }
+          },
+          "description": "Further description of the place of performance of the contract. Required by EU."
+        }
+      },
+      {
+        "id": "0c44b180-d518-11e8-ac0d-dd2b0a703f98",
+        "title": "A title for this lot.",
+        "description": "A description of this lot.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 100.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-10-22T00:00:00Z",
+          "endDate": "2018-12-16T00:00:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "3400000",
+                "description": "Donduşeni",
+                "uri": "http://statistica.md"
+              },
+              "locality": {
+                "scheme": "other",
+                "id": "",
+                "description": ""
+              }
+            }
+          },
+          "description": "Further description of the place of performance of the contract. Required by EU."
+        }
+      }
+    ],
+    "tenderStatus": "active",
+    "tenderStatusDetails": "auction"
+  },
+  "version": "0.0.1"
 }

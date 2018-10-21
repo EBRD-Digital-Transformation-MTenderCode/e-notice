@@ -252,6 +252,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     PLANNED("planned"),
     CLARIFICATION("clarification"),
     TENDERING("tendering"),
+    AUCTION("auction"),
     CANCELLATION("cancellation"),
     SUSPENDED("suspended"),
     AWARDING("awarding"),
