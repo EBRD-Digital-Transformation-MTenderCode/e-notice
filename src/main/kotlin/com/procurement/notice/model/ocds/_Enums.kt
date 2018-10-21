@@ -382,6 +382,7 @@ enum class Operation(val value: String) {
     UNSUCCESSFUL_TENDER("tenderUnsuccessful"),
     TENDER_PERIOD_END("tenderPeriodEnd"),
     TENDER_PERIOD_END_EV("tenderPeriodEndEv"),
+    TENDER_PERIOD_END_AUCTION("tenderPeriodEndAuction"),
     ENQUIRY_PERIOD_END("enquiryPeriodEnd"),
     SUSPEND_TENDER("suspendTender"),
     AWARD_BY_BID("awardByBid"),
