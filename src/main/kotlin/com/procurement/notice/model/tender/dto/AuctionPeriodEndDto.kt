@@ -17,10 +17,18 @@ data class AuctionPeriodEndDto @JsonCreator constructor(
 
         val awards: HashSet<Award>,
 
+        val lots: HashSet<Lot>,
+
         val bids: HashSet<Bid>,
 
         val documents: HashSet<Document>,
 
-        var electronicAuctions: ElectronicAuctions
+        val tender: AuctionTender
 )
 
+data class AuctionTender @JsonCreator constructor(
+
+        val auctionPeriod: Period,
+
+        var electronicAuctions: ElectronicAuctions
+)
