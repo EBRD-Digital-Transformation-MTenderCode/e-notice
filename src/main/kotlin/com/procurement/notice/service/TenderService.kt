@@ -91,7 +91,6 @@ class TenderService(private val releaseService: ReleaseService,
     }
 
 
-
     fun suspendTender(cpid: String,
                       ocid: String,
                       stage: String,
