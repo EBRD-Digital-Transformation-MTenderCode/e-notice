@@ -80,7 +80,6 @@ class TenderService(private val releaseService: ReleaseService,
             tender.auctionPeriod = dto.tender.auctionPeriod
             tender.electronicAuctions = dto.tender.electronicAuctions
             if (dto.awards.isNotEmpty()) awards = dto.awards
-            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
