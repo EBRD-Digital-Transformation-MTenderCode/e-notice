@@ -15,7 +15,6 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class TenderService(private val releaseService: ReleaseService,
@@ -71,6 +70,7 @@ class TenderService(private val releaseService: ReleaseService,
         val dto = toObject(AuctionPeriodEndDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
+        val recordAwards = record.awards ?: setOf<Award>()
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
@@ -79,7 +79,7 @@ class TenderService(private val releaseService: ReleaseService,
             tender.statusDetails = dto.tenderStatusDetails
             tender.auctionPeriod = dto.tender.auctionPeriod
             tender.electronicAuctions = dto.tender.electronicAuctions
-            if (dto.awards.isNotEmpty()) awards = dto.awards
+            if (dto.awards.isNotEmpty()) awards = recordAwards.plus(dto.awards).toHashSet()
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
         }
