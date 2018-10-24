@@ -34,6 +34,7 @@ class OrganizationService {
             if (ei.parties == null) ei.parties = hashSetOf()
             ei.parties?.add(partyBuyer)
             clearOrganizationReference(buyer)
+            if (ei.parties != null && ei.parties!!.isEmpty()) ei.parties = null
         }
     }
 
@@ -78,6 +79,7 @@ class OrganizationService {
             }
             fs.payer = null
         }
+        if (fs.parties != null && fs.parties!!.isEmpty()) fs.parties = null
     }
 
     fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
@@ -91,6 +93,7 @@ class OrganizationService {
                 clearOrganizationReference(procuringEntity)
             }
         }
+        if (ms.parties != null && ms.parties!!.isEmpty()) ms.parties = null
     }
 
     fun processRecordPartiesFromBids(record: Record) {
@@ -105,6 +108,7 @@ class OrganizationService {
                 }
             }
         }
+        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     fun processRecordPartiesFromAwards(record: Record) {
@@ -119,6 +123,7 @@ class OrganizationService {
                 }
             }
         }
+        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     fun processContractRecordPartiesFromAwards(record: ContractRecord) {
@@ -136,6 +141,7 @@ class OrganizationService {
                 }
             }
         }
+        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
@@ -144,6 +150,7 @@ class OrganizationService {
             record.parties?.let { addParty(parties = it, organization = author, role = PartyRole.ENQUIRER) }
             clearOrganizationReference(author)
         }
+        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference?, role: PartyRole) {
