@@ -77,7 +77,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender = recordTender
-            tender.amendments = amendments
+            tender.amendments = if (amendments.isNotEmpty()) amendments else null
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -153,7 +153,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender.tenderPeriod = recordTender.tenderPeriod
             tender.enquiryPeriod = recordTender.enquiryPeriod
-            tender.amendments = amendments
+            tender.amendments = if (amendments.isNotEmpty()) amendments else null
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
