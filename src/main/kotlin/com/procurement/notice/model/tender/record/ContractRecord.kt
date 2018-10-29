@@ -19,13 +19,15 @@ data class ContractRecord @JsonCreator constructor(
 
         var initiationType: InitiationType?,
 
-        var parties: HashSet<Organization>?,
+        var tender: RecordTender,
 
         var awards: HashSet<Award>?,
 
         var contracts: HashSet<Contract>?,
 
         val agreedMetrics: Set<AgreedMetric>?,
+
+        var parties: HashSet<Organization>?,
 
         var relatedProcesses: HashSet<RelatedProcess>?
 )
