@@ -1,12 +1,13 @@
 {
-  "id": "c05cf480-db89-11e8-997d-b3562e4b1162",
+  "id": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
   "command": "createRelease",
   "context": {
-    "operationId": "c05cf480-db89-11e8-997d-b3562e4b1162",
-    "requestId": "c05cf480-db89-11e8-997d-b3562e4b1162",
+    "operationId": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
+    "requestId": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
     "cpid": "ocds-t1s2t3-MD-1540545860155",
     "ocid": "ocds-t1s2t3-MD-1540545860155-EV-1540545860300",
     "stage": "AC",
+    "prevStage": "EV",
     "processType": "awardPeriodEnd",
     "operationType": "awardPeriodEndEv",
     "phase": "contractCreation",
@@ -15,10 +16,15 @@
     "language": "ro",
     "pmd": "TEST_OT",
     "token": "95838ccd-1507-4fc0-993d-403ed20aea1f",
-    "outcomes": [],
-    "startDate": "2018-10-29T14:48:51Z",
-    "endDate": "2018-10-29T14:49:32Z",
-    "timeStamp": 1540824531913539,
+    "outcomes": [
+      {
+        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
+        "token": "ca65edef-b70f-4d0f-a985-697bbfc1908b"
+      }
+    ],
+    "startDate": "2018-10-29T16:40:08Z",
+    "endDate": "2018-10-29T16:40:19Z",
+    "timeStamp": 1540831208461582,
     "isAuction": false,
     "mainProcurementCategory": "goods"
   },
@@ -83,7 +89,7 @@
     ],
     "awardPeriod": {
       "startDate": "2018-10-26T09:27:19Z",
-      "endDate": "2018-10-29T14:49:32Z"
+      "endDate": "2018-10-29T16:40:19Z"
     },
     "unsuccessfulLots": [
       {
@@ -374,9 +380,147 @@
     ],
     "tenderStatus": "active",
     "tenderStatusDetails": "awardedContractPreparation",
-    "cans": [],
-    "contracts": [],
-    "contractTerms": []
+    "cans": [
+      {
+        "contract": {
+          "id": "cd6604c6-cb41-4074-9f65-6cec9754451f",
+          "date": "2018-10-26T09:27:24Z",
+          "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+          "status": "active",
+          "statusDetails": "empty"
+        }
+      }
+    ],
+    "contracts": [
+      {
+        "token": "ca65edef-b70f-4d0f-a985-697bbfc1908b",
+        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
+        "date": "2018-10-29T16:40:08Z",
+        "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+        "status": "pending",
+        "statusDetails": "contractProject"
+      }
+    ],
+    "contractTerms": [
+      {
+        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
+        "agreedMetrics": [
+          {
+            "id": "cc-general",
+            "title": "General Responsibilities",
+            "description": "Contract conditions governing the general responsibilities related to both: CA and EO",
+            "observations": [
+              {
+                "id": "cc-general-1-3",
+                "notes": "Maximum days to respond on termination intention",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-general-1-1",
+                "notes": "Maximum days to inform on invoking Force Majeure",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-general-1-2",
+                "notes": "Maximum days to inform on termination intention",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-tenderer-1",
+            "title": "Execution Guarantee",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding guarantee",
+            "observations": [
+              {
+                "id": "cc-tenderer-1-1",
+                "notes": "Guarantee amount",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-4",
+                "notes": "Maximum amount in case of successive withholding from partial invoices",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-5",
+                "notes": "Maximum days of guarantee transfer",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-2",
+                "notes": "Guarantee amount provided by the general entrepreneur",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-3",
+                "notes": "Amount of guarantee in case of successive withholding from partial invoices",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-subject",
+            "title": "item.description: subject specification",
+            "description": "Description of procured items of subject of contracting process",
+            "observations": [
+              {
+                "id": "cc-subject-3",
+                "notes": "Producer"
+              },
+              {
+                "id": "cc-subject-1",
+                "notes": "Item model"
+              },
+              {
+                "id": "cc-subject-5",
+                "notes": "Reference standards"
+              },
+              {
+                "id": "cc-subject-4",
+                "notes": "Tech specification"
+              },
+              {
+                "id": "cc-subject-2",
+                "notes": "Country of origin"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "version": "0.0.1"
 }
