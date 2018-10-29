@@ -25,5 +25,7 @@ data class ContractRecord @JsonCreator constructor(
 
         var contracts: HashSet<Contract>?,
 
+        val agreedMetrics: Set<AgreedMetric>?,
+
         var relatedProcesses: HashSet<RelatedProcess>?
 )
