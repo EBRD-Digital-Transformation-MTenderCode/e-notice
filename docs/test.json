@@ -1,11 +1,11 @@
 {
-  "id": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
+  "id": "6f469910-dba3-11e8-851d-f9eb2a9a7526",
   "command": "createRelease",
   "context": {
-    "operationId": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
-    "requestId": "4bdf3a40-db99-11e8-b2a8-9d1bd7444697",
-    "cpid": "ocds-t1s2t3-MD-1540545860155",
-    "ocid": "ocds-t1s2t3-MD-1540545860155-EV-1540545860300",
+    "operationId": "6f469910-dba3-11e8-851d-f9eb2a9a7526",
+    "requestId": "6f469910-dba3-11e8-851d-f9eb2a9a7526",
+    "cpid": "ocds-t1s2t3-MD-1540483970375",
+    "ocid": "ocds-t1s2t3-MD-1540483970375-EV-1540483970444",
     "stage": "AC",
     "prevStage": "EV",
     "processType": "awardPeriodEnd",
@@ -15,38 +15,25 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "95838ccd-1507-4fc0-993d-403ed20aea1f",
+    "token": "24a5d084-c3fe-4c4c-9c42-2a13ee46e826",
     "outcomes": [
       {
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
-        "token": "ca65edef-b70f-4d0f-a985-697bbfc1908b"
+        "id": "ocds-t1s2t3-MD-1540483970375-AC-1539754755194",
+        "token": "48c348a0-8979-4b1d-9e25-205f8b019ec6"
       }
     ],
-    "startDate": "2018-10-29T16:40:08Z",
-    "endDate": "2018-10-29T16:40:19Z",
-    "timeStamp": 1540831208461582,
+    "startDate": "2018-10-29T17:52:42Z",
+    "endDate": "2018-10-29T17:52:48Z",
     "isAuction": false,
     "mainProcurementCategory": "goods"
   },
   "data": {
     "awards": [
       {
-        "token": "78912ba2-95ce-47f4-9d7d-9e03b10af4f2",
-        "id": "5630e602-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:19Z",
-        "description": "Other reasons (discontinuation of procedure)",
-        "title": "The contract/lot is not awarded",
-        "status": "unsuccessful",
-        "statusDetails": "empty",
-        "relatedLots": [
-          "eb0d60b4-d900-11e8-8191-413e90804d99"
-        ]
-      },
-      {
-        "token": "7c159944-33b7-481a-bc30-8a82d20637d7",
-        "id": "5630e600-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:29Z",
-        "description": "Personal across cell discover town major until often heart science can partner music cell class grow key recent ever especially research eat catch need leave.",
+        "token": "5065c06c-0f2f-40f5-9c5a-0b674371a439",
+        "id": "3c6c1360-d871-11e8-82f4-c3b403e102b4",
+        "date": "2018-10-25T16:15:58Z",
+        "description": "Deal above safe cost difficult ten agent week quite build research pull agency respond major beyond left industry president begin involve PM create.",
         "status": "active",
         "statusDetails": "empty",
         "value": {
@@ -54,20 +41,32 @@
           "currency": "MDL"
         },
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "d1de6575-d870-11e8-8191-413e90804d99"
         ],
-        "relatedBid": "26d63f90-d901-11e8-ad26-e5c1eb0d4905",
+        "relatedBid": "07913120-d871-11e8-ad26-e5c1eb0d4905",
         "suppliers": [
           {
-            "id": "MD-IDNO-446-04-7287",
-            "name": "Mcdonald-Matthews"
+            "id": "MD-IDNO-441-04-3941",
+            "name": "Wilson-Olson"
           }
         ]
       },
       {
-        "token": "a8b7b995-8577-4c00-ac75-6b946dbaac16",
-        "id": "5630e601-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:29Z",
+        "token": "7346153c-38a9-4d83-bc4a-5518f2bc907a",
+        "id": "3c6c1362-d871-11e8-82f4-c3b403e102b4",
+        "date": "2018-10-25T16:15:49Z",
+        "description": "Other reasons (discontinuation of procedure)",
+        "title": "The contract/lot is not awarded",
+        "status": "unsuccessful",
+        "statusDetails": "empty",
+        "relatedLots": [
+          "d1de6574-d870-11e8-8191-413e90804d99"
+        ]
+      },
+      {
+        "token": "83983b5b-e93a-4b08-a55f-e9c1337bbb58",
+        "id": "3c6c1361-d871-11e8-82f4-c3b403e102b4",
+        "date": "2018-10-25T16:15:58Z",
         "description": "",
         "status": "unsuccessful",
         "statusDetails": "empty",
@@ -76,45 +75,45 @@
           "currency": "MDL"
         },
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "d1de6575-d870-11e8-8191-413e90804d99"
         ],
-        "relatedBid": "27cf93b0-d901-11e8-ad26-e5c1eb0d4905",
+        "relatedBid": "08663460-d871-11e8-ad26-e5c1eb0d4905",
         "suppliers": [
           {
-            "id": "MD-IDNO-667-81-1618",
-            "name": "Lee Group"
+            "id": "MD-IDNO-623-84-6786",
+            "name": "Nguyen PLC"
           }
         ]
       }
     ],
     "awardPeriod": {
-      "startDate": "2018-10-26T09:27:19Z",
-      "endDate": "2018-10-29T16:40:19Z"
+      "startDate": "2018-10-25T16:15:49Z",
+      "endDate": "2018-10-29T17:52:48Z"
     },
     "unsuccessfulLots": [
       {
-        "id": "eb0d60b4-d900-11e8-8191-413e90804d99"
+        "id": "d1de6574-d870-11e8-8191-413e90804d99"
       }
     ],
     "bids": [
       {
-        "id": "26d63f90-d901-11e8-ad26-e5c1eb0d4905",
-        "date": "2018-10-26T09:27:24Z",
+        "id": "07913120-d871-11e8-ad26-e5c1eb0d4905",
+        "date": "2018-10-25T16:15:53Z",
         "status": "valid",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-446-04-7287",
-            "name": "Mcdonald-Matthews",
+            "id": "MD-IDNO-441-04-3941",
+            "name": "Wilson-Olson",
             "identifier": {
-              "id": "446-04-7287",
+              "id": "441-04-3941",
               "scheme": "MD-IDNO",
-              "legalName": "Bowers-Hanson Ltd",
-              "uri": "http://davis.org/explore/privacy/"
+              "legalName": "Ruiz, Cortez and Williams LLC",
+              "uri": "https://www.mosley-smith.com/faq.jsp"
             },
             "address": {
-              "streetAddress": "01855 Montes Circle",
-              "postalCode": "07300",
+              "streetAddress": "95453 Arnold Meadows",
+              "postalCode": "72304",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -124,32 +123,32 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "1000000",
-                  "description": "Anenii Noi",
+                  "id": "8300000",
+                  "description": "Şoldăneşti",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "1015000",
-                  "description": "s.Ciobanovca (r-l Anenii Noi)",
+                  "id": "8310001",
+                  "description": "s.Curătura",
                   "uri": "http://statistica.md"
                 }
               }
             },
             "additionalIdentifiers": [
               {
-                "id": "483-19-7567",
+                "id": "020-97-5670",
                 "scheme": "MD-IDNO",
-                "legalName": "Bowers-Hanson LLC",
-                "uri": "https://www.medina-brown.biz/register/"
+                "legalName": "Ruiz, Cortez and Williams Ltd",
+                "uri": "https://www.smith-pratt.com/tags/category/app/post.htm"
               }
             ],
             "contactPoint": {
-              "name": "Jay Taylor",
-              "email": "jamesbender@gmail.com",
-              "telephone": "+28(4)3643606091",
-              "faxNumber": "1-885-287-2567",
-              "url": "https://www.rangel.net/categories/about/"
+              "name": "Joshua Hodges",
+              "email": "tinaburns@gmail.com",
+              "telephone": "892.595.1688x01902",
+              "faxNumber": "02079876133",
+              "url": "https://www.martinez.com/"
             },
             "details": {
               "scale": "large"
@@ -161,27 +160,27 @@
           "currency": "MDL"
         },
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "d1de6575-d870-11e8-8191-413e90804d99"
         ]
       },
       {
-        "id": "27cf93b0-d901-11e8-ad26-e5c1eb0d4905",
-        "date": "2018-10-26T09:27:24Z",
+        "id": "08663460-d871-11e8-ad26-e5c1eb0d4905",
+        "date": "2018-10-25T16:15:53Z",
         "status": "withdrawn",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-667-81-1618",
-            "name": "Lee Group",
+            "id": "MD-IDNO-623-84-6786",
+            "name": "Nguyen PLC",
             "identifier": {
-              "id": "667-81-1618",
+              "id": "623-84-6786",
               "scheme": "MD-IDNO",
-              "legalName": "Summers LLC and Sons",
-              "uri": "https://brewer-weiss.com/"
+              "legalName": "Briggs, Ward and Spencer Group",
+              "uri": "http://www.powell-hernandez.net/wp-content/explore/about.html"
             },
             "address": {
-              "streetAddress": "966 Henry Gardens Apt. 209",
-              "postalCode": "26302",
+              "streetAddress": "5727 John Field Suite 212",
+              "postalCode": "70274",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -191,35 +190,35 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "9600000",
-                  "description": "UTA Găgăuzia",
+                  "id": "3600000",
+                  "description": "Drochia",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "9627002",
-                  "description": "s.Etulia Nouă",
+                  "id": "3618000",
+                  "description": "s.Hăsnăşenii Mari",
                   "uri": "http://statistica.md"
                 }
               }
             },
             "additionalIdentifiers": [
               {
-                "id": "448-92-5925",
+                "id": "899-63-9011",
                 "scheme": "MD-IDNO",
-                "legalName": "Summers LLC Ltd",
-                "uri": "https://wilkins-aguirre.com/homepage.htm"
+                "legalName": "Briggs, Ward and Spencer LLC",
+                "uri": "https://maynard.com/posts/author.php"
               }
             ],
             "contactPoint": {
-              "name": "Brett Rios",
-              "email": "vjames@yahoo.com",
-              "telephone": "+77(3)6692760657",
-              "faxNumber": "1-584-355-2990x1129",
-              "url": "https://wyatt.com/app/author.php"
+              "name": "Mary Foster",
+              "email": "zacharyallen@gmail.com",
+              "telephone": "514.390.7370x6315",
+              "faxNumber": "(270)915-5219x37336",
+              "url": "https://williams.com/app/posts/homepage/"
             },
             "details": {
-              "scale": "sme"
+              "scale": ""
             }
           }
         ],
@@ -229,38 +228,38 @@
         },
         "documents": [
           {
-            "id": "2f0cb693-d164-4344-b156-518ca3159522-1540545961012",
+            "id": "2dc49967-e4b1-4e54-acb8-ca2a8ca413ee-1540484060805",
             "documentType": "submissionDocuments",
-            "title": "Fast mother since human list executive process.",
-            "description": "Second upon skin up able author ahead always able back figure event job total agree significant view finally consider seem lead leg.",
+            "title": "More significant woman without kind necessary.",
+            "description": "Data evidence join which forward notice animal detail act skill energy oil nothing PM article she wonder music sign conference fight significant produce five issue.",
             "relatedLots": [
-              "eb0d60b5-d900-11e8-8191-413e90804d99"
+              "d1de6575-d870-11e8-8191-413e90804d99"
             ]
           },
           {
-            "id": "d9feadf8-0015-4d1d-91cd-1dccb3079cff-1540545961413",
+            "id": "b9370ec9-aac7-416d-9cb3-fa48d1aa902c-1540484061178",
             "documentType": "submissionDocuments",
-            "title": "Physical reality program whom recognize economy.",
-            "description": "Who economic trade change ground claim spring sign figure information toward factor trip forward could bank available impact true among impact painting likely through own parent discuss.",
+            "title": "Industry hear magazine need stop.",
+            "description": "Think meet after draw explain reflect happen between amount their commercial class data attention return agency learn wall really east thank race book off response establish.",
             "relatedLots": [
-              "eb0d60b5-d900-11e8-8191-413e90804d99"
+              "d1de6575-d870-11e8-8191-413e90804d99"
             ]
           }
         ],
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "d1de6575-d870-11e8-8191-413e90804d99"
         ]
       }
     ],
     "lots": [
       {
-        "id": "eb0d60b4-d900-11e8-8191-413e90804d99",
-        "title": "Husband from public specific game lawyer section.",
-        "description": "Such response rule structure choice purpose bed eye campaign born often teacher understand under concern toward fish guess fly fly animal raise they keep time.",
+        "id": "d1de6574-d870-11e8-8191-413e90804d99",
+        "title": "Many common perhaps to try sit.",
+        "description": "Wear become speech six degree huge information own share kind true seven get must who officer whom coach include story factor lose debate.",
         "status": "unsuccessful",
         "statusDetails": "empty",
         "value": {
-          "amount": 10145483365.14,
+          "amount": 21137243526.04,
           "currency": "MDL"
         },
         "options": [
@@ -284,13 +283,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-27T09:24:19Z",
-          "endDate": "2018-12-24T09:24:19Z"
+          "startDate": "2018-10-25T16:15:50Z",
+          "endDate": "2019-03-26T16:15:50Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "3243 Williams Divide",
-            "postalCode": "17656",
+            "streetAddress": "0928 Mendoza Green Apt. 013",
+            "postalCode": "80164",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -300,29 +299,29 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "3100000",
-                "description": "Criuleni",
+                "id": "1700000",
+                "description": "Cahul",
                 "uri": "http://statistica.md"
               },
               "locality": {
                 "scheme": "CUATM",
-                "id": "3118000",
-                "description": "s.Drăsliceni",
+                "id": "1726002",
+                "description": "s.Vladimirovca (r-l Cahul)",
                 "uri": "http://statistica.md"
               }
             }
           },
-          "description": "Style few story at mind option husband over development figure until can little happen although close court assume since."
+          "description": "Admit home choose citizen maybe case realize fish project clear ago pattern organization training put provide Mrs her also build traditional name think put public region difference major speech culture protect available what find feeling work majority."
         }
       },
       {
-        "id": "eb0d60b5-d900-11e8-8191-413e90804d99",
-        "title": "Business someone remain.",
-        "description": "Receive together always describe thousand mind live effect travel cost good break later wall say game put course.",
+        "id": "d1de6575-d870-11e8-8191-413e90804d99",
+        "title": "Ahead risk ask administration yeah.",
+        "description": "Term live all particular at wide agency international say land fall second road meeting picture history interest daughter change course director change wide network start nature there woman world best drug woman commercial cell.",
         "status": "complete",
         "statusDetails": "empty",
         "value": {
-          "amount": 19716405594.48,
+          "amount": 23081750068.43,
           "currency": "MDL"
         },
         "options": [
@@ -346,13 +345,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-27T09:24:19Z",
-          "endDate": "2018-12-24T09:24:19Z"
+          "startDate": "2018-10-25T16:15:50Z",
+          "endDate": "2019-03-26T16:15:50Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "1065 Bartlett Branch",
-            "postalCode": "20131",
+            "streetAddress": "293 Dorsey Plaza",
+            "postalCode": "02379",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -362,19 +361,19 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "0501000",
-                "description": "mun.Bender",
+                "id": "8000000",
+                "description": "Străşeni",
                 "uri": "http://statistica.md"
               },
               "locality": {
                 "scheme": "CUATM",
-                "id": "0501000",
-                "description": "mun.Bender",
+                "id": "8016001",
+                "description": "s.Saca",
                 "uri": "http://statistica.md"
               }
             }
           },
-          "description": "Ability century brother claim fly gun happy fact tree personal himself couple former chance key some live behavior meeting approach myself against project raise tonight rock day grow page."
+          "description": "Increase law medical rise building affect building single sure work seek view provide relationship pressure money world turn development organization ready which Congress game fall likely company their tax available full hundred tax account impact owner time."
         }
       }
     ],
@@ -383,9 +382,9 @@
     "cans": [
       {
         "contract": {
-          "id": "cd6604c6-cb41-4074-9f65-6cec9754451f",
-          "date": "2018-10-26T09:27:24Z",
-          "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+          "id": "0d9ab79e-1b21-4eda-b1af-88edcd655498",
+          "date": "2018-10-25T16:15:53Z",
+          "awardId": "3c6c1360-d871-11e8-82f4-c3b403e102b4",
           "status": "active",
           "statusDetails": "empty"
         }
@@ -393,17 +392,17 @@
     ],
     "contracts": [
       {
-        "token": "ca65edef-b70f-4d0f-a985-697bbfc1908b",
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
-        "date": "2018-10-29T16:40:08Z",
-        "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+        "token": "48c348a0-8979-4b1d-9e25-205f8b019ec6",
+        "id": "ocds-t1s2t3-MD-1540483970375-AC-1539754755194",
+        "date": "2018-10-29T17:52:42Z",
+        "awardId": "3c6c1360-d871-11e8-82f4-c3b403e102b4",
         "status": "pending",
         "statusDetails": "contractProject"
       }
     ],
     "contractTerms": [
       {
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1538756148626",
+        "id": "ocds-t1s2t3-MD-1540483970375-AC-1539754755194",
         "agreedMetrics": [
           {
             "id": "cc-general",
@@ -488,33 +487,6 @@
                   "name": "day",
                   "scheme": "MD-CUMC"
                 }
-              }
-            ]
-          },
-          {
-            "id": "cc-subject",
-            "title": "item.description: subject specification",
-            "description": "Description of procured items of subject of contracting process",
-            "observations": [
-              {
-                "id": "cc-subject-3",
-                "notes": "Producer"
-              },
-              {
-                "id": "cc-subject-1",
-                "notes": "Item model"
-              },
-              {
-                "id": "cc-subject-5",
-                "notes": "Reference standards"
-              },
-              {
-                "id": "cc-subject-4",
-                "notes": "Tech specification"
-              },
-              {
-                "id": "cc-subject-2",
-                "notes": "Country of origin"
               }
             ]
           }
