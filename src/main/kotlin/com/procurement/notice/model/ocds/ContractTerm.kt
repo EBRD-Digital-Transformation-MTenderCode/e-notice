@@ -8,7 +8,7 @@ data class ContractTerm @JsonCreator constructor(
 
         val id: String,
 
-        val agreedMetrics: Set<AgreedMetric>
+        val agreedMetrics: List<AgreedMetric>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
