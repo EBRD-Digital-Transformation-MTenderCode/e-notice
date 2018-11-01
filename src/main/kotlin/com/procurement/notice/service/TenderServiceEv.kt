@@ -119,6 +119,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 val ocIdContract = contract.id!!
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val contractTerm = dto.contractTerms.asSequence().first { it.id == contract.id }
+                contract.agreedMetrics = contractTerm.agreedMetrics
                 contractTender.lots = dto.lots.asSequence()
                         .filter { it.id == award.relatedLots!![0] }
                         .map{ ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
@@ -134,8 +135,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                         initiationType = record.initiationType,
                         tender = contractTender,
                         awards = setOf(award).toHashSet(),
-                        contracts = setOf(contract).toHashSet(),
-                        agreedMetrics = contractTerm.agreedMetrics)
+                        contracts = setOf(contract).toHashSet())
                 organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)
