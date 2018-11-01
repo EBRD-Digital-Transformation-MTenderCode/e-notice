@@ -88,7 +88,13 @@ class TenderCancellationService(private val releaseService: ReleaseService) {
             tender.statusDetails = TenderStatusDetails.EMPTY
             if (dto.lots != null) tender.lots?.let { updateLots(it, dto.lots) }
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.awards != null) awards?.let { updateAwards(it, dto.awards) }
+            if (dto.awards != null) {
+                if (awards != null) {
+                    updateAwards(awards!!, dto.awards)
+                }else{
+                    awards = dto.awards
+                }
+            }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
