@@ -10,8 +10,7 @@ import com.procurement.notice.model.tender.dto.AwardByBidEvDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
-import com.procurement.notice.model.tender.record.ContractRecord
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.*
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -109,22 +108,34 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         }
         val contractRecords = mutableListOf<ContractRecord>()
         if (dto.contracts.isNotEmpty()) {
+            val contractTender = ContractTender(
+                    id = record.tender.id,
+                    classification = ms.tender.classification,
+                    mainProcurementCategory = ms.tender.mainProcurementCategory,
+                    procurementMethod = ms.tender.procurementMethod,
+                    procurementMethodDetails = ms.tender.procurementMethodDetails
+            )
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val contractTerm = dto.contractTerms.asSequence().first { it.id == contract.id }
+                contractTender.lots = dto.lots.asSequence()
+                        .filter { it.id == award.relatedLots!![0] }
+                        .map{ ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
+                        .toHashSet()
+                val awardDocumentIds = award.documents?.asSequence()?.map{it.id}?.toHashSet()?: hashSetOf()
+                val awardDocuments = dto.documents?.asSequence()?.filter { awardDocumentIds.contains(it.id) }?.toHashSet()
+                award.documents = awardDocuments
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
                         id = releaseService.newReleaseId(ocIdContract),
                         date = releaseDate,
                         tag = listOf(Tag.CONTRACT),
                         initiationType = record.initiationType,
-                        tender = record.tender,
+                        tender = contractTender,
                         awards = setOf(award).toHashSet(),
                         contracts = setOf(contract).toHashSet(),
-                        agreedMetrics = contractTerm.agreedMetrics,
-                        parties = null,
-                        relatedProcesses = null)
+                        agreedMetrics = contractTerm.agreedMetrics)
                 organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)

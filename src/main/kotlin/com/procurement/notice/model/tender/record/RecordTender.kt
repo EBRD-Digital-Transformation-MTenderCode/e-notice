@@ -55,7 +55,7 @@ data class RecordTender @JsonCreator constructor(
         @get:JsonProperty("requiresElectronicCatalogue")
         val requiresElectronicCatalogue: Boolean?,
 
-        var procurementMethodModalities: Set<String>?,
+        val procurementMethodModalities: Set<String>?,
 
-        var electronicAuctions: ElectronicAuctions?
+        val electronicAuctions: ElectronicAuctions?
 )
