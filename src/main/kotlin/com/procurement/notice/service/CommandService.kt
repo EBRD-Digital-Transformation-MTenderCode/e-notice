@@ -44,7 +44,7 @@ class CommandService(private val historyDao: HistoryDao,
         val stage = cm.context.stage
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
-        val releaseDate = cm.context.startDate.toLocalDateTime()
+        val releaseDate = cm.context.timeStamp.toLocalDateTime()
         val isAuction = cm.context.isAuction
         val data = cm.data
 

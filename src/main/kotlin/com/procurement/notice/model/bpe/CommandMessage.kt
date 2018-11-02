@@ -29,9 +29,10 @@ data class Context @JsonCreator constructor(
         val country: String?,
         val language: String?,
         val pmd: String?,
-        val startDate: String,
+        val startDate: String?,
         val endDate: String?,
-        val isAuction: Boolean?
+        val isAuction: Boolean?,
+        val timeStamp: Long
 )
 
 enum class CommandType(private val value: String) {

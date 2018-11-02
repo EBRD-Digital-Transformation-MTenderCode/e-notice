@@ -21,6 +21,10 @@ fun LocalDateTime.toDate(): Date {
     return Date.from(this.toInstant(ZoneOffset.UTC))
 }
 
+fun Long.toLocalDateTime(): LocalDateTime {
+    return  LocalDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneOffset.UTC)
+}
+
 fun localNowUTC(): LocalDateTime {
     return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
 }
