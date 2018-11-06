@@ -208,6 +208,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 award.date = this.date
                 award.status = this.status
                 award.statusDetails = this.statusDetails
+                award.items = this.items
             }
         }
     }
