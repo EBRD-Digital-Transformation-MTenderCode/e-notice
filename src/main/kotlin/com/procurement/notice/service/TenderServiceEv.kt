@@ -107,22 +107,23 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         }
         val contractRecords = mutableListOf<ContractRecord>()
         if (dto.contracts.isNotEmpty()) {
-            val contractTender = ContractTender(
-                    id = record.tender.id,
-                    classification = ms.tender.classification,
-                    mainProcurementCategory = ms.tender.mainProcurementCategory,
-                    procurementMethod = ms.tender.procurementMethod,
-                    procurementMethodDetails = ms.tender.procurementMethodDetails
-            )
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
                 val contractTerm = dto.contractTerms.asSequence().first { it.id == contract.id }
                 contract.agreedMetrics = contractTerm.agreedMetrics
-                contractTender.lots = dto.lots.asSequence()
+                val contractTenderLots = dto.lots.asSequence()
                         .filter { it.id == award.relatedLots!![0] }
                         .map { ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
                         .toHashSet()
+                val contractTender = ContractTender(
+                        id = record.tender.id,
+                        lots = contractTenderLots,
+                        classification = ms.tender.classification,
+                        mainProcurementCategory = ms.tender.mainProcurementCategory,
+                        procurementMethod = ms.tender.procurementMethod,
+                        procurementMethodDetails = ms.tender.procurementMethodDetails
+                )
                 val awardDocumentIds = award.documents?.asSequence()?.map { it.id }?.toHashSet() ?: hashSetOf()
                 val awardDocuments = dto.documents?.asSequence()?.filter { awardDocumentIds.contains(it.id) }?.toHashSet()
                 award.documents = awardDocuments

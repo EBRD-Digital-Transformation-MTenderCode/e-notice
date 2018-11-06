@@ -1,119 +1,178 @@
 {
-  "id": "a971a340-db9f-11e8-8c69-4b4ccc0ff876",
+  "id": "b8d36b30-e11b-11e8-aa44-ad248f65e727",
   "command": "createRelease",
   "context": {
-    "operationId": "a971a340-db9f-11e8-8c69-4b4ccc0ff876",
-    "requestId": "a971a340-db9f-11e8-8c69-4b4ccc0ff876",
-    "cpid": "ocds-t1s2t3-MD-1540545860155",
-    "ocid": "ocds-t1s2t3-MD-1540545860155-EV-1540545860300",
+    "operationId": "7c63e8a5-ccbc-4cc2-8a52-b9ef1e5adb42",
+    "requestId": "b8d36b30-e11b-11e8-aa44-ad248f65e727",
+    "cpid": "ocds-t1s2t3-MD-1541436847040",
+    "ocid": "ocds-t1s2t3-MD-1541436847040-EV-1541436847141",
     "stage": "AC",
     "prevStage": "EV",
     "processType": "awardPeriodEnd",
     "operationType": "awardPeriodEndEv",
     "phase": "contractCreation",
-    "owner": "e7010f80-e4b9-425a-a1ad-ee2f041af79d",
+    "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "95838ccd-1507-4fc0-993d-403ed20aea1f",
+    "token": "9233229a-ce7d-441a-ae00-892eb277c9a3",
     "outcomes": [
       {
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1540042582944",
-        "token": "90089175-0dfe-4ad2-a33f-91e3ff3ce5f1"
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
+        "token": "38d8b90e-413a-4d1c-a431-05d8a8a395dc",
+        "type": "contracts"
+      },
+      {
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
+        "token": "076b8a46-b5ff-434c-8d16-d44bfdd23e96",
+        "type": "contracts"
+      },
+      {
+        "id": "3df74d59-7c1d-47f0-a343-454b5657f009",
+        "type": "cans"
+      },
+      {
+        "id": "19baea01-1057-4bf0-955b-bc89b04c9a28",
+        "type": "cans"
       }
     ],
-    "startDate": "2018-10-29T17:25:42Z",
-    "endDate": "2018-10-29T17:25:48Z",
+    "startDate": "2018-11-05T16:56:21Z",
+    "endDate": "2018-11-05T16:56:26Z",
+    "timeStamp": 1541436981490,
     "isAuction": false,
-    "mainProcurementCategory": "goods"
+    "mainProcurementCategory": "services"
   },
   "data": {
     "awards": [
       {
-        "token": "78912ba2-95ce-47f4-9d7d-9e03b10af4f2",
-        "id": "5630e602-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:19Z",
-        "description": "Other reasons (discontinuation of procedure)",
-        "title": "The contract/lot is not awarded",
-        "status": "unsuccessful",
-        "statusDetails": "empty",
-        "relatedLots": [
-          "eb0d60b4-d900-11e8-8191-413e90804d99"
-        ]
-      },
-      {
-        "token": "7c159944-33b7-481a-bc30-8a82d20637d7",
-        "id": "5630e600-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:29Z",
-        "description": "Personal across cell discover town major until often heart science can partner music cell class grow key recent ever especially research eat catch need leave.",
+        "token": "23c650d5-daa0-4cec-820d-15d1c143010d",
+        "id": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
+        "date": "2018-11-05T16:56:26Z",
+        "description": "However easy enjoy reflect top property possible minute fine interview learn act however live behind doctor bar design development.",
         "status": "active",
         "statusDetails": "empty",
         "value": {
-          "amount": 100.00,
+          "amount": 137520349.98,
           "currency": "MDL"
         },
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
         ],
-        "relatedBid": "26d63f90-d901-11e8-ad26-e5c1eb0d4905",
+        "relatedBid": "8f1fe980-e11b-11e8-b1d3-fdafb830aae7",
         "suppliers": [
           {
-            "id": "MD-IDNO-446-04-7287",
-            "name": "Mcdonald-Matthews"
+            "id": "MD-IDNO-867-56-1091",
+            "name": "Neal Inc"
+          }
+        ],
+        "documents": [
+          {
+            "id": "1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
+            "documentType": "shortlistedFirms",
+            "title": "Present practice either fund.",
+            "description": "Election happy kitchen age quality like modern hold account American right world including magazine book myself voice company fight bed ago."
           }
         ]
       },
       {
-        "token": "a8b7b995-8577-4c00-ac75-6b946dbaac16",
-        "id": "5630e601-d901-11e8-82f4-c3b403e102b4",
-        "date": "2018-10-26T09:27:29Z",
+        "token": "544ad26c-a0ba-4b7f-a799-d1707dc20b39",
+        "id": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
+        "date": "2018-11-05T16:56:26Z",
+        "description": "Early listen show expect mean top sea large share phone door star matter black purpose red head once listen game newspaper religious official single according else coach machine.",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 99751949.62,
+          "currency": "MDL"
+        },
+        "relatedLots": [
+          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
+        ],
+        "relatedBid": "90dd7800-e11b-11e8-b1d3-fdafb830aae7",
+        "suppliers": [
+          {
+            "id": "MD-IDNO-273-47-6392",
+            "name": "Mcdonald and Sons"
+          }
+        ],
+        "documents": [
+          {
+            "id": "05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
+            "documentType": "winningBid",
+            "title": "Miss throughout reason type behavior lay.",
+            "description": "Painting then seek lot far lot clearly term soldier score toward popular few out night above."
+          }
+        ]
+      },
+      {
+        "token": "a12fc655-1c4d-40ea-84d6-a75afac2c422",
+        "id": "b65bb471-e11b-11e8-986b-f35b57cb6f67",
+        "date": "2018-11-05T16:56:26Z",
         "description": "",
         "status": "unsuccessful",
         "statusDetails": "empty",
         "value": {
-          "amount": 100.00,
+          "amount": 119543874.40,
           "currency": "MDL"
         },
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
         ],
-        "relatedBid": "27cf93b0-d901-11e8-ad26-e5c1eb0d4905",
+        "relatedBid": "8fffc230-e11b-11e8-b1d3-fdafb830aae7",
         "suppliers": [
           {
-            "id": "MD-IDNO-667-81-1618",
-            "name": "Lee Group"
+            "id": "MD-IDNO-771-91-0931",
+            "name": "Taylor-Johnson"
+          }
+        ]
+      },
+      {
+        "token": "bb942cf1-a14c-40c1-986d-9e57fbad7b98",
+        "id": "b65bb473-e11b-11e8-986b-f35b57cb6f67",
+        "date": "2018-11-05T16:56:26Z",
+        "description": "",
+        "status": "unsuccessful",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 175942233.24,
+          "currency": "MDL"
+        },
+        "relatedLots": [
+          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+        ],
+        "relatedBid": "8e4037e0-e11b-11e8-b1d3-fdafb830aae7",
+        "suppliers": [
+          {
+            "id": "MD-IDNO-112-36-0523",
+            "name": "Lopez-Meyers"
           }
         ]
       }
     ],
     "awardPeriod": {
-      "startDate": "2018-10-26T09:27:19Z",
-      "endDate": "2018-10-29T17:25:48Z"
+      "startDate": "2018-11-05T16:56:17Z",
+      "endDate": "2018-11-05T16:56:26Z"
     },
-    "unsuccessfulLots": [
-      {
-        "id": "eb0d60b4-d900-11e8-8191-413e90804d99"
-      }
-    ],
+    "unsuccessfulLots": [],
     "bids": [
       {
-        "id": "26d63f90-d901-11e8-ad26-e5c1eb0d4905",
-        "date": "2018-10-26T09:27:24Z",
-        "status": "valid",
+        "id": "8e4037e0-e11b-11e8-b1d3-fdafb830aae7",
+        "date": "2018-11-05T16:56:17Z",
+        "status": "pending",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-446-04-7287",
-            "name": "Mcdonald-Matthews",
+            "id": "MD-IDNO-112-36-0523",
+            "name": "Lopez-Meyers",
             "identifier": {
-              "id": "446-04-7287",
+              "id": "112-36-0523",
               "scheme": "MD-IDNO",
-              "legalName": "Bowers-Hanson Ltd",
-              "uri": "http://davis.org/explore/privacy/"
+              "legalName": "Lopez-Meyers and Sons",
+              "uri": "https://jackson-taylor.com/"
             },
             "address": {
-              "streetAddress": "01855 Montes Circle",
-              "postalCode": "07300",
+              "streetAddress": "049 Thompson Creek Suite 690",
+              "postalCode": "81794",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -123,32 +182,188 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "1000000",
-                  "description": "Anenii Noi",
+                  "id": "0501000",
+                  "description": "mun.Bender",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "1015000",
-                  "description": "s.Ciobanovca (r-l Anenii Noi)",
+                  "id": "0501000",
+                  "description": "mun.Bender",
                   "uri": "http://statistica.md"
                 }
               }
             },
             "additionalIdentifiers": [
               {
-                "id": "483-19-7567",
+                "id": "118-48-5010",
                 "scheme": "MD-IDNO",
-                "legalName": "Bowers-Hanson LLC",
-                "uri": "https://www.medina-brown.biz/register/"
+                "legalName": "Lopez-Meyers Group",
+                "uri": "https://griffin.net/"
               }
             ],
             "contactPoint": {
-              "name": "Jay Taylor",
-              "email": "jamesbender@gmail.com",
-              "telephone": "+28(4)3643606091",
-              "faxNumber": "1-885-287-2567",
-              "url": "https://www.rangel.net/categories/about/"
+              "name": "Marilyn Rivera",
+              "email": "jcasey@hotmail.com",
+              "telephone": "04767112717",
+              "faxNumber": "795.372.0750x08910",
+              "url": "https://graves.com/index/"
+            },
+            "details": {
+              "scale": ""
+            }
+          }
+        ],
+        "value": {
+          "amount": 175942233.24,
+          "currency": "MDL"
+        },
+        "documents": [
+          {
+            "id": "1eeef426-78ee-437f-9c56-fb75bb79d981-1541436909081",
+            "documentType": "submissionDocuments",
+            "title": "Without author set test teacher body newspaper.",
+            "description": "Use while character business article also friend brother receive would student treat commercial public everybody various subject determine fill within follow reason street scientist effort act day there investment conference left game.",
+            "relatedLots": [
+              "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+            ]
+          }
+        ],
+        "relatedLots": [
+          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+        ]
+      },
+      {
+        "id": "8f1fe980-e11b-11e8-b1d3-fdafb830aae7",
+        "date": "2018-11-05T16:56:21Z",
+        "status": "valid",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "MD-IDNO-867-56-1091",
+            "name": "Neal Inc",
+            "identifier": {
+              "id": "867-56-1091",
+              "scheme": "MD-IDNO",
+              "legalName": "Neal Inc Group",
+              "uri": "https://www.wright.com/"
+            },
+            "address": {
+              "streetAddress": "408 Melanie Throughway Apt. 783",
+              "postalCode": "68577",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "3800000",
+                  "description": "Dubăsari",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "CUATM",
+                  "id": "3814000",
+                  "description": "s.Holercani",
+                  "uri": "http://statistica.md"
+                }
+              }
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "708-77-3788",
+                "scheme": "MD-IDNO",
+                "legalName": "Neal Inc Inc",
+                "uri": "https://www.odom.net/about/"
+              }
+            ],
+            "contactPoint": {
+              "name": "Roger Mitchell",
+              "email": "barnesmichael@gmail.com",
+              "telephone": "1-021-388-3920x6692",
+              "faxNumber": "071.360.4797",
+              "url": "https://www.hudson.com/category/"
+            },
+            "details": {
+              "scale": "micro"
+            }
+          }
+        ],
+        "value": {
+          "amount": 137520349.98,
+          "currency": "MDL"
+        },
+        "documents": [
+          {
+            "id": "8578e4e2-698d-4d41-bb33-361d1fd2c8f5-1541436910631",
+            "documentType": "submissionDocuments",
+            "title": "Road report down east.",
+            "description": "Recently especially scene strong reduce board method unit claim put determine especially town social heart magazine spring fine model third reason several test mouth street color to expect vote here fight.",
+            "relatedLots": [
+              "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+            ]
+          }
+        ],
+        "relatedLots": [
+          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+        ]
+      },
+      {
+        "id": "8fffc230-e11b-11e8-b1d3-fdafb830aae7",
+        "date": "2018-11-05T16:56:17Z",
+        "status": "pending",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "MD-IDNO-771-91-0931",
+            "name": "Taylor-Johnson",
+            "identifier": {
+              "id": "771-91-0931",
+              "scheme": "MD-IDNO",
+              "legalName": "Taylor-Johnson PLC",
+              "uri": "http://www.garza-black.com/home.html"
+            },
+            "address": {
+              "streetAddress": "300 Erickson Estates Apt. 649",
+              "postalCode": "69871",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0301000",
+                  "description": "mun.Bălţi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "CUATM",
+                  "id": "0301000",
+                  "description": "mun.Bălţi",
+                  "uri": "http://statistica.md"
+                }
+              }
+            },
+            "additionalIdentifiers": [
+              {
+                "id": "030-97-7879",
+                "scheme": "MD-IDNO",
+                "legalName": "Taylor-Johnson LLC",
+                "uri": "http://dalton-gallagher.com/homepage.jsp"
+              }
+            ],
+            "contactPoint": {
+              "name": "Samantha Pineda",
+              "email": "cassandrawhite@gmail.com",
+              "telephone": "08092867292",
+              "faxNumber": "211-463-0081x55793",
+              "url": "http://brown-allen.com/wp-content/login/"
             },
             "details": {
               "scale": "large"
@@ -156,31 +371,42 @@
           }
         ],
         "value": {
-          "amount": 100.00,
+          "amount": 119543874.40,
           "currency": "MDL"
         },
+        "documents": [
+          {
+            "id": "78b7ad34-7959-4f5a-8d05-3d2b8adfb30d-1541436912123",
+            "documentType": "submissionDocuments",
+            "title": "Tree least free drive.",
+            "description": "Time these focus force issue what Democrat focus employee voice next week six less social action long federal employee name pass order tree general beat store probably than and class around any feeling.",
+            "relatedLots": [
+              "689ebc04-e11b-11e8-bac7-85f963a24ed1"
+            ]
+          }
+        ],
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
         ]
       },
       {
-        "id": "27cf93b0-d901-11e8-ad26-e5c1eb0d4905",
-        "date": "2018-10-26T09:27:24Z",
-        "status": "withdrawn",
+        "id": "90dd7800-e11b-11e8-b1d3-fdafb830aae7",
+        "date": "2018-11-05T16:56:21Z",
+        "status": "valid",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-667-81-1618",
-            "name": "Lee Group",
+            "id": "MD-IDNO-273-47-6392",
+            "name": "Mcdonald and Sons",
             "identifier": {
-              "id": "667-81-1618",
+              "id": "273-47-6392",
               "scheme": "MD-IDNO",
-              "legalName": "Summers LLC and Sons",
-              "uri": "https://brewer-weiss.com/"
+              "legalName": "Mcdonald and Sons Inc",
+              "uri": "https://www.trujillo-evans.com/privacy.php"
             },
             "address": {
-              "streetAddress": "966 Henry Gardens Apt. 209",
-              "postalCode": "26302",
+              "streetAddress": "370 Cunningham Light",
+              "postalCode": "94706",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -190,138 +416,67 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "9600000",
-                  "description": "UTA Găgăuzia",
+                  "id": "0301000",
+                  "description": "mun.Bălţi",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "9627002",
-                  "description": "s.Etulia Nouă",
+                  "id": "0301000",
+                  "description": "mun.Bălţi",
                   "uri": "http://statistica.md"
                 }
               }
             },
             "additionalIdentifiers": [
               {
-                "id": "448-92-5925",
+                "id": "841-52-4578",
                 "scheme": "MD-IDNO",
-                "legalName": "Summers LLC Ltd",
-                "uri": "https://wilkins-aguirre.com/homepage.htm"
+                "legalName": "Mcdonald and Sons Group",
+                "uri": "http://garcia.com/about.html"
               }
             ],
             "contactPoint": {
-              "name": "Brett Rios",
-              "email": "vjames@yahoo.com",
-              "telephone": "+77(3)6692760657",
-              "faxNumber": "1-584-355-2990x1129",
-              "url": "https://wyatt.com/app/author.php"
+              "name": "Jeffrey Martin",
+              "email": "jenningsbradley@hotmail.com",
+              "telephone": "(686)672-4693x16326",
+              "faxNumber": "03229372182",
+              "url": "http://richards-ellis.biz/register.asp"
             },
             "details": {
-              "scale": "sme"
+              "scale": ""
             }
           }
         ],
         "value": {
-          "amount": 100.00,
+          "amount": 99751949.62,
           "currency": "MDL"
         },
         "documents": [
           {
-            "id": "2f0cb693-d164-4344-b156-518ca3159522-1540545961012",
+            "id": "3567bb49-9bcd-49ba-b596-dc68654e0b09-1541436913537",
             "documentType": "submissionDocuments",
-            "title": "Fast mother since human list executive process.",
-            "description": "Second upon skin up able author ahead always able back figure event job total agree significant view finally consider seem lead leg.",
+            "title": "Reality build ahead young environment including.",
+            "description": "Right like without beyond music give TV full husband bit water inside little black field threat address year while threat enjoy pull court card.",
             "relatedLots": [
-              "eb0d60b5-d900-11e8-8191-413e90804d99"
-            ]
-          },
-          {
-            "id": "d9feadf8-0015-4d1d-91cd-1dccb3079cff-1540545961413",
-            "documentType": "submissionDocuments",
-            "title": "Physical reality program whom recognize economy.",
-            "description": "Who economic trade change ground claim spring sign figure information toward factor trip forward could bank available impact true among impact painting likely through own parent discuss.",
-            "relatedLots": [
-              "eb0d60b5-d900-11e8-8191-413e90804d99"
+              "689ebc04-e11b-11e8-bac7-85f963a24ed1"
             ]
           }
         ],
         "relatedLots": [
-          "eb0d60b5-d900-11e8-8191-413e90804d99"
+          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
         ]
       }
     ],
     "lots": [
       {
-        "id": "eb0d60b4-d900-11e8-8191-413e90804d99",
-        "title": "Husband from public specific game lawyer section.",
-        "description": "Such response rule structure choice purpose bed eye campaign born often teacher understand under concern toward fish guess fly fly animal raise they keep time.",
-        "status": "unsuccessful",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 10145483365.14,
-          "currency": "MDL"
-        },
-        "options": [
-          {
-            "hasOptions": false
-          }
-        ],
-        "recurrentProcurement": [
-          {
-            "isRecurrent": false
-          }
-        ],
-        "renewals": [
-          {
-            "hasRenewals": false
-          }
-        ],
-        "variants": [
-          {
-            "hasVariants": false
-          }
-        ],
-        "contractPeriod": {
-          "startDate": "2018-11-27T09:24:19Z",
-          "endDate": "2018-12-24T09:24:19Z"
-        },
-        "placeOfPerformance": {
-          "address": {
-            "streetAddress": "3243 Williams Divide",
-            "postalCode": "17656",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "3100000",
-                "description": "Criuleni",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "CUATM",
-                "id": "3118000",
-                "description": "s.Drăsliceni",
-                "uri": "http://statistica.md"
-              }
-            }
-          },
-          "description": "Style few story at mind option husband over development figure until can little happen although close court assume since."
-        }
-      },
-      {
-        "id": "eb0d60b5-d900-11e8-8191-413e90804d99",
-        "title": "Business someone remain.",
-        "description": "Receive together always describe thousand mind live effect travel cost good break later wall say game put course.",
+        "id": "689ebc04-e11b-11e8-bac7-85f963a24ed1",
+        "title": "Sure couple good baby happy.",
+        "description": "Establish turn street institution miss do tend walk power imagine minute us professional especially must indeed all check else section Republican parent lay call college respond collection PM history senior option message everybody.",
         "status": "complete",
         "statusDetails": "empty",
         "value": {
-          "amount": 19716405594.48,
+          "amount": 427082587.66,
           "currency": "MDL"
         },
         "options": [
@@ -345,13 +500,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-27T09:24:19Z",
-          "endDate": "2018-12-24T09:24:19Z"
+          "startDate": "2018-11-05T16:56:18Z",
+          "endDate": "2019-10-14T12:19:06Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "1065 Bartlett Branch",
-            "postalCode": "20131",
+            "streetAddress": "0753 Steven Lane Suite 338",
+            "postalCode": "47629",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -361,19 +516,81 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "0501000",
-                "description": "mun.Bender",
+                "id": "5300000",
+                "description": "Hînceşti",
                 "uri": "http://statistica.md"
               },
               "locality": {
                 "scheme": "CUATM",
-                "id": "0501000",
-                "description": "mun.Bender",
+                "id": "5313000",
+                "description": "s.Bozieni",
                 "uri": "http://statistica.md"
               }
             }
           },
-          "description": "Ability century brother claim fly gun happy fact tree personal himself couple former chance key some live behavior meeting approach myself against project raise tonight rock day grow page."
+          "description": "Nearly head safe quickly action success great agent door why I consider too work room sort source production now in most."
+        }
+      },
+      {
+        "id": "689ebc05-e11b-11e8-bac7-85f963a24ed1",
+        "title": "Must move price war institution lead still.",
+        "description": "Sport choice success bit marriage bit tax itself cold sea thought whom between probably yeah hit provide long cut fish speak television attorney structure wear again message plan reflect test TV production opportunity.",
+        "status": "complete",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 272657577.47,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-11-05T16:56:18Z",
+          "endDate": "2019-05-29T15:01:02Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "1792 Patrick Freeway",
+            "postalCode": "78037",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "3400000",
+                "description": "Donduşeni",
+                "uri": "http://statistica.md"
+              },
+              "locality": {
+                "scheme": "CUATM",
+                "id": "3401000",
+                "description": "or.Donduşeni (r-l Donduşeni)",
+                "uri": "http://statistica.md"
+              }
+            }
+          },
+          "description": "Candidate enter matter western black soldier turn bed practice president reduce my get police ever message there attorney thus suddenly later should three name job forget believe conference now necessary red wonder mind born."
         }
       }
     ],
@@ -382,9 +599,18 @@
     "cans": [
       {
         "contract": {
-          "id": "cd6604c6-cb41-4074-9f65-6cec9754451f",
-          "date": "2018-10-26T09:27:24Z",
-          "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+          "id": "3df74d59-7c1d-47f0-a343-454b5657f009",
+          "date": "2018-11-05T16:56:21Z",
+          "awardId": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
+          "status": "active",
+          "statusDetails": "empty"
+        }
+      },
+      {
+        "contract": {
+          "id": "19baea01-1057-4bf0-955b-bc89b04c9a28",
+          "date": "2018-11-05T16:56:21Z",
+          "awardId": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
           "status": "active",
           "statusDetails": "empty"
         }
@@ -392,18 +618,85 @@
     ],
     "contracts": [
       {
-        "token": "90089175-0dfe-4ad2-a33f-91e3ff3ce5f1",
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1540042582944",
-        "date": "2018-10-29T17:25:42Z",
-        "awardId": "5630e600-d901-11e8-82f4-c3b403e102b4",
+        "token": "076b8a46-b5ff-434c-8d16-d44bfdd23e96",
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
+        "date": "2018-11-05T16:56:21Z",
+        "awardId": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
+        "status": "pending",
+        "statusDetails": "contractProject"
+      },
+      {
+        "token": "38d8b90e-413a-4d1c-a431-05d8a8a395dc",
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
+        "date": "2018-11-05T16:56:21Z",
+        "awardId": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
         "status": "pending",
         "statusDetails": "contractProject"
       }
     ],
     "contractTerms": [
       {
-        "id": "ocds-t1s2t3-MD-1540545860155-AC-1540042582944",
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
         "agreedMetrics": [
+          {
+            "id": "cc-buyer-1",
+            "title": "Periods",
+            "description": "Contract conditions governing the general responsibilities related to CA regarding timing",
+            "observations": [
+              {
+                "id": "cc-buyer-1-2",
+                "notes": "The maximum term for non-payment of payments due by the Beneficiary",
+                "unit": {
+                  "id": "362",
+                  "name": "month",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-1-3",
+                "notes": "Maximum days to additional delivery related to quality claims",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-1-1",
+                "notes": "Maximum days to submit claims on quality of delivered goods and/or services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-buyer-2",
+            "title": "Liability",
+            "description": "Contract conditions governing the general responsibilities related to CA regarding liability",
+            "observations": [
+              {
+                "id": "cc-buyer-2-1",
+                "notes": "Beneficiarys material liability in case of late payment",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-2-2",
+                "notes": "Maximum of Beneficiarys material liability in case of late payment",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
           {
             "id": "cc-general",
             "title": "General Responsibilities",
@@ -489,8 +782,428 @@
                 }
               }
             ]
+          },
+          {
+            "id": "cc-tenderer-2",
+            "title": "Periods",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding timing",
+            "observations": [
+              {
+                "id": "cc-tenderer-2-1",
+                "notes": "Maximum days from the signing of the contract to Buyers announcement of the availability on delivery of the Goods and/or the provision of the Services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-2",
+                "notes": "Maximum days to respond to claims on quality of delivered goods and/or services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-4",
+                "notes": "Period after which it is considered a refuse of execute the contrac",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-3",
+                "notes": "Maximum days to additional delivery related to quality claims",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-7",
+                "notes": "Works execution duration from date signed",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-5",
+                "notes": "Warranty Period for Executed Worksr",
+                "unit": {
+                  "id": "362",
+                  "name": "month",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-6",
+                "notes": "Maximum days from the signing and registration of the contract when the works will start",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-tenderer-3",
+            "title": "Liability",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding liability",
+            "observations": [
+              {
+                "id": "cc-tenderer-3-2",
+                "notes": "Maximum of material liability for delivery with delay",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-5",
+                "notes": "Maximum of material liability for Late execution of Works",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-1",
+                "notes": "Material liability for delivery with delay",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-4",
+                "notes": "Material liability for late execution of works",
+                "unit": {
+                  "id": "746",
+                  "name": "percent per day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-3",
+                "notes": "Maximum of the penalty for the refusal to execute the contract",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
           }
         ]
+      },
+      {
+        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
+        "agreedMetrics": [
+          {
+            "id": "cc-buyer-1",
+            "title": "Periods",
+            "description": "Contract conditions governing the general responsibilities related to CA regarding timing",
+            "observations": [
+              {
+                "id": "cc-buyer-1-2",
+                "notes": "The maximum term for non-payment of payments due by the Beneficiary",
+                "unit": {
+                  "id": "362",
+                  "name": "month",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-1-3",
+                "notes": "Maximum days to additional delivery related to quality claims",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-1-1",
+                "notes": "Maximum days to submit claims on quality of delivered goods and/or services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-buyer-2",
+            "title": "Liability",
+            "description": "Contract conditions governing the general responsibilities related to CA regarding liability",
+            "observations": [
+              {
+                "id": "cc-buyer-2-1",
+                "notes": "Beneficiarys material liability in case of late payment",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-buyer-2-2",
+                "notes": "Maximum of Beneficiarys material liability in case of late payment",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-general",
+            "title": "General Responsibilities",
+            "description": "Contract conditions governing the general responsibilities related to both: CA and EO",
+            "observations": [
+              {
+                "id": "cc-general-1-3",
+                "notes": "Maximum days to respond on termination intention",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-general-1-1",
+                "notes": "Maximum days to inform on invoking Force Majeure",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-general-1-2",
+                "notes": "Maximum days to inform on termination intention",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-tenderer-1",
+            "title": "Execution Guarantee",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding guarantee",
+            "observations": [
+              {
+                "id": "cc-tenderer-1-1",
+                "notes": "Guarantee amount",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-4",
+                "notes": "Maximum amount in case of successive withholding from partial invoices",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-5",
+                "notes": "Maximum days of guarantee transfer",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-2",
+                "notes": "Guarantee amount provided by the general entrepreneur",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-1-3",
+                "notes": "Amount of guarantee in case of successive withholding from partial invoices",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-tenderer-2",
+            "title": "Periods",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding timing",
+            "observations": [
+              {
+                "id": "cc-tenderer-2-1",
+                "notes": "Maximum days from the signing of the contract to Buyers announcement of the availability on delivery of the Goods and/or the provision of the Services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-2",
+                "notes": "Maximum days to respond to claims on quality of delivered goods and/or services",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-4",
+                "notes": "Period after which it is considered a refuse of execute the contrac",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-3",
+                "notes": "Maximum days to additional delivery related to quality claims",
+                "unit": {
+                  "id": "359",
+                  "name": "day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-7",
+                "notes": "Works execution duration from date signed",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-5",
+                "notes": "Warranty Period for Executed Worksr",
+                "unit": {
+                  "id": "362",
+                  "name": "month",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-2-6",
+                "notes": "Maximum days from the signing and registration of the contract when the works will start",
+                "unit": {
+                  "id": "359",
+                  "name": "days",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cc-tenderer-3",
+            "title": "Liability",
+            "description": "Contract conditions governing the general responsibilities related to EO regarding liability",
+            "observations": [
+              {
+                "id": "cc-tenderer-3-2",
+                "notes": "Maximum of material liability for delivery with delay",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-5",
+                "notes": "Maximum of material liability for Late execution of Works",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-1",
+                "notes": "Material liability for delivery with delay",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-4",
+                "notes": "Material liability for late execution of works",
+                "unit": {
+                  "id": "746",
+                  "name": "percent per day",
+                  "scheme": "MD-CUMC"
+                }
+              },
+              {
+                "id": "cc-tenderer-3-3",
+                "notes": "Maximum of the penalty for the refusal to execute the contract",
+                "unit": {
+                  "id": "746",
+                  "name": "percent",
+                  "scheme": "MD-CUMC"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "id": "1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
+        "documentType": "shortlistedFirms",
+        "title": "Present practice either fund.",
+        "description": "Election happy kitchen age quality like modern hold account American right world including magazine book myself voice company fight bed ago.",
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
+        "datePublished": "2018-11-05T16:56:19Z",
+        "dateModified": null,
+        "format": null,
+        "language": null,
+        "relatedLots": null
+      },
+      {
+        "id": "05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
+        "documentType": "winningBid",
+        "title": "Miss throughout reason type behavior lay.",
+        "description": "Painting then seek lot far lot clearly term soldier score toward popular few out night above.",
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
+        "datePublished": "2018-11-05T16:56:20Z",
+        "dateModified": null,
+        "format": null,
+        "language": null,
+        "relatedLots": null
       }
     ]
   },
