@@ -126,11 +126,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 )
                 val awardDocumentIds = award.documents?.asSequence()?.map { it.id }?.toHashSet() ?: hashSetOf()
                 val awardDocuments = dto.documents?.asSequence()?.filter { awardDocumentIds.contains(it.id) }?.toHashSet()
-                award.documents = if (awardDocuments != null && awardDocuments.isNotEmpty()) {
-                    awardDocuments
-                } else {
-                    null
-                }
+                award.documents = if (awardDocuments != null && awardDocuments.isNotEmpty()) awardDocuments else null
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
                         id = releaseService.newReleaseId(ocIdContract),
