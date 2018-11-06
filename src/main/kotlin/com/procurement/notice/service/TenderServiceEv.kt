@@ -10,7 +10,10 @@ import com.procurement.notice.model.tender.dto.AwardByBidEvDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
-import com.procurement.notice.model.tender.record.*
+import com.procurement.notice.model.tender.record.ContractRecord
+import com.procurement.notice.model.tender.record.ContractTender
+import com.procurement.notice.model.tender.record.ContractTenderLot
+import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -40,7 +43,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             updateAward(this, dto.award)
-            updateBid(this, dto.bid)
+            dto.bid?.let { bid -> updateBid(this, bid) }
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
         }
@@ -122,9 +125,9 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 contract.agreedMetrics = contractTerm.agreedMetrics
                 contractTender.lots = dto.lots.asSequence()
                         .filter { it.id == award.relatedLots!![0] }
-                        .map{ ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
+                        .map { ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
                         .toHashSet()
-                val awardDocumentIds = award.documents?.asSequence()?.map{it.id}?.toHashSet()?: hashSetOf()
+                val awardDocumentIds = award.documents?.asSequence()?.map { it.id }?.toHashSet() ?: hashSetOf()
                 val awardDocuments = dto.documents?.asSequence()?.filter { awardDocumentIds.contains(it.id) }?.toHashSet()
                 award.documents = awardDocuments
                 val recordContract = ContractRecord(

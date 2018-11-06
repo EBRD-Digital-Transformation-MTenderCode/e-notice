@@ -212,7 +212,6 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-
             AWARD_BY_BID -> return tenderService.awardByBid(
                     cpid = cpId,
                     ocid = ocId!!,
