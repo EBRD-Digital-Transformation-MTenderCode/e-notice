@@ -30,6 +30,7 @@ class EnquiryService(private val releaseService: ReleaseService) {
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.TENDER)
             date = releaseDate
             tender.hasEnquiries = true
         }

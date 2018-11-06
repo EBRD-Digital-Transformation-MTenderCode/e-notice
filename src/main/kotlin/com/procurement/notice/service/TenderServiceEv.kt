@@ -159,6 +159,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
+            tag = listOf(Tag.TENDER)
             tender.statusDetails = dto.tenderStatusDetails
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)

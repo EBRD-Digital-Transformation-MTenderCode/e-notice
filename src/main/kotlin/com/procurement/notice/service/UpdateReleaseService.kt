@@ -75,6 +75,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             /* previous record*/
             id = newReleaseID
             date = releaseDate
+            tag = listOf(Tag.TENDER_AMENDMENT)
             tender = recordTender
             tender.amendments = if (amendments.isNotEmpty()) amendments else null
         }
@@ -149,6 +150,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         record.apply {
             id = newReleaseID
             date = releaseDate
+            tag = listOf(Tag.TENDER_AMENDMENT)
             tender.tenderPeriod = recordTender.tenderPeriod
             tender.enquiryPeriod = recordTender.enquiryPeriod
             tender.amendments = if (amendments.isNotEmpty()) amendments else null
