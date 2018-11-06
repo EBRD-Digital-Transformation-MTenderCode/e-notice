@@ -26,10 +26,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                       private val organizationService: OrganizationService,
                       private val relatedProcessService: RelatedProcessService) {
 
-    companion object {
-        private const val AC = "AC"
-    }
-
     fun awardByBidEv(cpid: String,
                      ocid: String,
                      stage: String,
