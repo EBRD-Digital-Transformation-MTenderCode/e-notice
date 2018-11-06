@@ -21,7 +21,7 @@ data class AgreedMetric @JsonCreator constructor(
 
         val description: String,
 
-        val observations: Set<Observation>
+        val observations: LinkedList<Observation>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
