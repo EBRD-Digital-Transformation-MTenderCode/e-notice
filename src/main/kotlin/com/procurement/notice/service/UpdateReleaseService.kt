@@ -61,8 +61,9 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         } else {
             "General change of Contract Notice"
         }
+        val newAmendmentId = UUID.randomUUID().toString()
         amendments.add(Amendment(
-                id = UUID.randomUUID().toString(),
+                id = newAmendmentId,
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
@@ -81,8 +82,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = setOf(newAmendmentId)))
     }
 
     fun updatePn(cpid: String,
