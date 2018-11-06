@@ -2,13 +2,14 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.util.*
 
 
 data class ContractTerm @JsonCreator constructor(
 
         val id: String,
 
-        val agreedMetrics: List<AgreedMetric>
+        val agreedMetrics: LinkedList<AgreedMetric>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

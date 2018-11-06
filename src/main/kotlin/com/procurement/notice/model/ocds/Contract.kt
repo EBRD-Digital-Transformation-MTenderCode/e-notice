@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
+import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Contract @JsonCreator constructor(
@@ -55,7 +56,7 @@ data class Contract @JsonCreator constructor(
         @get:JsonProperty("isFrameworkOrDynamic")
         val isFrameworkOrDynamic: Boolean?,
 
-        var agreedMetrics: List<AgreedMetric>? = null
+        var agreedMetrics: LinkedList<AgreedMetric>? = null
 )
 
 
