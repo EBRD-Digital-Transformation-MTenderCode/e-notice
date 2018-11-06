@@ -1,11 +1,11 @@
 {
-  "id": "b8d36b30-e11b-11e8-aa44-ad248f65e727",
+  "id": "874ab8d0-deb8-11e8-8760-878eb4ca6d79",
   "command": "createRelease",
   "context": {
-    "operationId": "7c63e8a5-ccbc-4cc2-8a52-b9ef1e5adb42",
-    "requestId": "b8d36b30-e11b-11e8-aa44-ad248f65e727",
-    "cpid": "ocds-t1s2t3-MD-1541436847040",
-    "ocid": "ocds-t1s2t3-MD-1541436847040-EV-1541436847141",
+    "operationId": "05b38352-64eb-11e8-adc0-fa7ae01bbe60",
+    "requestId": "874ab8d0-deb8-11e8-8760-878eb4ca6d79",
+    "cpid": "ocds-t1s2t3-MD-1541170585085",
+    "ocid": "ocds-t1s2t3-MD-1541170585085-EV-1541170585212",
     "stage": "AC",
     "prevStage": "EV",
     "processType": "awardPeriodEnd",
@@ -14,165 +14,156 @@
     "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
     "country": "MD",
     "language": "ro",
-    "pmd": "TEST_OT",
-    "token": "9233229a-ce7d-441a-ae00-892eb277c9a3",
+    "pmd": "TEST_SV",
+    "token": "46ebf049-fe74-4e14-886b-1ca8c3f6582d",
     "outcomes": [
       {
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
-        "token": "38d8b90e-413a-4d1c-a431-05d8a8a395dc",
-        "type": "contracts"
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1540842786875",
+        "token": "dc3dd894-b8eb-46df-bf95-17fec358b3bb"
       },
       {
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
-        "token": "076b8a46-b5ff-434c-8d16-d44bfdd23e96",
-        "type": "contracts"
-      },
-      {
-        "id": "3df74d59-7c1d-47f0-a343-454b5657f009",
-        "type": "cans"
-      },
-      {
-        "id": "19baea01-1057-4bf0-955b-bc89b04c9a28",
-        "type": "cans"
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1542625842996",
+        "token": "adbf9f6b-9537-494d-b183-2b09b6f5e2a3"
       }
     ],
-    "startDate": "2018-11-05T16:56:21Z",
-    "endDate": "2018-11-05T16:56:26Z",
-    "timeStamp": 1541436981490,
-    "isAuction": false,
-    "mainProcurementCategory": "services"
+    "startDate": "2018-11-02T16:01:15Z",
+    "endDate": "2018-11-02T16:01:20Z",
+    "timeStamp": 1541174475808,
+    "isAuction": true,
+    "mainProcurementCategory": "goods"
   },
   "data": {
     "awards": [
       {
-        "token": "23c650d5-daa0-4cec-820d-15d1c143010d",
-        "id": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
-        "date": "2018-11-05T16:56:26Z",
-        "description": "However easy enjoy reflect top property possible minute fine interview learn act however live behind doctor bar design development.",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 137520349.98,
-          "currency": "MDL"
-        },
-        "relatedLots": [
-          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
-        ],
-        "relatedBid": "8f1fe980-e11b-11e8-b1d3-fdafb830aae7",
-        "suppliers": [
-          {
-            "id": "MD-IDNO-867-56-1091",
-            "name": "Neal Inc"
-          }
-        ],
-        "documents": [
-          {
-            "id": "1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
-            "documentType": "shortlistedFirms",
-            "title": "Present practice either fund.",
-            "description": "Election happy kitchen age quality like modern hold account American right world including magazine book myself voice company fight bed ago."
-          }
-        ]
-      },
-      {
-        "token": "544ad26c-a0ba-4b7f-a799-d1707dc20b39",
-        "id": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
-        "date": "2018-11-05T16:56:26Z",
-        "description": "Early listen show expect mean top sea large share phone door star matter black purpose red head once listen game newspaper religious official single according else coach machine.",
-        "status": "active",
-        "statusDetails": "empty",
-        "value": {
-          "amount": 99751949.62,
-          "currency": "MDL"
-        },
-        "relatedLots": [
-          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
-        ],
-        "relatedBid": "90dd7800-e11b-11e8-b1d3-fdafb830aae7",
-        "suppliers": [
-          {
-            "id": "MD-IDNO-273-47-6392",
-            "name": "Mcdonald and Sons"
-          }
-        ],
-        "documents": [
-          {
-            "id": "05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
-            "documentType": "winningBid",
-            "title": "Miss throughout reason type behavior lay.",
-            "description": "Painting then seek lot far lot clearly term soldier score toward popular few out night above."
-          }
-        ]
-      },
-      {
-        "token": "a12fc655-1c4d-40ea-84d6-a75afac2c422",
-        "id": "b65bb471-e11b-11e8-986b-f35b57cb6f67",
-        "date": "2018-11-05T16:56:26Z",
+        "token": "47d88af4-7ead-4ebf-9574-1e3dd285ef12",
+        "id": "04857442-deb2-11e8-b28e-3999a7848b8c",
+        "date": "2018-11-02T16:01:20Z",
         "description": "",
         "status": "unsuccessful",
         "statusDetails": "empty",
         "value": {
-          "amount": 119543874.40,
+          "amount": 6000.00,
           "currency": "MDL"
         },
         "relatedLots": [
-          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
+          "7820aad2-deaf-11e8-9704-b5b507496d2a"
         ],
-        "relatedBid": "8fffc230-e11b-11e8-b1d3-fdafb830aae7",
+        "relatedBid": "211c18e0-deb0-11e8-8348-afc8246d6498",
         "suppliers": [
           {
-            "id": "MD-IDNO-771-91-0931",
-            "name": "Taylor-Johnson"
+            "id": "MD-IDNO-1-5",
+            "name": "Googleh555fhfgh55g12"
           }
         ]
       },
       {
-        "token": "bb942cf1-a14c-40c1-986d-9e57fbad7b98",
-        "id": "b65bb473-e11b-11e8-986b-f35b57cb6f67",
-        "date": "2018-11-05T16:56:26Z",
-        "description": "",
+        "token": "4a643ebc-e3c8-467b-91f6-7ae660123c66",
+        "id": "04857440-deb2-11e8-b28e-3999a7848b8c",
+        "date": "2018-11-02T16:01:20Z",
+        "description": "Good",
         "status": "unsuccessful",
         "statusDetails": "empty",
         "value": {
-          "amount": 175942233.24,
+          "amount": 499.90,
           "currency": "MDL"
         },
         "relatedLots": [
-          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+          "7820aad3-deaf-11e8-9704-b5b507496d2a"
         ],
-        "relatedBid": "8e4037e0-e11b-11e8-b1d3-fdafb830aae7",
+        "relatedBid": "f995b060-deaf-11e8-8348-afc8246d6498",
         "suppliers": [
           {
-            "id": "MD-IDNO-112-36-0523",
-            "name": "Lopez-Meyers"
+            "id": "MD-IDNO-1-1",
+            "name": "Googleh555fhfgh55g12"
+          }
+        ],
+        "documents": [
+          {
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "awardNotice"
+          }
+        ]
+      },
+      {
+        "token": "6337f930-568e-4604-afac-73ddc3f0ad55",
+        "id": "04857441-deb2-11e8-b28e-3999a7848b8c",
+        "date": "2018-11-02T16:01:20Z",
+        "description": "Good",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 5000.00,
+          "currency": "MDL"
+        },
+        "relatedLots": [
+          "7820aad3-deaf-11e8-9704-b5b507496d2a"
+        ],
+        "relatedBid": "06a3f960-deb0-11e8-8348-afc8246d6498",
+        "suppliers": [
+          {
+            "id": "MD-IDNO-1-2",
+            "name": "Googleh555fhfgh55g12"
+          }
+        ],
+        "documents": [
+          {
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "awardNotice"
+          }
+        ]
+      },
+      {
+        "token": "7b4099e4-7f6a-4451-b2b0-d9db43ffc63e",
+        "id": "04857443-deb2-11e8-b28e-3999a7848b8c",
+        "date": "2018-11-02T16:01:20Z",
+        "description": "Good",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 5000.00,
+          "currency": "MDL"
+        },
+        "relatedLots": [
+          "7820aad2-deaf-11e8-9704-b5b507496d2a"
+        ],
+        "relatedBid": "178ee050-deb0-11e8-8348-afc8246d6498",
+        "suppliers": [
+          {
+            "id": "MD-IDNO-1-2",
+            "name": "Googleh555fhfgh55g12"
+          }
+        ],
+        "documents": [
+          {
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "awardNotice"
           }
         ]
       }
     ],
     "awardPeriod": {
-      "startDate": "2018-11-05T16:56:17Z",
-      "endDate": "2018-11-05T16:56:26Z"
+      "startDate": "2018-11-02T15:14:39Z",
+      "endDate": "2018-11-02T16:01:20Z"
     },
     "unsuccessfulLots": [],
     "bids": [
       {
-        "id": "8e4037e0-e11b-11e8-b1d3-fdafb830aae7",
-        "date": "2018-11-05T16:56:17Z",
-        "status": "pending",
+        "id": "f995b060-deaf-11e8-8348-afc8246d6498",
+        "date": "2018-11-02T16:01:15Z",
+        "status": "disqualified",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-112-36-0523",
-            "name": "Lopez-Meyers",
+            "id": "MD-IDNO-1-1",
+            "name": "Googleh555fhfgh55g12",
             "identifier": {
-              "id": "112-36-0523",
+              "id": "1-1",
               "scheme": "MD-IDNO",
-              "legalName": "Lopez-Meyers and Sons",
-              "uri": "https://jackson-taylor.com/"
+              "legalName": "Google Big Brother"
             },
             "address": {
-              "streetAddress": "049 Thompson Creek Suite 690",
-              "postalCode": "81794",
+              "streetAddress": "",
+              "postalCode": "",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -182,75 +173,72 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "0501000",
-                  "description": "mun.Bender",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "0501000",
-                  "description": "mun.Bender",
+                  "id": "1001000",
+                  "description": "or.Anenii Noi",
                   "uri": "http://statistica.md"
                 }
               }
             },
-            "additionalIdentifiers": [
-              {
-                "id": "118-48-5010",
-                "scheme": "MD-IDNO",
-                "legalName": "Lopez-Meyers Group",
-                "uri": "https://griffin.net/"
-              }
-            ],
             "contactPoint": {
-              "name": "Marilyn Rivera",
-              "email": "jcasey@hotmail.com",
-              "telephone": "04767112717",
-              "faxNumber": "795.372.0750x08910",
-              "url": "https://graves.com/index/"
+              "name": "111",
+              "email": "222",
+              "telephone": "333",
+              "url": "444"
             },
             "details": {
-              "scale": ""
+              "scale": "sme"
             }
           }
         ],
         "value": {
-          "amount": 175942233.24,
+          "amount": 500.00,
           "currency": "MDL"
         },
         "documents": [
           {
-            "id": "1eeef426-78ee-437f-9c56-fb75bb79d981-1541436909081",
-            "documentType": "submissionDocuments",
-            "title": "Without author set test teacher body newspaper.",
-            "description": "Use while character business article also friend brother receive would student treat commercial public everybody various subject determine fill within follow reason street scientist effort act day there investment conference left game.",
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "x_eligibilityDocuments",
+            "title": "doc1",
             "relatedLots": [
-              "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+              "7820aad3-deaf-11e8-9704-b5b507496d2a"
+            ]
+          },
+          {
+            "id": "0c572915-ebcc-41f3-895e-d93d3aa7225b-1541076226876",
+            "documentType": "submissionDocuments",
+            "title": "doc1",
+            "relatedLots": [
+              "7820aad3-deaf-11e8-9704-b5b507496d2a"
             ]
           }
         ],
         "relatedLots": [
-          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+          "7820aad3-deaf-11e8-9704-b5b507496d2a"
         ]
       },
       {
-        "id": "8f1fe980-e11b-11e8-b1d3-fdafb830aae7",
-        "date": "2018-11-05T16:56:21Z",
+        "id": "06a3f960-deb0-11e8-8348-afc8246d6498",
+        "date": "2018-11-02T16:01:15Z",
         "status": "valid",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-867-56-1091",
-            "name": "Neal Inc",
+            "id": "MD-IDNO-1-2",
+            "name": "Googleh555fhfgh55g12",
             "identifier": {
-              "id": "867-56-1091",
+              "id": "1-2",
               "scheme": "MD-IDNO",
-              "legalName": "Neal Inc Group",
-              "uri": "https://www.wright.com/"
+              "legalName": "Google Big Brother"
             },
             "address": {
-              "streetAddress": "408 Melanie Throughway Apt. 783",
-              "postalCode": "68577",
+              "streetAddress": "",
+              "postalCode": "",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -260,153 +248,72 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "3800000",
-                  "description": "Dubăsari",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "3814000",
-                  "description": "s.Holercani",
+                  "id": "1001000",
+                  "description": "or.Anenii Noi",
                   "uri": "http://statistica.md"
                 }
               }
             },
-            "additionalIdentifiers": [
-              {
-                "id": "708-77-3788",
-                "scheme": "MD-IDNO",
-                "legalName": "Neal Inc Inc",
-                "uri": "https://www.odom.net/about/"
-              }
-            ],
             "contactPoint": {
-              "name": "Roger Mitchell",
-              "email": "barnesmichael@gmail.com",
-              "telephone": "1-021-388-3920x6692",
-              "faxNumber": "071.360.4797",
-              "url": "https://www.hudson.com/category/"
+              "name": "111",
+              "email": "222",
+              "telephone": "333",
+              "url": "444"
             },
             "details": {
-              "scale": "micro"
+              "scale": "sme"
             }
           }
         ],
         "value": {
-          "amount": 137520349.98,
+          "amount": 5000.00,
           "currency": "MDL"
         },
         "documents": [
           {
-            "id": "8578e4e2-698d-4d41-bb33-361d1fd2c8f5-1541436910631",
-            "documentType": "submissionDocuments",
-            "title": "Road report down east.",
-            "description": "Recently especially scene strong reduce board method unit claim put determine especially town social heart magazine spring fine model third reason several test mouth street color to expect vote here fight.",
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "x_eligibilityDocuments",
+            "title": "doc1",
             "relatedLots": [
-              "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+              "7820aad3-deaf-11e8-9704-b5b507496d2a"
+            ]
+          },
+          {
+            "id": "0c572915-ebcc-41f3-895e-d93d3aa7225b-1541076226876",
+            "documentType": "submissionDocuments",
+            "title": "doc1",
+            "relatedLots": [
+              "7820aad3-deaf-11e8-9704-b5b507496d2a"
             ]
           }
         ],
         "relatedLots": [
-          "689ebc05-e11b-11e8-bac7-85f963a24ed1"
+          "7820aad3-deaf-11e8-9704-b5b507496d2a"
         ]
       },
       {
-        "id": "8fffc230-e11b-11e8-b1d3-fdafb830aae7",
-        "date": "2018-11-05T16:56:17Z",
-        "status": "pending",
-        "statusDetails": "empty",
-        "tenderers": [
-          {
-            "id": "MD-IDNO-771-91-0931",
-            "name": "Taylor-Johnson",
-            "identifier": {
-              "id": "771-91-0931",
-              "scheme": "MD-IDNO",
-              "legalName": "Taylor-Johnson PLC",
-              "uri": "http://www.garza-black.com/home.html"
-            },
-            "address": {
-              "streetAddress": "300 Erickson Estates Apt. 649",
-              "postalCode": "69871",
-              "addressDetails": {
-                "country": {
-                  "scheme": "iso-alpha2",
-                  "id": "MD",
-                  "description": "MOLDOVA",
-                  "uri": "http://reference.iatistandard.org"
-                },
-                "region": {
-                  "scheme": "CUATM",
-                  "id": "0301000",
-                  "description": "mun.Bălţi",
-                  "uri": "http://statistica.md"
-                },
-                "locality": {
-                  "scheme": "CUATM",
-                  "id": "0301000",
-                  "description": "mun.Bălţi",
-                  "uri": "http://statistica.md"
-                }
-              }
-            },
-            "additionalIdentifiers": [
-              {
-                "id": "030-97-7879",
-                "scheme": "MD-IDNO",
-                "legalName": "Taylor-Johnson LLC",
-                "uri": "http://dalton-gallagher.com/homepage.jsp"
-              }
-            ],
-            "contactPoint": {
-              "name": "Samantha Pineda",
-              "email": "cassandrawhite@gmail.com",
-              "telephone": "08092867292",
-              "faxNumber": "211-463-0081x55793",
-              "url": "http://brown-allen.com/wp-content/login/"
-            },
-            "details": {
-              "scale": "large"
-            }
-          }
-        ],
-        "value": {
-          "amount": 119543874.40,
-          "currency": "MDL"
-        },
-        "documents": [
-          {
-            "id": "78b7ad34-7959-4f5a-8d05-3d2b8adfb30d-1541436912123",
-            "documentType": "submissionDocuments",
-            "title": "Tree least free drive.",
-            "description": "Time these focus force issue what Democrat focus employee voice next week six less social action long federal employee name pass order tree general beat store probably than and class around any feeling.",
-            "relatedLots": [
-              "689ebc04-e11b-11e8-bac7-85f963a24ed1"
-            ]
-          }
-        ],
-        "relatedLots": [
-          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
-        ]
-      },
-      {
-        "id": "90dd7800-e11b-11e8-b1d3-fdafb830aae7",
-        "date": "2018-11-05T16:56:21Z",
+        "id": "178ee050-deb0-11e8-8348-afc8246d6498",
+        "date": "2018-11-02T16:01:15Z",
         "status": "valid",
         "statusDetails": "empty",
         "tenderers": [
           {
-            "id": "MD-IDNO-273-47-6392",
-            "name": "Mcdonald and Sons",
+            "id": "MD-IDNO-1-2",
+            "name": "Googleh555fhfgh55g12",
             "identifier": {
-              "id": "273-47-6392",
+              "id": "1-2",
               "scheme": "MD-IDNO",
-              "legalName": "Mcdonald and Sons Inc",
-              "uri": "https://www.trujillo-evans.com/privacy.php"
+              "legalName": "Google Big Brother"
             },
             "address": {
-              "streetAddress": "370 Cunningham Light",
-              "postalCode": "94706",
+              "streetAddress": "",
+              "postalCode": "",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -416,67 +323,140 @@
                 },
                 "region": {
                   "scheme": "CUATM",
-                  "id": "0301000",
-                  "description": "mun.Bălţi",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
                   "uri": "http://statistica.md"
                 },
                 "locality": {
                   "scheme": "CUATM",
-                  "id": "0301000",
-                  "description": "mun.Bălţi",
+                  "id": "1001000",
+                  "description": "or.Anenii Noi",
                   "uri": "http://statistica.md"
                 }
               }
             },
-            "additionalIdentifiers": [
-              {
-                "id": "841-52-4578",
-                "scheme": "MD-IDNO",
-                "legalName": "Mcdonald and Sons Group",
-                "uri": "http://garcia.com/about.html"
-              }
-            ],
             "contactPoint": {
-              "name": "Jeffrey Martin",
-              "email": "jenningsbradley@hotmail.com",
-              "telephone": "(686)672-4693x16326",
-              "faxNumber": "03229372182",
-              "url": "http://richards-ellis.biz/register.asp"
+              "name": "111",
+              "email": "222",
+              "telephone": "333",
+              "url": "444"
             },
             "details": {
-              "scale": ""
+              "scale": "sme"
             }
           }
         ],
         "value": {
-          "amount": 99751949.62,
+          "amount": 5000.00,
           "currency": "MDL"
         },
         "documents": [
           {
-            "id": "3567bb49-9bcd-49ba-b596-dc68654e0b09-1541436913537",
-            "documentType": "submissionDocuments",
-            "title": "Reality build ahead young environment including.",
-            "description": "Right like without beyond music give TV full husband bit water inside little black field threat address year while threat enjoy pull court card.",
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "x_eligibilityDocuments",
+            "title": "doc1",
             "relatedLots": [
-              "689ebc04-e11b-11e8-bac7-85f963a24ed1"
+              "7820aad2-deaf-11e8-9704-b5b507496d2a"
+            ]
+          },
+          {
+            "id": "0c572915-ebcc-41f3-895e-d93d3aa7225b-1541076226876",
+            "documentType": "submissionDocuments",
+            "title": "doc1",
+            "relatedLots": [
+              "7820aad2-deaf-11e8-9704-b5b507496d2a"
             ]
           }
         ],
         "relatedLots": [
-          "689ebc04-e11b-11e8-bac7-85f963a24ed1"
+          "7820aad2-deaf-11e8-9704-b5b507496d2a"
+        ]
+      },
+      {
+        "id": "211c18e0-deb0-11e8-8348-afc8246d6498",
+        "date": "2018-11-02T16:01:15Z",
+        "status": "withdrawn",
+        "statusDetails": "empty",
+        "tenderers": [
+          {
+            "id": "MD-IDNO-1-5",
+            "name": "Googleh555fhfgh55g12",
+            "identifier": {
+              "id": "1-5",
+              "scheme": "MD-IDNO",
+              "legalName": "Google Big Brother"
+            },
+            "address": {
+              "streetAddress": "",
+              "postalCode": "",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "CUATM",
+                  "id": "1001000",
+                  "description": "or.Anenii Noi",
+                  "uri": "http://statistica.md"
+                }
+              }
+            },
+            "contactPoint": {
+              "name": "111",
+              "email": "222",
+              "telephone": "333",
+              "url": "444"
+            },
+            "details": {
+              "scale": "sme"
+            }
+          }
+        ],
+        "value": {
+          "amount": 6000.00,
+          "currency": "MDL"
+        },
+        "documents": [
+          {
+            "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+            "documentType": "x_eligibilityDocuments",
+            "title": "doc1",
+            "relatedLots": [
+              "7820aad2-deaf-11e8-9704-b5b507496d2a"
+            ]
+          },
+          {
+            "id": "0c572915-ebcc-41f3-895e-d93d3aa7225b-1541076226876",
+            "documentType": "submissionDocuments",
+            "title": "doc1",
+            "relatedLots": [
+              "7820aad2-deaf-11e8-9704-b5b507496d2a"
+            ]
+          }
+        ],
+        "relatedLots": [
+          "7820aad2-deaf-11e8-9704-b5b507496d2a"
         ]
       }
     ],
     "lots": [
       {
-        "id": "689ebc04-e11b-11e8-bac7-85f963a24ed1",
-        "title": "Sure couple good baby happy.",
-        "description": "Establish turn street institution miss do tend walk power imagine minute us professional especially must indeed all check else section Republican parent lay call college respond collection PM history senior option message everybody.",
+        "id": "7820aad2-deaf-11e8-9704-b5b507496d2a",
+        "title": "lot2",
+        "description": "looot",
         "status": "complete",
         "statusDetails": "empty",
         "value": {
-          "amount": 427082587.66,
+          "amount": 500.00,
           "currency": "MDL"
         },
         "options": [
@@ -500,13 +480,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-05T16:56:18Z",
-          "endDate": "2019-10-14T12:19:06Z"
+          "startDate": "2019-12-25T14:45:00Z",
+          "endDate": "2020-12-25T14:50:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "0753 Steven Lane Suite 338",
-            "postalCode": "47629",
+            "streetAddress": "6666",
+            "postalCode": "666",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -516,29 +496,27 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "5300000",
-                "description": "Hînceşti",
+                "id": "1000000",
+                "description": "Anenii Noi",
                 "uri": "http://statistica.md"
               },
               "locality": {
-                "scheme": "CUATM",
-                "id": "5313000",
-                "description": "s.Bozieni",
-                "uri": "http://statistica.md"
+                "scheme": "666",
+                "id": "666",
+                "description": "666"
               }
             }
-          },
-          "description": "Nearly head safe quickly action success great agent door why I consider too work room sort source production now in most."
+          }
         }
       },
       {
-        "id": "689ebc05-e11b-11e8-bac7-85f963a24ed1",
-        "title": "Must move price war institution lead still.",
-        "description": "Sport choice success bit marriage bit tax itself cold sea thought whom between probably yeah hit provide long cut fish speak television attorney structure wear again message plan reflect test TV production opportunity.",
+        "id": "7820aad3-deaf-11e8-9704-b5b507496d2a",
+        "title": "lot1",
+        "description": "looot",
         "status": "complete",
         "statusDetails": "empty",
         "value": {
-          "amount": 272657577.47,
+          "amount": 500.00,
           "currency": "MDL"
         },
         "options": [
@@ -562,13 +540,13 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-11-05T16:56:18Z",
-          "endDate": "2019-05-29T15:01:02Z"
+          "startDate": "2019-12-25T14:45:00Z",
+          "endDate": "2020-12-25T14:50:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "1792 Patrick Freeway",
-            "postalCode": "78037",
+            "streetAddress": "6666",
+            "postalCode": "666",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -578,19 +556,17 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "3400000",
-                "description": "Donduşeni",
+                "id": "1000000",
+                "description": "Anenii Noi",
                 "uri": "http://statistica.md"
               },
               "locality": {
-                "scheme": "CUATM",
-                "id": "3401000",
-                "description": "or.Donduşeni (r-l Donduşeni)",
-                "uri": "http://statistica.md"
+                "scheme": "666",
+                "id": "666",
+                "description": "666"
               }
             }
-          },
-          "description": "Candidate enter matter western black soldier turn bed practice president reduce my get police ever message there attorney thus suddenly later should three name job forget believe conference now necessary red wonder mind born."
+          }
         }
       }
     ],
@@ -599,18 +575,18 @@
     "cans": [
       {
         "contract": {
-          "id": "3df74d59-7c1d-47f0-a343-454b5657f009",
-          "date": "2018-11-05T16:56:21Z",
-          "awardId": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
+          "id": "438e0fc4-d18a-434a-a01d-41710bf8c89a",
+          "date": "2018-11-02T16:01:15Z",
+          "awardId": "04857441-deb2-11e8-b28e-3999a7848b8c",
           "status": "active",
           "statusDetails": "empty"
         }
       },
       {
         "contract": {
-          "id": "19baea01-1057-4bf0-955b-bc89b04c9a28",
-          "date": "2018-11-05T16:56:21Z",
-          "awardId": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
+          "id": "d3017e3d-f077-4d23-b9cd-0b8da03a18e3",
+          "date": "2018-11-02T16:01:15Z",
+          "awardId": "04857443-deb2-11e8-b28e-3999a7848b8c",
           "status": "active",
           "statusDetails": "empty"
         }
@@ -618,25 +594,25 @@
     ],
     "contracts": [
       {
-        "token": "076b8a46-b5ff-434c-8d16-d44bfdd23e96",
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
-        "date": "2018-11-05T16:56:21Z",
-        "awardId": "b65bb470-e11b-11e8-986b-f35b57cb6f67",
+        "token": "adbf9f6b-9537-494d-b183-2b09b6f5e2a3",
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1542625842996",
+        "date": "2018-11-02T16:01:15Z",
+        "awardId": "04857441-deb2-11e8-b28e-3999a7848b8c",
         "status": "pending",
         "statusDetails": "contractProject"
       },
       {
-        "token": "38d8b90e-413a-4d1c-a431-05d8a8a395dc",
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
-        "date": "2018-11-05T16:56:21Z",
-        "awardId": "b65bb472-e11b-11e8-986b-f35b57cb6f67",
+        "token": "dc3dd894-b8eb-46df-bf95-17fec358b3bb",
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1540842786875",
+        "date": "2018-11-02T16:01:15Z",
+        "awardId": "04857443-deb2-11e8-b28e-3999a7848b8c",
         "status": "pending",
         "statusDetails": "contractProject"
       }
     ],
     "contractTerms": [
       {
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542165809852",
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1540842786875",
         "agreedMetrics": [
           {
             "id": "cc-buyer-1",
@@ -908,7 +884,7 @@
         ]
       },
       {
-        "id": "ocds-t1s2t3-MD-1541436847040-AC-1542035980520",
+        "id": "ocds-t1s2t3-MD-1541170585085-AC-1542625842996",
         "agreedMetrics": [
           {
             "id": "cc-buyer-1",
@@ -1182,24 +1158,36 @@
     ],
     "documents": [
       {
-        "id": "1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
-        "documentType": "shortlistedFirms",
-        "title": "Present practice either fund.",
-        "description": "Election happy kitchen age quality like modern hold account American right world including magazine book myself voice company fight bed ago.",
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/1f87badb-bd0f-45eb-bcc2-ad0e7ab1beb4-1541436978788",
-        "datePublished": "2018-11-05T16:56:19Z",
+        "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "documentType": "awardNotice",
+        "title": null,
+        "description": null,
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "datePublished": "2018-10-31T12:01:24Z",
         "dateModified": null,
         "format": null,
         "language": null,
         "relatedLots": null
       },
       {
-        "id": "05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
-        "documentType": "winningBid",
-        "title": "Miss throughout reason type behavior lay.",
-        "description": "Painting then seek lot far lot clearly term soldier score toward popular few out night above.",
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/05f64e6b-98fe-42a6-b076-8585d2c95626-1541436980275",
-        "datePublished": "2018-11-05T16:56:20Z",
+        "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "documentType": "awardNotice",
+        "title": null,
+        "description": null,
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "datePublished": "2018-10-31T12:01:24Z",
+        "dateModified": null,
+        "format": null,
+        "language": null,
+        "relatedLots": null
+      },
+      {
+        "id": "f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "documentType": "awardNotice",
+        "title": null,
+        "description": null,
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/f33eeb0e-eb12-476c-a62c-b35cec612b9c-1540986374290",
+        "datePublished": "2018-10-31T12:01:24Z",
         "dateModified": null,
         "format": null,
         "language": null,
