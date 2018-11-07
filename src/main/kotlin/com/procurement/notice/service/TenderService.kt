@@ -156,12 +156,9 @@ class TenderService(private val releaseService: ReleaseService,
             if (dto.lots != null) tender.lots?.let { updateLots(it, dto.lots) }
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) {
-                if (awards != null) {
-                    updateAwards(awards!!, dto.awards)
-                } else {
-                    awards = dto.awards
-                }
+                if (awards != null) updateAwards(awards!!, dto.awards) else awards = dto.awards
             }
+            if (dto.awardPeriod != null) tender.awardPeriod = dto.awardPeriod
         }
         releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
