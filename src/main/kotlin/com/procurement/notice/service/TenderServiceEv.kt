@@ -11,6 +11,8 @@ import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
 import com.procurement.notice.model.tender.record.ContractRecord
+import com.procurement.notice.model.tender.record.ContractTender
+import com.procurement.notice.model.tender.record.ContractTenderLot
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
@@ -23,10 +25,6 @@ import java.util.*
 class TenderServiceEv(private val releaseService: ReleaseService,
                       private val organizationService: OrganizationService,
                       private val relatedProcessService: RelatedProcessService) {
-
-    companion object {
-        private const val AC = "AC"
-    }
 
     fun awardByBidEv(cpid: String,
                      ocid: String,
@@ -41,7 +39,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             updateAward(this, dto.award)
-            updateBid(this, dto.bid)
+            dto.bid?.let { bid -> updateBid(this, bid) }
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
         }
@@ -80,6 +78,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
     fun awardPeriodEndEv(cpid: String,
                          ocid: String,
                          stage: String,
+                         prevStage: String,
                          releaseDate: LocalDateTime,
                          data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
@@ -96,7 +95,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
-            tender.statusDetails = TenderStatusDetails.COMPLETE
+            tender.statusDetails = TenderStatusDetails.AWARDED_CONTRACT_PREPARATION
             tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
@@ -111,16 +110,32 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             for (contract in dto.contracts) {
                 val ocIdContract = contract.id!!
                 val award = dto.awards.asSequence().first { it.id == contract.awardId }
+                val contractTerm = dto.contractTerms.asSequence().first { it.id == contract.id }
+                contract.agreedMetrics = contractTerm.agreedMetrics
+                val contractTenderLots = dto.lots.asSequence()
+                        .filter { it.id == award.relatedLots!![0] }
+                        .map { ContractTenderLot(id = it.id, title = it.title, description = it.description, placeOfPerformance = it.placeOfPerformance) }
+                        .toHashSet()
+                val contractTender = ContractTender(
+                        id = record.tender.id,
+                        lots = contractTenderLots,
+                        classification = ms.tender.classification,
+                        mainProcurementCategory = ms.tender.mainProcurementCategory,
+                        procurementMethod = ms.tender.procurementMethod,
+                        procurementMethodDetails = ms.tender.procurementMethodDetails
+                )
+                val awardDocumentIds = award.documents?.asSequence()?.map { it.id }?.toHashSet() ?: hashSetOf()
+                val awardDocuments = dto.documents?.asSequence()?.filter { awardDocumentIds.contains(it.id) }?.toHashSet()
+                award.documents = if (awardDocuments != null && awardDocuments.isNotEmpty()) awardDocuments else null
                 val recordContract = ContractRecord(
                         ocid = ocIdContract,
                         id = releaseService.newReleaseId(ocIdContract),
                         date = releaseDate,
                         tag = listOf(Tag.CONTRACT),
                         initiationType = record.initiationType,
-                        parties = null,
+                        tender = contractTender,
                         awards = setOf(award).toHashSet(),
-                        contracts = setOf(contract).toHashSet(),
-                        relatedProcesses = null)
+                        contracts = setOf(contract).toHashSet())
                 organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)
@@ -130,9 +145,9 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
         contractRecords.forEach { recordContract ->
-            releaseService.saveContractRecord(cpId = cpid, stage = AC, record = recordContract, publishDate = releaseDate.toDate())
+            releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = releaseDate.toDate())
         }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -144,6 +159,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
+            tag = listOf(Tag.TENDER)
             tender.statusDetails = dto.tenderStatusDetails
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -193,6 +209,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 award.date = this.date
                 award.status = this.status
                 award.statusDetails = this.statusDetails
+                award.items = this.items
             }
         }
     }

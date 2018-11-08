@@ -86,7 +86,6 @@ class BudgetService(private val budgetDao: BudgetDao,
         fs.apply {
             id = getReleaseId(ocid)
             date = releaseDate
-            tag = listOf(Tag.COMPILED)
             title = updateFs.title
             tender = updateFs.tender
             planning = updateFs.planning

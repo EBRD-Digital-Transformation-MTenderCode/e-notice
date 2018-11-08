@@ -17,13 +17,17 @@ data class ContractRecord @JsonCreator constructor(
 
         var tag: List<Tag>?,
 
-        var initiationType: InitiationType?,
+        var initiationType: InitiationType? = null,
 
-        var parties: HashSet<Organization>?,
+        var planning: ContractPlanning? = null,
 
-        var awards: HashSet<Award>?,
+        var contracts: HashSet<Contract>? = null,
 
-        var contracts: HashSet<Contract>?,
+        var tender: ContractTender? = null,
 
-        var relatedProcesses: HashSet<RelatedProcess>?
+        var awards: HashSet<Award>? = null,
+
+        var parties: HashSet<Organization>? = null,
+
+        var relatedProcesses: HashSet<RelatedProcess>? = null
 )

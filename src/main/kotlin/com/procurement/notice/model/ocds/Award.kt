@@ -23,7 +23,7 @@ data class Award @JsonCreator constructor(
 
         val suppliers: HashSet<OrganizationReference>?,
 
-        val items: HashSet<Item>?,
+        var items: HashSet<Item>?,
 
         val contractPeriod: Period?,
 

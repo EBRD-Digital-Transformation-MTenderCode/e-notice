@@ -25,34 +25,16 @@ class CommandService(private val historyDao: HistoryDao,
 
     fun execute(cm: CommandMessage): ResponseDto {
 
-        val cpId = cm.context.cpid
-        val ocId = cm.context.ocid
-        val stage = cm.context.stage
-        val operationType = cm.context.operationType
-        val releaseDate = cm.context.startDate.toLocalDateTime()
-        val data = cm.data
-
-        when (Operation.fromValue(operationType)) {
-            CANCEL_TENDER_EV -> return tenderCancellationService.tenderCancellation(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            else -> {
-                var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
-                if (historyEntity != null) {
-                    return toObject(ResponseDto::class.java, historyEntity.jsonData)
-                }
-
-                val response = when (cm.command) {
-                    CommandType.CREATE_RELEASE -> createRelease(cm)
-                }
-                historyEntity = historyDao.saveHistory(cm.id, cm.command.value(), response)
-                return toObject(ResponseDto::
-                class.java, historyEntity.jsonData)
-            }
+        var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
+        if (historyEntity != null) {
+            return toObject(ResponseDto::class.java, historyEntity.jsonData)
         }
+        val response = when (cm.command) {
+            CommandType.CREATE_RELEASE -> createRelease(cm)
+        }
+        historyEntity = historyDao.saveHistory(cm.id, cm.command.value(), response)
+        return toObject(ResponseDto::
+        class.java, historyEntity.jsonData)
     }
 
     fun createRelease(cm: CommandMessage): ResponseDto {
@@ -62,7 +44,7 @@ class CommandService(private val historyDao: HistoryDao,
         val stage = cm.context.stage
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
-        val releaseDate = cm.context.startDate.toLocalDateTime()
+        val releaseDate = cm.context.timeStamp.toLocalDateTime()
         val isAuction = cm.context.isAuction
         val data = cm.data
 
@@ -230,7 +212,6 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-
             AWARD_BY_BID -> return tenderService.awardByBid(
                     cpid = cpId,
                     ocid = ocId!!,
@@ -270,6 +251,7 @@ class CommandService(private val historyDao: HistoryDao,
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
+                    prevStage = prevStage!!,
                     releaseDate = releaseDate,
                     data = data)
 
@@ -288,7 +270,7 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-            CANCEL_TENDER, CANCEL_PLAN -> return tenderCancellationService.tenderCancellation(
+            CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> return tenderCancellationService.tenderCancellation(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,

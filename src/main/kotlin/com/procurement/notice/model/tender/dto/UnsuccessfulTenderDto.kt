@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.Period
 import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,5 +15,8 @@ data class UnsuccessfulTenderDto @JsonCreator constructor(
 
         val bids: HashSet<Bid>?,
 
-        val awards: HashSet<Award>?
+        val awards: HashSet<Award>?,
+
+        val awardPeriod: Period?
+
 )

@@ -17,5 +17,9 @@ data class AwardPeriodEndEvDto @JsonCreator constructor(
 
         val cans: HashSet<Can>,
 
-        val contracts: HashSet<Contract>
+        val contracts: HashSet<Contract>,
+
+        val contractTerms: Set<ContractTerm>,
+
+        val documents: HashSet<Document>?
 )
