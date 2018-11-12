@@ -249,7 +249,6 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         this.url = documentDto.url
         this.datePublished = documentDto.datePublished
         this.dateModified = documentDto.dateModified
-
     }
 
 }
