@@ -25,9 +25,13 @@ data class Contract @JsonCreator constructor(
 
         val extendsContractID: String?,
 
+        val budgetSource: List<BudgetSource>?,
+
+        val classification: Classification?,
+
         val period: Period?,
 
-        val value: Value?,
+        val value: ValueTax?,
 
         val items: HashSet<Item>?,
 
@@ -35,11 +39,8 @@ data class Contract @JsonCreator constructor(
 
         val documents: HashSet<Document>?,
 
-        val implementation: Implementation?,
-
         var relatedProcesses: HashSet<RelatedProcess>?,
 
-        val milestones: List<Milestone>?,
 
         val amendments: List<Amendment>?,
 
@@ -56,7 +57,12 @@ data class Contract @JsonCreator constructor(
         @get:JsonProperty("isFrameworkOrDynamic")
         val isFrameworkOrDynamic: Boolean?,
 
-        var agreedMetrics: LinkedList<AgreedMetric>? = null
+        var agreedMetrics: LinkedList<AgreedMetric>? = null,
+
+        val milestones: List<Milestone>?,
+
+        var confirmationRequests: List<ConfirmationRequest>?
+
 )
 
 

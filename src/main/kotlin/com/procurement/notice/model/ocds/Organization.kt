@@ -2,6 +2,7 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.procurement.notice.model.tender.dto.Person
 import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,15 +14,18 @@ data class Organization @JsonCreator constructor(
 
         var identifier: Identifier?,
 
-        var additionalIdentifiers: HashSet<Identifier>?,
-
         var address: Address?,
+
+        var additionalIdentifiers: HashSet<Identifier>?,
 
         var contactPoint: ContactPoint?,
 
-        var roles: HashSet<PartyRole>,
-
         var details: Details?,
 
-        var buyerProfile: String?
+        val persones: HashSet<Person>?,
+
+        var buyerProfile: String?,
+
+        var roles: HashSet<PartyRole>
+
 )

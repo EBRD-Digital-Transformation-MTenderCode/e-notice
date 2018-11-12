@@ -5,6 +5,7 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.tender.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -159,4 +160,21 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
+
+    fun updateAC(cpid: String,
+                 ocid: String,
+                 stage: String,
+                 releaseDate: LocalDateTime,
+                 data: JsonNode): ResponseDto {
+//        val msReq = releaseService.getMs(data)
+//        val recordTender = releaseService.getRecordTender(data)
+//        val msEntity = releaseService.getMsEntity(cpid)
+//        val ms = releaseService.getMs(msEntity.jsonData)
+        val dto = toObject(UpdateAcDto::class.java, data)
+
+
+        TODO()
+    }
+
+
 }

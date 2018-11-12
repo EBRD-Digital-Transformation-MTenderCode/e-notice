@@ -400,7 +400,8 @@ enum class Operation(val value: String) {
     CANCEL_TENDER("cancelTender"),
     CANCEL_TENDER_EV("cancelTenderEv"),
     CANCEL_PLAN("cancelPlan"),
-    CANCEL_STANDSTILL("cancellationStandstillPeriod");
+    CANCEL_STANDSTILL("cancellationStandstillPeriod"),
+    UPDATE_AC("updateAC");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()

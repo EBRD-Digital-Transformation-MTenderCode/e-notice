@@ -277,6 +277,13 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
+            UPDATE_AC -> return updateReleaseService.updateAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }
