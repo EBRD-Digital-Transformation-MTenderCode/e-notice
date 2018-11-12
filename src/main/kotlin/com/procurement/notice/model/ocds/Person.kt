@@ -2,6 +2,7 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Person @JsonCreator constructor(
@@ -38,5 +39,11 @@ data class DocumentBF @JsonCreator constructor(
 
         var title: String?,
 
-        var description: String?
+        var description: String?,
+
+        var url: String?,
+
+        var datePublished: LocalDateTime?,
+
+        var dateModified: LocalDateTime?
 )

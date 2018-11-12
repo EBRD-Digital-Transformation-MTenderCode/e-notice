@@ -9,6 +9,7 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
@@ -178,6 +179,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
                  data: JsonNode): ResponseDto {
 
         val dto = toObject(UpdateAcDto::class.java, data)
+        updatePersonsDocuments(dto)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
         recordContract.apply {
@@ -230,5 +232,27 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
+    private fun updatePersonsDocuments(dto: UpdateAcDto) {
+        val documentDto = dto.documentsOfContractPersones
+        if (documentDto != null) {
+            dto.awards.suppliers?.asSequence()?.forEach { supplier ->
+                supplier.persones?.asSequence()?.forEach { person ->
+                    person.businessFunctions.asSequence().forEach { businessFunction ->
+                        businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun DocumentBF.update(documentDto: DocumentBF) {
+        this.url = documentDto.url
+        this.datePublished = documentDto.datePublished
+        this.dateModified = documentDto.dateModified
+
+    }
 
 }
+
+
+
