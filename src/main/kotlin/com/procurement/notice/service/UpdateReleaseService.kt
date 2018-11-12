@@ -242,6 +242,11 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
                     }
                 }
             }
+            dto.buyer?.persones?.asSequence()?.forEach { person ->
+                person.businessFunctions.asSequence().forEach { businessFunction ->
+                    businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
+                }
+            }
         }
     }
 
