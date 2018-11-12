@@ -182,6 +182,31 @@ class RelatedProcessService {
         }
     }
 
+    fun addEiRelatedProcessToContract(record: ContractRecord, eiOcId: String) {
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses!!.asSequence().none { it.identifier == eiOcId })
+            record.relatedProcesses?.add(RelatedProcess(
+                    id = UUIDs.timeBased().toString(),
+                    relationship = listOf(RelatedProcessType.X_EXPENDITURE_ITEM),
+                    scheme = RelatedProcessScheme.OCID,
+                    identifier = eiOcId,
+                    uri = getBudgetUri(cpId = eiOcId, ocId = eiOcId)
+            ))
+    }
+
+    fun addFsRelatedProcessToContract(record: ContractRecord, fsOcId: String) {
+        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses!!.asSequence().none { it.identifier == fsOcId })
+            record.relatedProcesses?.add(RelatedProcess(
+                    id = UUIDs.timeBased().toString(),
+                    relationship = listOf(RelatedProcessType.X_FUNDING_SOURCE),
+                    scheme = RelatedProcessScheme.OCID,
+                    identifier = fsOcId,
+                    uri = getBudgetUri(cpId = getEiCpIdFromOcId(fsOcId), ocId = fsOcId)
+            ))
+    }
+
+
     private fun getEiCpIdFromOcId(ocId: String): String {
         val pos = ocId.indexOf(FS_SEPARATOR)
         return ocId.substring(0, pos)

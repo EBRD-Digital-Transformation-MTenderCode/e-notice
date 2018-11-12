@@ -91,7 +91,7 @@ class TenderCancellationService(private val releaseService: ReleaseService) {
             if (dto.awards != null) {
                 if (awards != null) {
                     updateAwards(awards!!, dto.awards)
-                }else{
+                } else {
                     awards = dto.awards
                 }
             }

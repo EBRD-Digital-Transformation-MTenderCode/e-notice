@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.procurement.point.databinding.JsonDateDeserializer
-import com.procurement.point.databinding.JsonDateSerializer
+import com.procurement.notice.databinding.JsonDateDeserializer
+import com.procurement.notice.databinding.JsonDateSerializer
 import java.io.IOException
 import java.time.Instant
 import java.time.LocalDateTime

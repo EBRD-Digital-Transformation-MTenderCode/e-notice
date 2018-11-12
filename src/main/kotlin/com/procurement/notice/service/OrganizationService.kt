@@ -29,7 +29,8 @@ class OrganizationService {
                     contactPoint = buyer.contactPoint,
                     roles = setOf(PartyRole.BUYER).toHashSet(),
                     details = buyer.details,
-                    buyerProfile = buyer.buyerProfile
+                    buyerProfile = buyer.buyerProfile,
+                    persones = null
             )
             if (ei.parties == null) ei.parties = hashSetOf()
             ei.parties?.add(partyBuyer)
@@ -50,7 +51,8 @@ class OrganizationService {
                     contactPoint = funder.contactPoint,
                     roles = setOf(PartyRole.FUNDER).toHashSet(),
                     details = funder.details,
-                    buyerProfile = null
+                    buyerProfile = null,
+                    persones = null
             )
             if (fs.parties == null) fs.parties = hashSetOf()
             fs.parties?.add(partyFunder)
@@ -72,7 +74,8 @@ class OrganizationService {
                         contactPoint = payer.contactPoint,
                         roles = setOf(PartyRole.PAYER).toHashSet(),
                         details = payer.details,
-                        buyerProfile = null
+                        buyerProfile = null,
+                        persones = null
                 )
                 if (fs.parties == null) fs.parties = hashSetOf()
                 fs.parties?.add(partyPayer)
@@ -128,17 +131,38 @@ class OrganizationService {
 
     fun processContractRecordPartiesFromAwards(record: ContractRecord) {
         if (record.parties == null) record.parties = hashSetOf()
-        record.awards?.let { awards ->
-            awards.forEach { award ->
-                award.suppliers?.let { suppliers ->
-                    suppliers.forEach { supplier ->
-                        record.parties?.let {
-                            addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER)
-                            addParty(parties = it, organization = supplier, role = PartyRole.PAYEE)
-                        }
-                        clearOrganizationReference(supplier)
+        record.awards?.let { award ->
+            award.suppliers?.let { suppliers ->
+                suppliers.forEach { supplier ->
+                    record.parties?.let {
+                        addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER)
+                        addParty(parties = it, organization = supplier, role = PartyRole.PAYEE)
                     }
+                    clearOrganizationReference(supplier)
                 }
+            }
+        }
+        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
+    }
+
+    fun processContractRecordPartiesFromBudget(record: ContractRecord,
+                                               buyer: OrganizationReference?,
+                                               funders: HashSet<OrganizationReference>?,
+                                               payers: HashSet<OrganizationReference>?) {
+        if (record.parties == null) record.parties = hashSetOf()
+        buyer?.let {
+            addParty(parties = record.parties!!, organization = it, role = PartyRole.BUYER)
+        }
+        funders?.let {
+            it.forEach { funder ->
+                addParty(parties = record.parties!!, organization = funder, role = PartyRole.FUNDER)
+                clearOrganizationReference(funder)
+            }
+        }
+        payers?.let {
+            it.forEach { payer ->
+                addParty(parties = record.parties!!, organization = payer, role = PartyRole.PAYER)
+                clearOrganizationReference(payer)
             }
         }
         if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
@@ -167,6 +191,7 @@ class OrganizationService {
                 if (partyPresent.contactPoint == null) partyPresent.contactPoint = organization.contactPoint
                 if (partyPresent.details == null) partyPresent.details = organization.details
                 if (partyPresent.buyerProfile.isNullOrEmpty()) partyPresent.buyerProfile = organization.buyerProfile
+                if (partyPresent.persones == null) partyPresent.persones = organization.persones
             } else {
                 val party = Organization(
                         id = organization.id,
@@ -177,7 +202,8 @@ class OrganizationService {
                         contactPoint = organization.contactPoint,
                         roles = setOf(role).toHashSet(),
                         details = organization.details,
-                        buyerProfile = organization.buyerProfile
+                        buyerProfile = organization.buyerProfile,
+                        persones = organization.persones
                 )
                 parties.add(party)
             }
@@ -195,5 +221,6 @@ class OrganizationService {
         organization.contactPoint = null
         organization.details = null
         organization.buyerProfile = null
+        organization.persones = null
     }
 }

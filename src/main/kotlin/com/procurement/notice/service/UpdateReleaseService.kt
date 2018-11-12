@@ -7,13 +7,16 @@ import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
+import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
 @Service
-class UpdateReleaseService(private val releaseService: ReleaseService) {
+class UpdateReleaseService(private val releaseService: ReleaseService,
+                           private val organizationService: OrganizationService,
+                           private val relatedProcessService: RelatedProcessService) {
 
     fun updateCn(cpid: String,
                  ocid: String,
@@ -166,14 +169,34 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                  stage: String,
                  releaseDate: LocalDateTime,
                  data: JsonNode): ResponseDto {
-//        val msReq = releaseService.getMs(data)
-//        val recordTender = releaseService.getRecordTender(data)
-//        val msEntity = releaseService.getMsEntity(cpid)
-//        val ms = releaseService.getMs(msEntity.jsonData)
+
         val dto = toObject(UpdateAcDto::class.java, data)
-
-
-        TODO()
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            awards = dto.awards
+            planning = dto.planning
+            contracts = dto.contracts
+        }
+        organizationService.processContractRecordPartiesFromAwards(recordContract)
+        organizationService.processContractRecordPartiesFromBudget(record = recordContract, buyer = dto.buyer, funders = dto.funders, payers = dto.payers)
+        dto.addedFS?.forEach { fsOcid ->
+            relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
+        }
+        dto.excludedFS?.forEach { fsOcid ->
+            relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
+        }
+        dto.addedEI?.forEach { eiOcid ->
+            relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
+        }
+        dto.excludedEI?.forEach { eiOcid ->
+            relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
 

@@ -2,9 +2,8 @@ package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.enquiry.RecordEnquiry
+import com.procurement.notice.model.ocds.Classification
+import com.procurement.notice.model.ocds.PlaceOfPerformance
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContractTender @JsonCreator constructor(

@@ -134,8 +134,8 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                         tag = listOf(Tag.CONTRACT),
                         initiationType = record.initiationType,
                         tender = contractTender,
-                        awards = setOf(award).toHashSet(),
-                        contracts = setOf(contract).toHashSet())
+                        awards = award,
+                        contracts = contract)
                 organizationService.processContractRecordPartiesFromAwards(recordContract)
                 relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
                 relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)
