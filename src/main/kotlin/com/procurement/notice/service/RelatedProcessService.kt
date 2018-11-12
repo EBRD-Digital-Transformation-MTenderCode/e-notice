@@ -207,7 +207,59 @@ class RelatedProcessService {
     }
 
 
-    private fun getEiCpIdFromOcId(ocId: String): String {
+    fun addContractRelatedProcessToFs(fs: FS, cpid: String, ocid: String) {
+        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        if (fs.relatedProcesses!!.asSequence().none { it.identifier == ocid })
+            fs.relatedProcesses?.add(RelatedProcess(
+                    id = UUIDs.timeBased().toString(),
+                    relationship = listOf(RelatedProcessType.PARENT),
+                    scheme = RelatedProcessScheme.OCID,
+                    identifier = ocid,
+                    uri = getTenderUri(cpId = cpid, ocId = cpid)
+            ))
+    }
+
+    fun addContractRelatedProcessToEi(ei: EI, cpid: String, ocid: String) {
+        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        if (ei.relatedProcesses!!.asSequence().none { it.identifier == ocid })
+            ei.relatedProcesses?.add(RelatedProcess(
+                    id = UUIDs.timeBased().toString(),
+                    relationship = listOf(RelatedProcessType.PARENT),
+                    scheme = RelatedProcessScheme.OCID,
+                    identifier = ocid,
+                    uri = getTenderUri(cpId = cpid, ocId = cpid)
+            ))
+    }
+
+    fun removeContractRelatedProcessFromFs(fs: FS, ocid: String) {
+        if (fs.relatedProcesses != null) {
+            val rp = fs.relatedProcesses!!.asSequence().first { it.identifier == ocid }
+            fs.relatedProcesses!!.remove(rp)
+        }
+    }
+
+    fun removeFsRelatedProcessFromContract(recordContract: ContractRecord, fsOcid: String) {
+        if (recordContract.relatedProcesses != null) {
+            val rp = recordContract.relatedProcesses!!.asSequence().first { it.identifier == fsOcid }
+            recordContract.relatedProcesses!!.remove(rp)
+        }
+    }
+
+    fun removeEiRelatedProcessFromContract(recordContract: ContractRecord, eiOcid: String) {
+        if (recordContract.relatedProcesses != null) {
+            val rp = recordContract.relatedProcesses!!.asSequence().first { it.identifier == eiOcid }
+            recordContract.relatedProcesses!!.remove(rp)
+        }
+    }
+
+    fun removeContractRelatedProcessFromEi(ei: EI, ocid: String) {
+        if (ei.relatedProcesses != null) {
+            val rp = ei.relatedProcesses!!.asSequence().first { it.identifier == ocid }
+            ei.relatedProcesses!!.remove(rp)
+        }
+    }
+
+    fun getEiCpIdFromOcId(ocId: String): String {
         val pos = ocId.indexOf(FS_SEPARATOR)
         return ocId.substring(0, pos)
     }

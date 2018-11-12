@@ -40,14 +40,6 @@ class BudgetDao(private val session: Session) {
         session.execute(batch)
     }
 
-    fun getTotalAmountByCpId(cpId: String): BigDecimal? {
-        val query = select().sum(AMOUNT).`as`(AMOUNT)
-                .from(BUDGET_COMPILED_TABLE)
-                .where(eq(CP_ID, cpId))
-        val row = session.execute(query).one()
-        return row?.getDecimal(AMOUNT)
-    }
-
     fun getEiByCpId(cpId: String): BudgetEntity? {
         val query = select()
                 .all()

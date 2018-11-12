@@ -1,13 +1,19 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.dao.BudgetDao
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.budget.EI
+import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
 import com.procurement.notice.model.tender.record.ContractRecord
+import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -16,7 +22,8 @@ import java.util.*
 @Service
 class UpdateReleaseService(private val releaseService: ReleaseService,
                            private val organizationService: OrganizationService,
-                           private val relatedProcessService: RelatedProcessService) {
+                           private val relatedProcessService: RelatedProcessService,
+                           private val budgetDao: BudgetDao) {
 
     fun updateCn(cpid: String,
                  ocid: String,
@@ -184,16 +191,40 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         organizationService.processContractRecordPartiesFromAwards(recordContract)
         organizationService.processContractRecordPartiesFromBudget(record = recordContract, buyer = dto.buyer, funders = dto.funders, payers = dto.payers)
         dto.addedFS?.forEach { fsOcid ->
+            val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
+                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val fs = toObject(FS::class.java, entity.jsonData)
             relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
+            relatedProcessService.addContractRelatedProcessToFs(fs = fs, cpid = cpid, ocid = ocid)
+            entity.jsonData = toJson(fs)
+            budgetDao.saveBudget(entity)
         }
         dto.excludedFS?.forEach { fsOcid ->
-            relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
+            val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
+                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val fs = toObject(FS::class.java, entity.jsonData)
+            relatedProcessService.removeFsRelatedProcessFromContract(recordContract, fsOcid)
+            relatedProcessService.removeContractRelatedProcessFromFs(fs, ocid)
+            entity.jsonData = toJson(fs)
+            budgetDao.saveBudget(entity)
         }
         dto.addedEI?.forEach { eiOcid ->
+            val entity = budgetDao.getEiByCpId(eiOcid)
+                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val ei = toObject(EI::class.java, entity.jsonData)
             relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
+            relatedProcessService.addContractRelatedProcessToEi(ei = ei, cpid = cpid, ocid = ocid)
+            entity.jsonData = toJson(ei)
+            budgetDao.saveBudget(entity)
         }
         dto.excludedEI?.forEach { eiOcid ->
-            relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
+            val entity = budgetDao.getEiByCpId(eiOcid)
+                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+            val ei = toObject(EI::class.java, entity.jsonData)
+            relatedProcessService.removeEiRelatedProcessFromContract(recordContract, eiOcid)
+            relatedProcessService.removeContractRelatedProcessFromEi(ei, ocid)
+            entity.jsonData = toJson(ei)
+            budgetDao.saveBudget(entity)
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
