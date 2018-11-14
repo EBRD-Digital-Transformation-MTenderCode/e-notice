@@ -78,7 +78,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
     fun awardPeriodEndEv(cpid: String,
                          ocid: String,
                          stage: String,
-                         prevStage: String,
                          releaseDate: LocalDateTime,
                          data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndEvDto::class.java, data.toString())
@@ -145,9 +144,9 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         contractRecords.forEach { recordContract ->
-            releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = releaseDate.toDate())
+            releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = releaseDate.toDate())
         }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }

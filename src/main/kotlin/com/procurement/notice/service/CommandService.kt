@@ -251,7 +251,6 @@ class CommandService(private val historyDao: HistoryDao,
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
-                    prevStage = prevStage!!,
                     releaseDate = releaseDate,
                     data = data)
 
