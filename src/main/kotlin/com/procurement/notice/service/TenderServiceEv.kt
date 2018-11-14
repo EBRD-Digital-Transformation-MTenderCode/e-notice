@@ -54,6 +54,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
             id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
         }
         record.bids?.details?.let { bids ->
