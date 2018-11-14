@@ -44,11 +44,11 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun awardByDocs(cpid: String,
-                    ocid: String,
-                    stage: String,
-                    releaseDate: LocalDateTime,
-                    data: JsonNode): ResponseDto {
+    fun updateBidDocs(cpid: String,
+                      ocid: String,
+                      stage: String,
+                      releaseDate: LocalDateTime,
+                      data: JsonNode): ResponseDto {
         val dto = toObject(UpdateBidDocsDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
