@@ -6,10 +6,7 @@ import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.dto.AwardByBidEvDto
-import com.procurement.notice.model.tender.dto.AwardPeriodEndEvDto
-import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
-import com.procurement.notice.model.tender.dto.TenderStatusDto
+import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.record.ContractRecord
 import com.procurement.notice.model.tender.record.ContractTender
 import com.procurement.notice.model.tender.record.ContractTenderLot
@@ -42,6 +39,29 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             dto.bid?.let { bid -> updateBid(this, bid) }
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
+        }
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    fun awardByDocs(cpid: String,
+                    ocid: String,
+                    stage: String,
+                    releaseDate: LocalDateTime,
+                    data: JsonNode): ResponseDto {
+        val dto = toObject(UpdateBidDocsDto::class.java, toJson(data))
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        record.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+        }
+        record.bids?.details?.let { bids ->
+            bids.asSequence()
+                    .firstOrNull { it.id == dto.bid.id }
+                    ?.let { bid ->
+                        bid.documents = dto.bid.documents
+                    }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))

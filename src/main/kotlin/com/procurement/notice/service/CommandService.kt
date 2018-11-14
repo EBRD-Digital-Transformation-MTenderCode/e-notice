@@ -226,6 +226,14 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
+            UPDATE_BID_DOCS -> return tenderServiceEv.awardByDocs(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
+
             STANDSTILL_PERIOD -> return tenderService.standstillPeriod(
                     cpid = cpId,
                     ocid = ocId!!,
