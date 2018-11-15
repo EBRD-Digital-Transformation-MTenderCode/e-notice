@@ -131,14 +131,14 @@ class OrganizationService {
 
     fun processContractRecordPartiesFromAwards(record: ContractRecord) {
         if (record.parties == null) record.parties = hashSetOf()
-        record.awards?.let { award ->
-            award.suppliers?.let { suppliers ->
-                suppliers.forEach { supplier ->
-                    record.parties?.let {
-                        addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER)
-                        addParty(parties = it, organization = supplier, role = PartyRole.PAYEE)
+        record.awards?.let { awards ->
+            awards.forEach { award ->
+                award.suppliers?.let { suppliers ->
+                    suppliers.forEach { supplier ->
+                        addParty(parties = record.parties!!, organization = supplier, role = PartyRole.SUPPLIER)
+                        addParty(parties = record.parties!!, organization = supplier, role = PartyRole.PAYEE)
+                        clearOrganizationReference(supplier)
                     }
-                    clearOrganizationReference(supplier)
                 }
             }
         }

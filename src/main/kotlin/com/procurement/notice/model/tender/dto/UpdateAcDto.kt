@@ -6,11 +6,11 @@ import com.procurement.notice.model.tender.record.ContractPlanning
 
 data class UpdateAcDto @JsonCreator constructor(
 
-        val awards: Award,
-
-        val contracts: Contract,
-
         val planning: ContractPlanning?,
+
+        val awards: HashSet<Award>,
+
+        val contracts: HashSet<Contract>,
 
         val buyer: OrganizationReference?,
 

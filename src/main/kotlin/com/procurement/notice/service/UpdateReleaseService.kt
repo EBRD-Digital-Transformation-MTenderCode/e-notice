@@ -186,8 +186,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
-            awards = dto.awards
             planning = dto.planning
+            awards = dto.awards
             contracts = dto.contracts
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
@@ -235,16 +235,18 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
         val documentDto = dto.documentsOfContractPersones
         if (documentDto != null) {
-            dto.awards.suppliers?.asSequence()?.forEach { supplier ->
-                supplier.persones?.asSequence()?.forEach { person ->
+            dto.awards.asSequence().forEach { award ->
+                award.suppliers?.asSequence()?.forEach { supplier ->
+                    supplier.persones?.asSequence()?.forEach { person ->
+                        person.businessFunctions.asSequence().forEach { businessFunction ->
+                            businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
+                        }
+                    }
+                }
+                dto.buyer?.persones?.asSequence()?.forEach { person ->
                     person.businessFunctions.asSequence().forEach { businessFunction ->
                         businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
                     }
-                }
-            }
-            dto.buyer?.persones?.asSequence()?.forEach { person ->
-                person.businessFunctions.asSequence().forEach { businessFunction ->
-                    businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
                 }
             }
         }
