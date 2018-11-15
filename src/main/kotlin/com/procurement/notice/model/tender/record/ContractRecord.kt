@@ -21,11 +21,11 @@ data class ContractRecord @JsonCreator constructor(
 
         var planning: ContractPlanning? = null,
 
-        var contracts: Contract? = null,
-
         var tender: ContractTender? = null,
 
-        var awards: Award? = null,
+        var awards: HashSet<Award>? = null,
+
+        var contracts: HashSet<Contract>? = null,
 
         var parties: HashSet<Organization>? = null,
 

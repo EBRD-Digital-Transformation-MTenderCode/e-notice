@@ -226,14 +226,6 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-            UPDATE_BID_DOCS -> return tenderServiceEv.updateBidDocs(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-
             STANDSTILL_PERIOD -> return tenderService.standstillPeriod(
                     cpid = cpId,
                     ocid = ocId!!,
@@ -249,13 +241,6 @@ class CommandService(private val historyDao: HistoryDao,
                     data = data)
 
             AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
@@ -278,6 +263,20 @@ class CommandService(private val historyDao: HistoryDao,
                     data = data)
 
             CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> return tenderCancellationService.tenderCancellation(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
+            UPDATE_BID_DOCS -> return tenderServiceEv.updateBidDocs(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
+            AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,

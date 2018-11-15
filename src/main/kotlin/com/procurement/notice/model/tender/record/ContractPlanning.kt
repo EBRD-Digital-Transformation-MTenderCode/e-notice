@@ -2,6 +2,8 @@ package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.procurement.notice.databinding.MoneyDeserializer
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 import java.math.BigDecimal
@@ -28,6 +30,8 @@ data class PlanningBudget @JsonCreator constructor(
 data class BudgetAllocation @JsonCreator constructor(
 
         var budgetBreakdownID: String?,
+
+        val amount: BigDecimal,
 
         val period: Period?,
 
