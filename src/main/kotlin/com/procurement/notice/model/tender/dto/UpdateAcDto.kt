@@ -8,9 +8,9 @@ data class UpdateAcDto @JsonCreator constructor(
 
         val planning: ContractPlanning?,
 
-        val awards: HashSet<Award>,
+        val award: Award,
 
-        val contracts: HashSet<Contract>,
+        val contract: Contract,
 
         val buyer: OrganizationReference?,
 

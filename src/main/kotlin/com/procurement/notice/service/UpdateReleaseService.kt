@@ -187,8 +187,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
             planning = dto.planning
-            awards = dto.awards
-            contracts = dto.contracts
+            awards = hashSetOf(dto.award)
+            contracts = hashSetOf(dto.contract)
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
         organizationService.processContractRecordPartiesFromBudget(record = recordContract, buyer = dto.buyer, funders = dto.funders, payers = dto.payers)
@@ -235,27 +235,27 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
         val documentDto = dto.documentsOfContractPersones
         if (documentDto != null) {
-            dto.awards.asSequence().forEach { award ->
-                award.suppliers?.asSequence()?.forEach { supplier ->
-                    supplier.persones?.asSequence()?.forEach { person ->
-                        person.businessFunctions.asSequence().forEach { businessFunction ->
-                            businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
-                        }
+            dto.award.suppliers?.asSequence()?.forEach { supplier ->
+                supplier.persones?.asSequence()?.forEach { person ->
+                    person.businessFunctions.asSequence().forEach { businessFunction ->
+                        businessFunction.documents.forEach { doc -> doc.update(documentDto.firstOrNull { it.id == doc.id }) }
                     }
                 }
-                dto.buyer?.persones?.asSequence()?.forEach { person ->
-                    person.businessFunctions.asSequence().forEach { businessFunction ->
-                        businessFunction.documents.forEach { doc -> doc.update(documentDto.first { it.id == doc.id }) }
-                    }
+            }
+            dto.buyer?.persones?.asSequence()?.forEach { person ->
+                person.businessFunctions.asSequence().forEach { businessFunction ->
+                    businessFunction.documents.forEach { doc -> doc.update(documentDto.firstOrNull { it.id == doc.id }) }
                 }
             }
         }
     }
 
-    private fun DocumentBF.update(documentDto: DocumentBF) {
-        this.url = documentDto.url
-        this.datePublished = documentDto.datePublished
-        this.dateModified = documentDto.dateModified
+    private fun DocumentBF.update(documentDto: DocumentBF?) {
+        if (documentDto != null) {
+            this.url = documentDto.url
+            this.datePublished = documentDto.datePublished
+            this.dateModified = documentDto.dateModified
+        }
     }
 
 }
