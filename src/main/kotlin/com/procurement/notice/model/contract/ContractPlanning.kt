@@ -1,9 +1,7 @@
-package com.procurement.notice.model.tender.record
+package com.procurement.notice.model.contract
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.procurement.notice.databinding.MoneyDeserializer
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 import java.math.BigDecimal

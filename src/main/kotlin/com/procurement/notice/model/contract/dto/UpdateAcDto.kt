@@ -1,8 +1,8 @@
-package com.procurement.notice.model.tender.dto
+package com.procurement.notice.model.contract.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.record.ContractPlanning
+import com.procurement.notice.model.contract.ContractPlanning
 
 data class UpdateAcDto @JsonCreator constructor(
 

@@ -1,4 +1,4 @@
-package com.procurement.notice.model.tender.record
+package com.procurement.notice.model.contract
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude

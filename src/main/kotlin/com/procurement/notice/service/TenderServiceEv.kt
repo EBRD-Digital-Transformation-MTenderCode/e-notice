@@ -5,11 +5,12 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.contract.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.*
-import com.procurement.notice.model.tender.record.ContractRecord
-import com.procurement.notice.model.tender.record.ContractTender
-import com.procurement.notice.model.tender.record.ContractTenderLot
+import com.procurement.notice.model.contract.ContractRecord
+import com.procurement.notice.model.contract.ContractTender
+import com.procurement.notice.model.contract.ContractTenderLot
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson

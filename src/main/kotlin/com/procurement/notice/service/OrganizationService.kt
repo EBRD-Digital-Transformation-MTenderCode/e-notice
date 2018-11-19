@@ -10,7 +10,7 @@ import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.tender.record.ContractRecord
+import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
 

@@ -11,7 +11,7 @@ import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.tender.record.ContractRecord
+import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
