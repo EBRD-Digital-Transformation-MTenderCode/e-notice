@@ -40,7 +40,7 @@ data class Permits @JsonCreator constructor(
 
         val scheme: String,
 
-        val uri: String,
+        val url: String,
 
         val permit: Permit
 )

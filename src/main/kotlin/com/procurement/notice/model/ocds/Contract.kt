@@ -41,7 +41,6 @@ data class Contract @JsonCreator constructor(
 
         var relatedProcesses: HashSet<RelatedProcess>?,
 
-
         val amendments: List<Amendment>?,
 
         val amendment: Amendment?,
