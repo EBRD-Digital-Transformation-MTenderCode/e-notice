@@ -1,11 +1,11 @@
 {
-  "id": "8e22fa51-ec3c-11e8-b438-e977632ae5b4",
+  "id": "20452fa0-ec3f-11e8-b438-e977632ae5b4",
   "command": "createRelease",
   "context": {
-    "operationId": "2217257c-31d9-4347-ad75-c2f81fdf9813",
-    "requestId": "8e22fa50-ec3c-11e8-b438-e977632ae5b4",
-    "cpid": "ocds-t1s2t3-MD-1542649756688",
-    "ocid": "ocds-t1s2t3-MD-1542649756688-AC-1543656767420",
+    "operationId": "2217257c-31d9-4347-ad75-c2f81fdf9817",
+    "requestId": "20452fa0-ec3f-11e8-b438-e977632ae5b4",
+    "cpid": "ocds-t1s2t3-MD-1542661199328",
+    "ocid": "ocds-t1s2t3-MD-1542661199328-AC-1541372926425",
     "stage": "AC",
     "prevStage": "AC",
     "processType": "updateAC",
@@ -15,9 +15,9 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "3343a87d-fb8b-4360-8a65-fe87f8b8640f",
-    "startDate": "2018-11-19T20:49:06Z",
-    "timeStamp": 1542660546165,
+    "token": "fff8319d-07e6-4310-b7db-ac442ccc6d1c",
+    "startDate": "2018-11-19T21:07:30Z",
+    "timeStamp": 1542661650330,
     "isAuction": false,
     "mainProcurementCategory": "goods"
   },
@@ -26,7 +26,7 @@
       "implementation": {
         "transactions": [
           {
-            "id": "8e5b4860-ec3c-11e8-9bb5-8bc71f2308b4",
+            "id": "207d7db0-ec3f-11e8-a6ef-c957b49ca7cc",
             "type": "advance",
             "value": {
               "amount": 20000.00,
@@ -48,7 +48,7 @@
               "startDate": "2018-11-13T15:39:46Z",
               "endDate": "2019-05-12T15:39:46Z"
             },
-            "relatedItem": "6f1b7102-ec23-11e8-9cb9-6bf876bfa65b"
+            "relatedItem": "1373be01-ec3e-11e8-9cb9-6bf876bfa65b"
           }
         ],
         "budgetSource": [
@@ -61,10 +61,10 @@
       }
     },
     "contract": {
-      "token": "3343a87d-fb8b-4360-8a65-fe87f8b8640f",
-      "id": "ocds-t1s2t3-MD-1542649756688-AC-1543656767420",
-      "date": "2018-11-19T17:54:42Z",
-      "awardId": "f46cc660-ec23-11e8-b684-430acc252883",
+      "token": "fff8319d-07e6-4310-b7db-ac442ccc6d1c",
+      "id": "ocds-t1s2t3-MD-1542661199328-AC-1541372926425",
+      "date": "2018-11-19T21:04:22Z",
+      "awardId": "7fc4ede0-ec3e-11e8-b684-430acc252883",
       "status": "pending",
       "statusDetails": "contractPreparation",
       "title": "Hello_WORLD",
@@ -81,17 +81,19 @@
       },
       "milestones": [
         {
-          "id": "delivery-MD-IDNO-191-8e5a5e00-ec3c-11e8-9bb5-8bc71f2308b4",
+          "id": "delivery-MD-IDNO-191-207ba8f0-ec3f-11e8-a6ef-c957b49ca7cc",
           "title": "123",
           "description": "321",
           "type": "delivery",
           "status": "scheduled",
           "additionalInformation": "TEST_ENOTIS",
           "dueDate": "2018-11-29T15:45:10Z",
-          "relatedParties": {
-            "id": "MD-IDNO-191",
-            "name": "Googleh555fhfgh55g12"
-          }
+          "relatedParties": [
+            {
+              "id": "MD-IDNO-191",
+              "name": "Googleh555fhfgh55g12"
+            }
+          ]
         }
       ],
       "confirmationRequests": [
@@ -123,15 +125,15 @@
       ]
     },
     "award": {
-      "id": "f46cc660-ec23-11e8-b684-430acc252883",
-      "date": "2018-11-19T17:54:47Z",
+      "id": "7fc4ede0-ec3e-11e8-b684-430acc252883",
+      "date": "2018-11-19T21:04:27Z",
       "description": "222222222",
       "status": "active",
       "statusDetails": "empty",
       "relatedLots": [
-        "6f1b7103-ec23-11e8-9cb9-6bf876bfa65b"
+        "1373be05-ec3e-11e8-9cb9-6bf876bfa65b"
       ],
-      "relatedBid": "ae239c60-ec23-11e8-a0b8-516ba9c66e7e",
+      "relatedBid": "3dcdb8e0-ec3e-11e8-a0b8-516ba9c66e7e",
       "value": {
         "amount": 127.22,
         "currency": "MDL",
@@ -140,7 +142,7 @@
       },
       "items": [
         {
-          "id": "6f1b7102-ec23-11e8-9cb9-6bf876bfa65b",
+          "id": "1373be01-ec3e-11e8-9cb9-6bf876bfa65b",
           "description": "666-2",
           "classification": {
             "id": "30199220-8",
@@ -165,7 +167,7 @@
               "valueAddedTaxIncluded": true
             }
           },
-          "relatedLot": "6f1b7103-ec23-11e8-9cb9-6bf876bfa65b",
+          "relatedLot": "1373be05-ec3e-11e8-9cb9-6bf876bfa65b",
           "deliveryAddress": {
             "streetAddress": "313 Graves Center",
             "postalCode": "18882",
@@ -275,45 +277,6 @@
                 "uri": "http://www.romero.net/index/"
               },
               "businessFunctions": [
-                {
-                  "id": "Senior PHP Developer",
-                  "type": "authority",
-                  "jobTitle": "Chief Executive Officer",
-                  "period": {
-                    "startDate": "2018-11-11T15:45:15Z"
-                  },
-                  "documents": [
-                    {
-                      "id": "ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-                      "documentType": "regulatoryDocument"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "PERSON1",
-              "name": "Shit",
-              "identifier": {
-                "id": "212-45-0215",
-                "scheme": "MD-IDNO",
-                "uri": "http://www.romero.net/index/"
-              },
-              "businessFunctions": [
-                {
-                  "id": "SystemArchitector",
-                  "type": "authority",
-                  "jobTitle": "Chief Executive Officer",
-                  "period": {
-                    "startDate": "2018-11-11T15:45:15Z"
-                  },
-                  "documents": [
-                    {
-                      "id": "ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-                      "documentType": "regulatoryDocument"
-                    }
-                  ]
-                },
                 {
                   "id": "Senior PHP Developer",
                   "type": "authority",
@@ -574,13 +537,7 @@
       "buyerProfile": "http://ray.com/"
     },
     "language": "ro",
-    "actualBudgetSource": [
-      {
-        "budgetBreakdownID": "ocds-t1s2t3-MD-1542645311548-FS-1542649498398",
-        "amount": 100.00,
-        "currency": "MDL"
-      }
-    ],
+    "actualBudgetSource": [],
     "treasuryBudgetSources": [
       {
         "budgetBreakdownID": "ocds-t1s2t3-MD-1542645311548-FS-1542649498398",
@@ -675,35 +632,11 @@
         }
       }
     ],
-    "addedEI": [],
-    "excludedEI": [],
-    "addedFS": [],
-    "excludedFS": [],
+    "addedEI": null,
+    "excludedEI": null,
+    "addedFS": null,
+    "excludedFS": null,
     "documentsOfContractPersones": [
-      {
-        "id": "ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-        "documentType": "regulatoryDocument",
-        "title": null,
-        "description": null,
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-        "datePublished": "2018-11-15T17:41:15Z",
-        "dateModified": null,
-        "format": null,
-        "language": null,
-        "relatedLots": null
-      },
-      {
-        "id": "ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-        "documentType": "regulatoryDocument",
-        "title": null,
-        "description": null,
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
-        "datePublished": "2018-11-15T17:41:15Z",
-        "dateModified": null,
-        "format": null,
-        "language": null,
-        "relatedLots": null
-      },
       {
         "id": "ad900cf7-a42c-4509-a3f6-07814bd0bb0b-1542278375087",
         "documentType": "regulatoryDocument",

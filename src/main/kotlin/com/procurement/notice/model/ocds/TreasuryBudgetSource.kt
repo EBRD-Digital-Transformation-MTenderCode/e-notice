@@ -9,10 +9,10 @@ import java.math.BigDecimal
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class TreasuryBudgetSource @JsonCreator constructor(
 
-        var budgetBreakdownID: String,
+        var budgetBreakdownID: String?,
 
-        val budgetIBAN: String,
+        val budgetIBAN: String?,
 
         @JsonDeserialize(using = MoneyDeserializer::class)
-        val amount: BigDecimal
+        val amount: BigDecimal?
 )

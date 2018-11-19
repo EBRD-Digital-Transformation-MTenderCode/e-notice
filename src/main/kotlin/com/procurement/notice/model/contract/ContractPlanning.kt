@@ -29,7 +29,7 @@ data class BudgetAllocation @JsonCreator constructor(
 
         var budgetBreakdownID: String?,
 
-        val amount: BigDecimal,
+        val amount: BigDecimal?,
 
         val period: Period?,
 
