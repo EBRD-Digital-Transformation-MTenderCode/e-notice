@@ -53,8 +53,7 @@ data class Contract @JsonCreator constructor(
 
         val valueBreakdown: HashSet<ValueBreakdown>?,
 
-        @get:JsonProperty("isFrameworkOrDynamic")
-        val isFrameworkOrDynamic: Boolean?,
+        val isFrameworkOrDynamic: Boolean? = null,
 
         var agreedMetrics: LinkedList<AgreedMetric>? = null,
 

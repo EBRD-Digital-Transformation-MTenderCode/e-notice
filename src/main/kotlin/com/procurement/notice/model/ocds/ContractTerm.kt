@@ -7,29 +7,31 @@ import java.util.*
 
 data class ContractTerm @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val agreedMetrics: LinkedList<AgreedMetric>
+        val agreedMetrics: LinkedList<AgreedMetric>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class AgreedMetric @JsonCreator constructor(
 
-        var id: String,
+        var id: String?,
 
-        val title: String,
+        val title: String?,
 
-        val description: String,
+        val description: String?,
 
-        val observations: LinkedList<Observation>
+        val observations: LinkedList<Observation>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Observation @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val notes: String,
+        val notes: String?,
+
+        val measure: Any?,
 
         val unit: ObservationUnit?
 )
@@ -37,11 +39,9 @@ data class Observation @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ObservationUnit @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val name: String,
+        val name: String?,
 
-        val scheme: String,
-
-        val measure: Any?
+        val scheme: String?
 )
