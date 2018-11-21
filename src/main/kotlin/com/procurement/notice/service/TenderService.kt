@@ -179,7 +179,7 @@ class TenderService(private val releaseService: ReleaseService,
             date = releaseDate
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
-            dto.consideredBid?.let { consideredBid -> updateBid(this, consideredBid) }
+            dto.consideredBid?.let { consideredBid -> updateBidDocuments(this, consideredBid) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -366,6 +366,13 @@ class TenderService(private val releaseService: ReleaseService,
                     }
                 }
             }
+        }
+    }
+
+    private fun updateBidDocuments(record: Record, bid: Bid) {
+        record.bids?.details?.let { bids ->
+            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            upBid.documents = bid.documents
         }
     }
 
