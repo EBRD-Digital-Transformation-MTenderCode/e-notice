@@ -179,6 +179,7 @@ class TenderService(private val releaseService: ReleaseService,
             date = releaseDate
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
+            dto.consideredBid?.let { consideredBid -> updateBid(this, consideredBid) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
