@@ -11,7 +11,5 @@ data class AwardByBidDto @JsonCreator constructor(
 
         val award: Award,
 
-        val bid: Bid,
-
-        val consideredBid: Bid?
+        val bid: Bid
 )

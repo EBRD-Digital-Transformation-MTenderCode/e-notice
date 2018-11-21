@@ -40,6 +40,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             dto.bid?.let { bid -> updateBid(this, bid) }
             dto.lot?.let { lot -> updateLot(this, lot) }
             dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
+            dto.consideredBid?.let { consideredBid -> updateBidDocuments(this, consideredBid) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -245,12 +246,12 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         }
     }
 
-    private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
-        for (bid in bids) if (bid.documents != null) for (document in documents)
-            bid.documents?.firstOrNull { it.id == document.id }?.apply {
-                datePublished = document.datePublished
-                url = document.url
-            }
+
+    private fun updateBidDocuments(record: Record, bid: Bid) {
+        record.bids?.details?.let { bids ->
+            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            upBid.documents = bid.documents
+        }
     }
 
 }
