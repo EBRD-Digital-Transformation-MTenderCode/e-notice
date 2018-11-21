@@ -14,6 +14,7 @@ import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
 import com.procurement.notice.model.contract.ContractRecord
+import com.procurement.notice.model.contract.dto.IssuingAcDto
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -231,6 +232,29 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
+    fun issuingAC(cpid: String,
+                  ocid: String,
+                  stage: String,
+                  releaseDate: LocalDateTime,
+                  data: JsonNode): ResponseDto{
+        val dto = toObject(IssuingAcDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.CONTRACT_UPDATE)
+        }
+        val contract =  recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        contract.apply {
+            date = dto.contract.date
+            statusDetails = dto.contract.statusDetails
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
 
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
         val documentDto = dto.documentsOfContractPersones
