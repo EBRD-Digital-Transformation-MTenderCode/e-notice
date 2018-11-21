@@ -246,6 +246,11 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
         }
+        val contract =  recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        contract.apply {
+            date = dto.contract.date
+            statusDetails = dto.contract.statusDetails
+        }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
