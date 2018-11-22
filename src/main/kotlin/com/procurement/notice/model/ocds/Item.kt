@@ -19,5 +19,7 @@ data class Item @JsonCreator constructor(
 
         val unit: Unit?,
 
+        val deliveryAddress: Address?,
+
         val relatedLot: String?
 )
