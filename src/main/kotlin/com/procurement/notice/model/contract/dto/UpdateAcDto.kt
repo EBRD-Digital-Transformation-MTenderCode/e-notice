@@ -28,5 +28,5 @@ data class UpdateAcDto @JsonCreator constructor(
 
         val excludedFS: Set<String>?,
 
-        val documentsOfContractPersones: Set<DocumentBF>?
+        val documentsOfContractPersones: List<DocumentBF>?
 )
