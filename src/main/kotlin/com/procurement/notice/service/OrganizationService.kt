@@ -4,13 +4,13 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.stereotype.Service
 
@@ -216,13 +216,13 @@ class OrganizationService {
             if (partyPresent != null) {
                 partyPresent.roles.add(role)
                 if (partyPresent.name.isNullOrEmpty()) partyPresent.name = organization.name
-                partyPresent.identifier = organization.identifier
-                partyPresent.additionalIdentifiers = organization.additionalIdentifiers
-                partyPresent.address = organization.address
-                partyPresent.contactPoint = organization.contactPoint
-                partyPresent.details = organization.details
-                partyPresent.buyerProfile = organization.buyerProfile
-                partyPresent.persones = organization.persones
+                organization.identifier?.let { partyPresent.identifier = organization.identifier }
+                organization.additionalIdentifiers?.let { partyPresent.additionalIdentifiers = organization.additionalIdentifiers }
+                organization.address?.let { partyPresent.address = organization.address }
+                organization.contactPoint?.let { partyPresent.contactPoint = organization.contactPoint }
+                organization.details?.let { partyPresent.details = organization.details }
+                organization.buyerProfile?.let { partyPresent.buyerProfile = organization.buyerProfile }
+                organization.persones?.let { partyPresent.persones = organization.persones }
             } else {
                 val party = Organization(
                         id = organization.id,
