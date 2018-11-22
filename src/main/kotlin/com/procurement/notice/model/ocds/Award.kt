@@ -33,11 +33,12 @@ data class Award @JsonCreator constructor(
 
         val amendment: Amendment?,
 
-        val relatedLots: List<String>?,
-
         val requirementResponses: HashSet<RequirementResponse>?,
 
         val reviewProceedings: ReviewProceedings?,
 
+        val relatedLots: List<String>?,
+
         val relatedBid: String?
+
 )
