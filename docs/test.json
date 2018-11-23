@@ -1,11 +1,11 @@
 {
-  "id": "ccdb3a00-ed86-11e8-b4f8-4f20a9ab176f",
+  "id": "62434ed0-ee76-11e8-a9c0-4968f68c64c7",
   "command": "createRelease",
   "context": {
-    "operationId": "a1bcd000-b00d-4644-b0e6-4b75020b1403",
-    "requestId": "ccdb3a00-ed86-11e8-b4f8-4f20a9ab176f",
-    "cpid": "ocds-t1s2t3-MD-1542645678020",
-    "ocid": "ocds-t1s2t3-MD-1542645678020-AC-1544745832237",
+    "operationId": "a1bcd000-b00d-4644-b0e6-4b75020b1491",
+    "requestId": "62434ed0-ee76-11e8-a9c0-4968f68c64c7",
+    "cpid": "ocds-t1s2t3-MD-1542896718130",
+    "ocid": "ocds-t1s2t3-MD-1542896718130-AC-1543178570809",
     "stage": "AC",
     "prevStage": "AC",
     "processType": "updateAC",
@@ -15,21 +15,22 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "63bd38a5-948b-4f0b-acab-f101b6183f17",
-    "startDate": "2018-11-21T12:13:05Z",
-    "timeStamp": 1542802385312,
-    "isAuction": false,
-    "mainProcurementCategory": "works"
+    "token": "455f50e3-bac3-4144-838f-eb29719804a9",
+    "startDate": "2018-11-22T16:48:05Z",
+    "timeStamp": 1542905285694,
+    "isAuction": true,
+    "mainProcurementCategory": "works",
+    "awardCriteria": "priceOnly"
   },
   "data": {
     "planning": {
       "implementation": {
         "transactions": [
           {
-            "id": "ccfacff0-ed86-11e8-a7a9-495cabe85e0c",
-            "type": "blabla",
+            "id": "626332e0-ee76-11e8-a55e-7d53da3cef79",
+            "type": "advance",
             "value": {
-              "amount": 5000.00,
+              "amount": 1000.00,
               "currency": "MDL"
             },
             "executionPeriod": {
@@ -42,58 +43,58 @@
         "description": "описание",
         "budgetAllocation": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
-            "amount": 102.00,
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1542894626674-FS-1542894645279",
+            "amount": 100.00,
             "period": {
               "startDate": "2018-11-30T00:00:00Z",
               "endDate": "2018-11-30T23:00:00Z"
             },
-            "relatedItem": "f0081842-ec19-11e8-9cb9-6bf876bfa65b"
+            "relatedItem": "6f9fcef0-ee62-11e8-8b4b-c53fea45a7b0"
           }
         ],
         "budgetSource": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
-            "amount": 102.00,
-            "currency": "MDL"
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1542894626674-FS-1542894645279",
+            "amount": 100.00,
+            "currency": "USD"
           }
         ]
       }
     },
     "contract": {
-      "token": "63bd38a5-948b-4f0b-acab-f101b6183f17",
-      "id": "ocds-t1s2t3-MD-1542645678020-AC-1544745832237",
-      "date": "2018-11-19T16:49:35Z",
-      "awardId": "74c43281-ec1a-11e8-928f-a9a0efcf4c9e",
+      "token": "455f50e3-bac3-4144-838f-eb29719804a9",
+      "id": "ocds-t1s2t3-MD-1542896718130-AC-1543178570809",
+      "date": "2018-11-22T14:56:34Z",
+      "awardId": "08d9d000-ee65-11e8-8498-a736525a2642",
       "status": "pending",
       "statusDetails": "contractPreparation",
       "title": "title",
       "description": "description",
       "period": {
-        "startDate": "2018-11-25T00:00:00Z",
+        "startDate": "2018-11-22T16:48:20Z",
         "endDate": "2018-11-26T00:00:00Z"
       },
       "value": {
-        "amount": 102.00,
+        "amount": 100.00,
         "currency": "MDL",
-        "amountNet": 102.00,
+        "amountNet": 100.00,
         "valueAddedTaxIncluded": false
       },
       "milestones": [
         {
-          "id": "x_warranty-MD-IDNO-f13-ccfaa8e0-ed86-11e8-a7a9-495cabe85e0c",
+          "id": "x_warranty-MD-IDNO-f3-6262e4c0-ee76-11e8-a55e-7d53da3cef79",
           "title": "title",
           "description": "description",
           "type": "x_warranty",
           "status": "scheduled",
           "relatedItems": [
-            "f0081842-ec19-11e8-9cb9-6bf876bfa65b"
+            "6f9fcef0-ee62-11e8-8b4b-c53fea45a7b0"
           ],
           "additionalInformation": "дополнительная ифнормация",
           "dueDate": "2018-11-25T00:00:00Z",
           "relatedParties": [
             {
-              "id": "MD-IDNO-f13",
+              "id": "MD-IDNO-f3",
               "name": "name"
             }
           ]
@@ -110,7 +111,7 @@
           "source": "tenderer",
           "requestGroups": [
             {
-              "id": "cs-tenderer-confirmation-on-a58b5e64-e338-4b20-a2c1-3650b220489c-1542127310613-MD-IDNO-f13",
+              "id": "cs-tenderer-confirmation-on-a58b5e64-e338-4b20-a2c1-3650b220489c-1542127310613-MD-IDNO-f3",
               "requests": [
                 {
                   "id": "cs-tenderer-confirmation-on-a58b5e64-e338-4b20-a2c1-3650b220489c-1542127310613-95-78-52",
@@ -320,23 +321,21 @@
       ]
     },
     "award": {
-      "id": "74c43281-ec1a-11e8-928f-a9a0efcf4c9e",
-      "date": "2018-11-19T16:49:40Z",
-      "status": "active",
-      "statusDetails": "empty",
+      "id": "08d9d000-ee65-11e8-8498-a736525a2642",
+      "date": "2018-11-22T14:56:39Z",
       "relatedLots": [
-        "f0081843-ec19-11e8-9cb9-6bf876bfa65b"
+        "6f9fcef1-ee62-11e8-8b4b-c53fea45a7b0"
       ],
-      "relatedBid": "43650980-ec1a-11e8-a0b8-516ba9c66e7e",
+      "relatedBid": "2e6a94f0-ee63-11e8-bed4-33557e04dd94",
       "value": {
-        "amount": 102.00,
+        "amount": 100.00,
         "currency": "MDL",
-        "amountNet": 102.00,
+        "amountNet": 100.00,
         "valueAddedTaxIncluded": false
       },
       "items": [
         {
-          "id": "f0081842-ec19-11e8-9cb9-6bf876bfa65b",
+          "id": "6f9fcef0-ee62-11e8-8b4b-c53fea45a7b0",
           "description": "p",
           "classification": {
             "id": "45400000-1",
@@ -360,13 +359,13 @@
             "id": "120",
             "name": "Milion decalitri",
             "value": {
-              "amount": 102.00,
+              "amount": 100.00,
               "currency": "MDL",
-              "amountNet": 102.00,
+              "amountNet": 100.00,
               "valueAddedTaxIncluded": false
             }
           },
-          "relatedLot": "f0081843-ec19-11e8-9cb9-6bf876bfa65b",
+          "relatedLot": "6f9fcef1-ee62-11e8-8b4b-c53fea45a7b0",
           "deliveryAddress": {
             "streetAddress": "street",
             "postalCode": "45900",
@@ -394,48 +393,26 @@
       ],
       "documents": [
         {
-          "id": "1a0c5a0a-b362-4a2c-a6cd-fd043fa68b1d-1542627998652",
+          "id": "316980b8-7c67-40c0-ac6d-9886996d39f2-1542818989778",
           "documentType": "awardNotice",
           "title": null,
           "description": null,
-          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/1a0c5a0a-b362-4a2c-a6cd-fd043fa68b1d-1542627998652",
-          "datePublished": "2018-11-19T11:47:35Z",
+          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/316980b8-7c67-40c0-ac6d-9886996d39f2-1542818989778",
+          "datePublished": "2018-11-21T16:50:04Z",
           "dateModified": null,
           "format": null,
           "language": null,
-          "relatedLots": null
-        },
-        {
-          "id": "379e4907-5ab9-4db7-a669-9ffb6c12d781-1542640870786",
-          "documentType": "contractDraft",
-          "title": null,
-          "description": null,
-          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/379e4907-5ab9-4db7-a669-9ffb6c12d781-1542640870786",
-          "datePublished": null,
-          "dateModified": null,
-          "format": null,
-          "language": null,
-          "relatedLots": null
-        },
-        {
-          "id": "4205f671-1be6-4cad-931f-cb133c0dd2d8-1542801925324",
-          "documentType": "contractDraft",
-          "title": null,
-          "description": null,
-          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/4205f671-1be6-4cad-931f-cb133c0dd2d8-1542801925324",
-          "datePublished": "2018-11-21T12:08:46Z",
-          "dateModified": null,
-          "format": null,
-          "language": null,
-          "relatedLots": null
+          "relatedLots": [
+            "08d9d000-ee65-11e8-8498-a736525a2642"
+          ]
         }
       ],
       "suppliers": [
         {
-          "id": "MD-IDNO-f13",
+          "id": "MD-IDNO-f3",
           "name": "name",
           "identifier": {
-            "id": "f13",
+            "id": "f3",
             "scheme": "MD-IDNO",
             "legalName": "jj"
           },
@@ -468,10 +445,10 @@
           },
           "additionalIdentifiers": [
             {
-              "id": "f13",
+              "id": "f3",
               "scheme": "MD-IDNO",
-              "legalName": "987",
-              "uri": "456"
+              "legalName": "Legal dvdvdvName",
+              "uri": "URddvdvI"
             }
           ],
           "persones": [
@@ -486,18 +463,42 @@
               "businessFunctions": [
                 {
                   "id": "456951",
-                  "type": "authority",
-                  "jobTitle": "Chief Executive Officer",
+                  "type": "authority-123",
+                  "jobTitle": "Chief прпрпрп",
                   "period": {
-                    "startDate": "2018-12-05T00:00:00Z"
+                    "startDate": "2018-12-19T00:00:00Z"
                   },
                   "documents": [
                     {
-                      "id": "164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
+                      "id": "44530212-7820-4f13-81cd-213ddf4c16d3-1542825585923",
                       "documentType": "regulatoryDocument"
-                    },
+                    }
+                  ]
+                },
+                {
+                  "id": "qwerty",
+                  "type": "authority",
+                  "jobTitle": "Chief",
+                  "period": {
+                    "startDate": "2018-12-15T00:00:00Z"
+                  },
+                  "documents": [
                     {
-                      "id": "164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
+                      "id": "42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
+                      "documentType": "regulatoryDocument"
+                    }
+                  ]
+                },
+                {
+                  "id": "qwerty123",
+                  "type": "authority12",
+                  "jobTitle": "job f",
+                  "period": {
+                    "startDate": "2018-12-31T00:00:00Z"
+                  },
+                  "documents": [
+                    {
+                      "id": "42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
                       "documentType": "regulatoryDocument"
                     }
                   ]
@@ -506,27 +507,27 @@
             }
           ],
           "details": {
-            "typeOfSupplier": "supplier",
-            "mainEconomicActivity": [
-              "456-95"
+            "typeOfSupplier": "type changed",
+            "mainEconomicActivities": [
+              "456-00-changed"
             ],
-            "scale": "sme",
+            "scale": "large",
             "permits": [
               {
-                "id": "45621",
-                "scheme": "SRLE",
+                "id": "4569512354785220000",
+                "scheme": "MD-MD",
                 "url": "4",
                 "permit": {
                   "issuedBy": {
-                    "id": "popopo",
-                    "name": "vasia pupkin"
+                    "id": "changed",
+                    "name": "vasia changed pupkin"
                   },
                   "issuedThought": {
-                    "id": "95874",
-                    "name": "name"
+                    "id": "fgfgfgfg",
+                    "name": "changed"
                   },
                   "validityPeriod": {
-                    "startDate": "2018-12-02T00:00:00Z",
+                    "startDate": "2018-12-05T00:00:00Z",
                     "endDate": "2018-12-04T00:00:00Z"
                   }
                 }
@@ -541,10 +542,16 @@
                   "postalCode": "5",
                   "addressDetails": {
                     "country": {
-                      "id": "MD"
+                      "scheme": "iso-alpha2",
+                      "id": "MD",
+                      "description": "description of country",
+                      "uri": "URI*"
                     },
                     "region": {
-                      "id": "0301000"
+                      "scheme": "CUATM",
+                      "id": "0301000",
+                      "description": "descr",
+                      "uri": "URI*"
                     },
                     "locality": {
                       "scheme": "CUATM",
@@ -654,27 +661,6 @@
         "typeOfBuyer": "BODY_PUBLIC",
         "mainGeneralActivity": "HOUSING_AND_COMMUNITY_AMENITIES",
         "mainSectoralActivity": "RAILWAY_SERVICES",
-        "gpaProfile": {
-          "gpaAnnex": {
-            "id": "654123",
-            "legalName": "LNN",
-            "uri": "https://e-gpa.wto.org/en/Appendix/Details?Agreement=GPA113&amp;Party=Moldova"
-          },
-          "gpaOrganizationType": {
-            "id": "as-85as5",
-            "legalName": "NMNM",
-            "uri": "uri*"
-          },
-          "gpaThresholds": [
-            {
-              "mainProcurementCategory": "works",
-              "value": {
-                "amount": 102.00,
-                "currency": "MDL"
-              }
-            }
-          ]
-        },
         "bankAccounts": [
           {
             "description": "32dfgv",
@@ -683,10 +669,16 @@
               "streetAddress": "address of pe",
               "addressDetails": {
                 "country": {
-                  "id": "MD"
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "asasdasdasdasd",
+                  "uri": "uri"
                 },
                 "region": {
-                  "id": "0101000"
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "sadfsdaf",
+                  "uri": "tratata"
                 },
                 "locality": {
                   "scheme": "CUATM",
@@ -722,53 +714,19 @@
     "language": "ro",
     "actualBudgetSource": [
       {
-        "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
-        "amount": 102.00,
-        "currency": "MDL"
+        "budgetBreakdownID": "ocds-t1s2t3-MD-1542894626674-FS-1542894645279",
+        "amount": 100.00,
+        "currency": "USD"
       }
     ],
     "treasuryBudgetSources": [
       {
-        "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
-        "amount": 102.00,
-        "currency": "MDL"
+        "budgetBreakdownID": "ocds-t1s2t3-MD-1542894626674-FS-1542894645279",
+        "amount": 100.00,
+        "currency": "USD"
       }
     ],
-    "funders": [
-      {
-        "id": "MD-IDNO-1ghj",
-        "name": "NAME of FS buyer",
-        "identifier": {
-          "id": "1ghj",
-          "scheme": "MD-IDNO",
-          "legalName": "1",
-          "uri": "1"
-        },
-        "address": {
-          "streetAddress": "street",
-          "addressDetails": {
-            "country": {
-              "scheme": "iso-alpha2",
-              "id": "MD",
-              "description": "MOLDOVA",
-              "uri": "http://reference.iatistandard.org"
-            },
-            "region": {
-              "scheme": "CUATM",
-              "id": "3400000",
-              "description": "Donduşeni",
-              "uri": "http://statistica.md"
-            },
-            "locality": {
-              "scheme": "CUATM",
-              "id": "3401000",
-              "description": "or.Donduşeni (r-l Donduşeni)",
-              "uri": "http://statistica.md"
-            }
-          }
-        }
-      }
-    ],
+    "funders": [],
     "payers": [
       {
         "id": "MD-IDNO-7787-9898-88-aeuyi",
@@ -814,24 +772,36 @@
     "excludedFS": [],
     "documentsOfContractPersones": [
       {
-        "id": "164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
+        "id": "44530212-7820-4f13-81cd-213ddf4c16d3-1542825585923",
         "documentType": "regulatoryDocument",
         "title": null,
         "description": null,
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
-        "datePublished": "2018-11-19T10:20:00Z",
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/44530212-7820-4f13-81cd-213ddf4c16d3-1542825585923",
+        "datePublished": "2018-11-21T18:40:09Z",
         "dateModified": null,
         "format": null,
         "language": null,
         "relatedLots": null
       },
       {
-        "id": "164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
+        "id": "42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
         "documentType": "regulatoryDocument",
         "title": null,
         "description": null,
-        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/164f1129-4be3-4bce-9647-d7a1b1e6c11b-1542622196101",
-        "datePublished": "2018-11-19T10:20:00Z",
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
+        "datePublished": "2018-11-22T13:04:42Z",
+        "dateModified": null,
+        "format": null,
+        "language": null,
+        "relatedLots": null
+      },
+      {
+        "id": "42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
+        "documentType": "regulatoryDocument",
+        "title": null,
+        "description": null,
+        "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/42277d77-00b1-420e-a1a1-5fcb8128ff28-1542891858528",
+        "datePublished": "2018-11-22T13:04:42Z",
         "dateModified": null,
         "format": null,
         "language": null,
@@ -843,7 +813,7 @@
         "title": null,
         "description": null,
         "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/379e4907-5ab9-4db7-a669-9ffb6c12d781-1542640870786",
-        "datePublished": null,
+        "datePublished": "2018-11-22T13:04:42Z",
         "dateModified": null,
         "format": null,
         "language": null,
