@@ -252,7 +252,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             statusDetails = dto.contract.statusDetails
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, releaseId = recordContract.id))
     }
 
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
