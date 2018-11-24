@@ -403,7 +403,8 @@ enum class Operation(val value: String) {
     CANCEL_STANDSTILL("cancellationStandstillPeriod"),
     UPDATE_BID_DOCS("updateBidDocs"),
     UPDATE_AC("updateAC"),
-    ISSUING_AC("issuingAC");
+    ISSUING_AC("issuingAC"),
+    FINAL_UPDATE("finalUpdateAC");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()
