@@ -7,5 +7,5 @@ import com.procurement.notice.model.ocds.Contract
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FinalUpdateAcDto @JsonCreator constructor(
 
-    val contracts: Contract
+    val contract: Contract
 )

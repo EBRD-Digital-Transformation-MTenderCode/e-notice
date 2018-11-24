@@ -255,6 +255,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
     fun finalUpdateAC(cpid: String,
                   ocid: String,
                   stage: String,
@@ -268,7 +269,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
-            contracts= hashSetOf(dto.contracts)
+            contracts= hashSetOf(dto.contract)
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
