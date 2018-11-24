@@ -3,7 +3,7 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.exception.EnumException
-import java.util.*
+ import java.util.*
 
 enum class InitiationType constructor(private val value: String) {
 
@@ -355,6 +355,7 @@ enum class LotStatusDetails constructor(private val value: String) {
     }
 }
 
+
 enum class Stage {
     EI,
     FS,
@@ -419,79 +420,5 @@ enum class Operation(val value: String) {
         fun fromValue(value: String): Operation {
             return CONSTANTS[value] ?: throw IllegalArgumentException(value)
         }
-    }
-
-}
-
-enum class ContractStatus(@JsonValue val value: String) {
-    PENDING("pending"),
-    ACTIVE("active"),
-    CANCELLED("cancelled"),
-    COMPLETE("complete"),
-    TERMINATED("terminated"),
-    UNSUCCESSFUL("unsuccessful");
-
-    override fun toString(): String {
-        return this.value
-    }
-
-    companion object {
-        private val CONSTANTS = HashMap<String, ContractStatus>()
-
-        init {
-            ContractStatus.values().forEach { CONSTANTS[it.value] = it }
-        }
-
-        fun fromValue(v: String): ContractStatus {
-            return CONSTANTS[v] ?: throw EnumException(ContractStatus::class.java.name, v, values().toString())
-        }
-    }
-}
-
-enum class ContractStatusDetails(@JsonValue val value: String) {
-    CONTRACT_PROJECT("contractProject"),
-    CONTRACT_PREPARATION("contractPreparation"),
-    ACTIVE("active"),
-    VERIFIED("verified"),
-    CANCELLED("cancelled"),
-    COMPLETE("complete"),
-    UNSUCCESSFUL("unsuccessful"),
-    ISSUED("issued"),
-    APPROVEMENT("approvement"),
-    EMPTY("empty");
-
-    override fun toString(): String {
-        return this.value
-    }
-
-    companion object {
-        private val CONSTANTS = HashMap<String, ContractStatusDetails>()
-
-        init {
-            ContractStatusDetails.values().forEach { CONSTANTS[it.value] = it }
-        }
-
-        fun fromValue(v: String): ContractStatusDetails {
-            return CONSTANTS[v] ?: throw EnumException(ContractStatusDetails::class.java.name, v, values().toString())
-        }
-    }
-}
-enum class DocumentTypeContract(@JsonValue val value: String) {
-
-    CONTRACT_NOTICE("contractNotice"),
-    COMPLETION_CERTIFICATE("completionCertificate"),
-    CONTRACT_DRAFT("contractDraft"),
-    CONTRACT_ARRANGEMENTS("contractArrangements"),
-    CONTRACT_SCHEDULE("contractSchedule"),
-    ENVIRONMENTAL_IMPACT("environmentalImpact"),
-    CONTRACT_ANNEXE("contractAnnexe"),
-    CONTRACT_GUARANTEES("contractGuarantees"),
-    SUB_CONTRACT("subContract"),
-    ILLUSTRATION("illustration"),
-    CONTRACT_SIGNED("contractSigned"),
-    CONTRACT_SUMMARY("contractSummary");
-
-    override fun toString(): String {
-        return this.value
     }
 }

@@ -8,10 +8,12 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.contract.ContractRecord
+import com.procurement.notice.model.contract.dto.IssuingAcDto
+import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.tender.dto.UpdateCnDto
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
@@ -238,7 +240,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
                   ocid: String,
                   stage: String,
                   releaseDate: LocalDateTime,
-                  data: JsonNode): ResponseDto{
+                  data: JsonNode): ResponseDto {
         val dto = toObject(IssuingAcDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -246,6 +248,11 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
+        }
+        val contract = recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        contract.apply {
+            date = dto.contract.date
+            statusDetails = dto.contract.statusDetails
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -269,20 +276,31 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
         val documentDto = dto.documentsOfContractPersones
         if (documentDto != null) {
             dto.award.suppliers?.asSequence()?.forEach { supplier ->
                 supplier.persones?.asSequence()?.forEach { person ->
                     person.businessFunctions.asSequence().forEach { businessFunction ->
-                        businessFunction.documents.forEach { doc -> doc.update(documentDto.firstOrNull { it.id == doc.id }) }
+                        businessFunction.documents.forEach { docBf ->
+                            documentDto.forEach { docDto ->
+                                if (docBf.id == docDto.id && docBf.documentType == docDto.documentType) {
+                                    docBf.update(docDto)
+                                }
+                            }
+                        }
                     }
                 }
             }
             dto.buyer?.persones?.asSequence()?.forEach { person ->
                 person.businessFunctions.asSequence().forEach { businessFunction ->
-                    businessFunction.documents.forEach { doc -> doc.update(documentDto.firstOrNull { it.id == doc.id }) }
+                    businessFunction.documents.forEach { docBf ->
+                        documentDto.forEach { docDto ->
+                            if (docBf.id == docDto.id && docBf.documentType == docDto.documentType) {
+                                docBf.update(docDto)
+                            }
+                        }
+                    }
                 }
             }
         }

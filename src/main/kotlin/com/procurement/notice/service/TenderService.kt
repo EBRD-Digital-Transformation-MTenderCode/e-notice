@@ -359,9 +359,11 @@ class TenderService(private val releaseService: ReleaseService,
         bids.forEach { bid ->
             bid.documents?.let { bidDocuments ->
                 documents.forEach { document ->
-                    bidDocuments.firstOrNull { it.id == document.id }?.apply {
-                        datePublished = document.datePublished
-                        url = document.url
+                    bidDocuments.forEach { bidDocument ->
+                        if (bidDocument.id == document.id) {
+                            bidDocument.datePublished = document.datePublished
+                            bidDocument.url = document.url
+                        }
                     }
                 }
             }

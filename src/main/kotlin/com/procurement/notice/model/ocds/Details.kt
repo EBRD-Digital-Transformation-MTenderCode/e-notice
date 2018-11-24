@@ -11,15 +11,13 @@ data class Details @JsonCreator constructor(
 
         val typeOfSupplier: String?,
 
-        val mainEconomicActivity: Set<String>?,
+        val mainEconomicActivities: Set<String>?,
 
         val mainGeneralActivity: String?,
 
         val mainSectoralActivity: String?,
 
         val permits: List<Permits>?,
-
-        val gpaProfile: GpaProfile?,
 
         val bankAccounts: List<BankAccount>?,
 
@@ -36,93 +34,55 @@ data class Details @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Permits @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val scheme: String,
+        val scheme: String?,
 
-        val uri: String,
+        val url: String?,
 
-        val permit: Permit
+        val permit: Permit?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Permit @JsonCreator constructor(
 
-        val issuedBy: Issue,
+        val issuedBy: Issue?,
 
-        val issuedThought: Issue,
+        val issuedThought: Issue?,
 
-        val validityPeriod: Period
+        val validityPeriod: Period?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Issue @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val name: String
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class GpaProfile @JsonCreator constructor(
-
-        val gpaAnnex: GpaAnnex,
-
-        val gpaOrganizationType: GpaOrganizationType,
-
-        val gpaThresholds: Set<GpaThreshold>
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class GpaAnnex @JsonCreator constructor(
-
-        val id: String,
-
-        val legalName: String,
-
-        val uri: String
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class GpaOrganizationType @JsonCreator constructor(
-
-        val id: String,
-
-        val legalName: String,
-
-        val uri: String
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class GpaThreshold @JsonCreator constructor(
-
-        val mainProcurementCategory: String,
-
-        val value: Value
+        val name: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BankAccount @JsonCreator constructor(
 
-        val description: String,
+        val description: String?,
 
-        val bankName: String,
+        val bankName: String?,
 
-        val address: Address,
+        val address: Address?,
 
-        val identifier: AccountIdentifier,
+        val identifier: AccountIdentifier?,
 
-        val accountIdentification: AccountIdentifier,
+        val accountIdentification: AccountIdentifier?,
 
-        val additionalAccountIdentifiers: Set<AccountIdentifier>
+        val additionalAccountIdentifiers: Set<AccountIdentifier>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class AccountIdentifier @JsonCreator constructor(
 
-        val id: String,
+        val id: String?,
 
-        val scheme: String
+        val scheme: String?
 )
 
 

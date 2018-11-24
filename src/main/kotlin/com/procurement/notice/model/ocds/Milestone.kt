@@ -8,29 +8,29 @@ import java.util.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Milestone @JsonCreator constructor(
 
-        private val id: String?,
+        var id: String?,
 
-        val title: String?,
+        var title: String?,
+
+        var description: String?,
 
         val type: String?,
 
-        val description: String?,
+        var status: String?,
 
-        val code: String?,
+        var relatedItems: Set<String>?,
 
-        val dueDate: LocalDateTime?,
+        var additionalInformation: String?,
 
-        val dateMet: LocalDateTime?,
+        var dueDate: LocalDateTime?,
 
-        val dateModified: LocalDateTime?,
+        var relatedParties: List<RelatedParty>?
+)
 
-        val status: String?,
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class RelatedParty @JsonCreator constructor(
 
-        val documents: HashSet<Document>?,
+        val id: String?,
 
-        val relatedLots: List<String>?,
-
-        val relatedParties: List<OrganizationReference>?,
-
-        val additionalInformation: String?
+        val name: String?
 )
