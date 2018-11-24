@@ -9,6 +9,7 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.contract.ContractRecord
+import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
 import com.procurement.notice.model.contract.dto.IssuingAcDto
 import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.ocds.Amendment
@@ -250,6 +251,24 @@ class UpdateReleaseService(private val releaseService: ReleaseService,
         contract.apply {
             date = dto.contract.date
             statusDetails = dto.contract.statusDetails
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+    fun finalUpdateAC(cpid: String,
+                  ocid: String,
+                  stage: String,
+                  releaseDate: LocalDateTime,
+                  data: JsonNode): ResponseDto{
+        val dto = toObject(FinalUpdateAcDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            contracts= hashSetOf(dto.contracts)
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
