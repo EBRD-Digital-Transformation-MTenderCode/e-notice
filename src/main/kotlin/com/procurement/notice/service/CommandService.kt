@@ -20,7 +20,8 @@ class CommandService(private val historyDao: HistoryDao,
                      private val tenderService: TenderService,
                      private val tenderServiceEv: TenderServiceEv,
                      private val tenderCancellationService: TenderCancellationService,
-                     private val enquiryService: EnquiryService) {
+                     private val enquiryService: EnquiryService,
+                     private val contractingService: ContractingService) {
 
     fun execute(cm: CommandMessage): ResponseDto {
 
@@ -282,25 +283,57 @@ class CommandService(private val historyDao: HistoryDao,
                 releaseDate = releaseDate,
                 data = data)
 
-            UPDATE_AC -> return updateReleaseService.updateAC(
+            UPDATE_AC -> return contractingService.updateAC(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data)
 
-            ISSUING_AC -> return updateReleaseService.issuingAC(
+            ISSUING_AC -> return contractingService.issuingAC(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data)
-            FINAL_UPDATE -> return updateReleaseService.finalUpdateAC(
+
+            FINAL_UPDATE -> return contractingService.finalUpdateAC(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data)
+
+            BUYER_SIGNING_AC -> return contractingService.buyerSigningAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+            SUPPLIER_SIGNING_AC -> return contractingService.supplierSigningAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+            VERIFICATION_AC -> return contractingService.verificationAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+            TREASURY_APPROVING_AC -> return contractingService.treasuryApprovingAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+            ACTIVATION_AC -> return contractingService.activationAC(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
 
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }

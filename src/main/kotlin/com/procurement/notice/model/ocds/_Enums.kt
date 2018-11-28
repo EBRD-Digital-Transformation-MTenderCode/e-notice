@@ -404,7 +404,12 @@ enum class Operation(val value: String) {
     UPDATE_BID_DOCS("updateBidDocs"),
     UPDATE_AC("updateAC"),
     ISSUING_AC("issuingAC"),
-    FINAL_UPDATE("finalUpdateAC");
+    FINAL_UPDATE("finalUpdateAC"),
+    BUYER_SIGNING_AC("buyerSigningAC"),
+    SUPPLIER_SIGNING_AC("supplierSigningAC"),
+    VERIFICATION_AC("verificationAC"),
+    TREASURY_APPROVING_AC("treasuryApprovingAC"),
+    ACTIVATION_AC("activationAC");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()
