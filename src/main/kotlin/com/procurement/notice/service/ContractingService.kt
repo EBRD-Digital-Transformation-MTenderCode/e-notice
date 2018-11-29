@@ -9,9 +9,7 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.contract.ContractRecord
-import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
-import com.procurement.notice.model.contract.dto.IssuingAcDto
-import com.procurement.notice.model.contract.dto.UpdateAcDto
+import com.procurement.notice.model.contract.dto.*
 import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.utils.toJson
@@ -47,7 +45,7 @@ class ContractingService(private val releaseService: ReleaseService,
         organizationService.processContractRecordPartiesFromBudget(record = recordContract, buyer = dto.buyer, funders = dto.funders, payers = dto.payers)
         dto.addedFS?.forEach { fsOcid ->
             val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
             relatedProcessService.addContractRelatedProcessToFs(fs = fs, cpid = cpid, ocid = ocid)
@@ -56,7 +54,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.excludedFS?.forEach { fsOcid ->
             val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             relatedProcessService.removeFsRelatedProcessFromContract(recordContract, fsOcid)
             relatedProcessService.removeContractRelatedProcessFromFs(fs, ocid)
@@ -65,7 +63,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.addedEI?.forEach { eiOcid ->
             val entity = budgetDao.getEiByCpId(eiOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
             relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
             relatedProcessService.addContractRelatedProcessToEi(ei = ei, cpid = cpid, ocid = ocid)
@@ -74,7 +72,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.excludedEI?.forEach { eiOcid ->
             val entity = budgetDao.getEiByCpId(eiOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
             relatedProcessService.removeEiRelatedProcessFromContract(recordContract, eiOcid)
             relatedProcessService.removeContractRelatedProcessFromEi(ei, ocid)
@@ -116,11 +114,20 @@ class ContractingService(private val releaseService: ReleaseService,
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
 
+        dto.contract.apply {
+            agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
+        }
+
         recordContract.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
             contracts = hashSetOf(dto.contract)
+        }
+        val contract = recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        contract.apply {
+            date = dto.contract.date
+            statusDetails = dto.contract.statusDetails
         }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -165,23 +172,99 @@ class ContractingService(private val releaseService: ReleaseService,
     }
 
     fun buyerSigningAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        TODO()
+        val dto = toObject(SigningDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+
+        dto.contract.apply {
+            agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
+        }
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            date = releaseDate
+            contracts = hashSetOf(dto.contract)
+        }
+
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+
     }
 
     fun supplierSigningAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        TODO()
+        val dto = toObject(SigningDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        dto.contract.apply {
+            agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
+        }
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            date = releaseDate
+            contracts = hashSetOf(dto.contract)
+        }
+
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     fun verificationAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        TODO()
+        val dto = toObject(VerificationDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            date = releaseDate
+            contracts?.firstOrNull()?.apply {
+                statusDetails = dto.contract.statusDetails
+            }
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+
     }
 
     fun treasuryApprovingAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        TODO()
+        val dto = toObject(SigningDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        dto.contract.apply {
+            agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
+        }
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            date = releaseDate
+            contracts = hashSetOf(dto.contract)
+        }
+
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     fun activationAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        TODO()
+        val dto = toObject(ActivationDto::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.CONTRACT_UPDATE)
+            date = releaseDate
+            contracts?.firstOrNull()?.apply {
+                status=dto.contract.status
+                statusDetails=dto.contract.statusDetails
+                milestones=dto.contract.milestones
+            }
+
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
 }

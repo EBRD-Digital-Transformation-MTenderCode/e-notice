@@ -24,7 +24,13 @@ data class Milestone @JsonCreator constructor(
 
         var dueDate: LocalDateTime?,
 
-        var relatedParties: List<RelatedParty>?
+        var relatedParties: List<RelatedParty>?,
+
+        var dateModified: LocalDateTime?,
+
+        var dateMet: LocalDateTime?
+
+
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

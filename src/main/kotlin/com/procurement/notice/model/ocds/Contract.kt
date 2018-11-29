@@ -57,7 +57,7 @@ data class Contract @JsonCreator constructor(
 
         var agreedMetrics: LinkedList<AgreedMetric>? = null,
 
-        val milestones: List<Milestone>?,
+        var milestones: List<Milestone>?,
 
         var confirmationRequests: List<ConfirmationRequest>?
 
