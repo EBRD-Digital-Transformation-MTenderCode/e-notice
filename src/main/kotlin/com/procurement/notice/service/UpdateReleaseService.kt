@@ -23,10 +23,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Service
-class UpdateReleaseService(private val releaseService: ReleaseService,
-                           private val organizationService: OrganizationService,
-                           private val relatedProcessService: RelatedProcessService,
-                           private val budgetDao: BudgetDao) {
+class UpdateReleaseService(private val releaseService: ReleaseService) {
 
     fun updateCn(cpid: String,
                  ocid: String,

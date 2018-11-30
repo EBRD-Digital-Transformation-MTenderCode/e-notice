@@ -20,7 +20,8 @@ class CommandService(private val historyDao: HistoryDao,
                      private val tenderService: TenderService,
                      private val tenderServiceEv: TenderServiceEv,
                      private val tenderCancellationService: TenderCancellationService,
-                     private val enquiryService: EnquiryService) {
+                     private val enquiryService: EnquiryService,
+                     private val contractingService: ContractingService) {
 
     fun execute(cm: CommandMessage): ResponseDto {
 
