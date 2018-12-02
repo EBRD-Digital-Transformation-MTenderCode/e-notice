@@ -2,7 +2,6 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.util.*
 
@@ -57,7 +56,7 @@ data class Contract @JsonCreator constructor(
 
         var agreedMetrics: LinkedList<AgreedMetric>? = null,
 
-        val milestones: List<Milestone>?,
+        var milestones: List<Milestone>?,
 
         var confirmationRequests: List<ConfirmationRequest>?
 

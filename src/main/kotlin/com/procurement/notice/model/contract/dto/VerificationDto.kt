@@ -2,16 +2,12 @@ package com.procurement.notice.model.contract.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import java.time.LocalDateTime
 
-data class IssuingAcDto @JsonCreator constructor(
-
-        val contract: ContractIssuingAc
+data class VerificationDto @JsonCreator constructor(
+        val contract: ContractVerification
 )
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ContractIssuingAc @JsonCreator constructor(
-        var date: LocalDateTime,
+data class ContractVerification @JsonCreator constructor(
         var statusDetails: String
 )

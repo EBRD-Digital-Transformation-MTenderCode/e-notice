@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Contract
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FinalUpdateAcDto @JsonCreator constructor(
-
+data class SigningDto @JsonCreator constructor(
         val contract: Contract
 )

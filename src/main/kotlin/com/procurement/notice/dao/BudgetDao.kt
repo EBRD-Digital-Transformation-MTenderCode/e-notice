@@ -5,7 +5,6 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder.*
 import com.procurement.notice.model.entity.BudgetEntity
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 
 @Service
 class BudgetDao(private val session: Session) {

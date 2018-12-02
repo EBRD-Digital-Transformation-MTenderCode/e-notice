@@ -5,13 +5,13 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.tender.record.Record
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
