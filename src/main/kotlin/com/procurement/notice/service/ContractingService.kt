@@ -2,6 +2,7 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.BudgetDao
+import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -12,6 +13,7 @@ import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.dto.*
 import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -21,7 +23,8 @@ import java.time.LocalDateTime
 class ContractingService(private val releaseService: ReleaseService,
                          private val organizationService: OrganizationService,
                          private val relatedProcessService: RelatedProcessService,
-                         private val budgetDao: BudgetDao) {
+                         private val budgetDao: BudgetDao,
+                         private val releaseDao: ReleaseDao) {
 
     fun updateAC(cpid: String,
                  ocid: String,
@@ -252,14 +255,45 @@ class ContractingService(private val releaseService: ReleaseService,
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
 
+
         recordContract.apply {
             id = releaseService.newReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
             contracts?.firstOrNull()?.apply {
-                status=dto.contract.status
-                statusDetails=dto.contract.statusDetails
-                milestones=dto.contract.milestones
+                status = dto.contract.status
+                statusDetails = dto.contract.statusDetails
+                milestones = dto.contract.milestones
+                tender?.apply {
+                    lots?.asSequence()?.filter {
+                        it.id == dto.lot.id
+                    }?.firstOrNull().apply {
+                        status = dto.lot.status
+                        statusDetails = dto.lot.statusDetails
+                    }
+                }
+            }
+
+        }
+        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    fun updateCanDocs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val dto = toObject(UpdateCanDocumentsDto::class.java, data)
+        val recordEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = stage)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity!!.jsonData)
+
+        val documentsdto = dto.contract.documents.toHashSet()
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            tag = listOf(Tag.AWARD_UPDATE)
+            date = releaseDate
+            contracts?.filter {
+                it.id == dto.contract.id
+            }?.firstOrNull()?.apply {
+                documents = documentsdto
             }
 
         }

@@ -305,35 +305,42 @@ class CommandService(private val historyDao: HistoryDao,
                 data = data)
 
             BUYER_SIGNING_AC -> return contractingService.buyerSigningAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data)
             SUPPLIER_SIGNING_AC -> return contractingService.supplierSigningAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data)
             VERIFICATION_AC -> return contractingService.verificationAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data)
             TREASURY_APPROVING_AC -> return contractingService.treasuryApprovingAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data)
             ACTIVATION_AC -> return contractingService.activationAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data)
+            UPDATE_CAN_DOCS -> return contractingService.updateCanDocs(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }

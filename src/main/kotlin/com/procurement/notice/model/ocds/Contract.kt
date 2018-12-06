@@ -37,7 +37,7 @@ data class Contract @JsonCreator constructor(
 
         val dateSigned: LocalDateTime?,
 
-        val documents: HashSet<Document>?,
+        var documents: HashSet<Document>?,
 
         var relatedProcesses: HashSet<RelatedProcess>?,
 
