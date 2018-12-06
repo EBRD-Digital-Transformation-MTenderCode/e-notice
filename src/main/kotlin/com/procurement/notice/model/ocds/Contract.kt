@@ -54,11 +54,13 @@ data class Contract @JsonCreator constructor(
 
         val isFrameworkOrDynamic: Boolean? = null,
 
-        var agreedMetrics: LinkedList<AgreedMetric>? = null,
+        var agreedMetrics: LinkedList<AgreedMetric>?,
 
         var milestones: List<Milestone>?,
 
-        var confirmationRequests: List<ConfirmationRequest>?
+        var confirmationRequests: List<ConfirmationRequest>?,
+
+        var confirmationResponses: HashSet<ConfirmationResponse>?
 
 )
 
