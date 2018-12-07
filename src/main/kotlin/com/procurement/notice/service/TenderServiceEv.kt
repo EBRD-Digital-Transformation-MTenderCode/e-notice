@@ -121,7 +121,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             tender.statusDetails = TenderStatusDetails.AWARDED_CONTRACT_PREPARATION
-            tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
