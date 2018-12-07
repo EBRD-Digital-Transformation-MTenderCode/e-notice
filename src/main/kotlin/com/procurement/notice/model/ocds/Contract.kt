@@ -22,7 +22,7 @@ data class Contract @JsonCreator constructor(
 
         var statusDetails: String,
 
-        val extendsContractID: String?,
+        val extendsContractId: String?,
 
         val budgetSource: List<BudgetSource>?,
 
