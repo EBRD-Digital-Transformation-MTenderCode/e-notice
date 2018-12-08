@@ -8,8 +8,6 @@ import com.procurement.notice.model.ocds.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class AwardPeriodEndEvDto @JsonCreator constructor(
 
-        val awardPeriod: Period,
-
         val lots: HashSet<Lot>,
 
         val bids: HashSet<Bid>,

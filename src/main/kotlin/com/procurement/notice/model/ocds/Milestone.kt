@@ -3,7 +3,6 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
-import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Milestone @JsonCreator constructor(
@@ -24,7 +23,11 @@ data class Milestone @JsonCreator constructor(
 
         var dueDate: LocalDateTime?,
 
-        var relatedParties: List<RelatedParty>?
+        var relatedParties: List<RelatedParty>?,
+
+        var dateModified: LocalDateTime?,
+
+        var dateMet: LocalDateTime?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

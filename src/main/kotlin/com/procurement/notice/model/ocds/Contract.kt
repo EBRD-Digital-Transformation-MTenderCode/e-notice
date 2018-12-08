@@ -2,7 +2,6 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.util.*
 
@@ -23,7 +22,7 @@ data class Contract @JsonCreator constructor(
 
         var statusDetails: String,
 
-        val extendsContractID: String?,
+        val extendsContractId: String?,
 
         val budgetSource: List<BudgetSource>?,
 
@@ -55,11 +54,13 @@ data class Contract @JsonCreator constructor(
 
         val isFrameworkOrDynamic: Boolean? = null,
 
-        var agreedMetrics: LinkedList<AgreedMetric>? = null,
+        var agreedMetrics: LinkedList<AgreedMetric>?,
 
-        val milestones: List<Milestone>?,
+        var milestones: List<Milestone>?,
 
-        var confirmationRequests: List<ConfirmationRequest>?
+        var confirmationRequests: List<ConfirmationRequest>?,
+
+        var confirmationResponses: HashSet<ConfirmationResponse>?
 
 )
 

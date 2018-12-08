@@ -5,12 +5,15 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
-import com.procurement.notice.model.contract.dto.AwardPeriodEndEvDto
-import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.ContractTender
 import com.procurement.notice.model.contract.ContractTenderLot
+import com.procurement.notice.model.contract.dto.AwardPeriodEndEvDto
+import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.tender.dto.AwardByBidEvDto
+import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
+import com.procurement.notice.model.tender.dto.TenderStatusDto
+import com.procurement.notice.model.tender.dto.UpdateBidDocsDto
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
@@ -118,7 +121,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             tender.statusDetails = TenderStatusDetails.AWARDED_CONTRACT_PREPARATION
-            tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
@@ -249,7 +251,8 @@ class TenderServiceEv(private val releaseService: ReleaseService,
 
     private fun updateBidDocuments(record: Record, bid: Bid) {
         record.bids?.details?.let { bids ->
-            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+            val upBid = bids.asSequence().firstOrNull { it.id == bid.id }
+                    ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
             upBid.documents = bid.documents
         }
     }
