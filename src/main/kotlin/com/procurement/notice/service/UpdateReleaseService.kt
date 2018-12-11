@@ -40,12 +40,13 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
+        val isAuctionPeriodChanged = dto.isAuctionPeriodChanged ?: false
         recordTender.apply {
             title = record.tender.title
             description = record.tender.description
             enquiries = record.tender.enquiries
             hasEnquiries = record.tender.hasEnquiries
-            if (!isAuction) {
+            if (isAuction && !isAuctionPeriodChanged) {
                 auctionPeriod = record.tender.auctionPeriod
                 procurementMethodModalities = record.tender.procurementMethodModalities
                 electronicAuctions = record.tender.electronicAuctions
