@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator
 
 data class UpdateCnDto @JsonCreator constructor(
 
-        val amendment: AmendmentUpdateCn?
+        val amendment: AmendmentUpdateCn?,
+
+        val isAuctionPeriodChanged: Boolean = false
 )
 
 data class AmendmentUpdateCn @JsonCreator constructor(

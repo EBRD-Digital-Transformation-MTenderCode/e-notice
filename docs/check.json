@@ -1,0 +1,5630 @@
+{
+  "id": "7c78b490-fb9e-11e8-9a06-2d8d224a215a",
+  "command": "createRelease",
+  "context": {
+    "operationId": "009c256f-21d0-45a7-8a5c-88a1adf18104",
+    "requestId": "7c78b490-fb9e-11e8-9a06-2d8d224a215a",
+    "cpid": "ocds-b3wdp1-MD-1544344944283",
+    "ocid": "ocds-b3wdp1-MD-1544344944283-PN-1544344944345",
+    "stage": "EV",
+    "prevStage": "PN",
+    "processType": "updateCN",
+    "operationType": "createCNonPN",
+    "phase": "clarification",
+    "owner": "434aef14-9d52-4ea0-a9f7-8737a95686c9",
+    "country": "MD",
+    "language": "ro",
+    "pmd": "SV",
+    "startDate": "2018-12-09T10:37:54Z",
+    "timeStamp": 1544351874649,
+    "isAuction": true
+  },
+  "data": {
+    "tender": {
+      "id": "ocds-b3wdp1-MD-1544344944283",
+      "title": "produse alimentare 2019",
+      "description": "produse alimentare 2019",
+      "status": "active",
+      "statusDetails": "clarification",
+      "classification": {
+        "scheme": "CPV",
+        "id": "15800000-6",
+        "description": "Diverse produse alimentare"
+      },
+      "mainProcurementCategory": "goods",
+      "procurementMethod": "open",
+      "procurementMethodDetails": "Procedură de valoare mică",
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "framework": {
+        "isAFramework": false
+      },
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procuringEntity": {
+        "id": "MD-IDNO-1007601002773",
+        "name": "Primaria Dobrogea Veche",
+        "identifier": {
+          "id": "1007601002773",
+          "scheme": "MD-IDNO",
+          "legalName": "Primaria Dobrogea Veche"
+        },
+        "address": {
+          "streetAddress": "Dobrogea Veche",
+          "postalCode": "MD-6222",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "7400000",
+              "description": "Sîngerei",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "UN/LOCODE",
+              "id": "7421000",
+              "description": "с.Доброджя Веке"
+            }
+          }
+        },
+        "contactPoint": {
+          "name": "Victor Rahmanov",
+          "email": "primariadv@mail.ru",
+          "telephone": "026259360"
+        }
+      },
+      "awardCriteria": "priceOnly",
+      "requiresElectronicCatalogue": false,
+      "contractPeriod": {
+        "startDate": "2019-01-01T08:45:01Z",
+        "endDate": "2019-12-30T10:34:30Z"
+      },
+      "tenderPeriod": {
+        "startDate": "2018-12-16T06:00:00Z",
+        "endDate": "2018-12-23T08:00:00Z"
+      },
+      "enquiryPeriod": {
+        "startDate": "2018-12-09T10:37:54Z",
+        "endDate": "2018-12-16T06:00:00Z"
+      },
+      "value": {
+        "amount": 299200.00,
+        "currency": "MDL"
+      },
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "lots": [
+        {
+          "id": "7cd357eb-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "FĂINĂ DE GRÎU.",
+          "description": "Calitate superioara SM 220:2000",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2100.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T08:47:11Z",
+            "endDate": "2019-12-30T08:47:11Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec0-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Dovlecei proaspete",
+          "description": "Calitate superioară la iulie-octombrie , livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-07-01T09:37:34Z",
+            "endDate": "2019-10-31T10:37:34Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec1-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Rosii proaspete",
+          "description": "Calitate superioară la iulie – octombrie livrare la comanda 1ori in  saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-07-01T09:36:38Z",
+            "endDate": "2019-10-31T10:36:38Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec2-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CHEFIR",
+          "description": "2,5% în pachet de polietilenă 0,5 l PT MD67-04928383-018, livrare la comanda 1 ori pe saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:12:07Z",
+            "endDate": "2019-12-30T09:12:07Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec3-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "BISCUIŢI ÎN ASORTIMENT FĂRĂ CREMĂ ȘI GRĂSIMI HIDROGENIZATE",
+          "description": "SM DSTU 3781:2005 \nCorobca 5 kg, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2100.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:50:55Z",
+            "endDate": "2019-12-30T09:50:55Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec4-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CRUPE DE ORZ",
+          "description": "în ambalaj pînă la 1kg GOST\n5784-60, livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:31:26Z",
+            "endDate": "2019-12-30T10:31:26Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec5-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "MAGIUN",
+          "description": "sterilizat caltate superioară în borcane de sticlă pina la 1 kg GOST 6929-88, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 900.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:28:02Z",
+            "endDate": "2019-12-30T10:28:02Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec6-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CARNE DE VITĂ .REFRIGERATĂ",
+          "description": "refregerata fără os, GOST 779-55\npungă de5 kg. livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 18000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:25:39Z",
+            "endDate": "2019-12-30T09:25:39Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec7-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "ROȘII  in suc Propriu  720 gr",
+          "description": "Ambalate a cîte 0.720 gr. Fara otet.Banca sticla ,livrare 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:51:59Z",
+            "endDate": "2019-12-30T09:51:59Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec8-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "DROJDIE 50 gr",
+          "description": "Ambalate a cite 0.50 gr. Autohtone. livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:33:20Z",
+            "endDate": "2019-12-30T10:33:20Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ec9-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "piersici",
+          "description": "SM SR 2714:2006 Mărimi medii fără vătămături\nSac 3 kg, 2 ori pe luna, livrare la comanda iulie-noiembrie\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-07-01T09:09:54Z",
+            "endDate": "2019-11-30T10:09:54Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eca-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PĂINE DE FĂINĂ DE GRÎU FORTIFICATĂ CU FIER ŞI ACID FOLIC.",
+          "description": "SM173:1997,c/s. Ambalata, etichetata 0.370gr,livrare 3 ori -saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 14200.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T08:45:01Z",
+            "endDate": "2019-12-30T08:45:01Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ecb-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CRUPE DE PORUMB",
+          "description": "GOST 7022-97\nAMBALAT PÂNĂ LA 1 KG, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:02:40Z",
+            "endDate": "2019-12-30T10:02:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ecc-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "SARE IODATĂ.",
+          "description": "în pachete de polietilen de 1 kg GOST 13830-97, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 120.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:25:17Z",
+            "endDate": "2019-12-30T10:25:17Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ecd-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CARNE DE PASĂRE PIEPT DE GĂINĂ  REFRIGERATĂ",
+          "description": "GOST 25391-82 Fara adausuri si marinate.\nAMBALAT PÂNĂ LA 2KG. livrare la comanda 1 ori pe saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 28000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:23:11Z",
+            "endDate": "2019-12-30T09:23:11Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ece-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "BRÎNZĂ DE VACI",
+          "description": "9%, pungă de 0/5 kg PTMD 67-00400053- 058:2006, livrare la comanda 1 ori pe saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 25600.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:14:24Z",
+            "endDate": "2019-12-30T09:14:24Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ecf-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "BANANE",
+          "description": "SM SR iso 931:2012 corobca carton 20kg Mărimi medii fără vătămături, livrare la comanda 1 in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:06:57Z",
+            "endDate": "2019-12-30T10:06:57Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed0-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CRUPE DE OVĂS",
+          "description": "GOST-21149-93\nAMBALAT PÂNĂ LA 1 KG, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:55:24Z",
+            "endDate": "2019-12-30T09:55:24Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed1-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PORUMB DULCE CONSERVAT 500 gr",
+          "description": "Calitate superioară, Autohtone, ambalat de 500 gr, livrare1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:14:33Z",
+            "endDate": "2019-12-30T10:14:33Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed2-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "SMÎNTÎNĂ",
+          "description": "15%, grasimi în pachet de polietilenă 0,5L TU 10.02.789.09.89, livrare la comanda 1 ori pe saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1600.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:15:46Z",
+            "endDate": "2019-12-30T09:15:46Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed3-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "UNT DE VACI",
+          "description": "din smîntînă dulce nesărat 72,5% grăsîme, fără adaus de grăsimi vegetal,în ambalaj de 200 gr. GOST37-91,1 in saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 31200.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T08:49:19Z",
+            "endDate": "2019-12-30T08:49:19Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed4-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Varza colorata",
+          "description": "SM SR 1418:2006 Mărimi medii fără vătămături Sac 10kg, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:44:17Z",
+            "endDate": "2019-12-30T09:44:17Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed5-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CEAPĂ",
+          "description": "SM 243:2004 Sac 5kgMărimi medii fără vătămături, livrare la comanda 1 ori in saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:41:31Z",
+            "endDate": "2019-12-30T09:41:31Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed6-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CRUPE DE GRÂU ",
+          "description": "în ambalaj pînă la 1kg arnautca, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 580.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:27:10Z",
+            "endDate": "2019-12-30T10:27:10Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed7-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CEAI negru in pachete ",
+          "description": "calitate superioară, pliculeţe GOST 1937-90\npacete 2 gr, livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:49:48Z",
+            "endDate": "2019-12-30T09:49:48Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed8-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "MAZĂRE USCATĂ.",
+          "description": "Jumătăţi în ambalaj pînă la 1kg PT MD 67-38869887-003:2005, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:16:32Z",
+            "endDate": "2019-12-30T10:16:32Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ed9-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CAȘCAVAL DIVERS FĂRĂ PIPER",
+          "description": "50%, SM 218:2001 upacovca 3 kg, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 5700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:04:52Z",
+            "endDate": "2019-12-30T10:04:52Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eda-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "BIFIDOC",
+          "description": "2,5% în pachet de polietilenă 0,5 l PT MD67-04928383-018, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2200.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:26:09Z",
+            "endDate": "2019-12-30T10:26:09Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37edb-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "VARZĂ ALBĂ.",
+          "description": "SM SR 1418:2006 Mărimi medii fără vătămături Sac 10kg, livrare la comanda 1 ori in saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 4400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:43:22Z",
+            "endDate": "2019-12-30T09:43:22Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37edc-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Prune",
+          "description": "SM SR 2714:2006 Mărimi medii fără vătămături\nSac 3 kg, livrare la comanda 2 ori pe luna, iulie-noiembrie\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-07-01T09:08:56Z",
+            "endDate": "2019-11-30T10:08:56Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37edd-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CRUPE DE GRIŞ",
+          "description": "GOST 7022-97\nAMBALAT PÂNĂ LA 1 29KG, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:59:09Z",
+            "endDate": "2019-12-30T09:59:09Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ede-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "FRUNZĂ DE DAFIN.20 gr",
+          "description": "ambalat în pachete de polietilena 20 gr GOST17594-81, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 200.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:45:12Z",
+            "endDate": "2019-12-30T09:45:12Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37edf-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "HRIŞCĂ. ",
+          "description": "GO30ST 5550-74\nPÂNĂ21 LA 1 KG s-s, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:00:09Z",
+            "endDate": "2019-12-30T10:00:09Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee0-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Castravet proaspete",
+          "description": "Calitate superioară\nIunie-octombrie, livrare la comanda 1 ori in  saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-06-01T09:35:32Z",
+            "endDate": "2019-10-31T10:35:32Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee1-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "LAMII",
+          "description": "Calitate superioară Import, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:32:28Z",
+            "endDate": "2019-12-30T10:32:28Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee2-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "MAZĂRE VERDE CONSERVATĂ 720 gr,",
+          "description": "SM 53:1993,ambalat in sticle de 0/720 L, livrare1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:13:03Z",
+            "endDate": "2019-12-30T10:13:03Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee3-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PRODUSE DE PATISERIE FĂRĂ CREMĂ CHIFLE ÎN ASORTIMENT CU SUSAN 80 gr.",
+          "description": "din făina de calitate superioară, cu adaos de susan,0,80 gr, livrare la comanda 1 ori in saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 5600.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:12:07Z",
+            "endDate": "2019-12-30T10:12:07Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee4-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "ULEI VEGETAL NERAFINAT ŞI RAFINAT DE (FLOAREA SOARELUI",
+          "description": "rafinat dezodorizat în  5 L PTMD 67-05691233-001:2002sauGOST 1129-33, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:24:14Z",
+            "endDate": "2019-12-30T10:24:14Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee5-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PEŞTE CONGELAT “HEC",
+          "description": "In stare eviscerenta fără cap  GOST20057-96fara cap lungime 15 sm\npungă de 10 kg cuti de cfrton, livrare la comanda 1 ori in saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 25000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:28:50Z",
+            "endDate": "2019-12-30T09:28:50Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee6-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Mandarine",
+          "description": "SM SR iso 931:2012\nAmbalat in carton 10 kg Mărimi medii fără vătămături\nDecembrie, ianuarie-iulie, livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:34:30Z",
+            "endDate": "2019-12-30T10:34:30Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee7-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "MORCOV",
+          "description": "SM SR 3278:2006 Mărimi medii fără vătămături\nSac 5kg, livrare la comanda 1 ori in saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:42:25Z",
+            "endDate": "2019-12-30T09:42:25Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee8-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "SCRUMBIE - FILE SĂRATĂ",
+          "description": "HG nr. 520 din 22.06.2010. 15g sar/100g. pr. pungă de 3kg, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:30:06Z",
+            "endDate": "2019-12-30T09:30:06Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ee9-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Gambe de gaine prod.RM",
+          "description": "refregerata , ambalaj pungă de 5 kg, livrare la comanda 2 ori pe luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 12000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:27:21Z",
+            "endDate": "2019-12-30T09:27:21Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eea-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PASTE DE TOMATE",
+          "description": "25%, calitatea I în borcane cu greutatea de pînă la 1 kg SM 247:2004 ambalaj pînă la 1kg, livrare la comanda 1 ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:23:10Z",
+            "endDate": "2019-12-30T10:23:10Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eeb-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "MERE .",
+          "description": "SM SR 2714:2006 Mărimi medii fără vătămături\nSac 3 kg, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:05:49Z",
+            "endDate": "2019-12-30T10:05:49Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eec-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "STAFIDE",
+          "description": "calitate superioară GOST 22-94\nambalat inpacet AMBALATE PÎNĂ LA 100 GR, livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 300.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:11:14Z",
+            "endDate": "2019-12-30T10:11:14Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eed-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "LAPTE PASTERIUZAT",
+          "description": "2,5% în pachete de polietilenă 1,0 L GOST 13277-79, livrare la comanda 2 ori pe saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 36000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:06:25Z",
+            "endDate": "2019-12-30T09:06:25Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eee-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "GOST 7022-97 AMBALAT PÂNĂ LA 1 KG, livrare la comanda 2 ori pe luna",
+          "description": "de masă, dietice categoria B cu greutatea nu mai mică de 63 gr. SM – 89:1997 livrare la comanda 1 in saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10000.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:03:47Z",
+            "endDate": "2019-12-30T10:03:47Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37eef-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CACAO 80 gr",
+          "description": "GOST-4391:2005 ambalat 80 gr. Calitate superioară, livrare 1ori in luna",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:30:29Z",
+            "endDate": "2019-12-30T10:30:29Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef0-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "OREZ ROTUND s-s",
+          "description": "GOST 6292-9\nAMBALAT PÂNĂ LA 1 KG, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1100.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:01:11Z",
+            "endDate": "2019-12-30T10:01:11Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef1-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "COVRIGI.",
+          "description": "Calitate cuperioară autohtone\nSac 5kg, livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 800.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:04:46Z",
+            "endDate": "2019-12-30T09:04:46Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef2-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Ardei dulci",
+          "description": "SM 163:1997\nSac 5kg , livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-06-01T08:48:59Z",
+            "endDate": "2019-10-31T09:48:59Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef3-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "PASTE FĂINOASE CALITATEA ISUPERIOARĂ ",
+          "description": "calitate superioara  GOST 875-92\nAMBALAT PÂNĂ LA 5 KG livrare la comanda 2 ori pe luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1800.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:54:32Z",
+            "endDate": "2019-12-30T09:54:32Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef4-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "SUCURI 3 L",
+          "description": "Sucuri naturale autohtone si de import, nectare de producere industriala (limpezite si cu pulpa), mai putin de 45% zahar in1000ml. \nambalat in sticle de 3 L, livrare 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 2700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:15:39Z",
+            "endDate": "2019-12-30T10:15:39Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef5-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "Poama",
+          "description": "SM SR 2714:2006 Mărimi medii fără vătămături\nSac 3 kg, livrare la comanda 2 ori pe luna\naugust-noiembrie\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 400.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-08-01T09:07:57Z",
+            "endDate": "2019-11-30T10:07:57Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef6-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "SECLĂ ROŞIE",
+          "description": "SM 163:1997\nSac 5kg, livrare la comanda 1 ori in  saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 1500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:47:40Z",
+            "endDate": "2019-12-30T09:47:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef7-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "CARTOFI",
+          "description": "GOST 26545-85\nSac 30kgMărimi medii fără vătămături, livrare la comanda 1ori  in saptamina\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 12700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:40:31Z",
+            "endDate": "2019-12-30T09:40:31Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef8-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "ZAHĂR",
+          "description": "din sfeclă de calitate standart în  pacet 1 cg GOST 21-94, livrare la comanda 1 ori in saptamina",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 7700.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T09:53:25Z",
+            "endDate": "2019-12-30T09:53:25Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        {
+          "id": "7cd37ef9-fb9e-11e8-bc94-25b0c2da1c29",
+          "title": "BORŞ ACRU ",
+          "description": "Calitate superioară, Autohtone\nIn butelie 2 kg, livrare la comanda 1 ori in luna\n",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 500.00,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2019-01-01T10:28:58Z",
+            "endDate": "2019-12-30T10:28:58Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dobrogea Veche",
+              "postalCode": "MD-6222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "7400000",
+                  "description": "Sîngerei",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "UN/LOCODE",
+                  "id": "7421000",
+                  "description": "с.Доброджя Веке"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "7cd357b0-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CEAI negru in pachete ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 7.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed7-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b1-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "LAMII",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee1-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b2-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "BRÎNZĂ DE VACI",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 500.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ece-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b3-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "ULEI VEGETAL NERAFINAT ŞI RAFINAT DE (FLOAREA SOARELUI",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 120.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee4-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b4-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Prune",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37edc-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b5-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CACAO 80 gr",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "794",
+            "name": "Bucata"
+          },
+          "relatedLot": "7cd37eef-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b6-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "SUCURI 3 L",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 70.00,
+          "unit": {
+            "id": "604",
+            "name": "Borcan"
+          },
+          "relatedLot": "7cd37ef4-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b7-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Dovlecei proaspete",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec0-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b8-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "MERE .",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 290.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eeb-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357b9-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Castravet proaspete",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 150.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee0-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357ba-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Varza colorata",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 100.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed4-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357bb-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PASTE FĂINOASE CALITATEA ISUPERIOARĂ ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 120.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef3-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357bc-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Poama",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 30.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef5-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357bd-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CRUPE DE OVĂS",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed0-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357be-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "LAPTE PASTERIUZAT",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 4000.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eed-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357bf-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CARTOFI",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 2500.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef7-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c0-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "BISCUIŢI ÎN ASORTIMENT FĂRĂ CREMĂ ȘI GRĂSIMI HIDROGENIZATE",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 100.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec3-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c1-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "SARE IODATĂ.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 25.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ecc-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c2-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "BORŞ ACRU ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 70.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef9-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c3-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "MAZĂRE USCATĂ.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed8-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c4-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PĂINE DE FĂINĂ DE GRÎU FORTIFICATĂ CU FIER ŞI ACID FOLIC.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 1400.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eca-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c5-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "SECLĂ ROŞIE",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 250.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef6-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c6-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "MAZĂRE VERDE CONSERVATĂ 720 gr,",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "604",
+            "name": "Borcan"
+          },
+          "relatedLot": "7cd37ee2-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c7-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CRUPE DE PORUMB",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ecb-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c8-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Gambe de gaine prod.RM",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 300.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee9-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357c9-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CRUPE DE GRIŞ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37edd-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357ca-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "ZAHĂR",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 550.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef8-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357cb-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "COVRIGI.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef1-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357cc-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CHEFIR",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 800.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec2-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357cd-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "HRIŞCĂ. ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 80.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37edf-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357ce-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "FĂINĂ DE GRÎU.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 320.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd357eb-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357cf-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "OREZ ROTUND s-s",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 80.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef0-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d0-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Mandarine",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 90.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee6-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d1-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CARNE DE PASĂRE PIEPT DE GĂINĂ  REFRIGERATĂ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 400.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ecd-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d2-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "SCRUMBIE - FILE SĂRATĂ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 30.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee8-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d3-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "BANANE",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 100.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ecf-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d4-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CRUPE DE ORZ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 50.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec4-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d5-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PORUMB DULCE CONSERVAT 500 gr",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 60.00,
+          "unit": {
+            "id": "604",
+            "name": "Borcan"
+          },
+          "relatedLot": "7cd37ed1-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d6-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PASTE DE TOMATE",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 60.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eea-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d7-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CARNE DE VITĂ .REFRIGERATĂ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 200.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec6-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d8-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "SMÎNTÎNĂ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 70.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed2-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357d9-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CAȘCAVAL DIVERS FĂRĂ PIPER",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 60.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed9-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357da-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "piersici",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec9-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357db-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CEAPĂ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 300.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed5-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357dc-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "UNT DE VACI",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 250.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed3-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357dd-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "GOST 7022-97 AMBALAT PÂNĂ LA 1 KG, livrare la comanda 2 ori pe luna",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 6000.00,
+          "unit": {
+            "id": "794",
+            "name": "Bucata"
+          },
+          "relatedLot": "7cd37eee-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357de-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "CRUPE DE GRÂU ",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 70.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ed6-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357df-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "BIFIDOC",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 150.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eda-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e0-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PRODUSE DE PATISERIE FĂRĂ CREMĂ CHIFLE ÎN ASORTIMENT CU SUSAN 80 gr.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 2500.00,
+          "unit": {
+            "id": "794",
+            "name": "Bucata"
+          },
+          "relatedLot": "7cd37ee3-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e1-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "DROJDIE 50 gr",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 120.00,
+          "unit": {
+            "id": "794",
+            "name": "Bucata"
+          },
+          "relatedLot": "7cd37ec8-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e2-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "VARZĂ ALBĂ.",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 800.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37edb-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e3-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "STAFIDE",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 4.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37eec-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e4-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "FRUNZĂ DE DAFIN.20 gr",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 20.00,
+          "unit": {
+            "id": "768",
+            "name": "Ambalaj"
+          },
+          "relatedLot": "7cd37ede-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e5-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "MAGIUN",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 40.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec5-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e6-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "MORCOV",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 300.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee7-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e7-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "ROȘII  in suc Propriu  720 gr",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 200.00,
+          "unit": {
+            "id": "604",
+            "name": "Borcan"
+          },
+          "relatedLot": "7cd37ec7-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e8-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "PEŞTE CONGELAT “HEC",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 500.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ee5-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357e9-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Rosii proaspete",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 150.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ec1-fb9e-11e8-bc94-25b0c2da1c29"
+        },
+        {
+          "id": "7cd357ea-fb9e-11e8-bc94-25b0c2da1c29",
+          "description": "Ardei dulci",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15800000-6",
+            "description": "Diverse produse alimentare"
+          },
+          "quantity": 100.00,
+          "unit": {
+            "id": "166",
+            "name": "Kilogram"
+          },
+          "relatedLot": "7cd37ef2-fb9e-11e8-bc94-25b0c2da1c29"
+        }
+      ],
+      "documents": [
+        {
+          "id": "2ed87d7f-bbd6-4c9e-b14e-df92b7112578-1544344982387",
+          "documentType": "biddingDocuments",
+          "title": "duae_bunuri.pdf",
+          "description": "",
+          "url": "http://storage.mtender.gov.md/get/2ed87d7f-bbd6-4c9e-b14e-df92b7112578-1544344982387",
+          "datePublished": "2018-12-09T10:37:54Z",
+          "dateModified": null,
+          "format": null,
+          "language": null,
+          "relatedLots": null
+        },
+        {
+          "id": "36cdd3b8-bbb7-44e4-871a-2021eb0d1641-1544345000387",
+          "documentType": "biddingDocuments",
+          "title": "documentatia_standard_bunuri .pdf",
+          "description": "",
+          "url": "http://storage.mtender.gov.md/get/36cdd3b8-bbb7-44e4-871a-2021eb0d1641-1544345000387",
+          "datePublished": "2018-12-09T10:37:54Z",
+          "dateModified": null,
+          "format": null,
+          "language": null,
+          "relatedLots": null
+        }
+      ],
+      "procurementMethodModalities": [
+        "electronicAuction"
+      ],
+      "electronicAuctions": {
+        "details": [
+          {
+            "id": "108b4f9c-f185-4d70-bcde-19b974508cbe",
+            "relatedLot": "7cd37eca-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T06:00:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eca-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 142.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "f6b338c4-88e1-4b69-a303-5cacf8c223ce",
+            "relatedLot": "7cd357eb-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T06:18:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd357eb-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 21.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "eda8d7ce-a5ee-4f48-9e10-187352797e33",
+            "relatedLot": "7cd37ed3-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T06:37:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed3-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 312.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "f77b7efb-6b12-401a-b77f-5bef881ee9ee",
+            "relatedLot": "7cd37ef1-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T06:55:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef1-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 8.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "d16c44fb-c653-48a9-8bdb-24cff39c6748",
+            "relatedLot": "7cd37eed-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:14:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eed-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 360.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "2ec9b590-816c-4a6c-8750-9597e13480b3",
+            "relatedLot": "7cd37ec2-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:32:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec2-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 100.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "b97cec35-0149-4a17-8704-65cc95d50f1c",
+            "relatedLot": "7cd37ece-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:51:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ece-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 256.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "bb40fa54-cb4f-48b7-a051-b14597b4fcb9",
+            "relatedLot": "7cd37ed2-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:09:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed2-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 16.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "36900a33-a063-4518-bc60-c73e8dcdf5e5",
+            "relatedLot": "7cd37ecd-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:28:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ecd-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 280.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "ab501c5d-9d6d-4128-a3ba-ddcca86d1d20",
+            "relatedLot": "7cd37ec6-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:46:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec6-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 180.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "696303f9-53bc-419c-9df8-616799b039bc",
+            "relatedLot": "7cd37ee9-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:05:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee9-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 120.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "09ebc960-addc-4f4b-a4bd-d18b6c309196",
+            "relatedLot": "7cd37ee5-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:23:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee5-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 250.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "8b9eee47-0273-4115-98e5-8fd7ff8983fd",
+            "relatedLot": "7cd37ee8-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:42:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee8-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 23.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "880af7de-950b-41f3-af68-6c12c572aafb",
+            "relatedLot": "7cd37ef7-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:00:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef7-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 127.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "135dd921-b5d4-46f6-8d56-ae464fa7d258",
+            "relatedLot": "7cd37ed5-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:19:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed5-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 25.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e50a66a1-7ed7-4556-ab44-8443c7440de3",
+            "relatedLot": "7cd37ee7-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:37:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee7-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 25.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "59d99c4c-574a-4908-815e-aced10c4bb2e",
+            "relatedLot": "7cd37edb-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:56:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37edb-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 44.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "9d109788-1e43-41de-b3c0-2eb1f8550730",
+            "relatedLot": "7cd37ed4-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:14:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed4-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "fbdc2345-b206-4962-b786-6e708dec9c84",
+            "relatedLot": "7cd37ede-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:33:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ede-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 2.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "50f0e73f-682c-42ad-9711-3434890c0a6d",
+            "relatedLot": "7cd37ef6-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:51:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef6-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 15.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "d28a24dc-59d2-41f6-94c2-7c39a15e2bbe",
+            "relatedLot": "7cd37ef2-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:10:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef2-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 14.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "d58203c6-e9ff-43ab-ba9e-b6d8dbbc7c67",
+            "relatedLot": "7cd37ed7-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:28:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed7-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 15.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "ac3d48d1-d6eb-4d87-bd68-96fd928a8cbf",
+            "relatedLot": "7cd37ec3-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:00:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec3-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 21.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "12d5f49b-59e4-4f06-bf87-817bf417ea94",
+            "relatedLot": "7cd37ec7-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:18:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec7-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 25.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "349c4ace-59e3-4402-a121-06bf80cd4b20",
+            "relatedLot": "7cd37ef8-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:37:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef8-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 77.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "40c05643-fbc4-4abe-88d6-e7c8722cca32",
+            "relatedLot": "7cd37ef3-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T07:55:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef3-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 18.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "5a995c65-b7c5-4a99-9bf6-52a0fd8ddfad",
+            "relatedLot": "7cd37ed0-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:14:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed0-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 3.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "8e453b25-5309-4126-9c73-b24604ed4b01",
+            "relatedLot": "7cd37edd-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:32:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37edd-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "bc46a8bf-3119-4fe1-94e2-88ea7635eb9b",
+            "relatedLot": "7cd37edf-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:51:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37edf-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "9cd2efaf-9a3d-4394-8c7f-123c9af99f02",
+            "relatedLot": "7cd37ef0-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:09:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef0-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 11.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "59b73a59-539a-4018-8dc3-85eb3d443d4c",
+            "relatedLot": "7cd37ecb-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:28:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ecb-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "b22fae72-db1c-4256-8692-c0e29a7c8c26",
+            "relatedLot": "7cd37eee-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:46:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eee-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 100.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "024eae16-622c-423b-b8c6-89ec410aa5b6",
+            "relatedLot": "7cd37ed9-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:05:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed9-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 57.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "69ed2954-8a74-444b-a209-78f519b24d95",
+            "relatedLot": "7cd37eeb-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:23:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eeb-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 14.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "775c9ab1-662c-424e-982c-dc68815a33a2",
+            "relatedLot": "7cd37ecf-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:42:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ecf-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 23.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e860ccbb-0e67-4a1c-a757-079458c9667b",
+            "relatedLot": "7cd37ef5-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:00:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef5-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "5760cf9f-83de-4b90-b136-a244cedaa16a",
+            "relatedLot": "7cd37edc-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:19:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37edc-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "61a69c07-a844-45b3-ae8d-f5da67064938",
+            "relatedLot": "7cd37ec9-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:37:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec9-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 3.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "313930a6-75d5-47c0-bd5d-4cb30f753928",
+            "relatedLot": "7cd37eec-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:56:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eec-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 3.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "52e9ae41-c766-4350-a215-a2c29ef6ddef",
+            "relatedLot": "7cd37ee3-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:14:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee3-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 56.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e423cfbf-43b2-4941-bf93-b0740c549c0c",
+            "relatedLot": "7cd37ee2-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:33:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee2-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "6a4eaced-8872-45ec-9763-b184883ddde7",
+            "relatedLot": "7cd37ed1-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:00:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed1-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "2eeef3bf-9221-464d-a972-cb88820f7400",
+            "relatedLot": "7cd37ef4-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:18:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef4-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 27.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "7e48b9df-6c7c-49be-91db-cfed9f56648c",
+            "relatedLot": "7cd37ed8-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:37:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed8-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 4.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "c3ce94a9-16e2-49ab-9d3b-373d38ddcf00",
+            "relatedLot": "7cd37eea-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T08:55:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eea-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 17.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e0f8a9ac-1d0b-4069-b1e9-a8f36f7a32a3",
+            "relatedLot": "7cd37ee4-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:14:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee4-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 25.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "be23a7f1-4a18-47db-a09c-f6dfad0e7712",
+            "relatedLot": "7cd37ecc-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:32:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ecc-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 1.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "109dbde5-bdfe-4dfb-a7bc-d3d712fc390f",
+            "relatedLot": "7cd37eda-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:51:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eda-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 20.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "d3923577-ba98-4b0d-894c-c7c2a921866c",
+            "relatedLot": "7cd37ed6-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:09:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ed6-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 5.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "22fe7f6b-6836-467f-a790-f1f56a857c39",
+            "relatedLot": "7cd37ec5-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:28:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec5-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 9.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "59abf1e7-9ba8-466e-bf57-fb0ae1429df0",
+            "relatedLot": "7cd37ef9-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T10:46:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ef9-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 5.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "164a0223-b467-4f17-9d05-8a685fecf773",
+            "relatedLot": "7cd37eef-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:05:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37eef-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 7.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "602f0b9b-b886-46a0-9739-2b31735a3f6c",
+            "relatedLot": "7cd37ec4-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:23:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec4-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 3.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "77df1594-06de-432f-b82c-125fc1bc34af",
+            "relatedLot": "7cd37ee1-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T11:42:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee1-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "9cd2167d-ef23-4fa2-983a-f18d6ed14aba",
+            "relatedLot": "7cd37ec8-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:00:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec8-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 5.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "facb0bf6-823b-49cc-af3d-89e6d94d6f3c",
+            "relatedLot": "7cd37ee6-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:19:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee6-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 20.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e777e450-185f-41bb-a6d7-02d814c6175e",
+            "relatedLot": "7cd37ee0-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T12:37:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ee0-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e60fbd02-4dbd-4f17-b836-a05f96089209",
+            "relatedLot": "7cd37ec1-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:00:00Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec1-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 10.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          },
+          {
+            "id": "9ab797b8-4b53-4a68-9edf-19cca7a71bc1",
+            "relatedLot": "7cd37ec0-fb9e-11e8-bc94-25b0c2da1c29",
+            "auctionPeriod": {
+              "startDate": "2018-12-24T09:18:30Z"
+            },
+            "electronicAuctionModalities": [
+              {
+                "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1544344944283/7cd37ec0-fb9e-11e8-bc94-25b0c2da1c29",
+                "eligibleMinimumDifference": {
+                  "amount": 3.00,
+                  "currency": "MDL"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "auctionPeriod": {
+        "startDate": "2018-12-24T06:00:00Z"
+      }
+    },
+    "planning": {
+      "budget": {
+        "amount": {
+          "amount": 300000.00,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": false,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-b3wdp1-MD-1544284002405-FS-1544284046459",
+            "amount": {
+              "amount": 300000.00,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T02:00:00Z",
+              "endDate": "2019-12-30T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1007601002773",
+              "name": "Primaria Dobrogea Veche"
+            }
+          }
+        ]
+      }
+    },
+    "eiPeriod": "01 янв. 2019 - 31 дек. 2019",
+    "isAuction": true,
+    "isAuctionDisabled": true,
+    "accept": true
+  },
+  "version": "0.0.1"
+}

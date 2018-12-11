@@ -45,7 +45,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             description = record.tender.description
             enquiries = record.tender.enquiries
             hasEnquiries = record.tender.hasEnquiries
-            if (!isAuction) {
+            if (isAuction && !dto.isAuctionPeriodChanged) {
                 auctionPeriod = record.tender.auctionPeriod
                 procurementMethodModalities = record.tender.procurementMethodModalities
                 electronicAuctions = record.tender.electronicAuctions
