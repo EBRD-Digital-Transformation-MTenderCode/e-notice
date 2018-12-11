@@ -6,7 +6,7 @@ data class UpdateCnDto @JsonCreator constructor(
 
         val amendment: AmendmentUpdateCn?,
 
-        val isAuctionPeriodChanged: Boolean? = false
+        val isAuctionPeriodChanged: Boolean?
 )
 
 data class AmendmentUpdateCn @JsonCreator constructor(
