@@ -6,5 +6,6 @@ import com.procurement.notice.model.ocds.Contract
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class SigningDto @JsonCreator constructor(
-        val contract: Contract
+
+    val contract: Contract
 )

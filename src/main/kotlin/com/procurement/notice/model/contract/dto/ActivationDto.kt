@@ -6,27 +6,21 @@ import com.procurement.notice.model.ocds.Milestone
 
 data class ActivationDto @JsonCreator constructor(
 
-        val contract: ContractActivation,
-
-        val lot: ContractActivationLot
+    val contract: ContractActivation,
+    val lot: ContractActivationTenderLot
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContractActivation @JsonCreator constructor(
-
-        var status: String,
-
-        var statusDetails: String,
-
-        val milestones: List<Milestone>
+    var status: String,
+    var statusDetails: String,
+    val milestones: List<Milestone>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ContractActivationLot @JsonCreator constructor(
-
-        val id: String,
-
-        var status: String,
-
-        var statusDetails: String
+data class ContractActivationTenderLot @JsonCreator constructor(
+    val id:String,
+    val status: String,
+    val statusDetails: String
 )
+

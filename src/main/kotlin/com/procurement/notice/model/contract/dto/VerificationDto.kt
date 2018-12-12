@@ -5,11 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude
 
 data class VerificationDto @JsonCreator constructor(
 
-        val contract: ContractVerification
+    val contract: ContractFerification
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ContractVerification @JsonCreator constructor(
-
-        var statusDetails: String
+data class ContractFerification @JsonCreator constructor(
+    var statusDetails: String
 )

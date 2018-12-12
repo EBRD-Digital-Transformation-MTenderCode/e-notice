@@ -410,7 +410,8 @@ enum class Operation(val value: String) {
     VERIFICATION_AC("verificationAC"),
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
-    END_AWARD_PERIOD("endAwardPeriod");
+    END_AWARD_PERIOD("endAwardPeriod"),
+    UPDATE_CAN_DOCS("addsCANDocs");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()
@@ -425,5 +426,25 @@ enum class Operation(val value: String) {
         fun fromValue(value: String): Operation {
             return CONSTANTS[value] ?: throw IllegalArgumentException(value)
         }
+    }
+}
+enum class DocumentTypeContract(@JsonValue val value: String) {
+
+    CONTRACT_NOTICE("contractNotice"),
+    COMPLETION_CERTIFICATE("completionCertificate"),
+    CONTRACT_DRAFT("contractDraft"),
+    CONTRACT_ARRANGEMENTS("contractArrangements"),
+    CONTRACT_SCHEDULE("contractSchedule"),
+    ENVIRONMENTAL_IMPACT("environmentalImpact"),
+    CONTRACT_ANNEXE("contractAnnexe"),
+    CONTRACT_GUARANTEES("contractGuarantees"),
+    SUB_CONTRACT("subContract"),
+    ILLUSTRATION("illustration"),
+    CONTRACT_SIGNED("contractSigned"),
+    CONTRACT_SUMMARY("contractSummary"),
+    BUYERS_RESPONSE_ADD("buyersResponseAdd");
+
+    override fun toString(): String {
+        return this.value
     }
 }
