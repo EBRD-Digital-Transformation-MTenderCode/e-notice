@@ -411,7 +411,7 @@ enum class Operation(val value: String) {
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
-    UPDATE_CAN_DOCS("addsCANDocs");
+    UPDATE_CAN_DOCS("updateCanDocs");
 
     companion object {
         private val CONSTANTS = HashMap<String, Operation>()

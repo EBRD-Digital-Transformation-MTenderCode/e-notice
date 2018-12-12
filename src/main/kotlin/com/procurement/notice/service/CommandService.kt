@@ -339,8 +339,7 @@ class CommandService(private val historyDao: HistoryDao,
                 ocid = ocId!!,
                 stage = stage,
                 releaseDate = releaseDate,
-                data = data
-            )
+                data = data)
             END_AWARD_PERIOD -> return contractingService.endAwardPeriod(
                 cpid = cpId,
                 ocid = ocId!!,
