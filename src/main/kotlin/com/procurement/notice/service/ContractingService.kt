@@ -207,11 +207,6 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts = hashSetOf(dto.contract)
         }
 
-        val contract = recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        contract.apply {
-            date = dto.contract.date
-            statusDetails = dto.contract.statusDetails
-        }
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
