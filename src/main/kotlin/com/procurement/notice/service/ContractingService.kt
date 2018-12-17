@@ -346,31 +346,29 @@ class ContractingService(private val releaseService: ReleaseService,
 
 
     fun setInitialBidsStatus(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto{
-        val dto = toObject(CanCancellationDto::class.java, data)
-        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
-            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-
-        record.apply {
-            tag = listOf(Tag.AWARD_CANCELLATION)
-            date = releaseDate
-            id = releaseService.newReleaseId(ocid)
-            if (dto.lot != null) tender.lots?.let { updateLots(it, dto.lot) }
-            if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.awards != null) {
-                if (awards != null) {
-                    updateAwards(awards!!, dto.awards)
-                } else {
-                    awards = dto.awards
-                }
-            }
-
-        }
-
-
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+//        val dto = toObject(CanCancellationDto::class.java, data)
+//        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
+//            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+//        val record = releaseService.getRecord(recordEntity.jsonData)
+//
+//        record.apply {
+//            tag = listOf(Tag.AWARD_CANCELLATION)
+//            date = releaseDate
+//            id = releaseService.newReleaseId(ocid)
+//            if (dto.lot != null) tender.lots?.let { updateLots(it, dto.lot) }
+//            if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
+//            if (dto.awards != null) {
+//                if (awards != null) {
+//                    updateAwards(awards!!, dto.awards)
+//                } else {
+//                    awards = dto.awards
+//                }
+//            }
+//
+//        }
+//
+//        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-
     }
 
     private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
