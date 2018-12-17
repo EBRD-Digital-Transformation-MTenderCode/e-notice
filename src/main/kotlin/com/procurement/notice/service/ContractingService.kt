@@ -364,7 +364,6 @@ class ContractingService(private val releaseService: ReleaseService,
 //                    awards = dto.awards
 //                }
 //            }
-//
 //        }
 //
 //        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
