@@ -346,6 +346,13 @@ class CommandService(private val historyDao: HistoryDao,
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data)
+            SET_INITIAL_BIDS_STATUS -> return contractingService.setInitialBidsStatus(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }

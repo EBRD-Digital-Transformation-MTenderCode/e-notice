@@ -11,14 +11,13 @@ import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.dto.*
-import com.procurement.notice.model.ocds.DocumentBF
-import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatus
-import com.procurement.notice.model.ocds.TenderStatusDetails
+import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.tender.dto.CanCancellationDto
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.HashSet
 
 @Service
 class ContractingService(private val releaseService: ReleaseService,
@@ -285,6 +284,7 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
+
     private fun updatePersonsDocuments(dto: UpdateAcDto) {
         val documentDto = dto.documentsOfContractPersones
         if (documentDto != null) {
@@ -343,6 +343,68 @@ class ContractingService(private val releaseService: ReleaseService,
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
+
+    fun setInitialBidsStatus(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto{
+        val dto = toObject(CanCancellationDto::class.java, data)
+        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        record.apply {
+            tag = listOf(Tag.AWARD_CANCELLATION)
+            date = releaseDate
+            id = releaseService.newReleaseId(ocid)
+            if (dto.lot != null) tender.lots?.let { updateLots(it, dto.lot) }
+            if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
+            if (dto.awards != null) {
+                if (awards != null) {
+                    updateAwards(awards!!, dto.awards)
+                } else {
+                    awards = dto.awards
+                }
+            }
+
+        }
+
+
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+
+    }
+
+    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
+        for (award in recordAwards) {
+            dtoAwards.firstOrNull { it.id == award.id }?.apply {
+                award.date = this.date
+                award.status = this.status
+                award.statusDetails = this.statusDetails
+            }
+        }
+    }
+
+    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+        for (bid in recordBids) {
+            dtoBids.firstOrNull { it.id == bid.id }?.apply {
+                bid.date = this.date
+                bid.status = this.status
+                bid.statusDetails = this.statusDetails
+            }
+        }
+    }
+
+    private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
+        for (lot in recordLots) {
+            dtoLots.firstOrNull { it.id == lot.id }?.apply {
+                lot.status = this.status
+                lot.statusDetails = this.statusDetails
+            }
+        }
+    }
+
+
+
+
 
 }
 
