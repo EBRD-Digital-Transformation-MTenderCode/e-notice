@@ -5,6 +5,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.ContractTender
 import com.procurement.notice.model.contract.ContractTenderLot
@@ -94,7 +95,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             tender.standstillPeriod = dto.standstillPeriod
-            if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
+            if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> convertToContract(it) }.toHashSet()
         }
         releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -125,7 +126,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.cans.isNotEmpty()) {
-                val contractsDto = dto.cans.asSequence().map { it -> it.contract }.toHashSet()
+                val contractsDto = dto.cans.asSequence().map { it -> convertToContract(it) }.toHashSet()
                 contracts?.let { updateContracts(it, contractsDto) }
             }
         }
@@ -188,6 +189,16 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    private fun convertToContract(can: Can): Contract {
+        return Contract(
+                id = can.id,
+                date = can.date,
+                awardId = can.awardId,
+                status = can.status!!,
+                statusDetails = can.statusDetails!!,
+                documents = can.documents!!)
     }
 
     private fun updateContracts(recordContracts: HashSet<Contract>, dtoContracts: HashSet<Contract>) {
