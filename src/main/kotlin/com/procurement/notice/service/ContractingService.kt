@@ -406,7 +406,7 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = recordContractEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
