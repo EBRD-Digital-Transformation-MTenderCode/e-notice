@@ -40,9 +40,9 @@ data class Contract @JsonCreator constructor(
 
         var relatedProcesses: HashSet<RelatedProcess>? = null,
 
-        val amendments: List<Amendment>? = null,
+        var amendments: List<Amendment>? = null,
 
-        val amendment: Amendment? = null,
+        var amendment: Amendment? = null,
 
         val requirementResponses: HashSet<RequirementResponse>? = null,
 

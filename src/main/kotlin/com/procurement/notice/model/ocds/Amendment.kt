@@ -21,6 +21,7 @@ data class Amendment @JsonCreator constructor(
 
         val relatedLots: Set<String>?,
 
-        val changes: List<Change>?
+        val changes: List<Change>?,
 
+        val documents: List<Document>?
 )

@@ -71,7 +71,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                 relatedLots = canceledLots,
                 rationale = rationale,
                 changes = null,
-                description = null
+                description = null,
+                documents = null
         ))
         record.apply {
             /* previous record*/
@@ -146,7 +147,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                 relatedLots = null,
                 rationale = "Extension of tender period",
                 changes = null,
-                description = null
+                description = null,
+                documents = null
         ))
         record.apply {
             id = newReleaseID
