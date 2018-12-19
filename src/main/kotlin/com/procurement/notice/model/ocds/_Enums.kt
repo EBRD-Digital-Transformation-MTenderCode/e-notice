@@ -412,7 +412,8 @@ enum class Operation(val value: String) {
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
     UPDATE_CAN_DOCS("updateCanDocs"),
-    CANCEL_CAN("cancelCan");
+    CANCEL_CAN("cancelCan"),
+    CANCEL_CAN_CONTRACT("cancelCanContract");
 
 
     companion object {

@@ -346,14 +346,20 @@ class CommandService(private val historyDao: HistoryDao,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
-            CANCEL_CAN -> return contractingService.cancelCAN(
+            CANCEL_CAN -> return contractingService.cancelCan(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data
             )
-
+            CANCEL_CAN_CONTRACT -> return contractingService.cancelCanAndContract(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data
+            )
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }

@@ -13,6 +13,8 @@ data class CanCancellationDto @JsonCreator constructor(
 
     val can: Contract,
 
+    val contract: Contract?,
+
     val awards: HashSet<Award>,
 
     val bids: HashSet<Bid>,
