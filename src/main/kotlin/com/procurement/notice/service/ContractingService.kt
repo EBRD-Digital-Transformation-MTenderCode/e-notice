@@ -355,8 +355,7 @@ class ContractingService(private val releaseService: ReleaseService,
             tag = listOf(Tag.AWARD_CANCELLATION)
             date = releaseDate
             id = releaseService.newReleaseId(ocid)
-            this.contracts?.asSequence()
-                    ?.firstOrNull { it.id == dto.can.id }
+            this.contracts?.asSequence()?.firstOrNull { it.id == dto.can.id }
                     ?.apply {
                         status = dto.can.status
                         statusDetails = dto.can.statusDetails
@@ -364,10 +363,9 @@ class ContractingService(private val releaseService: ReleaseService,
                     }
             tender.lots?.let { updateLots(it, dto.lot) }
             bids?.details?.let { updateBids(it, dto.bids) }
-            if (awards != null) {
-                updateAwards(awards!!, dto.awards)
-            } else {
-                awards = dto.awards
+            when(awards){
+                null -> awards = dto.awards
+                else -> updateAwards(awards!!, dto.awards)
             }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -394,13 +392,14 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
-    private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
-        for (lot in recordLots) {
-            dtoLots.firstOrNull { it.id == lot.id }?.apply {
-                lot.status = this.status
-                lot.statusDetails = this.statusDetails
-            }
-        }
+    private fun updateLots(recordLots: HashSet<Lot>, dtoLot: Lot) {
+        recordLots.asSequence()
+                .filter { it.id == dtoLot.id }
+                .firstOrNull()
+                ?.apply {
+                    this.status = dtoLot.status
+                    this.statusDetails = dtoLot.statusDetails
+                }
     }
 
 }

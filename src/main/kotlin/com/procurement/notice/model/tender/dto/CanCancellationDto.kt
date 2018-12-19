@@ -17,6 +17,6 @@ data class CanCancellationDto @JsonCreator constructor(
 
     val bids: HashSet<Bid>,
 
-    val lot: HashSet<Lot>
+    val lot: Lot
 )
 
