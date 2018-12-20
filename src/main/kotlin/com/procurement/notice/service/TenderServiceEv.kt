@@ -12,7 +12,7 @@ import com.procurement.notice.model.contract.ContractTenderLot
 import com.procurement.notice.model.contract.dto.AwardPeriodEndEvDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.AwardByBidEvDto
-import com.procurement.notice.model.tender.dto.StandstillPeriodEndEvDto
+import com.procurement.notice.model.tender.dto.CreateCanDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
 import com.procurement.notice.model.tender.dto.UpdateBidDocsDto
 import com.procurement.notice.model.tender.record.Record
@@ -70,34 +70,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                         bid.documents = dto.bid.documents
                     }
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-    fun standstillPeriodEv(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto {
-        val dto = toObject(StandstillPeriodEndEvDto::class.java, toJson(data))
-        val msEntity = releaseService.getMsEntity(cpid)
-        val ms = releaseService.getMs(msEntity.jsonData)
-        ms.apply {
-            id = releaseService.newReleaseId(cpid)
-            date = releaseDate
-            tag = listOf(Tag.COMPILED)
-            tender.statusDetails = TenderStatusDetails.EVALUATED
-        }
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.AWARD_UPDATE)
-            tender.standstillPeriod = dto.standstillPeriod
-            if (dto.cans.isNotEmpty()) contracts = dto.cans.asSequence().map { it -> convertToContract(it) }.toHashSet()
-        }
-        releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -198,7 +170,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 awardId = can.awardId,
                 status = can.status!!,
                 statusDetails = can.statusDetails!!,
-                documents = can.documents)
+                documents = can.documents!!)
     }
 
     private fun updateContracts(recordContracts: HashSet<Contract>, dtoContracts: HashSet<Contract>) {

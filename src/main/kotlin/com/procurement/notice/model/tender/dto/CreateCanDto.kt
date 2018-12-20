@@ -6,9 +6,7 @@ import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.ocds.Period
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class StandstillPeriodEndEvDto @JsonCreator constructor(
+data class CreateCanDto @JsonCreator constructor(
 
-        val standstillPeriod: Period,
-
-        val cans: HashSet<Can>
+        val can: Can
 )

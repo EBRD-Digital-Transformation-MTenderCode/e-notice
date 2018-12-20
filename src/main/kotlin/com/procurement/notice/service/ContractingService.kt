@@ -10,10 +10,12 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.dto.*
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.CanCancellationDto
+import com.procurement.notice.model.tender.dto.CreateCanDto
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -324,6 +326,33 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
+    fun createCan(cpid: String,
+                  ocid: String,
+                  stage: String,
+                  releaseDate: LocalDateTime,
+                  data: JsonNode): ResponseDto {
+        val dto = toObject(CreateCanDto::class.java, toJson(data))
+        val msEntity = releaseService.getMsEntity(cpid)
+        val ms = releaseService.getMs(msEntity.jsonData)
+        ms.apply {
+            id = releaseService.newReleaseId(cpid)
+            date = releaseDate
+            tag = listOf(Tag.COMPILED)
+            tender.statusDetails = TenderStatusDetails.EVALUATED
+        }
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        record.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.AWARD_UPDATE)
+            contracts = hashSetOf(convertToContract(dto.can))
+        }
+        releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
     fun updateCanDocs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(UpdateCanDocumentsDto::class.java, data)
         val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
@@ -422,6 +451,16 @@ class ContractingService(private val releaseService: ReleaseService,
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = recordContractEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    private fun convertToContract(can: Can): Contract {
+        return Contract(
+                id = can.id,
+                date = can.date,
+                awardId = can.awardId,
+                status = can.status!!,
+                statusDetails = can.statusDetails!!,
+                documents = can.documents)
     }
 
     private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {

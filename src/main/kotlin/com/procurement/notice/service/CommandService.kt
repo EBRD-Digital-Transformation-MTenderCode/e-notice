@@ -233,13 +233,6 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-            STANDSTILL_PERIOD_EV -> return tenderServiceEv.standstillPeriodEv(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
             AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(
                     cpid = cpId,
                     ocid = ocId!!,
@@ -334,18 +327,19 @@ class CommandService(private val historyDao: HistoryDao,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
+            CREATE_CAN -> return contractingService.createCan(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
             UPDATE_CAN_DOCS -> return contractingService.updateCanDocs(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
-            END_AWARD_PERIOD -> return contractingService.endAwardPeriod(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+
             CANCEL_CAN -> return contractingService.cancelCan(
                     cpid = cpId,
                     ocid = ocId!!,
@@ -360,6 +354,13 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data
             )
+            END_AWARD_PERIOD -> return contractingService.endAwardPeriod(
+                    cpid = cpId,
+                    ocid = ocId!!,
+                    stage = stage,
+                    releaseDate = releaseDate,
+                    data = data)
+
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }

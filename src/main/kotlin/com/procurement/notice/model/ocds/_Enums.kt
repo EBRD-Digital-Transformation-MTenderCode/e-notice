@@ -392,7 +392,6 @@ enum class Operation(val value: String) {
     AWARD_PERIOD_END("awardPeriodEnd"),
     AWARD_PERIOD_END_EV("awardPeriodEndEv"),
     STANDSTILL_PERIOD("standstillPeriod"),
-    STANDSTILL_PERIOD_EV("standstillPeriodEv"),
     START_NEW_STAGE("startNewStage"),
     CREATE_PIN_ON_PN("createPINonPN"),
     CREATE_CN_ON_PN("createCNonPN"),
@@ -411,6 +410,7 @@ enum class Operation(val value: String) {
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
+    CREATE_CAN("createCAN"),
     UPDATE_CAN_DOCS("updateCanDocs"),
     CANCEL_CAN("cancelCan"),
     CANCEL_CAN_CONTRACT("cancelCanContract");
