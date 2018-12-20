@@ -198,7 +198,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                 awardId = can.awardId,
                 status = can.status!!,
                 statusDetails = can.statusDetails!!,
-                documents = can.documents!!)
+                documents = can.documents)
     }
 
     private fun updateContracts(recordContracts: HashSet<Contract>, dtoContracts: HashSet<Contract>) {
