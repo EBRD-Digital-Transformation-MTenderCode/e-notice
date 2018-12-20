@@ -339,7 +339,6 @@ class CommandService(private val historyDao: HistoryDao,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
-
             CANCEL_CAN -> return contractingService.cancelCan(
                     cpid = cpId,
                     ocid = ocId!!,
