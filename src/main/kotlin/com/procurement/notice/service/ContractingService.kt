@@ -355,7 +355,7 @@ class ContractingService(private val releaseService: ReleaseService,
         dto.can.amendment?.apply {
             id = UUIDs.timeBased().toString()
             amendsReleaseID = record.id
-            date=releaseDate
+            date = releaseDate
 
         }
 
@@ -384,6 +384,12 @@ class ContractingService(private val releaseService: ReleaseService,
         val dto = toObject(CanCancellationDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
+        dto.can.amendment?.apply {
+            id = UUIDs.timeBased().toString()
+            amendsReleaseID = record.id
+            date = releaseDate
+
+        }
         record.apply {
             tag = listOf(Tag.AWARD_CANCELLATION)
             date = releaseDate
