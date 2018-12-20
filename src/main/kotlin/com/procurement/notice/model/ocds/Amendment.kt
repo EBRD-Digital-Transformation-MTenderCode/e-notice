@@ -7,15 +7,15 @@ import java.time.LocalDateTime
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Amendment @JsonCreator constructor(
 
-        val id: String?,
+        var id: String?,
 
-        val date: LocalDateTime?,
+        var date: LocalDateTime?,
 
         val releaseID: String?,
 
         val description: String?,
 
-        val amendsReleaseID: String?,
+        var amendsReleaseID: String?,
 
         val rationale: String?,
 

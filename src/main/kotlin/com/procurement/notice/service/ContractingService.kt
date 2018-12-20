@@ -1,5 +1,6 @@
 package com.procurement.notice.service
 
+import com.datastax.driver.core.utils.UUIDs
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
@@ -350,6 +351,13 @@ class ContractingService(private val releaseService: ReleaseService,
         val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = releaseService.getRecord(recordEntity.jsonData)
+
+        dto.can.amendment?.apply {
+            id = UUIDs.timeBased().toString()
+            amendsReleaseID = record.id
+            date=releaseDate
+
+        }
 
         record.apply {
             tag = listOf(Tag.AWARD_CANCELLATION)
