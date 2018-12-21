@@ -332,14 +332,6 @@ class ContractingService(private val releaseService: ReleaseService,
                   releaseDate: LocalDateTime,
                   data: JsonNode): ResponseDto {
         val dto = toObject(CreateCanDto::class.java, toJson(data))
-        val msEntity = releaseService.getMsEntity(cpid)
-        val ms = releaseService.getMs(msEntity.jsonData)
-        ms.apply {
-            id = releaseService.newReleaseId(cpid)
-            date = releaseDate
-            tag = listOf(Tag.COMPILED)
-            tender.statusDetails = TenderStatusDetails.EVALUATED
-        }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
@@ -348,7 +340,6 @@ class ContractingService(private val releaseService: ReleaseService,
             tag = listOf(Tag.AWARD_UPDATE)
             contracts = hashSetOf(convertToContract(dto.can))
         }
-        releaseService.saveMs(cpid, ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
