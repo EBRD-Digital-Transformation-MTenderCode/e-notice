@@ -269,7 +269,7 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
-            AWARD_PERIOD_END_EV -> return tenderServiceEv.awardPeriodEndEv(
+            CREATE_AC -> return contractingService.createAc(
                     cpid = cpId,
                     ocid = ocId!!,
                     stage = stage,
