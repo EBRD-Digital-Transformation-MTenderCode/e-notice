@@ -537,7 +537,6 @@ class ContractingService(private val releaseService: ReleaseService,
     private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
-                bid.date = this.date
                 bid.status = this.status
                 bid.statusDetails = this.statusDetails
             }
