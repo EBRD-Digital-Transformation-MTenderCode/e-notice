@@ -402,11 +402,13 @@ class ContractingService(private val releaseService: ReleaseService,
         val dto = toObject(CreateCanDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
+        val contractsOldAndNew = record.contracts?: hashSetOf()
+        contractsOldAndNew.addAll(hashSetOf(convertToCanContract(dto.can)))
         record.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
-            contracts = hashSetOf(convertToCanContract(dto.can))
+            contracts = contractsOldAndNew
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
