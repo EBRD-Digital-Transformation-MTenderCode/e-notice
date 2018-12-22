@@ -171,7 +171,8 @@ class RelatedProcessService {
             record.contracts?.asSequence()
                     ?.firstOrNull { it.id == can.id }
                     ?.let { contract ->
-                        contract.relatedProcesses?.add(RelatedProcess(
+                        if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
+                        contract.relatedProcesses!!.add(RelatedProcess(
                                 id = UUIDs.timeBased().toString(),
                                 relationship = listOf(RelatedProcessType.X_CONTRACTING),
                                 scheme = RelatedProcessScheme.OCID,
