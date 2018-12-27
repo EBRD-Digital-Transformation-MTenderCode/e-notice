@@ -517,7 +517,7 @@ class ContractingService(private val releaseService: ReleaseService,
 
     fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(ConfirmCanDto::class.java, data)
-        val recordEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
+        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = releaseService.getRecord(recordEntity.jsonData)
         record.apply {
