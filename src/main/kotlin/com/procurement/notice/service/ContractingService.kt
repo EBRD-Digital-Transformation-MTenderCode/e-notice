@@ -516,6 +516,20 @@ class ContractingService(private val releaseService: ReleaseService,
 
 
     fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val dto = toObject(ConfirmCanDto::class.java, data)
+        val recordEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        record.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.TENDER_UPDATE)
+            tender.apply {
+                lots?.let { updateLots(it, dto.lots) }
+            }
+            contracts?.let { updateCanContracts(it, dto.cans) }
+        }
+               releaseService.saveRecord(cpId = cpid, stage = "EV", record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
