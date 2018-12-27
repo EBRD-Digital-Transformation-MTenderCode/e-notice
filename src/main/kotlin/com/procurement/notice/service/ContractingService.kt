@@ -534,6 +534,38 @@ class ContractingService(private val releaseService: ReleaseService,
     }
 
     fun endContractingProcess(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val dto = toObject(EndContractingProcessDto::class.java, data)
+
+        val msEntity = releaseService.getMsEntity(cpid)
+        val ms = releaseService.getMs(msEntity.jsonData)
+        ms.apply {
+            id = releaseService.newReleaseId(cpid)
+            date = releaseDate
+            tag = listOf(Tag.COMPILED)
+            tender.apply {
+                status = TenderStatus.fromValue(dto.tender.status)
+                statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+            }
+        }
+        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
+        recordEv.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            tag = listOf(Tag.TENDER_UPDATE)
+            tender.apply {
+                awardPeriod = dto.awardPeriod
+                status = TenderStatus.fromValue(dto.tender.status)
+                statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+                lots?.let { updateLots(it, dto.lots) }
+            }
+            bids?.details?.let { updateBids(it, dto.bids) }
+            awards?.let { updateAwards(it, dto.awards) }
+            contracts?.let { updateCanContracts(it, dto.cans) }
+        }
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
