@@ -309,20 +309,20 @@ class ContractingService(private val releaseService: ReleaseService,
 
     fun endAwardPeriod(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(EndAwardPeriodDto::class.java, data)
-
         val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
-        recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
-            tag = listOf(Tag.CONTRACT_UPDATE)
-            date = releaseDate
-            contracts?.firstOrNull()?.apply {
-                status = dto.contract.status
-                statusDetails = dto.contract.statusDetails
-                milestones = dto.contract.milestones
+        if (dto.contract != null) {
+            recordContract.apply {
+                id = releaseService.newReleaseId(ocid)
+                tag = listOf(Tag.CONTRACT_UPDATE)
+                date = releaseDate
+                contracts?.firstOrNull()?.apply {
+                    status = dto.contract.status
+                    statusDetails = dto.contract.statusDetails
+                    milestones = dto.contract.milestones
+                }
             }
         }
-
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
@@ -334,15 +334,15 @@ class ContractingService(private val releaseService: ReleaseService,
                 awardPeriod = dto.awardPeriod
                 status = TenderStatus.fromValue(dto.tender.status)
                 statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+                lots?.let { updateLots(it, dto.lots) }
             }
-            tender.lots?.find { it.id == dto.lot.id }
-                    ?.apply {
-                        status = dto.lot.status
-                        statusDetails = dto.lot.statusDetails
-                    }
+            bids?.details?.let { updateBids(it, dto.bids) }
+            awards?.let { updateAwards(it, dto.awards) }
+            contracts?.let { updateCanContracts(it, dto.cans) }
         }
-
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
+        if (dto.contract != null) {
+            releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
+        }
         releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -402,7 +402,7 @@ class ContractingService(private val releaseService: ReleaseService,
         val dto = toObject(CreateCanDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        val contractsOldAndNew = record.contracts?: hashSetOf()
+        val contractsOldAndNew = record.contracts ?: hashSetOf()
         contractsOldAndNew.addAll(hashSetOf(convertToCanContract(dto.can)))
         record.apply {
             id = releaseService.newReleaseId(ocid)
@@ -459,7 +459,7 @@ class ContractingService(private val releaseService: ReleaseService,
                         statusDetails = dto.can.statusDetails
                         amendments = amendments?.plus(dto.can.amendment!!) ?: listOf(dto.can.amendment!!)
                     }
-            tender.lots?.let { updateLots(it, dto.lot) }
+            tender.lots?.let { updateLot(it, dto.lot) }
             bids?.details?.let { updateBids(it, dto.bids) }
             when (awards) {
                 null -> awards = dto.awards
@@ -490,7 +490,7 @@ class ContractingService(private val releaseService: ReleaseService,
                         statusDetails = dto.can.statusDetails
                         amendments = amendments?.plus(dto.can.amendment!!) ?: listOf(dto.can.amendment!!)
                     }
-            tender.lots?.let { updateLots(it, dto.lot) }
+            tender.lots?.let { updateLot(it, dto.lot) }
             bids?.details?.let { updateBids(it, dto.bids) }
             when (awards) {
                 null -> awards = dto.awards
@@ -514,6 +514,15 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
+
+    fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    fun endContractingProcess(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
     private fun convertToCanContract(can: Can): Contract {
         return Contract(
                 id = can.id,
@@ -534,6 +543,15 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
+    private fun updateCans(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+        for (bid in recordBids) {
+            dtoBids.firstOrNull { it.id == bid.id }?.apply {
+                bid.status = this.status
+                bid.statusDetails = this.statusDetails
+            }
+        }
+    }
+
     private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
@@ -543,7 +561,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
-    private fun updateLots(recordLots: HashSet<Lot>, dtoLot: Lot) {
+    private fun updateLot(recordLots: HashSet<Lot>, dtoLot: Lot) {
         recordLots.asSequence()
                 .filter { it.id == dtoLot.id }
                 .firstOrNull()
@@ -551,6 +569,15 @@ class ContractingService(private val releaseService: ReleaseService,
                     this.status = dtoLot.status
                     this.statusDetails = dtoLot.statusDetails
                 }
+    }
+
+    private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
+        for (lot in recordLots) {
+            dtoLots.firstOrNull { it.id == lot.id }?.apply {
+                lot.status = this.status
+                lot.statusDetails = this.statusDetails
+            }
+        }
     }
 
 }

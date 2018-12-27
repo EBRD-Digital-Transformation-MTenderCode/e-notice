@@ -1,22 +1,26 @@
 package com.procurement.notice.model.contract.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.procurement.notice.model.ocds.Milestone
-import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.contract.Can
+import com.procurement.notice.model.ocds.*
 
 data class EndAwardPeriodDto @JsonCreator constructor(
 
-        val contract: EndAwardPeriodContract,
+        val contract: EndAwardPeriodContract?,
 
         val tender: EndAwardPeriodTender,
 
-        val lot: EndAwardPeriodLot,
+        val lots: HashSet<Lot>,
 
-        val awardPeriod: Period
+        val bids: HashSet<Bid>,
+
+        val awards: HashSet<Award>,
+
+        val awardPeriod: Period,
+
+        val cans: HashSet<Can>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class EndAwardPeriodContract @JsonCreator constructor(
 
         var status: String,
@@ -26,18 +30,7 @@ data class EndAwardPeriodContract @JsonCreator constructor(
         val milestones: List<Milestone>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class EndAwardPeriodTender @JsonCreator constructor(
-
-        var status: String,
-
-        var statusDetails: String
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class EndAwardPeriodLot @JsonCreator constructor(
-
-        val id: String,
 
         var status: String,
 
