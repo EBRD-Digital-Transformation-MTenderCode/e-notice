@@ -295,11 +295,8 @@ class ContractingService(private val releaseService: ReleaseService,
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_UPDATE)
-            tender.lots?.find { it.id == dto.lot.id }
-                    ?.apply {
-                        status = dto.lot.status
-                        statusDetails = dto.lot.statusDetails
-                    }
+            tender.lots?.let { updateLots(it, dto.lots) }
+            contracts?.let { updateCanContracts(it, dto.cans) }
         }
 
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
@@ -309,18 +306,14 @@ class ContractingService(private val releaseService: ReleaseService,
 
     fun endAwardPeriod(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(EndAwardPeriodDto::class.java, data)
-        val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
-        if (dto.contract != null) {
-            recordContract.apply {
-                id = releaseService.newReleaseId(ocid)
-                tag = listOf(Tag.CONTRACT_UPDATE)
-                date = releaseDate
-                contracts?.firstOrNull()?.apply {
-                    status = dto.contract.status
-                    statusDetails = dto.contract.statusDetails
-                    milestones = dto.contract.milestones
-                }
+        val msEntity = releaseService.getMsEntity(cpid)
+        val ms = releaseService.getMs(msEntity.jsonData)
+        ms.apply {
+            id = releaseService.newReleaseId(cpid)
+            date = releaseDate
+            tag = listOf(Tag.COMPILED)
+            tender.apply {
+                statusDetails = TenderStatusDetails.EXECUTION
             }
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
@@ -340,9 +333,24 @@ class ContractingService(private val releaseService: ReleaseService,
             awards?.let { updateAwards(it, dto.awards) }
             contracts?.let { updateCanContracts(it, dto.cans) }
         }
+        val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
+        if (dto.contract != null) {
+            recordContract.apply {
+                id = releaseService.newReleaseId(ocid)
+                tag = listOf(Tag.CONTRACT_UPDATE)
+                date = releaseDate
+                contracts?.firstOrNull()?.apply {
+                    status = dto.contract.status
+                    statusDetails = dto.contract.statusDetails
+                    milestones = dto.contract.milestones
+                }
+            }
+        }
         if (dto.contract != null) {
             releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
         }
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -529,7 +537,7 @@ class ContractingService(private val releaseService: ReleaseService,
             }
             contracts?.let { updateCanContracts(it, dto.cans) }
         }
-               releaseService.saveRecord(cpId = cpid, stage = "EV", record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = "EV", record = record, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
