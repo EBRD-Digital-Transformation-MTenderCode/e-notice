@@ -582,7 +582,7 @@ class ContractingService(private val releaseService: ReleaseService,
                 id = can.id,
                 date = can.date,
                 awardId = can.awardId,
-                relatedLots = listOf(can.lotId!!),
+                relatedLots = if (can.lotId != null) { listOf(can.lotId) } else null,
                 status = can.status!!,
                 statusDetails = can.statusDetails!!,
                 documents = can.documents)
