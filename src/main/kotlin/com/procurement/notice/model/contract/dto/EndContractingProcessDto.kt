@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.ocds.*
 
-data class EndAwardPeriodDto @JsonCreator constructor(
+data class EndContractingProcessDto @JsonCreator constructor(
 
-        val contract: EndAwardPeriodContract?,
-
-        val tender: EndAwardPeriodTender,
+        val tender: EndContractingProcessTender,
 
         val lots: HashSet<Lot>,
 
@@ -21,16 +19,7 @@ data class EndAwardPeriodDto @JsonCreator constructor(
         val cans: HashSet<Can>
 )
 
-data class EndAwardPeriodContract @JsonCreator constructor(
-
-        var status: String,
-
-        var statusDetails: String,
-
-        val milestones: List<Milestone>
-)
-
-data class EndAwardPeriodTender @JsonCreator constructor(
+data class EndContractingProcessTender @JsonCreator constructor(
 
         var status: String,
 

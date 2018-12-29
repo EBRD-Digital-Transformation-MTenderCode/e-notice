@@ -1,215 +1,73 @@
 {
-  "bids": [
-    {
-      "id": "5101ae30-e798-11e8-a2fa-17f2fe410162",
-      "date": "2018-11-13T23:03:21Z",
-      "createdDate": "2018-11-13T23:03:21Z",
-      "pendingDate": "2018-11-13T23:03:21Z",
-      "value": {
-        "amount": 877127.00,
-        "currency": "MDL"
-      },
-      "tenderers": [
-        {
-          "id": "MD-IDNO-1006600023985",
-          "name": "Media Security",
-          "identifier": {
-            "id": "1006600023985",
-            "scheme": "MD-IDNO",
-            "legalName": "Media Security"
-          },
-          "address": {
-            "streetAddress": "str. Colina Puskin 4",
-            "postalCode": "MD-2005",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "Chisinau",
-                "description": "Chisinau"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "Victor Gaina",
-            "email": "support@media-security.eu",
-            "telephone": "022-201133"
-          },
-          "details": {
-            "scale": "micro"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ]
-    },
-    {
-      "id": "192e20d0-e755-11e8-a2fa-17f2fe410162",
-      "date": "2018-11-13T15:02:11Z",
-      "createdDate": "2018-11-13T15:02:11Z",
-      "pendingDate": "2018-11-13T15:02:11Z",
-      "value": {
-        "amount": 1149657.00,
-        "currency": "MDL"
-      },
-      "tenderers": [
-        {
-          "id": "MD-IDNO-1005600018410",
-          "name": "Victiana",
-          "identifier": {
-            "id": "1005600018410",
-            "scheme": "MD-IDNO",
-            "legalName": "Victiana"
-          },
-          "address": {
-            "streetAddress": "ул. А. Хыждеу 66/3",
-            "postalCode": "MD2001",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "Chișinău",
-                "description": "Chișinău"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "Кондря Дмитрий",
-            "email": "d.condrea@videosecurity.md",
-            "telephone": "060301363"
-          },
-          "details": {
-            "scale": "micro"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ]
-    },
-    {
-      "id": "f83eab60-e740-11e8-a2fa-17f2fe410162",
-      "date": "2018-11-13T12:38:06Z",
-      "createdDate": "2018-11-13T12:38:06Z",
-      "pendingDate": "2018-11-13T12:38:06Z",
-      "value": {
-        "amount": 601289.08,
-        "currency": "MDL"
-      },
-      "tenderers": [
-        {
-          "id": "MD-IDNO-1006600054871",
-          "name": "DAAC System Integrator SRL",
-          "identifier": {
-            "id": "1006600054871",
-            "scheme": "MD-IDNO",
-            "legalName": "DAAC System Integrator SRL"
-          },
-          "address": {
-            "streetAddress": "str. Calea Iesilor, 10",
-            "postalCode": "2069",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "0101000",
-                "description": "test"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "Kulikov Yurii",
-            "email": "tenders@integrator.md",
-            "telephone": "+37322509758"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ],
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ]
-    }
+  "ocid": "ocds-b3wdp1-MD-1543419347940-EV-1543419840214",
+  "id": "ocds-b3wdp1-MD-1543419347940-EV-1543419840214-1544624161037",
+  "date": "2018-12-10T07:07:26Z",
+  "tag": [
+    "tender"
   ],
-  "lots": [
-    {
-      "id": "a6228931-d6c6-11e8-99d8-67dbdbaf7b55",
-      "title": "Sistem de conferință audio cu traducere simultană",
-      "description": "Sistem de conferință audio cu traducere simultană",
-      "value": {
-        "amount": 1600000.00,
-        "currency": "MDL"
+  "initiationType": "tender",
+  "tender": {
+    "id": "ocds-b3wdp1-MD-1543419347940",
+    "title": "Evaluation",
+    "description": "Evaluation stage of contracting process",
+    "status": "active",
+    "statusDetails": "clarification",
+    "items": [
+      {
+        "id": "6c8c5af0-f324-11e8-9848-d104af1f2f79",
+        "description": "Produse de origine animală, carne şi produse din carne",
+        "classification": {
+          "scheme": "CPV",
+          "id": "15100000-9",
+          "description": "Produse de origine animală, carne şi produse din carne"
+        },
+        "quantity": 13542.0,
+        "unit": {
+          "name": "Kilogram",
+          "id": "166"
+        },
+        "relatedLot": "6c8c5af1-f324-11e8-9848-d104af1f2f79"
       }
-    }
-  ],
-  "awardCriteria": "priceOnly",
-  "awardPeriod": {
-    "startDate": "2018-11-14T00:00:00Z"
-  },
-  "awards": [
-    {
-      "token": "223942f6-ca78-44d0-92ab-6b8451d35665",
-      "id": "3b3569e0-e7a0-11e8-9d90-ab96f972450f",
-      "date": "2018-11-14T00:00:00Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 877127.00,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ],
-      "relatedBid": "5101ae30-e798-11e8-a2fa-17f2fe410162",
-      "suppliers": [
-        {
-          "id": "MD-IDNO-1006600023985",
-          "name": "Media Security",
-          "identifier": {
-            "id": "1006600023985",
-            "scheme": "MD-IDNO",
-            "legalName": "Media Security",
-            "uri": null
-          },
+    ],
+    "lots": [
+      {
+        "id": "6c8c5af1-f324-11e8-9848-d104af1f2f79",
+        "title": "Produse de origine animală, carne şi produse din carne",
+        "description": "Produse de origine animală, carne şi produse din carne",
+        "status": "active",
+        "statusDetails": "empty",
+        "value": {
+          "amount": 564250.00,
+          "currency": "MDL"
+        },
+        "options": [
+          {
+            "hasOptions": false
+          }
+        ],
+        "recurrentProcurement": [
+          {
+            "isRecurrent": false
+          }
+        ],
+        "renewals": [
+          {
+            "hasRenewals": false
+          }
+        ],
+        "variants": [
+          {
+            "hasVariants": false
+          }
+        ],
+        "contractPeriod": {
+          "startDate": "2018-12-31T00:00:00Z",
+          "endDate": "2019-12-30T00:00:00Z"
+        },
+        "placeOfPerformance": {
           "address": {
-            "streetAddress": "str. Colina Puskin 4",
-            "postalCode": "MD-2005",
+            "streetAddress": "or.Rezina, str.Nistreană1",
+            "postalCode": "7000",
             "addressDetails": {
               "country": {
                 "scheme": "iso-alpha2",
@@ -219,280 +77,154 @@
               },
               "region": {
                 "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
+                "id": "6700000",
+                "description": "Rezina",
                 "uri": "http://statistica.md"
               },
               "locality": {
                 "scheme": "other",
-                "id": "Chisinau",
-                "description": "Chisinau"
+                "id": "6701003",
+                "description": "s.Stohnaia"
               }
             }
           },
-          "contactPoint": {
-            "name": "Victor Gaina",
-            "email": "support@media-security.eu",
-            "telephone": "022-201133"
-          },
-          "details": {
-            "scale": "micro"
-          }
+          "description": "or.Rezina, str.Nistreană1"
         }
-      ]
-    },
-    {
-      "token": "b3cae7ff-b584-4d9a-b0bd-5e7aa9261e5c",
-      "id": "3b3569e1-e7a0-11e8-9d90-ab96f972450f",
-      "date": "2018-11-14T00:00:00Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "empty",
-      "value": {
-        "amount": 1149657.00,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ],
-      "relatedBid": "192e20d0-e755-11e8-a2fa-17f2fe410162",
-      "suppliers": [
-        {
-          "id": "MD-IDNO-1005600018410",
-          "name": "Victiana",
-          "identifier": {
-            "id": "1005600018410",
-            "scheme": "MD-IDNO",
-            "legalName": "Victiana",
-            "uri": null
-          },
-          "address": {
-            "streetAddress": "ул. А. Хыждеу 66/3",
-            "postalCode": "MD2001",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "Chișinău",
-                "description": "Chișinău"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "Кондря Дмитрий",
-            "email": "d.condrea@videosecurity.md",
-            "telephone": "060301363"
-          },
-          "details": {
-            "scale": "micro"
-          }
-        }
-      ]
-    },
-    {
-      "token": "4c719a15-c500-42c5-89a5-baf5120fcc55",
-      "id": "3b3569e2-e7a0-11e8-9d90-ab96f972450f",
-      "date": "2018-11-14T00:00:00Z",
-      "description": "",
-      "status": "pending",
-      "statusDetails": "consideration",
-      "value": {
-        "amount": 601289.08,
-        "currency": "MDL"
-      },
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ],
-      "relatedBid": "f83eab60-e740-11e8-a2fa-17f2fe410162",
-      "suppliers": [
-        {
-          "id": "MD-IDNO-1006600054871",
-          "name": "DAAC System Integrator SRL",
-          "identifier": {
-            "id": "1006600054871",
-            "scheme": "MD-IDNO",
-            "legalName": "DAAC System Integrator SRL",
-            "uri": null
-          },
-          "address": {
-            "streetAddress": "str. Calea Iesilor, 10",
-            "postalCode": "2069",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "0101000",
-                "description": "test"
-              }
-            }
-          },
-          "contactPoint": {
-            "name": "Kulikov Yurii",
-            "email": "tenders@integrator.md",
-            "telephone": "+37322509758"
-          },
-          "details": {
-            "scale": "sme"
-          }
-        }
-      ]
-    }
-  ],
-  "unsuccessfulLots": []
-}
-
-{
-  "token": "4c719a15-c500-42c5-89a5-baf5120fcc55",
-  "id": "3b3569e2-e7a0-11e8-9d90-ab96f972450f",
-  "date": "2018-11-21T09:31:34Z",
-  "description": "Toate documentele solicitate au fost prezentate, cel mai mic preț",
-  "status": "pending",
-  "statusDetails": "active",
-  "value": {
-    "amount": 601289.08,
-    "currency": "MDL"
-  },
-  "relatedLots": [
-    "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-  ],
-  "relatedBid": "f83eab60-e740-11e8-a2fa-17f2fe410162",
-  "suppliers": [
-    {
-      "id": "MD-IDNO-1006600054871",
-      "name": "DAAC System Integrator SRL",
-      "identifier": {
-        "id": "1006600054871",
-        "scheme": "MD-IDNO",
-        "legalName": "DAAC System Integrator SRL",
-        "uri": null
-      },
-      "address": {
-        "streetAddress": "str. Calea Iesilor, 10",
-        "postalCode": "2069",
-        "addressDetails": {
-          "country": {
-            "scheme": "iso-alpha2",
-            "id": "MD",
-            "description": "MOLDOVA",
-            "uri": "http://reference.iatistandard.org"
-          },
-          "region": {
-            "scheme": "CUATM",
-            "id": "0101000",
-            "description": "mun.Chişinău",
-            "uri": "http://statistica.md"
-          },
-          "locality": {
-            "scheme": "other",
-            "id": "0101000",
-            "description": "test"
-          }
-        }
-      },
-      "contactPoint": {
-        "name": "Kulikov Yurii",
-        "email": "tenders@integrator.md",
-        "telephone": "+37322509758"
-      },
-      "details": {
-        "scale": "sme"
       }
-    }
-  ]
-}
-3cf3a280-ed70-11e8-b0c7-83aef5f26bb9
-{
-  "data": {
-    "award": {
-      "token": "4c719a15-c500-42c5-89a5-baf5120fcc55",
-      "id": "3b3569e2-e7a0-11e8-9d90-ab96f972450f",
-      "date": "2018-11-21T09:31:34Z",
-      "description": "Toate documentele solicitate au fost prezentate, cel mai mic preț",
-      "status": "pending",
-      "statusDetails": "active",
-      "value": {
-        "amount": 601289.08,
-        "currency": "MDL"
+    ],
+    "lotGroups": [
+      {
+        "optionToCombine": false
+      }
+    ],
+    "tenderPeriod": {
+      "startDate": "2018-12-12T07:07:26Z",
+      "endDate": "2018-12-31T07:07:26Z"
+    },
+    "enquiryPeriod": {
+      "startDate": "2018-11-28T15:43:59Z",
+      "endDate": "2018-12-12T07:07:26Z"
+    },
+    "auctionPeriod": {
+      "startDate": "2019-01-02T12:00:00Z"
+    },
+    "hasEnquiries": true,
+    "enquiries": [
+      {
+        "id": "1d0a2c30-f961-11e8-8af7-0177dfc96066",
+        "date": "2018-12-06T14:13:32Z",
+        "title": "Garanție ofertă",
+        "description": "Din ce motiv nu de acceptă o garanție pentru ofertă în formă de transfer bancar. Citat din documentele standard expuse de Dvs. : ”21.\tGaranţia pentru ofertă 21.1.\tOfertantul va depune, ca parte a ofertei sale, o Garanţie pentru ofertă (F3.2), după cum este specificat în FDApunctul 3.2. 21.2.\tGaranţia pentru ofertă va fi în suma specificată în FDApunctul 3.3, în lei moldoveneşti, şi va fi: a)\tîn formă de garanţie bancară de la o instituţie bancară licențiată, valabilă pentru perioada de valabilitate a ofertei sau altă perioadă prelungită, după caz, în conformitate cu punctul IPO23.2; sau b)\ttransfer pe contul autorităţii contractante; sau c)\talte forme acceptate de autoritatea contractantă, specificate în FDA punctul 3.2.”",
+        "answer": "Legislația prevede modalitatea garanției în 2 variante, prin transfer și pe format de hîrtie. Instituția noastră ca autoritate contractantă, apreciază a doua variantă.",
+        "dateAnswered": "2018-12-10T07:07:26Z"
+      }
+    ],
+    "amendments": [
+      {
+        "id": "30b8c271-4576-4588-8369-7c599a205ca9",
+        "date": "2018-12-06T14:10:09Z",
+        "releaseID": "ocds-b3wdp1-MD-1543419347940-EV-1543419840214-1544105409479",
+        "amendsReleaseID": "ocds-b3wdp1-MD-1543419347940-EV-1543419840214-1543419840214",
+        "rationale": "General change of Contract Notice"
+      }
+    ],
+    "documents": [
+      {
+        "id": "e8da3c5f-5083-4293-b93c-4325b999cfb0-1543419836985",
+        "documentType": "tenderNotice",
+        "title": "carne",
+        "description": "carcase de pui broiler",
+        "url": "http://storage.mtender.gov.md/get/e8da3c5f-5083-4293-b93c-4325b999cfb0-1543419836985",
+        "datePublished": "2018-11-28T15:43:59Z"
       },
-      "relatedLots": [
-        "a6228931-d6c6-11e8-99d8-67dbdbaf7b55"
-      ],
-      "relatedBid": "f83eab60-e740-11e8-a2fa-17f2fe410162",
-      "suppliers": [
+      {
+        "id": "a2e6c3f8-dd19-419f-b7de-fce05be8537a-1544105407154",
+        "documentType": "technicalSpecifications",
+        "title": "DUAE CARNE",
+        "description": "carcase de pui broiler",
+        "url": "http://storage.mtender.gov.md/get/a2e6c3f8-dd19-419f-b7de-fce05be8537a-1544105407154",
+        "datePublished": "2018-12-06T14:10:09Z"
+      },
+      {
+        "id": "1be000e2-27be-4f1e-a4ae-8e05b88ff341-1543419838146",
+        "documentType": "biddingDocuments",
+        "title": "doc stan-anulat",
+        "description": "carcase de pui broiler",
+        "url": "http://storage.mtender.gov.md/get/1be000e2-27be-4f1e-a4ae-8e05b88ff341-1543419838146",
+        "datePublished": "2018-11-28T15:43:59Z"
+      },
+      {
+        "id": "99cedb75-20b3-4299-bdcf-8b02ed587b81-1544105407876",
+        "documentType": "technicalSpecifications",
+        "title": "Documentația Standard Carne 2019",
+        "description": "carcase de pui broiler",
+        "url": "http://storage.mtender.gov.md/get/99cedb75-20b3-4299-bdcf-8b02ed587b81-1544105407876",
+        "datePublished": "2018-12-06T14:10:09Z"
+      },
+      {
+        "id": "73ff9379-a57e-4d9b-b18c-4c55907000af-1543419838768",
+        "documentType": "biddingDocuments",
+        "title": "DUAE CARNE-anulat",
+        "description": "carcase de pui broiler",
+        "url": "http://storage.mtender.gov.md/get/73ff9379-a57e-4d9b-b18c-4c55907000af-1543419838768",
+        "datePublished": "2018-11-28T15:43:59Z"
+      }
+    ],
+    "awardCriteria": "priceOnly",
+    "submissionMethod": [
+      "electronicSubmission"
+    ],
+    "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+    "submissionMethodRationale": [
+      "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+    ],
+    "requiresElectronicCatalogue": false,
+    "procurementMethodModalities": [
+      "electronicAuction"
+    ],
+    "electronicAuctions": {
+      "details": [
         {
-          "id": "MD-IDNO-1006600054871",
-          "name": "DAAC System Integrator SRL",
-          "identifier": {
-            "id": "1006600054871",
-            "scheme": "MD-IDNO",
-            "legalName": "DAAC System Integrator SRL",
-            "uri": null
+          "id": "900afdbd-71ed-495c-8693-2ab4083b1959",
+          "relatedLot": "6c8c5af1-f324-11e8-9848-d104af1f2f79",
+          "auctionPeriod": {
+            "startDate": "2019-01-02T12:00:00Z"
           },
-          "address": {
-            "streetAddress": "str. Calea Iesilor, 10",
-            "postalCode": "2069",
-            "addressDetails": {
-              "country": {
-                "scheme": "iso-alpha2",
-                "id": "MD",
-                "description": "MOLDOVA",
-                "uri": "http://reference.iatistandard.org"
-              },
-              "region": {
-                "scheme": "CUATM",
-                "id": "0101000",
-                "description": "mun.Chişinău",
-                "uri": "http://statistica.md"
-              },
-              "locality": {
-                "scheme": "other",
-                "id": "0101000",
-                "description": "test"
+          "electronicAuctionModalities": [
+            {
+              "url": "https://auction.mtender.gov.md/auctions/ocds-b3wdp1-MD-1543419347940/6c8c5af1-f324-11e8-9848-d104af1f2f79",
+              "eligibleMinimumDifference": {
+                "amount": 565.00,
+                "currency": "MDL"
               }
             }
-          },
-          "contactPoint": {
-            "name": "Kulikov Yurii",
-            "email": "tenders@integrator.md",
-            "telephone": "+37322509758"
-          },
-          "details": {
-            "scale": "sme"
-          }
+          ]
         }
       ]
-    },
-    "bidAwarded": false
-  }
-}
-
-{
-  "errors": [
+    }
+  },
+  "hasPreviousNotice": true,
+  "purposeOfNotice": {
+    "isACallForCompetition": true
+  },
+  "relatedProcesses": [
     {
-      "code": "400.04.00",
-      "description": "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class com.procurement.submission.model.dto.ocds.Document] value failed for JSON property relatedLots due to missing (therefore NULL) value for creator parameter relatedLots which is a non-nullable type\n at [Source: (String)\"{\"id\":\"f83eab60-e740-11e8-a2fa-17f2fe410162\",\"date\":\"2018-11-14T00:00:00Z\",\"status\":\"pending\",\"statusDetails\":\"empty\",\"tenderers\":[{\"id\":\"MD-IDNO-1006600054871\",\"name\":\"DAAC System Integrator SRL\",\"identifier\":{\"id\":\"1006600054871\",\"scheme\":\"MD-IDNO\",\"legalName\":\"DAAC System Integrator SRL\"},\"address\":{\"streetAddress\":\"str. Calea Iesilor, 10\",\"postalCode\":\"2069\",\"addressDetails\":{\"country\":{\"scheme\":\"iso-alpha2\",\"id\":\"MD\",\"description\":\"MOLDOVA\",\"uri\":\"http://reference.iatistandard.org\"},\"region\"[truncated 1257 chars]; line: 1, column: 1015] (through reference chain: com.procurement.submission.model.dto.ocds.Bid[\"documents\"]->java.util.ArrayList[0]->com.procurement.submission.model.dto.ocds.Document[\"relatedLots\"])"
+      "id": "6ca84761-f324-11e8-a546-9ddc63fbb6af",
+      "relationship": [
+        "planning"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-b3wdp1-MD-1543419347940-PN-1543419347967",
+      "uri": "http://public.mtender.gov.md/tenders/ocds-b3wdp1-MD-1543419347940/ocds-b3wdp1-MD-1543419347940-PN-1543419347967"
+    },
+    {
+      "id": "474158f3-f323-11e8-a546-9ddc63fbb6af",
+      "relationship": [
+        "parent"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-b3wdp1-MD-1543419347940",
+      "uri": "http://public.mtender.gov.md/tenders/ocds-b3wdp1-MD-1543419347940/ocds-b3wdp1-MD-1543419347940"
     }
   ]
 }

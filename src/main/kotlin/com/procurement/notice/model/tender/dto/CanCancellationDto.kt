@@ -12,12 +12,13 @@ import java.util.*
 data class CanCancellationDto @JsonCreator constructor(
 
     val can: Contract,
-    val awards: HashSet<Award>,
-    val bids: CanCancellationBid,
-    val lot: HashSet<Lot>
-)
 
-data class CanCancellationBid @JsonCreator constructor(
-    val details: HashSet<Bid>
+    val contract: Contract?,
+
+    val awards: HashSet<Award>,
+
+    val bids: HashSet<Bid>,
+
+    val lot: Lot
 )
 

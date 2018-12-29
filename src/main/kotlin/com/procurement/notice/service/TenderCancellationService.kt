@@ -43,7 +43,8 @@ class TenderCancellationService(private val releaseService: ReleaseService) {
                     relatedLots = relatedLots,
                     rationale = dto.amendments[0].rationale,
                     changes = null,
-                    description = dto.amendments[0].description
+                    description = dto.amendments[0].description,
+                    documents = null
             ))
         }
         record.apply {

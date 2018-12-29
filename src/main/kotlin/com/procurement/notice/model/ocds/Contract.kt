@@ -14,53 +14,55 @@ data class Contract @JsonCreator constructor(
 
         val awardId: String?,
 
-        val title: String?,
+        val relatedLots: List<String>?,
 
-        val description: String?,
+        val title: String? = null,
+
+        val description: String? = null,
 
         var status: String,
 
         var statusDetails: String,
 
-        val extendsContractId: String?,
-
-        val budgetSource: List<BudgetSource>?,
-
-        val classification: Classification?,
-
-        val period: Period?,
-
-        val value: ValueTax?,
-
-        val items: HashSet<Item>?,
-
-        val dateSigned: LocalDateTime?,
-
         var documents: HashSet<Document>?,
 
-        var relatedProcesses: HashSet<RelatedProcess>?,
+        val extendsContractId: String? = null,
 
-        val amendments: List<Amendment>?,
+        val budgetSource: List<BudgetSource>? = null,
 
-        val amendment: Amendment?,
+        val classification: Classification? = null,
 
-        val requirementResponses: HashSet<RequirementResponse>?,
+        val period: Period? = null,
 
-        val countryOfOrigin: String?,
+        val value: ValueTax? = null,
 
-        val lotVariant: HashSet<String>?,
+        val items: HashSet<Item>? = null,
 
-        val valueBreakdown: HashSet<ValueBreakdown>?,
+        val dateSigned: LocalDateTime? = null,
+
+        var relatedProcesses: HashSet<RelatedProcess>? = null,
+
+        var amendments: List<Amendment>? = null,
+
+        var amendment: Amendment? = null,
+
+        val requirementResponses: HashSet<RequirementResponse>? = null,
+
+        val countryOfOrigin: String? = null,
+
+        val lotVariant: HashSet<String>? = null,
+
+        val valueBreakdown: HashSet<ValueBreakdown>? = null,
 
         val isFrameworkOrDynamic: Boolean? = null,
 
-        var agreedMetrics: LinkedList<AgreedMetric>?,
+        var agreedMetrics: LinkedList<AgreedMetric>? = null,
 
-        var milestones: List<Milestone>?,
+        var milestones: List<Milestone>? = null,
 
-        var confirmationRequests: List<ConfirmationRequest>?,
+        var confirmationRequests: List<ConfirmationRequest>? = null,
 
-        var confirmationResponses: HashSet<ConfirmationResponse>?
+        var confirmationResponses: HashSet<ConfirmationResponse>? = null
 
 )
 

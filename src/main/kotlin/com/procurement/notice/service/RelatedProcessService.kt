@@ -5,6 +5,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
 import com.procurement.notice.model.budget.FS
+import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.RelatedProcess
@@ -165,19 +166,18 @@ class RelatedProcessService {
                     uri = getTenderUri(cpId = cpId, ocId = ocId)))
     }
 
-    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract) {
-        record.contracts?.let { cans ->
-            cans.asSequence()
-                    .firstOrNull { it.awardId == contract.awardId }
-                    ?.let { can ->
-                        if (can.relatedProcesses == null) can.relatedProcesses = hashSetOf()
-                        if (can.relatedProcesses!!.asSequence().none { it.identifier == ocId })
-                            can.relatedProcesses?.add(RelatedProcess(
-                                    id = UUIDs.timeBased().toString(),
-                                    relationship = listOf(RelatedProcessType.X_CONTRACTING),
-                                    scheme = RelatedProcessScheme.OCID,
-                                    identifier = ocId,
-                                    uri = getTenderUri(cpId = cpId, ocId = ocId)))
+    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract, cans: HashSet<Can>) {
+        cans.asSequence().forEach { can ->
+            record.contracts?.asSequence()
+                    ?.firstOrNull { it.id == can.id }
+                    ?.let { contract ->
+                        if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
+                        contract.relatedProcesses!!.add(RelatedProcess(
+                                id = UUIDs.timeBased().toString(),
+                                relationship = listOf(RelatedProcessType.X_CONTRACTING),
+                                scheme = RelatedProcessScheme.OCID,
+                                identifier = ocId,
+                                uri = getTenderUri(cpId = cpId, ocId = ocId)))
                     }
         }
     }

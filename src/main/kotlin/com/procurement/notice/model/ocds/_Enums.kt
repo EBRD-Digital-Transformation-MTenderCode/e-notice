@@ -390,9 +390,7 @@ enum class Operation(val value: String) {
     AWARD_BY_BID("awardByBid"),
     AWARD_BY_BID_EV("awardByBidEv"),
     AWARD_PERIOD_END("awardPeriodEnd"),
-    AWARD_PERIOD_END_EV("awardPeriodEndEv"),
     STANDSTILL_PERIOD("standstillPeriod"),
-    STANDSTILL_PERIOD_EV("standstillPeriodEv"),
     START_NEW_STAGE("startNewStage"),
     CREATE_PIN_ON_PN("createPINonPN"),
     CREATE_CN_ON_PN("createCNonPN"),
@@ -402,6 +400,7 @@ enum class Operation(val value: String) {
     CANCEL_PLAN("cancelPlan"),
     CANCEL_STANDSTILL("cancellationStandstillPeriod"),
     UPDATE_BID_DOCS("updateBidDocs"),
+    CREATE_AC("createAC"),
     UPDATE_AC("updateAC"),
     ISSUING_AC("issuingAC"),
     FINAL_UPDATE("finalUpdateAC"),
@@ -411,8 +410,12 @@ enum class Operation(val value: String) {
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
+    CREATE_CAN("createCan"),
     UPDATE_CAN_DOCS("updateCanDocs"),
-    SET_INITIAL_BIDS_STATUS("setInitialBidsStatus");
+    CANCEL_CAN("cancelCan"),
+    CANCEL_CAN_CONTRACT("cancelCanContract"),
+    CONFIRM_CAN("confirmCan"),
+    END_CONTRACT_PROCESS("endContractingProcess");
 
 
     companion object {
