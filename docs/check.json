@@ -1,118 +1,35 @@
 {
-  "id": "5d528390-0434-11e9-8cb1-6d2f96498bfc",
+  "id": "6c96bb30-f324-11e8-b0c7-83aef5f26bb9",
   "command": "createRelease",
   "context": {
-    "operationId": "d200d000-aa00-4000-ae0e-0f000001f077",
-    "requestId": "5d528390-0434-11e9-8cb1-6d2f96498bfc",
-    "cpid": "ocds-t1s2t3-MD-1545295172621",
-    "ocid": "ocds-t1s2t3-MD-1545295172621-EV-1545295173206",
+    "operationId": "6c96bb30-f324-11e8-b0c7-83aef5f26bb9",
+    "requestId": "6c96bb30-f324-11e8-b0c7-83aef5f26bb9",
+    "cpid": "ocds-b3wdp1-MD-1543419347940",
+    "ocid": "ocds-b3wdp1-MD-1543419347940-EV-1543419840214",
     "stage": "EV",
-    "prevStage": "EV",
-    "processType": "awardPeriodEnd",
-    "operationType": "standstillPeriodEv",
-    "phase": "awardedStandstill",
-    "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
+    "processType": "enquiryPeriodEnd",
+    "operationType": "suspendTender",
+    "phase": "suspended",
+    "owner": "434aef14-9d52-4ea0-a9f7-8737a95686c9",
     "country": "MD",
     "language": "ro",
-    "pmd": "TEST_OT",
-    "token": "cc522d3f-5f33-45da-816c-bc771ed903ad",
-    "outcomes": [
-      {
-        "id": "3a281992-094b-424f-ac38-8bd6bad8953f",
-        "token": "e9650c52-3837-446e-b149-ca90bba6c003",
-        "type": "cans"
-      }
-    ],
-    "startDate": "2018-12-20T08:50:56Z",
-    "endDate": "2018-12-20T08:51:01Z",
-    "timeStamp": 1545295856201,
-    "isAuction": false,
-    "awardCriteria": "priceOnly"
+    "pmd": "OT",
+    "token": "c9654269-756d-4e1b-b6a8-6d1f57b7aff7",
+    "startDate": "2018-12-08T18:00:00Z",
+    "timeStamp": 1544292000400,
+    "isAuction": true
   },
   "data": {
-    "items": [
-      {
-        "id": "c5e07bd0-0432-11e9-a7a1-b9da9489678e",
-        "description": "7a8695a5-fe1c-11e8-9789-97b651a29bd6",
-        "classification": {
-          "scheme": "CPV",
-          "id": "45100000-8",
-          "description": "Lucrări de pregătire a şantierului"
-        },
-        "quantity": 150.00,
-        "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
-        },
-        "relatedLot": "c5e07bd5-0432-11e9-a7a1-b9da9489678e"
-      },
-      {
-        "id": "c5e07bd1-0432-11e9-a7a1-b9da9489678e",
-        "description": "7a8695a1-fe1c-11e8-9789-97b651a29bd6",
-        "classification": {
-          "scheme": "CPV",
-          "id": "45100000-8",
-          "description": "Lucrări de pregătire a şantierului"
-        },
-        "quantity": 150.00,
-        "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
-        },
-        "relatedLot": "c5e07bd3-0432-11e9-a7a1-b9da9489678e"
-      },
-      {
-        "id": "c5e07bd2-0432-11e9-a7a1-b9da9489678e",
-        "description": "7a8695a4-fe1c-11e8-9789-97b651a29bd6",
-        "classification": {
-          "scheme": "CPV",
-          "id": "45100000-8",
-          "description": "Lucrări de pregătire a şantierului"
-        },
-        "quantity": 150.00,
-        "unit": {
-          "id": "120",
-          "name": "Milion decalitri"
-        },
-        "relatedLot": "c5e07bd4-0432-11e9-a7a1-b9da9489678e"
+    "isEnquiryPeriodExpired": true,
+    "allAnswered": false,
+    "tender": {
+      "enquiryPeriod": {
+        "startDate": "2018-11-28T15:43:59Z",
+        "endDate": "2018-12-08T18:00:00Z"
       }
-    ],
-    "standstillPeriod": {
-      "startDate": "2018-12-20T08:50:56Z",
-      "endDate": "2018-12-20T08:51:01Z"
     },
-    "awards": [
-      {
-        "id": "3cac8320-0434-11e9-a551-01d72f52ae0f",
-        "items": [
-          {
-            "id": "c5e07bd1-0432-11e9-a7a1-b9da9489678e",
-            "description": "7a8695a1-fe1c-11e8-9789-97b651a29bd6",
-            "classification": {
-              "scheme": "CPV",
-              "id": "45100000-8",
-              "description": "Lucrări de pregătire a şantierului"
-            },
-            "quantity": 150.00,
-            "unit": {
-              "id": "120",
-              "name": "Milion decalitri"
-            },
-            "relatedLot": "c5e07bd3-0432-11e9-a7a1-b9da9489678e"
-          }
-        ]
-      }
-    ],
-    "cans": [
-      {
-        "id": "3a281992-094b-424f-ac38-8bd6bad8953f",
-        "token": "e9650c52-3837-446e-b149-ca90bba6c003",
-        "date": "2018-12-20T08:50:56Z",
-        "awardId": "3cac8320-0434-11e9-a551-01d72f52ae0f",
-        "status": "pending",
-        "statusDetails": "contractProject"
-      }
-    ]
+    "tenderStatus": "active",
+    "tenderStatusDetails": "tendering"
   },
   "version": "0.0.1"
 }

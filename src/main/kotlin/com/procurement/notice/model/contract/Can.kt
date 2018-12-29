@@ -16,6 +16,8 @@ data class Can @JsonCreator constructor(
 
         val awardId: String?,
 
+        val lotId: String?,
+
         var status: String?,
 
         var statusDetails: String?,

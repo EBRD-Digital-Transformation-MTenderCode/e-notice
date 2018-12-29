@@ -582,6 +582,7 @@ class ContractingService(private val releaseService: ReleaseService,
                 id = can.id,
                 date = can.date,
                 awardId = can.awardId,
+                relatedLots = listOf(can.lotId!!),
                 status = can.status!!,
                 statusDetails = can.statusDetails!!,
                 documents = can.documents)
