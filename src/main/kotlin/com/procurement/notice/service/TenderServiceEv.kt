@@ -36,7 +36,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             updateAward(this, dto.award)
             dto.bid?.let { bid -> updateBid(this, bid) }
             dto.lot?.let { lot -> updateLot(this, lot) }
-            dto.nextAwardForUpdate?.let { award -> updateAward(this, award) }
+            dto.nextAwardForUpdate?.let { nextAward -> updateNextAward(this, nextAward) }
             dto.consideredBid?.let { consideredBid -> updateBidDocuments(this, consideredBid) }
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -90,6 +90,14 @@ class TenderServiceEv(private val releaseService: ReleaseService,
             award.description?.let { upAward.description = it }
             award.statusDetails?.let { upAward.statusDetails = it }
             award.documents?.let { upAward.documents = it }
+        }
+    }
+
+    private fun updateNextAward(record: Record, nextAward: Award) {
+        record.awards?.let { awards ->
+            val upAward = awards.firstOrNull { it.id == nextAward.id }
+                ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
+            nextAward.statusDetails?.let { upAward.statusDetails = it }
         }
     }
 
