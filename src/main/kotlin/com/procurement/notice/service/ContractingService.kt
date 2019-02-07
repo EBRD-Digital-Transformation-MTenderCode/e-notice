@@ -509,7 +509,7 @@ class ContractingService(private val releaseService: ReleaseService,
         val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = contractOcid)
         val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = releaseService.newReleaseId(contractOcid)
             tag = listOf(Tag.CONTRACT_TERMINATION)
             date = releaseDate
             contracts?.firstOrNull()?.apply {
