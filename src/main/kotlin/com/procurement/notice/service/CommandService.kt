@@ -112,6 +112,16 @@ class CommandService(private val historyDao: HistoryDao,
                     releaseDate = releaseDate,
                     data = data)
 
+            CREATE_NEGOTIATION_CN_ON_PN -> return createReleaseService.createNegotiationCnOnPn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                prevStage = prevStage!!,
+                releaseDate = releaseDate,
+                operation = CREATE_NEGOTIATION_CN_ON_PN,
+                data = data
+            )
+
             CREATE_CN_ON_PIN -> return createReleaseService.createCnOnPin(
                     cpid = cpId,
                     ocid = ocId!!,

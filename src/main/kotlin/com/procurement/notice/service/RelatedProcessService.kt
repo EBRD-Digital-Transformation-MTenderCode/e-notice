@@ -135,12 +135,15 @@ class RelatedProcessService {
     fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == ocId })
-            record.relatedProcesses?.add(RelatedProcess(
+            record.relatedProcesses?.add(
+                RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(processType),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocId,
-                    uri = getTenderUri(cpId = cpId, ocId = ocId)))
+                    uri = getTenderUri(cpId = cpId, ocId = ocId)
+                )
+            )
     }
 
     fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
