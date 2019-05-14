@@ -292,7 +292,7 @@ class ContractingService(private val releaseService: ReleaseService,
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
         recordEv.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = releaseService.newReleaseId(recordEvEntity.ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER_UPDATE)
             tender.lots?.let { updateLots(it, dto.lots) }
