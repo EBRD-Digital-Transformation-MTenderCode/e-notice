@@ -13,5 +13,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     STAGE_ERROR("00.10", "Stage invalid for this type of operation."),
     BREAKDOWN_ERROR("00.11", "Budget breakdown is empty."),
     OCID_ERROR("00.12", "OCID is empty."),
-    HISTORY_ERROR("00.12", "OCID is empty.")
+    HISTORY_ERROR("00.12", "OCID is empty."),
+    CONTRACT_BY_ID_NOT_FOUND("00.13", "The contract by id for cancel is not found."),
 }

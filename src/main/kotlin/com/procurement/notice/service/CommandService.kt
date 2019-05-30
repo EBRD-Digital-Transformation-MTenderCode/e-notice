@@ -7,7 +7,57 @@ import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Operation
-import com.procurement.notice.model.ocds.Operation.*
+import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
+import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
+import com.procurement.notice.model.ocds.Operation.AUCTION_PERIOD_END
+import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID
+import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID_EV
+import com.procurement.notice.model.ocds.Operation.AWARD_PERIOD_END
+import com.procurement.notice.model.ocds.Operation.BUYER_SIGNING_AC
+import com.procurement.notice.model.ocds.Operation.CANCEL_CAN
+import com.procurement.notice.model.ocds.Operation.CANCEL_CAN_CONTRACT
+import com.procurement.notice.model.ocds.Operation.CANCEL_PLAN
+import com.procurement.notice.model.ocds.Operation.CANCEL_STANDSTILL
+import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER
+import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
+import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
+import com.procurement.notice.model.ocds.Operation.CREATE_AC
+import com.procurement.notice.model.ocds.Operation.CREATE_CAN
+import com.procurement.notice.model.ocds.Operation.CREATE_CN
+import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PIN
+import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PN
+import com.procurement.notice.model.ocds.Operation.CREATE_EI
+import com.procurement.notice.model.ocds.Operation.CREATE_ENQUIRY
+import com.procurement.notice.model.ocds.Operation.CREATE_FS
+import com.procurement.notice.model.ocds.Operation.CREATE_NEGOTIATION_CN_ON_PN
+import com.procurement.notice.model.ocds.Operation.CREATE_PIN
+import com.procurement.notice.model.ocds.Operation.CREATE_PIN_ON_PN
+import com.procurement.notice.model.ocds.Operation.CREATE_PN
+import com.procurement.notice.model.ocds.Operation.END_AWARD_PERIOD
+import com.procurement.notice.model.ocds.Operation.END_CONTRACT_PROCESS
+import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
+import com.procurement.notice.model.ocds.Operation.FINAL_UPDATE
+import com.procurement.notice.model.ocds.Operation.ISSUING_AC
+import com.procurement.notice.model.ocds.Operation.STANDSTILL_PERIOD
+import com.procurement.notice.model.ocds.Operation.START_NEW_STAGE
+import com.procurement.notice.model.ocds.Operation.SUPPLIER_SIGNING_AC
+import com.procurement.notice.model.ocds.Operation.SUSPEND_TENDER
+import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END
+import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_AUCTION
+import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_EV
+import com.procurement.notice.model.ocds.Operation.TREASURY_APPROVING_AC
+import com.procurement.notice.model.ocds.Operation.UNSUCCESSFUL_TENDER
+import com.procurement.notice.model.ocds.Operation.UNSUSPEND_TENDER
+import com.procurement.notice.model.ocds.Operation.UPDATE_AC
+import com.procurement.notice.model.ocds.Operation.UPDATE_BID_DOCS
+import com.procurement.notice.model.ocds.Operation.UPDATE_CAN_DOCS
+import com.procurement.notice.model.ocds.Operation.UPDATE_CN
+import com.procurement.notice.model.ocds.Operation.UPDATE_EI
+import com.procurement.notice.model.ocds.Operation.UPDATE_FS
+import com.procurement.notice.model.ocds.Operation.UPDATE_PN
+import com.procurement.notice.model.ocds.Operation.UPDATE_TENDER_PERIOD
+import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
+import com.procurement.notice.service.contract.ContractingService
 import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -21,7 +71,8 @@ class CommandService(private val historyDao: HistoryDao,
                      private val tenderServiceEv: TenderServiceEv,
                      private val tenderCancellationService: TenderCancellationService,
                      private val enquiryService: EnquiryService,
-                     private val contractingService: ContractingService) {
+                     private val contractingService: ContractingService
+) {
 
     fun execute(cm: CommandMessage): ResponseDto {
 

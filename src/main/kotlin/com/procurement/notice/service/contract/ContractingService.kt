@@ -1,7 +1,7 @@
-package com.procurement.notice.service
+package com.procurement.notice.service.contract
 
-import com.datastax.driver.core.utils.UUIDs
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
@@ -13,23 +13,48 @@ import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.ContractTender
-import com.procurement.notice.model.contract.dto.*
-import com.procurement.notice.model.ocds.*
-import com.procurement.notice.model.tender.dto.CanCancellationDto
+import com.procurement.notice.model.contract.dto.ActivationDto
+import com.procurement.notice.model.contract.dto.ConfirmCanDto
+import com.procurement.notice.model.contract.dto.CreateAcDto
+import com.procurement.notice.model.contract.dto.EndAwardPeriodDto
+import com.procurement.notice.model.contract.dto.EndContractingProcessDto
+import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
+import com.procurement.notice.model.contract.dto.IssuingAcDto
+import com.procurement.notice.model.contract.dto.SigningDto
+import com.procurement.notice.model.contract.dto.UpdateAcDto
+import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
+import com.procurement.notice.model.contract.dto.VerificationDto
+import com.procurement.notice.model.ocds.Award
+import com.procurement.notice.model.ocds.Bid
+import com.procurement.notice.model.ocds.Contract
+import com.procurement.notice.model.ocds.DocumentBF
+import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.RelatedProcessType
+import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.TenderStatus
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.dto.CreateCanDto
+import com.procurement.notice.service.OrganizationService
+import com.procurement.notice.service.RelatedProcessService
+import com.procurement.notice.service.ReleaseService
+import com.procurement.notice.service.contract.strategy.CancelCANsAndContractStrategy
+import com.procurement.notice.service.contract.strategy.CancelCANsStrategy
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class ContractingService(private val releaseService: ReleaseService,
                          private val organizationService: OrganizationService,
                          private val relatedProcessService: RelatedProcessService,
                          private val budgetDao: BudgetDao,
-                         private val releaseDao: ReleaseDao) {
+                         private val releaseDao: ReleaseDao,
+                         generationService: GenerationService) {
+
+    private val cancelCANsStrategy = CancelCANsStrategy(releaseService, generationService)
+    private val cancelCANsAndContractStrategy = CancelCANsAndContractStrategy(releaseService, generationService)
 
     fun createAc(cpid: String,
                  ocid: String,
@@ -443,85 +468,35 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
+    fun cancelCan(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto =
+        cancelCANsStrategy.cancelCan(
+            cpid = cpid,
+            ocid = ocid,
+            stage = stage,
+            releaseDate = releaseDate,
+            data = data
+        )
 
-    fun cancelCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(CanCancellationDto::class.java, data)
-        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-
-        dto.can.amendment?.apply {
-            id = UUIDs.timeBased().toString()
-            amendsReleaseID = record.id
-            date = releaseDate
-
-        }
-
-        record.apply {
-            tag = listOf(Tag.AWARD_CANCELLATION)
-            date = releaseDate
-            id = releaseService.newReleaseId(ocid)
-            this.contracts?.asSequence()?.firstOrNull { it.id == dto.can.id }
-                    ?.apply {
-                        status = dto.can.status
-                        statusDetails = dto.can.statusDetails
-                        amendments = amendments?.plus(dto.can.amendment!!) ?: listOf(dto.can.amendment!!)
-                    }
-            tender.lots?.let { updateLot(it, dto.lot) }
-            bids?.details?.let { updateBids(it, dto.bids) }
-            when (awards) {
-                null -> awards = dto.awards
-                else -> updateAwards(awards!!, dto.awards)
-            }
-        }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-    fun cancelCanAndContract(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(CanCancellationDto::class.java, data)
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        dto.can.amendment?.apply {
-            id = UUIDs.timeBased().toString()
-            amendsReleaseID = record.id
-            date = releaseDate
-
-        }
-        record.apply {
-            tag = listOf(Tag.AWARD_CANCELLATION)
-            date = releaseDate
-            id = releaseService.newReleaseId(ocid)
-            this.contracts?.asSequence()?.firstOrNull { it.id == dto.can.id }
-                    ?.apply {
-                        status = dto.can.status
-                        statusDetails = dto.can.statusDetails
-                        amendments = amendments?.plus(dto.can.amendment!!) ?: listOf(dto.can.amendment!!)
-                    }
-            tender.lots?.let { updateLot(it, dto.lot) }
-            bids?.details?.let { updateBids(it, dto.bids) }
-            when (awards) {
-                null -> awards = dto.awards
-                else -> updateAwards(awards!!, dto.awards)
-            }
-        }
-        val contractOcid = dto.contract!!.id!!
-        val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = contractOcid)
-        val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
-        recordContract.apply {
-            id = releaseService.newReleaseId(contractOcid)
-            tag = listOf(Tag.CONTRACT_TERMINATION)
-            date = releaseDate
-            contracts?.firstOrNull()?.apply {
-                status = dto.contract.status
-                statusDetails = dto.contract.statusDetails
-            }
-        }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = recordContractEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
+    fun cancelCanAndContract(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto =
+        cancelCANsAndContractStrategy.cancelCanAndContract(
+            cpid = cpid,
+            ocid = ocid,
+            stage = stage,
+            releaseDate = releaseDate,
+            data = data
+        )
 
     fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(ConfirmCanDto::class.java, data)
@@ -598,15 +573,6 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
-    private fun updateCans(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
-        for (bid in recordBids) {
-            dtoBids.firstOrNull { it.id == bid.id }?.apply {
-                bid.status = this.status
-                bid.statusDetails = this.statusDetails
-            }
-        }
-    }
-
     private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
@@ -614,16 +580,6 @@ class ContractingService(private val releaseService: ReleaseService,
                 bid.statusDetails = this.statusDetails
             }
         }
-    }
-
-    private fun updateLot(recordLots: HashSet<Lot>, dtoLot: Lot) {
-        recordLots.asSequence()
-                .filter { it.id == dtoLot.id }
-                .firstOrNull()
-                ?.apply {
-                    this.status = dtoLot.status
-                    this.statusDetails = dtoLot.statusDetails
-                }
     }
 
     private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
@@ -634,8 +590,4 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
     }
-
 }
-
-
-
