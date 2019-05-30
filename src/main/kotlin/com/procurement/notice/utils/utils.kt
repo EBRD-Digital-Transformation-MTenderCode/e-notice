@@ -65,6 +65,9 @@ fun LocalDateTime.toDate(): Date {
     return Date.from(this.toInstant(ZoneOffset.UTC))
 }
 
+fun Date.toLocalDateTime(): LocalDateTime =
+    this.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+
 fun localNowUTC(): LocalDateTime {
     return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
 }
