@@ -34,53 +34,64 @@ class CancelCANsAndContractStrategy(
         data: JsonNode
     ): ResponseDto {
         val request = toObject(CancelCANsAndContractRequest::class.java, data)
-        val cancelledCAN: CancelCANsAndContractRequest.CAN = request.cans.firstOrNull {
-            it.status == "cancelled"
-        } ?: throw RuntimeException("Cancelled CAN is not found.")
-
-
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record: Record = releaseService.getRecord(recordEntity.jsonData)
+        val recordEV: Record = releaseService.getRecord(recordEntity.jsonData)
 
-        val amendment: Amendment = cancelledCAN.createAmendment(record, releaseDate)
+        val cancelledCAN: CancelCANsAndContractRequest.CancelledCAN = request.cancelledCan
 
-        val updatedRecord = record.copy(
+        /** BR-2.8.3.4 */
+        val releaseId = releaseService.newReleaseId(ocid)
+        val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseId, releaseDate)
+
+        val updatedRecordEV = recordEV.copy(
+            /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
+            /** BR-2.8.3.3 */
             date = releaseDate,
-            id = releaseService.newReleaseId(ocid),
-            contracts = record.contracts?.updateContracts(cancelledCAN, amendment),
-            tender = record.tender.copy(
-                lots = record.tender.lots?.updateLots(request.lot)
+            /** BR-2.8.3.4 */
+            id = releaseId,
+            /** BR-2.8.3.8 */
+            contracts = recordEV.contracts
+                ?.updateContracts(
+                    cancelledCAN = cancelledCAN,
+                    relatedCANs = request.relatedCANs,
+                    amendment = amendment
+                ),
+            /** BR-2.8.3.12 */
+            tender = recordEV.tender.copy(
+                /** BR-2.8.3.13 */
+                lots = recordEV.tender.lots?.updateLots(request.lot)
             ),
 
-            bids = record.bids?.copy(
-                details = record.bids?.details?.updateBids(request.bids)
+            bids = recordEV.bids?.copy(
+                /** BR-2.8.3.6 */
+                details = recordEV.bids?.details?.updateBids(request.bids)
             ),
-            awards = record.awards?.updateAwards(request.awards) ?: request.createAwards()
+            awards = recordEV.awards?.updateAwards(request.awards) ?: request.createAwards()
         )
 
-        val contractOcid = request.contract.id
-        val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = contractOcid)
-        val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
+        val contractId = request.contract.id
+        val recordACEntity = releaseService.getRecordEntity(cpId = cpid, ocId = contractId)
+        val recordAC = toObject(ContractRecord::class.java, recordACEntity.jsonData)
 
-        val updatedContract = recordContract.copy(
-            id = releaseService.newReleaseId(contractOcid),
+        val updatedRecordAC = recordAC.copy(
+            id = releaseService.newReleaseId(contractId),
             tag = listOf(Tag.CONTRACT_TERMINATION),
             date = releaseDate,
-            contracts = recordContract.contracts?.updateContract(request.contract)
+            contracts = recordAC.contracts?.updateContract(request.contract)
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage,
-            record = updatedRecord,
+            record = updatedRecordEV,
             publishDate = recordEntity.publishDate
         )
         releaseService.saveContractRecord(
             cpId = cpid,
             stage = "AC",
-            record = updatedContract,
-            publishDate = recordContractEntity.publishDate
+            record = updatedRecordAC,
+            publishDate = recordACEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
@@ -90,17 +101,20 @@ class CancelCANsAndContractStrategy(
      * BR-2.8.3.10
      * BR-2.8.3.11
      */
-    private fun CancelCANsAndContractRequest.CAN.createAmendment(
+    private fun CancelCANsAndContractRequest.CancelledCAN.createAmendment(
         record: Record,
+        releaseId: String,
         releaseDate: LocalDateTime
     ): Amendment {
         return this.amendment.let { amendment ->
             Amendment(
-                //BR-2.8.3.9
+                /** BR-2.8.3.9 */
                 id = generationService.generateAmendmentId().toString(),
-                //BR-2.8.3.10
+                /** BR-2.8.3.10 */
                 amendsReleaseID = record.id,
-                //BR-2.8.3.11
+                /** BR-2.8.3.8 4.c */
+                releaseID = releaseId,
+                /** BR-2.8.3.11 */
                 date = releaseDate,
                 description = amendment.description,
                 rationale = amendment.rationale,
@@ -120,8 +134,7 @@ class CancelCANsAndContractStrategy(
                     )
                 },
                 changes = null,
-                relatedLots = null,
-                releaseID = null
+                relatedLots = null
             )
         }
     }
@@ -130,19 +143,30 @@ class CancelCANsAndContractStrategy(
      * BR-2.8.3.8
      */
     private fun HashSet<Contract>.updateContracts(
-        can: CancelCANsAndContractRequest.CAN,
+        cancelledCAN: CancelCANsAndContractRequest.CancelledCAN,
+        relatedCANs: List<CancelCANsAndContractRequest.RelatedCAN>?,
         amendment: Amendment
     ): HashSet<Contract> {
+        val relatedCANsById = relatedCANs?.associateBy { it.id } ?: emptyMap()
+
         return this.asSequence()
             .map { contract ->
-                if (contract.id == can.id) {
-                    contract.copy(
-                        status = can.status,
-                        statusDetails = can.statusDetails,
+                val contractId = contract.id!!
+                when {
+                    contractId == cancelledCAN.id -> contract.copy(
+                        status = cancelledCAN.status,
+                        statusDetails = cancelledCAN.statusDetails,
                         amendments = contract.amendments?.plus(amendment) ?: listOf(amendment)
                     )
-                } else
-                    contract
+                    relatedCANsById.containsKey(contractId) -> {
+                        val relatedCAN = relatedCANsById.getValue(contractId)
+                        contract.copy(
+                            status = relatedCAN.status,
+                            statusDetails = relatedCAN.statusDetails
+                        )
+                    }
+                    else -> contract
+                }
             }
             .toHashSet()
     }

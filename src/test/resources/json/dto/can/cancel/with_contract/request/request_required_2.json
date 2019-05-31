@@ -4,16 +4,14 @@
     "status": "cancelled",
     "statusDetails": "empty"
   },
-  "cans": [
-    {
-      "id": "0dc181db-f5ae-4039-97c7-defcceef89a4",
-      "status": "cancelled",
-      "statusDetails": "empty",
-      "amendment": {
-        "rationale": "can[0].amendment.rationale"
-      }
+  "cancelledCan": {
+    "id": "0dc181db-f5ae-4039-97c7-defcceef89a4",
+    "status": "cancelled",
+    "statusDetails": "empty",
+    "amendment": {
+      "rationale": "can[0].amendment.rationale"
     }
-  ],
+  },
   "awards": [
     {
       "id": "",

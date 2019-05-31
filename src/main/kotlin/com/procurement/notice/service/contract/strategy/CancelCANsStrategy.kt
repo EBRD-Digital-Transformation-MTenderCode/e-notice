@@ -2,7 +2,7 @@ package com.procurement.notice.service.contract.strategy
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
-import com.procurement.notice.infrastructure.dto.can.CancelCANsRequest
+import com.procurement.notice.infrastructure.dto.can.CancelCANRequest
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Amendment
@@ -24,35 +24,38 @@ class CancelCANsStrategy(
 ) {
 
     fun cancelCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val request = toObject(CancelCANsRequest::class.java, data)
-        val cancelledCAN: CancelCANsRequest.CAN = request.cans.firstOrNull {
-            it.status == "cancelled"
-        } ?: throw RuntimeException("Cancelled CAN is not found.")
-
+        val request = toObject(CancelCANRequest::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record: Record = releaseService.getRecord(recordEntity.jsonData)
+        val recordEV: Record = releaseService.getRecord(recordEntity.jsonData)
 
-        val amendment: Amendment = cancelledCAN.createAmendment(record, releaseDate)
+        val cancelledCAN: CancelCANRequest.CancelledCAN = request.cancelledCan
+        val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseDate)
 
-        val updatedRecord = record.copy(
+        val updatedRecordEV = recordEV.copy(
+            /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
+            /** BR-2.8.3.3 */
             date = releaseDate,
+            /** BR-2.8.3.4 */
             id = releaseService.newReleaseId(ocid),
-            contracts = record.contracts?.updateContracts(cancelledCAN, amendment),
-            tender = record.tender.copy(
-                lots = record.tender.lots?.updateLots(request.lot)
+            /** BR-2.8.3.8 */
+            contracts = recordEV.contracts?.updateContracts(cancelledCAN, amendment),
+            /** BR-2.8.3.12 */
+            tender = recordEV.tender.copy(
+                /** BR-2.8.3.13 */
+                lots = recordEV.tender.lots?.updateLots(request.lot)
             ),
 
-            bids = record.bids?.copy(
-                details = record.bids?.details?.updateBids(request.bids)
+            bids = recordEV.bids?.copy(
+                details = recordEV.bids?.details?.updateBids(request.bids)
             ),
-            awards = record.awards?.updateAwards(request.awards) ?: request.createAwards()
+            awards = recordEV.awards?.updateAwards(request.awards) ?: request.createAwards()
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage,
-            record = updatedRecord,
+            record = updatedRecordEV,
             publishDate = recordEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -63,14 +66,14 @@ class CancelCANsStrategy(
      * BR-2.8.3.10
      * BR-2.8.3.11
      */
-    private fun CancelCANsRequest.CAN.createAmendment(record: Record, releaseDate: LocalDateTime): Amendment {
+    private fun CancelCANRequest.CancelledCAN.createAmendment(record: Record, releaseDate: LocalDateTime): Amendment {
         return this.amendment.let { amendment ->
             Amendment(
-                //BR-2.8.3.9
+                /**BR-2.8.3.9 */
                 id = generationService.generateAmendmentId().toString(),
-                //BR-2.8.3.10
+                /**BR-2.8.3.10 */
                 amendsReleaseID = record.id,
-                //BR-2.8.3.11
+                /**BR-2.8.3.11 */
                 date = releaseDate,
                 description = amendment.description,
                 rationale = amendment.rationale,
@@ -100,15 +103,15 @@ class CancelCANsStrategy(
      * BR-2.8.3.8
      */
     private fun HashSet<Contract>.updateContracts(
-        can: CancelCANsRequest.CAN,
+        cancelledCAN: CancelCANRequest.CancelledCAN,
         amendment: Amendment
     ): HashSet<Contract> {
         return this.asSequence()
             .map { contract ->
-                if (contract.id == can.id) {
+                if (contract.id == cancelledCAN.id) {
                     contract.copy(
-                        status = can.status,
-                        statusDetails = can.statusDetails,
+                        status = cancelledCAN.status,
+                        statusDetails = cancelledCAN.statusDetails,
                         amendments = contract.amendments?.plus(amendment) ?: listOf(amendment)
                     )
                 } else
@@ -120,7 +123,7 @@ class CancelCANsStrategy(
     /**
      * BR-2.8.3.13
      */
-    private fun HashSet<Lot>.updateLots(lot: CancelCANsRequest.Lot): HashSet<Lot> {
+    private fun HashSet<Lot>.updateLots(lot: CancelCANRequest.Lot): HashSet<Lot> {
         return this.asSequence()
             .map {
                 if (it.id == lot.id)
@@ -137,7 +140,7 @@ class CancelCANsStrategy(
     /**
      * BR-2.8.3.6
      */
-    private fun HashSet<Bid>.updateBids(bids: List<CancelCANsRequest.Bid>): HashSet<Bid> {
+    private fun HashSet<Bid>.updateBids(bids: List<CancelCANRequest.Bid>): HashSet<Bid> {
         val bidsById = bids.associateBy { it.id }
         return this.asSequence()
             .map { bid ->
@@ -154,7 +157,7 @@ class CancelCANsStrategy(
     /**
      * BR-2.8.3.7
      */
-    private fun HashSet<Award>.updateAwards(awards: List<CancelCANsRequest.Award>): HashSet<Award> {
+    private fun HashSet<Award>.updateAwards(awards: List<CancelCANRequest.Award>): HashSet<Award> {
         val awardsById = awards.associateBy { it.id }
         return this.asSequence()
             .map { award ->
@@ -169,7 +172,7 @@ class CancelCANsStrategy(
             .toHashSet()
     }
 
-    private fun CancelCANsRequest.createAwards(): HashSet<Award> {
+    private fun CancelCANRequest.createAwards(): HashSet<Award> {
         return this.awards.asSequence()
             .map { award ->
                 Award(

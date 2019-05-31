@@ -3,7 +3,7 @@ package com.procurement.notice.infrastructure.dto.can
 import com.procurement.notice.infrastructure.AbstractDTOTestBase
 import org.junit.jupiter.api.Test
 
-class CancelCANsRequestTest : AbstractDTOTestBase<CancelCANsRequest>(CancelCANsRequest::class.java) {
+class CancelCANRequestTest : AbstractDTOTestBase<CancelCANRequest>(CancelCANRequest::class.java) {
 
     @Test
     fun fully() {

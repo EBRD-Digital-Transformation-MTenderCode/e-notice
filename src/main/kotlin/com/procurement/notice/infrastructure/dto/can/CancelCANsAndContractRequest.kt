@@ -10,7 +10,11 @@ import java.time.LocalDateTime
 
 data class CancelCANsAndContractRequest(
     @field:JsonProperty("contract") @param:JsonProperty("contract") val contract: Contract,
-    @field:JsonProperty("cans") @param:JsonProperty("cans") val cans: List<CAN>,
+    @field:JsonProperty("cancelledCan") @param:JsonProperty("cancelledCan") val cancelledCan: CancelledCAN,
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("relatedCans") @param:JsonProperty("relatedCans") val relatedCANs: List<RelatedCAN>?,
+
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
     @field:JsonProperty("lot") @param:JsonProperty("lot") val lot: Lot
@@ -21,7 +25,7 @@ data class CancelCANsAndContractRequest(
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
     )
 
-    data class CAN(
+    data class CancelledCAN(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String,
@@ -52,6 +56,12 @@ data class CancelCANsAndContractRequest(
             )
         }
     }
+
+    data class RelatedCAN(
+        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+        @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
+        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
+    )
 
     data class Award(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,

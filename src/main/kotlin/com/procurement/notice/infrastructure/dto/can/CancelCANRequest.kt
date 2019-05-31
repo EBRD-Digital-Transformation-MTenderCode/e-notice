@@ -8,13 +8,13 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import java.time.LocalDateTime
 
-data class CancelCANsRequest(
-    @field:JsonProperty("cans") @param:JsonProperty("cans") val cans: List<CAN>,
+data class CancelCANRequest(
+    @field:JsonProperty("cancelledCan") @param:JsonProperty("cancelledCan") val cancelledCan: CancelledCAN,
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
     @field:JsonProperty("lot") @param:JsonProperty("lot") val lot: Lot
 ) {
-    data class CAN(
+    data class CancelledCAN(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String,
