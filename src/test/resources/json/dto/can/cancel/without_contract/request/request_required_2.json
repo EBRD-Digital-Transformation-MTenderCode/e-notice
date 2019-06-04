@@ -1,0 +1,31 @@
+{
+  "cancelledCan": {
+    "id": "0dc181db-f5ae-4039-97c7-defcceef89a4",
+    "status": "cancelled",
+    "statusDetails": "empty",
+    "amendment": {
+      "rationale": "can[0].amendment.rationale"
+    }
+  },
+  "awards": [
+    {
+      "id": "",
+      "date": "2011-03-01T15:09:00Z",
+      "relatedBid": "bid-1",
+      "status": "awards[0].status",
+      "statusDetails": "awards[0].statusDetails"
+    }
+  ],
+  "bids": [
+    {
+      "id": "bid-1",
+      "status": "bids[0].status",
+      "statusDetails": "bids[0].statusDetails"
+    }
+  ],
+  "lot": {
+    "id": "lot-1",
+    "status": "lot.status",
+    "statusDetails": "lot.statusDetails"
+  }
+}

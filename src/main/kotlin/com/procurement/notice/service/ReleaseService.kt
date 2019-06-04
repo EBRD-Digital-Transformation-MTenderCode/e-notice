@@ -214,7 +214,7 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         return params
     }
 
-    fun getParamsForUpdateCnOnPnPin(stage: Stage): Params {
+    fun getParamsForUpdateCnOnPnPin(stage: Stage, operation: Operation? = null): Params {
         val params = Params()
         when (stage) {
             Stage.PS -> {
@@ -228,6 +228,13 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
             Stage.EV -> {
                 params.statusDetails = TenderStatusDetails.EVALUATION
                 params.relatedProcessType = RelatedProcessType.X_EVALUATION
+            }
+            Stage.NP -> {
+                if(operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
+                    params.statusDetails = TenderStatusDetails.NEGOTIATION
+                    params.relatedProcessType = RelatedProcessType.X_NEGOTIATION
+                } else
+                    throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
             }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }

@@ -2,6 +2,10 @@ package com.procurement.notice.model.contract
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.procurement.notice.infrastructure.bind.amount.AmountDeserializer
+import com.procurement.notice.infrastructure.bind.amount.AmountSerializer
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 import java.math.BigDecimal
@@ -9,65 +13,69 @@ import java.math.BigDecimal
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContractPlanning @JsonCreator constructor(
 
-        var implementation: Implementation?,
+    var implementation: Implementation?,
 
-        val budget: PlanningBudget?
+    val budget: PlanningBudget?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class PlanningBudget @JsonCreator constructor(
 
-        var description: String?,
+    var description: String?,
 
-        val budgetAllocation: Set<BudgetAllocation>?,
+    val budgetAllocation: Set<BudgetAllocation>?,
 
-        val budgetSource: Set<PlanningBudgetSource>?
+    val budgetSource: Set<PlanningBudgetSource>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetAllocation @JsonCreator constructor(
 
-        var budgetBreakdownID: String?,
+    var budgetBreakdownID: String?,
 
-        val amount: BigDecimal?,
+    @JsonDeserialize(using = AmountDeserializer::class)
+    @JsonSerialize(using = AmountSerializer::class)
+    val amount: BigDecimal?,
 
-        val period: Period?,
+    val period: Period?,
 
-        val relatedItem: String?
+    val relatedItem: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class PlanningBudgetSource @JsonCreator constructor(
 
-        var budgetBreakdownID: String?,
+    var budgetBreakdownID: String?,
 
-        val amount: BigDecimal?,
+    @JsonDeserialize(using = AmountDeserializer::class)
+    @JsonSerialize(using = AmountSerializer::class)
+    val amount: BigDecimal?,
 
-        val currency: String?
+    val currency: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Implementation @JsonCreator constructor(
 
-        val transactions: Set<Transaction>?
+    val transactions: Set<Transaction>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Transaction @JsonCreator constructor(
 
-        val id: String?,
+    val id: String?,
 
-        val type: String?,
+    val type: String?,
 
-        val value: Value?,
+    val value: Value?,
 
-        val executionPeriod: ExecutionPeriod?,
+    val executionPeriod: ExecutionPeriod?,
 
-        val relatedContractMilestone: String?
+    val relatedContractMilestone: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ExecutionPeriod @JsonCreator constructor(
 
-        val durationInDays: Long?
+    val durationInDays: Long?
 )

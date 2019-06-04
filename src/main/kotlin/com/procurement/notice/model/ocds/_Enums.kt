@@ -107,6 +107,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_PRESELECTION("x_preselection"),
     X_PREQUALIFICATION("x_prequalification"),
     X_EVALUATION("x_evaluation"),
+    X_NEGOTIATION("x_negotiation"),
     PLANNING("planning"),
     X_PLANNED("x_planned"),
     X_CONTRACTING("x_contracting");
@@ -185,7 +186,8 @@ enum class TenderDescription(val text: String) {
     PQ("Prequalification stage of contracting process"),
     EV("Evaluation stage of contracting process"),
     PN("Contracting process is planned"),
-    PIN("Date of tender launch is determined")
+    PIN("Date of tender launch is determined"),
+    NP("Negotiation stage of contracting process")
 }
 
 enum class TenderTitle(val text: String) {
@@ -194,7 +196,8 @@ enum class TenderTitle(val text: String) {
     PQ("Prequalification"),
     EV("Evaluation"),
     PN("Planning Notice"),
-    PIN("Prior Notice")
+    PIN("Prior Notice"),
+    NP("Negotiation")
 }
 
 enum class TenderStatus constructor(private val value: String) {
@@ -251,6 +254,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     PLANNING("planning"),
     PLANNED("planned"),
     CLARIFICATION("clarification"),
+    NEGOTIATION("negotiation"),
     TENDERING("tendering"),
     AUCTION("auction"),
     CANCELLATION("cancellation"),
@@ -363,7 +367,8 @@ enum class Stage {
     PN,
     PIN,
     EV,
-    CT
+    CT,
+    NP
 }
 
 enum class Operation(val value: String) {
@@ -394,6 +399,7 @@ enum class Operation(val value: String) {
     START_NEW_STAGE("startNewStage"),
     CREATE_PIN_ON_PN("createPINonPN"),
     CREATE_CN_ON_PN("createCNonPN"),
+    CREATE_NEGOTIATION_CN_ON_PN("createNegotiationCnOnPn"),
     CREATE_CN_ON_PIN("createCNonPIN"),
     CANCEL_TENDER("cancelTender"),
     CANCEL_TENDER_EV("cancelTenderEv"),

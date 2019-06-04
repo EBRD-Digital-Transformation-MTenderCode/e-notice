@@ -1,0 +1,54 @@
+{
+  "contract": {
+    "id": "f97046fc-4843-4eb3-a54f-3bdd3ac5b55c",
+    "status": "cancelled",
+    "statusDetails": "empty"
+  },
+  "cancelledCan": {
+    "id": "0dc181db-f5ae-4039-97c7-defcceef89a4",
+    "status": "cancelled",
+    "statusDetails": "empty",
+    "amendment": {
+      "rationale": "can[0].amendment.rationale",
+      "description": "can[0].amendment.description",
+      "documents": [
+        {
+          "documentType": "completionCertificate",
+          "id": "can[0].document[0].id",
+          "url": "can[0].document[0].url",
+          "datePublished": "2011-06-05T17:59:00Z",
+          "title": "can[0].document[0].title",
+          "description": "can[0].document[0].description"
+        }
+      ]
+    }
+  },
+  "relatedCans": [
+    {
+      "id": "20a7ec7f-21bb-4d09-9247-9087dd3133e0",
+      "status": "active",
+      "statusDetails": "contractProject"
+    }
+  ],
+  "awards": [
+    {
+      "id": "",
+      "date": "2011-03-01T15:09:00Z",
+      "relatedBid": "bid-1",
+      "status": "awards[0].status",
+      "statusDetails": "awards[0].statusDetails"
+    }
+  ],
+  "bids": [
+    {
+      "id": "bid-1",
+      "status": "bids[0].status",
+      "statusDetails": "bids[0].statusDetails"
+    }
+  ],
+  "lot": {
+    "id": "lot-1",
+    "status": "lot.status",
+    "statusDetails": "lot.statusDetails"
+  }
+}

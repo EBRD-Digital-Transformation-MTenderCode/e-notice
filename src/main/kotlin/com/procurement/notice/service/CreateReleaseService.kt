@@ -161,6 +161,74 @@ class CreateReleaseService(private val budgetService: BudgetService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
+    fun createNegotiationCnOnPn(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        prevStage: String,
+        operation: Operation,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
+        val msTender = releaseService.getMsTender(data)
+        val recordTender = releaseService.getRecordTender(data)
+        val msEntity = releaseService.getMsEntity(cpid)
+        val ms = releaseService.getMs(msEntity.jsonData)
+        val prevProcuringEntity = ms.tender.procuringEntity
+        val params = releaseService.getParamsForUpdateCnOnPnPin(
+            stage = Stage.valueOf(stage.toUpperCase()),
+            operation = operation
+        )
+        ms.apply {
+            id = releaseService.newReleaseId(cpid) //BR-2.4.16.24
+            date = releaseDate //BR-2.4.16.25
+            tag = listOf(Tag.COMPILED) //BR-2.4.16.23
+            tender = msTender //BR-2.4.16.19
+            tender.statusDetails = params.statusDetails //BR-2.4.16.20
+            tender.procuringEntity = prevProcuringEntity //BR-2.4.16.21
+            tender.hasEnquiries = false
+        }
+
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordPN = releaseService.getRecord(recordEntity.jsonData)
+        recordPN.apply {
+            id = releaseService.newReleaseId(ocid) //BR-2.4.16.16
+            date = releaseDate //BR-2.4.16.15
+            tag = listOf(Tag.PLANNING_UPDATE) //BR-2.4.16.13
+            tender.status = TenderStatus.COMPLETE //BR-2.4.16.18
+            tender.statusDetails = TenderStatusDetails.EMPTY //BR-2.4.16.18
+        }
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = recordPN, publishDate = recordEntity.publishDate)
+
+        //BR-2.4.16.6
+        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+
+        val recordNP = recordPN.copy(
+            ocid = newOcId, //BR-2.4.16.6
+            id = releaseService.newReleaseId(newOcId), //BR-2.4.16.7
+            date = releaseDate, //BR-2.4.16.8
+            tag = listOf(Tag.TENDER), //BR-2.4.16.3
+            tender = recordTender.copy( //BR-2.4.16.11
+                title = TenderTitle.valueOf(stage.toUpperCase()).text, //BR-2.4.16.9
+                description = TenderDescription.valueOf(stage.toUpperCase()).text, //BR-2.4.16.10
+                hasEnquiries = false
+            ),
+            initiationType = InitiationType.TENDER, //BR-2.4.16.5
+            hasPreviousNotice = true, //BR-2.4.16.1
+            purposeOfNotice = PurposeOfNotice(true), //BR-2.4.16.4
+            parties = null //BR-2.4.16.12
+        )
+        //BR-2.4.16.26
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
+
+        //BR-2.4.16.2
+        relatedProcessService.addRecordRelatedProcessToRecord(record = recordNP, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
+
+        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, record = recordNP, publishDate = releaseDate.toDate())
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
+    }
+
     fun createCnOnPin(cpid: String,
                       ocid: String,
                       stage: String,
