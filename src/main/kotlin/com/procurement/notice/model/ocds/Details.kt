@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Details @JsonCreator constructor(
 
         val typeOfBuyer: String?,
@@ -61,7 +61,7 @@ data class Issue @JsonCreator constructor(
         val name: String?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BankAccount @JsonCreator constructor(
 
         val description: String?,

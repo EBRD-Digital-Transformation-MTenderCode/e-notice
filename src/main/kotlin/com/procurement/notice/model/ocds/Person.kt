@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Person @JsonCreator constructor(
 
         var title: String,
@@ -16,7 +16,7 @@ data class Person @JsonCreator constructor(
         var businessFunctions: List<BusinessFunction>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BusinessFunction @JsonCreator constructor(
 
         val id: String,

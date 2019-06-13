@@ -2,10 +2,15 @@ package com.procurement.notice.model.budget
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.InitiationType
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.RelatedProcess
+import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.Tender
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EI @JsonCreator constructor(
 
         val ocid: String,

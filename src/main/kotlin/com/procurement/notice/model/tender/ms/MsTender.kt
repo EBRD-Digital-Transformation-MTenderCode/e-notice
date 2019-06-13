@@ -3,9 +3,22 @@ package com.procurement.notice.model.tender.ms
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.AcceleratedProcedure
+import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.Classification
+import com.procurement.notice.model.ocds.DesignContest
+import com.procurement.notice.model.ocds.DynamicPurchasingSystem
+import com.procurement.notice.model.ocds.ElectronicWorkflows
+import com.procurement.notice.model.ocds.Framework
+import com.procurement.notice.model.ocds.JointProcurement
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.ocds.ProcedureOutsourcing
+import com.procurement.notice.model.ocds.TenderStatus
+import com.procurement.notice.model.ocds.TenderStatusDetails
+import com.procurement.notice.model.ocds.Value
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class MsTender @JsonCreator constructor(
 
         var id: String?,

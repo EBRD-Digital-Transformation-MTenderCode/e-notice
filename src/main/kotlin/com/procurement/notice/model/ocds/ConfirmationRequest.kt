@@ -3,7 +3,7 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ConfirmationRequest @JsonCreator constructor(
 
         var id: String,
@@ -23,7 +23,7 @@ data class ConfirmationRequest @JsonCreator constructor(
         var requestGroups: Set<RequestGroup>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RequestGroup @JsonCreator constructor(
 
         val id: String,

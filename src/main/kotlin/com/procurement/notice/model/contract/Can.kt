@@ -28,7 +28,7 @@ data class Can @JsonCreator constructor(
 )
 
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Amendment @JsonCreator constructor(
 
         val rationale: String?,

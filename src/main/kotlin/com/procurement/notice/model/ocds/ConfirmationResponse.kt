@@ -14,6 +14,7 @@ data class ConfirmationResponse @JsonCreator constructor(
         val request: String?
 )
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ConfirmationResponseValue @JsonCreator constructor(
 
         val name: String?,
@@ -27,6 +28,7 @@ data class ConfirmationResponseValue @JsonCreator constructor(
         val verification: List<Verification>?
 )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Verification @JsonCreator constructor(
 
         val type: String?,

@@ -3,10 +3,17 @@ package com.procurement.notice.model.tender.record
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.Document
+import com.procurement.notice.model.ocds.Item
+import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.LotGroup
+import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.ocds.TenderStatus
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RecordTender @JsonCreator constructor(
 
         val id: String?,

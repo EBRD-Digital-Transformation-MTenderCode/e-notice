@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.model.ocds.BudgetBreakdown
 import com.procurement.notice.model.ocds.Value
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class MsBudget @JsonCreator constructor(
 
         val id: String?,

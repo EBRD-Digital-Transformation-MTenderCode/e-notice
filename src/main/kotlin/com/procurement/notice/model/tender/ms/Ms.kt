@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Ms @JsonCreator constructor(
 
         var ocid: String?,

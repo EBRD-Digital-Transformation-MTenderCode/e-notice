@@ -3,8 +3,10 @@ package com.procurement.notice.model.contract.dto
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.contract.Can
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.Milestone
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ActivationDto @JsonCreator constructor(
 
         val contract: ContractActivation,
@@ -14,7 +16,7 @@ data class ActivationDto @JsonCreator constructor(
         val cans: HashSet<Can>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ContractActivation @JsonCreator constructor(
 
     var status: String,

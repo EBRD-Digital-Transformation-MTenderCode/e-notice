@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Classification
 import com.procurement.notice.model.ocds.PlaceOfPerformance
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ContractTender @JsonCreator constructor(
 
         val id: String? = null,
