@@ -10,7 +10,7 @@ data class UpdateCanDocumentsDto @JsonCreator constructor(
     val contract: UpdateDocumentContract
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class UpdateDocumentContract @JsonCreator constructor(
 
     val id:String,

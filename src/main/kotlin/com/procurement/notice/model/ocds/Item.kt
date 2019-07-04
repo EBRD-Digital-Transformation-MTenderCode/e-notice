@@ -8,7 +8,7 @@ import com.procurement.access.infrastructure.bind.quantity.QuantitySerializer
 import com.procurement.notice.infrastructure.bind.quantity.QuantityDeserializer
 import java.math.BigDecimal
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Item @JsonCreator constructor(
 
     val id: String?,

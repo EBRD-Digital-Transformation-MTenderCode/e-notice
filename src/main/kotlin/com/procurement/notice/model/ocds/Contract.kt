@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Contract @JsonCreator constructor(
 
         val id: String?,

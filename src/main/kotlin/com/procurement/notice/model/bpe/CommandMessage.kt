@@ -61,7 +61,7 @@ enum class ApiVersion(private val value: String) {
     }
 }
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ResponseDto(
 
         val errors: List<ResponseErrorDto>? = null,
@@ -69,7 +69,7 @@ data class ResponseDto(
         val id: String? = null
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class DataResponseDto(
 
         val cpid: String? = null,

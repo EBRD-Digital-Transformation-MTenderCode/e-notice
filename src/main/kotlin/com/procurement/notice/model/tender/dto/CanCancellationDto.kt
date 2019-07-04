@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.Lot
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CanCancellationDto @JsonCreator constructor(
 
     val can: Contract,

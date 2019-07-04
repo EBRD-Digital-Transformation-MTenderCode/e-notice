@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 
-
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ContractTerm @JsonCreator constructor(
 
         val id: String?,
@@ -12,7 +12,7 @@ data class ContractTerm @JsonCreator constructor(
         val agreedMetrics: LinkedList<AgreedMetric>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class AgreedMetric @JsonCreator constructor(
 
         var id: String?,

@@ -6,7 +6,7 @@ import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class TenderDto @JsonCreator constructor(
 
         val statusDetails: TenderStatusDetails,

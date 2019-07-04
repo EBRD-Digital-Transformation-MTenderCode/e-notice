@@ -3,11 +3,18 @@ package com.procurement.notice.model.tender.record
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.Award
+import com.procurement.notice.model.ocds.Bids
+import com.procurement.notice.model.ocds.Contract
+import com.procurement.notice.model.ocds.InitiationType
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.PurposeOfNotice
+import com.procurement.notice.model.ocds.RelatedProcess
+import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Record @JsonCreator constructor(
 
         var ocid: String?,

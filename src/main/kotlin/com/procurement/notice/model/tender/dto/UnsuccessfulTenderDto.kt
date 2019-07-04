@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class UnsuccessfulTenderDto @JsonCreator constructor(
 
         val lots: HashSet<Lot>?,

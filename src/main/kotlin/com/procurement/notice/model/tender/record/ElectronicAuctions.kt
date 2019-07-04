@@ -7,13 +7,13 @@ import com.procurement.notice.model.ocds.Value
 import java.time.LocalDateTime
 
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctions @JsonCreator constructor(
 
         val details: Set<ElectronicAuctionsDetails>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctionsDetails @JsonCreator constructor(
 
         val id: String?,
@@ -45,7 +45,7 @@ data class ElectronicAuctionResult @JsonCreator constructor(
         val value: Value?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctionProgress @JsonCreator constructor(
 
         val id: String?,

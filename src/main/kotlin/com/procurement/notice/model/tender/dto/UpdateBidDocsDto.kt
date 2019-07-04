@@ -10,7 +10,7 @@ data class UpdateBidDocsDto @JsonCreator constructor(
         val bid: BidUpdateDocs
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BidUpdateDocs @JsonCreator constructor(
 
         val id: String,
