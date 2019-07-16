@@ -22,6 +22,7 @@ import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER
 import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
 import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_AC
+import com.procurement.notice.model.ocds.Operation.CREATE_AWARD
 import com.procurement.notice.model.ocds.Operation.CREATE_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PIN
@@ -432,6 +433,7 @@ class CommandService(private val historyDao: HistoryDao,
                     stage = stage,
                     releaseDate = releaseDate,
                     data = data)
+            CREATE_AWARD -> TODO()
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }

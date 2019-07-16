@@ -421,7 +421,8 @@ enum class Operation(val value: String) {
     CANCEL_CAN("cancelCan"),
     CANCEL_CAN_CONTRACT("cancelCanContract"),
     CONFIRM_CAN("confirmCan"),
-    END_CONTRACT_PROCESS("endContractingProcess");
+    END_CONTRACT_PROCESS("endContractingProcess"),
+    CREATE_AWARD("createAward");
 
 
     companion object {
