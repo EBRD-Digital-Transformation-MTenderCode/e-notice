@@ -1,8 +1,6 @@
 package com.procurement.notice.service
 
 import com.procurement.notice.dao.HistoryDao
-import com.procurement.notice.exception.ErrorException
-import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.ResponseDto
@@ -64,19 +62,19 @@ import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 
 @Service
-class CommandService(private val historyDao: HistoryDao,
-                     private val budgetService: BudgetService,
-                     private val createReleaseService: CreateReleaseService,
-                     private val updateReleaseService: UpdateReleaseService,
-                     private val tenderService: TenderService,
-                     private val tenderServiceEv: TenderServiceEv,
-                     private val tenderCancellationService: TenderCancellationService,
-                     private val enquiryService: EnquiryService,
-                     private val contractingService: ContractingService
+class CommandService(
+    private val historyDao: HistoryDao,
+    private val budgetService: BudgetService,
+    private val createReleaseService: CreateReleaseService,
+    private val updateReleaseService: UpdateReleaseService,
+    private val tenderService: TenderService,
+    private val tenderServiceEv: TenderServiceEv,
+    private val tenderCancellationService: TenderCancellationService,
+    private val enquiryService: EnquiryService,
+    private val contractingService: ContractingService
 ) {
 
     fun execute(cm: CommandMessage): ResponseDto {
-
         var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
         if (historyEntity != null) {
             return toObject(ResponseDto::class.java, historyEntity.jsonData)
@@ -85,12 +83,10 @@ class CommandService(private val historyDao: HistoryDao,
             CommandType.CREATE_RELEASE -> createRelease(cm)
         }
         historyEntity = historyDao.saveHistory(cm.id, cm.command.value(), response)
-        return toObject(ResponseDto::
-        class.java, historyEntity.jsonData)
+        return toObject(ResponseDto::class.java, historyEntity.jsonData)
     }
 
     fun createRelease(cm: CommandMessage): ResponseDto {
-
         val cpId = cm.context.cpid
         val ocId = cm.context.ocid
         val stage = cm.context.stage
@@ -100,71 +96,80 @@ class CommandService(private val historyDao: HistoryDao,
         val isAuction = cm.context.isAuction
         val data = cm.data
 
-        when (Operation.fromValue(operationType)) {
+        return when (Operation.fromValue(operationType)) {
 
-            CREATE_EI -> return budgetService.createEi(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+            CREATE_EI -> budgetService.createEi(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            UPDATE_EI -> return budgetService.updateEi(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+            UPDATE_EI -> budgetService.updateEi(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            CREATE_FS -> return budgetService.createFs(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+            CREATE_FS -> budgetService.createFs(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            UPDATE_FS -> return budgetService.updateFs(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+            UPDATE_FS -> budgetService.updateFs(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            CREATE_CN -> return createReleaseService.createCnPnPin(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data,
-                    operation = CREATE_CN)
+            CREATE_CN -> createReleaseService.createCnPnPin(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data,
+                operation = CREATE_CN
+            )
 
-            CREATE_PN -> return createReleaseService.createCnPnPin(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data,
-                    operation = CREATE_PN)
+            CREATE_PN -> createReleaseService.createCnPnPin(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data,
+                operation = CREATE_PN
+            )
 
-            CREATE_PIN -> return createReleaseService.createCnPnPin(
-                    cpid = cpId,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data,
-                    operation = CREATE_PIN)
+            CREATE_PIN -> createReleaseService.createCnPnPin(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data,
+                operation = CREATE_PIN
+            )
 
-            CREATE_PIN_ON_PN -> return createReleaseService.createPinOnPn(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    prevStage = prevStage!!,
-                    releaseDate = releaseDate,
-                    data = data)
+            CREATE_PIN_ON_PN -> createReleaseService.createPinOnPn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                prevStage = prevStage!!,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            CREATE_CN_ON_PN -> return createReleaseService.createCnOnPn(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    prevStage = prevStage!!,
-                    releaseDate = releaseDate,
-                    data = data)
+            CREATE_CN_ON_PN -> createReleaseService.createCnOnPn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                prevStage = prevStage!!,
+                releaseDate = releaseDate,
+                data = data
+            )
 
-            CREATE_NEGOTIATION_CN_ON_PN -> return createReleaseService.createNegotiationCnOnPn(
+            CREATE_NEGOTIATION_CN_ON_PN -> createReleaseService.createNegotiationCnOnPn(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
@@ -174,267 +179,314 @@ class CommandService(private val historyDao: HistoryDao,
                 data = data
             )
 
-            CREATE_CN_ON_PIN -> return createReleaseService.createCnOnPin(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    prevStage = prevStage!!,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UPDATE_CN -> return updateReleaseService.updateCn(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    isAuction = isAuction!!,
-                    data = data)
-
-            UPDATE_PN -> return updateReleaseService.updatePn(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UPDATE_TENDER_PERIOD -> return updateReleaseService.updateTenderPeriod(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            CREATE_ENQUIRY -> return enquiryService.createEnquiry(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            ADD_ANSWER -> return enquiryService.addAnswer(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            SUSPEND_TENDER -> return tenderService.suspendTender(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UNSUSPEND_TENDER -> return tenderService.unsuspendTender(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UNSUCCESSFUL_TENDER -> return tenderService.tenderUnsuccessful(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            TENDER_PERIOD_END -> return tenderService.tenderPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            TENDER_PERIOD_END_AUCTION -> return tenderService.tenderPeriodEndAuction(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            AUCTION_PERIOD_END -> return tenderService.auctionPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            TENDER_PERIOD_END_EV -> return tenderService.tenderPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            ENQUIRY_PERIOD_END -> return tenderServiceEv.enquiryPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            AWARD_BY_BID -> return tenderService.awardByBid(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            AWARD_BY_BID_EV -> return tenderServiceEv.awardByBidEv(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            STANDSTILL_PERIOD -> return tenderService.standstillPeriod(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            AWARD_PERIOD_END -> return tenderService.awardPeriodEnd(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            START_NEW_STAGE -> return tenderService.startNewStage(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    prevStage = prevStage!!,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            CANCEL_STANDSTILL -> return tenderCancellationService.cancellationStandstillPeriod(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> return tenderCancellationService.tenderCancellation(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UPDATE_BID_DOCS -> return tenderServiceEv.updateBidDocs(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            CREATE_AC -> return contractingService.createAc(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            UPDATE_AC -> return contractingService.updateAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            ISSUING_AC -> return contractingService.issuingAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            FINAL_UPDATE -> return contractingService.finalUpdateAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-
-            BUYER_SIGNING_AC -> return contractingService.buyerSigningAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            SUPPLIER_SIGNING_AC -> return contractingService.supplierSigningAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            VERIFICATION_AC -> return contractingService.verificationAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            TREASURY_APPROVING_AC -> return contractingService.treasuryApprovingAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            ACTIVATION_AC -> return contractingService.activationAC(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            CREATE_CAN -> return contractingService.createCan(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            UPDATE_CAN_DOCS -> return contractingService.updateCanDocs(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            CANCEL_CAN -> return contractingService.cancelCan(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data
+            CREATE_CN_ON_PIN -> createReleaseService.createCnOnPin(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                prevStage = prevStage!!,
+                releaseDate = releaseDate,
+                data = data
             )
-            CANCEL_CAN_CONTRACT -> return contractingService.cancelCanAndContract(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data
+
+            UPDATE_CN -> updateReleaseService.updateCn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                isAuction = isAuction!!,
+                data = data
             )
-            END_AWARD_PERIOD -> return contractingService.endAwardPeriod(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            CONFIRM_CAN -> return contractingService.confirmCan(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
-            END_CONTRACT_PROCESS-> return contractingService.endContractingProcess(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
-                    releaseDate = releaseDate,
-                    data = data)
+
+            UPDATE_PN -> updateReleaseService.updatePn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UPDATE_TENDER_PERIOD -> updateReleaseService.updateTenderPeriod(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CREATE_ENQUIRY -> enquiryService.createEnquiry(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            ADD_ANSWER -> enquiryService.addAnswer(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            SUSPEND_TENDER -> tenderService.suspendTender(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UNSUSPEND_TENDER -> tenderService.unsuspendTender(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UNSUCCESSFUL_TENDER -> tenderService.tenderUnsuccessful(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            TENDER_PERIOD_END -> tenderService.tenderPeriodEnd(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            TENDER_PERIOD_END_AUCTION -> tenderService.tenderPeriodEndAuction(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            AUCTION_PERIOD_END -> tenderService.auctionPeriodEnd(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            TENDER_PERIOD_END_EV -> tenderService.tenderPeriodEnd(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            ENQUIRY_PERIOD_END -> tenderServiceEv.enquiryPeriodEnd(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            AWARD_BY_BID -> tenderService.awardByBid(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            AWARD_BY_BID_EV -> tenderServiceEv.awardByBidEv(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            STANDSTILL_PERIOD -> tenderService.standstillPeriod(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            AWARD_PERIOD_END -> tenderService.awardPeriodEnd(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            START_NEW_STAGE -> tenderService.startNewStage(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                prevStage = prevStage!!,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CANCEL_STANDSTILL -> tenderCancellationService.cancellationStandstillPeriod(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> tenderCancellationService.tenderCancellation(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UPDATE_BID_DOCS -> tenderServiceEv.updateBidDocs(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CREATE_AC -> contractingService.createAc(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UPDATE_AC -> contractingService.updateAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            ISSUING_AC -> contractingService.issuingAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            FINAL_UPDATE -> contractingService.finalUpdateAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            BUYER_SIGNING_AC -> contractingService.buyerSigningAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            SUPPLIER_SIGNING_AC -> contractingService.supplierSigningAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            VERIFICATION_AC -> contractingService.verificationAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            TREASURY_APPROVING_AC -> contractingService.treasuryApprovingAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            ACTIVATION_AC -> contractingService.activationAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CREATE_CAN -> contractingService.createCan(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UPDATE_CAN_DOCS -> contractingService.updateCanDocs(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CANCEL_CAN -> contractingService.cancelCan(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CANCEL_CAN_CONTRACT -> contractingService.cancelCanAndContract(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            END_AWARD_PERIOD -> contractingService.endAwardPeriod(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            CONFIRM_CAN -> contractingService.confirmCan(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            END_CONTRACT_PROCESS -> contractingService.endContractingProcess(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
             CREATE_AWARD -> TODO()
-            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
     }
 }
