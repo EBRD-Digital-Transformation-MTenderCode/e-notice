@@ -1,0 +1,186 @@
+{
+  "award": {
+    "id": "09d528dc-0fcf-45b7-a192-dfd8c1464420",
+    "date": "2019-10-29T16:51:00Z",
+    "status": "active",
+    "statusDetails": "empty",
+    "relatedLots": [
+      "76d15fa3-5793-440b-ad24-5fc9ce776244",
+      "d5f79a36-01fe-4caf-abe0-988f98f889a8"
+    ],
+    "value": {
+      "amount": 150.01,
+      "currency": "MDL"
+    },
+    "suppliers": [
+      {
+        "id": "32be2b96-19c1-4121-b92a-cfddb82a4315",
+        "name": "award.suppliers[0].name",
+        "identifier": {
+          "scheme": "award.suppliers[0].identifier.scheme",
+          "id": "award.suppliers[0].identifier.id",
+          "legalName": "award.suppliers[0].identifier.legalName"
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "award.suppliers[0].additionalIdentifiers[0].scheme",
+            "id": "award.suppliers[0].additionalIdentifiers[0].id",
+            "legalName": "award.suppliers[0].additionalIdentifiers[0].legalName"
+          }
+        ],
+        "address": {
+          "streetAddress": "award.suppliers[0].address.streetAddress",
+          "addressDetails": {
+            "country": {
+              "scheme": "award.suppliers[0].address.addressDetails.country.scheme",
+              "id": "award.suppliers[0].address.addressDetails.country.id",
+              "description": "award.suppliers[0].address.addressDetails.country.description",
+              "uri": "award.suppliers[0].address.addressDetails.country.uri"
+            },
+            "region": {
+              "scheme": "award.suppliers[0].address.addressDetails.region.scheme",
+              "id": "award.suppliers[0].address.addressDetails.region.id",
+              "description": "award.suppliers[0].address.addressDetails.region.description",
+              "uri": "award.suppliers[0].address.addressDetails.region.uri"
+            },
+            "locality": {
+              "scheme": "award.suppliers[0].address.addressDetails.locality.scheme",
+              "id": "award.suppliers[0].address.addressDetails.locality.id",
+              "description": "award.suppliers[0].address.addressDetails.locality.description"
+            }
+          }
+        },
+        "contactPoint": {
+          "name": "award.suppliers[0].contactPoint.name",
+          "email": "award.suppliers[0].contactPoint.email",
+          "telephone": "award.suppliers[0].contactPoint.telephone"
+        },
+        "details": {
+          "scale": "sme"
+        }
+      }
+    ]
+  },
+  "lots": [
+    {
+      "id": "76d15fa3-5793-440b-ad24-5fc9ce776244",
+      "title": "lots[0].title",
+      "description": "lots[0].description",
+      "status": "planning",
+      "statusDetails": "awarded",
+      "value": {
+        "amount": 100.0,
+        "currency": "MDL"
+      },
+      "options": [
+        {
+          "hasOptions": false
+        }
+      ],
+      "variants": [
+        {
+          "hasVariants": false
+        }
+      ],
+      "renewals": [
+        {
+          "hasRenewals": false
+        }
+      ],
+      "recurrentProcurement": [
+        {
+          "isRecurrent": false
+        }
+      ],
+      "contractPeriod": {
+        "startDate": "2019-10-15T10:01:00Z",
+        "endDate": "2019-10-30T16:25:00Z"
+      },
+      "placeOfPerformance": {
+        "address": {
+          "streetAddress": "lots[0].placeOfPerformance.address.streetAddress",
+          "addressDetails": {
+            "country": {
+              "scheme": "lots[0].placeOfPerformance.address.addressDetails.country.scheme",
+              "id": "lots[0].placeOfPerformance.address.addressDetails.country.id",
+              "description": "lots[0].placeOfPerformance.address.addressDetails.country.description",
+              "uri": "lots[0].placeOfPerformance.address.addressDetails.country.uri"
+            },
+            "region": {
+              "scheme": "lots[0].placeOfPerformance.address.addressDetails.region.scheme",
+              "id": "lots[0].placeOfPerformance.address.addressDetails.region.id",
+              "description": "lots[0].placeOfPerformance.address.addressDetails.region.description",
+              "uri": "lots[0].placeOfPerformance.address.addressDetails.region.uri"
+            },
+            "locality": {
+              "scheme": "lots[0].placeOfPerformance.address.addressDetails.locality.scheme",
+              "id": "lots[0].placeOfPerformance.address.addressDetails.locality.id",
+              "description": "lots[0].placeOfPerformance.address.addressDetails.locality.description"
+            }
+          }
+        },
+        "description": "lots[0].placeOfPerformance.description"
+      }
+    },
+    {
+      "id": "d5f79a36-01fe-4caf-abe0-988f98f889a8",
+      "title": "lots[1].title",
+      "description": "lots[1].description",
+      "status": "complete",
+      "statusDetails": "unsuccessful",
+      "value": {
+        "amount": 50.1,
+        "currency": "MDL"
+      },
+      "options": [
+        {
+          "hasOptions": false
+        }
+      ],
+      "variants": [
+        {
+          "hasVariants": false
+        }
+      ],
+      "renewals": [
+        {
+          "hasRenewals": false
+        }
+      ],
+      "recurrentProcurement": [
+        {
+          "isRecurrent": false
+        }
+      ],
+      "contractPeriod": {
+        "startDate": "2019-11-01T00:01:00Z",
+        "endDate": "2019-11-12T06:15:00Z"
+      },
+      "placeOfPerformance": {
+        "address": {
+          "streetAddress": "lots[1].placeOfPerformance.address.streetAddress",
+          "addressDetails": {
+            "country": {
+              "scheme": "lots[1].placeOfPerformance.address.addressDetails.country.scheme",
+              "id": "lots[1].placeOfPerformance.address.addressDetails.country.id",
+              "description": "lots[1].placeOfPerformance.address.addressDetails.country.description",
+              "uri": "lots[1].placeOfPerformance.address.addressDetails.country.uri"
+            },
+            "region": {
+              "scheme": "lots[1].placeOfPerformance.address.addressDetails.region.scheme",
+              "id": "lots[1].placeOfPerformance.address.addressDetails.region.id",
+              "description": "lots[1].placeOfPerformance.address.addressDetails.region.description",
+              "uri": "lots[1].placeOfPerformance.address.addressDetails.region.uri"
+            },
+            "locality": {
+              "scheme": "lots[1].placeOfPerformance.address.addressDetails.locality.scheme",
+              "id": "lots[1].placeOfPerformance.address.addressDetails.locality.id",
+              "description": "lots[1].placeOfPerformance.address.addressDetails.locality.description"
+            }
+          }
+        },
+        "description": "lots[1].placeOfPerformance.description"
+      }
+    }
+  ]
+}
