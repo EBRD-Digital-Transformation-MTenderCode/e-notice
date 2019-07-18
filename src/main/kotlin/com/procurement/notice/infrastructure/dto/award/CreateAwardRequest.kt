@@ -172,8 +172,13 @@ data class CreateAwardRequest(
         )
 
         data class ContractPeriod(
-            @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: String,
-            @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: String
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
+
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
         )
 
         data class PlaceOfPerformance(
