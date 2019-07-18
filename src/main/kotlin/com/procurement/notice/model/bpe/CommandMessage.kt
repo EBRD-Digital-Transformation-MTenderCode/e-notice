@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.utils.toLocalDateTime
+import java.time.LocalDateTime
 
 data class CommandMessage @JsonCreator constructor(
 
@@ -15,6 +18,22 @@ data class CommandMessage @JsonCreator constructor(
         val data: JsonNode,
         val version: ApiVersion
 )
+
+val CommandMessage.cpid: String
+    get() = this.context.cpid
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'cpid' attribute in context.")
+
+val CommandMessage.ocid: String
+    get() = this.context.ocid
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'ocid' attribute in context.")
+
+val CommandMessage.stage: String
+    get() = this.context.stage
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'stage' attribute in context.")
+
+val CommandMessage.startDate: LocalDateTime
+    get() = this.context.startDate?.toLocalDateTime()
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'startDate' attribute in context.")
 
 data class Context @JsonCreator constructor(
         val operationId: String?,
