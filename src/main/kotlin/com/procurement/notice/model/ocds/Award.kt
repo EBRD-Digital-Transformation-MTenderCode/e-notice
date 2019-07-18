@@ -21,19 +21,19 @@ data class Award @JsonCreator constructor(
 
         val value: Value?,
 
-        val suppliers: HashSet<OrganizationReference>?,
+        val suppliers: List<OrganizationReference>?,
 
-        var items: HashSet<Item>?,
+        var items: List<Item>?,
 
         val contractPeriod: Period?,
 
-        var documents: HashSet<Document>?,
+        var documents: List<Document>?,
 
         val amendments: List<Amendment>?,
 
         val amendment: Amendment?,
 
-        val requirementResponses: HashSet<RequirementResponse>?,
+        val requirementResponses: List<RequirementResponse>?,
 
         val reviewProceedings: ReviewProceedings?,
 
