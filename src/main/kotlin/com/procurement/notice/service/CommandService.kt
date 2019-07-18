@@ -1,9 +1,18 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.application.service.award.AwardService
+import com.procurement.notice.application.service.award.CreateAwardContext
+import com.procurement.notice.application.service.award.CreateAwardData
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
+import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.bpe.cpid
+import com.procurement.notice.model.bpe.ocid
+import com.procurement.notice.model.bpe.stage
+import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
@@ -71,7 +80,8 @@ class CommandService(
     private val tenderServiceEv: TenderServiceEv,
     private val tenderCancellationService: TenderCancellationService,
     private val enquiryService: EnquiryService,
-    private val contractingService: ContractingService
+    private val contractingService: ContractingService,
+    private val awardService: AwardService
 ) {
 
     fun execute(cm: CommandMessage): ResponseDto {
@@ -486,7 +496,187 @@ class CommandService(
                 data = data
             )
 
-            CREATE_AWARD -> TODO()
+            CREATE_AWARD -> {
+                val createAwardContext = CreateAwardContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate
+                )
+
+                val request = toObject(CreateAwardRequest::class.java, cm.data)
+                val createAwardData = CreateAwardData(
+                    award = request.award.let { award ->
+                        CreateAwardData.Award(
+                            id = award.id,
+                            date = award.date,
+                            status = award.status,
+                            statusDetails = award.statusDetails,
+                            relatedLots = award.relatedLots.toList(),
+                            description = award.description,
+                            value = award.value.let { value ->
+                                CreateAwardData.Award.Value(
+                                    amount = value.amount,
+                                    currency = value.currency
+                                )
+                            },
+                            suppliers = award.suppliers.map { supplier ->
+                                CreateAwardData.Award.Supplier(
+                                    id = supplier.id,
+                                    name = supplier.name,
+                                    identifier = supplier.identifier.let { identifier ->
+                                        CreateAwardData.Award.Supplier.Identifier(
+                                            scheme = identifier.scheme,
+                                            id = identifier.id,
+                                            legalName = identifier.legalName,
+                                            uri = identifier.uri
+                                        )
+                                    },
+                                    additionalIdentifiers = supplier.additionalIdentifiers?.map { additionalIdentifier ->
+                                        CreateAwardData.Award.Supplier.AdditionalIdentifier(
+                                            scheme = additionalIdentifier.scheme,
+                                            id = additionalIdentifier.id,
+                                            legalName = additionalIdentifier.legalName,
+                                            uri = additionalIdentifier.uri
+                                        )
+                                    },
+                                    address = supplier.address.let { address ->
+                                        CreateAwardData.Award.Supplier.Address(
+                                            streetAddress = address.streetAddress,
+                                            postalCode = address.postalCode,
+                                            addressDetails = address.addressDetails.let { addressDetails ->
+                                                CreateAwardData.Award.Supplier.Address.AddressDetails(
+                                                    country = addressDetails.country.let { country ->
+                                                        CreateAwardData.Award.Supplier.Address.AddressDetails.Country(
+                                                            scheme = country.scheme,
+                                                            id = country.id,
+                                                            description = country.description,
+                                                            uri = country.uri
+                                                        )
+                                                    },
+                                                    region = addressDetails.region.let { region ->
+                                                        CreateAwardData.Award.Supplier.Address.AddressDetails.Region(
+                                                            scheme = region.scheme,
+                                                            id = region.id,
+                                                            description = region.description,
+                                                            uri = region.uri
+                                                        )
+                                                    },
+                                                    locality = addressDetails.locality.let { locality ->
+                                                        CreateAwardData.Award.Supplier.Address.AddressDetails.Locality(
+                                                            scheme = locality.scheme,
+                                                            id = locality.id,
+                                                            description = locality.description,
+                                                            uri = locality.uri
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    },
+                                    contactPoint = supplier.contactPoint.let { contactPoint ->
+                                        CreateAwardData.Award.Supplier.ContactPoint(
+                                            name = contactPoint.name,
+                                            email = contactPoint.email,
+                                            telephone = contactPoint.telephone,
+                                            faxNumber = contactPoint.faxNumber,
+                                            url = contactPoint.url
+                                        )
+                                    },
+                                    details = supplier.details.let { details ->
+                                        CreateAwardData.Award.Supplier.Details(
+                                            scale = details.scale
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    lots = request.lots?.map { lot ->
+                        CreateAwardData.Lot(
+                            id = lot.id,
+                            title = lot.title,
+                            description = lot.description,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails,
+                            value = lot.value.let { value ->
+                                CreateAwardData.Lot.Value(
+                                    amount = value.amount,
+                                    currency = value.currency
+                                )
+                            },
+                            options = lot.options.map { option ->
+                                CreateAwardData.Lot.Option(
+                                    hasOptions = option.hasOptions
+                                )
+                            },
+                            variants = lot.variants.map { variant ->
+                                CreateAwardData.Lot.Variant(
+                                    hasVariants = variant.hasVariants
+                                )
+                            },
+                            renewals = lot.renewals.map { renewal ->
+                                CreateAwardData.Lot.Renewal(
+                                    hasRenewals = renewal.hasRenewals
+                                )
+                            },
+                            recurrentProcurement = lot.recurrentProcurement.map { recurrentProcurement ->
+                                CreateAwardData.Lot.RecurrentProcurement(
+                                    isRecurrent = recurrentProcurement.isRecurrent
+                                )
+                            },
+                            contractPeriod = lot.contractPeriod.let { contractPeriod ->
+                                CreateAwardData.Lot.ContractPeriod(
+                                    startDate = contractPeriod.startDate,
+                                    endDate = contractPeriod.endDate
+                                )
+                            },
+                            placeOfPerformance = lot.placeOfPerformance.let { placeOfPerformance ->
+                                CreateAwardData.Lot.PlaceOfPerformance(
+                                    description = placeOfPerformance.description,
+                                    address = placeOfPerformance.address.let { address ->
+                                        CreateAwardData.Lot.PlaceOfPerformance.Address(
+                                            streetAddress = address.streetAddress,
+                                            postalCode = address.postalCode,
+                                            addressDetails = address.addressDetails.let { addressDetails ->
+                                                CreateAwardData.Lot.PlaceOfPerformance.Address.AddressDetails(
+                                                    country = addressDetails.country.let { country ->
+                                                        CreateAwardData.Lot.PlaceOfPerformance.Address.AddressDetails.Country(
+                                                            scheme = country.scheme,
+                                                            id = country.id,
+                                                            description = country.description,
+                                                            uri = country.uri
+                                                        )
+                                                    },
+                                                    region = addressDetails.region.let { region ->
+                                                        CreateAwardData.Lot.PlaceOfPerformance.Address.AddressDetails.Region(
+                                                            scheme = region.scheme,
+                                                            id = region.id,
+                                                            description = region.description,
+                                                            uri = region.uri
+                                                        )
+                                                    },
+                                                    locality = addressDetails.locality.let { locality ->
+                                                        CreateAwardData.Lot.PlaceOfPerformance.Address.AddressDetails.Locality(
+                                                            scheme = locality.scheme,
+                                                            id = locality.id,
+                                                            description = locality.description,
+                                                            uri = locality.uri
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+                awardService.createAward(context = createAwardContext, data = createAwardData)
+                ResponseDto(data = DataResponseDto())
+            }
         }
     }
 }
