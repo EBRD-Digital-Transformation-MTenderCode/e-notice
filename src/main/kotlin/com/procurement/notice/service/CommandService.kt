@@ -784,7 +784,7 @@ class CommandService(
                         )
                     },
                     tender = StartAwardPeriodData.Tender(
-                        statusDetails = request.statusDetails
+                        statusDetails = request.tenderStatusDetails
                     )
                 )
 

@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 data class StartAwardPeriodRequest(
     @field:JsonProperty("award") @param:JsonProperty("award") val award: Award,
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,
-    @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: TenderStatusDetails
+    @field:JsonProperty("tenderStatusDetails") @param:JsonProperty("tenderStatusDetails") val tenderStatusDetails: TenderStatusDetails
 ) {
 
     data class Award(
