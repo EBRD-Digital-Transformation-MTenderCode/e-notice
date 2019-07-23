@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 data class StartAwardPeriodRequest(
     @field:JsonProperty("award") @param:JsonProperty("award") val award: Award,
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,
-    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender
+    @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: TenderStatusDetails
 ) {
 
     data class Award(
@@ -135,9 +135,5 @@ data class StartAwardPeriodRequest(
         @JsonDeserialize(using = JsonDateTimeDeserializer::class)
         @JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime
-    )
-
-    data class Tender(
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: TenderStatusDetails
     )
 }

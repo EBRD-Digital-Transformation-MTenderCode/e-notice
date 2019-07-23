@@ -783,11 +783,9 @@ class CommandService(
                             startDate = awardPeriod.startDate
                         )
                     },
-                    tender = request.tender.let { tender ->
-                        StartAwardPeriodData.Tender(
-                            statusDetails = tender.statusDetails
-                        )
-                    }
+                    tender = StartAwardPeriodData.Tender(
+                        statusDetails = request.statusDetails
+                    )
                 )
 
                 awardService.startAwardPeriod(context = startAwardPeriodContext, data = startAwardPeriodData)
