@@ -679,7 +679,12 @@ class CommandService(
                     }
                 )
                 awardService.createAward(context = createAwardContext, data = createAwardData)
-                ResponseDto(data = DataResponseDto())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = createAwardContext.cpid,
+                        ocid = createAwardContext.ocid
+                    )
+                )
             }
             START_AWARD_PERIOD -> {
                 val startAwardPeriodContext = StartAwardPeriodContext(
@@ -789,7 +794,12 @@ class CommandService(
                 )
 
                 awardService.startAwardPeriod(context = startAwardPeriodContext, data = startAwardPeriodData)
-                ResponseDto(data = DataResponseDto())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = startAwardPeriodContext.cpid,
+                        ocid = startAwardPeriodContext.ocid
+                    )
+                )
             }
         }
     }
