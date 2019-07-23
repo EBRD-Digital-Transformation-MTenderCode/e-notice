@@ -3,8 +3,11 @@ package com.procurement.notice.service
 import com.procurement.notice.application.service.award.AwardService
 import com.procurement.notice.application.service.award.CreateAwardContext
 import com.procurement.notice.application.service.award.CreateAwardData
+import com.procurement.notice.application.service.award.StartAwardPeriodContext
+import com.procurement.notice.application.service.award.StartAwardPeriodData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
+import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -47,6 +50,7 @@ import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.FINAL_UPDATE
 import com.procurement.notice.model.ocds.Operation.ISSUING_AC
 import com.procurement.notice.model.ocds.Operation.STANDSTILL_PERIOD
+import com.procurement.notice.model.ocds.Operation.START_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.START_NEW_STAGE
 import com.procurement.notice.model.ocds.Operation.SUPPLIER_SIGNING_AC
 import com.procurement.notice.model.ocds.Operation.SUSPEND_TENDER
@@ -675,6 +679,118 @@ class CommandService(
                     }
                 )
                 awardService.createAward(context = createAwardContext, data = createAwardData)
+                ResponseDto(data = DataResponseDto())
+            }
+            START_AWARD_PERIOD -> {
+                val startAwardPeriodContext = StartAwardPeriodContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate
+                )
+
+                val request = toObject(StartAwardPeriodRequest::class.java, cm.data)
+                val startAwardPeriodData = StartAwardPeriodData(
+                    award = request.award.let { award ->
+                        StartAwardPeriodData.Award(
+                            id = award.id,
+                            date = award.date,
+                            status = award.status,
+                            statusDetails = award.statusDetails,
+                            relatedLots = award.relatedLots.toList(),
+                            description = award.description,
+                            value = award.value.let { value ->
+                                StartAwardPeriodData.Award.Value(
+                                    amount = value.amount,
+                                    currency = value.currency
+                                )
+                            },
+                            suppliers = award.suppliers.map { supplier ->
+                                StartAwardPeriodData.Award.Supplier(
+                                    id = supplier.id,
+                                    name = supplier.name,
+                                    identifier = supplier.identifier.let { identifier ->
+                                        StartAwardPeriodData.Award.Supplier.Identifier(
+                                            scheme = identifier.scheme,
+                                            id = identifier.id,
+                                            legalName = identifier.legalName,
+                                            uri = identifier.uri
+                                        )
+                                    },
+                                    additionalIdentifiers = supplier.additionalIdentifiers?.map { additionalIdentifier ->
+                                        StartAwardPeriodData.Award.Supplier.AdditionalIdentifier(
+                                            scheme = additionalIdentifier.scheme,
+                                            id = additionalIdentifier.id,
+                                            legalName = additionalIdentifier.legalName,
+                                            uri = additionalIdentifier.uri
+                                        )
+                                    },
+                                    address = supplier.address.let { address ->
+                                        StartAwardPeriodData.Award.Supplier.Address(
+                                            streetAddress = address.streetAddress,
+                                            postalCode = address.postalCode,
+                                            addressDetails = address.addressDetails.let { addressDetails ->
+                                                StartAwardPeriodData.Award.Supplier.Address.AddressDetails(
+                                                    country = addressDetails.country.let { country ->
+                                                        StartAwardPeriodData.Award.Supplier.Address.AddressDetails.Country(
+                                                            scheme = country.scheme,
+                                                            id = country.id,
+                                                            description = country.description,
+                                                            uri = country.uri
+                                                        )
+                                                    },
+                                                    region = addressDetails.region.let { region ->
+                                                        StartAwardPeriodData.Award.Supplier.Address.AddressDetails.Region(
+                                                            scheme = region.scheme,
+                                                            id = region.id,
+                                                            description = region.description,
+                                                            uri = region.uri
+                                                        )
+                                                    },
+                                                    locality = addressDetails.locality.let { locality ->
+                                                        StartAwardPeriodData.Award.Supplier.Address.AddressDetails.Locality(
+                                                            scheme = locality.scheme,
+                                                            id = locality.id,
+                                                            description = locality.description,
+                                                            uri = locality.uri
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    },
+                                    contactPoint = supplier.contactPoint.let { contactPoint ->
+                                        StartAwardPeriodData.Award.Supplier.ContactPoint(
+                                            name = contactPoint.name,
+                                            email = contactPoint.email,
+                                            telephone = contactPoint.telephone,
+                                            faxNumber = contactPoint.faxNumber,
+                                            url = contactPoint.url
+                                        )
+                                    },
+                                    details = supplier.details.let { details ->
+                                        StartAwardPeriodData.Award.Supplier.Details(
+                                            scale = details.scale
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    awardPeriod = request.awardPeriod.let { awardPeriod ->
+                        StartAwardPeriodData.AwardPeriod(
+                            startDate = awardPeriod.startDate
+                        )
+                    },
+                    tender = request.tender.let { tender ->
+                        StartAwardPeriodData.Tender(
+                            statusDetails = tender.statusDetails
+                        )
+                    }
+                )
+
+                awardService.startAwardPeriod(context = startAwardPeriodContext, data = startAwardPeriodData)
                 ResponseDto(data = DataResponseDto())
             }
         }
