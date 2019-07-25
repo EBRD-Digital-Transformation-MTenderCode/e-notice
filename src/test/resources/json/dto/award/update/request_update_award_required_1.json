@@ -1,0 +1,32 @@
+{
+  "award": {
+    "id": "09d528dc-0fcf-45b7-a192-dfd8c1464420",
+    "date": "2019-10-29T16:51:00Z",
+    "status": "active",
+    "statusDetails": "empty",
+    "relatedLots": [
+      "76d15fa3-5793-440b-ad24-5fc9ce776244"
+    ],
+    "value": {
+      "amount": 150.01,
+      "currency": "MDL"
+    },
+    "suppliers": [
+      {
+        "id": "32be2b96-19c1-4121-b92a-cfddb82a4315",
+        "name": "award.suppliers[0].name"
+      }
+    ],
+    "documents": [
+      {
+        "documentType": "award.documents[0].documentType",
+        "id": "56ce2b96-19c1-4121-b92a-cfddb82a4587",
+        "datePublished": "2019-10-29T16:51:00Z",
+        "url": "award.documents[0].url",
+        "relatedLots": [
+          "76d15fa3-5793-440b-ad24-5fc9ce776244"
+        ]
+      }
+    ]
+  }
+}
