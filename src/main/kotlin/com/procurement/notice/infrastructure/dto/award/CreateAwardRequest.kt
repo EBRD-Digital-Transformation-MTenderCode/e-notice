@@ -12,10 +12,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class CreateAwardRequest(
-    @field:JsonProperty("award") @param:JsonProperty("award") val award: Award,
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("lots") @param:JsonProperty("lots") val lots: List<Lot>?
+    @field:JsonProperty("award") @param:JsonProperty("award") val award: Award
 ) {
 
     data class Award(
