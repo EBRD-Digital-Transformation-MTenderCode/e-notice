@@ -6,6 +6,7 @@ import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.ContactPoint
 import com.procurement.notice.model.ocds.CountryDetails
 import com.procurement.notice.model.ocds.Details
+import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.LocalityDetails
 import com.procurement.notice.model.ocds.Organization
@@ -24,6 +25,8 @@ interface AwardService {
     fun createAward(context: CreateAwardContext, data: CreateAwardData)
 
     fun startAwardPeriod(context: StartAwardPeriodContext, data: StartAwardPeriodData)
+
+    fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
 }
 
 @Service
@@ -476,5 +479,95 @@ class AwardServiceImpl(
         buyerProfile = null,
         persones = null,
         roles = hashSetOf(PartyRole.SUPPLIER)
+    )
+
+    override fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData) {
+        val cpid = context.cpid
+        val ocid = context.ocid
+        val stage = Stage.valueOf(context.stage.toUpperCase())
+        val releaseDate = context.releaseDate
+
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        //BR-2.6.21.7
+        val awards: Set<Award>? = record.awards
+        val updatedAwards = if (awards != null && awards.isNotEmpty()) {
+            awards.asSequence()
+                .map { award ->
+                    if (data.award.id == award.id) {
+                        convertAward(data.award)
+                    } else
+                        award
+                }
+                .toList()
+        } else {
+            listOf(convertAward(data.award))
+        }
+
+        val newRecord = record.copy(
+            //BR-2.6.21.4
+            id = releaseService.newReleaseId(ocid),
+
+            //BR-2.6.21.1
+            tag = listOf(Tag.AWARD_UPDATE),
+
+            //BR-2.6.21.3
+            date = releaseDate,
+
+            //BR-2.6.21.7
+            awards = updatedAwards.toHashSet()
+        )
+
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage.name,
+            record = newRecord,
+            publishDate = releaseDate.toDate()
+        )
+    }
+
+    private fun convertAward(award: EvaluateAwardData.Award): Award = Award(
+        id = award.id,
+        date = award.date,
+        title = null,
+        description = award.description,
+        status = award.status,
+        statusDetails = award.statusDetails,
+
+        value = award.value.let { value ->
+            Value(
+                amount = value.amount,
+                currency = value.currency,
+                amountNet = null,
+                valueAddedTaxIncluded = null
+            )
+        },
+        suppliers = award.suppliers.map { supplier ->
+            convertSupplier(id = supplier.id, name = supplier.name)
+        },
+        relatedLots = award.relatedLots.map { it.toString() },
+        items = null,
+        contractPeriod = null,
+        documents = award.documents?.map { document ->
+            Document(
+                documentType = document.documentType,
+                id = document.id,
+                datePublished = document.datePublished,
+                url = document.url,
+                title = document.title,
+                description = document.description,
+                relatedLots = document.relatedLots.map { it.toString() },
+                dateModified = null,
+                format = null,
+                language = null,
+                relatedConfirmations = null
+            )
+        },
+        amendments = null,
+        amendment = null,
+        requirementResponses = null,
+        reviewProceedings = null,
+        relatedBid = null
     )
 }
