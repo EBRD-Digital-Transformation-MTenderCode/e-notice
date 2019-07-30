@@ -12,7 +12,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-class UpdateAwardRequest(
+class EvaluateAwardRequest(
     @field:JsonProperty("award") @param:JsonProperty("award") val award: Award
 ) {
     data class Award(
