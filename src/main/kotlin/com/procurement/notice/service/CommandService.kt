@@ -7,10 +7,13 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.can.CreateCANContext
+import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
+import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -447,13 +450,123 @@ class CommandService(
                 data = data
             )
 
-            CREATE_CAN -> contractingService.createCan(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            CREATE_CAN -> {
+                val createCANContext = CreateCANContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate
+                )
+                val request = toObject(CreateCANRequest::class.java, cm.data)
+                val createCANData = CreateCANData(
+                    can = request.can.let { can ->
+                        CreateCANData.CAN(
+                            id = can.id,
+                            lotId = can.lotId,
+                            awardId = can.awardId,
+                            date = can.date,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    },
+                    bids = request.bids.map { bid ->
+                        CreateCANData.Bid(
+                            id = bid.id,
+                            statusDetails = bid.statusDetails
+                        )
+                    },
+                    lot = request.lot.let { lot ->
+                        CreateCANData.Lot(
+                            id = lot.id,
+                            title = lot.title,
+                            description = lot.description,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails,
+                            value = lot.value.let { value ->
+                                CreateCANData.Lot.Value(
+                                    amount = value.amount,
+                                    currency = value.currency
+                                )
+                            },
+                            options = lot.options.map { option ->
+                                CreateCANData.Lot.Option(
+                                    hasOptions = option.hasOptions
+                                )
+                            },
+                            variants = lot.variants.map { variant ->
+                                CreateCANData.Lot.Variant(
+                                    hasVariants = variant.hasVariants
+                                )
+                            },
+                            renewals = lot.renewals.map { renewal ->
+                                CreateCANData.Lot.Renewal(
+                                    hasRenewals = renewal.hasRenewals
+                                )
+                            },
+                            recurrentProcurement = lot.recurrentProcurement.map { recurrentProcurement ->
+                                CreateCANData.Lot.RecurrentProcurement(
+                                    isRecurrent = recurrentProcurement.isRecurrent
+                                )
+                            },
+                            contractPeriod = lot.contractPeriod.let { contractPeriod ->
+                                CreateCANData.Lot.ContractPeriod(
+                                    startDate = contractPeriod.startDate,
+                                    endDate = contractPeriod.endDate
+                                )
+                            },
+                            placeOfPerformance = lot.placeOfPerformance.let { placeOfPerformance ->
+                                CreateCANData.Lot.PlaceOfPerformance(
+                                    address = placeOfPerformance.address.let { address ->
+                                        CreateCANData.Lot.PlaceOfPerformance.Address(
+                                            streetAddress = address.streetAddress,
+                                            postalCode = address.postalCode,
+                                            addressDetails = address.addressDetails.let { addressDetail ->
+                                                CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails(
+                                                    country = addressDetail.country.let { country ->
+                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Country(
+                                                            scheme = country.scheme,
+                                                            id = country.id,
+                                                            description = country.description,
+                                                            uri = country.uri
+                                                        )
+                                                    },
+                                                    region = addressDetail.region.let { region ->
+                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Region(
+                                                            scheme = region.scheme,
+                                                            id = region.id,
+                                                            description = region.description,
+                                                            uri = region.uri
+                                                        )
+                                                    },
+                                                    locality = addressDetail.locality.let { locality ->
+                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Locality(
+                                                            scheme = locality.scheme,
+                                                            id = locality.id,
+                                                            description = locality.description,
+                                                            uri = locality.uri
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    },
+                                    description = placeOfPerformance.description
+                                )
+                            }
+                        )
+                    }
+                )
+
+                contractingService.createCan(context = createCANContext, data = createCANData)
+
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = createCANContext.cpid,
+                        ocid = createCANContext.ocid
+                    )
+                )
+            }
 
             UPDATE_CAN_DOCS -> contractingService.updateCanDocs(
                 cpid = cpId,
