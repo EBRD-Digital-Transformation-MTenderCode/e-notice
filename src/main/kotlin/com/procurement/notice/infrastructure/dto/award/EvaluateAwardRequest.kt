@@ -64,7 +64,8 @@ class EvaluateAwardRequest(
             @JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
-            @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<UUID>
+            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<UUID>?
         )
     }
 }

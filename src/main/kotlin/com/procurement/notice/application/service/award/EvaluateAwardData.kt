@@ -28,7 +28,7 @@ class EvaluateAwardData(val award: Award) {
             val url: String,
             val title: String?,
             val description: String?,
-            val relatedLots: List<UUID>
+            val relatedLots: List<UUID>?
         )
     }
 }

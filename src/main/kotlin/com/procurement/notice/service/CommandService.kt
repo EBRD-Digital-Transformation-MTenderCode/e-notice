@@ -875,7 +875,7 @@ class CommandService(
                                     url = document.url,
                                     title = document.title,
                                     description = document.description,
-                                    relatedLots = document.relatedLots.toList()
+                                    relatedLots = document.relatedLots
                                 )
                             }
                         )

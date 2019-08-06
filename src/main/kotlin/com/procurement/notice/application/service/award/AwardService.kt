@@ -557,7 +557,7 @@ class AwardServiceImpl(
                 url = document.url,
                 title = document.title,
                 description = document.description,
-                relatedLots = document.relatedLots.map { it.toString() },
+                relatedLots = document.relatedLots?.map { it.toString() },
                 dateModified = null,
                 format = null,
                 language = null,
