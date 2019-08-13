@@ -1,0 +1,77 @@
+{
+  "can": {
+    "id": "c64f7205-ff3f-4e88-b936-8dfaa9dd2bc7",
+    "lotId": "6feb6f49-ebb0-4021-b54a-de432e676e0c",
+    "date": "2019-11-25T16:01:00Z",
+    "status": "pending",
+    "statusDetails": "contractProject"
+  },
+  "bids": [
+    {
+      "id": "88cfa952-e6e1-4238-8fad-14e7c1600d6f",
+      "statusDetails": "withdrawn"
+    }
+  ],
+  "lot": {
+    "id": "6feb6f49-ebb0-4021-b54a-de432e676e0c",
+    "title": "lot.title",
+    "description": "lot.description",
+    "status": "active",
+    "statusDetails": "empty",
+    "value": {
+      "amount": 100.01,
+      "currency": "MDL"
+    },
+    "options": [
+      {
+        "hasOptions": false
+      }
+    ],
+    "variants": [
+      {
+        "hasVariants": false
+      }
+    ],
+    "renewals": [
+      {
+        "hasRenewals": false
+      }
+    ],
+    "recurrentProcurement": [
+      {
+        "isRecurrent": false
+      }
+    ],
+    "contractPeriod": {
+      "startDate": "2019-01-01T10:10:00Z",
+      "endDate": "2019-12-31T06:00:00Z"
+    },
+    "placeOfPerformance": {
+      "address": {
+        "streetAddress": "lot.placeOfPerformance.address.streetAddress",
+        "postalCode": "lot.placeOfPerformance.address.postalCode",
+        "addressDetails": {
+          "country": {
+            "scheme": "lot.placeOfPerformance.address.addressDetails.country.scheme",
+            "id": "lot.placeOfPerformance.address.addressDetails.country.id",
+            "description": "lot.placeOfPerformance.address.addressDetails.country.description",
+            "uri": "lot.placeOfPerformance.address.addressDetails.country.uri"
+          },
+          "region": {
+            "scheme": "lot.placeOfPerformance.address.addressDetails.region.scheme",
+            "id": "lot.placeOfPerformance.address.addressDetails.region.id",
+            "description": "lot.placeOfPerformance.address.addressDetails.region.description",
+            "uri": "lot.placeOfPerformance.address.addressDetails.region.uri"
+          },
+          "locality": {
+            "scheme": "lot.placeOfPerformance.address.addressDetails.locality.scheme",
+            "id": "lot.placeOfPerformance.address.addressDetails.locality.id",
+            "description": "lot.placeOfPerformance.address.addressDetails.locality.description",
+            "uri": "lot.placeOfPerformance.address.addressDetails.locality.uri"
+          }
+        }
+      },
+      "description": "lot.placeOfPerformance.description"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.procurement.notice.infrastructure.dto.can
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
@@ -16,7 +17,9 @@ data class CreateProtocolRequest(
     data class CAN(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: UUID,
         @field:JsonProperty("lotId") @param:JsonProperty("lotId") val lotId: UUID,
-        @field:JsonProperty("awardId") @param:JsonProperty("awardId") val awardId: UUID,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("awardId") @param:JsonProperty("awardId") val awardId: UUID?,
 
         @JsonDeserialize(using = JsonDateTimeDeserializer::class)
         @JsonSerialize(using = JsonDateTimeSerializer::class)

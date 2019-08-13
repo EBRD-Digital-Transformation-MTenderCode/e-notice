@@ -9,4 +9,9 @@ class CreateProtocolRequestTest : AbstractDTOTestBase<CreateProtocolRequest>(Cre
     fun fully() {
         testBindingAndMapping("json/dto/can/create/request/request_create_protocol_full.json")
     }
+
+    @Test
+    fun required1() {
+        testBindingAndMapping("json/dto/can/create/request/request_create_protocol_required_1.json")
+    }
 }

@@ -11,7 +11,7 @@ data class CreateProtocolData(
     data class CAN(
         val id: UUID,
         val lotId: UUID,
-        val awardId: UUID,
+        val awardId: UUID?,
         val date: LocalDateTime,
         val status: String,
         val statusDetails: String
