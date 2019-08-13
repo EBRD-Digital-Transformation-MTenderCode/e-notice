@@ -2,7 +2,7 @@ package com.procurement.notice.application.service.can
 
 import java.time.LocalDateTime
 
-data class CreateCANContext(
+data class CreateProtocolContext(
     val cpid: String,
     val ocid: String,
     val stage: String,

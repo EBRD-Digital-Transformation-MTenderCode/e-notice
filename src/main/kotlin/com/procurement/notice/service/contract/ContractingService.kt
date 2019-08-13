@@ -2,8 +2,8 @@ package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
-import com.procurement.notice.application.service.can.CreateCANContext
-import com.procurement.notice.application.service.can.CreateCANData
+import com.procurement.notice.application.service.can.CreateProtocolContext
+import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
@@ -430,7 +430,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
-    fun createCan(context: CreateCANContext, data: CreateCANData) {
+    fun createProtocol(context: CreateProtocolContext, data: CreateProtocolData) {
         val cpid = context.cpid
         val ocid = context.ocid
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
@@ -483,13 +483,13 @@ class ContractingService(private val releaseService: ReleaseService,
      *   b. ELSE [stage == "NP"] then:
      *        system does not perform any operation;
      */
-    private fun updatedBids(context: CreateCANContext, data: CreateCANData, bids: Bids?): Bids? {
+    private fun updatedBids(context: CreateProtocolContext, data: CreateProtocolData, bids: Bids?): Bids? {
         return when (context.stage) {
             "EV" -> {
                 if (data.bids.isEmpty())
                     throw ErrorException(error = ErrorType.BIDS_IN_REQUEST_IS_EMPTY)
 
-                val bidsById: Map<UUID, CreateCANData.Bid> = data.bids.associateBy { it.id }
+                val bidsById: Map<UUID, CreateProtocolData.Bid> = data.bids.associateBy { it.id }
                 val detailsByBidId: Map<UUID, Bid> = bids!!.details!!.associateBy { UUID.fromString(it.id) }
                 val ids: Set<UUID> = detailsByBidId.keys.plus(bidsById.keys)
                 val updatedDetails: List<Bid> = ids.map { id ->
@@ -524,7 +524,7 @@ class ContractingService(private val releaseService: ReleaseService,
      *   e. can.statusDetails == contracts.statusDetails;
      *   f. can.date == contracts.date;
      */
-    private fun updateContracts(can: CreateCANData.CAN, contracts: Collection<Contract>): List<Contract> {
+    private fun updateContracts(can: CreateProtocolData.CAN, contracts: Collection<Contract>): List<Contract> {
         val newContract = Contract(
             id = can.id.toString(),
             awardId = can.awardId.toString(),
@@ -545,7 +545,7 @@ class ContractingService(private val releaseService: ReleaseService,
      *   a. Finds lot.ID object in new Release where lot.ID == lot.id from Request;
      *   b. Sets lot.statusDetails in object (found before) == lot.statusDetails from processed lot of Request;
      */
-    private fun updateLots(lot: CreateCANData.Lot, lots: Collection<Lot>): List<Lot> {
+    private fun updateLots(lot: CreateProtocolData.Lot, lots: Collection<Lot>): List<Lot> {
         return lots.map {
             if (lot.id.toString() == it.id)
                 it.copy(

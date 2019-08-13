@@ -7,13 +7,13 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
-import com.procurement.notice.application.service.can.CreateCANContext
-import com.procurement.notice.application.service.can.CreateCANData
+import com.procurement.notice.application.service.can.CreateProtocolContext
+import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
-import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
+import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -39,7 +39,6 @@ import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
 import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_AC
 import com.procurement.notice.model.ocds.Operation.CREATE_AWARD
-import com.procurement.notice.model.ocds.Operation.CREATE_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PN
@@ -50,6 +49,7 @@ import com.procurement.notice.model.ocds.Operation.CREATE_NEGOTIATION_CN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_PIN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PN
+import com.procurement.notice.model.ocds.Operation.CREATE_PROTOCOL
 import com.procurement.notice.model.ocds.Operation.END_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.END_CONTRACT_PROCESS
 import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
@@ -450,18 +450,18 @@ class CommandService(
                 data = data
             )
 
-            CREATE_CAN -> {
-                val createCANContext = CreateCANContext(
+            CREATE_PROTOCOL -> {
+                val createProtocolContext = CreateProtocolContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
                     releaseDate = releaseDate,
                     startDate = cm.startDate
                 )
-                val request = toObject(CreateCANRequest::class.java, cm.data)
-                val createCANData = CreateCANData(
+                val request = toObject(CreateProtocolRequest::class.java, cm.data)
+                val createProtocolData = CreateProtocolData(
                     can = request.can.let { can ->
-                        CreateCANData.CAN(
+                        CreateProtocolData.CAN(
                             id = can.id,
                             lotId = can.lotId,
                             awardId = can.awardId,
@@ -471,60 +471,60 @@ class CommandService(
                         )
                     },
                     bids = request.bids.map { bid ->
-                        CreateCANData.Bid(
+                        CreateProtocolData.Bid(
                             id = bid.id,
                             statusDetails = bid.statusDetails
                         )
                     },
                     lot = request.lot.let { lot ->
-                        CreateCANData.Lot(
+                        CreateProtocolData.Lot(
                             id = lot.id,
                             title = lot.title,
                             description = lot.description,
                             status = lot.status,
                             statusDetails = lot.statusDetails,
                             value = lot.value.let { value ->
-                                CreateCANData.Lot.Value(
+                                CreateProtocolData.Lot.Value(
                                     amount = value.amount,
                                     currency = value.currency
                                 )
                             },
                             options = lot.options.map { option ->
-                                CreateCANData.Lot.Option(
+                                CreateProtocolData.Lot.Option(
                                     hasOptions = option.hasOptions
                                 )
                             },
                             variants = lot.variants.map { variant ->
-                                CreateCANData.Lot.Variant(
+                                CreateProtocolData.Lot.Variant(
                                     hasVariants = variant.hasVariants
                                 )
                             },
                             renewals = lot.renewals.map { renewal ->
-                                CreateCANData.Lot.Renewal(
+                                CreateProtocolData.Lot.Renewal(
                                     hasRenewals = renewal.hasRenewals
                                 )
                             },
                             recurrentProcurement = lot.recurrentProcurement.map { recurrentProcurement ->
-                                CreateCANData.Lot.RecurrentProcurement(
+                                CreateProtocolData.Lot.RecurrentProcurement(
                                     isRecurrent = recurrentProcurement.isRecurrent
                                 )
                             },
                             contractPeriod = lot.contractPeriod.let { contractPeriod ->
-                                CreateCANData.Lot.ContractPeriod(
+                                CreateProtocolData.Lot.ContractPeriod(
                                     startDate = contractPeriod.startDate,
                                     endDate = contractPeriod.endDate
                                 )
                             },
                             placeOfPerformance = lot.placeOfPerformance.let { placeOfPerformance ->
-                                CreateCANData.Lot.PlaceOfPerformance(
+                                CreateProtocolData.Lot.PlaceOfPerformance(
                                     address = placeOfPerformance.address.let { address ->
-                                        CreateCANData.Lot.PlaceOfPerformance.Address(
+                                        CreateProtocolData.Lot.PlaceOfPerformance.Address(
                                             streetAddress = address.streetAddress,
                                             postalCode = address.postalCode,
                                             addressDetails = address.addressDetails.let { addressDetail ->
-                                                CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails(
+                                                CreateProtocolData.Lot.PlaceOfPerformance.Address.AddressDetails(
                                                     country = addressDetail.country.let { country ->
-                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Country(
+                                                        CreateProtocolData.Lot.PlaceOfPerformance.Address.AddressDetails.Country(
                                                             scheme = country.scheme,
                                                             id = country.id,
                                                             description = country.description,
@@ -532,7 +532,7 @@ class CommandService(
                                                         )
                                                     },
                                                     region = addressDetail.region.let { region ->
-                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Region(
+                                                        CreateProtocolData.Lot.PlaceOfPerformance.Address.AddressDetails.Region(
                                                             scheme = region.scheme,
                                                             id = region.id,
                                                             description = region.description,
@@ -540,7 +540,7 @@ class CommandService(
                                                         )
                                                     },
                                                     locality = addressDetail.locality.let { locality ->
-                                                        CreateCANData.Lot.PlaceOfPerformance.Address.AddressDetails.Locality(
+                                                        CreateProtocolData.Lot.PlaceOfPerformance.Address.AddressDetails.Locality(
                                                             scheme = locality.scheme,
                                                             id = locality.id,
                                                             description = locality.description,
@@ -558,12 +558,12 @@ class CommandService(
                     }
                 )
 
-                contractingService.createCan(context = createCANContext, data = createCANData)
+                contractingService.createProtocol(context = createProtocolContext, data = createProtocolData)
 
                 ResponseDto(
                     data = DataResponseDto(
-                        cpid = createCANContext.cpid,
-                        ocid = createCANContext.ocid
+                        cpid = createProtocolContext.cpid,
+                        ocid = createProtocolContext.ocid
                     )
                 )
             }

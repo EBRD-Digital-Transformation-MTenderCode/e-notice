@@ -416,7 +416,7 @@ enum class Operation(val value: String) {
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
-    CREATE_CAN("createCan"),
+    CREATE_PROTOCOL("createProtocol"),
     UPDATE_CAN_DOCS("updateCanDocs"),
     CANCEL_CAN("cancelCan"),
     CANCEL_CAN_CONTRACT("cancelCanContract"),

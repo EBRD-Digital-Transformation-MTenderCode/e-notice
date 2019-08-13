@@ -3,7 +3,7 @@ package com.procurement.notice.application.service.can
 import java.time.LocalDateTime
 import java.util.*
 
-data class CreateCANData(
+data class CreateProtocolData(
     val can: CAN,
     val bids: List<Bid>,
     val lot: Lot

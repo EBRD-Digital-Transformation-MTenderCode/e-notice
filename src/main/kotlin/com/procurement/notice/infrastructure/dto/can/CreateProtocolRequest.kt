@@ -8,7 +8,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import java.time.LocalDateTime
 import java.util.*
 
-data class CreateCANRequest(
+data class CreateProtocolRequest(
     @field:JsonProperty("can") @param:JsonProperty("can") val can: CAN,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
     @field:JsonProperty("lot") @param:JsonProperty("lot") val lot: Lot
