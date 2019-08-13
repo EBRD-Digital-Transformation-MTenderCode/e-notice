@@ -2,6 +2,8 @@ package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.can.CreateCANContext
+import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.BudgetDao
@@ -554,6 +556,63 @@ class ContractingService(private val releaseService: ReleaseService,
             else
                 it
         }
+    }
+
+
+    fun createCAN(context: CreateCANContext, data: CreateCANData) {
+        val cpid = context.cpid
+        val ocid = context.ocid
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        val updatedContracts = updateContracts(can = data.can, contracts = record.contracts ?: emptyList())
+
+        val updatedRecord = record.copy(
+            //BR-2.8.4.4
+            id = releaseService.newReleaseId(ocid),
+
+            //BR-2.8.4.1
+            tag = listOf(Tag.AWARD_UPDATE),
+
+            //BR-2.8.4.3
+            date = context.releaseDate,
+
+            //BR-2.8.4.6
+            contracts = updatedContracts.toHashSet()
+        )
+
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+    }
+
+    /**
+     * BR-2.8.4.6 Contracts
+     *
+     * eNotice executes next operations:
+     * 1. Rewrite all Contracts objects from previous Release to new Release;
+     * 2. Saves CAN object from Request as a new Contract object in Contracts arrays in new formed Release following to the next order:
+     *   a. can.ID == contracts.ID;
+     *   b. can.awardId == contracts.awardId;
+     *   c. can.lotId == contracts.relatedLots;
+     *   d. can.status == contracts.status;
+     *   e. can.statusDetails == contracts.statusDetails;
+     *   f. can.date == contracts.date;
+     */
+    private fun updateContracts(can: CreateCANData.CAN, contracts: Collection<Contract>): List<Contract> {
+        val newContract = Contract(
+            id = can.id.toString(),
+            awardId = can.awardId.toString(),
+            status = can.status,
+            statusDetails = can.statusDetails,
+            date = can.date,
+            documents = null,
+            relatedLots = listOf(can.lotId.toString())
+        )
+        return contracts.plus(newContract)
     }
 
     fun updateCanDocs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {

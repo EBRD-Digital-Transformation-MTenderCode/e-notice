@@ -7,12 +7,15 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.can.CreateCANContext
+import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
+import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
@@ -39,6 +42,7 @@ import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
 import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_AC
 import com.procurement.notice.model.ocds.Operation.CREATE_AWARD
+import com.procurement.notice.model.ocds.Operation.CREATE_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PN
@@ -564,6 +568,37 @@ class CommandService(
                     data = DataResponseDto(
                         cpid = createProtocolContext.cpid,
                         ocid = createProtocolContext.ocid
+                    )
+                )
+            }
+
+            CREATE_CAN -> {
+                val createCANContext = CreateCANContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(CreateCANRequest::class.java, cm.data)
+                val createCANData = CreateCANData(
+                    can = request.can.let { can ->
+                        CreateCANData.CAN(
+                            id = can.id,
+                            lotId = can.lotId,
+                            awardId = can.awardId,
+                            date = can.date,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    }
+                )
+
+                contractingService.createCAN(context = createCANContext, data = createCANData)
+
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = createCANContext.cpid,
+                        ocid = createCANContext.ocid
                     )
                 )
             }
