@@ -13,7 +13,10 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class CreateProtocolRequest(
     @field:JsonProperty("can") @param:JsonProperty("can") val can: CAN,
-    @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>?,
+
     @field:JsonProperty("lot") @param:JsonProperty("lot") val lot: Lot
 ) {
     data class CAN(

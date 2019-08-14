@@ -474,7 +474,7 @@ class CommandService(
                             statusDetails = can.statusDetails
                         )
                     },
-                    bids = request.bids.map { bid ->
+                    bids = request.bids?.map { bid ->
                         CreateProtocolData.Bid(
                             id = bid.id,
                             statusDetails = bid.statusDetails

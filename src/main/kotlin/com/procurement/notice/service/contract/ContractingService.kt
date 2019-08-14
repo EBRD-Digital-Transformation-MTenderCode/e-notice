@@ -488,7 +488,7 @@ class ContractingService(private val releaseService: ReleaseService,
     private fun updatedBids(context: CreateProtocolContext, data: CreateProtocolData, bids: Bids?): Bids? {
         return when (context.stage) {
             "EV" -> {
-                if (data.bids.isEmpty())
+                if (data.bids == null || data.bids.isEmpty())
                     throw ErrorException(error = ErrorType.BIDS_IN_REQUEST_IS_EMPTY)
 
                 val bidsById: Map<UUID, CreateProtocolData.Bid> = data.bids.associateBy { it.id }

@@ -5,7 +5,7 @@ import java.util.*
 
 data class CreateProtocolData(
     val can: CAN,
-    val bids: List<Bid>,
+    val bids: List<Bid>?,
     val lot: Lot
 ) {
     data class CAN(
