@@ -529,7 +529,7 @@ class ContractingService(private val releaseService: ReleaseService,
     private fun updateContracts(can: CreateProtocolData.CAN, contracts: Collection<Contract>): List<Contract> {
         val newContract = Contract(
             id = can.id.toString(),
-            awardId = can.awardId.toString(),
+            awardId = can.awardId,
             status = can.status,
             statusDetails = can.statusDetails,
             date = can.date,
@@ -605,7 +605,7 @@ class ContractingService(private val releaseService: ReleaseService,
     private fun updateContracts(can: CreateCANData.CAN, contracts: Collection<Contract>): List<Contract> {
         val newContract = Contract(
             id = can.id.toString(),
-            awardId = can.awardId.toString(),
+            awardId = can.awardId,
             status = can.status,
             statusDetails = can.statusDetails,
             date = can.date,
