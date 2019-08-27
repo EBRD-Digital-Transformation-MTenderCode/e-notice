@@ -416,12 +416,16 @@ enum class Operation(val value: String) {
     TREASURY_APPROVING_AC("treasuryApprovingAC"),
     ACTIVATION_AC("activationAC"),
     END_AWARD_PERIOD("endAwardPeriod"),
+    CREATE_PROTOCOL("createProtocol"),
     CREATE_CAN("createCan"),
     UPDATE_CAN_DOCS("updateCanDocs"),
     CANCEL_CAN("cancelCan"),
     CANCEL_CAN_CONTRACT("cancelCanContract"),
     CONFIRM_CAN("confirmCan"),
-    END_CONTRACT_PROCESS("endContractingProcess");
+    END_CONTRACT_PROCESS("endContractingProcess"),
+    CREATE_AWARD("createAward"),
+    START_AWARD_PERIOD("startAwardPeriod"),
+    EVALUATE_AWARD("evaluateAward");
 
 
     companion object {

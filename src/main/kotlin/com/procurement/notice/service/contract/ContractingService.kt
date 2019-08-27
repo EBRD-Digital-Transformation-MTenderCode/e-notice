@@ -2,6 +2,10 @@ package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.can.CreateCANContext
+import com.procurement.notice.application.service.can.CreateCANData
+import com.procurement.notice.application.service.can.CreateProtocolContext
+import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
@@ -26,6 +30,7 @@ import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
 import com.procurement.notice.model.contract.dto.VerificationDto
 import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
+import com.procurement.notice.model.ocds.Bids
 import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Lot
@@ -33,7 +38,6 @@ import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
-import com.procurement.notice.model.tender.dto.CreateCanDto
 import com.procurement.notice.service.OrganizationService
 import com.procurement.notice.service.RelatedProcessService
 import com.procurement.notice.service.ReleaseService
@@ -44,6 +48,7 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class ContractingService(private val releaseService: ReleaseService,
@@ -427,24 +432,187 @@ class ContractingService(private val releaseService: ReleaseService,
         }
     }
 
-    fun createCan(cpid: String,
-                  ocid: String,
-                  stage: String,
-                  releaseDate: LocalDateTime,
-                  data: JsonNode): ResponseDto {
-        val dto = toObject(CreateCanDto::class.java, toJson(data))
+    fun createProtocol(context: CreateProtocolContext, data: CreateProtocolData) {
+        val cpid = context.cpid
+        val ocid = context.ocid
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        val contractsOldAndNew = record.contracts ?: hashSetOf()
-        contractsOldAndNew.addAll(hashSetOf(convertToCanContract(dto.can)))
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.AWARD_UPDATE)
-            contracts = contractsOldAndNew
+
+        val updatedBids = updatedBids(context = context, data = data, bids = record.bids)
+        val updatedContracts = updateContracts(can = data.can, contracts = record.contracts ?: emptyList())
+        val updatedLots = updateLots(lot = data.lot, lots = record.tender.lots ?: emptyList())
+
+        val updatedRecord = record.copy(
+            //BR-2.8.4.4
+            id = releaseService.newReleaseId(ocid),
+
+            //BR-2.8.4.1
+            tag = listOf(Tag.AWARD_UPDATE),
+
+            //BR-2.8.4.3
+            date = context.releaseDate,
+
+            //BR-2.8.4.6
+            bids = updatedBids,
+
+            //BR-2.8.4.7
+            contracts = updatedContracts.toHashSet(),
+
+            //BR-2.8.4.9
+            tender = record.tender.copy(
+                //BR-2.8.4.8
+                lots = updatedLots.toHashSet()
+            )
+        )
+
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+    }
+
+    /**
+     * BR-2.8.4.6 Bids
+     *
+     * 1. eNotice analyzes stage value from the context of Request:
+     *   a. IF [stage == "EV"] then:
+     *     i.  Rewrite all Bids objects from previous Release to new Release;
+     *     ii. forEach bid object from Request system executes:
+     *       1. Finds bid.details object in new Release where bid.details.ID == bid.id from Request;
+     *       2. Sets bid.details.statusDetails in object (found before) == bid.statusDetails from processed bid of Request;
+     *   b. ELSE [stage == "NP"] then:
+     *        system does not perform any operation;
+     */
+    private fun updatedBids(context: CreateProtocolContext, data: CreateProtocolData, bids: Bids?): Bids? {
+        return when (context.stage) {
+            "EV" -> {
+                if (data.bids == null || data.bids.isEmpty())
+                    throw ErrorException(error = ErrorType.BIDS_IN_REQUEST_IS_EMPTY)
+
+                val bidsById: Map<UUID, CreateProtocolData.Bid> = data.bids.associateBy { it.id }
+                val detailsByBidId: Map<UUID, Bid> = bids!!.details!!.associateBy { UUID.fromString(it.id) }
+                val ids: Set<UUID> = detailsByBidId.keys.plus(bidsById.keys)
+                val updatedDetails: List<Bid> = ids.map { id ->
+                    bidsById[id]?.let { bid ->
+                        detailsByBidId.getValue(id)
+                            .copy(statusDetails = bid.statusDetails)
+                    } ?: detailsByBidId.getValue(id)
+                }
+
+                bids.copy(
+                    details = updatedDetails.toHashSet()
+                )
+            }
+            "NP" -> bids
+            else -> throw ErrorException(
+                error = ErrorType.INVALID_STAGE,
+                message = "Current stage: '${context.stage}', expected stages: [EV, NP]."
+            )
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    /**
+     * BR-2.8.4.7 Contracts
+     *
+     * eNotice executes next operations:
+     * 1. Rewrite all Contracts objects from previous Release to new Release;
+     * 2. Saves CAN object from Request as a new Contract object in Contracts arrays in new formed Release following to the next order:
+     *   a. can.ID == contracts.ID;
+     *   b. can.awardId == contracts.awardId;
+     *   c. can.lotId == contracts.relatedLots;
+     *   d. can.status == contracts.status;
+     *   e. can.statusDetails == contracts.statusDetails;
+     *   f. can.date == contracts.date;
+     */
+    private fun updateContracts(can: CreateProtocolData.CAN, contracts: Collection<Contract>): List<Contract> {
+        val newContract = Contract(
+            id = can.id.toString(),
+            awardId = can.awardId,
+            status = can.status,
+            statusDetails = can.statusDetails,
+            date = can.date,
+            documents = null,
+            relatedLots = listOf(can.lotId.toString())
+        )
+        return contracts.plus(newContract)
+    }
+
+    /**
+     * BR-2.8.4.8 lots
+     *
+     * 1. Rewrite all Lot objects from previous Release to new Release;
+     * 2. forEach Lot object from Request system executes:
+     *   a. Finds lot.ID object in new Release where lot.ID == lot.id from Request;
+     *   b. Sets lot.statusDetails in object (found before) == lot.statusDetails from processed lot of Request;
+     */
+    private fun updateLots(lot: CreateProtocolData.Lot, lots: Collection<Lot>): List<Lot> {
+        return lots.map {
+            if (lot.id.toString() == it.id)
+                it.copy(
+                    statusDetails = lot.statusDetails
+                )
+            else
+                it
+        }
+    }
+
+
+    fun createCAN(context: CreateCANContext, data: CreateCANData) {
+        val cpid = context.cpid
+        val ocid = context.ocid
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        val updatedContracts = updateContracts(can = data.can, contracts = record.contracts ?: emptyList())
+
+        val updatedRecord = record.copy(
+            //BR-2.8.4.4
+            id = releaseService.newReleaseId(ocid),
+
+            //BR-2.8.4.1
+            tag = listOf(Tag.AWARD_UPDATE),
+
+            //BR-2.8.4.3
+            date = context.releaseDate,
+
+            //BR-2.8.4.6
+            contracts = updatedContracts.toHashSet()
+        )
+
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+    }
+
+    /**
+     * BR-2.8.4.6 Contracts
+     *
+     * eNotice executes next operations:
+     * 1. Rewrite all Contracts objects from previous Release to new Release;
+     * 2. Saves CAN object from Request as a new Contract object in Contracts arrays in new formed Release following to the next order:
+     *   a. can.ID == contracts.ID;
+     *   b. can.awardId == contracts.awardId;
+     *   c. can.lotId == contracts.relatedLots;
+     *   d. can.status == contracts.status;
+     *   e. can.statusDetails == contracts.statusDetails;
+     *   f. can.date == contracts.date;
+     */
+    private fun updateContracts(can: CreateCANData.CAN, contracts: Collection<Contract>): List<Contract> {
+        val newContract = Contract(
+            id = can.id.toString(),
+            awardId = can.awardId,
+            status = can.status,
+            statusDetails = can.statusDetails,
+            date = can.date,
+            documents = null,
+            relatedLots = listOf(can.lotId.toString())
+        )
+        return contracts.plus(newContract)
     }
 
     fun updateCanDocs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
@@ -550,17 +718,6 @@ class ContractingService(private val releaseService: ReleaseService,
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-    private fun convertToCanContract(can: Can): Contract {
-        return Contract(
-                id = can.id,
-                date = can.date,
-                awardId = can.awardId,
-                relatedLots = if (can.lotId != null) { listOf(can.lotId) } else null,
-                status = can.status!!,
-                statusDetails = can.statusDetails!!,
-                documents = can.documents)
     }
 
     private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {

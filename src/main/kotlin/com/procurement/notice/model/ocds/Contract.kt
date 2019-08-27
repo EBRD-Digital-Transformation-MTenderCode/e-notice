@@ -12,7 +12,7 @@ data class Contract @JsonCreator constructor(
 
         var date: LocalDateTime?,
 
-        val awardId: String?,
+        val awardId: UUID?,
 
         val relatedLots: List<String>?,
 

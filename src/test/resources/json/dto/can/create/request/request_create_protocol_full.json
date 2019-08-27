@@ -1,0 +1,20 @@
+{
+  "can": {
+    "id": "c64f7205-ff3f-4e88-b936-8dfaa9dd2bc7",
+    "lotId": "6feb6f49-ebb0-4021-b54a-de432e676e0c",
+    "awardId": "5711c5eb-6c39-4e28-942b-032c6021192e",
+    "date": "2019-11-25T16:01:00Z",
+    "status": "pending",
+    "statusDetails": "contractProject"
+  },
+  "bids": [
+    {
+      "id": "88cfa952-e6e1-4238-8fad-14e7c1600d6f",
+      "statusDetails": "withdrawn"
+    }
+  ],
+  "lot": {
+    "id": "6feb6f49-ebb0-4021-b54a-de432e676e0c",
+    "statusDetails": "empty"
+  }
+}
