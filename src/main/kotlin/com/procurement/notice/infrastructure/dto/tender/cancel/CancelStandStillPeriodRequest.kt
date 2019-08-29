@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 data class CancelStandStillPeriodRequest(
     @field:JsonProperty("standstillPeriod") @param:JsonProperty("standstillPeriod") val standstillPeriod: StandstillPeriod,
-    @field:JsonProperty("amendment") @param:JsonProperty("amendment") val amendment: Amendment,
+    @field:JsonProperty("amendments") @param:JsonProperty("amendments") val amendments: List<Amendment>,
     @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender
 ) {
     data class StandstillPeriod(

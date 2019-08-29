@@ -53,9 +53,9 @@ class TenderCancellationService(
         val record = releaseService.getRecord(recordEntity.jsonData)
 
         //BR-2.4.8.10
-        val newAmendment = newAmendment(context, data, record)
+        val newAmendments: List<Amendment> = newAmendments(context, data, record)
         val amendments = record.tender.amendments ?: emptyList()
-        val updatedAmendment = amendments + newAmendment
+        val updatedAmendment = amendments + newAmendments
 
         val updatedRecord = record.copy(
             //BR-2.4.8.4
@@ -99,48 +99,52 @@ class TenderCancellationService(
     /**
      * BR-2.4.8.10
      */
-    private fun newAmendment(
+    private fun newAmendments(
         context: CancelStandStillPeriodContext,
         data: CancelStandStillPeriodData,
         record: Record
-    ): Amendment = Amendment(
-        //BR-2.4.8.11
-        id = generationService.generateAmendmentId().toString(),
+    ): List<Amendment> = data.amendments.map { amendment ->
+        Amendment(
+            //BR-2.4.8.11
+            id = generationService.generateAmendmentId().toString(),
 
-        //BR-2.4.8.12
-        amendsReleaseID = record.id,
+            //BR-2.4.8.12
+            amendsReleaseID = record.id,
 
-        //BR-2.4.8.13
-        releaseID = releaseService.newReleaseId(context.ocid),
+            //BR-2.4.8.13
+            releaseID = releaseService.newReleaseId(context.ocid),
 
-        //BR-2.4.8.14
-        date = context.releaseDate,
-        relatedLots = null,
-        rationale = data.amendment.rationale,
-        changes = null,
-        description = data.amendment.description,
-        documents = data.amendment.documents?.map { document ->
-            Document(
-                id = document.id,
-                documentType = document.documentType,
-                title = document.title,
-                description = document.description,
-                datePublished = document.datePublished,
-                url = document.url,
-                dateModified = null,
-                format = null,
-                language = null,
-                relatedLots = null,
-                relatedConfirmations = null
-            )
-        }
-    )
+            //BR-2.4.8.14
+            date = context.releaseDate,
+            relatedLots = null,
+            rationale = amendment.rationale,
+            changes = null,
+            description = amendment.description,
+            documents = amendment.documents?.map { document ->
+                Document(
+                    id = document.id,
+                    documentType = document.documentType,
+                    title = document.title,
+                    description = document.description,
+                    datePublished = document.datePublished,
+                    url = document.url,
+                    dateModified = null,
+                    format = null,
+                    language = null,
+                    relatedLots = null,
+                    relatedConfirmations = null
+                )
+            }
+        )
+    }
 
-    fun tenderCancellation(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto {
+    fun tenderCancellation(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(CancellationStandstillPeriodDto::class.java, toJson(data))
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)

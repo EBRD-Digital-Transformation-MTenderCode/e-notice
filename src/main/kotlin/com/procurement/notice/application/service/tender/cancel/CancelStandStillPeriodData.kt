@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class CancelStandStillPeriodData(
     val standstillPeriod: StandstillPeriod,
-    val amendment: Amendment,
+    val amendments: List<Amendment>,
     val tender: Tender
 ) {
     data class StandstillPeriod(

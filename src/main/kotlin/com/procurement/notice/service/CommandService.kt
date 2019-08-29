@@ -377,7 +377,7 @@ class CommandService(
                             endDate = standstillPeriod.endDate
                         )
                     },
-                    amendment = request.amendment.let { amendment ->
+                    amendments = request.amendments.map { amendment ->
                         CancelStandStillPeriodData.Amendment(
                             rationale = amendment.rationale,
                             description = amendment.description,

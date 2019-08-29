@@ -3,20 +3,22 @@
     "startDate": "2011-03-01T15:09:00Z",
     "endDate": "2011-10-01T10:01:05Z"
   },
-  "amendment": {
-    "rationale": "amendment.rationale",
-    "description": "amendment.description",
-    "documents": [
-      {
-        "documentType": "amendment.documents[0].documentType",
-        "datePublished": "2011-03-02T08:00:00Z",
-        "url": "amendment.documents[0].url",
-        "id": "amendment.documents[0].id",
-        "title": "amendment.documents[0].title",
-        "description": "amendment.documents[0].description"
-      }
-    ]
-  },
+  "amendments": [
+    {
+      "rationale": "amendment.rationale",
+      "description": "amendment.description",
+      "documents": [
+        {
+          "documentType": "amendment.documents[0].documentType",
+          "datePublished": "2011-03-02T08:00:00Z",
+          "url": "amendment.documents[0].url",
+          "id": "amendment.documents[0].id",
+          "title": "amendment.documents[0].title",
+          "description": "amendment.documents[0].description"
+        }
+      ]
+    }
+  ],
   "tender": {
     "statusDetails": "standStill"
   }
