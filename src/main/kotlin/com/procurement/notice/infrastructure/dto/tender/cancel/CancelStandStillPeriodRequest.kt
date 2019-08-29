@@ -11,10 +11,7 @@ import java.time.LocalDateTime
 data class CancelStandStillPeriodRequest(
     @field:JsonProperty("standstillPeriod") @param:JsonProperty("standstillPeriod") val standstillPeriod: StandstillPeriod,
     @field:JsonProperty("amendment") @param:JsonProperty("amendment") val amendment: Amendment,
-    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender,
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>?
+    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender
 ) {
     data class StandstillPeriod(
         @JsonDeserialize(using = JsonDateTimeDeserializer::class)
@@ -55,15 +52,4 @@ data class CancelStandStillPeriodRequest(
     data class Tender(
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
     )
-
-    data class Bid(
-        @field:JsonProperty("details") @param:JsonProperty("details") val details: List<Detail>
-    ) {
-
-        data class Detail(
-            @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
-            @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
-            @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
-        )
-    }
 }
