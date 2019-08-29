@@ -404,7 +404,7 @@ enum class Operation(val value: String) {
     CANCEL_TENDER("cancelTender"),
     CANCEL_TENDER_EV("cancelTenderEv"),
     CANCEL_PLAN("cancelPlan"),
-    CANCEL_STANDSTILL("cancellationStandstillPeriod"),
+    CANCEL_STANDSTILL_PERIOD("cancellationStandstillPeriod"),
     UPDATE_BID_DOCS("updateBidDocs"),
     CREATE_AC("createAC"),
     UPDATE_AC("updateAC"),
