@@ -92,7 +92,7 @@ class TenderCancellationService(
             record = updatedRecord,
             publishDate = recordEntity.publishDate
         )
-        val amendmentsIds = updatedAmendment.map { it.id!! }
+        val amendmentsIds = newAmendments.map { it.id!! }
         return CancelledStandStillPeriodData(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds)
     }
 
