@@ -167,7 +167,7 @@ class TenderCancellationService(
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
             if (dto.awards != null) {
                 if (awards != null) {
-                    updateAwards(awards!!, dto.awards)
+                    awards = updateAwards(awards!!, dto.awards).toHashSet()
                 } else {
                     awards = dto.awards
                 }
@@ -178,13 +178,41 @@ class TenderCancellationService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
-        for (award in recordAwards) {
-            dtoAwards.firstOrNull { it.id == award.id }?.apply {
-                award.date = this.date
-                award.status = this.status
-                award.statusDetails = this.statusDetails
-            }
+    private fun updateAwards(persistAwards: HashSet<Award>, requestAwards: HashSet<Award>): List<Award> {
+        val persistAwardsById: Map<String, Award> = persistAwards.associateBy { it.id!! }
+        val requestAwardsByIds: Map<String, Award> = requestAwards.associateBy { it.id!! }
+        val allAwardIds: Set<String> = persistAwardsById.keys + requestAwardsByIds.keys
+
+        return allAwardIds.map { awardId ->
+            requestAwardsByIds[awardId]
+                ?.let { requestAward ->
+                    persistAwardsById[awardId]
+                        ?.copy(
+                            date = requestAward.date,
+                            status = requestAward.status,
+                            statusDetails = requestAward.statusDetails
+                        )
+                        ?: Award(
+                            id = requestAward.id,
+                            date = requestAward.date,
+                            relatedBid = requestAward.relatedBid,
+                            status = requestAward.status,
+                            statusDetails = requestAward.statusDetails,
+                            title = requestAward.title,
+                            description = requestAward.description,
+                            value = requestAward.value,
+                            suppliers = requestAward.suppliers,
+                            items = requestAward.items,
+                            contractPeriod = requestAward.contractPeriod,
+                            documents = requestAward.documents,
+                            amendments = requestAward.amendments,
+                            amendment = requestAward.amendment,
+                            requirementResponses = requestAward.requirementResponses,
+                            reviewProceedings = requestAward.reviewProceedings,
+                            relatedLots = requestAward.relatedLots
+                        )
+                }
+                ?: persistAwardsById.getValue(awardId)
         }
     }
 
