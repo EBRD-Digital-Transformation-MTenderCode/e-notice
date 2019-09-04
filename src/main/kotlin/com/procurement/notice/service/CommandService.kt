@@ -11,12 +11,16 @@ import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
+import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
+import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
+import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
+import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -36,7 +40,7 @@ import com.procurement.notice.model.ocds.Operation.BUYER_SIGNING_AC
 import com.procurement.notice.model.ocds.Operation.CANCEL_CAN
 import com.procurement.notice.model.ocds.Operation.CANCEL_CAN_CONTRACT
 import com.procurement.notice.model.ocds.Operation.CANCEL_PLAN
-import com.procurement.notice.model.ocds.Operation.CANCEL_STANDSTILL
+import com.procurement.notice.model.ocds.Operation.CANCEL_STANDSTILL_PERIOD
 import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER
 import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
 import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
@@ -358,13 +362,56 @@ class CommandService(
                 data = data
             )
 
-            CANCEL_STANDSTILL -> tenderCancellationService.cancellationStandstillPeriod(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            CANCEL_STANDSTILL_PERIOD -> {
+                val context = CancelStandStillPeriodContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(CancelStandStillPeriodRequest::class.java, cm.data)
+                val cancelStandStillPeriodData = CancelStandStillPeriodData(
+                    standstillPeriod = request.standstillPeriod.let { standstillPeriod ->
+                        CancelStandStillPeriodData.StandstillPeriod(
+                            startDate = standstillPeriod.startDate,
+                            endDate = standstillPeriod.endDate
+                        )
+                    },
+                    amendments = request.amendments.map { amendment ->
+                        CancelStandStillPeriodData.Amendment(
+                            rationale = amendment.rationale,
+                            description = amendment.description,
+                            documents = amendment.documents?.map { document ->
+                                CancelStandStillPeriodData.Amendment.Document(
+                                    documentType = document.documentType,
+                                    id = document.id,
+                                    title = document.title,
+                                    description = document.description,
+                                    datePublished = document.datePublished,
+                                    url = document.url
+                                )
+                            }
+                        )
+                    },
+                    tender = request.tender.let { tender ->
+                        CancelStandStillPeriodData.Tender(
+                            statusDetails = tender.statusDetails
+                        )
+                    }
+                )
+
+                val result: CancelledStandStillPeriodData = tenderCancellationService.cancellationStandstillPeriod(
+                    context = context,
+                    data = cancelStandStillPeriodData
+                )
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid,
+                        amendmentsIds = result.amendmentsIds.toSet()
+                    )
+                )
+            }
 
             CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> tenderCancellationService.tenderCancellation(
                 cpid = cpId,
