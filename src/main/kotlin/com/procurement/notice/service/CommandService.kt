@@ -408,7 +408,7 @@ class CommandService(
                     data = DataResponseDto(
                         cpid = result.cpid,
                         ocid = result.ocid,
-                        amendmentsIds = result.amendmentsIds.toSet()
+                        amendmentsIds = result.amendmentsIds.toList()
                     )
                 )
             }

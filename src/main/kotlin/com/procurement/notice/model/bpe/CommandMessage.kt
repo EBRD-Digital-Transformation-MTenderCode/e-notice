@@ -90,10 +90,9 @@ data class ResponseDto(
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class DataResponseDto(
-
         val cpid: String? = null,
         val ocid: String? = null,
-        val amendmentsIds: Set<String>? = null,
+        val amendmentsIds: List<String>? = null,
         val releaseId: String? = null
 )
 
