@@ -84,7 +84,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = setOf(newAmendmentId)))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = listOf(newAmendmentId)))
     }
 
     fun updatePn(cpid: String,
@@ -159,7 +159,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             tender.amendments = if (amendments.isNotEmpty()) amendments else null
         }
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        val amendmentsIds = amendments.asSequence().map { it.id!! }.toSet()
+        val amendmentsIds = amendments.map { it.id!! }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 }

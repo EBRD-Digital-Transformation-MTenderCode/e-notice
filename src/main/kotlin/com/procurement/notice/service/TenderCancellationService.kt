@@ -175,7 +175,7 @@ class TenderCancellationService(
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, awardsIds = dto.awards?.map { it.id!! }))
     }
 
     private fun updateAwards(persistAwards: HashSet<Award>, requestAwards: HashSet<Award>): List<Award> {
