@@ -93,6 +93,7 @@ data class DataResponseDto(
         val cpid: String? = null,
         val ocid: String? = null,
         val amendmentsIds: List<String>? = null,
+        val awardsIds: List<String>? = null,
         val releaseId: String? = null
 )
 
