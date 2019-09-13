@@ -5,64 +5,89 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Contract @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        var date: LocalDateTime?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        val awardId: UUID?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardId: UUID?,
 
-        val relatedLots: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relatedLots: List<String>?,
 
-        val title: String? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String? = null,
 
-        val description: String? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String? = null,
 
-        var status: String,
+    var status: String,
 
-        var statusDetails: String,
+    var statusDetails: String,
 
-        var documents: HashSet<Document>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: HashSet<Document>?,
 
-        val extendsContractId: String? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val extendsContractId: String? = null,
 
-        val budgetSource: List<BudgetSource>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val budgetSource: List<BudgetSource>? = null,
 
-        val classification: Classification? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val classification: Classification? = null,
 
-        val period: Period? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period? = null,
 
-        val value: ValueTax? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: ValueTax? = null,
 
-        val items: HashSet<Item>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val items: HashSet<Item>? = null,
 
-        val dateSigned: LocalDateTime? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val dateSigned: LocalDateTime? = null,
 
-        var relatedProcesses: HashSet<RelatedProcess>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedProcesses: HashSet<RelatedProcess>? = null,
 
-        var amendments: List<Amendment>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var amendments: List<Amendment>? = null,
 
-        var amendment: Amendment? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var amendment: Amendment? = null,
 
-        val requirementResponses: HashSet<RequirementResponse>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requirementResponses: HashSet<RequirementResponse>? = null,
 
-        val countryOfOrigin: String? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val countryOfOrigin: String? = null,
 
-        val lotVariant: HashSet<String>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lotVariant: HashSet<String>? = null,
 
-        val valueBreakdown: HashSet<ValueBreakdown>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val valueBreakdown: HashSet<ValueBreakdown>? = null,
 
-        val isFrameworkOrDynamic: Boolean? = null,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val isFrameworkOrDynamic: Boolean? = null,
 
-        var agreedMetrics: LinkedList<AgreedMetric>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var agreedMetrics: LinkedList<AgreedMetric>? = null,
 
-        var milestones: List<Milestone>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var milestones: List<Milestone>? = null,
 
-        var confirmationRequests: List<ConfirmationRequest>? = null,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var confirmationRequests: List<ConfirmationRequest>? = null,
 
-        var confirmationResponses: HashSet<ConfirmationResponse>? = null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var confirmationResponses: HashSet<ConfirmationResponse>? = null
 
 )
 

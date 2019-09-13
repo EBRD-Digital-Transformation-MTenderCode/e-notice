@@ -8,30 +8,39 @@ import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsBudget @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val period: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?,
 
-        val amount: Value,
+    val amount: Value,
 
-        val europeanUnionFunding: EuropeanUnionFunding?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val europeanUnionFunding: EuropeanUnionFunding?,
 
-        @get:JsonProperty("isEuropeanUnionFunded")
-        val isEuropeanUnionFunded: Boolean?,
+    @get:JsonProperty("isEuropeanUnionFunded")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val isEuropeanUnionFunded: Boolean?,
 
-        @get:JsonProperty("verified")
-        val verified: Boolean?,
+    @get:JsonProperty("verified")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val verified: Boolean?,
 
-        val sourceEntity: OrganizationReference?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val sourceEntity: OrganizationReference?,
 
-        val project: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val project: String?,
 
-        val projectID: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val projectID: String?,
 
-        val uri: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?
 )

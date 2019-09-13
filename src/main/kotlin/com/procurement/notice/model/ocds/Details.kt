@@ -4,96 +4,116 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Details @JsonCreator constructor(
 
-        val typeOfBuyer: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val typeOfBuyer: String?,
 
-        val typeOfSupplier: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val typeOfSupplier: String?,
 
-        val mainEconomicActivities: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val mainEconomicActivities: Set<String>?,
 
-        val mainGeneralActivity: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val mainGeneralActivity: String?,
 
-        val mainSectoralActivity: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val mainSectoralActivity: String?,
 
-        val permits: List<Permits>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val permits: List<Permits>?,
 
-        val bankAccounts: List<BankAccount>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bankAccounts: List<BankAccount>?,
 
-        val legalForm: LegalForm?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val legalForm: LegalForm?,
 
-        @get:JsonProperty("isACentralPurchasingBody")
-        val isACentralPurchasingBody: Boolean?,
+    @get:JsonProperty("isACentralPurchasingBody")
+    val isACentralPurchasingBody: Boolean?,
 
-        val nutsCode: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val nutsCode: String?,
 
-        val scale: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val scale: String?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Permits @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val scheme: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val scheme: String?,
 
-        val url: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val url: String?,
 
-        val permitDetails: PermitDetails?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val permitDetails: PermitDetails?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class PermitDetails @JsonCreator constructor(
 
-        val issuedBy: Issue?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val issuedBy: Issue?,
 
-        val issuedThought: Issue?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val issuedThought: Issue?,
 
-        val validityPeriod: Period?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val validityPeriod: Period?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Issue @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val name: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BankAccount @JsonCreator constructor(
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val bankName: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val bankName: String?,
 
-        val address: Address?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val address: Address?,
 
-        val identifier: AccountIdentifier?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val identifier: AccountIdentifier?,
 
-        val accountIdentification: AccountIdentifier?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val accountIdentification: AccountIdentifier?,
 
-        val additionalAccountIdentifiers: Set<AccountIdentifier>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val additionalAccountIdentifiers: Set<AccountIdentifier>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class AccountIdentifier @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val scheme: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val scheme: String?
 )
 
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class LegalForm @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val scheme: String,
+    val scheme: String,
 
-        val description: String,
+    val description: String,
 
-        val uri: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?
 )

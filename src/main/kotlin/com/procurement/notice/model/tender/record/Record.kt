@@ -14,33 +14,44 @@ import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Record @JsonCreator constructor(
 
-        var ocid: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var ocid: String?,
 
-        var id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var date: LocalDateTime?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        var tag: List<Tag>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var tag: List<Tag>?,
 
-        var initiationType: InitiationType?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var initiationType: InitiationType?,
 
-        var parties: HashSet<Organization>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var parties: HashSet<Organization>?,
 
-        var tender: RecordTender,
+    var tender: RecordTender,
 
-        var awards: HashSet<Award>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var awards: HashSet<Award>?,
 
-        var bids: Bids?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var bids: Bids?,
 
-        var contracts: HashSet<Contract>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var contracts: HashSet<Contract>?,
 
-        @get:JsonProperty("hasPreviousNotice")
-        var hasPreviousNotice: Boolean?,
+    @get:JsonProperty("hasPreviousNotice")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var hasPreviousNotice: Boolean?,
 
-        var purposeOfNotice: PurposeOfNotice?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var purposeOfNotice: PurposeOfNotice?,
 
-        var relatedProcesses: HashSet<RelatedProcess>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedProcesses: HashSet<RelatedProcess>?
 )

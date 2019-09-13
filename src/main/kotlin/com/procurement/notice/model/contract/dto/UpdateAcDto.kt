@@ -9,30 +9,39 @@ import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.TreasuryBudgetSource
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class UpdateAcDto @JsonCreator constructor(
 
-        val planning: ContractPlanning?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val planning: ContractPlanning?,
 
-        val award: Award,
+    val award: Award,
 
-        val contract: Contract,
+    val contract: Contract,
 
-        val buyer: OrganizationReference?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val buyer: OrganizationReference?,
 
-        val funders: HashSet<OrganizationReference>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val funders: HashSet<OrganizationReference>?,
 
-        val payers: HashSet<OrganizationReference>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val payers: HashSet<OrganizationReference>?,
 
-        val treasuryBudgetSources: List<TreasuryBudgetSource>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val treasuryBudgetSources: List<TreasuryBudgetSource>?,
 
-        val addedEI: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val addedEI: Set<String>?,
 
-        val excludedEI: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val excludedEI: Set<String>?,
 
-        val addedFS: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val addedFS: Set<String>?,
 
-        val excludedFS: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val excludedFS: Set<String>?,
 
-        val documentsOfContractPersones: List<DocumentBF>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documentsOfContractPersones: List<DocumentBF>?
 )

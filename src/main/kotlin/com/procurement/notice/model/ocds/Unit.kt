@@ -3,16 +3,20 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Unit @JsonCreator constructor(
 
-        val name: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?,
 
-        val value: Value?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val scheme: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val scheme: String?,
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val uri: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?
 )

@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class TenderStatusDto @JsonCreator constructor(
 
-        val tenderStatus: TenderStatus?,
-        val tenderStatusDetails: TenderStatusDetails?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val tenderStatus: TenderStatus?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val tenderStatusDetails: TenderStatusDetails?
 )

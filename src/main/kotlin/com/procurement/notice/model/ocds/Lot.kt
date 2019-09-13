@@ -3,30 +3,40 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Lot @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        var status: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: String?,
 
-        var statusDetails: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: String?,
 
-        val value: Value?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val options: List<Option>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val options: List<Option>?,
 
-        val recurrentProcurement: List<RecurrentProcurement>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val recurrentProcurement: List<RecurrentProcurement>?,
 
-        val renewals: List<Renewal>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val renewals: List<Renewal>?,
 
-        val variants: List<Variant>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val variants: List<Variant>?,
 
-        val contractPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val contractPeriod: Period?,
 
-        val placeOfPerformance: PlaceOfPerformance?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val placeOfPerformance: PlaceOfPerformance?
 )

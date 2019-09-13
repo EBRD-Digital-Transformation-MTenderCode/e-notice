@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.OrganizationReference
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CheckFsDto @JsonCreator constructor(
 
-        val ei: HashSet<String>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val ei: HashSet<String>,
 
-        val buyer: HashSet<OrganizationReference>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val buyer: HashSet<OrganizationReference>,
 
-        val funder: HashSet<OrganizationReference>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val funder: HashSet<OrganizationReference>,
 
-        val payer: HashSet<OrganizationReference>
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val payer: HashSet<OrganizationReference>
 )

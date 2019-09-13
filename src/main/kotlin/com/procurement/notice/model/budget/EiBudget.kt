@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class EiBudget @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val period: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?,
 
-        var amount: Value?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var amount: Value?
 )

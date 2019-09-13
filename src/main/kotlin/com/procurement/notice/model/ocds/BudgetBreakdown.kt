@@ -3,18 +3,22 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetBreakdown @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val amount: Value?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val amount: Value?,
 
-        val period: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?,
 
-        val sourceParty: OrganizationReference?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val sourceParty: OrganizationReference?,
 
-        val europeanUnionFunding: EuropeanUnionFunding?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val europeanUnionFunding: EuropeanUnionFunding?
 )

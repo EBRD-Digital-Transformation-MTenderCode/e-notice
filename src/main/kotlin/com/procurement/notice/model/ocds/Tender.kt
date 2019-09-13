@@ -5,114 +5,166 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Tender @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val status: TenderStatus?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val status: TenderStatus?,
 
-        val statusDetails: TenderStatusDetails?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val statusDetails: TenderStatusDetails?,
 
-        val items: HashSet<Item>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val items: HashSet<Item>?,
 
-        val minValue: Value?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val minValue: Value?,
 
-        val value: Value?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val procurementMethod: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethod: String?,
 
-        val procurementMethodDetails: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethodDetails: String?,
 
-        val procurementMethodRationale: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethodRationale: String?,
 
-        val mainProcurementCategory: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val mainProcurementCategory: String?,
 
-        val additionalProcurementCategories: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val additionalProcurementCategories: List<String>?,
 
-        val awardCriteria: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardCriteria: String?,
 
-        val awardCriteriaDetails: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardCriteriaDetails: String?,
 
-        val submissionMethod: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionMethod: List<String>?,
 
-        val submissionMethodDetails: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val submissionMethodDetails: String?,
 
-        val tenderPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val tenderPeriod: Period?,
 
-        val enquiryPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val enquiryPeriod: Period?,
 
-        @get:JsonProperty("hasEnquiries")
-        val hasEnquiries: Boolean?,
+    @get:JsonProperty("hasEnquiries")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val hasEnquiries: Boolean?,
 
-        val enquiries: List<Enquiry>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val enquiries: List<Enquiry>?,
 
-        val eligibilityCriteria: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val eligibilityCriteria: String?,
 
-        private val awardPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private val awardPeriod: Period?,
 
-        val contractPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val contractPeriod: Period?,
 
-        val numberOfTenderers: Int?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val numberOfTenderers: Int?,
 
-        val tenderers: HashSet<OrganizationReference>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val tenderers: HashSet<OrganizationReference>?,
 
-        val procuringEntity: OrganizationReference?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procuringEntity: OrganizationReference?,
 
-        val documents: List<Document>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: List<Document>?,
 
-        val milestones: List<Milestone>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val milestones: List<Milestone>?,
 
-        val amendments: List<Amendment>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val amendments: List<Amendment>?,
 
-        val amendment: Amendment?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val amendment: Amendment?,
 
-        val lots: List<Lot>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: List<Lot>?,
 
-        val lotDetails: LotDetails?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val lotDetails: LotDetails?,
 
-        val lotGroups: List<LotGroup>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lotGroups: List<LotGroup>?,
 
-        val participationFees: HashSet<ParticipationFee>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val participationFees: HashSet<ParticipationFee>?,
 
-        val criteria: List<Criterion>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val criteria: List<Criterion>?,
 
-        val acceleratedProcedure: AcceleratedProcedure?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val acceleratedProcedure: AcceleratedProcedure?,
 
-        val classification: Classification?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val classification: Classification?,
 
-        val designContest: DesignContest?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val designContest: DesignContest?,
 
-        val electronicWorkflows: ElectronicWorkflows?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val electronicWorkflows: ElectronicWorkflows?,
 
-        val jointProcurement: JointProcurement?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val jointProcurement: JointProcurement?,
 
-        val legalBasis: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val legalBasis: String?,
 
-        val objectives: Objectives?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val objectives: Objectives?,
 
-        val procedureOutsourcing: ProcedureOutsourcing?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procedureOutsourcing: ProcedureOutsourcing?,
 
-        val procurementMethodAdditionalInfo: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethodAdditionalInfo: String?,
 
-        val reviewParties: HashSet<OrganizationReference>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val reviewParties: HashSet<OrganizationReference>?,
 
-        val reviewPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val reviewPeriod: Period?,
 
-        val standstillPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val standstillPeriod: Period?,
 
-        val submissionLanguages: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionLanguages: List<String>?,
 
-        val submissionMethodRationale: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionMethodRationale: List<String>?,
 
-        val dynamicPurchasingSystem: DynamicPurchasingSystem?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val dynamicPurchasingSystem: DynamicPurchasingSystem?,
 
-        val framework: Framework?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val framework: Framework?,
 
-        @get:JsonProperty("requiresElectronicCatalogue")
-        val requiresElectronicCatalogue: Boolean?
+    @get:JsonProperty("requiresElectronicCatalogue")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val requiresElectronicCatalogue: Boolean?
 )

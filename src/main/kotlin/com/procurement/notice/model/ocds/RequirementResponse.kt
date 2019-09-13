@@ -3,20 +3,26 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class RequirementResponse @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val value: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: String?,
 
-        val period: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?,
 
-        val requirement: RequirementReference?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val requirement: RequirementReference?,
 
-        val relatedTenderer: OrganizationReference?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedTenderer: OrganizationReference?
 )

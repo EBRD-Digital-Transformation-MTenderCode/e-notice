@@ -13,56 +13,79 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RecordTender @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        var title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        var description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var description: String?,
 
-        var status: TenderStatus?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: TenderStatus?,
 
-        var statusDetails: TenderStatusDetails?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: TenderStatusDetails?,
 
-        var items: HashSet<Item>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var items: HashSet<Item>?,
 
-        var lots: HashSet<Lot>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var lots: HashSet<Lot>?,
 
-        val lotGroups: List<LotGroup>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lotGroups: List<LotGroup>?,
 
-        var tenderPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var tenderPeriod: Period?,
 
-        var enquiryPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var enquiryPeriod: Period?,
 
-        var standstillPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var standstillPeriod: Period?,
 
-        var awardPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var awardPeriod: Period?,
 
-        var auctionPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var auctionPeriod: Period?,
 
-        @get:JsonProperty("hasEnquiries")
-        var hasEnquiries: Boolean? = false,
+    @get:JsonProperty("hasEnquiries")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var hasEnquiries: Boolean? = false,
 
-        var enquiries: HashSet<RecordEnquiry>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var enquiries: HashSet<RecordEnquiry>?,
 
-        var amendments: List<Amendment>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var amendments: List<Amendment>?,
 
-        var documents: HashSet<Document>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: HashSet<Document>?,
 
-        val awardCriteria: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardCriteria: String?,
 
-        val submissionMethod: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionMethod: List<String>?,
 
-        val submissionMethodDetails: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val submissionMethodDetails: String?,
 
-        val submissionMethodRationale: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionMethodRationale: List<String>?,
 
-        @get:JsonProperty("requiresElectronicCatalogue")
-        val requiresElectronicCatalogue: Boolean?,
+    @get:JsonProperty("requiresElectronicCatalogue")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val requiresElectronicCatalogue: Boolean?,
 
-        var procurementMethodModalities: Set<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var procurementMethodModalities: Set<String>?,
 
-        var electronicAuctions: ElectronicAuctions?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var electronicAuctions: ElectronicAuctions?
 )

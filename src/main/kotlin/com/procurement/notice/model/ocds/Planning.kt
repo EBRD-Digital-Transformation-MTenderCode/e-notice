@@ -3,14 +3,17 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Planning @JsonCreator constructor(
 
-        val budget: Budget?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val budget: Budget?,
 
-        val rationale: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val rationale: String?,
 
-        val documents: List<Document>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: List<Document>?,
 
-        val milestones: List<Milestone>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val milestones: List<Milestone>?
 )

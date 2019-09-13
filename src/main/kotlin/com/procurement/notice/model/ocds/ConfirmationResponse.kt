@@ -4,36 +4,42 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ConfirmationResponse @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val value: ConfirmationResponseValue?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: ConfirmationResponseValue?,
 
-        val request: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val request: String?
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ConfirmationResponseValue @JsonCreator constructor(
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?,
 
-        val name: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val date: LocalDateTime?,
 
-        val date: LocalDateTime?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedPerson: RelatedPerson?,
 
-        val relatedPerson: RelatedPerson?,
-
-        val verification: List<Verification>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val verification: List<Verification>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Verification @JsonCreator constructor(
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val type: String?,
 
-        val type: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: String?,
 
-        val value: String?,
-
-        val rationale :String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val rationale: String?
 )

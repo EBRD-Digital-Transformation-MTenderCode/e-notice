@@ -3,51 +3,53 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ConfirmationRequest @JsonCreator constructor(
 
-        var id: String,
+    var id: String,
 
-        var type: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var type: String?,
 
-        var title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        var description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var description: String?,
 
-        var relatesTo: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var relatesTo: String?,
 
-        val relatedItem: String,
+    val relatedItem: String,
 
-        val source: String,
+    val source: String,
 
-        var requestGroups: Set<RequestGroup>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var requestGroups: Set<RequestGroup>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RequestGroup @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val requests: Set<Request>
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requests: Set<Request>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Request @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val title: String,
+    val title: String,
 
-        val description: String,
+    val description: String,
 
-        val relatedPerson: RelatedPerson?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedPerson: RelatedPerson?
 )
 
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class RelatedPerson @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val name: String
+    val name: String
 )

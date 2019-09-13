@@ -8,25 +8,28 @@ import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EndContractingProcessDto @JsonCreator constructor(
 
-        val tender: EndContractingProcessTender,
+    val tender: EndContractingProcessTender,
 
-        val lots: HashSet<Lot>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>,
 
-        val bids: HashSet<Bid>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bids: HashSet<Bid>,
 
-        val awards: HashSet<Award>,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awards: HashSet<Award>,
 
-        val awardPeriod: Period,
+    val awardPeriod: Period,
 
-        val cans: HashSet<Can>
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val cans: HashSet<Can>
 )
 
 data class EndContractingProcessTender @JsonCreator constructor(
 
-        var status: String,
+    var status: String,
 
-        var statusDetails: String
+    var statusDetails: String
 )

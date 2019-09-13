@@ -4,27 +4,36 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Organization @JsonCreator constructor(
 
-        var id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var name: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var name: String?,
 
-        var identifier: Identifier?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var identifier: Identifier?,
 
-        var address: Address?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var address: Address?,
 
-        var additionalIdentifiers: HashSet<Identifier>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var additionalIdentifiers: HashSet<Identifier>?,
 
-        var contactPoint: ContactPoint?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var contactPoint: ContactPoint?,
 
-        var details: Details?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var details: Details?,
 
-        var persones: HashSet<Person>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var persones: HashSet<Person>?,
 
-        var buyerProfile: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var buyerProfile: String?,
 
-        var roles: HashSet<PartyRole>
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var roles: HashSet<PartyRole>
 
 )

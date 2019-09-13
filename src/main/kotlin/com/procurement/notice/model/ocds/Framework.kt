@@ -4,17 +4,21 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Framework @JsonCreator constructor(
 
-        @get:JsonProperty("isAFramework")
-        val isAFramework: Boolean?,
+    @get:JsonProperty("isAFramework")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val isAFramework: Boolean?,
 
-        val typeOfFramework: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val typeOfFramework: String?,
 
-        val maxSuppliers: Int?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val maxSuppliers: Int?,
 
-        val exceptionalDurationRationale: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val exceptionalDurationRationale: String?,
 
-        val additionalBuyerCategories: List<String>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val additionalBuyerCategories: List<String>?
 )

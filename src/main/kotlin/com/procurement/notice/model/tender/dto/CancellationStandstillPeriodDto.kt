@@ -8,17 +8,21 @@ import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CancellationStandstillPeriodDto @JsonCreator constructor(
 
-        val amendments: List<Amendment>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val amendments: List<Amendment>?,
 
-        val standstillPeriod: Period?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val standstillPeriod: Period?,
 
-        val lots: HashSet<Lot>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>?,
 
-        val bids: HashSet<Bid>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bids: HashSet<Bid>?,
 
-        val awards: HashSet<Award>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awards: HashSet<Award>?
 
 )

@@ -4,15 +4,18 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class LotGroup @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val relatedLots: List<String>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relatedLots: List<String>?,
 
-        @get:JsonProperty("optionToCombine")
-        val optionToCombine: Boolean?,
+    @get:JsonProperty("optionToCombine")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val optionToCombine: Boolean?,
 
-        val maximumValue: Value?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val maximumValue: Value?
 )

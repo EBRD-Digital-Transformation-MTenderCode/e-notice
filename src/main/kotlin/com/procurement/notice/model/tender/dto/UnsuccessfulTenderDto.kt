@@ -8,15 +8,18 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class UnsuccessfulTenderDto @JsonCreator constructor(
 
-        val lots: HashSet<Lot>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>?,
 
-        val bids: HashSet<Bid>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bids: HashSet<Bid>?,
 
-        val awards: HashSet<Award>?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awards: HashSet<Award>?,
 
-        val awardPeriod: Period?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardPeriod: Period?
 
 )

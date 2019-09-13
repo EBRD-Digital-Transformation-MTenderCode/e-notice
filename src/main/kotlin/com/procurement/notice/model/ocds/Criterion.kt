@@ -3,20 +3,26 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Criterion @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val source: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val source: String?,
 
-        val relatesTo: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatesTo: String?,
 
-        val relatedItem: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedItem: String?,
 
-        val requirementGroups: HashSet<RequirementGroup>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requirementGroups: HashSet<RequirementGroup>?
 )

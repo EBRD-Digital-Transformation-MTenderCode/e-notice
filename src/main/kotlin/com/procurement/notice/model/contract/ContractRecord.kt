@@ -11,28 +11,39 @@ import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+
 data class ContractRecord @JsonCreator constructor(
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var ocid: String?,
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var id: String?,
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var date: LocalDateTime?,
 
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         var tag: List<Tag>?,
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var initiationType: InitiationType? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var planning: ContractPlanning? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         var tender: ContractTender? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         var awards: HashSet<Award>? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         var contracts: HashSet<Contract>? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         var parties: HashSet<Organization>? = null,
 
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         var relatedProcesses: HashSet<RelatedProcess>? = null
 )

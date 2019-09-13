@@ -4,44 +4,53 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ContractTerm @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val agreedMetrics: LinkedList<AgreedMetric>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val agreedMetrics: LinkedList<AgreedMetric>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class AgreedMetric @JsonCreator constructor(
 
-        var id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        val title: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val observations: LinkedList<Observation>?
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val observations: LinkedList<Observation>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Observation @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val notes: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val notes: String?,
 
-        val measure: Any?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val measure: Any?,
 
-        val unit: ObservationUnit?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val unit: ObservationUnit?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ObservationUnit @JsonCreator constructor(
 
-        val id: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val name: String?,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?,
 
-        val scheme: String?
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val scheme: String?
 )
