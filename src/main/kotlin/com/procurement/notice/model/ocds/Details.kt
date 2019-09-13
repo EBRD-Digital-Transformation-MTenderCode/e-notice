@@ -31,6 +31,7 @@ data class Details @JsonCreator constructor(
     val legalForm: LegalForm?,
 
     @get:JsonProperty("isACentralPurchasingBody")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     val isACentralPurchasingBody: Boolean?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
