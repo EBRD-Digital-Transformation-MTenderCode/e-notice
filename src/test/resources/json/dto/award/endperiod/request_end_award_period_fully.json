@@ -1,0 +1,65 @@
+{
+  "contract": {
+    "id": "contract.id",
+    "status": "active",
+    "statusDetails": "empty",
+    "milestones": [
+      {
+        "id": "approval-relatedparties.id",
+        "relatedItems": [
+          "contract.milestones[0].relatedItems[0]"
+        ],
+        "status": "active",
+        "additionalInformation": "contract.milestones[0].additionalInformation",
+        "dueDate": "2019-10-29T16:51:00Z",
+        "title": "Signature by the Buyer",
+        "type": "approval",
+        "description": "contract.milestones[0].description",
+        "dateModified": "2019-11-15T06:15:00Z",
+        "dateMet": "2019-12-05T10:11:00Z",
+        "relatedParties": [
+          {
+            "id": "contract.milestones[0].relatedParties[0].id",
+            "name": "contract.milestones[0].relatedParties[0].name"
+          }
+        ]
+      }
+    ]
+  },
+  "cans": [
+    {
+      "id": "235926b9-93a7-4161-890c-61d14bce1c1d",
+      "status": "active",
+      "statusDetails": "contractProject"
+    }
+  ],
+  "tender": {
+    "status": "planning",
+    "statusDetails": "execution"
+  },
+  "lots": [
+    {
+      "id": "6d5f19c6-dc50-417e-8038-206d64a1e0b6",
+      "status": "planning",
+      "statusDetails": "awarded"
+    }
+  ],
+  "awards": [
+    {
+      "id": "ff49481c-2812-401c-94b3-72c5dd0baab5",
+      "status": "pending",
+      "statusDetails": "consideration"
+    }
+  ],
+  "awardPeriod": {
+    "startDate": "2019-09-05T16:51:00Z",
+    "endDate": "2019-10-05T16:51:00Z"
+  },
+  "bids": [
+    {
+      "id": "69687876-7680-4730-b154-3a25bf1940b3",
+      "status": "invited",
+      "statusDetails": "withdrawn"
+    }
+  ]
+}
