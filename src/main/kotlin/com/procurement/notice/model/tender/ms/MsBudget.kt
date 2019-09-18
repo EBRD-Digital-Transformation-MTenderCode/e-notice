@@ -8,19 +8,19 @@ import com.procurement.notice.model.ocds.Value
 
 data class MsBudget @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val description: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val amount: Value?,
 
     @get:JsonProperty("isEuropeanUnionFunded")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val isEuropeanUnionFunded: Boolean?,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val budgetBreakdown: List<BudgetBreakdown>?
 )

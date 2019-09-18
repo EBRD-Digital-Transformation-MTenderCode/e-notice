@@ -7,9 +7,9 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 
 data class TenderStatusDto @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val tenderStatus: TenderStatus?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val tenderStatusDetails: TenderStatusDetails?
 )

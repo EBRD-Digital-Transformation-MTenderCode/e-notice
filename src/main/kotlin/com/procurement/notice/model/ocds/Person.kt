@@ -12,7 +12,7 @@ data class Person @JsonCreator constructor(
 
     val identifier: Identifier,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var businessFunctions: List<BusinessFunction>
 )
 
@@ -26,7 +26,7 @@ data class BusinessFunction @JsonCreator constructor(
 
     var period: Period,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var documents: List<DocumentBF>
 )
 
@@ -36,18 +36,18 @@ data class DocumentBF @JsonCreator constructor(
 
     val documentType: String,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var title: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var description: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var url: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var datePublished: LocalDateTime?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var dateModified: LocalDateTime?
 )

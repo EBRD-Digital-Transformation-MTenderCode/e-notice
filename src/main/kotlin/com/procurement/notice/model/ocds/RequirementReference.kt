@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude
 
 data class RequirementReference @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val title: String?
 )

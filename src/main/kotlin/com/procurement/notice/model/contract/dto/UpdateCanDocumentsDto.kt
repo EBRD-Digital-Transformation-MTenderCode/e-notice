@@ -13,6 +13,6 @@ data class UpdateDocumentContract @JsonCreator constructor(
 
     val id: String,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val documents: List<Document>
 )

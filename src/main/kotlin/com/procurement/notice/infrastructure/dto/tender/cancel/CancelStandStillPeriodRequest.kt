@@ -14,37 +14,37 @@ data class CancelStandStillPeriodRequest(
     @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender
 ) {
     data class StandstillPeriod(
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
 
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
     )
 
     data class Amendment(
         @field:JsonProperty("rationale") @param:JsonProperty("rationale") val rationale: String,
 
-        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
-        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
         @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?
     ) {
 
         data class Document(
             @field:JsonProperty("documentType") @param:JsonProperty("documentType") val documentType: String,
 
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
             @field:JsonProperty("datePublished") @param:JsonProperty("datePublished") val datePublished: LocalDateTime,
 
             @field:JsonProperty("url") @param:JsonProperty("url") val url: String,
             @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
             @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("description") @param:JsonProperty("description") val description: String?
         )
     }

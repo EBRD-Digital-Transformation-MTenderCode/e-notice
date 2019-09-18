@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class JointProcurement @JsonCreator constructor(
 
     @get:JsonProperty("isJointProcurement")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val isJointProcurement: Boolean?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val country: String?
 )

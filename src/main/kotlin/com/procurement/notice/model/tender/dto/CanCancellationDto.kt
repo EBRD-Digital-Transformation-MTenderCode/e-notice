@@ -12,15 +12,14 @@ data class CanCancellationDto @JsonCreator constructor(
 
     val can: Contract,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val contract: Contract?,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val awards: HashSet<Award>,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val bids: HashSet<Bid>,
 
     val lot: Lot
 )
-

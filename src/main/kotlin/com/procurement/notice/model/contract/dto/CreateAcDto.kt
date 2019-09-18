@@ -11,7 +11,7 @@ import com.procurement.notice.model.ocds.ContractTerm
 
 data class CreateAcDto @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val cans: HashSet<Can>,
 
     val contract: Contract,
@@ -24,7 +24,7 @@ data class CreateAcDto @JsonCreator constructor(
 )
 
 data class CreateAcTender @JsonCreator constructor(
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
     var classification: Classification,
@@ -35,7 +35,7 @@ data class CreateAcTender @JsonCreator constructor(
 
     val mainProcurementCategory: String,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var lots: HashSet<ContractTenderLot>
 
 )

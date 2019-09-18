@@ -18,11 +18,8 @@ data class BudgetEntity(
 
     var stage: String,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var amount: BigDecimal? = BigDecimal.valueOf(0.00),
 
     var jsonData: String
-
 )
-
-

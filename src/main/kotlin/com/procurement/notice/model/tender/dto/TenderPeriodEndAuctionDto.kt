@@ -15,10 +15,10 @@ data class TenderPeriodEndAuctionDto @JsonCreator constructor(
 
     val tenderStatusDetails: TenderStatusDetails,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val awards: HashSet<Award>,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val lots: HashSet<Lot>,
 
     var electronicAuctions: ElectronicAuctions

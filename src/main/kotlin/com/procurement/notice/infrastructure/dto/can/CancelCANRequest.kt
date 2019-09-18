@@ -23,10 +23,10 @@ data class CancelCANRequest(
         data class Amendment(
             @field:JsonProperty("rationale") @param:JsonProperty("rationale") val rationale: String,
 
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
-            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
             @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?
         ) {
             data class Document(
@@ -34,13 +34,13 @@ data class CancelCANRequest(
                 @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                 @field:JsonProperty("url") @param:JsonProperty("url") val url: String,
 
-                @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                @JsonSerialize(using = JsonDateTimeSerializer::class)
+                @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                @field:JsonSerialize(using = JsonDateTimeSerializer::class)
                 @field:JsonProperty("datePublished") @param:JsonProperty("datePublished") val datePublished: LocalDateTime,
 
                 @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("description") @param:JsonProperty("description") val description: String?
             )
         }
@@ -49,8 +49,8 @@ data class CancelCANRequest(
     data class Award(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime,
 
         @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String,

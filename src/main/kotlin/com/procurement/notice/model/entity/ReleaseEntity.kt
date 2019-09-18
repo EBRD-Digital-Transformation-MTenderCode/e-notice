@@ -19,8 +19,6 @@ data class ReleaseEntity(
 
     var jsonData: String,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var status: String? = ""
 )
-
-

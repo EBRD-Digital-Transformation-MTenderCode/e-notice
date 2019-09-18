@@ -6,9 +6,9 @@ import java.util.*
 
 data class Bids @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val statistics: HashSet<BidsStatistic>?,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val details: HashSet<Bid>?
 )

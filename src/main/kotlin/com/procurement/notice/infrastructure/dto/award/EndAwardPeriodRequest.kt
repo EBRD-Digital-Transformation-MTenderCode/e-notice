@@ -11,7 +11,7 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.time.LocalDateTime
 
 data class EndAwardPeriodRequest(
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("contract") @param:JsonProperty("contract") val contract: Contract?,
 
     @field:JsonProperty("cans") @param:JsonProperty("cans") val cans: List<CAN>,
@@ -20,7 +20,7 @@ data class EndAwardPeriodRequest(
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>?
 ) {
 
@@ -34,31 +34,31 @@ data class EndAwardPeriodRequest(
         data class Milestone(
             @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
-            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
             @field:JsonProperty("relatedItems") @param:JsonProperty("relatedItems") val relatedItems: List<String>?,
 
             @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
 
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("additionalInformation") @param:JsonProperty("additionalInformation") val additionalInformation: String?,
 
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("dueDate") @param:JsonProperty("dueDate") val dueDate: LocalDateTime?,
 
             @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
             @field:JsonProperty("type") @param:JsonProperty("type") val type: String,
             @field:JsonProperty("description") @param:JsonProperty("description") val description: String,
 
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("dateModified") @param:JsonProperty("dateModified") val dateModified: LocalDateTime?,
 
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
-            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
             @field:JsonProperty("dateMet") @param:JsonProperty("dateMet") val dateMet: LocalDateTime?,
 
             @field:JsonProperty("relatedParties") @param:JsonProperty("relatedParties") val relatedParties: List<RelatedParty>
@@ -95,12 +95,12 @@ data class EndAwardPeriodRequest(
     )
 
     data class AwardPeriod(
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
 
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
     )
 

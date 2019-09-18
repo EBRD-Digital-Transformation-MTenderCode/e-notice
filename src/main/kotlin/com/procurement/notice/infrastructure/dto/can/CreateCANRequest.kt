@@ -16,11 +16,11 @@ data class CreateCANRequest(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: UUID,
         @field:JsonProperty("lotId") @param:JsonProperty("lotId") val lotId: UUID,
 
-        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("awardId") @param:JsonProperty("awardId") val awardId: UUID?,
 
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime,
 
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,

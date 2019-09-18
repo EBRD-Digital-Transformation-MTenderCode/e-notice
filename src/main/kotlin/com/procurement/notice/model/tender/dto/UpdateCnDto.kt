@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude
 
 data class UpdateCnDto @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val amendment: AmendmentUpdateCn?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val isAuctionPeriodChanged: Boolean?
 )
 
 data class AmendmentUpdateCn @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val relatedLots: Set<String>
 )

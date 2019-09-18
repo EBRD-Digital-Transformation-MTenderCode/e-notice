@@ -10,19 +10,19 @@ import java.math.BigDecimal
 
 data class ValueTax @JsonCreator constructor(
 
-    @JsonDeserialize(using = AmountDeserializer::class)
-    @JsonSerialize(using = AmountSerializer::class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @param:JsonDeserialize(using = AmountDeserializer::class)
+    @field:JsonSerialize(using = AmountSerializer::class)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val amount: BigDecimal?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val currency: String?,
 
-    @JsonDeserialize(using = AmountDeserializer::class)
-    @JsonSerialize(using = AmountSerializer::class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @param:JsonDeserialize(using = AmountDeserializer::class)
+    @field:JsonSerialize(using = AmountSerializer::class)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val amountNet: BigDecimal?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val valueAddedTaxIncluded: Boolean?
 )

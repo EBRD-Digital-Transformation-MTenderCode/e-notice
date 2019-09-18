@@ -11,23 +11,23 @@ import com.procurement.notice.model.ocds.Period
 
 data class EndAwardPeriodDto @JsonCreator constructor(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val contract: EndAwardPeriodContract?,
 
     val tender: EndAwardPeriodTender,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val lots: HashSet<Lot>,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val bids: HashSet<Bid>,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val awards: HashSet<Award>,
 
     val awardPeriod: Period,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val cans: HashSet<Can>
 )
 
@@ -37,7 +37,7 @@ data class EndAwardPeriodContract @JsonCreator constructor(
 
     var statusDetails: String,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val milestones: List<Milestone>
 )
 

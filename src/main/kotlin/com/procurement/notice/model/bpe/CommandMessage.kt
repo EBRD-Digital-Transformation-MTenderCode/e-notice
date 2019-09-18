@@ -82,31 +82,31 @@ enum class ApiVersion(private val value: String) {
 
 data class ResponseDto(
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val errors: List<ResponseErrorDto>? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val data: DataResponseDto? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String? = null
 )
 
 data class DataResponseDto(
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val cpid: String? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val ocid: String? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val amendmentsIds: List<String>? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val awardsIds: List<String>? = null,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val releaseId: String? = null
 )
 
@@ -114,7 +114,7 @@ data class ResponseErrorDto(
 
     val code: String,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val description: String?
 )
 
@@ -152,4 +152,3 @@ fun getEnumExceptionResponseDto(error: EnumException, id: String? = null): Respo
         id = id
     )
 }
-

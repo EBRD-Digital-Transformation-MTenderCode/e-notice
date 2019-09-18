@@ -8,7 +8,7 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 data class Params(
     var statusDetails: TenderStatusDetails = TenderStatusDetails.PRESELECTION,
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var tag: List<Tag> = listOf(),
 
     var isACallForCompetition: Boolean = false,
