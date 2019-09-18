@@ -74,7 +74,7 @@ data class Contract @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val valueBreakdown: HashSet<ValueBreakdown>? = null,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isFrameworkOrDynamic: Boolean? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)

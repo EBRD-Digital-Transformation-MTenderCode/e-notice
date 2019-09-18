@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class ProcedureOutsourcing @JsonCreator constructor(
 
     @get:JsonProperty("procedureOutsourced")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val procedureOutsourced: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

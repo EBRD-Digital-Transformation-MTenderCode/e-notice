@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class DesignContest @JsonCreator constructor(
 
     @get:JsonProperty("hasPrizes")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val hasPrizes: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -17,11 +17,11 @@ data class DesignContest @JsonCreator constructor(
     val paymentsToParticipants: String?,
 
     @get:JsonProperty("serviceContractAward")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val serviceContractAward: Boolean?,
 
     @get:JsonProperty("juryDecisionBinding")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val juryDecisionBinding: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)

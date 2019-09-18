@@ -25,11 +25,11 @@ data class FsBudget @JsonCreator constructor(
     val europeanUnionFunding: EuropeanUnionFunding?,
 
     @get:JsonProperty("isEuropeanUnionFunded")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isEuropeanUnionFunded: Boolean?,
 
     @get:JsonProperty("verified")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val verified: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

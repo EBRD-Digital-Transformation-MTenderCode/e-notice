@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Option @JsonCreator constructor(
 
     @get:JsonProperty("hasOptions")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val hasOptions: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

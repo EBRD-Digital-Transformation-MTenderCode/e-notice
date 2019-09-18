@@ -55,7 +55,7 @@ data class RecordTender @JsonCreator constructor(
     var auctionPeriod: Period?,
 
     @get:JsonProperty("hasEnquiries")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     var hasEnquiries: Boolean? = false,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -80,7 +80,7 @@ data class RecordTender @JsonCreator constructor(
     val submissionMethodRationale: List<String>?,
 
     @get:JsonProperty("requiresElectronicCatalogue")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val requiresElectronicCatalogue: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)

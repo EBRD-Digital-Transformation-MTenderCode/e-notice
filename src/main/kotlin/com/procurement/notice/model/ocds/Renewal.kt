@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Renewal @JsonCreator constructor(
 
     @get:JsonProperty("hasRenewals")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val hasRenewals: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

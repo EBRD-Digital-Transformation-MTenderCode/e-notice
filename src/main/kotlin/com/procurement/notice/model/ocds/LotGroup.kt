@@ -13,7 +13,7 @@ data class LotGroup @JsonCreator constructor(
     val relatedLots: List<String>?,
 
     @get:JsonProperty("optionToCombine")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val optionToCombine: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

@@ -65,7 +65,7 @@ data class Tender @JsonCreator constructor(
     val enquiryPeriod: Period?,
 
     @get:JsonProperty("hasEnquiries")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val hasEnquiries: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -165,6 +165,6 @@ data class Tender @JsonCreator constructor(
     val framework: Framework?,
 
     @get:JsonProperty("requiresElectronicCatalogue")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val requiresElectronicCatalogue: Boolean?
 )

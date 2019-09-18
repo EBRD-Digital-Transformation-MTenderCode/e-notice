@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class PurposeOfNotice @JsonCreator constructor(
 
     @get:JsonProperty("isACallForCompetition")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     var isACallForCompetition: Boolean?
 )

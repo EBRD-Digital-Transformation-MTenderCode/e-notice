@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class AcceleratedProcedure @JsonCreator constructor(
 
     @get:JsonProperty("isAcceleratedProcedure")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isAcceleratedProcedure: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

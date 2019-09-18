@@ -46,7 +46,7 @@ data class Record @JsonCreator constructor(
     var contracts: HashSet<Contract>?,
 
     @get:JsonProperty("hasPreviousNotice")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     var hasPreviousNotice: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

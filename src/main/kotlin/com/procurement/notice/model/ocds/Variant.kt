@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Variant @JsonCreator constructor(
 
     @get:JsonProperty("hasVariants")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val hasVariants: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

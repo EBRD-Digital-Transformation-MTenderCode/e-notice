@@ -53,8 +53,8 @@ data class MsTender @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val additionalProcurementCategories: List<String>?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @get:JsonProperty("hasEnquiries")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     var hasEnquiries: Boolean? = false,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

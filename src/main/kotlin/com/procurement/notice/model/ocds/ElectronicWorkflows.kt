@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class ElectronicWorkflows @JsonCreator constructor(
 
     @get:JsonProperty("useOrdering")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val useOrdering: Boolean?,
 
     @get:JsonProperty("usePayment")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val usePayment: Boolean?,
 
     @get:JsonProperty("acceptInvoicing")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val acceptInvoicing: Boolean?
 )

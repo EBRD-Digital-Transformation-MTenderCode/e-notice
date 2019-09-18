@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Framework @JsonCreator constructor(
 
     @get:JsonProperty("isAFramework")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isAFramework: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

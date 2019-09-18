@@ -18,7 +18,7 @@ data class MsBudget @JsonCreator constructor(
     val amount: Value?,
 
     @get:JsonProperty("isEuropeanUnionFunded")
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isEuropeanUnionFunded: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
