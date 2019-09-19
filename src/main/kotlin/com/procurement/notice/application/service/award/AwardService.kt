@@ -1,6 +1,7 @@
 package com.procurement.notice.application.service.award
 
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -597,7 +598,19 @@ class AwardServiceImpl(
             )
         )
 
-        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = "EV")
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
 
@@ -648,7 +661,7 @@ class AwardServiceImpl(
         )
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = "EV",
+            stage = recordStage,
             record = updatedRecordEV,
             publishDate = recordEvEntity.publishDate
         )
