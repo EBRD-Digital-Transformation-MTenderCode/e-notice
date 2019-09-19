@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -30,6 +31,11 @@ val CommandMessage.ocid: String
 val CommandMessage.stage: String
     get() = this.context.stage
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'stage' attribute in context.")
+
+val CommandMessage.pmd: ProcurementMethod
+    get() = this.context.pmd?.let {
+        ProcurementMethod.fromString(it)
+    } ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'pmd' attribute in context.")
 
 val CommandMessage.startDate: LocalDateTime
     get() = this.context.startDate?.toLocalDateTime()

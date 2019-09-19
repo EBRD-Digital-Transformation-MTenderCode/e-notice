@@ -18,5 +18,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     CONTEXT("00.15", "Context parameter not found."),
     INVALID_STAGE("00.16", "Invalid stage"),
     BIDS_IN_REQUEST_IS_EMPTY("00.17", "The collection of bids in request cannot be empty"),
-    CONTRACT_NOT_FOUND("00.18", "Contract is not found.");
+    CONTRACT_NOT_FOUND("00.18", "Contract is not found."),
+    INVALID_PMD("00.19", "Invalid pmd.");
 }

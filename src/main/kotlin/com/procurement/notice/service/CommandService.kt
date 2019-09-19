@@ -30,6 +30,7 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.bpe.cpid
 import com.procurement.notice.model.bpe.ocid
+import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
@@ -500,6 +501,7 @@ class CommandService(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
+                pmd = cm.pmd,
                 releaseDate = releaseDate,
                 data = data
             )
