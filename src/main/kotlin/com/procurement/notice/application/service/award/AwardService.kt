@@ -685,7 +685,7 @@ class AwardServiceImpl(
                 it.copy(
                     status = contract.status,
                     statusDetails = contract.statusDetails,
-                    milestones = (it.milestones ?: emptyList()).add(milestones = contract.milestones)
+                    milestones = createMilestones(milestones = contract.milestones)
                 )
             }
             ?: throw ErrorException(ErrorType.CONTRACT_NOT_FOUND)
@@ -698,8 +698,8 @@ class AwardServiceImpl(
         }
     }
 
-    private fun List<Milestone>.add(milestones: List<EndAwardPeriodData.Contract.Milestone>): List<Milestone> {
-        return this + milestones.map { milestone ->
+    private fun createMilestones(milestones: List<EndAwardPeriodData.Contract.Milestone>): List<Milestone> {
+        return milestones.map { milestone ->
             Milestone(
                 id = milestone.id,
                 title = milestone.title,
