@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.ocds.Lot
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ConfirmCanDto @JsonCreator constructor(
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>,
 
-        val lots: HashSet<Lot>,
-
-        val cans: HashSet<Can>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val cans: HashSet<Can>
 )

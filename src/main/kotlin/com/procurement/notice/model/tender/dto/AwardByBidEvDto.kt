@@ -6,16 +6,19 @@ import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Lot
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class AwardByBidEvDto @JsonCreator constructor(
 
-        val award: Award,
+    val award: Award,
 
-        val nextAwardForUpdate: Award?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val nextAwardForUpdate: Award?,
 
-        val consideredBid: Bid?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val consideredBid: Bid?,
 
-        val bid: Bid?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val bid: Bid?,
 
-        val lot: Lot?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val lot: Lot?
 )

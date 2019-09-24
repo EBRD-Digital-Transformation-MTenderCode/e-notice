@@ -4,24 +4,32 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Amendment @JsonCreator constructor(
 
-        var id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        val releaseID: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val releaseID: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        var amendsReleaseID: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var amendsReleaseID: String?,
 
-        val rationale: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val rationale: String?,
 
-        val relatedLots: Set<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relatedLots: Set<String>?,
 
-        val changes: List<Change>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val changes: List<Change>?,
 
-        val documents: List<Document>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: List<Document>?
 )

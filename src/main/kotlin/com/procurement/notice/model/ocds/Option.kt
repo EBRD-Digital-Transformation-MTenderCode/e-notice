@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Option @JsonCreator constructor(
 
-        @get:JsonProperty("hasOptions")
-        val hasOptions: Boolean?,
+    @get:JsonProperty("hasOptions")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val hasOptions: Boolean?,
 
-        val optionDetails: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val optionDetails: String?
 )

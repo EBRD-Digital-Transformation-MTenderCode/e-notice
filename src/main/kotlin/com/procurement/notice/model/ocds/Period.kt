@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Period @JsonCreator constructor(
 
-        val startDate: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val startDate: LocalDateTime?,
 
-        val endDate: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val endDate: LocalDateTime?,
 
-        val maxExtentDate: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val maxExtentDate: LocalDateTime?,
 
-        val durationInDays: Int?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val durationInDays: Int?
 )

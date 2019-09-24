@@ -3,16 +3,20 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RelatedProcess @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val relationship: List<RelatedProcessType>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relationship: List<RelatedProcessType>?,
 
-        val scheme: RelatedProcessScheme?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val scheme: RelatedProcessScheme?,
 
-        val identifier: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val identifier: String?,
 
-        val uri: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?
 )

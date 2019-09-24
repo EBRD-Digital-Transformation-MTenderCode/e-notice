@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Implementation @JsonCreator constructor(
 
-        val transactions: HashSet<Transaction>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val transactions: HashSet<Transaction>?,
 
-        val milestones: HashSet<Milestone>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val milestones: HashSet<Milestone>?,
 
-        val documents: HashSet<Document>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: HashSet<Document>?
 )

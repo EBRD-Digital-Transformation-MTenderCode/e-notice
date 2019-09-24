@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -12,11 +13,11 @@ import java.time.LocalDateTime
 
 data class CommandMessage @JsonCreator constructor(
 
-        val id: String,
-        val command: CommandType,
-        val context: Context,
-        val data: JsonNode,
-        val version: ApiVersion
+    val id: String,
+    val command: CommandType,
+    val context: Context,
+    val data: JsonNode,
+    val version: ApiVersion
 )
 
 val CommandMessage.cpid: String
@@ -31,27 +32,32 @@ val CommandMessage.stage: String
     get() = this.context.stage
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'stage' attribute in context.")
 
+val CommandMessage.pmd: ProcurementMethod
+    get() = this.context.pmd?.let {
+        ProcurementMethod.fromString(it)
+    } ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'pmd' attribute in context.")
+
 val CommandMessage.startDate: LocalDateTime
     get() = this.context.startDate?.toLocalDateTime()
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'startDate' attribute in context.")
 
 data class Context @JsonCreator constructor(
-        val operationId: String?,
-        val cpid: String,
-        val ocid: String?,
-        val stage: String,
-        val prevStage: String?,
-        val processType: String?,
-        val operationType: String,
-        val phase: String?,
-        val owner: String?,
-        val country: String?,
-        val language: String?,
-        val pmd: String?,
-        val startDate: String?,
-        val endDate: String?,
-        val isAuction: Boolean?,
-        val timeStamp: Long
+    val operationId: String?,
+    val cpid: String,
+    val ocid: String?,
+    val stage: String,
+    val prevStage: String?,
+    val processType: String?,
+    val operationType: String,
+    val phase: String?,
+    val owner: String?,
+    val country: String?,
+    val language: String?,
+    val pmd: String?,
+    val startDate: String?,
+    val endDate: String?,
+    val isAuction: Boolean?,
+    val timeStamp: Long
 )
 
 enum class CommandType(private val value: String) {
@@ -80,54 +86,75 @@ enum class ApiVersion(private val value: String) {
     }
 }
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ResponseDto(
 
-        val errors: List<ResponseErrorDto>? = null,
-        val data: DataResponseDto? = null,
-        val id: String? = null
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val errors: List<ResponseErrorDto>? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val data: DataResponseDto? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String? = null
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class DataResponseDto(
-        val cpid: String? = null,
-        val ocid: String? = null,
-        val amendmentsIds: List<String>? = null,
-        val awardsIds: List<String>? = null,
-        val releaseId: String? = null
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val cpid: String? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val ocid: String? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val amendmentsIds: List<String>? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awardsIds: List<String>? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val releaseId: String? = null
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ResponseErrorDto(
 
-        val code: String,
+    val code: String,
 
-        val description: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?
 )
 
 fun getExceptionResponseDto(exception: Exception): ResponseDto {
     return ResponseDto(
-            errors = listOf(ResponseErrorDto(
-                    code = "400.02.00",
-                    description = exception.message
-            )))
+        errors = listOf(
+            ResponseErrorDto(
+                code = "400.02.00",
+                description = exception.message
+            )
+        )
+    )
 }
 
 fun getErrorExceptionResponseDto(error: ErrorException, id: String? = null): ResponseDto {
     return ResponseDto(
-            errors = listOf(ResponseErrorDto(
-                    code = "400.02." + error.code,
-                    description = error.msg
-            )),
-            id = id)
+        errors = listOf(
+            ResponseErrorDto(
+                code = "400.02." + error.code,
+                description = error.msg
+            )
+        ),
+        id = id
+    )
 }
 
 fun getEnumExceptionResponseDto(error: EnumException, id: String? = null): ResponseDto {
     return ResponseDto(
-            errors = listOf(ResponseErrorDto(
-                    code = "400.02." + error.code,
-                    description = error.msg
-            )),
-            id = id)
+        errors = listOf(
+            ResponseErrorDto(
+                code = "400.02." + error.code,
+                description = error.msg
+            )
+        ),
+        id = id
+    )
 }
-

@@ -1,0 +1,31 @@
+{
+  "cans": [
+    {
+      "id": "235926b9-93a7-4161-890c-61d14bce1c1d",
+      "status": "active",
+      "statusDetails": "contractProject"
+    }
+  ],
+  "tender": {
+    "status": "planning",
+    "statusDetails": "execution"
+  },
+  "lots": [
+    {
+      "id": "6d5f19c6-dc50-417e-8038-206d64a1e0b6",
+      "status": "planning",
+      "statusDetails": "awarded"
+    }
+  ],
+  "awards": [
+    {
+      "id": "ff49481c-2812-401c-94b3-72c5dd0baab5",
+      "status": "pending",
+      "statusDetails": "consideration"
+    }
+  ],
+  "awardPeriod": {
+    "startDate": "2019-09-05T16:51:00Z",
+    "endDate": "2019-10-05T16:51:00Z"
+  }
+}

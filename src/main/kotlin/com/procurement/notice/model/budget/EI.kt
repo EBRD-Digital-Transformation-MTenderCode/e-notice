@@ -10,30 +10,40 @@ import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.Tender
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EI @JsonCreator constructor(
 
-        val ocid: String,
+    val ocid: String,
 
-        var id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        var tag: List<Tag>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var tag: List<Tag>?,
 
-        var initiationType: InitiationType?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var initiationType: InitiationType?,
 
-        var title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        var tender: Tender?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var tender: Tender?,
 
-        val buyer: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val buyer: OrganizationReference?,
 
-        var parties: HashSet<Organization>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var parties: HashSet<Organization>?,
 
-        var planning: EiPlanning?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var planning: EiPlanning?,
 
-        var relatedProcesses: HashSet<RelatedProcess>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedProcesses: HashSet<RelatedProcess>?
 )

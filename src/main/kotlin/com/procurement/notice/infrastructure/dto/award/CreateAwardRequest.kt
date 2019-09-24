@@ -18,15 +18,15 @@ data class CreateAwardRequest(
     data class Award(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
+        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime,
 
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String,
         @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<String>,
 
-        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
         @field:JsonProperty("value") @param:JsonProperty("value") val value: Value,
@@ -34,8 +34,8 @@ data class CreateAwardRequest(
     ) {
 
         data class Value(
-            @JsonDeserialize(using = AmountDeserializer::class)
-            @JsonSerialize(using = AmountSerializer::class)
+            @param:JsonDeserialize(using = AmountDeserializer::class)
+            @field:JsonSerialize(using = AmountSerializer::class)
             @field:JsonProperty("amount") @param:JsonProperty("amount") val amount: BigDecimal,
 
             @field:JsonProperty("currency") @param:JsonProperty("currency") val currency: String
@@ -46,7 +46,7 @@ data class CreateAwardRequest(
             @field:JsonProperty("name") @param:JsonProperty("name") val name: String,
             @field:JsonProperty("identifier") @param:JsonProperty("identifier") val identifier: Identifier,
 
-            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
             @field:JsonProperty("additionalIdentifiers") @param:JsonProperty("additionalIdentifiers") val additionalIdentifiers: List<AdditionalIdentifier>?,
             @field:JsonProperty("address") @param:JsonProperty("address") val address: Address,
             @field:JsonProperty("contactPoint") @param:JsonProperty("contactPoint") val contactPoint: ContactPoint,
@@ -58,7 +58,7 @@ data class CreateAwardRequest(
                 @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                 @field:JsonProperty("legalName") @param:JsonProperty("legalName") val legalName: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("uri") @param:JsonProperty("uri") val uri: String?
             )
 
@@ -67,14 +67,14 @@ data class CreateAwardRequest(
                 @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                 @field:JsonProperty("legalName") @param:JsonProperty("legalName") val legalName: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("uri") @param:JsonProperty("uri") val uri: String?
             )
 
             data class Address(
                 @field:JsonProperty("streetAddress") @param:JsonProperty("streetAddress") val streetAddress: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("postalCode") @param:JsonProperty("postalCode") val postalCode: String?,
 
                 @field:JsonProperty("addressDetails") @param:JsonProperty("addressDetails") val addressDetails: AddressDetails
@@ -105,7 +105,7 @@ data class CreateAwardRequest(
                         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                         @field:JsonProperty("description") @param:JsonProperty("description") val description: String,
 
-                        @JsonInclude(JsonInclude.Include.NON_NULL)
+                        @field:JsonInclude(JsonInclude.Include.NON_NULL)
                         @field:JsonProperty("uri") @param:JsonProperty("uri") val uri: String?
                     )
                 }
@@ -116,10 +116,10 @@ data class CreateAwardRequest(
                 @field:JsonProperty("email") @param:JsonProperty("email") val email: String,
                 @field:JsonProperty("telephone") @param:JsonProperty("telephone") val telephone: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("faxNumber") @param:JsonProperty("faxNumber") val faxNumber: String?,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("url") @param:JsonProperty("url") val url: String?
             )
 
@@ -145,8 +145,8 @@ data class CreateAwardRequest(
     ) {
 
         data class Value(
-            @JsonDeserialize(using = AmountDeserializer::class)
-            @JsonSerialize(using = AmountSerializer::class)
+            @param:JsonDeserialize(using = AmountDeserializer::class)
+            @field:JsonSerialize(using = AmountSerializer::class)
             @field:JsonProperty("amount") @param:JsonProperty("amount") val amount: BigDecimal,
 
             @field:JsonProperty("currency") @param:JsonProperty("currency") val currency: String
@@ -169,12 +169,12 @@ data class CreateAwardRequest(
         )
 
         data class ContractPeriod(
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
             @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
 
-            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @field:JsonSerialize(using = JsonDateTimeSerializer::class)
             @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
         )
 
@@ -186,7 +186,7 @@ data class CreateAwardRequest(
             data class Address(
                 @field:JsonProperty("streetAddress") @param:JsonProperty("streetAddress") val streetAddress: String,
 
-                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("postalCode") @param:JsonProperty("postalCode") val postalCode: String?,
 
                 @field:JsonProperty("addressDetails") @param:JsonProperty("addressDetails") val addressDetails: AddressDetails
@@ -217,7 +217,7 @@ data class CreateAwardRequest(
                         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                         @field:JsonProperty("description") @param:JsonProperty("description") val description: String,
 
-                        @JsonInclude(JsonInclude.Include.NON_NULL)
+                        @field:JsonInclude(JsonInclude.Include.NON_NULL)
                         @field:JsonProperty("uri") @param:JsonProperty("uri") val uri: String?
                     )
                 }

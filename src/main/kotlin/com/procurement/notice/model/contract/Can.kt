@@ -5,47 +5,59 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Document
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Can @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val token: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val token: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        val awardId: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardId: String?,
 
-        val lotId: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val lotId: String?,
 
-        var status: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: String?,
 
-        var statusDetails: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: String?,
 
-        var documents: HashSet<Document>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: HashSet<Document>?,
 
-        var amendment: Amendment?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var amendment: Amendment?
 )
 
-
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Amendment @JsonCreator constructor(
 
-        val rationale: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val rationale: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val documents: List<DocumentAmendment>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: List<DocumentAmendment>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class DocumentAmendment @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        var documentType: Document?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var documentType: Document?,
 
-        var title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        var description: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var description: String?
 )

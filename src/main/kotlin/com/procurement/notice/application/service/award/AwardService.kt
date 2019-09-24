@@ -1,24 +1,36 @@
 package com.procurement.notice.application.service.award
 
+import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.ocds.Address
 import com.procurement.notice.model.ocds.AddressDetails
 import com.procurement.notice.model.ocds.Award
+import com.procurement.notice.model.ocds.Bids
 import com.procurement.notice.model.ocds.ContactPoint
+import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.CountryDetails
 import com.procurement.notice.model.ocds.Details
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.LocalityDetails
+import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.Milestone
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.RegionDetails
+import com.procurement.notice.model.ocds.RelatedParty
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toDate
+import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 
 interface AwardService {
@@ -26,12 +38,15 @@ interface AwardService {
 
     fun startAwardPeriod(context: StartAwardPeriodContext, data: StartAwardPeriodData)
 
+    fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData)
+
     fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
 }
 
 @Service
 class AwardServiceImpl(
-    private val releaseService: ReleaseService
+    private val releaseService: ReleaseService,
+    private val releaseDao: ReleaseDao
 ) : AwardService {
     override fun createAward(context: CreateAwardContext, data: CreateAwardData) {
         val cpid = context.cpid
@@ -570,4 +585,208 @@ class AwardServiceImpl(
         reviewProceedings = null,
         relatedBid = null
     )
+
+    override fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData) {
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
+        val ms = releaseService.getMs(msEntity.jsonData)
+        val updatedMS = ms.copy(
+            id = releaseService.newReleaseId(ocId = context.cpid),
+            date = context.releaseDate,
+            tag = listOf(Tag.COMPILED),
+            tender = ms.tender.copy(
+                statusDetails = TenderStatusDetails.EXECUTION
+            )
+        )
+
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
+
+        val updatedRecordEV = recordEv.let { record ->
+            record.copy(
+                id = releaseService.newReleaseId(recordEvEntity.ocId),
+                date = context.releaseDate,
+                tag = listOf(Tag.TENDER_UPDATE),
+                tender = record.tender.let { tender ->
+                    tender.copy(
+                        awardPeriod = data.awardPeriod.let { awardPeriod ->
+                            Period(
+                                startDate = awardPeriod.startDate,
+                                endDate = awardPeriod.endDate,
+                                durationInDays = null,
+                                maxExtentDate = null
+                            )
+                        },
+                        status = data.tender.status,
+                        statusDetails = data.tender.statusDetails,
+                        lots = updateLots(data, tender.lots).toHashSet()
+                    )
+                },
+                bids = updateBids(data, record.bids),
+                awards = updateAwards(data, record.awards).toHashSet(),
+                contracts = updateCanContracts(data, record.contracts).toHashSet()
+            )
+        }
+
+        val (updatedContractRecord, contractPublishDate) = data.contract
+            ?.let { contract ->
+                val contractRecordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+                val contractRecord = toObject(ContractRecord::class.java, contractRecordEntity.jsonData)
+
+                contractRecord.copy(
+                    id = releaseService.newReleaseId(context.ocid),
+                    tag = listOf(Tag.CONTRACT_UPDATE),
+                    date = context.releaseDate,
+                    contracts = updateContracts(contract, contractRecord.contracts!!).toHashSet()
+                ) to contractRecordEntity.publishDate
+            }
+            ?: Pair(null, null)
+
+        releaseService.saveMs(
+            cpId = context.cpid,
+            ms = updatedMS,
+            publishDate = msEntity.publishDate
+        )
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = recordStage,
+            record = updatedRecordEV,
+            publishDate = recordEvEntity.publishDate
+        )
+        if (updatedContractRecord != null)
+            releaseService.saveContractRecord(
+                cpId = context.cpid,
+                stage = context.stage,
+                record = updatedContractRecord,
+                publishDate = contractPublishDate!!
+            )
+    }
+
+    private fun updateContracts(
+        contract: EndAwardPeriodData.Contract,
+        contracts: Collection<Contract>
+    ): List<Contract> {
+        val contractsById: Map<String, Contract> = contracts.associateBy { it.id!! }
+
+        val updatedContract = contractsById[contract.id]
+            ?.let {
+                it.copy(
+                    status = contract.status,
+                    statusDetails = contract.statusDetails,
+                    milestones = createMilestones(milestones = contract.milestones)
+                )
+            }
+            ?: throw ErrorException(ErrorType.CONTRACT_NOT_FOUND)
+
+        return contractsById.map { (id, value) ->
+            if (id == contract.id)
+                updatedContract
+            else
+                value
+        }
+    }
+
+    private fun createMilestones(milestones: List<EndAwardPeriodData.Contract.Milestone>): List<Milestone> {
+        return milestones.map { milestone ->
+            Milestone(
+                id = milestone.id,
+                title = milestone.title,
+                description = milestone.description,
+                type = milestone.type,
+                status = milestone.status,
+                relatedItems = milestone.relatedItems?.toSet(),
+                additionalInformation = milestone.additionalInformation,
+                dueDate = milestone.dueDate,
+                relatedParties = milestone.relatedParties.map { relatedParty ->
+                    RelatedParty(
+                        id = relatedParty.id,
+                        name = relatedParty.name
+                    )
+                },
+                dateModified = milestone.dateModified,
+                dateMet = milestone.dateMet
+            )
+        }
+    }
+
+    private fun updateBids(data: EndAwardPeriodData, bids: Bids?): Bids? {
+        if (bids?.details == null) return bids
+
+        val bidsFromRequestById: Map<String, EndAwardPeriodData.Bid> = data.bids?.associateBy { it.id } ?: emptyMap()
+        if (bidsFromRequestById.isEmpty()) return bids
+
+        val updatedBids = bids.details.map { bid ->
+            bidsFromRequestById[bid.id]
+                ?.let {
+                    bid.copy(
+                        status = it.status,
+                        statusDetails = it.statusDetails
+                    )
+                }
+                ?: bid
+        }
+        return bids.copy(
+            details = updatedBids.toHashSet()
+        )
+    }
+
+    private fun updateAwards(data: EndAwardPeriodData, awards: Collection<Award>?): List<Award> {
+        if (awards == null || awards.isEmpty()) return emptyList()
+
+        val awardsFromRequestById: Map<String, EndAwardPeriodData.Award> = data.awards.associateBy { it.id }
+        return awards.map { award ->
+            awardsFromRequestById[award.id]
+                ?.let {
+                    award.copy(
+                        status = it.status,
+                        statusDetails = it.statusDetails
+                    )
+                }
+                ?: award
+        }
+    }
+
+    private fun updateLots(data: EndAwardPeriodData, lots: Collection<Lot>?): List<Lot> {
+        if (lots == null || lots.isEmpty()) return emptyList()
+
+        val lotsFromRequestById: Map<String, EndAwardPeriodData.Lot> = data.lots.associateBy { it.id }
+        return lots.map { lot ->
+            lotsFromRequestById[lot.id]
+                ?.let {
+                    lot.copy(
+                        status = it.status,
+                        statusDetails = it.statusDetails
+                    )
+                }
+                ?: lot
+        }
+    }
+
+    private fun updateCanContracts(data: EndAwardPeriodData, contracts: Collection<Contract>?): List<Contract> {
+        if (contracts == null || contracts.isEmpty()) return emptyList()
+
+        val cansFromRequestById: Map<String, EndAwardPeriodData.CAN> = data.cans.associateBy { it.id }
+        return contracts.map { contract ->
+            cansFromRequestById[contract.id]
+                ?.let {
+                    contract.copy(
+                        status = it.status,
+                        statusDetails = it.statusDetails
+                    )
+                }
+                ?: contract
+        }
+    }
 }

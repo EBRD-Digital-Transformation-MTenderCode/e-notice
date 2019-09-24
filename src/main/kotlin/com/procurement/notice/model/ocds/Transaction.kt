@@ -4,26 +4,35 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Transaction @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val source: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val source: String?,
 
-        val date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val date: LocalDateTime?,
 
-        val value: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val payer: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val payer: OrganizationReference?,
 
-        val payee: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val payee: OrganizationReference?,
 
-        val uri: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?,
 
-        val amount: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val amount: Value?,
 
-        val providerOrganization: Identifier?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val providerOrganization: Identifier?,
 
-        val receiverOrganization: Identifier?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val receiverOrganization: Identifier?
 )

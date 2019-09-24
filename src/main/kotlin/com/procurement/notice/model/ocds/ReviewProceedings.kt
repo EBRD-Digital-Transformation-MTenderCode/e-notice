@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ReviewProceedings @JsonCreator constructor(
 
-        @get:JsonProperty("buyerProcedureReview")
-        val buyerProcedureReview: Boolean?,
+    @get:JsonProperty("buyerProcedureReview")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val buyerProcedureReview: Boolean?,
 
-        @get:JsonProperty("reviewBodyChallenge")
-        val reviewBodyChallenge: Boolean?,
+    @get:JsonProperty("reviewBodyChallenge")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val reviewBodyChallenge: Boolean?,
 
-        val legalProcedures: HashSet<LegalProceedings>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val legalProcedures: HashSet<LegalProceedings>?
 )

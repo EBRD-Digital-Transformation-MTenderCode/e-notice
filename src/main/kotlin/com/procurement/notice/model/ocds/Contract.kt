@@ -5,66 +5,88 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Contract @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        val awardId: UUID?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardId: UUID?,
 
-        val relatedLots: List<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relatedLots: List<String>?,
 
-        val title: String? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String? = null,
 
-        val description: String? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String? = null,
 
-        var status: String,
+    var status: String,
 
-        var statusDetails: String,
+    var statusDetails: String,
 
-        var documents: HashSet<Document>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: HashSet<Document>?,
 
-        val extendsContractId: String? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val extendsContractId: String? = null,
 
-        val budgetSource: List<BudgetSource>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val budgetSource: List<BudgetSource>? = null,
 
-        val classification: Classification? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val classification: Classification? = null,
 
-        val period: Period? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period? = null,
 
-        val value: ValueTax? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: ValueTax? = null,
 
-        val items: HashSet<Item>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val items: HashSet<Item>? = null,
 
-        val dateSigned: LocalDateTime? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val dateSigned: LocalDateTime? = null,
 
-        var relatedProcesses: HashSet<RelatedProcess>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedProcesses: HashSet<RelatedProcess>? = null,
 
-        var amendments: List<Amendment>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var amendments: List<Amendment>? = null,
 
-        var amendment: Amendment? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var amendment: Amendment? = null,
 
-        val requirementResponses: HashSet<RequirementResponse>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requirementResponses: HashSet<RequirementResponse>? = null,
 
-        val countryOfOrigin: String? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val countryOfOrigin: String? = null,
 
-        val lotVariant: HashSet<String>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lotVariant: HashSet<String>? = null,
 
-        val valueBreakdown: HashSet<ValueBreakdown>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val valueBreakdown: HashSet<ValueBreakdown>? = null,
 
-        val isFrameworkOrDynamic: Boolean? = null,
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val isFrameworkOrDynamic: Boolean? = null,
 
-        var agreedMetrics: LinkedList<AgreedMetric>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var agreedMetrics: LinkedList<AgreedMetric>? = null,
 
-        var milestones: List<Milestone>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var milestones: List<Milestone>? = null,
 
-        var confirmationRequests: List<ConfirmationRequest>? = null,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var confirmationRequests: List<ConfirmationRequest>? = null,
 
-        var confirmationResponses: HashSet<ConfirmationResponse>? = null
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var confirmationResponses: HashSet<ConfirmationResponse>? = null
 
 )
-
-
-

@@ -3,14 +3,17 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ParticipationFee @JsonCreator constructor(
 
-        val type: List<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val type: List<String>?,
 
-        val value: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val methodOfPayment: List<String>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val methodOfPayment: List<String>?
 )

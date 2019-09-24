@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RequirementGroup @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val requirements: HashSet<Requirement>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requirements: HashSet<Requirement>?
 )

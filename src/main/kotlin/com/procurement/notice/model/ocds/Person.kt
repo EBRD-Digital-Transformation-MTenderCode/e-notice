@@ -4,46 +4,50 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Person @JsonCreator constructor(
 
-        var title: String,
+    var title: String,
 
-        var name: String,
+    var name: String,
 
-        val identifier: Identifier,
+    val identifier: Identifier,
 
-        var businessFunctions: List<BusinessFunction>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var businessFunctions: List<BusinessFunction>
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BusinessFunction @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        var type: String,
+    var type: String,
 
-        var jobTitle: String,
+    var jobTitle: String,
 
-        var period: Period,
+    var period: Period,
 
-        var documents: List<DocumentBF>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: List<DocumentBF>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class DocumentBF @JsonCreator constructor(
 
-        val id: String,
+    val id: String,
 
-        val documentType: String,
+    val documentType: String,
 
-        var title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        var description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var description: String?,
 
-        var url: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var url: String?,
 
-        var datePublished: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var datePublished: LocalDateTime?,
 
-        var dateModified: LocalDateTime?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var dateModified: LocalDateTime?
 )

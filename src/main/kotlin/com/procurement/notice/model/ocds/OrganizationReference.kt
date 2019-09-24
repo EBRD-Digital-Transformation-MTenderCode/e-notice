@@ -3,24 +3,32 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class OrganizationReference @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val name: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?,
 
-        var identifier: Identifier?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var identifier: Identifier?,
 
-        var address: Address?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var address: Address?,
 
-        var additionalIdentifiers: HashSet<Identifier>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var additionalIdentifiers: HashSet<Identifier>?,
 
-        var contactPoint: ContactPoint?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var contactPoint: ContactPoint?,
 
-        var details: Details?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var details: Details?,
 
-        var buyerProfile: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var buyerProfile: String?,
 
-        var persones: HashSet<Person>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var persones: HashSet<Person>?
 )

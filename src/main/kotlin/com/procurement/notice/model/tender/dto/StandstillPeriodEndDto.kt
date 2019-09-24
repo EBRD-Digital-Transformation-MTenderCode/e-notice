@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class StandstillPeriodEndDto @JsonCreator constructor(
 
-        val standstillPeriod: Period,
+    val standstillPeriod: Period,
 
-        val lots: HashSet<Lot>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>
 )

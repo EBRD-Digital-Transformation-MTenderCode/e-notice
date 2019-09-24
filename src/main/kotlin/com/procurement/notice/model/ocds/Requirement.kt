@@ -3,25 +3,32 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Requirement @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val dataType: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val dataType: String?,
 
-        val pattern: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val pattern: String?,
 
-        val expectedValue: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val expectedValue: String?,
 
-        val minValue: Double?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val minValue: Double?,
 
-        val maxValue: Double?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val maxValue: Double?,
 
-        val period: Period?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?
 )
-

@@ -8,24 +8,31 @@ import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Ms @JsonCreator constructor(
 
-        var ocid: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var ocid: String?,
 
-        var id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        var tag: List<Tag>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var tag: List<Tag>?,
 
-        var initiationType: InitiationType?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var initiationType: InitiationType?,
 
-        var planning: MsPlanning?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var planning: MsPlanning?,
 
-        var tender: MsTender,
+    var tender: MsTender,
 
-        var parties: HashSet<Organization>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var parties: HashSet<Organization>?,
 
-        var relatedProcesses: HashSet<RelatedProcess>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedProcesses: HashSet<RelatedProcess>?
 )

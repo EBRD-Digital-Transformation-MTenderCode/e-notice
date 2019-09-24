@@ -9,37 +9,41 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Milestone
 import com.procurement.notice.model.ocds.Period
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EndAwardPeriodDto @JsonCreator constructor(
 
-        val contract: EndAwardPeriodContract?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val contract: EndAwardPeriodContract?,
 
-        val tender: EndAwardPeriodTender,
+    val tender: EndAwardPeriodTender,
 
-        val lots: HashSet<Lot>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>,
 
-        val bids: HashSet<Bid>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bids: HashSet<Bid>,
 
-        val awards: HashSet<Award>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awards: HashSet<Award>,
 
-        val awardPeriod: Period,
+    val awardPeriod: Period,
 
-        val cans: HashSet<Can>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val cans: HashSet<Can>
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EndAwardPeriodContract @JsonCreator constructor(
 
-        var status: String,
+    var status: String,
 
-        var statusDetails: String,
+    var statusDetails: String,
 
-        val milestones: List<Milestone>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val milestones: List<Milestone>
 )
 
 data class EndAwardPeriodTender @JsonCreator constructor(
 
-        var status: String,
+    var status: String,
 
-        var statusDetails: String
+    var statusDetails: String
 )

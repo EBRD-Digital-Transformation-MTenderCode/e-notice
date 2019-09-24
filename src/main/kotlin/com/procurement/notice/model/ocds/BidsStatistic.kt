@@ -4,18 +4,23 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class BidsStatistic @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val measure: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val measure: String?,
 
-        val date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val date: LocalDateTime?,
 
-        val value: Double?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Double?,
 
-        val notes: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val notes: String?,
 
-        val relatedLot: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedLot: String?
 )

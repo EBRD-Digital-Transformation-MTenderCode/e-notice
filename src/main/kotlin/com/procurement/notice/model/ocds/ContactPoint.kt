@@ -3,16 +3,20 @@ package com.procurement.notice.model.ocds
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContactPoint @JsonCreator constructor(
 
-        val name: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?,
 
-        val email: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val email: String?,
 
-        val telephone: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val telephone: String?,
 
-        val faxNumber: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val faxNumber: String?,
 
-        val url: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val url: String?
 )

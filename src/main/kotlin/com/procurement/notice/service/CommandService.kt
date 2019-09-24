@@ -3,6 +3,8 @@ package com.procurement.notice.service
 import com.procurement.notice.application.service.award.AwardService
 import com.procurement.notice.application.service.award.CreateAwardContext
 import com.procurement.notice.application.service.award.CreateAwardData
+import com.procurement.notice.application.service.award.EndAwardPeriodContext
+import com.procurement.notice.application.service.award.EndAwardPeriodData
 import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
@@ -16,6 +18,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelStandStill
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
+import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
@@ -27,6 +30,7 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.bpe.cpid
 import com.procurement.notice.model.bpe.ocid
+import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
@@ -497,6 +501,7 @@ class CommandService(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
+                pmd = cm.pmd,
                 releaseDate = releaseDate,
                 data = data
             )
@@ -600,13 +605,94 @@ class CommandService(
                 data = data
             )
 
-            END_AWARD_PERIOD -> contractingService.endAwardPeriod(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            END_AWARD_PERIOD -> {
+                val endAwardPeriodContext = EndAwardPeriodContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    pmd = cm.pmd,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(EndAwardPeriodRequest::class.java, cm.data)
+                val endAwardPeriodData = EndAwardPeriodData(
+                    contract = request.contract?.let { contract ->
+                        EndAwardPeriodData.Contract(
+                            id = contract.id,
+                            status = contract.status,
+                            statusDetails = contract.statusDetails,
+                            milestones = contract.milestones.map { milestone ->
+                                EndAwardPeriodData.Contract.Milestone(
+                                    id = milestone.id,
+                                    relatedItems = milestone.relatedItems?.toList(),
+                                    status = milestone.status,
+                                    additionalInformation = milestone.additionalInformation,
+                                    dueDate = milestone.dueDate,
+                                    title = milestone.title,
+                                    type = milestone.type,
+                                    description = milestone.description,
+                                    dateModified = milestone.dateModified,
+                                    dateMet = milestone.dateMet,
+                                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                                        EndAwardPeriodData.Contract.Milestone.RelatedParty(
+                                            id = relatedParty.id,
+                                            name = relatedParty.name
+                                        )
+                                    }
+
+                                )
+                            }
+                        )
+                    },
+                    cans = request.cans.map { can ->
+                        EndAwardPeriodData.CAN(
+                            id = can.id,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    },
+                    tender = request.tender.let { tender ->
+                        EndAwardPeriodData.Tender(
+                            status = tender.status,
+                            statusDetails = tender.statusDetails
+                        )
+                    },
+                    lots = request.lots.map { lot ->
+                        EndAwardPeriodData.Lot(
+                            id = lot.id,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails
+                        )
+                    },
+                    awards = request.awards.map { award ->
+                        EndAwardPeriodData.Award(
+                            id = award.id,
+                            status = award.status,
+                            statusDetails = award.statusDetails
+                        )
+                    },
+                    awardPeriod = request.awardPeriod.let { awardPeriod ->
+                        EndAwardPeriodData.AwardPeriod(
+                            startDate = awardPeriod.startDate,
+                            endDate = awardPeriod.endDate
+                        )
+                    },
+                    bids = request.bids?.map { bid ->
+                        EndAwardPeriodData.Bid(
+                            id = bid.id,
+                            status = bid.status,
+                            statusDetails = bid.statusDetails
+                        )
+                    }
+                )
+
+                awardService.endAwardPeriod(context = endAwardPeriodContext, data = endAwardPeriodData)
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = endAwardPeriodContext.cpid,
+                        ocid = endAwardPeriodContext.ocid
+                    )
+                )
+            }
 
             CONFIRM_CAN -> contractingService.confirmCan(
                 cpid = cpId,

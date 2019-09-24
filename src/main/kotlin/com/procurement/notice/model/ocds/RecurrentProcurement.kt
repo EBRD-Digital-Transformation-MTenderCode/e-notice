@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class RecurrentProcurement @JsonCreator constructor(
 
-        @get:JsonProperty("isRecurrent")
-        val isRecurrent: Boolean?,
+    @get:JsonProperty("isRecurrent")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val isRecurrent: Boolean?,
 
-        val dates: List<Period>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val dates: List<Period>?,
 
-        val description: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?
 )

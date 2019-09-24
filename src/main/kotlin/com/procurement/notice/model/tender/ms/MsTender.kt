@@ -18,61 +18,86 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class MsTender @JsonCreator constructor(
 
-        var id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        val title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        var status: TenderStatus?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: TenderStatus?,
 
-        var statusDetails: TenderStatusDetails?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: TenderStatusDetails?,
 
-        val value: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        val procurementMethod: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethod: String?,
 
-        val procurementMethodDetails: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethodDetails: String?,
 
-        val procurementMethodRationale: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val procurementMethodRationale: String?,
 
-        val mainProcurementCategory: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val mainProcurementCategory: String?,
 
-        val additionalProcurementCategories: List<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val additionalProcurementCategories: List<String>?,
 
-        @get:JsonProperty("hasEnquiries")
-        var hasEnquiries: Boolean? = false,
+    @get:JsonProperty("hasEnquiries")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    var hasEnquiries: Boolean? = false,
 
-        val eligibilityCriteria: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val eligibilityCriteria: String?,
 
-        val contractPeriod: Period?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val contractPeriod: Period?,
 
-        var procuringEntity: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var procuringEntity: OrganizationReference?,
 
-        val amendments: List<Amendment>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val amendments: List<Amendment>?,
 
-        val acceleratedProcedure: AcceleratedProcedure?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val acceleratedProcedure: AcceleratedProcedure?,
 
-        val classification: Classification?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val classification: Classification?,
 
-        val designContest: DesignContest?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val designContest: DesignContest?,
 
-        val electronicWorkflows: ElectronicWorkflows?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val electronicWorkflows: ElectronicWorkflows?,
 
-        val jointProcurement: JointProcurement?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val jointProcurement: JointProcurement?,
 
-        val legalBasis: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val legalBasis: String?,
 
-        val procedureOutsourcing: ProcedureOutsourcing?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val procedureOutsourcing: ProcedureOutsourcing?,
 
-        val procurementMethodAdditionalInfo: String?,
+    val procurementMethodAdditionalInfo: String?,
 
-        val submissionLanguages: List<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val submissionLanguages: List<String>?,
 
-        val dynamicPurchasingSystem: DynamicPurchasingSystem?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val dynamicPurchasingSystem: DynamicPurchasingSystem?,
 
-        val framework: Framework?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val framework: Framework?
 )

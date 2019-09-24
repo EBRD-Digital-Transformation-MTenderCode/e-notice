@@ -4,38 +4,47 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Milestone @JsonCreator constructor(
 
-        var id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var id: String?,
 
-        var title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var title: String?,
 
-        var description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var description: String?,
 
-        val type: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val type: String?,
 
-        var status: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: String?,
 
-        var relatedItems: Set<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedItems: Set<String>?,
 
-        var additionalInformation: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var additionalInformation: String?,
 
-        var dueDate: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var dueDate: LocalDateTime?,
 
-        var relatedParties: List<RelatedParty>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var relatedParties: List<RelatedParty>?,
 
-        var dateModified: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var dateModified: LocalDateTime?,
 
-        var dateMet: LocalDateTime?
-
-
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var dateMet: LocalDateTime?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class RelatedParty @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val name: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val name: String?
 )

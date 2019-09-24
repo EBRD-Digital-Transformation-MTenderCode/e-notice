@@ -5,24 +5,32 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.procurement.notice.model.ocds.OrganizationReference
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class RecordEnquiry @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val date: LocalDateTime?,
 
-        var author: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var author: OrganizationReference?,
 
-        val title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        var answer: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var answer: String?,
 
-        var dateAnswered: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var dateAnswered: LocalDateTime?,
 
-        val relatedItem: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedItem: String?,
 
-        val relatedLot: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedLot: String?
 )

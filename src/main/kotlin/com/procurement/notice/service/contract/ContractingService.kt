@@ -8,6 +8,7 @@ import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -302,7 +303,7 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun activationAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun activationAC(cpid: String, ocid: String, stage: String, pmd: ProcurementMethod, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(ActivationDto::class.java, data)
 
         val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
@@ -318,7 +319,19 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
 
-        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
+        val recordStage = when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = recordStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
         recordEv.apply {
@@ -330,7 +343,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
 
         releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = recordStage, record = recordEv, publishDate = recordEvEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 

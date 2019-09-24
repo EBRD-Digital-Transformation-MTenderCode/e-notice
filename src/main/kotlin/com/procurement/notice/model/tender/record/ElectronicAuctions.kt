@@ -6,63 +6,74 @@ import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Value
 import java.time.LocalDateTime
 
-
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctions @JsonCreator constructor(
 
-        val details: Set<ElectronicAuctionsDetails>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val details: Set<ElectronicAuctionsDetails>
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctionsDetails @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val relatedLot: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedLot: String?,
 
-        val auctionPeriod: Period?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val auctionPeriod: Period?,
 
-        val electronicAuctionModalities: Set<ElectronicAuctionModalities>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val electronicAuctionModalities: Set<ElectronicAuctionModalities>?,
 
-        val electronicAuctionResult: Set<ElectronicAuctionResult>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val electronicAuctionResult: Set<ElectronicAuctionResult>?,
 
-        val electronicAuctionProgress: Set<ElectronicAuctionProgress>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val electronicAuctionProgress: Set<ElectronicAuctionProgress>?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ElectronicAuctionModalities @JsonCreator constructor(
 
-        val url: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val url: String?,
 
-        val eligibleMinimumDifference: Value?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val eligibleMinimumDifference: Value?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ElectronicAuctionResult @JsonCreator constructor(
 
-        val relatedBid: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedBid: String?,
 
-        val value: Value?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ElectronicAuctionProgress @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val period: Period?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val period: Period?,
 
-        val breakdown: Set<ElectronicAuctionProgressBreakdown>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val breakdown: Set<ElectronicAuctionProgressBreakdown>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ElectronicAuctionProgressBreakdown @JsonCreator constructor(
 
-        val relatedBid: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedBid: String?,
 
-        val status: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val status: String?,
 
-        val dateMet: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val dateMet: LocalDateTime?,
 
-        val value: Value?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?
 )

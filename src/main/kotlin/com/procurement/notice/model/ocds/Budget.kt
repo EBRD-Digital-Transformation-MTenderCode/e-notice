@@ -4,27 +4,36 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Budget @JsonCreator constructor(
 
-        private val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    private val id: String?,
 
-        val description: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String?,
 
-        val amount: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val amount: Value?,
 
-        val project: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val project: String?,
 
-        val projectID: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val projectID: String?,
 
-        val uri: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val uri: String?,
 
-        val source: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val source: String?,
 
-        val europeanUnionFunding: EuropeanUnionFunding?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val europeanUnionFunding: EuropeanUnionFunding?,
 
-        @get:JsonProperty("isEuropeanUnionFunded")
-        val isEuropeanUnionFunded: Boolean?,
+    @get:JsonProperty("isEuropeanUnionFunded")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val isEuropeanUnionFunded: Boolean?,
 
-        val budgetBreakdown: List<BudgetBreakdown>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val budgetBreakdown: List<BudgetBreakdown>?
 )

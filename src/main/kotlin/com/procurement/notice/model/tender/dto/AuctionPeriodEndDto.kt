@@ -11,27 +11,31 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import java.util.*
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class AuctionPeriodEndDto @JsonCreator constructor(
 
-        val tenderStatus: TenderStatus?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val tenderStatus: TenderStatus?,
 
-        val tenderStatusDetails: TenderStatusDetails?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val tenderStatusDetails: TenderStatusDetails?,
 
-        val awardPeriod: Period,
+    val awardPeriod: Period,
 
-        val awards: HashSet<Award>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val awards: HashSet<Award>,
 
-        val bids: HashSet<Bid>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val bids: HashSet<Bid>,
 
-        val documents: HashSet<Document>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val documents: HashSet<Document>,
 
-        val tender: AuctionTender
+    val tender: AuctionTender
 )
 
 data class AuctionTender @JsonCreator constructor(
 
-        val auctionPeriod: Period,
+    val auctionPeriod: Period,
 
-        var electronicAuctions: ElectronicAuctions
+    var electronicAuctions: ElectronicAuctions
 )

@@ -4,23 +4,29 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class DesignContest @JsonCreator constructor(
 
-        @get:JsonProperty("hasPrizes")
-        val hasPrizes: Boolean?,
+    @get:JsonProperty("hasPrizes")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val hasPrizes: Boolean?,
 
-        val prizes: HashSet<Item>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val prizes: HashSet<Item>?,
 
-        val paymentsToParticipants: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val paymentsToParticipants: String?,
 
-        @get:JsonProperty("serviceContractAward")
-        val serviceContractAward: Boolean?,
+    @get:JsonProperty("serviceContractAward")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val serviceContractAward: Boolean?,
 
-        @get:JsonProperty("juryDecisionBinding")
-        val juryDecisionBinding: Boolean?,
+    @get:JsonProperty("juryDecisionBinding")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val juryDecisionBinding: Boolean?,
 
-        val juryMembers: HashSet<OrganizationReference>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val juryMembers: HashSet<OrganizationReference>?,
 
-        val participants: HashSet<OrganizationReference>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val participants: HashSet<OrganizationReference>?
 )

@@ -3,10 +3,11 @@ package com.procurement.notice.model.budget
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class EiPlanning @JsonCreator constructor(
 
-        val budget: EiBudget?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val budget: EiBudget?,
 
-        val rationale: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val rationale: String?
 )

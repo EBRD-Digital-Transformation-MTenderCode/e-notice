@@ -4,26 +4,32 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Bid @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        var date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var date: LocalDateTime?,
 
-        var status: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var status: String?,
 
-        var statusDetails: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: String?,
 
-        val tenderers: List<OrganizationReference>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val tenderers: List<OrganizationReference>?,
 
-        val value: Value?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val value: Value?,
 
-        var documents: HashSet<Document>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var documents: HashSet<Document>?,
 
-        val relatedLots: List<String>?,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val relatedLots: List<String>?,
 
-        val requirementResponses: HashSet<RequirementResponse>?
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val requirementResponses: HashSet<RequirementResponse>?
 )
-
-

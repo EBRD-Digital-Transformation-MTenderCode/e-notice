@@ -4,26 +4,35 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Enquiry @JsonCreator constructor(
 
-        val id: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val id: String?,
 
-        val date: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val date: LocalDateTime?,
 
-        val author: OrganizationReference?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val author: OrganizationReference?,
 
-        val title: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val title: String?,
 
-        val description: String,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String,
 
-        private val answer: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    private val answer: String?,
 
-        val dateAnswered: LocalDateTime?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val dateAnswered: LocalDateTime?,
 
-        val relatedItem: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedItem: String?,
 
-        val relatedLot: String?,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val relatedLot: String?,
 
-        val threadID: String?
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val threadID: String?
 )

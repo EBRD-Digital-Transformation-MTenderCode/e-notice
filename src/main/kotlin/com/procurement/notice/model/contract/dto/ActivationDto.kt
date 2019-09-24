@@ -6,23 +6,23 @@ import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Milestone
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ActivationDto @JsonCreator constructor(
 
-        val contract: ContractActivation,
+    val contract: ContractActivation,
 
-        val lots: HashSet<Lot>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val lots: HashSet<Lot>,
 
-        val cans: HashSet<Can>
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    val cans: HashSet<Can>
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ContractActivation @JsonCreator constructor(
 
     var status: String,
 
     var statusDetails: String,
 
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val milestones: List<Milestone>
 )
-
