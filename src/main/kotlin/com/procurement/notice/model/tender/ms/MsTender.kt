@@ -90,6 +90,7 @@ data class MsTender @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val procedureOutsourcing: ProcedureOutsourcing?,
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val procurementMethodAdditionalInfo: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
