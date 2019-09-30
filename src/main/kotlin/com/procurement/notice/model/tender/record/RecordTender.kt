@@ -70,6 +70,9 @@ data class RecordTender @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val awardCriteria: String?,
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val awardCriteriaDetails: String?,
+
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val submissionMethod: List<String>?,
 
