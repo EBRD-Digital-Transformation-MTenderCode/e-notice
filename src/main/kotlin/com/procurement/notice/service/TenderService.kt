@@ -8,6 +8,8 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.*
 import com.procurement.notice.model.tender.dto.*
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
+import com.procurement.notice.model.tender.record.ElectronicAuctions
+import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
 import com.procurement.notice.model.tender.record.Record
 import com.procurement.notice.model.tender.record.RecordTender
 import com.procurement.notice.utils.toDate
@@ -78,7 +80,7 @@ class TenderService(private val releaseService: ReleaseService,
             tender.awardPeriod = dto.awardPeriod
             tender.statusDetails = dto.tenderStatusDetails
             tender.auctionPeriod = dto.tender.auctionPeriod
-            tender.electronicAuctions = dto.tender.electronicAuctions
+            tender.electronicAuctions = updateElectronicAuctions(dto = dto, record = record)
             if (dto.awards.isNotEmpty()) awards = recordAwards.plus(dto.awards).toHashSet()
             if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
             if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
@@ -353,6 +355,24 @@ class TenderService(private val releaseService: ReleaseService,
                 }
             }
         }
+    }
+
+    private fun updateElectronicAuctions(dto: AuctionPeriodEndDto, record: Record): ElectronicAuctions? {
+        val electronicAuctions: ElectronicAuctions = record.tender.electronicAuctions
+            ?.takeIf { it.details.isNotEmpty() }
+            ?: return record.tender.electronicAuctions
+
+        val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
+            dto.tender.electronicAuctions.details.associateBy { it.id!! }
+
+        return ElectronicAuctions(
+            details = electronicAuctions.details
+                .asSequence()
+                .map { detail ->
+                    requestElectronicAuctionsDetailsByIds[detail.id!!] ?: detail
+                }
+                .toSet()
+        )
     }
 
     private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
