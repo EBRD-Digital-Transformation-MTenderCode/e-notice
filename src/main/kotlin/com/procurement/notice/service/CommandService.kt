@@ -9,6 +9,8 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.can.ConfirmCANContext
+import com.procurement.notice.application.service.can.ConfirmCANData
 import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
@@ -21,6 +23,7 @@ import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
+import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
@@ -88,8 +91,10 @@ import com.procurement.notice.model.ocds.Operation.UPDATE_PN
 import com.procurement.notice.model.ocds.Operation.UPDATE_TENDER_PERIOD
 import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
 import com.procurement.notice.service.contract.ContractingService
+import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
@@ -105,6 +110,9 @@ class CommandService(
     private val contractingService: ContractingService,
     private val awardService: AwardService
 ) {
+    companion object {
+        private val log = LoggerFactory.getLogger(CommandService::class.java)
+    }
 
     fun execute(cm: CommandMessage): ResponseDto {
         var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
@@ -694,14 +702,46 @@ class CommandService(
                 )
             }
 
-            CONFIRM_CAN -> contractingService.confirmCan(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
-
+            CONFIRM_CAN -> {
+                val createAwardContext = ConfirmCANContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(ConfirmCANRequest::class.java, cm.data)
+                val confirmCANData = ConfirmCANData(
+                    cans = request.cans.map { can ->
+                        ConfirmCANData.CAN(
+                            id = can.id,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    },
+                    lots = request.lots.map { lot ->
+                        ConfirmCANData.Lot(
+                            id = lot.id,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails
+                        )
+                    },
+                    awards = request.awards.map { award ->
+                        ConfirmCANData.Award(
+                            id = award.id,
+                            status = award.status,
+                            statusDetails = award.statusDetails
+                        )
+                    },
+                    bids = request.bids?.map { bid ->
+                        ConfirmCANData.Bid(
+                            id = bid.id,
+                            status = bid.status,
+                            statusDetails = bid.statusDetails
+                        )
+                    }
+                )
+                contractingService.confirmCan(context = createAwardContext, data = confirmCANData)
+            }
             END_CONTRACT_PROCESS -> contractingService.endContractingProcess(
                 cpid = cpId,
                 ocid = ocId!!,
