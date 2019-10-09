@@ -13,7 +13,6 @@ import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
-import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
@@ -22,7 +21,6 @@ import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.ContractTender
 import com.procurement.notice.model.contract.dto.ActivationDto
-import com.procurement.notice.model.contract.dto.ConfirmCanDto
 import com.procurement.notice.model.contract.dto.CreateAcDto
 import com.procurement.notice.model.contract.dto.EndAwardPeriodDto
 import com.procurement.notice.model.contract.dto.EndContractingProcessDto
