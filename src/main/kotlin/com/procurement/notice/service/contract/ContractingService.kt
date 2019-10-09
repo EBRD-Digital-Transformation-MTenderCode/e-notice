@@ -2,6 +2,8 @@ package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.can.ConfirmCANContext
+import com.procurement.notice.application.service.can.ConfirmCANData
 import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
@@ -11,6 +13,7 @@ import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.budget.EI
@@ -679,22 +682,92 @@ class ContractingService(private val releaseService: ReleaseService,
             data = data
         )
 
-    fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(ConfirmCanDto::class.java, data)
-        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.TENDER_UPDATE)
-            tender.apply {
-                lots?.let { updateLots(it, dto.lots) }
+    fun confirmCan(context: ConfirmCANContext, data: ConfirmCANData): ResponseDto {
+        fun Collection<Lot>.updating(data: ConfirmCANData): List<Lot> {
+            val lotsByIds = data.lots.associateBy { it.id }
+            return this.map { lot ->
+                lotsByIds[UUID.fromString(lot.id)]
+                    ?.let {
+                        lot.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: lot
             }
-            contracts?.let { updateCanContracts(it, dto.cans) }
         }
-        releaseService.saveRecord(cpId = cpid, stage = "EV", record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+
+        fun Collection<Award>.updating(data: ConfirmCANData): List<Award> {
+            val awardsByIds = data.awards.associateBy { it.id }
+            return this.map { award ->
+                awardsByIds[UUID.fromString(award.id)]
+                    ?.let {
+                        award.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: award
+            }
+        }
+
+        fun Collection<Bid>.updating(data: ConfirmCANData): List<Bid> {
+            val bidsByIds = data.bids?.associateBy { it.id }
+            return if (bidsByIds == null)
+                this.toList()
+            else
+                this.map { bid ->
+                    bidsByIds[UUID.fromString(bid.id)]
+                        ?.let {
+                            bid.copy(
+                                status = it.status,
+                                statusDetails = it.statusDetails
+                            )
+                        }
+                        ?: bid
+                }
+        }
+
+        fun Collection<Contract>.updating(data: ConfirmCANData): List<Contract> {
+            val cansByIds = data.cans.associateBy { it.id }
+            return this.map { contract ->
+                cansByIds[UUID.fromString(contract.id)]
+                    ?.let {
+                        contract.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: contract
+            }
+        }
+
+        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = context.cpid, ocId = context.ocid)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        val updatedRecord = record.copy(
+            id = releaseService.newReleaseId(context.ocid),
+            date = context.releaseDate,
+            tag = listOf(Tag.TENDER_UPDATE),
+            tender = record.tender.let { tender ->
+                tender.copy(
+                    lots = tender.lots?.updating(data)?.toHashSet()
+                )
+            },
+            awards = record.awards?.updating(data)?.toHashSet(),
+            bids = record.bids?.let { bids ->
+                bids.copy(details = bids.details?.updating(data)?.toHashSet())
+            },
+            contracts = record.contracts?.updating(data)?.toHashSet()
+        )
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = "EV",
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
     fun endContractingProcess(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
