@@ -13,6 +13,9 @@ data class Item @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val internalId: String?,
+
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val description: String?,
 

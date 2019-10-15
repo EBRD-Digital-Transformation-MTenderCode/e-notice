@@ -7,6 +7,9 @@ data class Lot @JsonCreator constructor(
 
     val id: String,
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val internalId: String?,
+
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val title: String?,
 
