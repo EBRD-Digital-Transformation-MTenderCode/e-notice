@@ -60,7 +60,7 @@ class TenderService(private val releaseService: ReleaseService,
             tender.statusDetails = dto.tenderStatusDetails
             if (dto.awards.isNotEmpty()) awards = dto.awards
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            tender.electronicAuctions = dto.electronicAuctions
+            tender.electronicAuctions = updateElectronicAuctions(dto = dto, record = record)
         }
         organizationService.processRecordPartiesFromAwards(record)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
@@ -364,6 +364,24 @@ class TenderService(private val releaseService: ReleaseService,
 
         val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
             dto.tender.electronicAuctions.details.associateBy { it.id!! }
+
+        return ElectronicAuctions(
+            details = electronicAuctions.details
+                .asSequence()
+                .map { detail ->
+                    requestElectronicAuctionsDetailsByIds[detail.id!!] ?: detail
+                }
+                .toSet()
+        )
+    }
+
+    private fun updateElectronicAuctions(dto: TenderPeriodEndAuctionDto, record: Record): ElectronicAuctions? {
+        val electronicAuctions: ElectronicAuctions = record.tender.electronicAuctions
+            ?.takeIf { it.details.isNotEmpty() }
+            ?: return record.tender.electronicAuctions
+
+        val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
+            dto.electronicAuctions.details.associateBy { it.id!! }
 
         return ElectronicAuctions(
             details = electronicAuctions.details
