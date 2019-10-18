@@ -21,7 +21,7 @@ data class Amendment @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var amendsReleaseID: String?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val rationale: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)

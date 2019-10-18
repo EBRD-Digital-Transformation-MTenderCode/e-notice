@@ -9,10 +9,14 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.can.ConfirmCANContext
+import com.procurement.notice.application.service.can.ConfirmCANData
 import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
+import com.procurement.notice.application.service.contract.activate.ActivateContractContext
+import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -21,8 +25,10 @@ import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
+import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
+import com.procurement.notice.infrastructure.dto.contract.ActivateContractRequest
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
@@ -90,6 +96,7 @@ import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
 import com.procurement.notice.service.contract.ContractingService
 import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
@@ -105,6 +112,9 @@ class CommandService(
     private val contractingService: ContractingService,
     private val awardService: AwardService
 ) {
+    companion object {
+        private val log = LoggerFactory.getLogger(CommandService::class.java)
+    }
 
     fun execute(cm: CommandMessage): ResponseDto {
         var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
@@ -497,14 +507,74 @@ class CommandService(
                 data = data
             )
 
-            ACTIVATION_AC -> contractingService.activationAC(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                pmd = cm.pmd,
-                releaseDate = releaseDate,
-                data = data
-            )
+            ACTIVATION_AC -> {
+                val context = ActivateContractContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    pmd = cm.pmd,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(ActivateContractRequest::class.java, cm.data)
+                val activateContractData = ActivateContractData(
+                    contract = request.contract.let { contract ->
+                        ActivateContractData.Contract(
+                            id = contract.id,
+                            status = contract.status,
+                            statusDetails = contract.statusDetails,
+                            milestones = contract.milestones.map { milestone ->
+                                ActivateContractData.Contract.Milestone(
+                                    id = milestone.id,
+                                    relatedItems = milestone.relatedItems?.toList(),
+                                    status = milestone.status,
+                                    additionalInformation = milestone.additionalInformation,
+                                    dueDate = milestone.dueDate,
+                                    title = milestone.title,
+                                    type = milestone.type,
+                                    description = milestone.description,
+                                    dateModified = milestone.dateModified,
+                                    dateMet = milestone.dateMet,
+                                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                                        ActivateContractData.Contract.Milestone.RelatedParty(
+                                            id = relatedParty.id,
+                                            name = relatedParty.name
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    cans = request.cans.map { can ->
+                        ActivateContractData.CAN(
+                            id = can.id,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    },
+                    lots = request.lots.map { lot ->
+                        ActivateContractData.Lot(
+                            id = lot.id,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails
+                        )
+                    },
+                    awards = request.awards.map { award ->
+                        ActivateContractData.Award(
+                            id = award.id,
+                            status = award.status,
+                            statusDetails = award.statusDetails
+                        )
+                    },
+                    bids = request.bids?.map { bid ->
+                        ActivateContractData.Bid(
+                            id = bid.id,
+                            status = bid.status,
+                            statusDetails = bid.statusDetails
+                        )
+                    }
+                )
+                contractingService.activationAC(context = context, data = activateContractData)
+            }
 
             CREATE_PROTOCOL -> {
                 val createProtocolContext = CreateProtocolContext(
@@ -694,14 +764,46 @@ class CommandService(
                 )
             }
 
-            CONFIRM_CAN -> contractingService.confirmCan(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
-
+            CONFIRM_CAN -> {
+                val createAwardContext = ConfirmCANContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(ConfirmCANRequest::class.java, cm.data)
+                val confirmCANData = ConfirmCANData(
+                    cans = request.cans.map { can ->
+                        ConfirmCANData.CAN(
+                            id = can.id,
+                            status = can.status,
+                            statusDetails = can.statusDetails
+                        )
+                    },
+                    lots = request.lots.map { lot ->
+                        ConfirmCANData.Lot(
+                            id = lot.id,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails
+                        )
+                    },
+                    awards = request.awards.map { award ->
+                        ConfirmCANData.Award(
+                            id = award.id,
+                            status = award.status,
+                            statusDetails = award.statusDetails
+                        )
+                    },
+                    bids = request.bids?.map { bid ->
+                        ConfirmCANData.Bid(
+                            id = bid.id,
+                            status = bid.status,
+                            statusDetails = bid.statusDetails
+                        )
+                    }
+                )
+                contractingService.confirmCan(context = createAwardContext, data = confirmCANData)
+            }
             END_CONTRACT_PROCESS -> contractingService.endContractingProcess(
                 cpid = cpId,
                 ocid = ocId!!,
