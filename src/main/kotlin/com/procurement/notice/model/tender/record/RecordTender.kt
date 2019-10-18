@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.Conversion
+import com.procurement.notice.model.ocds.Criteria
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Item
 import com.procurement.notice.model.ocds.Lot
@@ -29,6 +31,12 @@ data class RecordTender @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var statusDetails: TenderStatusDetails?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var criteria: List<Criteria>?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var conversions: List<Conversion>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var items: HashSet<Item>?,

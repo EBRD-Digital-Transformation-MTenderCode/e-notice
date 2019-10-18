@@ -2,13 +2,16 @@ package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.can.ConfirmCANContext
+import com.procurement.notice.application.service.can.ConfirmCANData
 import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
+import com.procurement.notice.application.service.contract.activate.ActivateContractContext
+import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
-import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -18,8 +21,6 @@ import com.procurement.notice.model.budget.FS
 import com.procurement.notice.model.contract.Can
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.contract.ContractTender
-import com.procurement.notice.model.contract.dto.ActivationDto
-import com.procurement.notice.model.contract.dto.ConfirmCanDto
 import com.procurement.notice.model.contract.dto.CreateAcDto
 import com.procurement.notice.model.contract.dto.EndAwardPeriodDto
 import com.procurement.notice.model.contract.dto.EndContractingProcessDto
@@ -42,6 +43,7 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.service.OrganizationService
 import com.procurement.notice.service.RelatedProcessService
 import com.procurement.notice.service.ReleaseService
+import com.procurement.notice.service.contract.strategy.ActivationContractStrategy
 import com.procurement.notice.service.contract.strategy.CancelCANsAndContractStrategy
 import com.procurement.notice.service.contract.strategy.CancelCANsStrategy
 import com.procurement.notice.utils.toDate
@@ -61,6 +63,7 @@ class ContractingService(private val releaseService: ReleaseService,
 
     private val cancelCANsStrategy = CancelCANsStrategy(releaseService, generationService)
     private val cancelCANsAndContractStrategy = CancelCANsAndContractStrategy(releaseService, generationService)
+    private val activationContractStrategy = ActivationContractStrategy(releaseService = releaseService, releaseDao = releaseDao)
 
     fun createAc(cpid: String,
                  ocid: String,
@@ -303,49 +306,8 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun activationAC(cpid: String, ocid: String, stage: String, pmd: ProcurementMethod, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(ActivationDto::class.java, data)
-
-        val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
-        recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
-            tag = listOf(Tag.CONTRACT_UPDATE)
-            date = releaseDate
-            contracts?.firstOrNull()?.apply {
-                status = dto.contract.status
-                statusDetails = dto.contract.statusDetails
-                milestones = dto.contract.milestones
-            }
-        }
-
-        val recordStage = when (pmd) {
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
-
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
-
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
-        }
-        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = recordStage)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
-        recordEv.apply {
-            id = releaseService.newReleaseId(recordEvEntity.ocId)
-            date = releaseDate
-            tag = listOf(Tag.TENDER_UPDATE)
-            tender.lots?.let { updateLots(it, dto.lots) }
-            contracts?.let { updateCanContracts(it, dto.cans) }
-        }
-
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = recordStage, record = recordEv, publishDate = recordEvEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
+    fun activationAC(context: ActivateContractContext, data: ActivateContractData): ResponseDto =
+        activationContractStrategy.activateContract(context, data)
 
     fun endAwardPeriod(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(EndAwardPeriodDto::class.java, data)
@@ -679,22 +641,92 @@ class ContractingService(private val releaseService: ReleaseService,
             data = data
         )
 
-    fun confirmCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(ConfirmCanDto::class.java, data)
-        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.TENDER_UPDATE)
-            tender.apply {
-                lots?.let { updateLots(it, dto.lots) }
+    fun confirmCan(context: ConfirmCANContext, data: ConfirmCANData): ResponseDto {
+        fun Collection<Lot>.updating(data: ConfirmCANData): List<Lot> {
+            val lotsByIds = data.lots.associateBy { it.id }
+            return this.map { lot ->
+                lotsByIds[UUID.fromString(lot.id)]
+                    ?.let {
+                        lot.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: lot
             }
-            contracts?.let { updateCanContracts(it, dto.cans) }
         }
-        releaseService.saveRecord(cpId = cpid, stage = "EV", record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+
+        fun Collection<Award>.updating(data: ConfirmCANData): List<Award> {
+            val awardsByIds = data.awards.associateBy { it.id }
+            return this.map { award ->
+                awardsByIds[UUID.fromString(award.id)]
+                    ?.let {
+                        award.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: award
+            }
+        }
+
+        fun Collection<Bid>.updating(data: ConfirmCANData): List<Bid> {
+            val bidsByIds = data.bids?.associateBy { it.id }
+            return if (bidsByIds == null)
+                this.toList()
+            else
+                this.map { bid ->
+                    bidsByIds[UUID.fromString(bid.id)]
+                        ?.let {
+                            bid.copy(
+                                status = it.status,
+                                statusDetails = it.statusDetails
+                            )
+                        }
+                        ?: bid
+                }
+        }
+
+        fun Collection<Contract>.updating(data: ConfirmCANData): List<Contract> {
+            val cansByIds = data.cans.associateBy { it.id }
+            return this.map { contract ->
+                cansByIds[UUID.fromString(contract.id)]
+                    ?.let {
+                        contract.copy(
+                            status = it.status,
+                            statusDetails = it.statusDetails
+                        )
+                    }
+                    ?: contract
+            }
+        }
+
+        val recordEntity = releaseDao.getByCpIdAndOcId(cpId = context.cpid, ocId = context.ocid)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+
+        val updatedRecord = record.copy(
+            id = releaseService.newReleaseId(context.ocid),
+            date = context.releaseDate,
+            tag = listOf(Tag.TENDER_UPDATE),
+            tender = record.tender.let { tender ->
+                tender.copy(
+                    lots = tender.lots?.updating(data)?.toHashSet()
+                )
+            },
+            awards = record.awards?.updating(data)?.toHashSet(),
+            bids = record.bids?.let { bids ->
+                bids.copy(details = bids.details?.updating(data)?.toHashSet())
+            },
+            contracts = record.contracts?.updating(data)?.toHashSet()
+        )
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = "EV",
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
     fun endContractingProcess(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
