@@ -18,7 +18,7 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.util.*
-
+import kotlin.collections.HashSet
 
 @Service
 class ReleaseService(private val releaseDao: ReleaseDao) {
@@ -83,6 +83,15 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
 
     fun getRecordEntity(cpId: String, ocId: String): ReleaseEntity {
         return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+    }
+
+    fun getPartiesWithActualPersones(requestProcuringEntity: OrganizationReference?, parties: HashSet<Organization>?) : HashSet<Organization>? {
+        return parties?.map { organization ->
+            if (organization.id == requestProcuringEntity!!.id) {
+                organization.copy( persones = requestProcuringEntity.persones )
+            } else organization
+
+        }?.toHashSet()
     }
 
     fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
