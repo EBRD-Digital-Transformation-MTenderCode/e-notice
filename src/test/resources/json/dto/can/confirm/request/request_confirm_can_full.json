@@ -1,0 +1,30 @@
+{
+  "cans": [
+    {
+      "id": "4e58229c-0990-4d64-8d58-eba75b4575aa",
+      "status": "active",
+      "statusDetails": "treasuryRejection"
+    }
+  ],
+  "lots": [
+    {
+      "id": "2a68a2f2-fb12-4071-8aff-9f37265fc0ea",
+      "status": "complete",
+      "statusDetails": "awarded"
+    }
+  ],
+  "awards": [
+    {
+      "id": "d0b134ef-4369-4ad4-864d-5cebcff8de74",
+      "status": "consideration",
+      "statusDetails": "empty"
+    }
+  ],
+  "bids": [
+    {
+      "id": "4251e51c-7a69-4830-96d1-c74a3d67a676",
+      "status": "disqualified",
+      "statusDetails": "withdrawn"
+    }
+  ]
+}
