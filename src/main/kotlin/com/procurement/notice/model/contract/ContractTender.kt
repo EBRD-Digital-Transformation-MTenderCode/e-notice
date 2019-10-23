@@ -38,6 +38,9 @@ data class ContractTenderLot @JsonCreator constructor(
     val id: String? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val internalId: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var title: String? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
