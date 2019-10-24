@@ -32,16 +32,31 @@ import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
 import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
 import com.procurement.notice.model.contract.dto.VerificationDto
+import com.procurement.notice.model.ocds.AgreedMetric
 import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Bids
+import com.procurement.notice.model.ocds.ConfirmationRequest
+import com.procurement.notice.model.ocds.ConfirmationResponse
+import com.procurement.notice.model.ocds.ConfirmationResponseValue
 import com.procurement.notice.model.ocds.Contract
+import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.DocumentBF
 import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.Milestone
+import com.procurement.notice.model.ocds.Observation
+import com.procurement.notice.model.ocds.ObservationUnit
+import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.ocds.RelatedParty
+import com.procurement.notice.model.ocds.RelatedPerson
 import com.procurement.notice.model.ocds.RelatedProcessType
+import com.procurement.notice.model.ocds.Request
+import com.procurement.notice.model.ocds.RequestGroup
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
+import com.procurement.notice.model.ocds.ValueTax
+import com.procurement.notice.model.ocds.Verification
 import com.procurement.notice.service.OrganizationService
 import com.procurement.notice.service.RelatedProcessService
 import com.procurement.notice.service.ReleaseService
@@ -415,11 +430,13 @@ class ContractingService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
         val clarificationData = treasuryClarificationRequestToData(clarificationRequest, recordContract)
+        val contract = getContract(clarificationData.contract)
 
         recordContract.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
-            contracts = hashSetOf(clarificationData.contract)
+            contracts = hashSetOf(contract)
+            tag = listOf(Tag.CONTRACT_UPDATE)
         }
 
         releaseService.saveContractRecord(
@@ -577,6 +594,159 @@ class ContractingService(
                 )
             }
         )
+
+    private fun getContract(contractData: TreasuryClarificationData.Contract): Contract =
+         Contract(
+            id = contractData.id,
+            documents = contractData.documents.asSequence().map { document ->
+                Document(
+                    documentType = document.documentType,
+                    relatedConfirmations = document.relatedConfirmations,
+                    relatedLots = document.relatedLots?.map { it.toString() },
+                    description = document.description,
+                    title = document.title,
+                    id = document.id,
+                    url = document.url,
+                    datePublished = document.datePublished,
+                    dateModified = null,
+                    format = null,
+                    language = null
+                )
+            }.toHashSet(),
+            title = contractData.title,
+            description = contractData.description,
+            period = contractData.period.let { period ->
+                Period(
+                    startDate = period.startDate,
+                    endDate = period.endDate,
+                    durationInDays = null,
+                    maxExtentDate = null
+                )
+            },
+            value = contractData.value.let { value ->
+                ValueTax(
+                    amount = value.amount,
+                    currency = value.currency,
+                    amountNet = value.amountNet,
+                    valueAddedTaxIncluded = value.valueAddedTaxincluded
+                )
+            },
+            agreedMetrics = contractData.agreedMetrics?.asSequence()?.map { agreedMetric ->
+                AgreedMetric(
+                    id = agreedMetric.id,
+                    description = agreedMetric.description,
+                    title = agreedMetric.title,
+                    observations = agreedMetric.observations?.asSequence()?.map { observation ->
+                        Observation(
+                            id = observation.id,
+                            unit = observation.unit?.let { observationUnit ->
+                                ObservationUnit(
+                                    id = observationUnit.id,
+                                    scheme = observationUnit.scheme,
+                                    name = observationUnit.name
+                                )
+                            },
+                            measure = observation.measure,
+                            notes = observation.notes
+                        )
+                    }?.toCollection(LinkedList<Observation>())
+                )
+            }?.toCollection(LinkedList<AgreedMetric>()),
+            awardId = contractData.awardID,
+            confirmationRequests = contractData.confirmationRequests.map { confirmationRequest ->
+                ConfirmationRequest(
+                    title = confirmationRequest.title,
+                    description = confirmationRequest.description,
+                    id = confirmationRequest.id,
+                    relatedItem = confirmationRequest.relatedItem.toString(),
+                    relatesTo = confirmationRequest.relatesTo,
+                    requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
+                        RequestGroup(
+                            id = requestGroup.id,
+                            requests = requestGroup.requests.asSequence().map { request ->
+                                Request(
+                                    id = request.id,
+                                    description = request.description,
+                                    title = request.title,
+                                    relatedPerson = request.relatedPerson?.let { relatedPerson ->
+                                        RelatedPerson(
+                                            id = relatedPerson.id,
+                                            name = relatedPerson.name
+                                        )
+                                    }
+                                )
+                            }.toSet()
+                        )
+                    }.toSet(),
+                    source = confirmationRequest.source,
+                    type = confirmationRequest.type
+                )
+            },
+            confirmationResponses = contractData.confirmationResponses.asSequence().map { confirmationResponse ->
+                ConfirmationResponse(
+                    id = confirmationResponse.id,
+                    value = confirmationResponse.value.let { value ->
+                        ConfirmationResponseValue(
+                            name = value.name,
+                            id = value.id,
+                            relatedPerson = value.relatedPerson.let { relatedPerson ->
+                                RelatedPerson(
+                                    id = relatedPerson.id,
+                                    name = relatedPerson.name
+                                )
+                            },
+                            date = value.date,
+                            verification = value.verification.map { verification ->
+                                Verification(
+                                    type = verification.type,
+                                    value = verification.value,
+                                    rationale = verification.rationale
+                                )
+                            }
+                        )
+                    },
+                    request = confirmationResponse.request
+                )
+            }.toHashSet(),
+            date = contractData.date,
+            milestones = contractData.milestones.map { milestone ->
+                Milestone(
+                    id = milestone.id,
+                    type = milestone.type,
+                    title = milestone.title,
+                    description = milestone.description,
+                    additionalInformation = milestone.additionalInformation,
+                    dateMet = milestone.dateMet,
+                    dateModified = milestone.dateModified,
+                    dueDate = milestone.dueDate,
+                    relatedItems = milestone.relatedItems?.asSequence()?.map { it.toString() }?.toSet(),
+                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                        RelatedParty(
+                            id = relatedParty.id,
+                            name = relatedParty.name
+                        )
+                    },
+                    status = milestone.status
+                )
+            },
+            status = contractData.status,
+            statusDetails = contractData.statusDetails,
+            relatedLots = null,
+            items = null,
+            classification = null,
+            amendment = null,
+            amendments = null,
+            budgetSource = null,
+            countryOfOrigin = null,
+            dateSigned = null,
+            extendsContractId = null,
+            isFrameworkOrDynamic = null,
+            lotVariant = null,
+            relatedProcesses = null,
+            requirementResponses = null,
+            valueBreakdown = null
+        )
+
 
     fun activationAC(context: ActivateContractContext, data: ActivateContractData): ResponseDto =
         activationContractStrategy.activateContract(context, data)

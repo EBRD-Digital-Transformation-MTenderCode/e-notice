@@ -82,6 +82,7 @@ import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_AUCTION
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_EV
 import com.procurement.notice.model.ocds.Operation.TREASURY_APPROVING_AC
+import com.procurement.notice.model.ocds.Operation.TREASURY_CLARIFICATION_AC
 import com.procurement.notice.model.ocds.Operation.UNSUCCESSFUL_TENDER
 import com.procurement.notice.model.ocds.Operation.UNSUSPEND_TENDER
 import com.procurement.notice.model.ocds.Operation.UPDATE_AC
@@ -500,6 +501,14 @@ class CommandService(
             )
 
             TREASURY_APPROVING_AC -> contractingService.treasuryApprovingAC(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            TREASURY_CLARIFICATION_AC ->contractingService.treasuryClarificationAC(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
