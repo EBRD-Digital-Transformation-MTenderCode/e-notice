@@ -22,7 +22,7 @@ data class TreasuryClarificationData(
         val confirmationResponses: List<ConfirmationResponse>,
         val confirmationRequests: List<ConfirmationRequest>,
         val value: Value,
-        val agreedMetrics: List<AgreedMetric>
+        val agreedMetrics: List<AgreedMetric>?
     ) {
         data class Period(
             val startDate: LocalDateTime,

@@ -27,6 +27,8 @@ import com.procurement.notice.model.contract.dto.EndContractingProcessDto
 import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
 import com.procurement.notice.model.contract.dto.IssuingAcDto
 import com.procurement.notice.model.contract.dto.SigningDto
+import com.procurement.notice.model.contract.dto.TreasuryClarificationData
+import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
 import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
 import com.procurement.notice.model.contract.dto.VerificationDto
@@ -54,22 +56,29 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Service
-class ContractingService(private val releaseService: ReleaseService,
-                         private val organizationService: OrganizationService,
-                         private val relatedProcessService: RelatedProcessService,
-                         private val budgetDao: BudgetDao,
-                         private val releaseDao: ReleaseDao,
-                         generationService: GenerationService) {
+class ContractingService(
+    private val releaseService: ReleaseService,
+    private val organizationService: OrganizationService,
+    private val relatedProcessService: RelatedProcessService,
+    private val budgetDao: BudgetDao,
+    private val releaseDao: ReleaseDao,
+    generationService: GenerationService
+) {
 
     private val cancelCANsStrategy = CancelCANsStrategy(releaseService, generationService)
     private val cancelCANsAndContractStrategy = CancelCANsAndContractStrategy(releaseService, generationService)
-    private val activationContractStrategy = ActivationContractStrategy(releaseService = releaseService, releaseDao = releaseDao)
+    private val activationContractStrategy = ActivationContractStrategy(
+        releaseService = releaseService,
+        releaseDao = releaseDao
+    )
 
-    fun createAc(cpid: String,
-                 ocid: String,
-                 stage: String,
-                 releaseDate: LocalDateTime,
-                 data: JsonNode): ResponseDto {
+    fun createAc(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(CreateAcDto::class.java, data.toString())
         val cans = dto.cans
         val msEntity = releaseService.getMsEntity(cpid)
@@ -95,39 +104,62 @@ class ContractingService(private val releaseService: ReleaseService,
         contract.agreedMetrics = dto.contractTerm.agreedMetrics
 
         val contractedTender = ContractTender(
-                id = record.tender.id,
-                lots = dto.contractedTender.lots,
-                classification = dto.contractedTender.classification,
-                mainProcurementCategory = dto.contractedTender.mainProcurementCategory,
-                procurementMethod = dto.contractedTender.procurementMethod,
-                procurementMethodDetails = dto.contractedTender.procurementMethodDetails
+            id = record.tender.id,
+            lots = dto.contractedTender.lots,
+            classification = dto.contractedTender.classification,
+            mainProcurementCategory = dto.contractedTender.mainProcurementCategory,
+            procurementMethod = dto.contractedTender.procurementMethod,
+            procurementMethodDetails = dto.contractedTender.procurementMethodDetails
         )
         val recordContract = ContractRecord(
-                ocid = ocIdContract,
-                id = releaseService.newReleaseId(ocIdContract),
-                date = releaseDate,
-                tag = listOf(Tag.CONTRACT),
-                initiationType = record.initiationType,
-                tender = contractedTender,
-                awards = hashSetOf(contractedAward),
-                contracts = hashSetOf(contract))
+            ocid = ocIdContract,
+            id = releaseService.newReleaseId(ocIdContract),
+            date = releaseDate,
+            tag = listOf(Tag.CONTRACT),
+            initiationType = record.initiationType,
+            tender = contractedTender,
+            awards = hashSetOf(contractedAward),
+            contracts = hashSetOf(contract)
+        )
         organizationService.processContractRecordPartiesFromAwards(recordContract)
         relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
-        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocIdContract, processType = RelatedProcessType.X_CONTRACTING)
-        relatedProcessService.addRecordRelatedProcessToContractRecord(record = recordContract, ocId = ocid, cpId = cpid, processType = RelatedProcessType.X_EVALUATION)
-        relatedProcessService.addContractRelatedProcessToCAN(record = record, ocId = ocIdContract, cpId = cpid, contract = contract, cans = cans)
+        relatedProcessService.addRecordRelatedProcessToMs(
+            ms = ms,
+            ocid = ocIdContract,
+            processType = RelatedProcessType.X_CONTRACTING
+        )
+        relatedProcessService.addRecordRelatedProcessToContractRecord(
+            record = recordContract,
+            ocId = ocid,
+            cpId = cpid,
+            processType = RelatedProcessType.X_EVALUATION
+        )
+        relatedProcessService.addContractRelatedProcessToCAN(
+            record = record,
+            ocId = ocIdContract,
+            cpId = cpid,
+            contract = contract,
+            cans = cans
+        )
 
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        releaseService.saveContractRecord(cpId = cpid, stage = "AC", record = recordContract, publishDate = releaseDate.toDate())
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = "AC",
+            record = recordContract,
+            publishDate = releaseDate.toDate()
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun updateAC(cpid: String,
-                 ocid: String,
-                 stage: String,
-                 releaseDate: LocalDateTime,
-                 data: JsonNode): ResponseDto {
+    fun updateAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
 
         val dto = toObject(UpdateAcDto::class.java, data)
         updatePersonsDocuments(dto)
@@ -142,10 +174,15 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts = hashSetOf(dto.contract)
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
-        organizationService.processContractRecordPartiesFromBudget(record = recordContract, buyer = dto.buyer, funders = dto.funders, payers = dto.payers)
+        organizationService.processContractRecordPartiesFromBudget(
+            record = recordContract,
+            buyer = dto.buyer,
+            funders = dto.funders,
+            payers = dto.payers
+        )
         dto.addedFS?.forEach { fsOcid ->
             val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             relatedProcessService.addFsRelatedProcessToContract(recordContract, fsOcid)
             relatedProcessService.addContractRelatedProcessToFs(fs = fs, cpid = cpid, ocid = ocid)
@@ -154,7 +191,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.excludedFS?.forEach { fsOcid ->
             val entity = budgetDao.getFsByCpIdAndOcId(relatedProcessService.getEiCpIdFromOcId(fsOcid), fsOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val fs = toObject(FS::class.java, entity.jsonData)
             relatedProcessService.removeFsRelatedProcessFromContract(recordContract, fsOcid)
             relatedProcessService.removeContractRelatedProcessFromFs(fs, ocid)
@@ -163,7 +200,7 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.addedEI?.forEach { eiOcid ->
             val entity = budgetDao.getEiByCpId(eiOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
             relatedProcessService.addEiRelatedProcessToContract(recordContract, eiOcid)
             relatedProcessService.addContractRelatedProcessToEi(ei = ei, cpid = cpid, ocid = ocid)
@@ -172,22 +209,29 @@ class ContractingService(private val releaseService: ReleaseService,
         }
         dto.excludedEI?.forEach { eiOcid ->
             val entity = budgetDao.getEiByCpId(eiOcid)
-                    ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)
             relatedProcessService.removeEiRelatedProcessFromContract(recordContract, eiOcid)
             relatedProcessService.removeContractRelatedProcessFromEi(ei, ocid)
             entity.jsonData = toJson(ei)
             budgetDao.saveBudget(entity)
         }
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun issuingAC(cpid: String,
-                  ocid: String,
-                  stage: String,
-                  releaseDate: LocalDateTime,
-                  data: JsonNode): ResponseDto {
+    fun issuingAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(IssuingAcDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -201,15 +245,22 @@ class ContractingService(private val releaseService: ReleaseService,
             date = dto.contract.date
             statusDetails = dto.contract.statusDetails
         }
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun finalUpdateAC(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto {
+    fun finalUpdateAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(FinalUpdateAcDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -227,11 +278,22 @@ class ContractingService(private val releaseService: ReleaseService,
             date = dto.contract.date
             statusDetails = dto.contract.statusDetails
         }
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun buyerSigningAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun buyerSigningAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(SigningDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -247,12 +309,22 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts = hashSetOf(dto.contract)
         }
 
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-
     }
 
-    fun supplierSigningAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun supplierSigningAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(SigningDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -267,11 +339,22 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts = hashSetOf(dto.contract)
         }
 
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun verificationAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun verificationAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(VerificationDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -283,12 +366,22 @@ class ContractingService(private val releaseService: ReleaseService,
                 statusDetails = dto.contract.statusDetails
             }
         }
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-
     }
 
-    fun treasuryApprovingAC(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun treasuryApprovingAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(SigningDto::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
@@ -302,14 +395,199 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts = hashSetOf(dto.contract)
         }
 
-        releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordEntity.publishDate)
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
+    fun treasuryClarificationAC(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
+        val clarificationRequest = toObject(TreasuryClarificationRequest::class.java, data)
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
+        val clarificationData = treasuryClarificationRequestToData(clarificationRequest, recordContract)
+
+        recordContract.apply {
+            id = releaseService.newReleaseId(ocid)
+            date = releaseDate
+            contracts = hashSetOf(clarificationData.contract)
+        }
+
+        releaseService.saveContractRecord(
+            cpId = cpid,
+            stage = stage,
+            record = recordContract,
+            publishDate = recordEntity.publishDate
+        )
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    private fun treasuryClarificationRequestToData(
+        treasuryRequest: TreasuryClarificationRequest,
+        recordContract: ContractRecord
+    ): TreasuryClarificationData =
+        TreasuryClarificationData(
+            contract = treasuryRequest.contract.let { contract ->
+                TreasuryClarificationData.Contract(
+                    id = contract.id,
+                    documents = contract.documents.map { document ->
+                        TreasuryClarificationData.Contract.Document(
+                            documentType = document.documentType,
+                            relatedConfirmations = document.relatedConfirmations,
+                            relatedLots = document.relatedLots,
+                            description = document.description,
+                            title = document.title,
+                            id = document.id,
+                            url = document.url,
+                            datePublished = document.datePublished
+                        )
+                    },
+                    title = contract.title,
+                    description = contract.description,
+                    period = contract.period.let { period ->
+                        TreasuryClarificationData.Contract.Period(
+                            startDate = period.startDate,
+                            endDate = period.endDate
+                        )
+                    },
+                    value = contract.value.let { value ->
+                        TreasuryClarificationData.Contract.Value(
+                            amount = value.amount,
+                            currency = value.currency,
+                            amountNet = value.amountNet,
+                            valueAddedTaxincluded = value.valueAddedTaxincluded
+                        )
+                    },
+                    agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics?.map { agreedMetric ->
+                        TreasuryClarificationData.Contract.AgreedMetric(
+                            id = agreedMetric.id,
+                            description = agreedMetric.description,
+                            title = agreedMetric.title,
+                            observations = agreedMetric.observations?.map { observation ->
+                                TreasuryClarificationData.Contract.AgreedMetric.Observation(
+                                    id = observation.id,
+                                    unit = observation.unit?.let { observationUnit ->
+                                        TreasuryClarificationData.Contract.AgreedMetric.Observation.ObservationUnit(
+                                            id = observationUnit.id,
+                                            scheme = observationUnit.scheme,
+                                            name = observationUnit.name
+                                        )
+                                    },
+                                    measure = observation.measure,
+                                    notes = observation.notes
+                                )
+                            }
+                        )
+                    },
+                    awardID = contract.awardID,
+                    confirmationRequests = contract.confirmationRequests.map { confirmationRequest ->
+                        TreasuryClarificationData.Contract.ConfirmationRequest(
+                            title = confirmationRequest.title,
+                            description = confirmationRequest.description,
+                            id = confirmationRequest.id,
+                            relatedItem = confirmationRequest.relatedItem,
+                            relatesTo = confirmationRequest.relatesTo,
+                            requestGroups = confirmationRequest.requestGroups.map { requestGroup ->
+                                TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup(
+                                    id = requestGroup.id,
+                                    requests = requestGroup.requests.map { request ->
+                                        TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup.Request(
+                                            id = request.id,
+                                            description = request.description,
+                                            title = request.title,
+                                            relatedPerson = request.relatedPerson?.let { relatedPerson ->
+                                                TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup.Request.RelatedPerson(
+                                                    id = relatedPerson.id,
+                                                    name = relatedPerson.name
+                                                )
+                                            }
+                                        )
+                                    }
+                                )
+                            },
+                            source = confirmationRequest.source,
+                            type = confirmationRequest.type
+                        )
+                    },
+                    confirmationResponses = contract.confirmationResponses.map { confirmationResponse ->
+                        TreasuryClarificationData.Contract.ConfirmationResponse(
+                            id = confirmationResponse.id,
+                            value = confirmationResponse.value.let { value ->
+                                TreasuryClarificationData.Contract.ConfirmationResponse.Value(
+                                    name = value.name,
+                                    id = value.id,
+                                    relatedPerson = value.relatedPerson.let { relatedPerson ->
+                                        TreasuryClarificationData.Contract.ConfirmationResponse.Value.RelatedPerson(
+                                            id = relatedPerson.id,
+                                            name = relatedPerson.name
+                                        )
+                                    },
+                                    date = value.date,
+                                    verification = value.verification.map { verification ->
+                                        TreasuryClarificationData.Contract.ConfirmationResponse.Value.Verification(
+                                            type = verification.type,
+                                            value = verification.value,
+                                            rationale = verification.rationale
+                                        )
+                                    }
+                                )
+                            },
+                            request = confirmationResponse.request
+                        )
+                    },
+                    date = contract.date,
+                    milestones = contract.milestones.map { milestone ->
+                        TreasuryClarificationData.Contract.Milestone(
+                            id = milestone.id,
+                            type = milestone.type,
+                            title = milestone.title,
+                            description = milestone.description,
+                            additionalInformation = milestone.additionalInformation,
+                            dateMet = milestone.dateMet,
+                            dateModified = milestone.dateModified,
+                            dueDate = milestone.dueDate,
+                            relatedItems = milestone.relatedItems,
+                            relatedParties = milestone.relatedParties.map { relatedParty ->
+                                TreasuryClarificationData.Contract.Milestone.RelatedParty(
+                                    id = relatedParty.id,
+                                    name = relatedParty.name
+                                )
+                            },
+                            status = milestone.status
+                        )
+                    },
+                    status = contract.status,
+                    statusDetails = contract.statusDetails
+                )
+            },
+            cans = treasuryRequest.cans.map { can ->
+                TreasuryClarificationData.Can(
+                    id = can.id,
+                    statusDetails = can.statusDetails,
+                    status = can.status
+                )
+            }
+        )
 
     fun activationAC(context: ActivateContractContext, data: ActivateContractData): ResponseDto =
         activationContractStrategy.activateContract(context, data)
 
-    fun endAwardPeriod(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun endAwardPeriod(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(EndAwardPeriodDto::class.java, data)
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
@@ -322,7 +600,7 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
         recordEv.apply {
             id = releaseService.newReleaseId(recordEvEntity.ocId)
@@ -353,10 +631,20 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
         if (dto.contract != null) {
-            releaseService.saveContractRecord(cpId = cpid, stage = stage, record = recordContract, publishDate = recordContractEntity.publishDate)
+            releaseService.saveContractRecord(
+                cpId = cpid,
+                stage = stage,
+                record = recordContract,
+                publishDate = recordContractEntity.publishDate
+            )
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = "EV",
+            record = recordEv,
+            publishDate = recordEvEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -501,7 +789,10 @@ class ContractingService(private val releaseService: ReleaseService,
      *   e. can.statusDetails == contracts.statusDetails;
      *   f. can.date == contracts.date;
      */
-    private fun updateContracts(can: CreateProtocolData.CAN, contracts: Collection<Contract>): List<Contract> {
+    private fun updateContracts(
+        can: CreateProtocolData.CAN,
+        contracts: Collection<Contract>
+    ): List<Contract> {
         val newContract = Contract(
             id = can.id.toString(),
             awardId = can.awardId,
@@ -532,7 +823,6 @@ class ContractingService(private val releaseService: ReleaseService,
                 it
         }
     }
-
 
     fun createCAN(context: CreateCANContext, data: CreateCANData) {
         val cpid = context.cpid
@@ -590,10 +880,16 @@ class ContractingService(private val releaseService: ReleaseService,
         return contracts.plus(newContract)
     }
 
-    fun updateCanDocs(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun updateCanDocs(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(UpdateCanDocumentsDto::class.java, data)
         val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val record = releaseService.getRecord(recordEntity.jsonData)
 
         record.apply {
@@ -601,13 +897,18 @@ class ContractingService(private val releaseService: ReleaseService,
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             contracts?.asSequence()
-                    ?.firstOrNull { it.id == dto.contract.id }
-                    ?.apply {
-                        documents = dto.contract.documents.toHashSet()
-                    }
+                ?.firstOrNull { it.id == dto.contract.id }
+                ?.apply {
+                    documents = dto.contract.documents.toHashSet()
+                }
 
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage,
+            record = record,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -729,7 +1030,13 @@ class ContractingService(private val releaseService: ReleaseService,
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
-    fun endContractingProcess(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+    fun endContractingProcess(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(EndContractingProcessDto::class.java, data)
 
         val msEntity = releaseService.getMsEntity(cpid)
@@ -744,7 +1051,7 @@ class ContractingService(private val releaseService: ReleaseService,
             }
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
-                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+            ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
         recordEv.apply {
             id = releaseService.newReleaseId(ocid)
@@ -761,7 +1068,12 @@ class ContractingService(private val releaseService: ReleaseService,
             contracts?.let { updateCanContracts(it, dto.cans) }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = "EV", record = recordEv, publishDate = recordEvEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = "EV",
+            record = recordEv,
+            publishDate = recordEvEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
