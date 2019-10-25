@@ -436,7 +436,7 @@ class ContractingService(
             val contract = getContractFromRequest(clarificationRequest.contract)
 
             //BR-2.7.6.7
-            val updatedMetrics = getUpdatedMetrics(recordContract).takeIf { it.isNotEmpty() }
+            val updatedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
             val updatedContract = contract.copy(
                 agreedMetrics = updatedMetrics
             )
@@ -509,30 +509,6 @@ class ContractingService(
                 contract
             }
         }
-
-    private fun getUpdatedMetrics(contractRecord: ContractRecord): LinkedList<AgreedMetric> {
-        return contractRecord.contracts?.firstOrNull()?.agreedMetrics?.asSequence()?.map { agreedMetric ->
-            AgreedMetric(
-                id = agreedMetric.id,
-                description = agreedMetric.description,
-                title = agreedMetric.title,
-                observations = agreedMetric.observations?.asSequence()?.map { observation ->
-                    Observation(
-                        id = observation.id,
-                        unit = observation.unit?.let { observationUnit ->
-                            ObservationUnit(
-                                id = observationUnit.id,
-                                scheme = observationUnit.scheme,
-                                name = observationUnit.name
-                            )
-                        },
-                        measure = observation.measure,
-                        notes = observation.notes
-                    )
-                }?.toCollection(LinkedList())
-            )
-        }?.toCollection(LinkedList()) ?: LinkedList()
-    }
 
     private fun getContractFromRequest(contractData: TreasuryClarificationRequest.Contract): Contract =
         Contract(
