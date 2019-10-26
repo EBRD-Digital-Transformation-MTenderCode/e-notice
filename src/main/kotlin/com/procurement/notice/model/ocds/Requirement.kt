@@ -1,34 +1,76 @@
 package com.procurement.notice.model.ocds
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonInclude
+import com.procurement.notice.domain.model.enums.RequirementDataType
+import java.math.BigDecimal
+import java.time.LocalDateTime
 
-data class Requirement @JsonCreator constructor(
-
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val id: String?,
-
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val title: String?,
-
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+class Requirement(
+    val id: String,
+    val title: String,
     val description: String?,
+    val period: Period?,
+    val dataType: RequirementDataType,
+    val value: RequirementValue?
+) {
+    data class Period(
+        val startDate: LocalDateTime,
+        val endDate: LocalDateTime
+    )
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val dataType: String?,
+}
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val pattern: String?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val expectedValue: String?,
+sealed class RequirementValue
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val minValue: Double?,
+sealed class ExpectedValue : RequirementValue() {
+    companion object {
+        fun of(value: Boolean) = AsBoolean(value)
+        fun of(value: String) = AsString(value)
+        fun of(value: BigDecimal) = AsNumber(value)
+        fun of(value: Long) = AsInteger(value)
+    }
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val maxValue: Double?,
+    data class AsBoolean(val value: Boolean) : ExpectedValue()
+    data class AsString(val value: String) : ExpectedValue()
+    data class AsNumber(val value: BigDecimal) : ExpectedValue()
+    data class AsInteger(val value: Long) : ExpectedValue()
+}
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val period: Period?
-)
+sealed class MinValue : RequirementValue() {
+    companion object {
+        fun of(value: BigDecimal) = AsNumber(value)
+        fun of(value: Long) = AsInteger(value)
+    }
+
+    data class AsNumber(val value: BigDecimal) : MinValue()
+    data class AsInteger(val value: Long) : MinValue()
+}
+
+sealed class MaxValue : RequirementValue() {
+    companion object {
+        fun of(value: BigDecimal) = AsNumber(value)
+        fun of(value: Long) = AsInteger(value)
+    }
+
+    data class AsNumber(val value: BigDecimal) : MaxValue()
+    data class AsInteger(val value: Long) : MaxValue()
+}
+
+sealed class RangeValue : RequirementValue() {
+    companion object {
+        fun of(minValue: BigDecimal, maxValue: BigDecimal) =
+            AsNumber(
+                minValue = minValue,
+                maxValue = maxValue
+            )
+
+        fun of(minValue: Long, maxValue: Long) =
+            AsInteger(
+                minValue = minValue,
+                maxValue = maxValue
+            )
+    }
+
+    data class AsNumber(val minValue: BigDecimal, val maxValue: BigDecimal) : RangeValue()
+    data class AsInteger(val minValue: Long, val maxValue: Long) : RangeValue()
+}
