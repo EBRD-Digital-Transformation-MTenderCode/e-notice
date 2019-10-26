@@ -27,7 +27,7 @@ data class BusinessFunction @JsonCreator constructor(
     var period: Period,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var documents: List<DocumentBF>
+    var documents: List<DocumentBF>?
 )
 
 data class DocumentBF @JsonCreator constructor(

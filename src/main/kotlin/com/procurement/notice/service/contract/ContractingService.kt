@@ -375,7 +375,7 @@ class ContractingService(private val releaseService: ReleaseService,
             dto.award.suppliers?.asSequence()?.forEach { supplier ->
                 supplier.persones?.asSequence()?.forEach { person ->
                     person.businessFunctions.asSequence().forEach { businessFunction ->
-                        businessFunction.documents.forEach { docBf ->
+                        businessFunction.documents?.forEach { docBf ->
                             documentDto.forEach { docDto ->
                                 if (docBf.id == docDto.id && docBf.documentType == docDto.documentType) {
                                     docBf.update(docDto)
@@ -387,7 +387,7 @@ class ContractingService(private val releaseService: ReleaseService,
             }
             dto.buyer?.persones?.asSequence()?.forEach { person ->
                 person.businessFunctions.asSequence().forEach { businessFunction ->
-                    businessFunction.documents.forEach { docBf ->
+                    businessFunction.documents?.forEach { docBf ->
                         documentDto.forEach { docDto ->
                             if (docBf.id == docDto.id && docBf.documentType == docDto.documentType) {
                                 docBf.update(docDto)

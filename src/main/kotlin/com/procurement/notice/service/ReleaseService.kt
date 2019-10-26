@@ -6,7 +6,13 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.entity.ReleaseEntity
-import com.procurement.notice.model.ocds.*
+import com.procurement.notice.model.ocds.Operation
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.RelatedProcessType
+import com.procurement.notice.model.ocds.Stage
+import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Params
@@ -18,7 +24,6 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.collections.HashSet
 
 @Service
 class ReleaseService(private val releaseDao: ReleaseDao) {
@@ -86,12 +91,13 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
     }
 
     fun getPartiesWithActualPersones(requestProcuringEntity: OrganizationReference?, parties: HashSet<Organization>?) : HashSet<Organization>? {
-        return parties?.map { organization ->
-            if (organization.id == requestProcuringEntity!!.id) {
-                organization.copy( persones = requestProcuringEntity.persones )
-            } else organization
-
-        }?.toHashSet()
+        return requestProcuringEntity?.persones?.let {
+            parties?.map { organization ->
+                if (organization.id == requestProcuringEntity.id) {
+                    organization.copy( persones = requestProcuringEntity.persones )
+                } else organization
+            }?.toHashSet() ?: parties
+        }
     }
 
     fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
