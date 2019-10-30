@@ -1,0 +1,109 @@
+{
+  "contract": {
+    "id": "request.contract.id",
+    "date": "2019-11-15T06:15:00Z",
+    "awardID": "5711c5eb-6c39-4e28-942b-032c6021192e",
+    "status": "active",
+    "statusDetails":"empty",
+    "title": "request.contract.title",
+    "description": "request.contract.description",
+    "period": {
+      "startDate": "2019-11-15T06:15:00Z",
+      "endDate": "2019-12-05T10:11:00Z"
+    },
+    "documents": [
+      {
+        "documentType": "tenderNotice",
+        "id": "request.contract.documents[0].id",
+        "datePublished": "2019-11-15T06:15:00Z",
+        "url": "request.contract.documents[0].url",
+        "title": "request.contract.documents[0].title",
+        "description": "request.contract.documents[0].description",
+        "relatedLots": ["5711c5eb-6c39-4e28-942b-032c6021191e"],
+        "relatedConfirmations": [
+        "cs-buyer-confirmation-on-document.id-relatedPerson.id"
+      ]
+      }
+    ],
+    "milestones": [
+      {
+        "id": "approval-relatedparties.id",
+        "relatedItems": ["5711c5eb-6c39-4e28-942b-032c6021193e"],
+        "status": "active",
+        "additionalInformation": "request.contract.milestones[0].additionalInformation[0]",
+        "dueDate": "2019-10-29T16:51:00Z",
+        "title": "Signature by the Buyer",
+        "type": "approval",
+        "description": "request.contract.milestones[0].description",
+        "dateModified":"2019-11-15T16:51:00Z",
+        "dateMet": "2019-12-02T16:51:00Z",
+        "relatedParties": [
+          {
+            "id": "request.contract.milestones[0].relatedParties[0].id",
+            "name": "request.contract.milestones[0].relatedParties[0].name"
+          }
+        ]
+      }
+    ],
+    "confirmationResponses": [
+      {
+        "id": "cs-buyer-confirmation-on-document.id-relatedPerson.id",
+        "value": {
+          "name": "Ministry of Communications",
+          "id": "GB-GOV-12345678",
+          "date": "2019-10-29T16:51:00Z",
+          "relatedPerson": {
+            "id": "request.contract.confirmationResponses[0].relatedPerson.id",
+            "name": "request.contract.confirmationResponses[0].relatedPerson.name"
+          },
+          "verification": [
+            {
+              "type": "request.contract.confirmationResponses[0].verification[0].type",
+              "value": "request.contract.confirmationResponses[0].verification[0].value",
+              "rationale": "request.contract.confirmationResponses[0].verification[0].rationale"
+            }
+          ]
+        },
+        "request": "cs-buyer-signature-on-document.id-relatedPerson.id"
+      }
+    ],
+    "confirmationRequests": [
+      {
+        "id": "cs-tenderer-confirmation-on-document.id",
+        "type": "digitalSignature",
+        "title": "request.contract.confirmationRequests[0].title",
+        "description": "request.contract.confirmationRequests[0].description",
+        "relatesTo": "document",
+        "relatedItem": "5711c5eb-6c39-4e28-942b-032c6021192e",
+        "source": "tenderer",
+        "requestGroups": [
+          {
+            "id": "cs-tenderer-confirmation-on-document.id-tenderer.identifier.id",
+            "requests": [
+              {
+                "id": "cs-tenderer-confirmation-on-document.id-tenderer.identifier.id-relatedPerson.id",
+                "title": "parties[role:supplier].persones[role:authority].name",
+                "description": "request.contract.confirmationRequests[0].requestGroups[0].requests[0].description",
+                "relatedPerson": {
+                "id": "request.contract.confirmationRequests[0].requestGroups[0].requests[0].relatedPerson.id",
+                "name": "request.contract.confirmationRequests[0].requestGroups[0].requests[0].relatedPerson.name"
+              }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "value": {
+      "amount": 101.01,
+      "currency": "MDL",
+      "amountNet": 200.02,
+      "valueAddedTaxincluded": true
+    }
+  },
+  "cans": [{
+    "id": "ocds-t1s2t3-MD-1549028047114-AC-1547458512687",
+    "status": "active",
+    "statusDetails": "treasuryRejection"
+  }]
+}
