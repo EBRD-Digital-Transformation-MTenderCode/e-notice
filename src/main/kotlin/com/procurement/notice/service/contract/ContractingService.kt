@@ -437,8 +437,6 @@ class ContractingService(
             val updatedContract = contract.copy(
                 agreedMetrics = updatedMetrics
             )
-            val updatedContracts = contractRecord.contracts?.toList()?.let { it + updatedContract }
-                ?: listOf(updatedContract)
 
             val updatedRecordContract = contractRecord.copy(
                 //BR-2.7.6.8
@@ -446,7 +444,7 @@ class ContractingService(
                 //BR-2.7.6.2
                 date = releaseDate,
                 //BR-2.7.6.6
-                contracts = updatedContracts.toHashSet(),
+                contracts = hashSetOf(updatedContract),
                 //BR-2.7.6.1
                 tag = listOf(Tag.CONTRACT_UPDATE)
             )
