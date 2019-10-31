@@ -513,9 +513,9 @@ class CommandService(
 
             PROCESS_AC_CLARIFICATION -> {
                 val context = TreasuryClarificationContext(
-                    cpid = cpId,
-                    ocid = ocId!!,
-                    stage = stage,
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
                     releaseDate = releaseDate
                 )
                 val clarificationRequest = toObject(TreasuryClarificationRequest::class.java, data)
