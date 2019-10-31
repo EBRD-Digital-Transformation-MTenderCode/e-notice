@@ -1,6 +1,5 @@
 package com.procurement.notice.service.contract
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
@@ -14,7 +13,7 @@ import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.json.loadJson
 import com.procurement.notice.model.contract.ContractRecord
-import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.record.Record

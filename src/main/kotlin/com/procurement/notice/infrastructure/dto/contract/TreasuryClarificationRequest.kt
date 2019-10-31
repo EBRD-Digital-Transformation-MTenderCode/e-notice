@@ -1,4 +1,4 @@
-package com.procurement.notice.model.contract.dto
+package com.procurement.notice.infrastructure.dto.contract
 
 
 import com.fasterxml.jackson.annotation.JsonInclude

@@ -1,10 +1,11 @@
 package com.procurement.notice.infrastructure.dto.ac.treasury.clarification
 
 import com.procurement.notice.infrastructure.AbstractDTOTestBase
-import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import org.junit.jupiter.api.Test
 
-class TreasuryClarificationRequestTest : AbstractDTOTestBase<TreasuryClarificationRequest>(TreasuryClarificationRequest::class.java) {
+class TreasuryClarificationRequestTest : AbstractDTOTestBase<TreasuryClarificationRequest>(
+    TreasuryClarificationRequest::class.java) {
 
     @Test
     fun fully() {

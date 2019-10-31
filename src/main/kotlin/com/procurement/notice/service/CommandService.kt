@@ -41,7 +41,7 @@ import com.procurement.notice.model.bpe.ocid
 import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
-import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
