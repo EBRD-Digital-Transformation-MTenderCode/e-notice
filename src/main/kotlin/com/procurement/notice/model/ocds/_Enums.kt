@@ -425,7 +425,8 @@ enum class Operation(val value: String) {
     END_CONTRACT_PROCESS("endContractingProcess"),
     CREATE_AWARD("createAward"),
     START_AWARD_PERIOD("startAwardPeriod"),
-    EVALUATE_AWARD("evaluateAward");
+    EVALUATE_AWARD("evaluateAward"),
+    PROCESS_AC_CLARIFICATION("processAcClarification");
 
 
     companion object {

@@ -17,6 +17,8 @@ import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.application.service.contract.activate.ActivateContractContext
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
+import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
+import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -39,6 +41,7 @@ import com.procurement.notice.model.bpe.ocid
 import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
@@ -82,6 +85,7 @@ import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_AUCTION
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_EV
 import com.procurement.notice.model.ocds.Operation.TREASURY_APPROVING_AC
+import com.procurement.notice.model.ocds.Operation.PROCESS_AC_CLARIFICATION
 import com.procurement.notice.model.ocds.Operation.UNSUCCESSFUL_TENDER
 import com.procurement.notice.model.ocds.Operation.UNSUSPEND_TENDER
 import com.procurement.notice.model.ocds.Operation.UPDATE_AC
@@ -506,6 +510,138 @@ class CommandService(
                 releaseDate = releaseDate,
                 data = data
             )
+
+            PROCESS_AC_CLARIFICATION -> {
+                val context = TreasuryClarificationContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val clarificationRequest = toObject(TreasuryClarificationRequest::class.java, data)
+                val clarificationData = TreasuryClarificationData(
+                    contract = clarificationRequest.contract.let { contract ->
+                        TreasuryClarificationData.Contract(
+                            id = contract.id,
+                            documents = contract.documents.map { document ->
+                                TreasuryClarificationData.Contract.Document(
+                                    documentType = document.documentType,
+                                    relatedConfirmations = document.relatedConfirmations,
+                                    relatedLots = document.relatedLots,
+                                    description = document.description,
+                                    title = document.title,
+                                    id = document.id,
+                                    url = document.url,
+                                    datePublished = document.datePublished
+                                )
+                            },
+                            title = contract.title,
+                            description = contract.description,
+                            period = contract.period.let { period ->
+                                TreasuryClarificationData.Contract.Period(
+                                    startDate = period.startDate,
+                                    endDate = period.endDate
+                                )
+                            },
+                            value = contract.value.let { value ->
+                                TreasuryClarificationData.Contract.Value(
+                                    amount = value.amount,
+                                    currency = value.currency,
+                                    amountNet = value.amountNet,
+                                    valueAddedTaxincluded = value.valueAddedTaxincluded
+                                )
+                            },
+                            awardID = contract.awardID,
+                            confirmationRequests = contract.confirmationRequests.map { confirmationRequest ->
+                                TreasuryClarificationData.Contract.ConfirmationRequest(
+                                    title = confirmationRequest.title,
+                                    description = confirmationRequest.description,
+                                    id = confirmationRequest.id,
+                                    relatedItem = confirmationRequest.relatedItem,
+                                    relatesTo = confirmationRequest.relatesTo,
+                                    requestGroups = confirmationRequest.requestGroups.map { requestGroup ->
+                                        TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup(
+                                            id = requestGroup.id,
+                                            requests = requestGroup.requests.map { request ->
+                                                TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup.Request(
+                                                    id = request.id,
+                                                    description = request.description,
+                                                    title = request.title,
+                                                    relatedPerson = request.relatedPerson?.let { relatedPerson ->
+                                                        TreasuryClarificationData.Contract.ConfirmationRequest.RequestGroup.Request.RelatedPerson(
+                                                            id = relatedPerson.id,
+                                                            name = relatedPerson.name
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    },
+                                    source = confirmationRequest.source,
+                                    type = confirmationRequest.type
+                                )
+                            },
+                            confirmationResponses = contract.confirmationResponses.map { confirmationResponse ->
+                                TreasuryClarificationData.Contract.ConfirmationResponse(
+                                    id = confirmationResponse.id,
+                                    value = confirmationResponse.value.let { value ->
+                                        TreasuryClarificationData.Contract.ConfirmationResponse.Value(
+                                            name = value.name,
+                                            id = value.id,
+                                            relatedPerson = value.relatedPerson.let { relatedPerson ->
+                                                TreasuryClarificationData.Contract.ConfirmationResponse.Value.RelatedPerson(
+                                                    id = relatedPerson.id,
+                                                    name = relatedPerson.name
+                                                )
+                                            },
+                                            date = value.date,
+                                            verification = value.verification.map { verification ->
+                                                TreasuryClarificationData.Contract.ConfirmationResponse.Value.Verification(
+                                                    type = verification.type,
+                                                    value = verification.value,
+                                                    rationale = verification.rationale
+                                                )
+                                            }
+                                        )
+                                    },
+                                    request = confirmationResponse.request
+                                )
+                            },
+                            date = contract.date,
+                            milestones = contract.milestones.map { milestone ->
+                                TreasuryClarificationData.Contract.Milestone(
+                                    id = milestone.id,
+                                    type = milestone.type,
+                                    title = milestone.title,
+                                    description = milestone.description,
+                                    additionalInformation = milestone.additionalInformation,
+                                    dateMet = milestone.dateMet,
+                                    dateModified = milestone.dateModified,
+                                    dueDate = milestone.dueDate,
+                                    relatedItems = milestone.relatedItems,
+                                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                                        TreasuryClarificationData.Contract.Milestone.RelatedParty(
+                                            id = relatedParty.id,
+                                            name = relatedParty.name
+                                        )
+                                    },
+                                    status = milestone.status
+                                )
+                            },
+                            status = contract.status,
+                            statusDetails = contract.statusDetails
+                        )
+                    },
+                    cans = clarificationRequest.cans.map { can ->
+                        TreasuryClarificationData.Can(
+                            id = can.id,
+                            statusDetails = can.statusDetails,
+                            status = can.status
+                        )
+                    }
+                )
+                contractingService.treasuryClarificationAC(context, clarificationData)
+            }
 
             ACTIVATION_AC -> {
                 val context = ActivateContractContext(

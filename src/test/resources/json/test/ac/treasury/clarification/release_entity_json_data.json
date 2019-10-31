@@ -1,0 +1,461 @@
+{
+  "ocid": "ocds-t1s2t3-MD-1549028047114-AC-1547458512687",
+  "id": "ocds-t1s2t3-MD-1549028047114-EV-1549028047269-1549032043132",
+  "date": "2019-02-01T14:40:42Z",
+  "tag": [
+    "contractTermination"
+  ],
+  "initiationType": "tender",
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1549028047114",
+    "lots": [
+      {
+        "id": "0c7556a2-2626-11e9-ab19-bd3b3ed4ebec",
+        "title": "lot2",
+        "description": "2",
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "Steet",
+            "postalCode": "5",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi",
+                "uri": "http://statistica.md"
+              },
+              "locality": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi",
+                "uri": "http://statistica.md"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "0c7556a3-2626-11e9-ab19-bd3b3ed4ebec",
+        "title": "lot2",
+        "description": "2",
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "Steet",
+            "postalCode": "5",
+            "addressDetails": {
+              "country": {
+                "scheme": "iso-alpha2",
+                "id": "MD",
+                "description": "MOLDOVA",
+                "uri": "http://reference.iatistandard.org"
+              },
+              "region": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi",
+                "uri": "http://statistica.md"
+              },
+              "locality": {
+                "scheme": "CUATM",
+                "id": "0301000",
+                "description": "mun.Bălţi",
+                "uri": "http://statistica.md"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "classification": {
+      "scheme": "CPV",
+      "id": "03100000-2",
+      "description": "Produse agricole şi horticole"
+    },
+    "mainProcurementCategory": "goods",
+    "procurementMethod": "open",
+    "procurementMethodDetails": "TEST Micro Value"
+  },
+  "awards": [
+    {
+      "id": "c458934f-ccf6-43e7-b858-e362a63f9e10",
+      "date": "2019-02-01T14:39:05Z",
+      "value": {
+        "amount": 380.00,
+        "currency": "MDL"
+      },
+      "suppliers": [
+        {
+          "id": "MD-IDNO-147852",
+          "name": "name of bidder9"
+        }
+      ],
+      "items": [
+        {
+          "id": "0c7556a0-2626-11e9-ab19-bd3b3ed4ebec",
+          "description": "7a8695a4-fe1c-11e8-9789-97b651a29bd6",
+          "classification": {
+            "scheme": "CPV",
+            "id": "03100000-2",
+            "description": "Produse agricole şi horticole"
+          },
+          "quantity": 150.0,
+          "unit": {
+            "name": "Milion decalitri",
+            "id": "120"
+          },
+          "relatedLot": "0c7556a2-2626-11e9-ab19-bd3b3ed4ebec"
+        },
+        {
+          "id": "0c7556a1-2626-11e9-ab19-bd3b3ed4ebec",
+          "description": "7a8695a1-fe1c-11e8-9789-97b651a29bd6",
+          "classification": {
+            "scheme": "CPV",
+            "id": "03100000-2",
+            "description": "Produse agricole şi horticole"
+          },
+          "quantity": 150.0,
+          "unit": {
+            "name": "Milion decalitri",
+            "id": "120"
+          },
+          "relatedLot": "0c7556a3-2626-11e9-ab19-bd3b3ed4ebec"
+        }
+      ],
+      "documents": [
+        {
+          "id": "17e73407-0bee-422d-9b73-e918488f806c-1543247966828",
+          "documentType": "complaints",
+          "title": "title",
+          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/17e73407-0bee-422d-9b73-e918488f806c-1543247966828",
+          "datePublished": "2018-11-26T16:02:36Z",
+          "relatedLots": [
+            "0c7556a2-2626-11e9-ab19-bd3b3ed4ebec"
+          ]
+        },
+        {
+          "id": "17e73407-0bee-422d-9b73-e918488f806c-1543247966828",
+          "documentType": "complaints",
+          "title": "title",
+          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/17e73407-0bee-422d-9b73-e918488f806c-1543247966828",
+          "datePublished": "2018-11-26T16:02:36Z",
+          "relatedLots": [
+            "0c7556a3-2626-11e9-ab19-bd3b3ed4ebec"
+          ]
+        }
+      ],
+      "relatedLots": [
+        "0c7556a2-2626-11e9-ab19-bd3b3ed4ebec",
+        "0c7556a3-2626-11e9-ab19-bd3b3ed4ebec"
+      ]
+    }
+  ],
+  "contracts": [
+    {
+      "id": "ocds-t1s2t3-MD-1549028047114-AC-1547458512687",
+      "awardId": "c458934f-ccf6-43e7-b858-e362a63f9e10",
+      "status": "cancelled",
+      "statusDetails": "empty",
+      "agreedMetrics": [
+        {
+          "id": "cc-general",
+          "title": "Responsabilități generale",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de ambele părți",
+          "observations": [
+            {
+              "id": "cc-general-1-1",
+              "notes": "Nr. max. de zile pentru informarea prinvind invocarea forței majore",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-general-1-2",
+              "notes": "Nr. max. de pentru notificarea despre intenția de reziliere",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-general-1-3",
+              "notes": "Nr. max. de zile pentru răspunsul la notificarea despre intenția de reziliere",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cc-tenderer-1",
+          "title": "Garanție de executare",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de operatorul economic în ceea ce privește garanția",
+          "observations": [
+            {
+              "id": "cc-tenderer-1-1",
+              "notes": "Cuantumul garanției",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-1-2",
+              "notes": "Forma de garanţie de bună executare a contractului"
+            }
+          ]
+        },
+        {
+          "id": "cc-tenderer-2",
+          "title": "Termeni",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de EO în ceea ce privește calendarul",
+          "observations": [
+            {
+              "id": "cc-tenderer-2-1",
+              "notes": "Nr. max. de zile de la semnarea contractului pentru anunțarea Cumpărătorului despre disponibilitatea livrării Bunurilor şi/sau prestării Serviciilor",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-2-2",
+              "notes": "Nr. max. de zile pentru examinarea pretenţiilor înaintate privind calitatea bunurilor şi/sau serviciilor livrate",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-2-3",
+              "notes": "Nr. max. de zile pentru livrarea suplimentară în baza pretențiilor privind calitatea",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-2-4",
+              "notes": "Nr. de zile după care se consideră refuz de a vinde Bunurile/Serviciile/Lucrările contractate",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cc-tenderer-3",
+          "title": "Răspundere",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de furnizor în ceea ce privește răspunderea",
+          "observations": [
+            {
+              "id": "cc-tenderer-3-1",
+              "notes": "% de răspundere materială pentru livrarea cu întărziere",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-3-2",
+              "notes": "% maxim de răspundere materială a Vânzătorului în cazul livrării cu întârziere",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-tenderer-3-3",
+              "notes": "% max. a penalității pentru refuzul executării contractului",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cc-buyer-1",
+          "title": "Termeni",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de entitatea contractantă în ceea ce privește calendarul",
+          "observations": [
+            {
+              "id": "cc-buyer-1-1",
+              "notes": "Nr. max. de zile pentru depunerea pretențiilor privind calitatea bunurilor şi/sau serviciilor livrate",
+              "unit": {
+                "id": "359",
+                "name": "ziua",
+                "scheme": "MD-CUMC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cc-buyer-2",
+          "title": "Răspundere",
+          "description": "Condiții contractuale care reglementează responsabilitățile generale legate de entitatea contractantă privind răspunderea",
+          "observations": [
+            {
+              "id": "cc-buyer-2-1",
+              "notes": "% de răspundere materială a Beneficiarului in caz de achitare cu întârziere",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            },
+            {
+              "id": "cc-buyer-2-2",
+              "notes": "% răspundere materială maximă a Beneficiarului in caz de achitare cu întârziere",
+              "unit": {
+                "id": "744",
+                "name": "procent",
+                "scheme": "MD-CUMC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cc-subject-c458934f-ccf6-43e7-b858-e362a63f9e10-0c7556a1-2626-11e9-ab19-bd3b3ed4ebec",
+          "title": "Specificație pentru 7a8695a1-fe1c-11e8-9789-97b651a29bd6",
+          "description": "Informații detaliate privind obiectul achiziției",
+          "observations": [
+            {
+              "id": "cc-subject-1",
+              "notes": "Modelul articolului"
+            },
+            {
+              "id": "cc-subject-2",
+              "notes": "Tara de origine"
+            },
+            {
+              "id": "cc-subject-3",
+              "notes": "Producător"
+            },
+            {
+              "id": "cc-subject-4",
+              "notes": "Specificația tehnică propusă de Furnizor"
+            },
+            {
+              "id": "cc-subject-5",
+              "notes": "Standarde de referință"
+            }
+          ]
+        },
+        {
+          "id": "cc-subject-c458934f-ccf6-43e7-b858-e362a63f9e10-0c7556a0-2626-11e9-ab19-bd3b3ed4ebec",
+          "title": "Specificație pentru 7a8695a4-fe1c-11e8-9789-97b651a29bd6",
+          "description": "Informații detaliate privind obiectul achiziției",
+          "observations": [
+            {
+              "id": "cc-subject-1",
+              "notes": "Modelul articolului"
+            },
+            {
+              "id": "cc-subject-2",
+              "notes": "Tara de origine"
+            },
+            {
+              "id": "cc-subject-3",
+              "notes": "Producător"
+            },
+            {
+              "id": "cc-subject-4",
+              "notes": "Specificația tehnică propusă de Furnizor"
+            },
+            {
+              "id": "cc-subject-5",
+              "notes": "Standarde de referință"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "parties": [
+    {
+      "id": "MD-IDNO-147852",
+      "name": "name of bidder9",
+      "identifier": {
+        "scheme": "MD-IDNO",
+        "id": "147852",
+        "legalName": "Legalname",
+        "uri": "233"
+      },
+      "address": {
+        "streetAddress": "dfhg",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1000000",
+            "description": "Anenii Noi",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "1001000",
+            "description": "dv"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "vdv",
+        "email": "dvdvdv",
+        "telephone": "45621",
+        "url": "dvdv"
+      },
+      "details": {
+        "scale": "micro"
+      },
+      "roles": [
+        "supplier",
+        "payee"
+      ]
+    }
+  ],
+  "relatedProcesses": [
+    {
+      "id": "200e0960-262f-11e9-bfa7-95c03bbd6d75",
+      "relationship": [
+        "parent"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-MD-1549028047114",
+      "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1549028047114/ocds-t1s2t3-MD-1549028047114"
+    },
+    {
+      "id": "200e0962-262f-11e9-bfa7-95c03bbd6d75",
+      "relationship": [
+        "x_evaluation"
+      ],
+      "scheme": "ocid",
+      "identifier": "ocds-t1s2t3-MD-1549028047114-EV-1549028047269",
+      "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1549028047114/ocds-t1s2t3-MD-1549028047114-EV-1549028047269"
+    }
+  ]
+}
