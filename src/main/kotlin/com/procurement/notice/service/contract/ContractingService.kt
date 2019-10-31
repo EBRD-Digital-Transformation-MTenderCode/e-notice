@@ -10,6 +10,8 @@ import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
 import com.procurement.notice.application.service.contract.activate.ActivateContractContext
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
+import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
+import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.exception.ErrorException
@@ -27,7 +29,6 @@ import com.procurement.notice.model.contract.dto.EndContractingProcessDto
 import com.procurement.notice.model.contract.dto.FinalUpdateAcDto
 import com.procurement.notice.model.contract.dto.IssuingAcDto
 import com.procurement.notice.model.contract.dto.SigningDto
-import com.procurement.notice.model.contract.dto.TreasuryClarificationRequest
 import com.procurement.notice.model.contract.dto.UpdateAcDto
 import com.procurement.notice.model.contract.dto.UpdateCanDocumentsDto
 import com.procurement.notice.model.contract.dto.VerificationDto
@@ -67,7 +68,6 @@ import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.HashSet
 
 @Service
 class ContractingService(
@@ -419,18 +419,17 @@ class ContractingService(
     }
 
     fun treasuryClarificationAC(
-        cpid: String,
-        ocid: String,
-        stage: String,
-        releaseDate: LocalDateTime,
-        data: JsonNode
+        context: TreasuryClarificationContext,
+        data: TreasuryClarificationData
     ): ResponseDto {
 
-        val clarificationRequest = toObject(TreasuryClarificationRequest::class.java, data)
-
-        fun getUpdatedContractRecord(recordContractEntity: ReleaseEntity): ContractRecord {
-            val contractRecord = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
-            val contract = getContractFromRequest(clarificationRequest.contract)
+        fun getUpdatedContractRecord(
+            clarificationContext: TreasuryClarificationContext,
+            clarificationData: TreasuryClarificationData,
+            entity: ReleaseEntity
+        ): ContractRecord {
+            val contractRecord = toObject(ContractRecord::class.java, entity.jsonData)
+            val contract = getContractFromData(clarificationData.contract)
 
             //BR-2.7.6.7
             val updatedMetrics = contractRecord.contracts?.firstOrNull()?.agreedMetrics
@@ -440,9 +439,9 @@ class ContractingService(
 
             val updatedRecordContract = contractRecord.copy(
                 //BR-2.7.6.8
-                id = releaseService.newReleaseId(ocid),
+                id = releaseService.newReleaseId(clarificationContext.ocid),
                 //BR-2.7.6.2
-                date = releaseDate,
+                date = clarificationContext.releaseDate,
                 //BR-2.7.6.6
                 contracts = hashSetOf(updatedContract),
                 //BR-2.7.6.1
@@ -451,16 +450,20 @@ class ContractingService(
             return updatedRecordContract
         }
 
-        fun getUpdatedRecord(recordContractEntity: ReleaseEntity): Record {
-            val record: Record = releaseService.getRecord(recordContractEntity.jsonData)
+        fun getUpdatedRecord(
+            clarificationContext: TreasuryClarificationContext,
+            clarificationData: TreasuryClarificationData,
+            entity: ReleaseEntity
+        ): Record {
+            val record: Record = releaseService.getRecord(entity.jsonData)
             val contracts = record.contracts?.toList() ?: emptyList()
-            val updatedContracts = getContractsUpdatedWithCansSection(contracts, clarificationRequest.cans)
+            val updatedContracts = getContractsUpdatedWithCansSection(contracts, clarificationData.cans)
 
             val updatedRecord = record.copy(
                 //BR-2.8.6.4
-                id = releaseService.newReleaseId(ocid),
+                id = releaseService.newReleaseId(clarificationContext.ocid),
                 //BR-2.8.6.3
-                date = releaseDate,
+                date = clarificationContext.releaseDate,
                 //BR-2.8.6.1
                 tag = listOf(Tag.TENDER_UPDATE),
                 //BR-2.8.6.6
@@ -469,32 +472,44 @@ class ContractingService(
             return updatedRecord
         }
 
-        val entityForContractRelease = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val updatedRecordContract = getUpdatedContractRecord(entityForContractRelease)
+        val entityForContractRelease =
+            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
 
-        val entityForEvaluationOrNegotiationRelease = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val updatedRecord = getUpdatedRecord(entityForEvaluationOrNegotiationRelease)
+        val updatedRecordContract = getUpdatedContractRecord(
+            clarificationContext = context,
+            entity = entityForContractRelease,
+            clarificationData = data
+        )
+
+        val entityForEvaluationOrNegotiationRelease =
+            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+
+        val updatedRecord = getUpdatedRecord(
+            clarificationContext = context,
+            entity = entityForEvaluationOrNegotiationRelease,
+            clarificationData = data
+        )
 
         releaseService.saveContractRecord(
-            cpId = cpid,
-            stage = stage,
+            cpId = context.cpid,
+            stage = context.stage,
             record = updatedRecordContract,
             publishDate = entityForContractRelease.publishDate
         )
 
         releaseService.saveRecord(
-            cpId = cpid,
-            stage = stage,
+            cpId = context.cpid,
+            stage = context.stage,
             record = updatedRecord,
             publishDate = entityForEvaluationOrNegotiationRelease.publishDate
         )
 
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
     private fun getContractsUpdatedWithCansSection(
         contracts: List<Contract>,
-        cans: List<TreasuryClarificationRequest.Can>
+        cans: List<TreasuryClarificationData.Can>
     ): List<Contract> =
         contracts.map { contract ->
             val matchedCan = cans
@@ -511,7 +526,7 @@ class ContractingService(
             }
         }
 
-    private fun getContractFromRequest(contractData: TreasuryClarificationRequest.Contract): Contract =
+    private fun getContractFromData(contractData: TreasuryClarificationData.Contract): Contract =
         Contract(
             id = contractData.id,
             documents = contractData.documents.asSequence().map { document ->
