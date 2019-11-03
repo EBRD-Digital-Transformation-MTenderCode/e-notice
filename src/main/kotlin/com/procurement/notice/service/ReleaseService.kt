@@ -90,14 +90,16 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
     }
 
-    fun getPartiesWithActualPersones(requestProcuringEntity: OrganizationReference?, parties: HashSet<Organization>?) : HashSet<Organization>? {
-        return requestProcuringEntity?.persones?.let {
-            parties?.map { organization ->
-                if (organization.id == requestProcuringEntity.id) {
-                    organization.copy( persones = requestProcuringEntity.persones )
-                } else organization
-            }?.toHashSet() ?: parties
-        }
+    fun getPartiesWithActualPersones(
+        requestProcuringEntity: OrganizationReference,
+        parties: Collection<Organization>?
+    ): List<Organization>? = parties?.map { party ->
+        if (party.id == requestProcuringEntity.id) {
+            party.copy(
+                persones = requestProcuringEntity.persones
+            )
+        } else
+            party
     }
 
     fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {

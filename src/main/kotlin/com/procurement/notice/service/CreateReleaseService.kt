@@ -124,7 +124,7 @@ class CreateReleaseService(private val budgetService: BudgetService,
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
-            parties = releaseService.getPartiesWithActualPersones(msTender.procuringEntity, ms.parties)
+            parties = releaseService.getPartiesWithActualPersones(msTender.procuringEntity!!, ms.parties)?.toHashSet()
             tender.statusDetails = params.statusDetails
             tender.procuringEntity = prevProcuringEntity
             tender.hasEnquiries = false
