@@ -569,7 +569,7 @@ class ContractingService(
                     title = confirmationRequest.title,
                     description = confirmationRequest.description,
                     id = confirmationRequest.id,
-                    relatedItem = confirmationRequest.relatedItem.toString(),
+                    relatedItem = confirmationRequest.relatedItem,
                     relatesTo = confirmationRequest.relatesTo,
                     requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
                         RequestGroup(

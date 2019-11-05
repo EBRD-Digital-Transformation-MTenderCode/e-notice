@@ -89,7 +89,7 @@ data class TreasuryClarificationData(
             val title: String,
             val description: String,
             val relatesTo: String,
-            val relatedItem: UUID,
+            val relatedItem: String,
             val source: String,
             val requestGroups: List<RequestGroup>
         ) {
