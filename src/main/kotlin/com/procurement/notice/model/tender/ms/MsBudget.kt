@@ -8,6 +8,7 @@ import com.procurement.notice.model.ocds.Value
 
 data class MsBudget @JsonCreator constructor(
 
+    @Deprecated(level = DeprecationLevel.ERROR, message = "Not using")
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
