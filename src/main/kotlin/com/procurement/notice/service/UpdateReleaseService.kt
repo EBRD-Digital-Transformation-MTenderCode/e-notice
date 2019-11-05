@@ -1,12 +1,53 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.cn.UpdateCNContext
+import com.procurement.notice.application.service.cn.UpdateCNData
+import com.procurement.notice.application.service.cn.UpdatedCN
+import com.procurement.notice.lib.mapIfNotEmpty
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.ocds.AcceleratedProcedure
+import com.procurement.notice.model.ocds.Address
+import com.procurement.notice.model.ocds.AddressDetails
 import com.procurement.notice.model.ocds.Amendment
+import com.procurement.notice.model.ocds.BudgetBreakdown
+import com.procurement.notice.model.ocds.BusinessFunction
+import com.procurement.notice.model.ocds.Classification
+import com.procurement.notice.model.ocds.CountryDetails
+import com.procurement.notice.model.ocds.DesignContest
+import com.procurement.notice.model.ocds.Document
+import com.procurement.notice.model.ocds.DocumentBF
+import com.procurement.notice.model.ocds.DynamicPurchasingSystem
+import com.procurement.notice.model.ocds.ElectronicWorkflows
+import com.procurement.notice.model.ocds.EuropeanUnionFunding
+import com.procurement.notice.model.ocds.Framework
+import com.procurement.notice.model.ocds.Identifier
+import com.procurement.notice.model.ocds.Item
+import com.procurement.notice.model.ocds.JointProcurement
+import com.procurement.notice.model.ocds.LocalityDetails
+import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.LotGroup
+import com.procurement.notice.model.ocds.Option
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.ocds.Person
+import com.procurement.notice.model.ocds.PlaceOfPerformance
+import com.procurement.notice.model.ocds.ProcedureOutsourcing
+import com.procurement.notice.model.ocds.RecurrentProcurement
+import com.procurement.notice.model.ocds.RegionDetails
+import com.procurement.notice.model.ocds.Renewal
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.tender.dto.UpdateCnDto
-import com.procurement.notice.utils.toObject
+import com.procurement.notice.model.ocds.Variant
+import com.procurement.notice.model.ocds.toValue
+import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.ms.MsBudget
+import com.procurement.notice.model.tender.ms.MsPlanning
+import com.procurement.notice.model.tender.ms.MsTender
+import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
+import com.procurement.notice.model.tender.record.ElectronicAuctions
+import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
+import com.procurement.notice.model.tender.record.RecordTender
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -15,23 +56,422 @@ import java.util.*
 class UpdateReleaseService(private val releaseService: ReleaseService) {
 
     fun updateCn(
-        cpid: String,
-        ocid: String,
-        stage: String,
-        releaseDate: LocalDateTime,
-        isAuction: Boolean,
-        data: JsonNode
-    ): ResponseDto {
+        context: UpdateCNContext,
+        data: UpdateCNData
+    ): UpdatedCN {
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
+        val recordMS = releaseService.getMs(msEntity.jsonData)
+        val updatedRecordMS: Ms = recordMS.copy(
+            id = releaseService.newReleaseId(ocId = context.cpid), //FR-5.0.1
+            date = context.releaseDate, //FR-5.0.2
+            tag = listOf(Tag.COMPILED), //FR-MR-5.5.2.3.1
+            //FR-MR-5.5.2.3.6
+            planning = data.planning.let { planning ->
+                MsPlanning(
+                    rationale = planning.rationale,
+                    budget = planning.budget.let { budget ->
+                        MsBudget(
+                            id = null,
+                            description = budget.description,
+                            amount = budget.amount.toValue(),
+                            isEuropeanUnionFunded = budget.isEuropeanUnionFunded,
+                            budgetBreakdown = budget.budgetBreakdowns
+                                .mapIfNotEmpty { budgetBreakdown ->
+                                    BudgetBreakdown(
+                                        id = budgetBreakdown.id,
+                                        description = budgetBreakdown.description,
+                                        amount = budgetBreakdown.amount.toValue(),
+                                        period = budgetBreakdown.period.let { period ->
+                                            Period(
+                                                startDate = period.startDate,
+                                                endDate = period.endDate,
+                                                maxExtentDate = null,
+                                                durationInDays = null
+                                            )
+                                        },
+                                        sourceParty = budgetBreakdown.sourceParty.let { sourceParty ->
+                                            OrganizationReference(
+                                                id = sourceParty.id,
+                                                name = sourceParty.name,
+                                                identifier = null,
+                                                additionalIdentifiers = null,
+                                                address = null,
+                                                contactPoint = null,
+                                                buyerProfile = null,
+                                                persones = null,
+                                                details = null
+                                            )
+                                        },
+                                        europeanUnionFunding = budgetBreakdown.europeanUnionFunding?.let { europeanUnionFunding ->
+                                            EuropeanUnionFunding(
+                                                projectIdentifier = europeanUnionFunding.projectIdentifier,
+                                                projectName = europeanUnionFunding.projectName,
+                                                uri = europeanUnionFunding.uri
+                                            )
+                                        }
+                                    )
+                                }
+                        )
+                    }
+                )
+            },
+            tender = data.tender.let { tender ->
+                MsTender(
+                    id = recordMS.tender.id, //FR-MR-5.5.2.3.4
+                    status = recordMS.tender.status, //FR-MR-5.5.2.3.4
+                    statusDetails = recordMS.tender.statusDetails, //FR-MR-5.5.2.3.4
+                    title = tender.title,
+                    description = tender.description,
+                    classification = tender.classification.let { classification ->
+                        Classification(
+                            scheme = classification.scheme,
+                            id = classification.id,
+                            description = classification.description,
+                            uri = null
+                        )
+                    },
+                    acceleratedProcedure = AcceleratedProcedure(
+                        isAcceleratedProcedure = tender.acceleratedProcedure.isAcceleratedProcedure,
+                        acceleratedProcedureJustification = null
+                    ),
+                    designContest = DesignContest(
+                        serviceContractAward = tender.designContest.serviceContractAward,
+                        hasPrizes = null,
+                        prizes = null,
+                        paymentsToParticipants = null,
+                        juryDecisionBinding = null,
+                        juryMembers = null,
+                        participants = null
+                    ),
+                    electronicWorkflows = tender.electronicWorkflows.let { electronicWorkflows ->
+                        ElectronicWorkflows(
+                            useOrdering = electronicWorkflows.useOrdering,
+                            usePayment = electronicWorkflows.usePayment,
+                            acceptInvoicing = electronicWorkflows.acceptInvoicing
+                        )
+                    },
+                    jointProcurement = JointProcurement(
+                        isJointProcurement = tender.jointProcurement.isJointProcurement,
+                        country = null
+                    ),
+                    procedureOutsourcing = ProcedureOutsourcing(
+                        procedureOutsourced = tender.procedureOutsourcing.procedureOutsourced,
+                        outsourcedTo = null
+                    ),
+                    framework = Framework(
+                        isAFramework = tender.framework.isAFramework,
+                        typeOfFramework = null,
+                        maxSuppliers = null,
+                        exceptionalDurationRationale = null,
+                        additionalBuyerCategories = null
+                    ),
+                    dynamicPurchasingSystem = DynamicPurchasingSystem(
+                        hasDynamicPurchasingSystem = tender.dynamicPurchasingSystem.hasDynamicPurchasingSystem,
+                        hasOutsideBuyerAccess = null,
+                        noFurtherContracts = null
+                    ),
+                    legalBasis = tender.legalBasis,
+                    procurementMethod = tender.procurementMethod.toString(),
+                    procurementMethodDetails = tender.procurementMethodDetails,
+                    procurementMethodRationale = tender.procurementMethodRationale,
+                    procurementMethodAdditionalInfo = tender.procurementMethodAdditionalInfo,
+                    mainProcurementCategory = tender.mainProcurementCategory,
+                    eligibilityCriteria = tender.eligibilityCriteria,
+                    contractPeriod = tender.contractPeriod.let { tenderPeriod ->
+                        Period(
+                            startDate = tenderPeriod.startDate,
+                            endDate = tenderPeriod.endDate,
+                            durationInDays = null,
+                            maxExtentDate = null
+                        )
+                    },
+                    procuringEntity = recordMS.tender.procuringEntity, //FR-MR-5.5.2.3.3
+                    value = tender.value.toValue(),
+                    hasEnquiries = recordMS.tender.hasEnquiries,
+                    additionalProcurementCategories = null,
+                    submissionLanguages = null,
+                    amendments = null
+                )
+            },
+
+            //FR-MR-5.5.2.3.7
+            parties = recordMS.parties
+                ?.map { party ->
+                    if (party.id == data.tender.procuringEntity.id)
+                        party.copy(
+                            persones = data.tender.procuringEntity.persons
+                                .map { person ->
+                                    Person(
+                                        title = person.title,
+                                        name = person.name,
+                                        identifier = person.identifier.let { identifier ->
+                                            Identifier(
+                                                scheme = identifier.scheme,
+                                                id = identifier.id,
+                                                uri = identifier.uri,
+                                                legalName = null
+                                            )
+                                        },
+                                        businessFunctions = person.businessFunctions.map { businessFunction ->
+                                            BusinessFunction(
+                                                id = businessFunction.id,
+                                                type = businessFunction.type,
+                                                jobTitle = businessFunction.jobTitle,
+                                                period = Period(
+                                                    startDate = businessFunction.period.startDate,
+                                                    endDate = null,
+                                                    durationInDays = null,
+                                                    maxExtentDate = null
+                                                ),
+                                                documents = businessFunction.documents.map { document ->
+                                                    DocumentBF(
+                                                        id = document.id,
+                                                        documentType = document.documentType,
+                                                        title = document.title,
+                                                        description = document.description,
+                                                        datePublished = document.datePublished,
+                                                        dateModified = null,
+                                                        url = document.url
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    )
+                                }
+                                .toHashSet()
+                        )
+                    else
+                        party
+                }
+                ?.toHashSet()
+        )
+
+        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val recordEV = releaseService.getRecord(recordEntity.jsonData)
+
+        val newReleaseID = releaseService.newReleaseId(context.ocid)
+        val actualReleaseID = recordEV.id!!
+        val newAmendment: Amendment =
+            newAmendment(context = context, data = data, actualReleaseID = actualReleaseID, newReleaseID = newReleaseID)
+        val updatedAmendments: List<Amendment> = recordEV.tender.amendments?.plus(newAmendment) ?: listOf(newAmendment)
+
+        val updatedRecordEV = recordEV.copy(
+            id = newReleaseID, //FR-5.0.1
+            date = context.releaseDate, //FR-5.0.2
+            tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
+            relatedProcesses = recordEV.relatedProcesses, //FR-ER-5.5.2.3.2
+            parties = recordEV.parties, //FR-ER-5.5.2.3.2
+            tender = data.tender.let { tender ->
+                RecordTender(
+                    id = tender.id,
+                    status = tender.status,
+                    statusDetails = tender.statusDetails,
+                    title = recordEV.tender.title, //FR-ER-5.5.2.3.3
+                    description = recordEV.tender.description, //FR-ER-5.5.2.3.3
+                    hasEnquiries = recordEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
+                    enquiries = recordEV.tender.enquiries, //FR-ER-5.5.2.3.3
+                    criteria = recordEV.tender.criteria, //FR-ER-5.5.2.3.3
+                    conversions = recordEV.tender.conversions, //FR-ER-5.5.2.3.3
+                    awardCriteria = recordEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
+                    awardCriteriaDetails = recordEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
+                    awardPeriod = null,
+                    standstillPeriod = null,
+                    amendments = updatedAmendments, //FR-ER-5.5.2.3.4
+                    //FR-ER-5.5.2.3.6
+                    auctionPeriod = getAuctionPeriod(
+                        context = context,
+                        data = data,
+                        previous = recordEV.tender.auctionPeriod
+                    ),
+                    //FR-ER-5.5.2.3.6
+                    electronicAuctions = getElectronicAuctions(
+                        context = context,
+                        data = data, previous = recordEV.tender.electronicAuctions
+                    ),
+                    procurementMethodModalities = getProcurementMethodModalities(
+                        context = context,
+                        data = data,
+                        previous = recordEV.tender.procurementMethodModalities
+                    ),
+                    tenderPeriod = tender.tenderPeriod.let { tenderPeriod ->
+                        Period(
+                            startDate = tenderPeriod.startDate,
+                            endDate = tenderPeriod.endDate,
+                            maxExtentDate = null,
+                            durationInDays = null
+                        )
+                    },
+                    enquiryPeriod = tender.enquiryPeriod.let { enquiryPeriod ->
+                        Period(
+                            startDate = enquiryPeriod.startDate,
+                            endDate = enquiryPeriod.endDate,
+                            maxExtentDate = null,
+                            durationInDays = null
+                        )
+                    },
+                    lotGroups = tender.lotGroups.map { lotGroup ->
+                        LotGroup(
+                            id = null,
+                            optionToCombine = lotGroup.optionToCombine,
+                            relatedLots = null,
+                            maximumValue = null
+                        )
+                    },
+                    lots = tender.lots.map { lot ->
+                        Lot(
+                            id = lot.id,
+                            internalId = lot.internalId,
+                            title = lot.title,
+                            description = lot.description,
+                            status = lot.status,
+                            statusDetails = lot.statusDetails,
+                            value = lot.value.toValue(),
+                            options = lot.options.map { option ->
+                                Option(
+                                    hasOptions = option.hasOptions,
+                                    optionDetails = null
+                                )
+                            },
+                            variants = lot.variants.map { variant ->
+                                Variant(
+                                    hasVariants = variant.hasVariants,
+                                    variantDetails = null
+                                )
+                            },
+                            renewals = lot.renewals.map { renewal ->
+                                Renewal(
+                                    hasRenewals = renewal.hasRenewals,
+                                    renewalConditions = null,
+                                    maxNumber = null
+                                )
+                            },
+                            recurrentProcurement = lot.recurrentProcurements.map { recurrentProcurement ->
+                                RecurrentProcurement(
+                                    isRecurrent = recurrentProcurement.isRecurrent,
+                                    description = null,
+                                    dates = null
+                                )
+                            },
+                            contractPeriod = lot.contractPeriod.let { contractPeriod ->
+                                Period(
+                                    startDate = contractPeriod.startDate,
+                                    endDate = contractPeriod.endDate,
+                                    durationInDays = null,
+                                    maxExtentDate = null
+                                )
+                            },
+                            placeOfPerformance = lot.placeOfPerformance?.let { placeOfPerformance ->
+                                PlaceOfPerformance(
+                                    address = placeOfPerformance.address.let { address ->
+                                        Address(
+                                            streetAddress = address.streetAddress,
+                                            postalCode = address.postalCode,
+                                            addressDetails = address.addressDetails.let { addressDetails ->
+                                                AddressDetails(
+                                                    country = addressDetails.country.let { country ->
+                                                        CountryDetails(
+                                                            scheme = country.scheme,
+                                                            id = country.id,
+                                                            description = country.description,
+                                                            uri = country.uri
+                                                        )
+                                                    },
+                                                    region = addressDetails.region.let { region ->
+                                                        RegionDetails(
+                                                            scheme = region.scheme,
+                                                            id = region.id,
+                                                            description = region.description,
+                                                            uri = region.uri
+                                                        )
+                                                    },
+                                                    locality = addressDetails.locality.let { locality ->
+                                                        LocalityDetails(
+                                                            scheme = locality.scheme,
+                                                            id = locality.id,
+                                                            description = locality.description,
+                                                            uri = locality.uri
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
+                                    },
+                                    description = placeOfPerformance.description,
+                                    nutScode = null
+                                )
+                            }
+                        )
+                    }.toHashSet(),
+                    items = tender.items.map { item ->
+                        Item(
+                            id = item.id,
+                            internalId = item.internalId,
+                            classification = item.classification.let { classification ->
+                                Classification(
+                                    scheme = classification.scheme,
+                                    id = classification.id,
+                                    description = classification.description,
+                                    uri = null
+                                )
+                            },
+                            additionalClassifications = item.additionalClassifications
+                                .map { additionalClassification ->
+                                    Classification(
+                                        scheme = additionalClassification.scheme,
+                                        id = additionalClassification.id,
+                                        description = additionalClassification.description,
+                                        uri = null
+                                    )
+                                }.toHashSet(),
+                            quantity = item.quantity,
+                            unit = item.unit.let { unit ->
+                                com.procurement.notice.model.ocds.Unit(
+                                    scheme = null,
+                                    id = unit.id,
+                                    name = unit.name,
+                                    value = null,
+                                    uri = null
+                                )
+                            },
+                            description = item.description,
+                            relatedLot = item.relatedLot,
+                            deliveryAddress = null
+                        )
+                    }.toHashSet(),
+                    requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
+                    submissionMethod = tender.submissionMethod.toList(),
+                    submissionMethodRationale = tender.submissionMethodRationale.toList(),
+                    submissionMethodDetails = tender.submissionMethodDetails,
+                    documents = tender.documents.map { document ->
+                        Document(
+                            documentType = document.documentType,
+                            id = document.id,
+                            title = document.title,
+                            description = document.description,
+                            relatedLots = document.relatedLots.toList(),
+                            datePublished = document.datePublished,
+                            url = document.url,
+                            dateModified = null,
+                            format = null,
+                            language = null,
+                            relatedConfirmations = null
+                        )
+                    }.toHashSet()
+                )
+            }
+
+        )
+        /*
         val dto = toObject(UpdateCnDto::class.java, data)
         val requestTenderEV = releaseService.getRecordTender(data)
 
         val requestMS = releaseService.getMs(data)
-        val msEntity = releaseService.getMsEntity(cpid)
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val recordMS = releaseService.getMs(msEntity.jsonData)
 
         val updatedRecordMS = recordMS.copy(
-            id = releaseService.newReleaseId(cpid), //FR-5.0.1
-            date = releaseDate, //FR-5.0.2
+            id = releaseService.newReleaseId(ocId = context.cpid), //FR-5.0.1
+            date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.5.2.3.1
             planning = requestMS.planning, //FR-MR-5.5.2.3.6
             tender = requestMS.tender.copy(
@@ -53,11 +493,11 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             }?.toHashSet()
         )
 
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val recordEV = releaseService.getRecord(recordEntity.jsonData)
 
         val actualReleaseID = recordEV.id
-        val newReleaseID = releaseService.newReleaseId(ocid)
+        val newReleaseID = releaseService.newReleaseId(context.ocid)
         val requestAmendments: List<Amendment> = requestTenderEV.amendments ?: emptyList()
         val newAmendments: List<Amendment> = if (requestAmendments.isNotEmpty())
             requestAmendments.map { amendment ->
@@ -65,7 +505,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                     id = UUID.randomUUID().toString(),
                     amendsReleaseID = actualReleaseID,
                     releaseID = newReleaseID,
-                    date = releaseDate,
+                    date = context.releaseDate,
                     rationale = "Changing of Contract Notice due to the need of cancelling lot / lots",
                     relatedLots = amendment.relatedLots,
                     changes = null,
@@ -79,7 +519,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                     id = UUID.randomUUID().toString(),
                     amendsReleaseID = actualReleaseID,
                     releaseID = newReleaseID,
-                    date = releaseDate,
+                    date = context.releaseDate,
                     rationale = "General change of Contract Notice",
                     relatedLots = null,
                     changes = null,
@@ -94,7 +534,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         val isAuctionPeriodChanged = dto.isAuctionPeriodChanged ?: false
         val updatedRecordEV = recordEV.copy(
             id = newReleaseID, //FR-5.0.1
-            date = releaseDate, //FR-5.0.2
+            date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
             tender = requestTenderEV.copy(
                 title = recordEV.tender.title, //FR-ER-5.5.2.3.3
@@ -102,44 +542,131 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                 enquiries = recordEV.tender.enquiries, //FR-ER-5.5.2.3.3
                 hasEnquiries = recordEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
                 amendments = updatedAmendments, //if (amendments.isNotEmpty()) amendments else null //FR-ER-5.5.2.3.4
-                auctionPeriod = if (isAuction && isAuctionPeriodChanged)
+                auctionPeriod = if (context.isAuction && isAuctionPeriodChanged)
                     requestTenderEV.auctionPeriod
                 else
                     recordEV.tender.auctionPeriod,
 
-                procurementMethodModalities = if (isAuction && isAuctionPeriodChanged)
+                procurementMethodModalities = if (context.isAuction && isAuctionPeriodChanged)
                     requestTenderEV.procurementMethodModalities
                 else
                     recordEV.tender.procurementMethodModalities,
 
-                electronicAuctions = if (isAuction && isAuctionPeriodChanged)
+                electronicAuctions = if (context.isAuction && isAuctionPeriodChanged)
                     requestTenderEV.electronicAuctions
                 else
                     recordEV.tender.electronicAuctions
             )
-        )
+        )*/
 
-        releaseService.saveMs(cpId = cpid, ms = updatedRecordMS, publishDate = msEntity.publishDate)
+        releaseService.saveMs(cpId = context.cpid, ms = updatedRecordMS, publishDate = msEntity.publishDate)
         releaseService.saveRecord(
-            cpId = cpid,
-            stage = stage,
+            cpId = context.cpid,
+            stage = context.stage,
             record = updatedRecordEV,
             publishDate = recordEntity.publishDate
         )
-        return ResponseDto(
-            data = DataResponseDto(
-                cpid = cpid,
-                ocid = ocid,
-                amendmentsIds = newAmendments.map { it.id!! }
-            )
+        return UpdatedCN(
+            cpid = context.cpid,
+            ocid = context.ocid
         )
     }
 
-    fun updatePn(cpid: String,
-                 ocid: String,
-                 stage: String,
-                 releaseDate: LocalDateTime,
-                 data: JsonNode): ResponseDto {
+    private fun newAmendment(
+        context: UpdateCNContext,
+        data: UpdateCNData,
+        actualReleaseID: String,
+        newReleaseID: String
+    ): Amendment {
+        val rationale: String
+        val relatedLots: Set<String>?
+
+        if (data.amendment != null) {
+            rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
+            relatedLots = data.amendment.relatedLots.toSet()
+        } else {
+            rationale = "General change of Contract Notice"
+            relatedLots = null
+        }
+
+        return Amendment(
+            id = UUID.randomUUID().toString(),
+            amendsReleaseID = actualReleaseID,
+            releaseID = newReleaseID,
+            date = context.releaseDate,
+            rationale = rationale,
+            relatedLots = relatedLots,
+            changes = null,
+            description = null,
+            documents = null
+        )
+    }
+
+    private fun getAuctionPeriod(
+        context: UpdateCNContext,
+        data: UpdateCNData,
+        previous: Period?
+    ): Period? = if (context.isAuction && data.isAuctionPeriodChanged)
+        Period(
+            startDate = data.tender.auctionPeriod!!.startDate,
+            endDate = null,
+            durationInDays = null,
+            maxExtentDate = null
+        )
+    else
+        previous
+
+    private fun getProcurementMethodModalities(
+        context: UpdateCNContext,
+        data: UpdateCNData,
+        previous: Set<String>?
+    ): Set<String>? = if (context.isAuction && data.isAuctionPeriodChanged)
+        data.tender.procurementMethodModalities.toSet()
+    else
+        previous
+
+    private fun getElectronicAuctions(
+        context: UpdateCNContext,
+        data: UpdateCNData,
+        previous: ElectronicAuctions?
+    ): ElectronicAuctions? =
+        if (context.isAuction && data.isAuctionPeriodChanged)
+            data.tender.electronicAuctions!!.let { electronicAuctions ->
+                ElectronicAuctions(
+                    details = electronicAuctions.details.map { detail ->
+                        ElectronicAuctionsDetails(
+                            id = detail.id,
+                            relatedLot = detail.relatedLot,
+                            auctionPeriod = detail.auctionPeriod!!.let { auctionPeriod ->
+                                Period(
+                                    startDate = auctionPeriod.startDate,
+                                    endDate = null,
+                                    durationInDays = null,
+                                    maxExtentDate = null
+                                )
+                            },
+                            electronicAuctionModalities = detail.electronicAuctionModalities.map { electronicAuctionModality ->
+                                ElectronicAuctionModalities(
+                                    eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference.toValue(),
+                                    url = electronicAuctionModality.url
+                                )
+                            }.toSet(),
+                            electronicAuctionProgress = null,
+                            electronicAuctionResult = null
+                        )
+                    }.toSet()
+                )
+            }
+        else
+            previous
+
+    fun updatePn(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val msReq = releaseService.getMs(data)
         val recordTender = releaseService.getRecordTender(data)
         /*ms*/
@@ -176,18 +703,21 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
-    fun updateTenderPeriod(cpid: String,
-                           ocid: String,
-                           stage: String,
-                           releaseDate: LocalDateTime,
-                           data: JsonNode): ResponseDto {
+    fun updateTenderPeriod(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val recordTender = releaseService.getRecordTender(data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val actualReleaseID = record.id
         val newReleaseID = releaseService.newReleaseId(ocid)
         val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
-        amendments.add(Amendment(
+        amendments.add(
+            Amendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
@@ -197,7 +727,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                 changes = null,
                 description = null,
                 documents = null
-        ))
+            )
+        )
         record.apply {
             id = newReleaseID
             date = releaseDate

@@ -15,6 +15,8 @@ import com.procurement.notice.application.service.can.CreateCANContext
 import com.procurement.notice.application.service.can.CreateCANData
 import com.procurement.notice.application.service.can.CreateProtocolContext
 import com.procurement.notice.application.service.can.CreateProtocolData
+import com.procurement.notice.application.service.cn.UpdateCNContext
+import com.procurement.notice.application.service.cn.UpdatedCN
 import com.procurement.notice.application.service.contract.activate.ActivateContractContext
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
@@ -30,18 +32,21 @@ import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
+import com.procurement.notice.infrastructure.dto.cn.update.UpdateCNRequest
 import com.procurement.notice.infrastructure.dto.contract.ActivateContractRequest
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
+import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.bpe.cpid
+import com.procurement.notice.model.bpe.isAuction
 import com.procurement.notice.model.bpe.ocid
 import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
-import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
@@ -76,6 +81,7 @@ import com.procurement.notice.model.ocds.Operation.END_CONTRACT_PROCESS
 import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.FINAL_UPDATE
 import com.procurement.notice.model.ocds.Operation.ISSUING_AC
+import com.procurement.notice.model.ocds.Operation.PROCESS_AC_CLARIFICATION
 import com.procurement.notice.model.ocds.Operation.STANDSTILL_PERIOD
 import com.procurement.notice.model.ocds.Operation.START_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.START_NEW_STAGE
@@ -85,7 +91,6 @@ import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_AUCTION
 import com.procurement.notice.model.ocds.Operation.TENDER_PERIOD_END_EV
 import com.procurement.notice.model.ocds.Operation.TREASURY_APPROVING_AC
-import com.procurement.notice.model.ocds.Operation.PROCESS_AC_CLARIFICATION
 import com.procurement.notice.model.ocds.Operation.UNSUCCESSFUL_TENDER
 import com.procurement.notice.model.ocds.Operation.UNSUSPEND_TENDER
 import com.procurement.notice.model.ocds.Operation.UPDATE_AC
@@ -139,7 +144,6 @@ class CommandService(
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
         val releaseDate = cm.context.timeStamp.toLocalDateTime()
-        val isAuction = cm.context.isAuction
         val data = cm.data
 
         return when (Operation.fromValue(operationType)) {
@@ -234,14 +238,23 @@ class CommandService(
                 data = data
             )
 
-            UPDATE_CN -> updateReleaseService.updateCn(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                isAuction = isAuction!!,
-                data = data
-            )
+            UPDATE_CN -> {
+                val context = UpdateCNContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate,
+                    isAuction = cm.isAuction
+                )
+                val request = toObject(UpdateCNRequest::class.java, cm.data)
+                val result: UpdatedCN = updateReleaseService.updateCn(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid
+                    )
+                )
+            }
 
             UPDATE_PN -> updateReleaseService.updatePn(
                 cpid = cpId,
