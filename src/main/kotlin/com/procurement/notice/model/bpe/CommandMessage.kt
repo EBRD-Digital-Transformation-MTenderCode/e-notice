@@ -41,6 +41,10 @@ val CommandMessage.startDate: LocalDateTime
     get() = this.context.startDate?.toLocalDateTime()
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'startDate' attribute in context.")
 
+val CommandMessage.isAuction: Boolean
+    get() = this.context.isAuction
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'isAuction' attribute in context.")
+
 data class Context @JsonCreator constructor(
     val operationId: String?,
     val cpid: String,
