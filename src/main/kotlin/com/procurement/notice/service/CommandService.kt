@@ -248,10 +248,15 @@ class CommandService(
                 )
                 val request = toObject(UpdateCNRequest::class.java, cm.data)
                 val result: UpdatedCN = updateReleaseService.updateCn(context = context, data = request.convert())
+
+
                 ResponseDto(
                     data = DataResponseDto(
                         cpid = result.cpid,
-                        ocid = result.ocid
+                        ocid = result.ocid,
+                        amendmentsIds = result.amendment?.let { amendment ->
+                            listOf(amendment.id)
+                        }
                     )
                 )
             }

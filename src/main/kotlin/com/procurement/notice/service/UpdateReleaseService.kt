@@ -459,105 +459,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                     }.toHashSet()
                 )
             }
-
         )
-        /*
-        val dto = toObject(UpdateCnDto::class.java, data)
-        val requestTenderEV = releaseService.getRecordTender(data)
-
-        val requestMS = releaseService.getMs(data)
-        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
-        val recordMS = releaseService.getMs(msEntity.jsonData)
-
-        val updatedRecordMS = recordMS.copy(
-            id = releaseService.newReleaseId(ocId = context.cpid), //FR-5.0.1
-            date = context.releaseDate, //FR-5.0.2
-            tag = listOf(Tag.COMPILED), //FR-MR-5.5.2.3.1
-            planning = requestMS.planning, //FR-MR-5.5.2.3.6
-            tender = requestMS.tender.copy(
-                id = recordMS.tender.id, //FR-MR-5.5.2.3.4
-                status = recordMS.tender.status, //FR-MR-5.5.2.3.4
-                statusDetails = recordMS.tender.statusDetails, //FR-MR-5.5.2.3.4
-                hasEnquiries = recordMS.tender.hasEnquiries,
-                procuringEntity = recordMS.tender.procuringEntity //FR-MR-5.5.2.3.3
-            ),
-
-            //FR-MR-5.5.2.3.7
-            parties = recordMS.parties?.map { party ->
-                if (party.id == requestMS.tender.procuringEntity!!.id)
-                    party.copy(
-                        persones = requestMS.tender.procuringEntity!!.persones
-                    )
-                else
-                    party
-            }?.toHashSet()
-        )
-
-        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val recordEV = releaseService.getRecord(recordEntity.jsonData)
-
-        val actualReleaseID = recordEV.id
-        val newReleaseID = releaseService.newReleaseId(context.ocid)
-        val requestAmendments: List<Amendment> = requestTenderEV.amendments ?: emptyList()
-        val newAmendments: List<Amendment> = if (requestAmendments.isNotEmpty())
-            requestAmendments.map { amendment ->
-                Amendment(
-                    id = UUID.randomUUID().toString(),
-                    amendsReleaseID = actualReleaseID,
-                    releaseID = newReleaseID,
-                    date = context.releaseDate,
-                    rationale = "Changing of Contract Notice due to the need of cancelling lot / lots",
-                    relatedLots = amendment.relatedLots,
-                    changes = null,
-                    description = null,
-                    documents = null
-                )
-            }
-        else
-            listOf(
-                Amendment(
-                    id = UUID.randomUUID().toString(),
-                    amendsReleaseID = actualReleaseID,
-                    releaseID = newReleaseID,
-                    date = context.releaseDate,
-                    rationale = "General change of Contract Notice",
-                    relatedLots = null,
-                    changes = null,
-                    description = null,
-                    documents = null
-                )
-            )
-
-        val recordEVAmendments = recordEV.tender.amendments ?: emptyList()
-        val updatedAmendments: List<Amendment> = recordEVAmendments.plus(newAmendments)
-
-        val isAuctionPeriodChanged = dto.isAuctionPeriodChanged ?: false
-        val updatedRecordEV = recordEV.copy(
-            id = newReleaseID, //FR-5.0.1
-            date = context.releaseDate, //FR-5.0.2
-            tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
-            tender = requestTenderEV.copy(
-                title = recordEV.tender.title, //FR-ER-5.5.2.3.3
-                description = recordEV.tender.description, //FR-ER-5.5.2.3.3
-                enquiries = recordEV.tender.enquiries, //FR-ER-5.5.2.3.3
-                hasEnquiries = recordEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
-                amendments = updatedAmendments, //if (amendments.isNotEmpty()) amendments else null //FR-ER-5.5.2.3.4
-                auctionPeriod = if (context.isAuction && isAuctionPeriodChanged)
-                    requestTenderEV.auctionPeriod
-                else
-                    recordEV.tender.auctionPeriod,
-
-                procurementMethodModalities = if (context.isAuction && isAuctionPeriodChanged)
-                    requestTenderEV.procurementMethodModalities
-                else
-                    recordEV.tender.procurementMethodModalities,
-
-                electronicAuctions = if (context.isAuction && isAuctionPeriodChanged)
-                    requestTenderEV.electronicAuctions
-                else
-                    recordEV.tender.electronicAuctions
-            )
-        )*/
 
         releaseService.saveMs(cpId = context.cpid, ms = updatedRecordMS, publishDate = msEntity.publishDate)
         releaseService.saveRecord(
@@ -568,7 +470,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         )
         return UpdatedCN(
             cpid = context.cpid,
-            ocid = context.ocid
+            ocid = context.ocid,
+            amendment = UpdatedCN.Amendment(id = newAmendment.id!!)
         )
     }
 
