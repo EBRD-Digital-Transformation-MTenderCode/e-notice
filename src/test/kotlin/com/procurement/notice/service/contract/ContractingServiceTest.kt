@@ -231,7 +231,7 @@ internal class ContractingServiceTest {
                             TreasuryClarificationData.Contract.ConfirmationResponse.Value(
                                 name = value.name,
                                 id = value.id,
-                                relatedPerson = value.relatedPerson.let { relatedPerson ->
+                                relatedPerson = value.relatedPerson?.let { relatedPerson ->
                                     TreasuryClarificationData.Contract.ConfirmationResponse.Value.RelatedPerson(
                                         id = relatedPerson.id,
                                         name = relatedPerson.name

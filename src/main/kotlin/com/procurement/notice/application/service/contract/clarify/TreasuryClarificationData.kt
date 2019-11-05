@@ -67,7 +67,7 @@ data class TreasuryClarificationData(
                 val name: String,
                 val id: String,
                 val date: LocalDateTime,
-                val relatedPerson: RelatedPerson,
+                val relatedPerson: RelatedPerson?,
                 val verification: List<Verification>
             ) {
                 data class RelatedPerson(

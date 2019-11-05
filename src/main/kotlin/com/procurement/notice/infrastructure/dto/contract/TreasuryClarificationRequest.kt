@@ -94,7 +94,10 @@ data class TreasuryClarificationRequest(
                 @param:JsonProperty("name") @field:JsonProperty("name") val name: String,
                 @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
                 @param:JsonProperty("date") @field:JsonProperty("date") val date: LocalDateTime,
-                @param:JsonProperty("relatedPerson") @field:JsonProperty("relatedPerson") val relatedPerson: RelatedPerson,
+
+                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @param:JsonProperty("relatedPerson") @field:JsonProperty("relatedPerson") val relatedPerson: RelatedPerson?,
+
                 @param:JsonProperty("verification") @field:JsonProperty("verification") val verification: List<Verification>
             ) {
                 data class RelatedPerson(

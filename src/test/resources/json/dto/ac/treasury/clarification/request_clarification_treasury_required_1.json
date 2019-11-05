@@ -41,10 +41,6 @@
           "name": "Ministry of Communications",
           "id": "GB-GOV-12345678",
           "date": "2019-10-29T16:51:00Z",
-          "relatedPerson": {
-            "id": "request.contract.confirmationResponses[0].relatedPerson.id",
-            "name": "request.contract.confirmationResponses[0].relatedPerson.name"
-          },
           "verification": [
             {
               "type": "request.contract.confirmationResponses[0].verification[0].type",

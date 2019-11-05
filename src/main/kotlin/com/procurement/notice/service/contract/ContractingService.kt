@@ -600,7 +600,7 @@ class ContractingService(
                         ConfirmationResponseValue(
                             name = value.name,
                             id = value.id,
-                            relatedPerson = value.relatedPerson.let { relatedPerson ->
+                            relatedPerson = value.relatedPerson?.let { relatedPerson ->
                                 RelatedPerson(
                                     id = relatedPerson.id,
                                     name = relatedPerson.name
