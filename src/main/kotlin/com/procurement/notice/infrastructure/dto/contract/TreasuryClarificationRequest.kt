@@ -116,7 +116,7 @@ data class TreasuryClarificationRequest(
             @param:JsonProperty("title") @field:JsonProperty("title") val title: String,
             @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
             @param:JsonProperty("relatesTo") @field:JsonProperty("relatesTo") val relatesTo: String,
-            @param:JsonProperty("relatedItem") @field:JsonProperty("relatedItem") val relatedItem: UUID,
+            @param:JsonProperty("relatedItem") @field:JsonProperty("relatedItem") val relatedItem: String,
             @param:JsonProperty("source") @field:JsonProperty("source") val source: String,
             @param:JsonProperty("requestGroups") @field:JsonProperty("requestGroups") val requestGroups: List<RequestGroup>
         ) {
