@@ -124,12 +124,15 @@ class RelatedProcessService {
         if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocid })
-            ms.relatedProcesses?.add(RelatedProcess(
+            ms.relatedProcesses?.add(
+                RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(processType),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocid,
-                    uri = getTenderUri(cpId = msOcId, ocId = ocid)))
+                    uri = getTenderUri(cpId = msOcId, ocId = ocid)
+                )
+            )
     }
 
     fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
@@ -149,39 +152,59 @@ class RelatedProcessService {
     fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == cpId })
-            record.relatedProcesses?.add(RelatedProcess(
+            record.relatedProcesses?.add(
+                RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(RelatedProcessType.PARENT),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = cpId,
-                    uri = getTenderUri(cpId = cpId, ocId = cpId)))
-
+                    uri = getTenderUri(cpId = cpId, ocId = cpId)
+                )
+            )
     }
 
-    fun addRecordRelatedProcessToContractRecord(record: ContractRecord, ocId: String, cpId: String, processType: RelatedProcessType) {
+    fun addRecordRelatedProcessToContractRecord(
+        record: ContractRecord,
+        ocId: String,
+        cpId: String,
+        processType: RelatedProcessType
+    ) {
         if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == ocId })
-            record.relatedProcesses?.add(RelatedProcess(
+            record.relatedProcesses?.add(
+                RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(processType),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocId,
-                    uri = getTenderUri(cpId = cpId, ocId = ocId)))
+                    uri = getTenderUri(cpId = cpId, ocId = ocId)
+                )
+            )
     }
 
-    fun addContractRelatedProcessToCAN(record: Record, ocId: String, cpId: String, contract: Contract, cans: HashSet<Can>) {
+    fun addContractRelatedProcessToCAN(
+        record: Record,
+        ocId: String,
+        cpId: String,
+        contract: Contract,
+        cans: HashSet<Can>
+    ) {
         cans.asSequence().forEach { can ->
-            record.contracts?.asSequence()
-                    ?.firstOrNull { it.id == can.id }
-                    ?.let { contract ->
-                        if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
-                        contract.relatedProcesses!!.add(RelatedProcess(
-                                id = UUIDs.timeBased().toString(),
-                                relationship = listOf(RelatedProcessType.X_CONTRACTING),
-                                scheme = RelatedProcessScheme.OCID,
-                                identifier = ocId,
-                                uri = getTenderUri(cpId = cpId, ocId = ocId)))
-                    }
+            record.contracts
+                ?.asSequence()
+                ?.firstOrNull { it.id == can.id }
+                ?.let { contract ->
+                    if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
+                    contract.relatedProcesses!!.add(
+                        RelatedProcess(
+                            id = UUIDs.timeBased().toString(),
+                            relationship = listOf(RelatedProcessType.X_CONTRACTING),
+                            scheme = RelatedProcessScheme.OCID,
+                            identifier = ocId,
+                            uri = getTenderUri(cpId = cpId, ocId = ocId)
+                        )
+                    )
+                }
         }
     }
 

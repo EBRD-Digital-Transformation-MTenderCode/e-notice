@@ -135,6 +135,15 @@ class ContractingService(
             awards = hashSetOf(contractedAward),
             contracts = hashSetOf(contract)
         )
+        //BR-2.7.1.10
+        val processType = when(stage) {
+            "EV" -> RelatedProcessType.X_EVALUATION
+            "NP" ->RelatedProcessType.X_NEGOTIATION
+            else -> throw ErrorException(
+                error = ErrorType.INVALID_STAGE,
+                message = "Current stage '${stage}', required stage: 'EV' or 'NP'."
+            )
+        }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
         relatedProcessService.addMsRelatedProcessToContract(record = recordContract, cpId = cpid)
         relatedProcessService.addRecordRelatedProcessToMs(
@@ -146,7 +155,7 @@ class ContractingService(
             record = recordContract,
             ocId = ocid,
             cpId = cpid,
-            processType = RelatedProcessType.X_EVALUATION
+            processType = processType
         )
         relatedProcessService.addContractRelatedProcessToCAN(
             record = record,
