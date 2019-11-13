@@ -2,10 +2,14 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.domain.model.enums.CriteriaSource
 
 data class Criteria(
     @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
     @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("source") @param:JsonProperty("source") val source: CriteriaSource?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
