@@ -55,5 +55,8 @@ data class Award @JsonCreator constructor(
     val relatedLots: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val relatedBid: String?
+    val relatedBid: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val weightedValue: Value? = null
 )
