@@ -24,6 +24,7 @@ import com.procurement.notice.application.service.contract.clarify.TreasuryClari
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
+import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
@@ -37,6 +38,7 @@ import com.procurement.notice.infrastructure.dto.contract.ActivateContractReques
 import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
+import com.procurement.notice.infrastructure.dto.tender.periodEnd.TenderPeriodEndRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -317,14 +319,22 @@ class CommandService(
                 data = data
             )
 
-            TENDER_PERIOD_END -> tenderService.tenderPeriodEnd(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
-
+            TENDER_PERIOD_END -> {
+                val context = TenderPeriodEndContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(TenderPeriodEndRequest::class.java, cm.data)
+                val result = tenderService.tenderPeriodEnd(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid
+                    )
+                )
+            }
             TENDER_PERIOD_END_AUCTION -> tenderService.tenderPeriodEndAuction(
                 cpid = cpId,
                 ocid = ocId!!,
@@ -341,13 +351,22 @@ class CommandService(
                 data = data
             )
 
-            TENDER_PERIOD_END_EV -> tenderService.tenderPeriodEnd(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            TENDER_PERIOD_END_EV -> {
+                val context = TenderPeriodEndContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(TenderPeriodEndRequest::class.java, cm.data)
+                val result = tenderService.tenderPeriodEnd(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid
+                    )
+                )
+            }
 
             ENQUIRY_PERIOD_END -> tenderServiceEv.enquiryPeriodEnd(
                 cpid = cpId,
