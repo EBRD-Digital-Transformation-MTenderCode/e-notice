@@ -25,6 +25,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelStandStill
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
+import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
@@ -39,6 +40,7 @@ import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationR
 import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
 import com.procurement.notice.infrastructure.dto.tender.periodEnd.TenderPeriodEndRequest
+import com.procurement.notice.infrastructure.dto.tender.unsuccessful.TenderUnsuccessfulRequest
 import com.procurement.notice.model.bpe.CommandMessage
 import com.procurement.notice.model.bpe.CommandType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -311,13 +313,22 @@ class CommandService(
                 data = data
             )
 
-            UNSUCCESSFUL_TENDER -> tenderService.tenderUnsuccessful(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            UNSUCCESSFUL_TENDER -> {
+                val context = TenderUnsuccessfulContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(TenderUnsuccessfulRequest::class.java, cm.data)
+                val result = tenderService.tenderUnsuccessful(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid
+                    )
+                )
+            }
 
             TENDER_PERIOD_END -> {
                 val context = TenderPeriodEndContext(
