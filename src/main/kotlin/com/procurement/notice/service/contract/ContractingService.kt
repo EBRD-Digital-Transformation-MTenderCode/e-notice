@@ -1169,7 +1169,6 @@ class ContractingService(
     private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
         for (award in recordAwards) {
             dtoAwards.firstOrNull { it.id == award.id }?.apply {
-                award.date = this.date
                 award.status = this.status
                 award.statusDetails = this.statusDetails
             }
