@@ -270,7 +270,9 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                                                                     id = document.id,
                                                                     documentType = document.documentType,
                                                                     title = document.title,
-                                                                    description = document.description
+                                                                    description = document.description,
+                                                                    datePublished = document.datePublished,
+                                                                    url = document.url
                                                                 )
                                                             }
                                                             .orEmpty()

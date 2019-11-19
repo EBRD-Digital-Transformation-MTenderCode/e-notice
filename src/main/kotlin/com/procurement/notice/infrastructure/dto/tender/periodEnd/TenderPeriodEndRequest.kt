@@ -193,7 +193,13 @@ data class TenderPeriodEndRequest(
                         @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 
                         @JsonInclude(JsonInclude.Include.NON_NULL)
-                        @field:JsonProperty("description") @param:JsonProperty("description") val description: String?
+                        @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
+
+                        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                        @JsonSerialize(using = JsonDateTimeSerializer::class)
+                        @field:JsonProperty("datePublished") @param:JsonProperty("datePublished") val datePublished: LocalDateTime,
+
+                        @field:JsonProperty("url") @param:JsonProperty("url") val url: String
                     )
                 }
             }

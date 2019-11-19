@@ -137,7 +137,9 @@ data class TenderPeriodEndData(
                         val id: String,
                         val documentType: BusinessFunctionDocumentType,
                         val title: String,
-                        val description: String?
+                        val description: String?,
+                        val datePublished: LocalDateTime,
+                        val url: String
                     )
                 }
             }
