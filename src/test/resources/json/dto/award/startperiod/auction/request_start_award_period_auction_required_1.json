@@ -1,0 +1,25 @@
+{
+  "tender": {
+    "statusDetails": "negotiation"
+  },
+  "electronicAuctions": {
+    "details": [
+      {
+        "id": "electronicAuctions.details.id",
+        "relatedLot": "7b4ad1fe-d2aa-45e6-8f4c-efa099628eee",
+        "auctionPeriod": {
+          "startDate": "2019-04-18T13:48:06Z"
+        },
+        "electronicAuctionModalities": [
+          {
+            "url": "https://eauction.mtender.md/cpid/ocid",
+            "eligibleMinimumDifference": {
+              "amount": 150.00,
+              "currency": "MDL"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
