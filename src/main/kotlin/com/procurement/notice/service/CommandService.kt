@@ -9,6 +9,7 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
 import com.procurement.notice.application.service.can.CreateCANContext
@@ -31,6 +32,7 @@ import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.StartAwardPeriodRequest
+import com.procurement.notice.infrastructure.dto.award.auction.StartAwardPeriodAuctionRequest
 import com.procurement.notice.infrastructure.dto.can.ConfirmCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateCANRequest
 import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
@@ -346,13 +348,19 @@ class CommandService(
                     )
                 )
             }
-            TENDER_PERIOD_END_AUCTION -> tenderService.tenderPeriodEndAuction(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            TENDER_PERIOD_END_AUCTION -> {
+                val context = StartAwardPeriodAuctionContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    startDate = cm.startDate
+                )
+                val request = toObject(StartAwardPeriodAuctionRequest::class.java, cm.data)
+                tenderService.tenderPeriodEndAuction(
+                    data = request.convert(),
+                    context = context
+                )
+            }
 
             AUCTION_PERIOD_END -> tenderService.auctionPeriodEnd(
                 cpid = cpId,

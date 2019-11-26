@@ -1,6 +1,8 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
+import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionData
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndData
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndResult
@@ -56,10 +58,10 @@ import com.procurement.notice.model.tender.dto.AwardByBidDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndDto
 import com.procurement.notice.model.tender.dto.StartNewStageDto
-import com.procurement.notice.model.tender.dto.TenderPeriodEndAuctionDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
 import com.procurement.notice.model.tender.dto.UnsuspendTenderDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
+import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
 import com.procurement.notice.model.tender.record.Record
@@ -1018,25 +1020,102 @@ class TenderService(
             .toList()
     }
 
-    fun tenderPeriodEndAuction(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(TenderPeriodEndAuctionDto::class.java, data.toString())
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+    fun tenderPeriodEndAuction(data: StartAwardPeriodAuctionData, context: StartAwardPeriodAuctionContext): ResponseDto{
+        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.AWARD)
-            tender.status = dto.tenderStatus
-            tender.statusDetails = dto.tenderStatusDetails
-            if (dto.awards.isNotEmpty()) awards = dto.awards
-            if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            tender.electronicAuctions = updateElectronicAuctions(dto = dto, record = record)
-        }
-        organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        val updatedLots = setUnsuccessfulStatusToLots(data, record)
+        val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, record)
+        val updatedRecord = record.copy(
+            id = releaseService.newReleaseId(context.ocid),
+            date = context.startDate,
+            tag = listOf(Tag.AWARD),
+            awards = data.awards
+                .asSequence()
+                .map { award ->
+                Award(
+                    id = award.id,
+                    status = award.status.value,
+                    statusDetails = award.statusDetails.value,
+                    relatedLots = award.relatedLots.map { it.toString() },
+                    date = award.date,
+                    description = award.description,
+                    title = award.title,
+                    weightedValue = null,
+                    items = null,
+                    documents = null,
+                    suppliers = null,
+                    relatedBid = null,
+                    value = null,
+                    requirementResponses = null,
+                    amendment = null,
+                    amendments = null,
+                    contractPeriod = null,
+                    reviewProceedings = null
+
+                )
+            }.toHashSet()
+                .ifEmpty { record.awards },
+            tender = record.tender.copy(
+                statusDetails = TenderStatusDetails.valueOf(data.tender.statusDetails.value),
+                lots = updatedLots?.toHashSet(),
+                electronicAuctions = updatedElectronicAuctions
+            )
+        )
+        releaseService.saveRecord(cpId = context.cpid, stage = context.stage, record = updatedRecord, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
+    private fun getUpdatedElectronicAuctions(
+        data: StartAwardPeriodAuctionData,
+        record: Record
+    ): ElectronicAuctions? {
+        val requestAuctionsById = data.electronicAuctions.details.associateBy { it.id }
+
+        return record.tender.electronicAuctions.let { recordAuctions ->
+            recordAuctions?.copy(
+                details = recordAuctions.details.asSequence().map { detail ->
+                    if (requestAuctionsById.contains(detail.id)) {
+                        val requestAuction = requestAuctionsById.getValue(detail.id!!)
+                        ElectronicAuctionsDetails(
+                            id = requestAuction.id,
+                            auctionPeriod = requestAuction.auctionPeriod.let { auctionPeriod ->
+                                Period(
+                                    startDate = auctionPeriod.startDate,
+                                    endDate = null,
+                                    durationInDays = null,
+                                    maxExtentDate = null
+                                )
+                            },
+                            electronicAuctionModalities = requestAuction.electronicAuctionModalities.asSequence().map { modality ->
+                                ElectronicAuctionModalities(
+                                    url = modality.url,
+                                    eligibleMinimumDifference = modality.eligibleMinimumDifference.toValue()
+                                )
+                            }.toSet(),
+                            relatedLot = requestAuction.relatedLot.toString(),
+                            electronicAuctionProgress = null,
+                            electronicAuctionResult = null
+                        )
+                    } else
+                        detail
+                }.toSet()
+            )
+        }
+    }
+
+    private fun setUnsuccessfulStatusToLots(
+        data: StartAwardPeriodAuctionData,
+        record: Record
+    ): List<Lot>? {
+        val unsuccessfulLotsById = data.unsuccessfulLots.associateBy { it.id.toString() }
+
+        return record.tender.lots?.asSequence()?.map { lot ->
+            if (unsuccessfulLotsById.contains(lot.id))
+                lot.copy(status = unsuccessfulLotsById.getValue(lot.id).status.value)
+            else
+                lot
+        }?.toList()
+    }
 
     fun auctionPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val dto = toObject(AuctionPeriodEndDto::class.java, data.toString())
@@ -1895,24 +1974,6 @@ class TenderService(
 
         val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
             dto.tender.electronicAuctions.details.associateBy { it.id!! }
-
-        return ElectronicAuctions(
-            details = electronicAuctions.details
-                .asSequence()
-                .map { detail ->
-                    requestElectronicAuctionsDetailsByIds[detail.id!!] ?: detail
-                }
-                .toSet()
-        )
-    }
-
-    private fun updateElectronicAuctions(dto: TenderPeriodEndAuctionDto, record: Record): ElectronicAuctions? {
-        val electronicAuctions: ElectronicAuctions = record.tender.electronicAuctions
-            ?.takeIf { it.details.isNotEmpty() }
-            ?: return record.tender.electronicAuctions
-
-        val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
-            dto.electronicAuctions.details.associateBy { it.id!! }
 
         return ElectronicAuctions(
             details = electronicAuctions.details
