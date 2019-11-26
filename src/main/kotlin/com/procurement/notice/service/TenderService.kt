@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionData
+import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionResult
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndData
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndResult
@@ -1020,7 +1021,7 @@ class TenderService(
             .toList()
     }
 
-    fun tenderPeriodEndAuction(data: StartAwardPeriodAuctionData, context: StartAwardPeriodAuctionContext): ResponseDto{
+    fun tenderPeriodEndAuction(data: StartAwardPeriodAuctionData, context: StartAwardPeriodAuctionContext): StartAwardPeriodAuctionResult{
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val updatedLots = setUnsuccessfulStatusToLots(data, record)
@@ -1061,8 +1062,16 @@ class TenderService(
                 electronicAuctions = updatedElectronicAuctions
             )
         )
-        releaseService.saveRecord(cpId = context.cpid, stage = context.stage, record = updatedRecord, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = recordEntity.publishDate
+        )
+        return StartAwardPeriodAuctionResult(
+            cpid = context.cpid,
+            ocid = context.ocid
+        )
     }
 
     private fun getUpdatedElectronicAuctions(

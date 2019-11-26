@@ -109,6 +109,7 @@ import com.procurement.notice.model.ocds.Operation.UPDATE_PN
 import com.procurement.notice.model.ocds.Operation.UPDATE_TENDER_PERIOD
 import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
 import com.procurement.notice.service.contract.ContractingService
+import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toLocalDateTime
 import com.procurement.notice.utils.toObject
 import org.slf4j.LoggerFactory
@@ -356,9 +357,19 @@ class CommandService(
                     startDate = cm.startDate
                 )
                 val request = toObject(StartAwardPeriodAuctionRequest::class.java, cm.data)
-                tenderService.tenderPeriodEndAuction(
+                val result = tenderService.tenderPeriodEndAuction(
                     data = request.convert(),
                     context = context
+                )
+
+                if (log.isDebugEnabled)
+                    log.debug("Tender period end with auction. Result: ${toJson(result)}")
+
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = result.cpid,
+                        ocid = result.ocid
+                    )
                 )
             }
 
