@@ -10,8 +10,8 @@ import java.util.*
 
 data class StartAwardPeriodAuctionData(
 
-    val awards: List<Award>?,
-    val unsuccessfulLots: List<UnsuccessfulLot>?,
+    val awards: List<Award>,
+    val unsuccessfulLots: List<UnsuccessfulLot>,
 
     val tender: Tender,
     val electronicAuctions: ElectronicAuctions
