@@ -1021,7 +1021,10 @@ class TenderService(
             .toList()
     }
 
-    fun tenderPeriodEndAuction(data: StartAwardPeriodAuctionData, context: StartAwardPeriodAuctionContext): StartAwardPeriodAuctionResult{
+    fun tenderPeriodEndAuction(
+        data: StartAwardPeriodAuctionData,
+        context: StartAwardPeriodAuctionContext
+    ): StartAwardPeriodAuctionResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val updatedLots = setUnsuccessfulStatusToLots(data, record)
@@ -1033,28 +1036,29 @@ class TenderService(
             awards = data.awards
                 .asSequence()
                 .map { award ->
-                Award(
-                    id = award.id,
-                    status = award.status.value,
-                    statusDetails = award.statusDetails.value,
-                    relatedLots = award.relatedLots.map { it.toString() },
-                    date = award.date,
-                    description = award.description,
-                    title = award.title,
-                    weightedValue = null,
-                    items = null,
-                    documents = null,
-                    suppliers = null,
-                    relatedBid = null,
-                    value = null,
-                    requirementResponses = null,
-                    amendment = null,
-                    amendments = null,
-                    contractPeriod = null,
-                    reviewProceedings = null
+                    Award(
+                        id = award.id.toString(),
+                        status = award.status.value,
+                        statusDetails = award.statusDetails.value,
+                        relatedLots = award.relatedLots.map { it.toString() },
+                        date = award.date,
+                        description = award.description,
+                        title = award.title,
+                        weightedValue = null,
+                        items = null,
+                        documents = null,
+                        suppliers = null,
+                        relatedBid = null,
+                        value = null,
+                        requirementResponses = null,
+                        amendment = null,
+                        amendments = null,
+                        contractPeriod = null,
+                        reviewProceedings = null
 
-                )
-            }.toHashSet()
+                    )
+                }
+                .toHashSet()
                 .ifEmpty { record.awards },
             tender = record.tender.copy(
                 statusDetails = TenderStatusDetails.valueOf(data.tender.statusDetails.value),
@@ -1082,32 +1086,40 @@ class TenderService(
 
         return record.tender.electronicAuctions.let { recordAuctions ->
             recordAuctions?.copy(
-                details = recordAuctions.details.asSequence().map { detail ->
-                    if (requestAuctionsById.contains(detail.id)) {
-                        val requestAuction = requestAuctionsById.getValue(detail.id!!)
-                        ElectronicAuctionsDetails(
-                            id = requestAuction.id,
-                            auctionPeriod = requestAuction.auctionPeriod.let { auctionPeriod ->
-                                Period(
-                                    startDate = auctionPeriod.startDate,
-                                    endDate = null,
-                                    durationInDays = null,
-                                    maxExtentDate = null
-                                )
-                            },
-                            electronicAuctionModalities = requestAuction.electronicAuctionModalities.asSequence().map { modality ->
-                                ElectronicAuctionModalities(
-                                    url = modality.url,
-                                    eligibleMinimumDifference = modality.eligibleMinimumDifference.toValue()
-                                )
-                            }.toSet(),
-                            relatedLot = requestAuction.relatedLot.toString(),
-                            electronicAuctionProgress = null,
-                            electronicAuctionResult = null
-                        )
-                    } else
-                        detail
-                }.toSet()
+                details = recordAuctions.details
+                    .asSequence()
+                    .map { detail ->
+                        val id = detail.id!!
+                        val requestAuction = requestAuctionsById[id]
+                        if (requestAuction != null) {
+                            ElectronicAuctionsDetails(
+                                id = requestAuction.id,
+                                auctionPeriod = requestAuction.auctionPeriod
+                                    .let { auctionPeriod ->
+                                        Period(
+                                            startDate = auctionPeriod.startDate,
+                                            endDate = null,
+                                            durationInDays = null,
+                                            maxExtentDate = null
+                                        )
+                                    },
+                                electronicAuctionModalities = requestAuction.electronicAuctionModalities
+                                    .asSequence()
+                                    .map { modality ->
+                                        ElectronicAuctionModalities(
+                                            url = modality.url,
+                                            eligibleMinimumDifference = modality.eligibleMinimumDifference.toValue()
+                                        )
+                                    }
+                                    .toSet(),
+                                relatedLot = requestAuction.relatedLot.toString(),
+                                electronicAuctionProgress = null,
+                                electronicAuctionResult = null
+                            )
+                        } else
+                            detail
+                    }
+                    .toSet()
             )
         }
     }
@@ -1118,12 +1130,17 @@ class TenderService(
     ): List<Lot>? {
         val unsuccessfulLotsById = data.unsuccessfulLots.associateBy { it.id.toString() }
 
-        return record.tender.lots?.asSequence()?.map { lot ->
-            if (unsuccessfulLotsById.contains(lot.id))
-                lot.copy(status = unsuccessfulLotsById.getValue(lot.id).status.value)
-            else
-                lot
-        }?.toList()
+        return record.tender.lots
+            ?.asSequence()
+            ?.map { lot ->
+                val id = lot.id
+                val unsuccessfulLot = unsuccessfulLotsById[id]
+                if (unsuccessfulLot != null)
+                    lot.copy(status = unsuccessfulLot.status.value)
+                else
+                    lot
+            }
+            ?.toList()
     }
 
     fun auctionPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
