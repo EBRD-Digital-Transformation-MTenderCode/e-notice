@@ -24,7 +24,7 @@ fun StartAwardPeriodAuctionRequest.convert(): StartAwardPeriodAuctionData = Star
                 title = award.title,
                 description = award.description,
                 date = award.date,
-                relatedLots = award.relatedLots
+                relatedLots = award.relatedLots.toList()
             )
         }.orEmpty(),
     electronicAuctions = this.electronicAuctions.let { electronicAuctions ->
