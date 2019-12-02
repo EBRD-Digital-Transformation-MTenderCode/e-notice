@@ -1,12 +1,13 @@
 package com.procurement.notice.application.service.award.auction
 
 import com.procurement.access.domain.model.enums.LotStatus
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
+import com.procurement.notice.domain.model.lot.LotId
 import com.procurement.notice.domain.model.money.Money
 import java.time.LocalDateTime
-import java.util.*
 
 data class StartAwardPeriodAuctionData(
 
@@ -17,17 +18,17 @@ data class StartAwardPeriodAuctionData(
     val electronicAuctions: ElectronicAuctions
 ) {
     data class Award(
-        val id: String,
+        val id: AwardId,
         val title: String,
         val description: String,
         val date: LocalDateTime,
         val status: AwardStatus,
         val statusDetails: AwardStatusDetails,
-        val relatedLots: List<UUID>
+        val relatedLots: List<LotId>
     )
 
     data class UnsuccessfulLot(
-        val id: UUID,
+        val id: LotId,
         val status: LotStatus
     )
 
@@ -40,7 +41,7 @@ data class StartAwardPeriodAuctionData(
     ) {
         data class Detail(
             val id: String,
-            val relatedLot: UUID,
+            val relatedLot: LotId,
             val auctionPeriod: AuctionPeriod,
             val electronicAuctionModalities: List<ElectronicAuctionModality>
         ) {
