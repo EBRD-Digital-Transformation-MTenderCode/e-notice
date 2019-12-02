@@ -1,0 +1,44 @@
+{
+  "awards": [
+    {
+      "id": "2ca66383-bbe2-4288-9f39-e9c74c29672d",
+      "title": "awards[0].title",
+      "description": "awards[0].description",
+      "date": "2019-04-17T13:48:06Z",
+      "status": "pending",
+      "statusDetails": "active",
+      "relatedLots": [
+        "5ef3c1c6-f350-4f95-b7d0-be3612360c4c"
+      ]
+    }
+  ],
+  "unsuccessfulLots": [
+    {
+      "id": "cc056a12-979e-4ed2-a760-3a24163af656",
+      "status": "unsuccessful"
+    }
+  ],
+  "tender": {
+    "statusDetails": "negotiation"
+  },
+  "electronicAuctions": {
+    "details": [
+      {
+        "id": "electronicAuctions.details.id",
+        "relatedLot": "7b4ad1fe-d2aa-45e6-8f4c-efa099628eee",
+        "auctionPeriod": {
+          "startDate": "2019-04-18T13:48:06Z"
+        },
+        "electronicAuctionModalities": [
+          {
+            "url": "https://eauction.mtender.md/cpid/ocid",
+            "eligibleMinimumDifference": {
+              "amount": 150.00,
+              "currency": "MDL"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

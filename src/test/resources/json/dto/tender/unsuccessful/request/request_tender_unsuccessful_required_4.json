@@ -1,0 +1,25 @@
+{
+  "tender": {
+    "status": "unsuccessful",
+    "statusDetails": "empty"
+  },
+  "awards": [
+    {
+      "id": "e7efcb50-92b7-499b-af0d-1fe73a572a38",
+      "date": "2011-06-25T15:09:00Z",
+      "status": "pending",
+      "statusDetails": "unsuccessful",
+      "title": "awards[0].title",
+      "description": "awards[0].description",
+      "relatedLots": [
+        "0efd4fe3-cbdd-4e33-a2ff-10b9876d8fe5"
+      ]
+    }
+  ],
+  "unsuccessfulLots": [
+    {
+      "id": "3a7e4987-a42a-4467-8e61-ba8dd7776f5b",
+      "status": "active"
+    }
+  ]
+}

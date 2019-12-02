@@ -386,6 +386,7 @@ enum class Operation(val value: String) {
     ADD_ANSWER("addAnswer"),
     UNSUSPEND_TENDER("unsuspendTender"),
     UNSUCCESSFUL_TENDER("tenderUnsuccessful"),
+    @Deprecated(message = "Using 'tenderPeriodEndEv'.", level = DeprecationLevel.WARNING)
     TENDER_PERIOD_END("tenderPeriodEnd"),
     TENDER_PERIOD_END_EV("tenderPeriodEndEv"),
     TENDER_PERIOD_END_AUCTION("tenderPeriodEndAuction"),

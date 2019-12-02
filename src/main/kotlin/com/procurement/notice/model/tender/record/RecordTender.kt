@@ -32,10 +32,10 @@ data class RecordTender @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var statusDetails: TenderStatusDetails?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var criteria: List<Criteria>?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var conversions: List<Conversion>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
