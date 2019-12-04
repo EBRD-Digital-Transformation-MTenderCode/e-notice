@@ -19,4 +19,9 @@ class EvaluateAwardRequestTest : AbstractDTOTestBase<EvaluateAwardRequest>(Evalu
     fun required2() {
         testBindingAndMapping("json/dto/award/evaluate/request_evaluate_award_required_2.json")
     }
+
+    @Test
+    fun required3() {
+        testBindingAndMapping("json/dto/award/evaluate/request_evaluate_award_required_3.json")
+    }
 }
