@@ -7,6 +7,7 @@
     "relatedLots": [
       "76d15fa3-5793-440b-ad24-5fc9ce776244"
     ],
+    "relatedBid": "09d528dc-0fcf-45b7-a192-dfd8c1464421",
     "value": {
       "amount": 150.01,
       "currency": "MDL"
@@ -23,6 +24,17 @@
         "id": "56ce2b96-19c1-4121-b92a-cfddb82a4587",
         "datePublished": "2019-10-29T16:51:00Z",
         "url": "award.documents[0].url"
+      }
+    ]
+  },
+  "bid": {
+    "id": "09d528dc-0fcf-45b7-a192-dfd8c1464423",
+    "documents": [
+      {
+        "documentType": "submissionDocuments",
+        "id": "bid.documents[0].id",
+        "datePublished": "2019-11-01T16:51:00Z",
+        "url": "bid.documents[0].url"
       }
     ]
   }
