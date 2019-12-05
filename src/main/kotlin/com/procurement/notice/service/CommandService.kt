@@ -1236,22 +1236,16 @@ class CommandService(
                 )
             }
             Operation.EVALUATE_AWARD -> {
-                val updateAwardContext = EvaluateAwardContext(
+                val evaluateAwardContext = EvaluateAwardContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
-                    releaseDate = releaseDate,
-                    startDate = cm.startDate
+                    releaseDate = releaseDate
                 )
                 val request = toObject(EvaluateAwardRequest::class.java, cm.data)
-                val updateAwardData = request.convert()
-                awardService.evaluate(context = updateAwardContext, data = updateAwardData)
-                ResponseDto(
-                    data = DataResponseDto(
-                        cpid = updateAwardContext.cpid,
-                        ocid = updateAwardContext.ocid
-                    )
-                )
+                val evaluateAwardData = request.convert()
+                awardService.evaluate(context = evaluateAwardContext, data = evaluateAwardData)
+                ResponseDto()
             }
         }
     }
