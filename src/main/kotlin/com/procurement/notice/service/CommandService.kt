@@ -9,6 +9,7 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.award.auction.ConsiderAwardContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
@@ -28,6 +29,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.infrastructure.dto.award.ConsiderAwardRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
@@ -108,6 +110,7 @@ import com.procurement.notice.model.ocds.Operation.UPDATE_FS
 import com.procurement.notice.model.ocds.Operation.UPDATE_PN
 import com.procurement.notice.model.ocds.Operation.UPDATE_TENDER_PERIOD
 import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
+import com.procurement.notice.model.ocds.Operation.DO_AWARD_CONSIDERATION
 import com.procurement.notice.service.contract.ContractingService
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toLocalDateTime
@@ -1236,7 +1239,7 @@ class CommandService(
                     )
                 )
             }
-            Operation.EVALUATE_AWARD -> {
+            Operation.EVALUATE_AWARD         -> {
                 val updateAwardContext = EvaluateAwardContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
@@ -1287,6 +1290,19 @@ class CommandService(
                         ocid = updateAwardContext.ocid
                     )
                 )
+            }
+            DO_AWARD_CONSIDERATION -> {
+                val context = ConsiderAwardContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    releaseDate = releaseDate,
+                    stage = cm.stage
+                )
+
+                val request = toObject(ConsiderAwardRequest::class.java, cm.data)
+                val data = request.convert()
+                awardService.consider(context = context, data = data)
+                ResponseDto()
             }
         }
     }
