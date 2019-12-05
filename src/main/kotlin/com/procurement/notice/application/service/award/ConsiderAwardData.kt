@@ -3,7 +3,7 @@ package com.procurement.notice.application.service.award
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 
-class ConsiderAwardData(
+data class ConsiderAwardData(
     val award: Award
 ) {
     data class Award(
