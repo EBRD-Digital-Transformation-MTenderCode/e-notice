@@ -28,6 +28,7 @@ import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
@@ -505,12 +506,12 @@ class AwardServiceImpl(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
 
-        //BR-2.6.21.7
+        //FR-5.7.1.1.3 1)-3)
         val awards: Set<Award>? = record.awards
-        val updatedAwards = if (awards != null && awards.isNotEmpty()) {
+        val intermediateAwards = if (awards != null && awards.isNotEmpty()) {
             awards.asSequence()
                 .map { award ->
-                    if (data.award.id == award.id) {
+                    if (data.award.id.toString() == award.id) {
                         convertAward(data.award)
                     } else
                         award
@@ -520,18 +521,66 @@ class AwardServiceImpl(
             listOf(convertAward(data.award))
         }
 
+        //FR-5.7.1.1.3 4)
+        val updatedAwards = intermediateAwards.asSequence()
+            .map { intermediateAward ->
+                if (intermediateAward.id == data.nextAwardForUpdate?.id.toString()) {
+                    intermediateAward.copy(statusDetails = data.nextAwardForUpdate?.statusDetails?.value)
+                } else
+                    intermediateAward
+            }
+
+        val requestBid = data.bid
+        //FR-5.7.1.1.4
+        val updatedBids = if (requestBid != null) {
+            record.bids?.let { bids ->
+                bids.copy(
+                    details = bids.details?.map { bid ->
+                        if (bid.id == requestBid.id.toString()) {
+                            bid.copy(
+                                documents = requestBid.documents
+                                    .asSequence()
+                                    .map { document ->
+                                        Document(
+                                            id = document.id,
+                                            url = document.url,
+                                            title = document.title,
+                                            relatedLots = document.relatedLots.map { it.toString() },
+                                            documentType = document.documentType.value,
+                                            description = document.description,
+                                            datePublished = document.datePublished,
+                                            dateModified = null,
+                                            format = null,
+                                            language = null,
+                                            relatedConfirmations = null
+                                        )
+                                    }
+                                    .toHashSet()
+                            )
+                        } else
+                            bid
+                    }?.toHashSet()
+                )
+            }
+        } else
+            record.bids
+
+
         val newRecord = record.copy(
-            //BR-2.6.21.4
+            //FR-5.0.1
             id = releaseService.newReleaseId(ocid),
 
-            //BR-2.6.21.1
+            //FR-5.7.1.1.1
             tag = listOf(Tag.AWARD_UPDATE),
 
-            //BR-2.6.21.3
+            //FR-5.0.2
             date = releaseDate,
 
-            //BR-2.6.21.7
-            awards = updatedAwards.toHashSet()
+            //FR-5.7.1.1.3 4)
+            awards = updatedAwards.toHashSet(),
+
+            //FR-5.7.1.1.4
+            bids = updatedBids
         )
 
         releaseService.saveRecord(
@@ -543,28 +592,22 @@ class AwardServiceImpl(
     }
 
     private fun convertAward(award: EvaluateAwardData.Award): Award = Award(
-        id = award.id,
+        id = award.id.toString(),
         date = award.date,
         title = null,
         description = award.description,
-        status = award.status,
-        statusDetails = award.statusDetails,
+        status = award.status.value,
+        statusDetails = award.statusDetails.value,
 
-        value = award.value.let { value ->
-            Value(
-                amount = value.amount,
-                currency = value.currency,
-                amountNet = null,
-                valueAddedTaxIncluded = null
-            )
-        },
-        suppliers = award.suppliers.map { supplier ->
-            convertSupplier(id = supplier.id, name = supplier.name)
-        },
+        value = award.value.toValue(),
+        suppliers = award.suppliers
+            .map { supplier ->
+                convertSupplier(id = supplier.id, name = supplier.name)
+            },
         relatedLots = award.relatedLots.map { it.toString() },
         items = null,
         contractPeriod = null,
-        documents = award.documents?.map { document ->
+        documents = award.documents.map { document ->
             Document(
                 documentType = document.documentType,
                 id = document.id,
@@ -572,7 +615,7 @@ class AwardServiceImpl(
                 url = document.url,
                 title = document.title,
                 description = document.description,
-                relatedLots = document.relatedLots?.map { it.toString() },
+                relatedLots = document.relatedLots.map { it.toString() },
                 dateModified = null,
                 format = null,
                 language = null,
@@ -583,7 +626,8 @@ class AwardServiceImpl(
         amendment = null,
         requirementResponses = null,
         reviewProceedings = null,
-        relatedBid = null
+        relatedBid = award.relatedBid.toString(),
+        weightedValue = null
     )
 
     override fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData) {
