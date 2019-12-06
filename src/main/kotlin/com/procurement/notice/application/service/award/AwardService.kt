@@ -43,7 +43,7 @@ interface AwardService {
 
     fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
 
-     fun consider(context: AwardConsiderationContext, data: ConsiderAwardData)
+     fun consider(context: AwardConsiderationContext, data: AwardConsiderationData)
 }
 
 @Service
@@ -793,7 +793,7 @@ class AwardServiceImpl(
         }
     }
 
-    override fun consider(context: AwardConsiderationContext, data: ConsiderAwardData) {
+    override fun consider(context: AwardConsiderationContext, data: AwardConsiderationData) {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val updatedRecord = record.copy(
