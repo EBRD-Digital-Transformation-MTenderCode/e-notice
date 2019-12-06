@@ -508,21 +508,33 @@ class AwardServiceImpl(
 
         //FR-5.7.1.1.3 1)-3)
         val awards: Set<Award>? = record.awards
-        val updatedAwards = if (awards != null && awards.isNotEmpty()) {
-            awards.asSequence()
-                .map { award ->
-                    if (award.id == data.award.id.toString()) {
-                        convertAward(data.award)
-                    } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
-                        //FR-5.7.1.1.3 4
-                        award.copy(statusDetails = data.nextAwardForUpdate.statusDetails.value)
-                    } else
-                        award
-                }
-                .toList()
-        } else {
-            listOf(convertAward(data.award))
+        val requestAwardId = data.award.id.toString()
+
+        if (awards == null || awards.isEmpty()) {
+            throw ErrorException(
+                error = ErrorType.AWARD_NOT_FOUND,
+                message = "No awards in the database found."
+            )
         }
+
+        if (awards.none { award -> award.id == requestAwardId }) {
+            throw ErrorException(
+                error = ErrorType.AWARD_NOT_FOUND,
+                message = "The award '${data.award.id}' from request is not found in the database."
+            )
+        }
+
+        val updatedAwards = awards.asSequence()
+            .map { award ->
+                if (award.id == requestAwardId) {
+                    convertAward(data.award)
+                } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
+                    //FR-5.7.1.1.3 4
+                    award.copy(statusDetails = data.nextAwardForUpdate.statusDetails.value)
+                } else
+                    award
+            }
+            .toList()
 
         val requestBid = data.bid
         //FR-5.7.1.1.4
