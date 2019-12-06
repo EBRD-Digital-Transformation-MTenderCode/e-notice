@@ -24,7 +24,8 @@ class EvaluateAwardData(
         val relatedBid: BidId,
         val value: Money,
         val suppliers: List<Supplier>,
-        val documents: List<Document>
+        val documents: List<Document>,
+        val weightedValue: Money?
     ) {
         data class Supplier(
             val id: String,

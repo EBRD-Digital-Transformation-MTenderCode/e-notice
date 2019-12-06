@@ -49,7 +49,12 @@ data class EvaluateAwardRequest(
         @field:JsonProperty("suppliers") @param:JsonProperty("suppliers") val suppliers: List<Supplier>,
 
         @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-        @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?
+        @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?,
+
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @param:JsonDeserialize(using = MoneyDeserializer::class)
+        @field:JsonSerialize(using = MoneySerializer::class)
+        @field:JsonProperty("weightedValue") @param:JsonProperty("weightedValue")val weightedValue: Money?
     ) {
         data class Supplier(
             @field:JsonProperty("id") @param:JsonProperty("id") val id: String,

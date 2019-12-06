@@ -62,7 +62,8 @@ fun EvaluateAwardRequest.convert(): EvaluateAwardData = EvaluateAwardData(
                             .orEmpty()
                     )
                 }.orEmpty(),
-            relatedBid = award.relatedBid
+            relatedBid = award.relatedBid,
+            weightedValue = award.weightedValue
         )
     },
     bid = this.bid?.let { bid ->

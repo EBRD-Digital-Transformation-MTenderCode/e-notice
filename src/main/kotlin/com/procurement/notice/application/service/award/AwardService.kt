@@ -635,7 +635,7 @@ class AwardServiceImpl(
         requirementResponses = null,
         reviewProceedings = null,
         relatedBid = award.relatedBid.toString(),
-        weightedValue = null
+        weightedValue = award.weightedValue?.toValue()
     )
 
     override fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData) {

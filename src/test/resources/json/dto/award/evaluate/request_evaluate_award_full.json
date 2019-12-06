@@ -31,7 +31,11 @@
           "76d15fa3-5793-440b-ad24-5fc9ce776244"
         ]
       }
-    ]
+    ],
+    "weightedValue": {
+      "amount": 10.50,
+      "currency": "MDL"
+    }
   },
   "nextAwardForUpdate": {
     "id": "09d528dc-0fcf-45b7-a192-dfd8c1464422",
