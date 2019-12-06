@@ -46,7 +46,7 @@
             "telephone": "bids[0].tenderers[0].contactPoint.telephone"
           },
           "details": {
-            "scale": "SME"
+            "scale": "sme"
           }
         }
       ],
