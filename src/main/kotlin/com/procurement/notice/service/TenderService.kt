@@ -132,7 +132,7 @@ class TenderService(
                     maxExtentDate = null,
                     durationInDays = null
                 ),
-                statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value), //FR-5.7.2.1.6
+                statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value), //FR-5.7.2.1.6
                 lots = updatedLots?.toHashSet(), //FR-5.7.2.1.6
                 criteria = updatedCriteria //FR-5.7.2.1.6
             ),

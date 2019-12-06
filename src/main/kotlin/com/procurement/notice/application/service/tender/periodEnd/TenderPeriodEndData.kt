@@ -19,7 +19,7 @@ import com.procurement.notice.model.ocds.Requirement
 import java.time.LocalDateTime
 
 data class TenderPeriodEndData(
-    val tender: Tender,
+    val tenderStatusDetails: TenderStatusDetails,
     val bids: List<Bid>,
     val criteria: Criteria?,
     val awards: List<Award>,
@@ -27,10 +27,6 @@ data class TenderPeriodEndData(
     val documents: List<Document>,
     val unsuccessfulLots: List<UnsuccessfulLot>
 ) {
-    data class Tender(
-        val statusDetails: TenderStatusDetails
-    )
-
     data class Bid(
         val id: String,
         val date: LocalDateTime,

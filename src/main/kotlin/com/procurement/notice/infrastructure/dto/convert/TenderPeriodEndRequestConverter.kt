@@ -10,12 +10,7 @@ import com.procurement.notice.lib.orThrow
 
 fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
     TenderPeriodEndData(
-        tender = this.tender
-            .let { tender ->
-                TenderPeriodEndData.Tender(
-                    statusDetails = tender.statusDetails
-                )
-            },
+        tenderStatusDetails = this.tenderStatusDetails,
         bids = this.bids
             .mapIfNotEmpty { bid ->
                 TenderPeriodEndData.Bid(
