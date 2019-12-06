@@ -43,7 +43,7 @@ interface AwardService {
 
     fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
 
-     fun consider(context: AwardConsiderationContext, data: AwardConsiderationData)
+    fun consider(context: AwardConsiderationContext, data: AwardConsiderationData)
 }
 
 @Service
@@ -808,7 +808,8 @@ class AwardServiceImpl(
                         award.copy(statusDetails = requestAward.statusDetails.value)
                     else
                         award
-                }?.toHashSet()
+                }
+                ?.toHashSet()
         )
 
         releaseService.saveRecord(
