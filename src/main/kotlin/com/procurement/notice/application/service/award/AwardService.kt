@@ -508,7 +508,6 @@ class AwardServiceImpl(
 
         //FR-5.7.1.1.3 1)-3)
         val awards: Set<Award>? = record.awards
-        val requestAwardId = data.award.id.toString()
 
         if (awards == null || awards.isEmpty()) {
             throw ErrorException(
@@ -517,6 +516,7 @@ class AwardServiceImpl(
             )
         }
 
+        val requestAwardId = data.award.id.toString()
         if (awards.none { award -> award.id == requestAwardId }) {
             throw ErrorException(
                 error = ErrorType.AWARD_NOT_FOUND,
