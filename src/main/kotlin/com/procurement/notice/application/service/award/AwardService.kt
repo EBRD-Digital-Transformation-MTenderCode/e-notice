@@ -508,11 +508,14 @@ class AwardServiceImpl(
 
         //FR-5.7.1.1.3 1)-3)
         val awards: Set<Award>? = record.awards
-        val intermediateAwards = if (awards != null && awards.isNotEmpty()) {
+        val updatedAwards = if (awards != null && awards.isNotEmpty()) {
             awards.asSequence()
                 .map { award ->
-                    if (data.award.id.toString() == award.id) {
+                    if (award.id == data.award.id.toString()) {
                         convertAward(data.award)
+                    } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
+                        //FR-5.7.1.1.3 4
+                        award.copy(statusDetails = data.nextAwardForUpdate.statusDetails.value)
                     } else
                         award
                 }
@@ -521,50 +524,43 @@ class AwardServiceImpl(
             listOf(convertAward(data.award))
         }
 
-        //FR-5.7.1.1.3 4)
-        val updatedAwards = intermediateAwards.asSequence()
-            .map { intermediateAward ->
-                if (intermediateAward.id == data.nextAwardForUpdate?.id.toString()) {
-                    intermediateAward.copy(statusDetails = data.nextAwardForUpdate?.statusDetails?.value)
-                } else
-                    intermediateAward
-            }
-
         val requestBid = data.bid
         //FR-5.7.1.1.4
         val updatedBids = if (requestBid != null) {
-            record.bids?.let { bids ->
-                bids.copy(
-                    details = bids.details?.map { bid ->
-                        if (bid.id == requestBid.id.toString()) {
-                            bid.copy(
-                                documents = requestBid.documents
-                                    .asSequence()
-                                    .map { document ->
-                                        Document(
-                                            id = document.id,
-                                            url = document.url,
-                                            title = document.title,
-                                            relatedLots = document.relatedLots.map { it.toString() },
-                                            documentType = document.documentType.value,
-                                            description = document.description,
-                                            datePublished = document.datePublished,
-                                            dateModified = null,
-                                            format = null,
-                                            language = null,
-                                            relatedConfirmations = null
-                                        )
-                                    }
-                                    .toHashSet()
-                            )
-                        } else
-                            bid
-                    }?.toHashSet()
-                )
-            }
+            record.bids
+                ?.let { bids ->
+                    bids.copy(
+                        details = bids.details
+                            ?.map { bid ->
+                                if (bid.id == requestBid.id.toString()) {
+                                    bid.copy(
+                                        documents = requestBid.documents
+                                            .asSequence()
+                                            .map { document ->
+                                                Document(
+                                                    id = document.id,
+                                                    url = document.url,
+                                                    title = document.title,
+                                                    relatedLots = document.relatedLots.map { it.toString() },
+                                                    documentType = document.documentType.value,
+                                                    description = document.description,
+                                                    datePublished = document.datePublished,
+                                                    dateModified = null,
+                                                    format = null,
+                                                    language = null,
+                                                    relatedConfirmations = null
+                                                )
+                                            }
+                                            .toHashSet()
+                                    )
+                                } else
+                                    bid
+                            }
+                            ?.toHashSet()
+                    )
+                }
         } else
             record.bids
-
 
         val newRecord = record.copy(
             //FR-5.0.1
