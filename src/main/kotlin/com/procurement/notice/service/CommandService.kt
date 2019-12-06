@@ -1300,9 +1300,13 @@ class CommandService(
                 )
 
                 val request = toObject(AwardConsiderationRequest::class.java, cm.data)
-                val data = request.convert()
-                awardService.consider(context = context, data = data)
-                ResponseDto()
+                awardService.consider(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocid
+                    )
+                )
             }
         }
     }
