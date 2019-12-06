@@ -9,7 +9,7 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
-import com.procurement.notice.application.service.award.auction.ConsiderAwardContext
+import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
@@ -84,6 +84,7 @@ import com.procurement.notice.model.ocds.Operation.CREATE_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_PIN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PROTOCOL
+import com.procurement.notice.model.ocds.Operation.DO_AWARD_CONSIDERATION
 import com.procurement.notice.model.ocds.Operation.END_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.END_CONTRACT_PROCESS
 import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
@@ -110,7 +111,6 @@ import com.procurement.notice.model.ocds.Operation.UPDATE_FS
 import com.procurement.notice.model.ocds.Operation.UPDATE_PN
 import com.procurement.notice.model.ocds.Operation.UPDATE_TENDER_PERIOD
 import com.procurement.notice.model.ocds.Operation.VERIFICATION_AC
-import com.procurement.notice.model.ocds.Operation.DO_AWARD_CONSIDERATION
 import com.procurement.notice.service.contract.ContractingService
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toLocalDateTime
@@ -1292,7 +1292,7 @@ class CommandService(
                 )
             }
             DO_AWARD_CONSIDERATION -> {
-                val context = ConsiderAwardContext(
+                val context = AwardConsiderationContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     releaseDate = releaseDate,

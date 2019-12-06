@@ -1,6 +1,6 @@
 package com.procurement.notice.application.service.award
 
-import com.procurement.notice.application.service.award.auction.ConsiderAwardContext
+import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
@@ -43,7 +43,7 @@ interface AwardService {
 
     fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
 
-     fun consider(context: ConsiderAwardContext, data: ConsiderAwardData)
+     fun consider(context: AwardConsiderationContext, data: ConsiderAwardData)
 }
 
 @Service
@@ -793,7 +793,7 @@ class AwardServiceImpl(
         }
     }
 
-    override fun consider(context: ConsiderAwardContext, data: ConsiderAwardData) {
+    override fun consider(context: AwardConsiderationContext, data: ConsiderAwardData) {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val updatedRecord = record.copy(
