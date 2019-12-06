@@ -797,18 +797,18 @@ class AwardServiceImpl(
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
         val updatedRecord = record.copy(
-            id= releaseService.newReleaseId(context.ocid),
+            id = releaseService.newReleaseId(context.ocid),
             date = context.releaseDate,
             tag = listOf(Tag.AWARD_UPDATE),
             awards = record.awards
                 ?.asSequence()
                 ?.map { award ->
                     val requestAward = data.award
-                    if(award.id == requestAward.id.toString())
+                    if (award.id == requestAward.id.toString())
                         award.copy(statusDetails = requestAward.statusDetails.value)
                     else
                         award
-            }?.toHashSet()
+                }?.toHashSet()
         )
 
         releaseService.saveRecord(
