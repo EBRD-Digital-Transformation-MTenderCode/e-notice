@@ -1243,8 +1243,7 @@ class CommandService(
                     releaseDate = releaseDate
                 )
                 val request = toObject(EvaluateAwardRequest::class.java, cm.data)
-                val evaluateAwardData = request.convert()
-                awardService.evaluate(context = evaluateAwardContext, data = evaluateAwardData)
+                awardService.evaluate(context = evaluateAwardContext, data = request.convert())
                 ResponseDto()
             }
         }
