@@ -29,7 +29,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
-import com.procurement.notice.infrastructure.dto.award.ConsiderAwardRequest
+import com.procurement.notice.infrastructure.dto.award.AwardConsiderationRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
@@ -1299,7 +1299,7 @@ class CommandService(
                     stage = cm.stage
                 )
 
-                val request = toObject(ConsiderAwardRequest::class.java, cm.data)
+                val request = toObject(AwardConsiderationRequest::class.java, cm.data)
                 val data = request.convert()
                 awardService.consider(context = context, data = data)
                 ResponseDto()

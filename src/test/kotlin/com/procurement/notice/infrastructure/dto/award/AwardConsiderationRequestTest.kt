@@ -3,7 +3,7 @@ package com.procurement.notice.infrastructure.dto.award
 import com.procurement.notice.infrastructure.AbstractDTOTestBase
 import org.junit.jupiter.api.Test
 
-class ConsiderAwardRequestTest : AbstractDTOTestBase<ConsiderAwardRequest>(ConsiderAwardRequest::class.java) {
+class AwardConsiderationRequestTest : AbstractDTOTestBase<AwardConsiderationRequest>(AwardConsiderationRequest::class.java) {
 
     @Test
     fun fully() {
