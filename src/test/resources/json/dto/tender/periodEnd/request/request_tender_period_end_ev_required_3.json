@@ -47,7 +47,7 @@
             "mainEconomicActivities": [
               "bids[0].tenderers[0].details.mainEconomicActivities[0]"
             ],
-            "scale": "SME"
+            "scale": "sme"
           }
         }
       ],

@@ -82,7 +82,7 @@
             }
           ],
           "details": {
-            "scale": "SME",
+            "scale": "sme",
             "permits": [
               {
                 "scheme": "SRLE",
