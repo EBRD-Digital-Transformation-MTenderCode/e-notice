@@ -9,6 +9,7 @@ import com.procurement.notice.application.service.award.EvaluateAwardContext
 import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
+import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
@@ -28,6 +29,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.infrastructure.dto.award.AwardConsiderationRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
 import com.procurement.notice.infrastructure.dto.award.EvaluateAwardRequest
@@ -82,6 +84,7 @@ import com.procurement.notice.model.ocds.Operation.CREATE_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_PIN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PROTOCOL
+import com.procurement.notice.model.ocds.Operation.DO_AWARD_CONSIDERATION
 import com.procurement.notice.model.ocds.Operation.END_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.END_CONTRACT_PROCESS
 import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
@@ -1236,7 +1239,7 @@ class CommandService(
                     )
                 )
             }
-            Operation.EVALUATE_AWARD -> {
+            Operation.EVALUATE_AWARD         -> {
                 val updateAwardContext = EvaluateAwardContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
@@ -1285,6 +1288,23 @@ class CommandService(
                     data = DataResponseDto(
                         cpid = updateAwardContext.cpid,
                         ocid = updateAwardContext.ocid
+                    )
+                )
+            }
+            DO_AWARD_CONSIDERATION -> {
+                val context = AwardConsiderationContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    releaseDate = releaseDate,
+                    stage = cm.stage
+                )
+
+                val request = toObject(AwardConsiderationRequest::class.java, cm.data)
+                awardService.consider(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocid
                     )
                 )
             }

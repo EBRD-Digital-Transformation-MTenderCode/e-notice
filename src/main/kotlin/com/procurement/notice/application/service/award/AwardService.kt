@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.award
 
+import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
@@ -41,6 +42,8 @@ interface AwardService {
     fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData)
 
     fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData)
+
+    fun consider(context: AwardConsiderationContext, data: AwardConsiderationData)
 }
 
 @Service
@@ -788,5 +791,32 @@ class AwardServiceImpl(
                 }
                 ?: contract
         }
+    }
+
+    override fun consider(context: AwardConsiderationContext, data: AwardConsiderationData) {
+        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val record = releaseService.getRecord(recordEntity.jsonData)
+        val updatedRecord = record.copy(
+            id = releaseService.newReleaseId(context.ocid),
+            date = context.releaseDate,
+            tag = listOf(Tag.AWARD_UPDATE),
+            awards = record.awards
+                ?.asSequence()
+                ?.map { award ->
+                    val requestAward = data.award
+                    if (award.id == requestAward.id.toString())
+                        award.copy(statusDetails = requestAward.statusDetails.value)
+                    else
+                        award
+                }
+                ?.toHashSet()
+        )
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = context.releaseDate.toDate()
+        )
     }
 }
