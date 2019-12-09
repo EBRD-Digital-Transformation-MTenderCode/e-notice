@@ -293,7 +293,7 @@ data class TenderPeriodEndData(
         val title: String?,
         val description: String?,
         val relatedLots: List<LotId>,
-        val relatedBid: String,
+        val relatedBid: String?,
         val value: Money?,
         val suppliers: List<Supplier>,
         val weightedValue: Money?

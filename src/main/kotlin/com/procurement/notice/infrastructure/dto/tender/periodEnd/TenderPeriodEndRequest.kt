@@ -408,7 +408,9 @@ data class TenderPeriodEndRequest(
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
         @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<LotId>,
-        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String?,
 
         @JsonDeserialize(using = MoneyDeserializer::class)
         @JsonSerialize(using = MoneySerializer::class)
