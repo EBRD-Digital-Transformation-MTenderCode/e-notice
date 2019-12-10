@@ -6,7 +6,6 @@ import com.procurement.notice.application.service.award.CreateAwardData
 import com.procurement.notice.application.service.award.EndAwardPeriodContext
 import com.procurement.notice.application.service.award.EndAwardPeriodData
 import com.procurement.notice.application.service.award.EvaluateAwardContext
-import com.procurement.notice.application.service.award.EvaluateAwardData
 import com.procurement.notice.application.service.award.StartAwardPeriodContext
 import com.procurement.notice.application.service.award.StartAwardPeriodData
 import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
@@ -1239,55 +1238,19 @@ class CommandService(
                     )
                 )
             }
-            Operation.EVALUATE_AWARD         -> {
-                val updateAwardContext = EvaluateAwardContext(
+            Operation.EVALUATE_AWARD -> {
+                val evaluateAwardContext = EvaluateAwardContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
-                    releaseDate = releaseDate,
-                    startDate = cm.startDate
+                    releaseDate = releaseDate
                 )
                 val request = toObject(EvaluateAwardRequest::class.java, cm.data)
-                val updateAwardData = EvaluateAwardData(
-                    award = request.award.let { award ->
-                        EvaluateAwardData.Award(
-                            id = award.id,
-                            date = award.date,
-                            description = award.description,
-                            status = award.status,
-                            statusDetails = award.statusDetails,
-                            relatedLots = award.relatedLots.toList(),
-                            value = award.value.let { value ->
-                                EvaluateAwardData.Award.Value(
-                                    amount = value.amount,
-                                    currency = value.currency
-                                )
-                            },
-                            suppliers = award.suppliers.map { supplier ->
-                                EvaluateAwardData.Award.Supplier(
-                                    id = supplier.id,
-                                    name = supplier.name
-                                )
-                            },
-                            documents = award.documents?.map { document ->
-                                EvaluateAwardData.Award.Document(
-                                    documentType = document.documentType,
-                                    id = document.id,
-                                    datePublished = document.datePublished,
-                                    url = document.url,
-                                    title = document.title,
-                                    description = document.description,
-                                    relatedLots = document.relatedLots
-                                )
-                            }
-                        )
-                    }
-                )
-                awardService.evaluate(context = updateAwardContext, data = updateAwardData)
+                awardService.evaluate(context = evaluateAwardContext, data = request.convert())
                 ResponseDto(
                     data = DataResponseDto(
-                        cpid = updateAwardContext.cpid,
-                        ocid = updateAwardContext.ocid
+                        cpid = evaluateAwardContext.cpid,
+                        ocid = evaluateAwardContext.ocid
                     )
                 )
             }

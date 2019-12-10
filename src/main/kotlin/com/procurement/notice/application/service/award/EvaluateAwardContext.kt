@@ -6,6 +6,5 @@ data class EvaluateAwardContext(
     val cpid: String,
     val ocid: String,
     val stage: String,
-    val releaseDate: LocalDateTime,
-    val startDate: LocalDateTime
+    val releaseDate: LocalDateTime
 )

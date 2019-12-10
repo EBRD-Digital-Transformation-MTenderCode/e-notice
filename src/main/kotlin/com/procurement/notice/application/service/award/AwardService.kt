@@ -3,6 +3,7 @@ package com.procurement.notice.application.service.award
 import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -29,6 +30,7 @@ import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
@@ -508,33 +510,85 @@ class AwardServiceImpl(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
 
-        //BR-2.6.21.7
-        val awards: Set<Award>? = record.awards
-        val updatedAwards = if (awards != null && awards.isNotEmpty()) {
-            awards.asSequence()
-                .map { award ->
-                    if (data.award.id == award.id) {
-                        convertAward(data.award)
-                    } else
-                        award
+        //FR-5.7.1.1.3 1)-3)
+        val awards: Set<Award> = record.awards
+            ?.takeIf {awards ->
+                awards.isNotEmpty()
+            }
+            ?:throw ErrorException(
+                error = ErrorType.AWARD_NOT_FOUND,
+                message = "No awards in the database found."
+            )
+
+        awards.checkAwardAvailability(requestAwardId = data.award.id)
+
+        val requestAwardIdAsString = data.award.id.toString()
+        val updatedAwards = awards.asSequence()
+            .map { award ->
+                if (award.id == requestAwardIdAsString) {
+                    convertAward(data.award)
+                } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
+                    //FR-5.7.1.1.3 4
+                    award.copy(statusDetails = data.nextAwardForUpdate.statusDetails.value)
+                } else
+                    award
+            }
+            .toList()
+
+        val requestBid = data.bid
+        //FR-5.7.1.1.4
+        val updatedBids = if (requestBid != null) {
+            val requestBidId = requestBid.id.toString()
+            record.bids
+                ?.let { bids ->
+                    bids.copy(
+                        details = bids.details
+                            ?.map { bid ->
+                                if (bid.id == requestBidId) {
+                                    bid.copy(
+                                        documents = requestBid.documents
+                                            .asSequence()
+                                            .map { document ->
+                                                Document(
+                                                    id = document.id,
+                                                    url = document.url,
+                                                    title = document.title,
+                                                    relatedLots = document.relatedLots.map { it.toString() },
+                                                    documentType = document.documentType.value,
+                                                    description = document.description,
+                                                    datePublished = document.datePublished,
+                                                    dateModified = null,
+                                                    format = null,
+                                                    language = null,
+                                                    relatedConfirmations = null
+                                                )
+                                            }
+                                            .toHashSet()
+                                    )
+                                } else
+                                    bid
+                            }
+                            ?.toHashSet()
+                    )
                 }
-                .toList()
-        } else {
-            listOf(convertAward(data.award))
-        }
+        } else
+            record.bids
 
         val newRecord = record.copy(
-            //BR-2.6.21.4
+            //FR-5.0.1
             id = releaseService.newReleaseId(ocid),
 
-            //BR-2.6.21.1
+            //FR-5.7.1.1.1
             tag = listOf(Tag.AWARD_UPDATE),
 
-            //BR-2.6.21.3
+            //FR-5.0.2
             date = releaseDate,
 
-            //BR-2.6.21.7
-            awards = updatedAwards.toHashSet()
+            //FR-5.7.1.1.3 4)
+            awards = updatedAwards.toHashSet(),
+
+            //FR-5.7.1.1.4
+            bids = updatedBids
         )
 
         releaseService.saveRecord(
@@ -545,29 +599,32 @@ class AwardServiceImpl(
         )
     }
 
+    private fun Collection<Award>.checkAwardAvailability(requestAwardId: AwardId) {
+        val requestAwardIdAsString = requestAwardId.toString()
+        if (this.none { award -> award.id == requestAwardIdAsString }) {
+            throw ErrorException(
+                error = ErrorType.AWARD_NOT_FOUND,
+                message = "The award '$requestAwardId' from request is not found in the database."
+            )
+        }
+    }
     private fun convertAward(award: EvaluateAwardData.Award): Award = Award(
-        id = award.id,
+        id = award.id.toString(),
         date = award.date,
         title = null,
         description = award.description,
-        status = award.status,
-        statusDetails = award.statusDetails,
+        status = award.status.value,
+        statusDetails = award.statusDetails.value,
 
-        value = award.value.let { value ->
-            Value(
-                amount = value.amount,
-                currency = value.currency,
-                amountNet = null,
-                valueAddedTaxIncluded = null
-            )
-        },
-        suppliers = award.suppliers.map { supplier ->
-            convertSupplier(id = supplier.id, name = supplier.name)
-        },
+        value = award.value.toValue(),
+        suppliers = award.suppliers
+            .map { supplier ->
+                convertSupplier(id = supplier.id, name = supplier.name)
+            },
         relatedLots = award.relatedLots.map { it.toString() },
         items = null,
         contractPeriod = null,
-        documents = award.documents?.map { document ->
+        documents = award.documents.map { document ->
             Document(
                 documentType = document.documentType,
                 id = document.id,
@@ -575,7 +632,7 @@ class AwardServiceImpl(
                 url = document.url,
                 title = document.title,
                 description = document.description,
-                relatedLots = document.relatedLots?.map { it.toString() },
+                relatedLots = document.relatedLots.map { it.toString() },
                 dateModified = null,
                 format = null,
                 language = null,
@@ -586,7 +643,8 @@ class AwardServiceImpl(
         amendment = null,
         requirementResponses = null,
         reviewProceedings = null,
-        relatedBid = null
+        relatedBid = award.relatedBid.toString(),
+        weightedValue = award.weightedValue?.toValue()
     )
 
     override fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData) {
