@@ -31,7 +31,7 @@ import com.procurement.notice.model.ocds.Requirement
 import java.time.LocalDateTime
 
 data class TenderPeriodEndRequest(
-    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender,
+    @field:JsonProperty("tenderStatusDetails") @param:JsonProperty("tenderStatusDetails") val tenderStatusDetails: TenderStatusDetails,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,9 +46,6 @@ data class TenderPeriodEndRequest(
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("unsuccessfulLots") @param:JsonProperty("unsuccessfulLots") val unsuccessfulLots: List<UnsuccessfulLot>?
 ) {
-    data class Tender(
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: TenderStatusDetails
-    )
 
     data class Bid(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
@@ -411,7 +408,9 @@ data class TenderPeriodEndRequest(
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
         @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<LotId>,
-        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String?,
 
         @JsonDeserialize(using = MoneyDeserializer::class)
         @JsonSerialize(using = MoneySerializer::class)

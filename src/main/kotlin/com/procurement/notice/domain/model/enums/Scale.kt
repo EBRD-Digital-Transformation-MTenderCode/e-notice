@@ -1,12 +1,13 @@
 package com.procurement.notice.domain.model.enums
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.exception.EnumException
 
 enum class Scale(@JsonValue val value: String) {
-    MICRO("MICRO"),
-    SME("SME"),
-    LARGE("LARGE"),
+    MICRO("micro"),
+    SME("sme"),
+    LARGE("large"),
     EMPTY("  ");
 
     override fun toString(): String = value
@@ -14,6 +15,8 @@ enum class Scale(@JsonValue val value: String) {
     companion object {
         private val elements: Map<String, Scale> = values().associateBy { it.value.toUpperCase() }
 
+        @JsonCreator
+        @JvmStatic
         fun fromString(value: String): Scale = elements[value.toUpperCase()]
             ?: throw EnumException(
                 enumType = Scale::class.java.canonicalName,

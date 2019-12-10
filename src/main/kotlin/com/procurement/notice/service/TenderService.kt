@@ -132,7 +132,7 @@ class TenderService(
                     maxExtentDate = null,
                     durationInDays = null
                 ),
-                statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value), //FR-5.7.2.1.6
+                statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value), //FR-5.7.2.1.6
                 lots = updatedLots?.toHashSet(), //FR-5.7.2.1.6
                 criteria = updatedCriteria //FR-5.7.2.1.6
             ),
@@ -1268,7 +1268,7 @@ class TenderService(
         }
     }
 
-    private fun updateBids(data: TenderUnsuccessfulData, bids: Bids?): Bids {
+    private fun updateBids(data: TenderUnsuccessfulData, bids: Bids?): Bids? {
         val bidsDocumentsById = data.documents.associateBy { it.id }
         val details = data.bids
             .asSequence()
@@ -1344,7 +1344,10 @@ class TenderService(
                 )
             }
             .toHashSet()
-        return bids?.copy(details = details) ?: Bids(details = details, statistics = null)
+        return if(details.isNotEmpty())
+            bids?.copy(details = details) ?: Bids(details = details, statistics = null)
+        else
+            null
     }
 
     private fun updateAwards(data: TenderUnsuccessfulData): List<Award> =

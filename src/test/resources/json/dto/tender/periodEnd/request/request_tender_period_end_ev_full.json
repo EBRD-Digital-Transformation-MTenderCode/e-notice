@@ -1,7 +1,5 @@
 {
-  "tender": {
-    "statusDetails": "empty"
-  },
+  "tenderStatusDetails": "empty",
   "bids": [
     {
       "id": "9d353269-c442-47ab-b11e-a82bf84c6cd5",
@@ -93,7 +91,7 @@
             "mainEconomicActivities": [
               "bids[0].tenderers[0].details.mainEconomicActivities[0]"
             ],
-            "scale": "SME",
+            "scale": "sme",
             "permits": [
               {
                 "scheme": "SRLE",
