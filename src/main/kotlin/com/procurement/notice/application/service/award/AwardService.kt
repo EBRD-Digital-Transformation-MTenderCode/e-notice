@@ -539,12 +539,13 @@ class AwardServiceImpl(
         val requestBid = data.bid
         //FR-5.7.1.1.4
         val updatedBids = if (requestBid != null) {
+            val requestBidId = requestBid.id.toString()
             record.bids
                 ?.let { bids ->
                     bids.copy(
                         details = bids.details
                             ?.map { bid ->
-                                if (bid.id == requestBid.id.toString()) {
+                                if (bid.id == requestBidId) {
                                     bid.copy(
                                         documents = requestBid.documents
                                             .asSequence()
