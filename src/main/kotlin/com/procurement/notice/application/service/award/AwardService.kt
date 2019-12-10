@@ -3,6 +3,7 @@ package com.procurement.notice.application.service.award
 import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -510,26 +511,21 @@ class AwardServiceImpl(
         val record = releaseService.getRecord(recordEntity.jsonData)
 
         //FR-5.7.1.1.3 1)-3)
-        val awards: Set<Award>? = record.awards
-
-        if (awards == null || awards.isEmpty()) {
-            throw ErrorException(
+        val awards: Set<Award> = record.awards
+            ?.takeIf {awards ->
+                awards.isNotEmpty()
+            }
+            ?:throw ErrorException(
                 error = ErrorType.AWARD_NOT_FOUND,
                 message = "No awards in the database found."
             )
-        }
 
-        val requestAwardId = data.award.id.toString()
-        if (awards.none { award -> award.id == requestAwardId }) {
-            throw ErrorException(
-                error = ErrorType.AWARD_NOT_FOUND,
-                message = "The award '${data.award.id}' from request is not found in the database."
-            )
-        }
+        awards.checkAwardAvailability(requestAwardId = data.award.id)
 
+        val requestAwardIdAsString = data.award.id.toString()
         val updatedAwards = awards.asSequence()
             .map { award ->
-                if (award.id == requestAwardId) {
+                if (award.id == requestAwardIdAsString) {
                     convertAward(data.award)
                 } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
                     //FR-5.7.1.1.3 4
@@ -603,6 +599,15 @@ class AwardServiceImpl(
         )
     }
 
+    private fun Collection<Award>.checkAwardAvailability(requestAwardId: AwardId) {
+        val requestAwardIdAsString = requestAwardId.toString()
+        if (this.none { award -> award.id == requestAwardIdAsString }) {
+            throw ErrorException(
+                error = ErrorType.AWARD_NOT_FOUND,
+                message = "The award '$requestAwardId' from request is not found in the database."
+            )
+        }
+    }
     private fun convertAward(award: EvaluateAwardData.Award): Award = Award(
         id = award.id.toString(),
         date = award.date,
