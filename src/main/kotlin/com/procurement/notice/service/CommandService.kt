@@ -1244,7 +1244,12 @@ class CommandService(
                 )
                 val request = toObject(EvaluateAwardRequest::class.java, cm.data)
                 awardService.evaluate(context = evaluateAwardContext, data = request.convert())
-                ResponseDto()
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = evaluateAwardContext.cpid,
+                        ocid = evaluateAwardContext.ocid
+                    )
+                )
             }
         }
     }
