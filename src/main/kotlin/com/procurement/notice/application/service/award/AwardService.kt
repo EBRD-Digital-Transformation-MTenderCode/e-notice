@@ -643,7 +643,7 @@ class AwardServiceImpl(
         amendment = null,
         requirementResponses = null,
         reviewProceedings = null,
-        relatedBid = award.relatedBid.toString(),
+        relatedBid = award.relatedBid?.toString(),
         weightedValue = award.weightedValue?.toValue()
     )
 

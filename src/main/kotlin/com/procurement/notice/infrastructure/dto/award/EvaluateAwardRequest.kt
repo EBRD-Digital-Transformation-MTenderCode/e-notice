@@ -40,7 +40,9 @@ data class EvaluateAwardRequest(
         @field:JsonProperty("status") @param:JsonProperty("status") val status: AwardStatus,
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: AwardStatusDetails,
         @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<LotId>,
-        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
+
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId?,
 
         @param:JsonDeserialize(using = MoneyDeserializer::class)
         @field:JsonSerialize(using = MoneySerializer::class)

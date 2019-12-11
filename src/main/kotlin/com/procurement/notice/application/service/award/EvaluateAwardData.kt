@@ -21,7 +21,7 @@ class EvaluateAwardData(
         val status: AwardStatus,
         val statusDetails: AwardStatusDetails,
         val relatedLots: List<LotId>,
-        val relatedBid: BidId,
+        val relatedBid: BidId?,
         val value: Money,
         val suppliers: List<Supplier>,
         val documents: List<Document>,
