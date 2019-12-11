@@ -1,7 +1,5 @@
 {
-  "tender": {
-    "statusDetails": "negotiation"
-  },
+  "tenderStatusDetails": "negotiation",
   "electronicAuctions": {
     "details": [
       {

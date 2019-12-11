@@ -61,11 +61,7 @@ fun StartAwardPeriodAuctionRequest.convert(): StartAwardPeriodAuctionData = Star
                 }
             )
     },
-    tender = this.tender.let { tender ->
-        StartAwardPeriodAuctionData.Tender(
-            statusDetails = tender.statusDetails
-        )
-    },
+    tenderStatusDetails = this.tenderStatusDetails,
     unsuccessfulLots = this.unsuccessfulLots
         .errorIfEmpty {
             ErrorException(

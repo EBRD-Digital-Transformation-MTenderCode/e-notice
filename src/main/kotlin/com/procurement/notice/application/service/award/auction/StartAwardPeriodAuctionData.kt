@@ -14,7 +14,7 @@ data class StartAwardPeriodAuctionData(
     val awards: List<Award>,
     val unsuccessfulLots: List<UnsuccessfulLot>,
 
-    val tender: Tender,
+    val tenderStatusDetails: TenderStatusDetails,
     val electronicAuctions: ElectronicAuctions
 ) {
     data class Award(

@@ -17,13 +17,14 @@ import com.procurement.notice.infrastructure.bind.money.MoneySerializer
 import java.time.LocalDateTime
 
 data class StartAwardPeriodAuctionRequest(
+    @field:JsonProperty("tenderStatusDetails") @param:JsonProperty("tenderStatusDetails") val tenderStatusDetails: TenderStatusDetails,
+
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @param:JsonProperty("awards") @field:JsonProperty("awards") val awards: List<Award>?,
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @param:JsonProperty("unsuccessfulLots") @field:JsonProperty("unsuccessfulLots") val unsuccessfulLots: List<UnsuccessfulLot>?,
 
-    @param:JsonProperty("tender") @field:JsonProperty("tender") val tender: Tender,
     @param:JsonProperty("electronicAuctions") @field:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
 ) {
     data class Award(
@@ -39,10 +40,6 @@ data class StartAwardPeriodAuctionRequest(
     data class UnsuccessfulLot(
         @param:JsonProperty("id") @field:JsonProperty("id") val id: LotId,
         @param:JsonProperty("status") @field:JsonProperty("status") val status: LotStatus
-    )
-
-    data class Tender(
-        @param:JsonProperty("statusDetails") @field:JsonProperty("statusDetails") val statusDetails: TenderStatusDetails
     )
 
     data class ElectronicAuctions(

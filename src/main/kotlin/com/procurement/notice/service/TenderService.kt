@@ -1061,7 +1061,7 @@ class TenderService(
                 .toHashSet()
                 .ifEmpty { record.awards },
             tender = record.tender.copy(
-                statusDetails = TenderStatusDetails.valueOf(data.tender.statusDetails.value),
+                statusDetails = TenderStatusDetails.valueOf(data.tenderStatusDetails.value),
                 lots = updatedLots?.toHashSet(),
                 electronicAuctions = updatedElectronicAuctions
             )
