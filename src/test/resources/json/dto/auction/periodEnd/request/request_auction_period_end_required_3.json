@@ -1,0 +1,194 @@
+{
+  "tenderStatusDetails": "empty",
+  "bids": [
+    {
+      "id": "9d353269-c442-47ab-b11e-a82bf84c6cd5",
+      "date": "2011-03-01T15:09:00Z",
+      "status": "invited",
+      "statusDetails": "pending",
+      "tenderers": [
+        {
+          "id": "bids[0].tenderers.id",
+          "name": "bids[0].tenderers.id",
+          "identifier": {
+            "scheme": "bids[0].tenderers.identifier.scheme",
+            "id": "bids[0].tenderers.identifier.id",
+            "legalName": "bids[0].tenderers.identifier.legalName"
+          },
+          "address": {
+            "streetAddress": "bids[0].tenderers[0].address.streetAddress",
+            "addressDetails": {
+              "country": {
+                "scheme": "bids[0].tenderers[0].address.addressDetails.country.scheme",
+                "id": "bids[0].tenderers[0].address.addressDetails.country.id",
+                "description": "bids[0].tenderers[0].address.addressDetails.country.description",
+                "uri": "bids[0].tenderers[0].address.addressDetails.country.uri"
+              },
+              "region": {
+                "scheme": "bids[0].tenderers[0].address.addressDetails.region.scheme",
+                "id": "bids[0].tenderers[0].address.addressDetails.region.id",
+                "description": "bids[0].tenderers[0].address.addressDetails.region.description",
+                "uri": "bids[0].tenderers[0].address.addressDetails.region.uri"
+              },
+              "locality": {
+                "scheme": "bids[0].tenderers[0].address.addressDetails.locality.scheme",
+                "id": "bids[0].tenderers[0].address.addressDetails.locality.id",
+                "description": "bids[0].tenderers[0].address.addressDetails.locality.description"
+              }
+            }
+          },
+          "contactPoint": {
+            "name": "bids[0].tenderers[0].contactPoint.name",
+            "email": "bids[0].tenderers[0].contactPoint.email",
+            "telephone": "bids[0].tenderers[0].contactPoint.telephone"
+          },
+          "details": {
+            "scale": "sme"
+          }
+        }
+      ],
+      "value": {
+        "amount": 200.01,
+        "currency": "MDL"
+      },
+      "relatedLots": [
+        "f4115b12-d5b4-44fc-8e4a-18538500cf20"
+      ]
+    }
+  ],
+  "criteria": {
+    "id": "criteria.id",
+    "title": "Conflict of interest",
+    "requirementGroups": [
+      {
+        "id": "criteria.requirementGroups[0].id",
+        "requirements": [
+          {
+            "id": "974c8196-9d1c-419c-9ca9-45bb9f5fd59a",
+            "title": "Your answer?",
+            "dataType": "boolean",
+            "expectedValue": false
+          },
+          {
+            "id": "804eb103-49d1-45b8-86cb-187b01ab03b4",
+            "title": "Your answer?",
+            "dataType": "number",
+            "minValue": 10.00,
+            "maxValue": 20.00
+          }
+        ]
+      }
+    ]
+  },
+  "awards": [
+    {
+      "id": "e7efcb50-92b7-499b-af0d-1fe73a572a38",
+      "date": "2011-06-25T15:09:00Z",
+      "status": "pending",
+      "statusDetails": "unsuccessful",
+      "relatedLots": [
+        "0efd4fe3-cbdd-4e33-a2ff-10b9876d8fe5"
+      ],
+      "relatedBid": "9d353269-c442-47ab-b11e-a82bf84c6cd5",
+      "value": {
+        "amount": 100.01,
+        "currency": "MDL"
+      },
+      "suppliers": [
+        {
+          "id": "awards[0].suppliers[0].id",
+          "name": "awards[0].suppliers[0].name"
+        }
+      ]
+    }
+  ],
+  "awardPeriod": {
+    "startDate": "2011-04-10T05:19:01Z"
+  },
+  "auctionPeriod": {
+    "startDate": "2011-06-01T17:59:00Z",
+    "endDate": "2011-06-01T17:59:00Z"
+  },
+  "electronicAuctions": {
+    "details": [
+      {
+        "id": "c15501a1-8be0-4734-bd5c-000000000888",
+        "relatedLot": "39614de2-c348-11e8-987b-a7ad59777db6",
+        "auctionPeriod": {
+          "startDate": "2011-06-01T17:59:00Z",
+          "endDate": "2011-06-01T17:59:00Z"
+        },
+        "electronicAuctionModalities": [
+          {
+            "url": "https://eauction.mtender.md/cpid/ocid",
+            "eligibleMinimumDifference": {
+              "amount": 150.00,
+              "currency": "MDL"
+            }
+          }
+        ],
+        "electronicAuctionProgress": [
+          {
+            "id": "1",
+            "period": {
+              "startDate": "2011-06-01T17:59:00Z",
+              "endDate": "2011-06-01T17:59:00Z"
+            },
+            "breakdown": [
+              {
+                "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
+                "status": "met",
+                "dateMet": "2011-06-01T17:59:00Z",
+                "value": {
+                  "amount": 1001.00,
+                  "currency": ""
+                }
+              },
+              {
+                "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
+                "status": "met",
+                "dateMet": "2011-06-01T17:59:00Z",
+                "value": {
+                  "amount": 1002.00,
+                  "currency": ""
+                }
+              },
+              {
+                "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
+                "status": "met",
+                "dateMet": "2011-06-01T17:59:00Z",
+                "value": {
+                  "amount": 1000.00,
+                  "currency": ""
+                }
+              }
+            ]
+          }
+        ],
+        "electronicAuctionResult": [
+          {
+            "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
+            "value": {
+              "amount": 981.00,
+              "currency": ""
+            }
+          },
+          {
+            "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
+            "value": {
+              "amount": 980.00,
+              "currency": ""
+            }
+          },
+          {
+            "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
+            "value": {
+              "amount": 990.00,
+              "currency": ""
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
