@@ -45,11 +45,11 @@ data class AuctionPeriodEndRequest(
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?,
 
-    @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ss.ElectronicAuctions
+    @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
 ) {
 
     data class Bid(
-        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+        @field:JsonProperty("id") @param:JsonProperty("id") val id: BidId,
 
         @JsonDeserialize(using = JsonDateTimeDeserializer::class)
         @JsonSerialize(using = JsonDateTimeSerializer::class)
@@ -509,7 +509,7 @@ data class AuctionPeriodEndRequest(
             data class ElectronicAuctionProgres(
                 @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
                 @field:JsonProperty("period") @param:JsonProperty("period") val period: Period,
-                @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdown: List<Breakdown>
+                @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdowns: List<Breakdown>
             ) {
                 data class Period(
                     @JsonDeserialize(using = JsonDateTimeDeserializer::class)
