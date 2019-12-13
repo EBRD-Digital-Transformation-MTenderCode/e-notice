@@ -2,6 +2,7 @@ package com.procurement.notice.application.service.auction
 
 import com.procurement.access.domain.model.enums.BusinessFunctionDocumentType
 import com.procurement.notice.application.model.RequirementRsValue
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.bid.BidId
 import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
@@ -292,12 +293,12 @@ data class AuctionPeriodEndData(
     }
 
     data class Award(
-        val id: String,
+        val id: AwardId,
         val date: LocalDateTime,
         val status: AwardStatus,
         val statusDetails: AwardStatusDetails,
         val relatedLots: List<LotId>,
-        val relatedBid: String,
+        val relatedBid: BidId,
         val value: Money,
         val suppliers: List<Supplier>,
         val weightedValue: Money?
