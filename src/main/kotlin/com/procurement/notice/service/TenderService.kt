@@ -778,7 +778,7 @@ class TenderService(
                                 scheme = identifier.scheme,
                                 id = identifier.id,
                                 uri = identifier.uri,
-                                legalName = null
+                                legalName = identifier.legalName
                             )
                         },
                     additionalIdentifiers = tenderer.additionalIdentifiers
