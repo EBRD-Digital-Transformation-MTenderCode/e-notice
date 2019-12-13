@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.procurement.access.domain.model.enums.BusinessFunctionDocumentType
 import com.procurement.notice.application.model.RequirementRsValue
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.bid.BidId
 import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
@@ -406,7 +407,7 @@ data class AuctionPeriodEndRequest(
     }
 
     data class Award(
-        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+        @field:JsonProperty("id") @param:JsonProperty("id") val id: AwardId,
 
         @JsonDeserialize(using = JsonDateTimeDeserializer::class)
         @JsonSerialize(using = JsonDateTimeSerializer::class)
@@ -415,7 +416,7 @@ data class AuctionPeriodEndRequest(
         @field:JsonProperty("status") @param:JsonProperty("status") val status: AwardStatus,
         @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: AwardStatusDetails,
         @field:JsonProperty("relatedLots") @param:JsonProperty("relatedLots") val relatedLots: List<LotId>,
-        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String,
+        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
 
         @JsonDeserialize(using = MoneyDeserializer::class)
         @JsonSerialize(using = MoneySerializer::class)
@@ -485,6 +486,9 @@ data class AuctionPeriodEndRequest(
         ) {
             data class ElectronicAuctionModality(
                 @field:JsonProperty("url") @param:JsonProperty("url") val url: String,
+
+                @JsonDeserialize(using = MoneyDeserializer::class)
+                @JsonSerialize(using = MoneySerializer::class)
                 @field:JsonProperty("eligibleMinimumDifference") @param:JsonProperty("eligibleMinimumDifference") val eligibleMinimumDifference: Money
             )
 
