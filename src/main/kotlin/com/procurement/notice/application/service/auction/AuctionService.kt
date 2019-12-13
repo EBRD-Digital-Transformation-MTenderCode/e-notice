@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.auction
 
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.model.ocds.AccountIdentifier
 import com.procurement.notice.model.ocds.Address
 import com.procurement.notice.model.ocds.AddressDetails
@@ -53,8 +54,7 @@ class AuctionServiceImpl(
         val entity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRecord(entity.jsonData)
 
-        val updatedAwards = listOf<Award>()
-
+        val updatedAwards = updateAwards(awards = record.awards ?: emptyList(), data = data)
         val updatedBids = updateBids(data)
         val updatedParties = updateParties(parties = record.parties ?: emptyList(), data = data)
         val updatedElectronicAuctions = record.tender.electronicAuctions?.updateElectronicAuctions(data = data)
@@ -100,6 +100,91 @@ class AuctionServiceImpl(
             record = updatedRecord,
             publishDate = entity.publishDate
         )
+    }
+
+    private fun updateAwards(awards: Collection<Award>, data: AuctionPeriodEndData): List<Award> {
+        val savedAwardsById: Map<AwardId, Award> = awards.associateBy { award -> AwardId.fromString(award.id!!) }
+
+        val receivedAwardsById: Map<AwardId, AuctionPeriodEndData.Award> = data.awards
+            .associateBy { award -> award.id }
+
+        val savedAwardsIds = savedAwardsById.keys
+        val receivedAwardsIds = receivedAwardsById.keys
+        val newAwards = newElements(received = receivedAwardsIds, saved = savedAwardsIds)
+            .map { id ->
+                receivedAwardsById.getValue(id)
+                    .let { award ->
+                        Award(
+                            id = award.id.toString(),
+                            title = null,
+                            description = null,
+                            status = award.status.value,
+                            statusDetails = award.statusDetails.value,
+                            date = award.date,
+                            value = award.value.toValue(),
+                            suppliers = award.suppliers
+                                .map { supplier ->
+                                    OrganizationReference(
+                                        id = supplier.id,
+                                        name = supplier.name,
+                                        identifier = null,
+                                        address = null,
+                                        additionalIdentifiers = null,
+                                        contactPoint = null,
+                                        details = null,
+                                        buyerProfile = null,
+                                        persones = null
+                                    )
+                                },
+                            relatedLots = award.relatedLots.map { it.toString() },
+                            relatedBid = award.relatedBid.toString(),
+                            items = null,
+                            contractPeriod = null,
+                            documents = null,
+                            amendments = null,
+                            amendment = null,
+                            requirementResponses = null,
+                            reviewProceedings = null,
+                            weightedValue = award.weightedValue?.toValue()
+                        )
+                    }
+            }
+
+        val updatedAwards: List<Award> = elementsForUpdate(received = receivedAwardsIds, saved = savedAwardsIds)
+            .map { id ->
+                val receivedAward = receivedAwardsById.getValue(id)
+                savedAwardsById.getValue(id)
+                    .copy(
+                        status = receivedAward.status.value,
+                        statusDetails = receivedAward.statusDetails.value,
+                        date = receivedAward.date,
+                        value = receivedAward.value.toValue(),
+                        suppliers = receivedAward.suppliers
+                            .map { supplier ->
+                                OrganizationReference(
+                                    id = supplier.id,
+                                    name = supplier.name,
+                                    identifier = null,
+                                    address = null,
+                                    additionalIdentifiers = null,
+                                    contactPoint = null,
+                                    details = null,
+                                    buyerProfile = null,
+                                    persones = null
+                                )
+                            },
+                        relatedLots = receivedAward.relatedLots.map { it.toString() },
+                        relatedBid = receivedAward.relatedBid.toString(),
+                        weightedValue = receivedAward.weightedValue?.toValue()
+                    )
+            }
+
+        val immutableAwards: List<Award> = immutableElements(received = receivedAwardsIds, saved = savedAwardsIds)
+            .map { id ->
+                savedAwardsById.getValue(id)
+            }
+
+        return newAwards + updatedAwards + immutableAwards
     }
 
     private fun updateBids(data: AuctionPeriodEndData): Bids {
