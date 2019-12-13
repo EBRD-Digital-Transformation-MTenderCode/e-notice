@@ -332,7 +332,7 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                         .orThrow {
                             ErrorException(
                                 error = ErrorType.IS_EMPTY,
-                                message = "The bid '${bid.id}' contain empty list of the requirement responses."
+                                message = "The bid '${bid.id}' contain empty list of the related lots."
                             )
                         },
                     requirementResponses = bid.requirementResponses
@@ -386,7 +386,16 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                             AuctionPeriodEndData.Criteria.RequirementGroup(
                                 id = requirementGroup.id,
                                 description = requirementGroup.description,
-                                requirements = requirementGroup.requirements.toList()
+                                requirements = requirementGroup.requirements
+                                    .mapIfNotEmpty { requirement ->
+                                        requirement
+                                    }
+                                    .orThrow {
+                                        ErrorException(
+                                            error = ErrorType.IS_EMPTY,
+                                            message = "The criteria contain empty list of the requirements."
+                                        )
+                                    }
                             )
                         }
                         .orThrow {
@@ -404,7 +413,16 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                     date = award.date,
                     status = award.status,
                     statusDetails = award.statusDetails,
-                    relatedLots = award.relatedLots.toList(),
+                    relatedLots = award.relatedLots
+                        .mapIfNotEmpty { relatedLot ->
+                            relatedLot
+                        }
+                        .orThrow {
+                            ErrorException(
+                                error = ErrorType.IS_EMPTY,
+                                message = "The award contain empty list of the related lots."
+                            )
+                        },
                     relatedBid = award.relatedBid,
                     value = award.value,
                     suppliers = award.suppliers
@@ -456,7 +474,15 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                     id = document.id,
                     title = document.title,
                     description = document.description,
-                    relatedLots = document.relatedLots?.toList() ?: emptyList(),
+                    relatedLots = document.relatedLots
+                        .errorIfEmpty {
+                            ErrorException(
+                                error = ErrorType.IS_EMPTY,
+                                message = "The document contain empty list of the related lots."
+                            )
+                        }
+                        ?.toList()
+                        .orEmpty(),
                     datePublished = document.datePublished,
                     url = document.url
                 )
