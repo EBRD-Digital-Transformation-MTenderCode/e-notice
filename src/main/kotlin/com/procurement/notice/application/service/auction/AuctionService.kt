@@ -638,7 +638,7 @@ class AuctionServiceImpl(
                                                 .map { breakdown ->
                                                     ElectronicAuctionProgressBreakdown(
                                                         relatedBid = breakdown.relatedBid.toString(),
-                                                        status = breakdown.status,
+                                                        status = breakdown.status.value,
                                                         dateMet = breakdown.dateMet,
                                                         value = breakdown.value.toValue()
                                                     )

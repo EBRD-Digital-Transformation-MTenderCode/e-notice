@@ -8,11 +8,13 @@ import com.procurement.access.domain.model.enums.BusinessFunctionDocumentType
 import com.procurement.notice.application.model.RequirementRsValue
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.bid.BidId
+import com.procurement.notice.domain.model.document.DocumentId
 import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.enums.BidStatus
 import com.procurement.notice.domain.model.enums.BidStatusDetails
+import com.procurement.notice.domain.model.enums.BreakdownStatus
 import com.procurement.notice.domain.model.enums.BusinessFunctionType
 import com.procurement.notice.domain.model.enums.CriteriaRelatesTo
 import com.procurement.notice.domain.model.enums.CriteriaSource
@@ -187,7 +189,7 @@ data class AuctionPeriodEndRequest(
                     )
 
                     data class Document(
-                        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+                        @field:JsonProperty("id") @param:JsonProperty("id") val id: DocumentId,
                         @field:JsonProperty("documentType") @param:JsonProperty("documentType") val documentType: BusinessFunctionDocumentType,
                         @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 
@@ -455,7 +457,7 @@ data class AuctionPeriodEndRequest(
 
     data class Document(
         @field:JsonProperty("documentType") @param:JsonProperty("documentType") val documentType: BidDocumentType,
-        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+        @field:JsonProperty("id") @param:JsonProperty("id") val id: DocumentId,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("title") @param:JsonProperty("title") val title: String?,
@@ -527,7 +529,7 @@ data class AuctionPeriodEndRequest(
 
                 data class Breakdown(
                     @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
-                    @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
+                    @field:JsonProperty("status") @param:JsonProperty("status") val status: BreakdownStatus,
 
                     @JsonDeserialize(using = JsonDateTimeDeserializer::class)
                     @JsonSerialize(using = JsonDateTimeSerializer::class)

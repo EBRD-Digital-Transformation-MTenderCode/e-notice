@@ -4,11 +4,13 @@ import com.procurement.access.domain.model.enums.BusinessFunctionDocumentType
 import com.procurement.notice.application.model.RequirementRsValue
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.bid.BidId
+import com.procurement.notice.domain.model.document.DocumentId
 import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.enums.BidStatus
 import com.procurement.notice.domain.model.enums.BidStatusDetails
+import com.procurement.notice.domain.model.enums.BreakdownStatus
 import com.procurement.notice.domain.model.enums.BusinessFunctionType
 import com.procurement.notice.domain.model.enums.CriteriaRelatesTo
 import com.procurement.notice.domain.model.enums.CriteriaSource
@@ -252,7 +254,7 @@ data class AuctionPeriodEndData(
         }
 
         data class Document(
-            val id: String
+            val id: DocumentId
         )
 
         data class RequirementResponse(
@@ -321,7 +323,7 @@ data class AuctionPeriodEndData(
 
     data class Document(
         val documentType: BidDocumentType,
-        val id: String,
+        val id: DocumentId,
         val title: String?,
         val description: String?,
         val relatedLots: List<LotId>,
@@ -367,7 +369,7 @@ data class AuctionPeriodEndData(
 
                 data class Breakdown(
                     val relatedBid: BidId,
-                    val status: String,
+                    val status: BreakdownStatus,
                     val dateMet: LocalDateTime,
                     val value: Money
                 )
