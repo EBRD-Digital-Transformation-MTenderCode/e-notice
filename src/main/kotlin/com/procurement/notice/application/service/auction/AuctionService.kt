@@ -67,7 +67,7 @@ class AuctionServiceImpl(
             //FR-5.7.2.6.6
             tender = record.tender.copy(
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
-                auctionPeriod = data.auctionPeriod
+                auctionPeriod = data.tender.auctionPeriod
                     .let { auctionPeriod ->
                         Period(
                             startDate = auctionPeriod.startDate,
@@ -589,7 +589,7 @@ class AuctionServiceImpl(
     )
 
     private fun ElectronicAuctions.updateElectronicAuctions(data: AuctionPeriodEndData): ElectronicAuctions {
-        val electronicAuctionsByIds = data.electronicAuctions
+        val electronicAuctionsByIds = data.tender.electronicAuctions
             .details
             .associateBy {
                 it.id

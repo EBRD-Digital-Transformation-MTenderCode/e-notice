@@ -229,6 +229,94 @@
       }
     ]
   },
+  "tender": {
+    "auctionPeriod": {
+      "startDate": "2011-06-01T17:59:00Z",
+      "endDate": "2011-06-01T17:59:00Z"
+    },
+    "electronicAuctions": {
+      "details": [
+        {
+          "id": "c15501a1-8be0-4734-bd5c-000000000888",
+          "relatedLot": "39614de2-c348-11e8-987b-a7ad59777db6",
+          "auctionPeriod": {
+            "startDate": "2011-06-01T17:59:00Z",
+            "endDate": "2011-06-01T17:59:00Z"
+          },
+          "electronicAuctionModalities": [
+            {
+              "url": "https://eauction.mtender.md/cpid/ocid",
+              "eligibleMinimumDifference": {
+                "amount": 150.00,
+                "currency": "MDL"
+              }
+            }
+          ],
+          "electronicAuctionProgress": [
+            {
+              "id": "1",
+              "period": {
+                "startDate": "2011-06-01T17:59:00Z",
+                "endDate": "2011-06-01T17:59:00Z"
+              },
+              "breakdown": [
+                {
+                  "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
+                  "status": "met",
+                  "dateMet": "2011-06-01T17:59:00Z",
+                  "value": {
+                    "amount": 1001.00,
+                    "currency": ""
+                  }
+                },
+                {
+                  "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
+                  "status": "met",
+                  "dateMet": "2011-06-01T17:59:00Z",
+                  "value": {
+                    "amount": 1002.00,
+                    "currency": ""
+                  }
+                },
+                {
+                  "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
+                  "status": "met",
+                  "dateMet": "2011-06-01T17:59:00Z",
+                  "value": {
+                    "amount": 1000.00,
+                    "currency": ""
+                  }
+                }
+              ]
+            }
+          ],
+          "electronicAuctionResult": [
+            {
+              "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
+              "value": {
+                "amount": 981.00,
+                "currency": ""
+              }
+            },
+            {
+              "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
+              "value": {
+                "amount": 980.00,
+                "currency": ""
+              }
+            },
+            {
+              "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
+              "value": {
+                "amount": 990.00,
+                "currency": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   "awards": [
     {
       "id": "e7efcb50-92b7-499b-af0d-1fe73a572a38",
@@ -258,10 +346,6 @@
   "awardPeriod": {
     "startDate": "2011-04-10T05:19:01Z"
   },
-  "auctionPeriod": {
-    "startDate": "2011-06-01T17:59:00Z",
-    "endDate": "2011-06-01T17:59:00Z"
-  },
   "documents": [
     {
       "documentType": "x_technicalDocuments",
@@ -274,87 +358,5 @@
       "datePublished": "2011-08-01T16:09:00Z",
       "url": "http://com.example"
     }
-  ],
-  "electronicAuctions": {
-    "details": [
-      {
-        "id": "c15501a1-8be0-4734-bd5c-000000000888",
-        "relatedLot": "39614de2-c348-11e8-987b-a7ad59777db6",
-        "auctionPeriod": {
-          "startDate": "2011-06-01T17:59:00Z",
-          "endDate": "2011-06-01T17:59:00Z"
-        },
-        "electronicAuctionModalities": [
-          {
-            "url": "https://eauction.mtender.md/cpid/ocid",
-            "eligibleMinimumDifference": {
-              "amount": 150.00,
-              "currency": "MDL"
-            }
-          }
-        ],
-        "electronicAuctionProgress": [
-          {
-            "id": "1",
-            "period": {
-              "startDate": "2011-06-01T17:59:00Z",
-              "endDate": "2011-06-01T17:59:00Z"
-            },
-            "breakdown": [
-              {
-                "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
-                "status": "met",
-                "dateMet": "2011-06-01T17:59:00Z",
-                "value": {
-                  "amount": 1001.00,
-                  "currency": ""
-                }
-              },
-              {
-                "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
-                "status": "met",
-                "dateMet": "2011-06-01T17:59:00Z",
-                "value": {
-                  "amount": 1002.00,
-                  "currency": ""
-                }
-              },
-              {
-                "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
-                "status": "met",
-                "dateMet": "2011-06-01T17:59:00Z",
-                "value": {
-                  "amount": 1000.00,
-                  "currency": ""
-                }
-              }
-            ]
-          }
-        ],
-        "electronicAuctionResult": [
-          {
-            "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
-            "value": {
-              "amount": 981.00,
-              "currency": ""
-            }
-          },
-          {
-            "relatedBid": "fcecd630-c63b-11e8-a76b-31c7a0ba1585",
-            "value": {
-              "amount": 980.00,
-              "currency": ""
-            }
-          },
-          {
-            "relatedBid": "d80449c0-cc80-11e8-bfb9-f9c4db0b58fc",
-            "value": {
-              "amount": 990.00,
-              "currency": ""
-            }
-          }
-        ]
-      }
-    ]
-  }
+  ]
 }

@@ -26,11 +26,10 @@ data class AuctionPeriodEndData(
     val tenderStatusDetails: TenderStatusDetails,
     val bids: List<Bid>,
     val criteria: Criteria?,
+    val tender: Tender,
     val awards: List<Award>,
     val awardPeriod: AwardPeriod,
-    val auctionPeriod: AuctionPeriod,
-    val documents: List<Document>,
-    val electronicAuctions: ElectronicAuctions
+    val documents: List<Document>
 ) {
 
     data class Bid(
@@ -294,6 +293,62 @@ data class AuctionPeriodEndData(
         )
     }
 
+    data class Tender(
+        val auctionPeriod: AuctionPeriod,
+        val electronicAuctions: ElectronicAuctions
+    ) {
+        data class AuctionPeriod(
+            val startDate: LocalDateTime,
+            val endDate: LocalDateTime
+        )
+
+        data class ElectronicAuctions(
+            val details: List<Detail>
+        ) {
+            data class Detail(
+                val id: String,
+                val relatedLot: LotId,
+                val auctionPeriod: AuctionPeriod,
+                val electronicAuctionModalities: List<ElectronicAuctionModality>,
+                val electronicAuctionProgress: List<ElectronicAuctionProgres>,
+                val electronicAuctionResult: List<ElectronicAuctionResult>
+            ) {
+                data class ElectronicAuctionModality(
+                    val url: String,
+                    val eligibleMinimumDifference: Money
+                )
+
+                data class ElectronicAuctionResult(
+                    val relatedBid: BidId,
+                    val value: Money
+                )
+
+                data class AuctionPeriod(
+                    val startDate: LocalDateTime,
+                    val endDate: LocalDateTime
+                )
+
+                data class ElectronicAuctionProgres(
+                    val id: String,
+                    val period: Period,
+                    val breakdowns: List<Breakdown>
+                ) {
+                    data class Period(
+                        val startDate: LocalDateTime,
+                        val endDate: LocalDateTime
+                    )
+
+                    data class Breakdown(
+                        val relatedBid: BidId,
+                        val status: BreakdownStatus,
+                        val dateMet: LocalDateTime,
+                        val value: Money
+                    )
+                }
+            }
+        }
+    }
+
     data class Award(
         val id: AwardId,
         val date: LocalDateTime,
@@ -316,11 +371,6 @@ data class AuctionPeriodEndData(
         val startDate: LocalDateTime
     )
 
-    data class AuctionPeriod(
-        val startDate: LocalDateTime,
-        val endDate: LocalDateTime
-    )
-
     data class Document(
         val documentType: BidDocumentType,
         val id: DocumentId,
@@ -331,49 +381,4 @@ data class AuctionPeriodEndData(
         val url: String
     )
 
-    data class ElectronicAuctions(
-        val details: List<Detail>
-    ) {
-        data class Detail(
-            val id: String,
-            val relatedLot: LotId,
-            val auctionPeriod: AuctionPeriod,
-            val electronicAuctionModalities: List<ElectronicAuctionModality>,
-            val electronicAuctionProgress: List<ElectronicAuctionProgres>,
-            val electronicAuctionResult: List<ElectronicAuctionResult>
-        ) {
-            data class ElectronicAuctionModality(
-                val url: String,
-                val eligibleMinimumDifference: Money
-            )
-
-            data class ElectronicAuctionResult(
-                val relatedBid: BidId,
-                val value: Money
-            )
-
-            data class AuctionPeriod(
-                val startDate: LocalDateTime,
-                val endDate: LocalDateTime
-            )
-
-            data class ElectronicAuctionProgres(
-                val id: String,
-                val period: Period,
-                val breakdowns: List<Breakdown>
-            ) {
-                data class Period(
-                    val startDate: LocalDateTime,
-                    val endDate: LocalDateTime
-                )
-
-                data class Breakdown(
-                    val relatedBid: BidId,
-                    val status: BreakdownStatus,
-                    val dateMet: LocalDateTime,
-                    val value: Money
-                )
-            }
-        }
-    }
 }

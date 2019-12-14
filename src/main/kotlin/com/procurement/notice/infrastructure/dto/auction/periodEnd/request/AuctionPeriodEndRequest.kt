@@ -41,14 +41,14 @@ data class AuctionPeriodEndRequest(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("criteria") @param:JsonProperty("criteria") val criteria: Criteria?,
 
+    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender,
+
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,
-    @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?,
+    @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?
 
-    @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
 ) {
 
     data class Bid(
@@ -408,6 +408,89 @@ data class AuctionPeriodEndRequest(
         )
     }
 
+    data class Tender(
+        @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
+        @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
+    ) {
+        data class AuctionPeriod(
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
+
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
+        )
+
+        data class ElectronicAuctions(
+            @field:JsonProperty("details") @param:JsonProperty("details") val details: List<Detail>
+        ) {
+            data class Detail(
+                @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+                @field:JsonProperty("relatedLot") @param:JsonProperty("relatedLot") val relatedLot: LotId,
+                @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
+                @field:JsonProperty("electronicAuctionModalities") @param:JsonProperty("electronicAuctionModalities") val electronicAuctionModalities: List<ElectronicAuctionModality>,
+                @field:JsonProperty("electronicAuctionProgress") @param:JsonProperty("electronicAuctionProgress") val electronicAuctionProgress: List<ElectronicAuctionProgres>,
+                @field:JsonProperty("electronicAuctionResult") @param:JsonProperty("electronicAuctionResult") val electronicAuctionResult: List<ElectronicAuctionResult>
+            ) {
+                data class ElectronicAuctionModality(
+                    @field:JsonProperty("url") @param:JsonProperty("url") val url: String,
+
+                    @JsonDeserialize(using = MoneyDeserializer::class)
+                    @JsonSerialize(using = MoneySerializer::class)
+                    @field:JsonProperty("eligibleMinimumDifference") @param:JsonProperty("eligibleMinimumDifference") val eligibleMinimumDifference: Money
+                )
+
+                data class ElectronicAuctionResult(
+                    @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
+
+                    @JsonDeserialize(using = MoneyDeserializer::class)
+                    @JsonSerialize(using = MoneySerializer::class)
+                    @field:JsonProperty("value") @param:JsonProperty("value") val value: Money
+                )
+
+                data class AuctionPeriod(
+                    @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                    @JsonSerialize(using = JsonDateTimeSerializer::class)
+                    @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
+
+                    @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                    @JsonSerialize(using = JsonDateTimeSerializer::class)
+                    @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
+                )
+
+                data class ElectronicAuctionProgres(
+                    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+                    @field:JsonProperty("period") @param:JsonProperty("period") val period: Period,
+                    @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdowns: List<Breakdown>
+                ) {
+                    data class Period(
+                        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                        @JsonSerialize(using = JsonDateTimeSerializer::class)
+                        @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
+
+                        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                        @JsonSerialize(using = JsonDateTimeSerializer::class)
+                        @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
+                    )
+
+                    data class Breakdown(
+                        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
+                        @field:JsonProperty("status") @param:JsonProperty("status") val status: BreakdownStatus,
+
+                        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+                        @JsonSerialize(using = JsonDateTimeSerializer::class)
+                        @field:JsonProperty("dateMet") @param:JsonProperty("dateMet") val dateMet: LocalDateTime,
+
+                        @JsonDeserialize(using = MoneyDeserializer::class)
+                        @JsonSerialize(using = MoneySerializer::class)
+                        @field:JsonProperty("value") @param:JsonProperty("value") val value: Money
+                    )
+                }
+            }
+        }
+    }
+
     data class Award(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: AwardId,
 
@@ -445,16 +528,6 @@ data class AuctionPeriodEndRequest(
         @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime
     )
 
-    data class AuctionPeriod(
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
-        @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
-
-        @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @JsonSerialize(using = JsonDateTimeSerializer::class)
-        @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
-    )
-
     data class Document(
         @field:JsonProperty("documentType") @param:JsonProperty("documentType") val documentType: BidDocumentType,
         @field:JsonProperty("id") @param:JsonProperty("id") val id: DocumentId,
@@ -475,71 +548,4 @@ data class AuctionPeriodEndRequest(
         @field:JsonProperty("url") @param:JsonProperty("url") val url: String
     )
 
-    data class ElectronicAuctions(
-        @field:JsonProperty("details") @param:JsonProperty("details") val details: List<Detail>
-    ) {
-        data class Detail(
-            @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
-            @field:JsonProperty("relatedLot") @param:JsonProperty("relatedLot") val relatedLot: LotId,
-            @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
-            @field:JsonProperty("electronicAuctionModalities") @param:JsonProperty("electronicAuctionModalities") val electronicAuctionModalities: List<ElectronicAuctionModality>,
-            @field:JsonProperty("electronicAuctionProgress") @param:JsonProperty("electronicAuctionProgress") val electronicAuctionProgress: List<ElectronicAuctionProgres>,
-            @field:JsonProperty("electronicAuctionResult") @param:JsonProperty("electronicAuctionResult") val electronicAuctionResult: List<ElectronicAuctionResult>
-        ) {
-            data class ElectronicAuctionModality(
-                @field:JsonProperty("url") @param:JsonProperty("url") val url: String,
-
-                @JsonDeserialize(using = MoneyDeserializer::class)
-                @JsonSerialize(using = MoneySerializer::class)
-                @field:JsonProperty("eligibleMinimumDifference") @param:JsonProperty("eligibleMinimumDifference") val eligibleMinimumDifference: Money
-            )
-
-            data class ElectronicAuctionResult(
-                @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
-
-                @JsonDeserialize(using = MoneyDeserializer::class)
-                @JsonSerialize(using = MoneySerializer::class)
-                @field:JsonProperty("value") @param:JsonProperty("value") val value: Money
-            )
-
-            data class AuctionPeriod(
-                @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                @JsonSerialize(using = JsonDateTimeSerializer::class)
-                @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
-
-                @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                @JsonSerialize(using = JsonDateTimeSerializer::class)
-                @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
-            )
-
-            data class ElectronicAuctionProgres(
-                @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
-                @field:JsonProperty("period") @param:JsonProperty("period") val period: Period,
-                @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdowns: List<Breakdown>
-            ) {
-                data class Period(
-                    @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                    @JsonSerialize(using = JsonDateTimeSerializer::class)
-                    @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime,
-
-                    @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                    @JsonSerialize(using = JsonDateTimeSerializer::class)
-                    @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime
-                )
-
-                data class Breakdown(
-                    @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: BidId,
-                    @field:JsonProperty("status") @param:JsonProperty("status") val status: BreakdownStatus,
-
-                    @JsonDeserialize(using = JsonDateTimeDeserializer::class)
-                    @JsonSerialize(using = JsonDateTimeSerializer::class)
-                    @field:JsonProperty("dateMet") @param:JsonProperty("dateMet") val dateMet: LocalDateTime,
-
-                    @JsonDeserialize(using = MoneyDeserializer::class)
-                    @JsonSerialize(using = MoneySerializer::class)
-                    @field:JsonProperty("value") @param:JsonProperty("value") val value: Money
-                )
-            }
-        }
-    }
 }

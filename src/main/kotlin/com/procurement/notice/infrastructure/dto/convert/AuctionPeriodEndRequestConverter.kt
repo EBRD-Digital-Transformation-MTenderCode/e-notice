@@ -406,6 +406,103 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                         }
                 )
             },
+        tender = this.tender
+            .let { tender ->
+                AuctionPeriodEndData.Tender(
+                    auctionPeriod = tender.auctionPeriod
+                        .let { auctionPeriod ->
+                            AuctionPeriodEndData.Tender.AuctionPeriod(
+                                startDate = auctionPeriod.startDate,
+                                endDate = auctionPeriod.endDate
+                            )
+                        },
+                    electronicAuctions = tender.electronicAuctions
+                        .let { electronicAuctions ->
+                            AuctionPeriodEndData.Tender.ElectronicAuctions(
+                                details = electronicAuctions.details
+                                    .mapIfNotEmpty { detail ->
+                                        AuctionPeriodEndData.Tender.ElectronicAuctions.Detail(
+                                            id = detail.id,
+                                            relatedLot = detail.relatedLot,
+                                            auctionPeriod = detail.auctionPeriod
+                                                .let { auctionPeriod ->
+                                                    AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.AuctionPeriod(
+                                                        startDate = auctionPeriod.startDate,
+                                                        endDate = auctionPeriod.endDate
+                                                    )
+                                                },
+                                            electronicAuctionModalities = detail.electronicAuctionModalities
+                                                .mapIfNotEmpty { electronicAuctionModality ->
+                                                    AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionModality(
+                                                        eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference,
+                                                        url = electronicAuctionModality.url
+                                                    )
+                                                }
+                                                .orThrow {
+                                                    ErrorException(
+                                                        error = ErrorType.IS_EMPTY,
+                                                        message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionModalities'."
+                                                    )
+                                                },
+                                            electronicAuctionProgress = detail.electronicAuctionProgress
+                                                .mapIfNotEmpty { progress ->
+                                                    AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionProgres(
+                                                        id = progress.id,
+                                                        period = progress.period
+                                                            .let { period ->
+                                                                AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionProgres.Period(
+                                                                    startDate = period.startDate,
+                                                                    endDate = period.endDate
+                                                                )
+                                                            },
+                                                        breakdowns = progress.breakdowns
+                                                            .mapIfNotEmpty { breakdown ->
+                                                                AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionProgres.Breakdown(
+                                                                    relatedBid = breakdown.relatedBid,
+                                                                    status = breakdown.status,
+                                                                    dateMet = breakdown.dateMet,
+                                                                    value = breakdown.value
+                                                                )
+                                                            }
+                                                            .orThrow {
+                                                                ErrorException(
+                                                                    error = ErrorType.IS_EMPTY,
+                                                                    message = "The 'electronicAuctionProgress' contain empty list of the 'breakdown'."
+                                                                )
+                                                            }
+                                                    )
+                                                }
+                                                .orThrow {
+                                                    ErrorException(
+                                                        error = ErrorType.IS_EMPTY,
+                                                        message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionProgress'."
+                                                    )
+                                                },
+                                            electronicAuctionResult = detail.electronicAuctionResult
+                                                .mapIfNotEmpty { result ->
+                                                    AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionResult(
+                                                        relatedBid = result.relatedBid,
+                                                        value = result.value
+                                                    )
+                                                }
+                                                .orThrow {
+                                                    ErrorException(
+                                                        error = ErrorType.IS_EMPTY,
+                                                        message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionResult'."
+                                                    )
+                                                }
+                                        )
+                                    }
+                                    .orThrow {
+                                        ErrorException(
+                                            error = ErrorType.IS_EMPTY,
+                                            message = "The 'electronicAuctions' contain empty list of the 'details'."
+                                        )
+                                    }
+                            )
+                        }
+                )
+            },
         awards = this.awards
             .mapIfNotEmpty { award ->
                 AuctionPeriodEndData.Award(
@@ -454,13 +551,6 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                     startDate = awardPeriod.startDate
                 )
             },
-        auctionPeriod = this.auctionPeriod
-            .let { auctionPeriod ->
-                AuctionPeriodEndData.AuctionPeriod(
-                    startDate = auctionPeriod.startDate,
-                    endDate = auctionPeriod.endDate
-                )
-            },
         documents = this.documents
             .errorIfEmpty {
                 ErrorException(
@@ -487,87 +577,5 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                     url = document.url
                 )
             }
-            .orEmpty(),
-        electronicAuctions = AuctionPeriodEndData.ElectronicAuctions(
-            details = this.electronicAuctions.details
-                .mapIfNotEmpty { detail ->
-                    AuctionPeriodEndData.ElectronicAuctions.Detail(
-                        id = detail.id,
-                        relatedLot = detail.relatedLot,
-                        auctionPeriod = detail.auctionPeriod
-                            .let { auctionPeriod ->
-                                AuctionPeriodEndData.ElectronicAuctions.Detail.AuctionPeriod(
-                                    startDate = auctionPeriod.startDate,
-                                    endDate = auctionPeriod.endDate
-                                )
-                            },
-                        electronicAuctionModalities = detail.electronicAuctionModalities
-                            .mapIfNotEmpty { electronicAuctionModality ->
-                                AuctionPeriodEndData.ElectronicAuctions.Detail.ElectronicAuctionModality(
-                                    eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference,
-                                    url = electronicAuctionModality.url
-                                )
-                            }
-                            .orThrow {
-                                ErrorException(
-                                    error = ErrorType.IS_EMPTY,
-                                    message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionModalities'."
-                                )
-                            },
-                        electronicAuctionProgress = detail.electronicAuctionProgress
-                            .mapIfNotEmpty { progress ->
-                                AuctionPeriodEndData.ElectronicAuctions.Detail.ElectronicAuctionProgres(
-                                    id = progress.id,
-                                    period = progress.period
-                                        .let { period ->
-                                            AuctionPeriodEndData.ElectronicAuctions.Detail.ElectronicAuctionProgres.Period(
-                                                startDate = period.startDate,
-                                                endDate = period.endDate
-                                            )
-                                        },
-                                    breakdowns = progress.breakdowns
-                                        .mapIfNotEmpty { breakdown ->
-                                            AuctionPeriodEndData.ElectronicAuctions.Detail.ElectronicAuctionProgres.Breakdown(
-                                                relatedBid = breakdown.relatedBid,
-                                                status = breakdown.status,
-                                                dateMet = breakdown.dateMet,
-                                                value = breakdown.value
-                                            )
-                                        }
-                                        .orThrow {
-                                            ErrorException(
-                                                error = ErrorType.IS_EMPTY,
-                                                message = "The 'electronicAuctionProgress' contain empty list of the 'breakdown'."
-                                            )
-                                        }
-                                )
-                            }
-                            .orThrow {
-                                ErrorException(
-                                    error = ErrorType.IS_EMPTY,
-                                    message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionProgress'."
-                                )
-                            },
-                        electronicAuctionResult = detail.electronicAuctionResult
-                            .mapIfNotEmpty { result ->
-                                AuctionPeriodEndData.ElectronicAuctions.Detail.ElectronicAuctionResult(
-                                    relatedBid = result.relatedBid,
-                                    value = result.value
-                                )
-                            }
-                            .orThrow {
-                                ErrorException(
-                                    error = ErrorType.IS_EMPTY,
-                                    message = "The 'electronicAuctions' contain empty list of the 'electronicAuctionResult'."
-                                )
-                            }
-                    )
-                }
-                .orThrow {
-                    ErrorException(
-                        error = ErrorType.IS_EMPTY,
-                        message = "The 'electronicAuctions' contain empty list of the 'details'."
-                    )
-                }
-        )
+            .orEmpty()
     )
