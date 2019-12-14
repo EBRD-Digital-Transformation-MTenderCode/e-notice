@@ -1,5 +1,7 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.application.service.auction.AuctionPeriodEndContext
+import com.procurement.notice.application.service.auction.AuctionService
 import com.procurement.notice.application.service.award.AwardService
 import com.procurement.notice.application.service.award.CreateAwardContext
 import com.procurement.notice.application.service.award.CreateAwardData
@@ -28,6 +30,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.infrastructure.dto.auction.periodEnd.request.AuctionPeriodEndRequest
 import com.procurement.notice.infrastructure.dto.award.AwardConsiderationRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
 import com.procurement.notice.infrastructure.dto.award.EndAwardPeriodRequest
@@ -128,7 +131,8 @@ class CommandService(
     private val tenderCancellationService: TenderCancellationService,
     private val enquiryService: EnquiryService,
     private val contractingService: ContractingService,
-    private val awardService: AwardService
+    private val awardService: AwardService,
+    private val auctionService: AuctionService
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(CommandService::class.java)
@@ -375,13 +379,23 @@ class CommandService(
                 )
             }
 
-            AUCTION_PERIOD_END -> tenderService.auctionPeriodEnd(
-                cpid = cpId,
-                ocid = ocId!!,
-                stage = stage,
-                releaseDate = releaseDate,
-                data = data
-            )
+            AUCTION_PERIOD_END -> {
+                val context = AuctionPeriodEndContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    releaseDate = releaseDate
+                )
+                val request = toObject(AuctionPeriodEndRequest::class.java, cm.data)
+                auctionService.periodEnd(context = context, data = request.convert())
+
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocid
+                    )
+                )
+            }
 
             TENDER_PERIOD_END_EV -> {
                 val context = TenderPeriodEndContext(

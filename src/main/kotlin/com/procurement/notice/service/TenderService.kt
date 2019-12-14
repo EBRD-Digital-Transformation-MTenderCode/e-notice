@@ -54,7 +54,6 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.ocds.toValue
-import com.procurement.notice.model.tender.dto.AuctionPeriodEndDto
 import com.procurement.notice.model.tender.dto.AwardByBidDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndDto
@@ -1143,30 +1142,6 @@ class TenderService(
             ?.toList()
     }
 
-    fun auctionPeriodEnd(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val dto = toObject(AuctionPeriodEndDto::class.java, data.toString())
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        val recordAwards = record.awards ?: setOf<Award>()
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.AWARD)
-            tender.awardPeriod = dto.awardPeriod
-            tender.statusDetails = dto.tenderStatusDetails
-            tender.auctionPeriod = dto.tender.auctionPeriod
-            tender.electronicAuctions = updateElectronicAuctions(dto = dto, record = record)
-            if (dto.awards.isNotEmpty()) awards = recordAwards.plus(dto.awards).toHashSet()
-            if (dto.bids.isNotEmpty() && dto.documents.isNotEmpty()) updateBidsDocuments(dto.bids, dto.documents)
-            if (dto.bids.isNotEmpty()) bids = Bids(null, dto.bids)
-        }
-        organizationService.processRecordPartiesFromBids(record)
-        organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
-    }
-
-
     fun suspendTender(cpid: String,
                       ocid: String,
                       stage: String,
@@ -1991,39 +1966,6 @@ class TenderService(
                 tenderDocuments.firstOrNull { it.id == document.id }?.apply {
                     datePublished = document.datePublished
                     url = document.url
-                }
-            }
-        }
-    }
-
-    private fun updateElectronicAuctions(dto: AuctionPeriodEndDto, record: Record): ElectronicAuctions? {
-        val electronicAuctions: ElectronicAuctions = record.tender.electronicAuctions
-            ?.takeIf { it.details.isNotEmpty() }
-            ?: return record.tender.electronicAuctions
-
-        val requestElectronicAuctionsDetailsByIds: Map<String, ElectronicAuctionsDetails> =
-            dto.tender.electronicAuctions.details.associateBy { it.id!! }
-
-        return ElectronicAuctions(
-            details = electronicAuctions.details
-                .asSequence()
-                .map { detail ->
-                    requestElectronicAuctionsDetailsByIds[detail.id!!] ?: detail
-                }
-                .toSet()
-        )
-    }
-
-    private fun updateBidsDocuments(bids: HashSet<Bid>, documents: HashSet<Document>) {
-        bids.forEach { bid ->
-            bid.documents?.let { bidDocuments ->
-                documents.forEach { document ->
-                    bidDocuments.forEach { bidDocument ->
-                        if (bidDocument.id == document.id) {
-                            bidDocument.datePublished = document.datePublished
-                            bidDocument.url = document.url
-                        }
-                    }
                 }
             }
         }
