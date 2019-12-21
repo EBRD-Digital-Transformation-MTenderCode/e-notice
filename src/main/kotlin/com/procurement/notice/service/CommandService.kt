@@ -634,7 +634,7 @@ class CommandService(
                                     valueAddedTaxincluded = value.valueAddedTaxincluded
                                 )
                             },
-                            awardID = contract.awardID,
+                            awardId = contract.awardId,
                             confirmationRequests = contract.confirmationRequests.map { confirmationRequest ->
                                 TreasuryClarificationData.Contract.ConfirmationRequest(
                                     title = confirmationRequest.title,

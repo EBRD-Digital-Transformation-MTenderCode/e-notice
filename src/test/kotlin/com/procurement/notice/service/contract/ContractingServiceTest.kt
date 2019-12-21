@@ -1,19 +1,19 @@
 package com.procurement.notice.service.contract
 
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.json.loadJson
 import com.procurement.notice.model.contract.ContractRecord
-import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.record.Record
@@ -22,7 +22,6 @@ import com.procurement.notice.service.RelatedProcessService
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toObject
 import org.junit.jupiter.api.Assertions.assertEquals
-
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -194,7 +193,7 @@ internal class ContractingServiceTest {
                         valueAddedTaxincluded = value.valueAddedTaxincluded
                     )
                 },
-                awardID = contract.awardID,
+                awardId = contract.awardId,
                 confirmationRequests = contract.confirmationRequests.map { confirmationRequest ->
                     TreasuryClarificationData.Contract.ConfirmationRequest(
                         title = confirmationRequest.title,

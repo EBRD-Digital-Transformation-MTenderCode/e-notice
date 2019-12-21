@@ -11,7 +11,7 @@ data class TreasuryClarificationData(
     data class Contract(
         val id: String,
         val date: LocalDateTime,
-        val awardID: UUID,
+        val awardId: UUID,
         val status: String,
         val statusDetails: String,
         val title: String,

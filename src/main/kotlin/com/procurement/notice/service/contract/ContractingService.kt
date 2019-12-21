@@ -572,7 +572,7 @@ class ContractingService(
                 )
             },
             agreedMetrics = null,
-            awardId = contractData.awardID,
+            awardId = contractData.awardId,
             confirmationRequests = contractData.confirmationRequests.map { confirmationRequest ->
                 ConfirmationRequest(
                     title = confirmationRequest.title,

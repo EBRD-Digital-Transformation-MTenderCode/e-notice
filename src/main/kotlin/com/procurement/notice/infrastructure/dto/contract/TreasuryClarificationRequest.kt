@@ -18,7 +18,7 @@ data class TreasuryClarificationRequest(
     data class Contract(
         @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
         @param:JsonProperty("date") @field:JsonProperty("date") val date: LocalDateTime,
-        @param:JsonProperty("awardID") @field:JsonProperty("awardID") val awardID: UUID,
+        @param:JsonProperty("awardId") @field:JsonProperty("awardId") val awardId: UUID,
         @param:JsonProperty("status") @field:JsonProperty("status") val status: String,
         @param:JsonProperty("statusDetails") @field:JsonProperty("statusDetails") val statusDetails: String,
         @param:JsonProperty("title") @field:JsonProperty("title") val title: String,

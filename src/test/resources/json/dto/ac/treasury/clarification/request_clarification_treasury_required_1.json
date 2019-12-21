@@ -2,7 +2,7 @@
   "contract": {
     "id": "request.contract.id",
     "date": "2019-11-15T06:15:00Z",
-    "awardID": "5711c5eb-6c39-4e28-942b-032c6021192e",
+    "awardId": "5711c5eb-6c39-4e28-942b-032c6021192e",
     "status": "active",
     "statusDetails":"empty",
     "title": "request.contract.title",
