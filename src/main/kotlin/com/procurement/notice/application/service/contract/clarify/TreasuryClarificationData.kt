@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.contract.clarify
 
+import com.procurement.notice.domain.model.award.AwardId
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -11,7 +12,7 @@ data class TreasuryClarificationData(
     data class Contract(
         val id: String,
         val date: LocalDateTime,
-        val awardId: UUID,
+        val awardId: AwardId,
         val status: String,
         val statusDetails: String,
         val title: String,

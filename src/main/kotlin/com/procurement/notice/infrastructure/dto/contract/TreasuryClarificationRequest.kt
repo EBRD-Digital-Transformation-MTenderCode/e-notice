@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.infrastructure.bind.amount.AmountDeserializer
 import com.procurement.notice.infrastructure.bind.amount.AmountSerializer
 import java.math.BigDecimal
@@ -18,7 +19,7 @@ data class TreasuryClarificationRequest(
     data class Contract(
         @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
         @param:JsonProperty("date") @field:JsonProperty("date") val date: LocalDateTime,
-        @param:JsonProperty("awardId") @field:JsonProperty("awardId") val awardId: UUID,
+        @param:JsonProperty("awardId") @field:JsonProperty("awardId") val awardId: AwardId,
         @param:JsonProperty("status") @field:JsonProperty("status") val status: String,
         @param:JsonProperty("statusDetails") @field:JsonProperty("statusDetails") val statusDetails: String,
         @param:JsonProperty("title") @field:JsonProperty("title") val title: String,
