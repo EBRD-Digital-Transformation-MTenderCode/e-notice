@@ -599,6 +599,7 @@ class CommandService(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
+                    pmd = cm.pmd,
                     releaseDate = releaseDate
                 )
                 val clarificationRequest = toObject(TreasuryClarificationRequest::class.java, data)

@@ -14,6 +14,7 @@ import com.procurement.notice.application.service.contract.clarify.TreasuryClari
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -490,8 +491,20 @@ class ContractingService(
             clarificationData = data
         )
 
-        val entityForEvaluationOrNegotiationRelease =
-            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
 
         val updatedRecord = getUpdatedRecord(
             clarificationContext = context,
