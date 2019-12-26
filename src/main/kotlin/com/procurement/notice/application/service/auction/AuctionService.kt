@@ -666,7 +666,7 @@ class AuctionServiceImpl(
     private fun AuctionPeriodEndData.Criteria.convert() = Criteria(
         id = this.id,
         title = this.title,
-        relatesTo = this.relatedTo?.value,
+        relatesTo = this.relatesTo?.value,
         relatedItem = this.relatedItem,
         source = this.source,
         description = this.description,

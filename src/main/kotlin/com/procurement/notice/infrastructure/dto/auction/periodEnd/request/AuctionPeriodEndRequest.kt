@@ -388,7 +388,7 @@ data class AuctionPeriodEndRequest(
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("relatedTo") @param:JsonProperty("relatedTo") val relatedTo: CriteriaRelatesTo?,
+        @field:JsonProperty("relatesTo") @param:JsonProperty("relatesTo") val relatesTo: CriteriaRelatesTo?,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?,

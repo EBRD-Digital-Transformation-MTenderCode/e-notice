@@ -281,7 +281,7 @@ data class AuctionPeriodEndData(
         val title: String,
         val source: CriteriaSource?,
         val description: String?,
-        val relatedTo: CriteriaRelatesTo?,
+        val relatesTo: CriteriaRelatesTo?,
         val relatedItem: String?,
         val requirementGroups: List<RequirementGroup>
     ) {
