@@ -10,6 +10,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.model.ocds.ExpectedValue
 import com.procurement.notice.model.ocds.MaxValue
 import com.procurement.notice.model.ocds.MinValue
+import com.procurement.notice.model.ocds.NoneValue
 import com.procurement.notice.model.ocds.RangeValue
 import com.procurement.notice.model.ocds.Requirement
 import java.io.IOException
@@ -70,10 +71,10 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
                     is MaxValue.AsNumber       -> {
                         requirementNode.put("maxValue", requirement.value.value.jsonFormat())
                     }
-                    is MaxValue.AsInteger      -> {
+                    is MaxValue.AsInteger -> {
                         requirementNode.put("maxValue", requirement.value.value)
                     }
-
+                    is NoneValue -> Unit
                 }
 
                 requirementNode
