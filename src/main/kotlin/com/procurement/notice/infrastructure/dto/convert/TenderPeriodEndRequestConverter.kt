@@ -354,6 +354,7 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                     id = criteria.id,
                     title = criteria.title,
                     source = criteria.source,
+                    relatesTo = criteria.relatesTo,
                     description = criteria.description,
                     requirementGroups = criteria.requirementGroups
                         .mapIfNotEmpty { requirementGroup ->
