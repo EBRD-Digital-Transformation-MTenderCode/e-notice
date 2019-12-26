@@ -13,6 +13,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.model.ocds.ExpectedValue
 import com.procurement.notice.model.ocds.MaxValue
 import com.procurement.notice.model.ocds.MinValue
+import com.procurement.notice.model.ocds.NoneValue
 import com.procurement.notice.model.ocds.RangeValue
 import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.RequirementValue
@@ -50,43 +51,53 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
             }
         }
 
-        private fun requirementValue(requirementNode: JsonNode): RequirementValue? {
+        private fun requirementValue(requirementNode: JsonNode): RequirementValue {
             val dataType = RequirementDataType.fromString(requirementNode.get("dataType").asText())
-            return if (isExpectedValue(requirementNode)) {
-                when (dataType) {
-                    RequirementDataType.BOOLEAN -> ExpectedValue.of(requirementNode.get("expectedValue").booleanValue())
-                    RequirementDataType.STRING -> ExpectedValue.of(requirementNode.get("expectedValue").textValue())
-                    RequirementDataType.NUMBER -> ExpectedValue.of(BigDecimal(requirementNode.get("expectedValue").asText()))
-                    RequirementDataType.INTEGER -> ExpectedValue.of(requirementNode.get("expectedValue").longValue())
+            return when {
+                isExpectedValue(requirementNode) -> {
+                    when (dataType) {
+                        RequirementDataType.BOOLEAN -> ExpectedValue.of(requirementNode.get("expectedValue").booleanValue())
+                        RequirementDataType.STRING -> ExpectedValue.of(requirementNode.get("expectedValue").textValue())
+                        RequirementDataType.NUMBER -> ExpectedValue.of(BigDecimal(requirementNode.get("expectedValue").asText()))
+                        RequirementDataType.INTEGER -> ExpectedValue.of(requirementNode.get("expectedValue").longValue())
+                    }
                 }
-            } else if (isRange(requirementNode)) {
-                when (dataType) {
-                    RequirementDataType.NUMBER ->  RangeValue.of(
-                        BigDecimal(requirementNode.get("minValue").asText()),
-                        BigDecimal(requirementNode.get("maxValue").asText())
+                isRange(requirementNode) -> {
+                    when (dataType) {
+                        RequirementDataType.NUMBER -> RangeValue.of(
+                            BigDecimal(requirementNode.get("minValue").asText()),
+                            BigDecimal(requirementNode.get("maxValue").asText())
+                        )
+                        RequirementDataType.INTEGER -> RangeValue.of(
+                            requirementNode.get("minValue").longValue(),
+                            requirementNode.get("maxValue").longValue()
+                        )
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                    }
+                }
+                isOnlyMax(requirementNode) -> {
+                    when (dataType) {
+                        RequirementDataType.NUMBER -> MaxValue.of(BigDecimal(requirementNode.get("maxValue").asText()))
+                        RequirementDataType.INTEGER -> MaxValue.of(requirementNode.get("maxValue").longValue())
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                    }
+                }
+                isOnlyMin(requirementNode) -> {
+                    when (dataType) {
+                        RequirementDataType.NUMBER -> MinValue.of(BigDecimal(requirementNode.get("minValue").asText()))
+                        RequirementDataType.INTEGER -> MinValue.of(requirementNode.get("minValue").longValue())
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                    }
+                }
+                isNotBounded(requirementNode) -> {
+                    NoneValue
+                }
+                else -> {
+                    throw ErrorException(
+                        ErrorType.INVALID_REQUIREMENT_VALUE,
+                        message = "Expected value cannot exists with Min/MaxVale"
                     )
-                    RequirementDataType.INTEGER -> RangeValue.of(
-                        requirementNode.get("minValue").longValue(),
-                        requirementNode.get("maxValue").longValue()
-                    )
-                    RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
                 }
-            } else if (isOnlyMax(requirementNode)) {
-                when (dataType) {
-                    RequirementDataType.NUMBER ->  MaxValue.of(BigDecimal(requirementNode.get("maxValue").asText()))
-                    RequirementDataType.INTEGER -> MaxValue.of(requirementNode.get("maxValue").longValue())
-                    RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
-                }
-            } else if (isOnlyMin(requirementNode)) {
-                when (dataType) {
-                    RequirementDataType.NUMBER -> MinValue.of(BigDecimal(requirementNode.get("minValue").asText()))
-                    RequirementDataType.INTEGER -> MinValue.of(requirementNode.get("minValue").longValue())
-                    RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
-                }
-            } else if (isNotBounded(requirementNode)){
-                null
-            } else {
-                throw ErrorException(ErrorType.INVALID_REQUIREMENT_VALUE, message = "Expected value cannot exists with Min/MaxVale")
             }
         }
 
