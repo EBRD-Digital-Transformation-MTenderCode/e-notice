@@ -72,21 +72,30 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                             requirementNode.get("minValue").longValue(),
                             requirementNode.get("maxValue").longValue()
                         )
-                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw ErrorException(
+                            error = ErrorType.INVALID_REQUIREMENT_DATATYPE,
+                            message = "Invalid RequirementDataType '${dataType}' in Requirement object for min/max value"
+                        )
                     }
                 }
                 isOnlyMax(requirementNode) -> {
                     when (dataType) {
                         RequirementDataType.NUMBER -> MaxValue.of(BigDecimal(requirementNode.get("maxValue").asText()))
                         RequirementDataType.INTEGER -> MaxValue.of(requirementNode.get("maxValue").longValue())
-                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw ErrorException(
+                            error = ErrorType.INVALID_REQUIREMENT_DATATYPE,
+                            message = "Invalid RequirementDataType '${dataType}' in Requirement object for maxValue"
+                        )
                     }
                 }
                 isOnlyMin(requirementNode) -> {
                     when (dataType) {
                         RequirementDataType.NUMBER -> MinValue.of(BigDecimal(requirementNode.get("minValue").asText()))
                         RequirementDataType.INTEGER -> MinValue.of(requirementNode.get("minValue").longValue())
-                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw RuntimeException()
+                        RequirementDataType.BOOLEAN, RequirementDataType.STRING -> throw ErrorException(
+                            error = ErrorType.INVALID_REQUIREMENT_DATATYPE,
+                            message = "Invalid RequirementDataType '${dataType}' in Requirement object for minValue"
+                        )
                     }
                 }
                 isNotBounded(requirementNode) -> {
