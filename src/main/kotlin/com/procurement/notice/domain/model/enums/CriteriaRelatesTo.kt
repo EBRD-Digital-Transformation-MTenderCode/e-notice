@@ -7,7 +7,8 @@ import com.procurement.notice.exception.EnumException
 enum class CriteriaRelatesTo(@JsonValue val value: String) {
     TENDERER("tenderer"),
     ITEM("item"),
-    LOT("lot");
+    LOT("lot"),
+    AWARD("award");
 
     override fun toString(): String = value
 

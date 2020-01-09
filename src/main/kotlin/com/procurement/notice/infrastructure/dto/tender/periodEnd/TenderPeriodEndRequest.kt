@@ -13,6 +13,7 @@ import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.enums.BidStatus
 import com.procurement.notice.domain.model.enums.BidStatusDetails
 import com.procurement.notice.domain.model.enums.BusinessFunctionType
+import com.procurement.notice.domain.model.enums.CriteriaRelatesTo
 import com.procurement.notice.domain.model.enums.CriteriaSource
 import com.procurement.notice.domain.model.enums.Scale
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
@@ -375,6 +376,9 @@ data class TenderPeriodEndRequest(
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("source") @param:JsonProperty("source") val source: CriteriaSource?,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("relatesTo") @param:JsonProperty("relatesTo") val relatesTo: CriteriaRelatesTo?,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
