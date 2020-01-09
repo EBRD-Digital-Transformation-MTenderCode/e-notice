@@ -16,9 +16,7 @@ class Requirement(
         val startDate: LocalDateTime,
         val endDate: LocalDateTime
     )
-
 }
-
 
 sealed class RequirementValue
 

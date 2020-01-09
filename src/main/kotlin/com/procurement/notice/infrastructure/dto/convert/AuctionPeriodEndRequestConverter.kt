@@ -377,7 +377,7 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                 AuctionPeriodEndData.Criteria(
                     id = criteria.id,
                     title = criteria.title,
-                    relatedTo = criteria.relatedTo,
+                    relatesTo = criteria.relatesTo,
                     relatedItem = criteria.relatedItem,
                     source = criteria.source,
                     description = criteria.description,
