@@ -1,6 +1,7 @@
 package com.procurement.notice.service.contract.strategy
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.infrastructure.dto.can.CancelCANRequest
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
@@ -8,6 +9,7 @@ import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Contract
+import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.tender.record.Record
@@ -17,7 +19,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 class CancelCANsStrategy(
-    private val releaseService: ReleaseService
+    private val releaseService: ReleaseService,
+    private val generationService: GenerationService
 ) {
 
     fun cancelCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
