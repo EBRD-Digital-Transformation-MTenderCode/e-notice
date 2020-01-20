@@ -740,7 +740,7 @@ class CommandService(
                     releaseDate = releaseDate
                 )
                 val rejectionRequest = toObject(TreasuryRejectionRequest::class.java, data)
-                val clarificationData = TreasuryRejectionData(
+                val rejectionData = TreasuryRejectionData(
                     contract = rejectionRequest.contract.let { contract ->
                         TreasuryRejectionData.Contract(
                             id = contract.id,
@@ -861,7 +861,7 @@ class CommandService(
                         )
                     }
                 )
-                contractingService.treasuryRejectionAC(context, clarificationData)
+                contractingService.treasuryRejectionAC(context, rejectionData)
             }
 
             ACTIVATION_AC -> {
