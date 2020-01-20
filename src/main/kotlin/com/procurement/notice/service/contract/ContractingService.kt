@@ -12,6 +12,8 @@ import com.procurement.notice.application.service.contract.activate.ActivateCont
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionData
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
@@ -529,6 +531,107 @@ class ContractingService(
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
+    fun treasuryRejectionAC(
+        context: TreasuryRejectionContext,
+        data: TreasuryRejectionData
+    ): ResponseDto {
+
+        fun getUpdatedContractRecord(
+            rejectionContext: TreasuryRejectionContext,
+            rejectionData: TreasuryRejectionData,
+            entity: ReleaseEntity
+        ): ContractRecord {
+            val contractRecord = toObject(ContractRecord::class.java, entity.jsonData)
+            val contract = getContractFromData(rejectionData.contract)
+
+            //BR-2.7.6.7
+            val updatedMetrics = contractRecord.contracts?.firstOrNull()?.agreedMetrics
+            val updatedContract = contract.copy(
+                agreedMetrics = updatedMetrics
+            )
+
+            val updatedRecordContract = contractRecord.copy(
+                //BR-2.7.6.8
+                id = releaseService.newReleaseId(rejectionContext.ocid),
+                //BR-2.7.6.2
+                date = rejectionContext.releaseDate,
+                //BR-2.7.6.6
+                contracts = hashSetOf(updatedContract),
+                //BR-2.7.6.1
+                tag = listOf(Tag.CONTRACT_UPDATE)
+            )
+            return updatedRecordContract
+        }
+
+        fun getUpdatedRecord(
+            rejectionContext: TreasuryRejectionContext,
+            rejectionData: TreasuryRejectionData,
+            entity: ReleaseEntity
+        ): Record {
+            val record: Record = releaseService.getRecord(entity.jsonData)
+            val contracts = record.contracts?.toList() ?: emptyList()
+            val updatedContracts = updateContractWithCansSection(contracts, rejectionData.cans)
+
+            val updatedRecord = record.copy(
+                //BR-2.8.6.4
+                id = releaseService.newReleaseId(rejectionContext.ocid),
+                //BR-2.8.6.3
+                date = rejectionContext.releaseDate,
+                //BR-2.8.6.1
+                tag = listOf(Tag.TENDER_UPDATE),
+                //BR-2.8.6.6
+                contracts = updatedContracts.toHashSet()
+            )
+            return updatedRecord
+        }
+
+        val entityForContractRelease =
+            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+
+        val updatedRecordContract = getUpdatedContractRecord(
+            rejectionContext = context,
+            entity = entityForContractRelease,
+            rejectionData = data
+        )
+
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+
+        val updatedRecord = getUpdatedRecord(
+            rejectionContext = context,
+            entity = entityForEvaluationOrNegotiationRelease,
+            rejectionData = data
+        )
+
+        releaseService.saveContractRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            record = updatedRecordContract,
+            publishDate = entityForContractRelease.publishDate
+        )
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            record = updatedRecord,
+            publishDate = entityForEvaluationOrNegotiationRelease.publishDate
+        )
+
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
+    }
+
     private fun getContractsUpdatedWithCansSection(
         contracts: List<Contract>,
         cans: List<TreasuryClarificationData.Can>
@@ -548,7 +651,158 @@ class ContractingService(
             }
         }
 
+    private fun updateContractWithCansSection(
+        contracts: List<Contract>,
+        cans: List<TreasuryRejectionData.Can>
+    ): List<Contract> =
+        contracts.map { contract ->
+            val matchedCan = cans
+                .asSequence()
+                .filter { can -> can.id == contract.id }
+                .firstOrNull()
+            if (matchedCan != null) {
+                contract.copy(
+                    status = matchedCan.status,
+                    statusDetails = matchedCan.statusDetails
+                )
+            } else {
+                contract
+            }
+        }
+
     private fun getContractFromData(contractData: TreasuryClarificationData.Contract): Contract =
+        Contract(
+            id = contractData.id,
+            documents = contractData.documents.asSequence().map { document ->
+                Document(
+                    documentType = document.documentType,
+                    relatedConfirmations = document.relatedConfirmations,
+                    relatedLots = document.relatedLots?.map { it.toString() },
+                    description = document.description,
+                    title = document.title,
+                    id = document.id,
+                    url = document.url,
+                    datePublished = document.datePublished,
+                    dateModified = null,
+                    format = null,
+                    language = null
+                )
+            }.toHashSet(),
+            title = contractData.title,
+            description = contractData.description,
+            period = contractData.period.let { period ->
+                Period(
+                    startDate = period.startDate,
+                    endDate = period.endDate,
+                    durationInDays = null,
+                    maxExtentDate = null
+                )
+            },
+            value = contractData.value.let { value ->
+                ValueTax(
+                    amount = value.amount,
+                    currency = value.currency,
+                    amountNet = value.amountNet,
+                    valueAddedTaxIncluded = value.valueAddedTaxincluded
+                )
+            },
+            agreedMetrics = null,
+            awardId = contractData.awardId,
+            confirmationRequests = contractData.confirmationRequests.map { confirmationRequest ->
+                ConfirmationRequest(
+                    title = confirmationRequest.title,
+                    description = confirmationRequest.description,
+                    id = confirmationRequest.id,
+                    relatedItem = confirmationRequest.relatedItem,
+                    relatesTo = confirmationRequest.relatesTo,
+                    requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
+                        RequestGroup(
+                            id = requestGroup.id,
+                            requests = requestGroup.requests.asSequence().map { request ->
+                                Request(
+                                    id = request.id,
+                                    description = request.description,
+                                    title = request.title,
+                                    relatedPerson = request.relatedPerson?.let { relatedPerson ->
+                                        RelatedPerson(
+                                            id = relatedPerson.id,
+                                            name = relatedPerson.name
+                                        )
+                                    }
+                                )
+                            }.toSet()
+                        )
+                    }.toSet(),
+                    source = confirmationRequest.source,
+                    type = confirmationRequest.type
+                )
+            },
+            confirmationResponses = contractData.confirmationResponses.asSequence().map { confirmationResponse ->
+                ConfirmationResponse(
+                    id = confirmationResponse.id,
+                    value = confirmationResponse.value.let { value ->
+                        ConfirmationResponseValue(
+                            name = value.name,
+                            id = value.id,
+                            relatedPerson = value.relatedPerson?.let { relatedPerson ->
+                                RelatedPerson(
+                                    id = relatedPerson.id,
+                                    name = relatedPerson.name
+                                )
+                            },
+                            date = value.date,
+                            verification = value.verification.map { verification ->
+                                Verification(
+                                    type = verification.type,
+                                    value = verification.value,
+                                    rationale = verification.rationale
+                                )
+                            }
+                        )
+                    },
+                    request = confirmationResponse.request
+                )
+            }.toHashSet(),
+            date = contractData.date,
+            milestones = contractData.milestones.map { milestone ->
+                Milestone(
+                    id = milestone.id,
+                    type = milestone.type,
+                    title = milestone.title,
+                    description = milestone.description,
+                    additionalInformation = milestone.additionalInformation,
+                    dateMet = milestone.dateMet,
+                    dateModified = milestone.dateModified,
+                    dueDate = milestone.dueDate,
+                    relatedItems = milestone.relatedItems?.asSequence()?.map { it.toString() }?.toSet(),
+                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                        RelatedParty(
+                            id = relatedParty.id,
+                            name = relatedParty.name
+                        )
+                    },
+                    status = milestone.status
+                )
+            },
+            status = contractData.status,
+            statusDetails = contractData.statusDetails,
+            relatedLots = null,
+            items = null,
+            classification = null,
+            amendment = null,
+            amendments = null,
+            budgetSource = null,
+            countryOfOrigin = null,
+            dateSigned = null,
+            extendsContractId = null,
+            isFrameworkOrDynamic = null,
+            lotVariant = null,
+            relatedProcesses = null,
+            requirementResponses = null,
+            valueBreakdown = null
+        )
+
+    private fun getContractFromData(contractData: TreasuryRejectionData.Contract): Contract =
         Contract(
             id = contractData.id,
             documents = contractData.documents.asSequence().map { document ->
