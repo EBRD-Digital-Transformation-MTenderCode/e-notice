@@ -521,7 +521,7 @@ class ContractingService(
 
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = context.stage,
+            stage = recordStage,
             record = updatedRecord,
             publishDate = entityForEvaluationOrNegotiationRelease.publishDate
         )
