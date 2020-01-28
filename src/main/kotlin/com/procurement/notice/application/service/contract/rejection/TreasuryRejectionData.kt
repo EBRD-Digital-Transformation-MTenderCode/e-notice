@@ -1,6 +1,7 @@
 package com.procurement.notice.application.service.contract.rejection
 
 import com.procurement.notice.domain.model.award.AwardId
+import com.procurement.notice.domain.model.lot.LotId
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -36,7 +37,7 @@ data class TreasuryRejectionData(
             val url: String,
             val title: String?,
             val description: String?,
-            val relatedLots: List<UUID>?,
+            val relatedLots: List<LotId>?,
             val relatedConfirmations: List<String>?
         )
 
