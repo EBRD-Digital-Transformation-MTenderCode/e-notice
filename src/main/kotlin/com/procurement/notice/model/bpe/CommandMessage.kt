@@ -96,7 +96,7 @@ data class ResponseDto(
     val errors: List<ResponseErrorDto>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val data: DataResponseDto? = null,
+    val data: Any? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String? = null
