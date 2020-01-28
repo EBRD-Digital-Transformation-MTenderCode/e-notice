@@ -14,6 +14,7 @@ import com.procurement.notice.application.service.contract.clarify.TreasuryClari
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
 import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionData
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionResult
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
@@ -534,7 +535,7 @@ class ContractingService(
     fun treasuryRejectionAC(
         context: TreasuryRejectionContext,
         data: TreasuryRejectionData
-    ): ResponseDto {
+    ): TreasuryRejectionResult {
 
         fun getUpdatedContractRecord(
             rejectionContext: TreasuryRejectionContext,
@@ -624,12 +625,12 @@ class ContractingService(
 
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = context.stage,
+            stage = recordStage,
             record = updatedRecord,
             publishDate = entityForEvaluationOrNegotiationRelease.publishDate
         )
 
-        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
+        return TreasuryRejectionResult(cpid = context.cpid, ocid = context.ocid)
     }
 
     private fun getContractsUpdatedWithCansSection(
