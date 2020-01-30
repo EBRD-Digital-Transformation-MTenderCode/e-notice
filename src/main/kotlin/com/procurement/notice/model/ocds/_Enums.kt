@@ -428,6 +428,7 @@ enum class Operation(val value: String) {
     START_AWARD_PERIOD("startAwardPeriod"),
     EVALUATE_AWARD("evaluateAward"),
     PROCESS_AC_CLARIFICATION("processAcClarification"),
+    PROCESS_AC_REJECTION("processAcRejection"),
     DO_AWARD_CONSIDERATION("doAwardConsideration");
 
 

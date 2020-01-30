@@ -24,6 +24,7 @@ import com.procurement.notice.application.service.contract.activate.ActivateCont
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -43,6 +44,7 @@ import com.procurement.notice.infrastructure.dto.can.CreateProtocolRequest
 import com.procurement.notice.infrastructure.dto.cn.update.UpdateCNRequest
 import com.procurement.notice.infrastructure.dto.contract.ActivateContractRequest
 import com.procurement.notice.infrastructure.dto.contract.TreasuryClarificationRequest
+import com.procurement.notice.infrastructure.dto.contract.TreasuryRejectionRequest
 import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.dto.tender.cancel.CancelStandStillPeriodRequest
 import com.procurement.notice.infrastructure.dto.tender.periodEnd.TenderPeriodEndRequest
@@ -93,6 +95,7 @@ import com.procurement.notice.model.ocds.Operation.ENQUIRY_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.FINAL_UPDATE
 import com.procurement.notice.model.ocds.Operation.ISSUING_AC
 import com.procurement.notice.model.ocds.Operation.PROCESS_AC_CLARIFICATION
+import com.procurement.notice.model.ocds.Operation.PROCESS_AC_REJECTION
 import com.procurement.notice.model.ocds.Operation.STANDSTILL_PERIOD
 import com.procurement.notice.model.ocds.Operation.START_AWARD_PERIOD
 import com.procurement.notice.model.ocds.Operation.START_NEW_STAGE
@@ -725,6 +728,21 @@ class CommandService(
                     }
                 )
                 contractingService.treasuryClarificationAC(context, clarificationData)
+            }
+
+            PROCESS_AC_REJECTION -> {
+                val context = TreasuryRejectionContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    stage = cm.stage,
+                    pmd = cm.pmd,
+                    releaseDate = releaseDate
+                )
+                val rejectionRequest = toObject(TreasuryRejectionRequest::class.java, data)
+                val rejectionData = rejectionRequest.convert()
+                val result = contractingService.treasuryRejectionAC(context, rejectionData)
+                val response = result.convert()
+                return ResponseDto(data = response)
             }
 
             ACTIVATION_AC -> {
