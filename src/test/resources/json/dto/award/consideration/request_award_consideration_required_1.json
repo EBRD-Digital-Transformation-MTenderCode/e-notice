@@ -9,10 +9,7 @@
       {
         "id": "doc.id",
         "datePublished": "2019-10-29T16:51:00Z",
-        "url": "doc.url",
-        "documentType": "x_eligibilityDocuments",
-        "title": "doc.title",
-        "description": "doc.description"
+        "documentType": "x_eligibilityDocuments"
       }
     ]
   }
