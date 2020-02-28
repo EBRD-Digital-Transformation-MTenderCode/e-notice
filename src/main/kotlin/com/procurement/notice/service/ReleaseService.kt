@@ -41,48 +41,11 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
 
     fun getMsTender(data: JsonNode): MsTender = toObject(MsTender::class.java, data.get(TENDER_JSON))
 
-    fun getRecordTender(data: JsonNode): ReleaseTender {
-        val releaseTender = toObject(ReleaseTender::class.java, data.get(TENDER_JSON))
-        // TODO
-//        if (recordTender.items != null && recordTender.items!!.isEmpty()) {
-//            recordTender.items = null
-//        }
-//        if (recordTender.lots != null && recordTender.lots!!.isEmpty()) {
-//            recordTender.lots = null
-//        }
-//        if (recordTender.documents != null && recordTender.documents!!.isEmpty()) {
-//            recordTender.documents = null
-//        }
-        return releaseTender
-    }
+    fun getRecordTender(data: JsonNode): ReleaseTender = toObject(ReleaseTender::class.java, data.get(TENDER_JSON))
 
-    fun getRelease(data: JsonNode): Release {
-        val release = toObject(Release::class.java, data)
-//        if (record.tender.items != null && record.tender.items!!.isEmpty()) {
-//            record.tender.items = null
-//        }
-//        if (record.tender.lots != null && record.tender.lots!!.isEmpty()) {
-//            record.tender.lots = null
-//        }
-//        if (record.tender.documents != null && record.tender.documents!!.isEmpty()) {
-//            record.tender.documents = null
-//        }
-        return release
-    }
+    fun getRelease(data: JsonNode): Release = toObject(Release::class.java, data)
 
-    fun getRelease(data: String): Release {
-        val release = toObject(Release::class.java, data)
-//        if (record.tender.items != null && record.tender.items!!.isEmpty()) {
-//            record.tender.items = null
-//        }
-//        if (record.tender.lots != null && record.tender.lots!!.isEmpty()) {
-//            record.tender.lots = null
-//        }findBy
-//        if (record.tender.documents != null && record.tender.documents!!.isEmpty()) {
-//            record.tender.documents = null
-//        }
-        return release
-    }
+    fun getRelease(data: String): Release  = toObject(Release::class.java, data)
 
     fun getRecord(data: String): Record = toObject(Record::class.java, data)
 
