@@ -10,11 +10,10 @@ import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toObject
 import java.time.LocalDateTime
-import java.util.*
 
 class CancelCANsStrategy(
     private val releaseService: ReleaseService,
@@ -24,12 +23,12 @@ class CancelCANsStrategy(
     fun cancelCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val request = toObject(CancelCANRequest::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordEV: Record = releaseService.getRecord(recordEntity.jsonData)
+        val recordEV: Release = releaseService.getRelease(recordEntity.jsonData)
 
         val cancelledCAN: CancelCANRequest.CancelledCAN = request.cancelledCan
         val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseDate)
 
-        val updatedRecordEV = recordEV.copy(
+        val updatedReleaseEV = recordEV.copy(
             /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
             /** BR-2.8.3.3 */
@@ -37,18 +36,18 @@ class CancelCANsStrategy(
             /** BR-2.8.3.4 */
             id = releaseService.newReleaseId(ocid),
             /** BR-2.8.3.8 */
-            contracts = recordEV.contracts?.updateContracts(cancelledCAN, amendment),
+            contracts = recordEV.contracts.updateContracts(cancelledCAN, amendment),
             /** BR-2.8.3.12 */
             tender = recordEV.tender.copy(
                 /** BR-2.8.3.13 */
-                lots = recordEV.tender.lots?.updateLots(request.lot)
+                lots = recordEV.tender.lots.updateLots(request.lot)
             )
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage,
-            record = updatedRecordEV,
+            release = updatedReleaseEV,
             publishDate = recordEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -59,13 +58,13 @@ class CancelCANsStrategy(
      * BR-2.8.3.10
      * BR-2.8.3.11
      */
-    private fun CancelCANRequest.CancelledCAN.createAmendment(record: Record, releaseDate: LocalDateTime): Amendment {
+    private fun CancelCANRequest.CancelledCAN.createAmendment(release: Release, releaseDate: LocalDateTime): Amendment {
         return this.amendment.let { amendment ->
             Amendment(
                 /**BR-2.8.3.9 */
                 id = generationService.generateAmendmentId().toString(),
                 /**BR-2.8.3.10 */
-                amendsReleaseID = record.id,
+                amendsReleaseID = release.id,
                 /**BR-2.8.3.11 */
                 date = releaseDate,
                 description = amendment.description,
@@ -95,10 +94,10 @@ class CancelCANsStrategy(
     /**
      * BR-2.8.3.8
      */
-    private fun HashSet<Contract>.updateContracts(
+    private fun List<Contract>.updateContracts(
         cancelledCAN: CancelCANRequest.CancelledCAN,
         amendment: Amendment
-    ): HashSet<Contract> {
+    ): List<Contract> {
         return this.asSequence()
             .map { contract ->
                 if (contract.id == cancelledCAN.id) {
@@ -110,13 +109,13 @@ class CancelCANsStrategy(
                 } else
                     contract
             }
-            .toHashSet()
+            .toList()
     }
 
     /**
      * BR-2.8.3.13
      */
-    private fun HashSet<Lot>.updateLots(lot: CancelCANRequest.Lot): HashSet<Lot> {
+    private fun List<Lot>.updateLots(lot: CancelCANRequest.Lot): List<Lot> {
         return this.asSequence()
             .map {
                 if (it.id == lot.id)
@@ -127,7 +126,7 @@ class CancelCANsStrategy(
                 else
                     it
 
-            }.toHashSet()
+            }.toList()
     }
 
 

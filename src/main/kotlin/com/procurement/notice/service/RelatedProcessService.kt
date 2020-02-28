@@ -13,7 +13,7 @@ import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -109,10 +109,9 @@ class RelatedProcessService {
         }
     }
 
-    fun addMsRelatedProcessToRecord(record: Record, cpId: String) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
-        if (record.relatedProcesses!!.asSequence().none { it.identifier == cpId })
-            record.relatedProcesses?.add(RelatedProcess(
+    fun addMsRelatedProcessToRecord(release: Release, cpId: String) {
+        if (release.relatedProcesses.asSequence().none { it.identifier == cpId })
+            release.relatedProcesses.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(RelatedProcessType.PARENT),
                     scheme = RelatedProcessScheme.OCID,
@@ -135,10 +134,9 @@ class RelatedProcessService {
             )
     }
 
-    fun addRecordRelatedProcessToRecord(record: Record, ocId: String, cpId: String, processType: RelatedProcessType) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
-        if (record.relatedProcesses!!.asSequence().none { it.identifier == ocId })
-            record.relatedProcesses?.add(
+    fun addRecordRelatedProcessToRecord(release: Release, ocId: String, cpId: String, processType: RelatedProcessType) {
+        if (release.relatedProcesses.asSequence().none { it.identifier == ocId })
+            release.relatedProcesses.add(
                 RelatedProcess(
                     id = UUIDs.timeBased().toString(),
                     relationship = listOf(processType),
@@ -183,16 +181,16 @@ class RelatedProcessService {
     }
 
     fun addContractRelatedProcessToCAN(
-        record: Record,
+        release: Release,
         ocId: String,
         cpId: String,
         contract: Contract,
         cans: HashSet<Can>
     ) {
         cans.asSequence().forEach { can ->
-            record.contracts
-                ?.asSequence()
-                ?.firstOrNull { it.id == can.id }
+            release.contracts
+                .asSequence()
+                .firstOrNull { it.id == can.id }
                 ?.let { contract ->
                     if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
                     contract.relatedProcesses!!.add(

@@ -16,7 +16,7 @@ data class AwardPeriodEndDto @JsonCreator constructor(
     val awards: HashSet<Award>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lots: HashSet<Lot>,
+    val lots: List<Lot>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val bids: HashSet<Bid>

@@ -51,7 +51,7 @@ class ReleaseServiceTest {
 
         val previousProcuringEntity = parties.find { it.id == targetProcuringEntityId }
         val updatedParties = releaseService.getPartiesWithActualPersones(requestProcuringEntity, parties)
-        val changedProcuringEntity = updatedParties!!.find { it.id == targetProcuringEntityId }
+        val changedProcuringEntity = updatedParties.find { it.id == targetProcuringEntityId }
 
         assertNotNull(updatedParties)
         assertNotNull(changedProcuringEntity)

@@ -52,11 +52,11 @@ class AuctionServiceImpl(
 ) : AuctionService {
     override fun periodEnd(context: AuctionPeriodEndContext, data: AuctionPeriodEndData) {
         val entity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(entity.jsonData)
+        val record = releaseService.getRelease(entity.jsonData)
 
-        val updatedAwards = updateAwards(awards = record.awards ?: emptyList(), data = data)
+        val updatedAwards = updateAwards(awards = record.awards, data = data)
         val updatedBids = updateBids(data)
-        val updatedParties = updateParties(parties = record.parties ?: emptyList(), data = data)
+        val updatedParties = updateParties(parties = record.parties, data = data)
         val updatedElectronicAuctions = record.tender.electronicAuctions?.updateElectronicAuctions(data = data)
         val criteria = data.criteria?.convert()
 
@@ -84,20 +84,20 @@ class AuctionServiceImpl(
                 ),
                 electronicAuctions = updatedElectronicAuctions,
                 criteria = if (criteria != null) {
-                    record.tender.criteria?.plus(criteria) ?: listOf(criteria)
+                    record.tender.criteria.plus(criteria)
                 } else
                     record.tender.criteria
 
             ),
-            awards = updatedAwards.toHashSet(),             //FR-5.7.2.6.4
+            awards = updatedAwards.toList(),             //FR-5.7.2.6.4
             bids = updatedBids,                             //FR-5.7.2.6.3
-            parties = updatedParties.toHashSet()            //FR-5.7.2.6.5
+            parties = updatedParties.toMutableList()            //FR-5.7.2.6.5
         )
 
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRecord,
             publishDate = entity.publishDate
         )
     }

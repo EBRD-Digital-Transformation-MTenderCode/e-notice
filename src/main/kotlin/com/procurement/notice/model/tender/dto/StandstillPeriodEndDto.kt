@@ -10,5 +10,5 @@ data class StandstillPeriodEndDto @JsonCreator constructor(
     val standstillPeriod: Period,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lots: HashSet<Lot>
+    val lots: List<Lot>
 )

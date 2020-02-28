@@ -42,7 +42,7 @@ data class FS @JsonCreator constructor(
     var payer: OrganizationReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var parties: HashSet<Organization>?,
+    var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var planning: FsPlanning?,

@@ -1,8 +1,9 @@
 package com.procurement.notice.dao
 
 import com.datastax.driver.core.Session
-import com.datastax.driver.core.querybuilder.QueryBuilder.*
-import com.procurement.notice.model.bpe.ResponseDto
+import com.datastax.driver.core.querybuilder.QueryBuilder.eq
+import com.datastax.driver.core.querybuilder.QueryBuilder.insertInto
+import com.datastax.driver.core.querybuilder.QueryBuilder.select
 import com.procurement.notice.model.entity.HistoryEntity
 import com.procurement.notice.utils.localNowUTC
 import com.procurement.notice.utils.toDate
@@ -27,7 +28,7 @@ class HistoryDao(private val session: Session) {
                 row.getString(JSON_DATA)) else null
     }
 
-    fun saveHistory(operationId: String, command: String, response: ResponseDto): HistoryEntity {
+    fun saveHistory(operationId: String, command: String, response: Any): HistoryEntity {
         val entity = HistoryEntity(
                 operationId = operationId,
                 command = command,

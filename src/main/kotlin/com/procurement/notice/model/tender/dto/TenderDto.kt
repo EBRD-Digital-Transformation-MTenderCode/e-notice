@@ -20,7 +20,7 @@ data class TenderDto @JsonCreator constructor(
     var auctionPeriod: Period?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val procurementMethodModalities: Set<String>?,
+    val procurementMethodModalities: List<String> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val electronicAuctions: ElectronicAuctions?

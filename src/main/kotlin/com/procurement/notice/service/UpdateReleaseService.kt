@@ -10,7 +10,6 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.AcceleratedProcedure
 import com.procurement.notice.model.ocds.Address
 import com.procurement.notice.model.ocds.AddressDetails
-import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.BudgetBreakdown
 import com.procurement.notice.model.ocds.BusinessFunction
 import com.procurement.notice.model.ocds.Classification
@@ -36,6 +35,7 @@ import com.procurement.notice.model.ocds.PlaceOfPerformance
 import com.procurement.notice.model.ocds.ProcedureOutsourcing
 import com.procurement.notice.model.ocds.RecurrentProcurement
 import com.procurement.notice.model.ocds.RegionDetails
+import com.procurement.notice.model.ocds.ReleaseAmendment
 import com.procurement.notice.model.ocds.Renewal
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.Variant
@@ -47,7 +47,7 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
-import com.procurement.notice.model.tender.record.RecordTender
+import com.procurement.notice.model.tender.record.ReleaseTender
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -196,7 +196,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
 
             //FR-MR-5.5.2.3.7
             parties = recordMS.parties
-                ?.map { party ->
+                .map { party ->
                     if (party.id == data.tender.procuringEntity.id)
                         party.copy(
                             persones = data.tender.procuringEntity.persons
@@ -243,26 +243,26 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                     else
                         party
                 }
-                ?.toHashSet()
+                .toMutableList()
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val recordEV = releaseService.getRecord(recordEntity.jsonData)
+        val recordEV = releaseService.getRelease(recordEntity.jsonData)
 
         val newReleaseID = releaseService.newReleaseId(context.ocid)
         val actualReleaseID = recordEV.id!!
-        val newAmendment: Amendment =
+        val newAmendment: ReleaseAmendment =
             newAmendment(context = context, data = data, actualReleaseID = actualReleaseID, newReleaseID = newReleaseID)
-        val updatedAmendments: List<Amendment> = recordEV.tender.amendments?.plus(newAmendment) ?: listOf(newAmendment)
+        val updatedAmendments: List<ReleaseAmendment> = recordEV.tender.amendments.plus(newAmendment)
 
-        val updatedRecordEV = recordEV.copy(
+        val updatedReleaseEV = recordEV.copy(
             id = newReleaseID, //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
             relatedProcesses = recordEV.relatedProcesses, //FR-ER-5.5.2.3.2
             parties = recordEV.parties, //FR-ER-5.5.2.3.2
             tender = data.tender.let { tender ->
-                RecordTender(
+                ReleaseTender(
                     id = tender.id,
                     status = tender.status,
                     statusDetails = tender.statusDetails,
@@ -401,7 +401,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                                 )
                             }
                         )
-                    }.toHashSet(),
+                    }.toList(),
                     items = tender.items.map { item ->
                         Item(
                             id = item.id,
@@ -437,7 +437,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                             relatedLot = item.relatedLot,
                             deliveryAddress = null
                         )
-                    }.toHashSet(),
+                    }.toList(),
                     requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
                     submissionMethod = tender.submissionMethod.toList(),
                     submissionMethodRationale = tender.submissionMethodRationale.toList(),
@@ -456,7 +456,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                             language = null,
                             relatedConfirmations = null
                         )
-                    }.toHashSet()
+                    }.toList()
                 )
             }
         )
@@ -465,7 +465,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecordEV,
+            release = updatedReleaseEV,
             publishDate = recordEntity.publishDate
         )
         return UpdatedCN(
@@ -480,28 +480,32 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         data: UpdateCNData,
         actualReleaseID: String,
         newReleaseID: String
-    ): Amendment {
+    ): ReleaseAmendment {
         val rationale: String
-        val relatedLots: Set<String>?
+        val relatedLots: List<String>
 
         if (data.amendment != null) {
             rationale = "Changing of Contract Notice due to the need of cancelling lot / lots"
-            relatedLots = data.amendment.relatedLots.toSet()
+            relatedLots = data.amendment.relatedLots
         } else {
             rationale = "General change of Contract Notice"
-            relatedLots = null
+            relatedLots = emptyList()
         }
 
-        return Amendment(
+        return ReleaseAmendment(
             id = UUID.randomUUID().toString(),
             amendsReleaseID = actualReleaseID,
             releaseID = newReleaseID,
             date = context.releaseDate,
             rationale = rationale,
             relatedLots = relatedLots,
-            changes = null,
+            changes = emptyList(),
             description = null,
-            documents = null
+            documents = emptyList(),
+            relatesTo = null,
+            relatedItem = null,
+            status = null,
+            type = null
         )
     }
 
@@ -522,9 +526,9 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
     private fun getProcurementMethodModalities(
         context: UpdateCNContext,
         data: UpdateCNData,
-        previous: Set<String>?
-    ): Set<String>? = if (context.isAuction && data.isAuctionPeriodChanged)
-        data.tender.procurementMethodModalities.toSet()
+        previous: List<String>
+    ): List<String> = if (context.isAuction && data.isAuctionPeriodChanged)
+        data.tender.procurementMethodModalities
     else
         previous
 
@@ -589,19 +593,19 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             tender = msReq.tender
         }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
         recordTender.apply {
-            title = record.tender.title
-            description = record.tender.description
+            title = release.tender.title
+            description = release.tender.description
         }
-        record.apply {
+        release.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender = recordTender
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         val amendmentsIds = null
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
@@ -615,32 +619,36 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
     ): ResponseDto {
         val recordTender = releaseService.getRecordTender(data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        val actualReleaseID = record.id
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        val actualReleaseID = release.id
         val newReleaseID = releaseService.newReleaseId(ocid)
-        val amendments = record.tender.amendments?.toMutableList() ?: mutableListOf()
+        val amendments = release.tender.amendments.toMutableList()
         amendments.add(
-            Amendment(
+            ReleaseAmendment(
                 id = UUID.randomUUID().toString(),
                 amendsReleaseID = actualReleaseID,
                 releaseID = newReleaseID,
                 date = releaseDate,
-                relatedLots = null,
+                relatedLots = emptyList(),
                 rationale = "Extension of tender period",
-                changes = null,
+                changes = emptyList(),
                 description = null,
-                documents = null
+                documents = emptyList(),
+                type = null,
+                status = null,
+                relatedItem = null,
+                relatesTo = null
             )
         )
-        record.apply {
+        release.apply {
             id = newReleaseID
             date = releaseDate
             tag = listOf(Tag.TENDER_AMENDMENT)
             tender.tenderPeriod = recordTender.tenderPeriod
             tender.enquiryPeriod = recordTender.enquiryPeriod
-            tender.amendments = if (amendments.isNotEmpty()) amendments else null
+            tender.amendments = if (amendments.isNotEmpty()) amendments else emptyList()
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         val amendmentsIds = amendments.map { it.id!! }
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
