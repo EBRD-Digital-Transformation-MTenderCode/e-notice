@@ -4,6 +4,7 @@ import com.procurement.notice.application.service.award.auction.AwardConsiderati
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.award.AwardId
+import com.procurement.notice.domain.model.bid.BidId
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -854,6 +855,33 @@ class AwardServiceImpl(
     override fun consider(context: AwardConsiderationContext, data: AwardConsiderationData) {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val record = releaseService.getRelease(recordEntity.jsonData)
+
+        val updatedBids = record.bids?.details?.map { dbBid ->
+            val bidId = BidId.fromString(dbBid.id)
+            if (bidId == data.bid.id) {
+                dbBid.copy(
+                    documents = data.bid.documents
+                        .map { document ->
+                            Document(
+                                id = document.id,
+                                description = document.description,
+                                title = document.title,
+                                documentType = document.documentType.toString(),
+                                relatedLots = document.relatedLots.map { it.toString() },
+                                url = document.url,
+                                datePublished = document.datePublished,
+                                language = null,
+                                dateModified = null,
+                                format = null,
+                                relatedConfirmations = null
+                            )
+                        }.toHashSet()
+                )
+            } else {
+                dbBid
+            }
+        }?.toHashSet()
+
         val updatedRecord = record.copy(
             id = releaseService.newReleaseId(context.ocid),
             date = context.releaseDate,
@@ -867,7 +895,8 @@ class AwardServiceImpl(
                     else
                         award
                 }
-                .toList()
+                .toList(),
+            bids = record.bids?.copy(details = updatedBids)
         )
 
         releaseService.saveRecord(
