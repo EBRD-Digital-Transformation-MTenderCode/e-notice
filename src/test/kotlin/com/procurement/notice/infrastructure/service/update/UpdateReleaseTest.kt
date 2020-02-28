@@ -1,0 +1,1491 @@
+package com.procurement.notice.infrastructure.service.update
+
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
+import com.procurement.notice.infrastructure.dto.entity.RecordClassification
+import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
+import com.procurement.notice.infrastructure.dto.entity.RecordIssue
+import com.procurement.notice.infrastructure.dto.entity.RecordLegalForm
+import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedProcess
+import com.procurement.notice.infrastructure.dto.entity.address.RecordAddress
+import com.procurement.notice.infrastructure.dto.entity.address.RecordAddressDetails
+import com.procurement.notice.infrastructure.dto.entity.address.RecordCountryDetails
+import com.procurement.notice.infrastructure.dto.entity.address.RecordLocalityDetails
+import com.procurement.notice.infrastructure.dto.entity.address.RecordRegionDetails
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
+import com.procurement.notice.infrastructure.dto.entity.contracts.RecordBudgetSource
+import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationRequest
+import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationResponse
+import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequest
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermits
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordMilestone
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
+import com.procurement.notice.infrastructure.dto.request.RequestAccountIdentifier
+import com.procurement.notice.infrastructure.dto.request.RequestClassification
+import com.procurement.notice.infrastructure.dto.request.RequestIdentifier
+import com.procurement.notice.infrastructure.dto.request.RequestIssue
+import com.procurement.notice.infrastructure.dto.request.RequestLegalForm
+import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
+import com.procurement.notice.infrastructure.dto.request.address.RequestAddress
+import com.procurement.notice.infrastructure.dto.request.address.RequestAddressDetails
+import com.procurement.notice.infrastructure.dto.request.address.RequestCountryDetails
+import com.procurement.notice.infrastructure.dto.request.address.RequestLocalityDetails
+import com.procurement.notice.infrastructure.dto.request.address.RequestRegionDetails
+import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
+import com.procurement.notice.infrastructure.dto.request.contracts.RequestBudgetSource
+import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationRequest
+import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
+import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
+import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
+import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
+import com.procurement.notice.infrastructure.dto.request.parties.RequestPermits
+import com.procurement.notice.infrastructure.dto.request.tender.RequestMilestone
+import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
+import com.procurement.notice.infrastructure.service.record.updateAccountIdentifier
+import com.procurement.notice.infrastructure.service.record.updateAccountIdentifierElement
+import com.procurement.notice.infrastructure.service.record.updateAddress
+import com.procurement.notice.infrastructure.service.record.updateBankAccount
+import com.procurement.notice.infrastructure.service.record.updateBidsStatistic
+import com.procurement.notice.infrastructure.service.record.updateBudgetSource
+import com.procurement.notice.infrastructure.service.record.updateClassification
+import com.procurement.notice.infrastructure.service.record.updateConfirmationRequest
+import com.procurement.notice.infrastructure.service.record.updateConfirmationResponse
+import com.procurement.notice.infrastructure.service.record.updateIdentifier
+import com.procurement.notice.infrastructure.service.record.updateLegalForm
+import com.procurement.notice.infrastructure.service.record.updateMilestone
+import com.procurement.notice.infrastructure.service.record.updatePeriod
+import com.procurement.notice.infrastructure.service.record.updatePermitDetails
+import com.procurement.notice.infrastructure.service.record.updatePermits
+import com.procurement.notice.infrastructure.service.record.updateRelatedParty
+import com.procurement.notice.infrastructure.service.record.updateRelatedProcess
+import com.procurement.notice.infrastructure.service.record.updateRequest
+import com.procurement.notice.infrastructure.service.record.updateStrategy
+import com.procurement.notice.infrastructure.service.record.updateTag
+import com.procurement.notice.infrastructure.service.record.updateUnit
+import com.procurement.notice.json.toJson
+import com.procurement.notice.lib.toSetBy
+import com.procurement.notice.model.ocds.Address
+import com.procurement.notice.model.ocds.AddressDetails
+import com.procurement.notice.model.ocds.CountryDetails
+import com.procurement.notice.model.ocds.Identifier
+import com.procurement.notice.model.ocds.LocalityDetails
+import com.procurement.notice.model.ocds.RegionDetails
+import com.procurement.notice.model.ocds.RelatedProcessType
+import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.Value
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.math.BigDecimal
+import java.time.LocalDateTime
+
+class UpdatedRecordTest {
+
+    @Nested
+    inner class Tags {
+
+        @Test
+        fun `update Tag`() {
+            val prevTags = listOf(Tag.AWARD, Tag.AWARD_CANCELLATION, Tag.COMPILED)
+            val newTags = listOf(Tag.AWARD, Tag.CONTRACT)
+            val tagsDiff = prevTags - newTags
+
+            val updatedTags = updateTag(
+                newTags,
+                prevTags
+            )
+
+            assertTrue(updatedTags.size == newTags.size)
+            assertTrue(updatedTags.containsAll(newTags))
+            assertFalse(updatedTags.containsAll(tagsDiff))
+        }
+    }
+
+    @Nested
+    inner class IdentifierTest {
+
+        private val prevIdentifier = RecordIdentifier(
+            id = "_requestIdentifier.id-484",
+            scheme = "_requestIdentifier.scheme-327",
+            uri = "_requestIdentifier.uri-281",
+            legalName = "_requestIdentifier.legalName-671"
+        )
+
+        private val sampleNewdentifier = RequestIdentifier(
+            id = "_requestIdentifier.id-484",
+            scheme = "_requestIdentifier.scheme-327",
+            uri = "_requestIdentifier.uri-281",
+            legalName = "_requestIdentifier.legalName-671"
+        )
+
+        @Test
+        fun `update identifier - without previous value`() {
+            val updatedIdentifier = updateIdentifier(
+                sampleNewdentifier,
+                null
+            )!!
+            assertEquals(sampleNewdentifier.toJson(), updatedIdentifier.toJson())
+        }
+
+        @Test
+        fun `update identifier - full update`() {
+            val updatedTags = updateIdentifier(
+                sampleNewdentifier,
+                prevIdentifier
+            )!!
+            assertEquals(updatedTags.toJson(), sampleNewdentifier.toJson())
+        }
+
+        @Test
+        fun `update identifier - partial updating`() {
+            val newIdentifier = sampleNewdentifier.copy(
+                uri = null
+            )
+
+            val expectedIdentifier = Identifier(
+                id = sampleNewdentifier.id,
+                legalName = sampleNewdentifier.legalName,
+                uri = prevIdentifier.uri,
+                scheme = sampleNewdentifier.scheme
+            )
+
+            val updatedIdentifier = updateIdentifier(
+                newIdentifier,
+                prevIdentifier
+            )!!
+            assertEquals(expectedIdentifier.toJson(), updatedIdentifier.toJson())
+        }
+
+        @Test
+        fun `update identifier - without new value`() {
+            val updatedIdentifier = updateIdentifier(
+                null,
+                prevIdentifier
+            )!!
+            assertEquals(prevIdentifier.toJson(), updatedIdentifier.toJson())
+        }
+    }
+
+    @Nested
+    inner class AddressTest {
+
+        val prevAddress = RecordAddress(
+            streetAddress = "address.streetAddress",
+            addressDetails = RecordAddressDetails(
+                country = RecordCountryDetails(
+                    id = "country.id",
+                    scheme = "dbAddress?.addressDetails?.country?.scheme",
+                    description = "dbAddress?.addressDetails?.country?.description",
+                    uri = "dbAddress?.addressDetails?.country?.uri"
+                ),
+                region = RecordRegionDetails(
+                    id = "region.id",
+                    scheme = "dbAddress?.addressDetails?.region?.scheme",
+                    description = "dbAddress?.addressDetails?.region?.description",
+                    uri = "dbAddress?.addressDetails?.region?.uri"
+                ),
+                locality = RecordLocalityDetails(
+                    id = "locality.id",
+                    scheme = "locality.scheme",
+                    description = "locality.description",
+                    uri = "dbAddress?.addressDetails?.locality?.uri"
+                )
+            ),
+            postalCode = "dbAddress?.postalCode"
+        )
+
+        val sampleNewAddress = RequestAddress(
+            streetAddress = "address.streetAddress-348",
+            addressDetails = RequestAddressDetails(
+                country = RequestCountryDetails(
+                    id = "country.id-361",
+                    scheme = "dbAddress?.addressDetails?.country?.scheme-82",
+                    description = "dbAddress?.addressDetails?.country?.description-625",
+                    uri = "dbAddress?.addressDetails?.country?.uri-720"
+                ),
+                region = RequestRegionDetails(
+                    id = "region.id-560",
+                    scheme = "dbAddress?.addressDetails?.region?.scheme-938",
+                    description = "dbAddress?.addressDetails?.region?.description-512",
+                    uri = "dbAddress?.addressDetails?.region?.uri-428"
+                ),
+                locality = RequestLocalityDetails(
+                    id = "locality.id-799",
+                    scheme = "locality.scheme-327",
+                    description = "locality.description-829",
+                    uri = "dbAddress?.addressDetails?.locality?.uri-484"
+                )
+            ),
+            postalCode = "dbAddress?.postalCode-161"
+        )
+
+        @Test
+        fun `update Address - without previous value`() {
+            val updatedAddress = updateAddress(
+                sampleNewAddress,
+                null
+            )!!
+            assertEquals(sampleNewAddress.toJson(), updatedAddress.toJson())
+        }
+
+        @Test
+        fun `update Address - full update`() {
+            val updatedAddress = updateAddress(
+                sampleNewAddress,
+                prevAddress
+            )!!
+            assertEquals(updatedAddress.toJson(), sampleNewAddress.toJson())
+        }
+
+        @Test
+        fun `update Address - partial updating`() {
+
+            val newAddress = sampleNewAddress.copy(
+                streetAddress = null,
+                addressDetails = sampleNewAddress.addressDetails?.copy(
+                    country = sampleNewAddress.addressDetails!!.country.copy(
+                        uri = null,
+                        description = null
+                    ),
+                    region = sampleNewAddress.addressDetails!!.region.copy(
+                        scheme = null,
+                        description = null
+                    ),
+                    locality = sampleNewAddress.addressDetails!!.locality.copy(
+                        uri = null
+                    )
+                )
+            )
+
+            val expectedAddress = Address(
+                streetAddress = prevAddress.streetAddress,
+                addressDetails = AddressDetails(
+                    country = CountryDetails(
+                        id = sampleNewAddress.addressDetails!!.country.id,
+                        description = prevAddress.addressDetails!!.country.description,
+                        scheme = sampleNewAddress.addressDetails!!.country.scheme,
+                        uri = prevAddress.addressDetails!!.country.uri
+                    ),
+                    region = RegionDetails(
+                        id = sampleNewAddress.addressDetails!!.region.id,
+                        description = prevAddress.addressDetails!!.region.description,
+                        scheme = prevAddress.addressDetails!!.region.scheme,
+                        uri = sampleNewAddress.addressDetails!!.region.uri
+                    ),
+                    locality = LocalityDetails(
+                        id = sampleNewAddress.addressDetails!!.locality.id,
+                        description = sampleNewAddress.addressDetails!!.locality.description,
+                        scheme = sampleNewAddress.addressDetails!!.locality.scheme,
+                        uri = prevAddress.addressDetails!!.locality.uri
+                    )
+                ),
+                postalCode = newAddress.postalCode
+            )
+
+            val updatedAddress = updateAddress(
+                newAddress,
+                prevAddress
+            )!!
+
+            assertEquals(expectedAddress.toJson(), updatedAddress.toJson())
+        }
+
+        @Test
+        fun `update Address - without new value`() {
+            val updatedAddress = updateAddress(
+                null,
+                prevAddress
+            )!!
+
+            assertEquals(prevAddress.toJson(), updatedAddress.toJson())
+        }
+    }
+
+    @Nested
+    inner class AccountIdentifierTest {
+
+        val prevAccountIdentifier = RecordAccountIdentifier(
+            id = "requestAccountIdentifier.id",
+            scheme = "requestAccountIdentifier.scheme"
+        )
+
+        val sampleNewAccountIdentifier = RequestAccountIdentifier(
+            id = "requestAccountIdentifier.id",
+            scheme = "requestAccountIdentifier.scheme"
+        )
+
+        @Test
+        fun `update AccountIdentifier - without previous value`() {
+            val updatedAccountIdentifier = updateAccountIdentifier(
+                sampleNewAccountIdentifier,
+                null
+            )!!
+            assertEquals(sampleNewAccountIdentifier.toJson(), updatedAccountIdentifier.toJson())
+        }
+
+        @Test
+        fun `update AccountIdentifier - full update`() {
+            val updatedAccountIdentifier = updateAccountIdentifier(
+                sampleNewAccountIdentifier,
+                prevAccountIdentifier
+            )!!
+            assertEquals(updatedAccountIdentifier.toJson(), sampleNewAccountIdentifier.toJson())
+        }
+
+        @Test
+        fun `update AccountIdentification - without new value`() {
+            val updatedAccountIdentification = updateAccountIdentifier(
+                null,
+                prevAccountIdentifier
+            )!!
+
+            assertEquals(prevAccountIdentifier.toJson(), updatedAccountIdentification.toJson())
+        }
+    }
+
+    @Nested
+    inner class AdditionalAccountIdentifierTest {
+
+        private val COMMON_ID = "id-161"
+
+        val prevAdditionalAccountIdentifier = listOf(
+            RecordAccountIdentifier(
+                id = COMMON_ID,
+                scheme = "dbAccountIdentifier.scheme-744"
+            ),
+            RecordAccountIdentifier(
+                id = "dbAccountIdentifier.id-971",
+                scheme = "dbAccountIdentifier.scheme-424"
+            )
+        )
+
+        val sampleNewAdditionalAccountIdentifier = listOf(
+            RequestAccountIdentifier(
+                id = COMMON_ID,
+                scheme = "requestAccountIdentifier.scheme-206"
+            ),
+            RequestAccountIdentifier(
+                id = "requestAccountIdentifier.id-77",
+                scheme = "requestAccountIdentifier.scheme-763"
+            ),
+            RequestAccountIdentifier(
+                id = "requestAccountIdentifier.id-468",
+                scheme = "requestAccountIdentifier.scheme-615"
+            )
+        )
+
+        @Test
+        fun `update AdditionalAccountIdentifier - without previous value`() {
+            val updatedAdditionalAccountIdentifier = updateStrategy(
+                receivedElements = sampleNewAdditionalAccountIdentifier,
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = emptyList(),
+                keyExtractorForAvailableElement = { it.id!! },
+                block = ::updateAccountIdentifierElement
+            )
+            assertEquals(sampleNewAdditionalAccountIdentifier.toJson(), updatedAdditionalAccountIdentifier.toJson())
+        }
+
+        @Test
+        fun `update AdditionalAccountIdentifier - empty collection in request`() {
+            val updatedAdditionalAccountIdentifier = updateStrategy(
+                receivedElements = emptyList(),
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = prevAdditionalAccountIdentifier,
+                keyExtractorForAvailableElement = { it.id!! },
+                block = ::updateAccountIdentifierElement
+            )
+            assertEquals(prevAdditionalAccountIdentifier.toJson(), updatedAdditionalAccountIdentifier.toJson())
+        }
+
+        @Test
+        fun `update AdditionalAccountIdentifier - partial updating`() {
+            val newAdditionalAccountIdentifier = sampleNewAdditionalAccountIdentifier.map {
+                it.copy(scheme = null)
+            }.associateBy { it.id }
+
+            val dbIds = prevAdditionalAccountIdentifier.map { it.id }
+            val requestIds = sampleNewAdditionalAccountIdentifier.map { it.id }
+            val distinctIds = (dbIds + requestIds).toSet()
+
+            val updatedAccountIdentification = updateStrategy(
+                receivedElements = newAdditionalAccountIdentifier.values.toList(),
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = prevAdditionalAccountIdentifier,
+                keyExtractorForAvailableElement = { it.id!! },
+                block = ::updateAccountIdentifierElement
+            ).associateBy { it.id }
+
+            assertEquals(distinctIds.size, updatedAccountIdentification.size)
+            assertTrue(updatedAccountIdentification.keys.containsAll(requestIds))
+            assertTrue(updatedAccountIdentification.keys.containsAll(dbIds))
+        }
+    }
+
+    @Nested
+    inner class BankAccountTest {
+
+        val prevBankAccount = RecordBankAccount(
+            identifier = AccountIdentifierTest().prevAccountIdentifier,
+            address = AddressTest().prevAddress,
+            description = "dbBankAccount.description",
+            accountIdentification = AccountIdentifierTest().prevAccountIdentifier,
+            additionalAccountIdentifiers = AdditionalAccountIdentifierTest().prevAdditionalAccountIdentifier,
+            bankName = "dbBankAccount.bankName"
+        )
+
+        val sampleNewBankAccount = RequestBankAccount(
+            identifier = AccountIdentifierTest().sampleNewAccountIdentifier,
+            address = AddressTest().sampleNewAddress,
+            description = "dbBankAccount.description",
+            accountIdentification = AccountIdentifierTest().sampleNewAccountIdentifier,
+            additionalAccountIdentifiers = AdditionalAccountIdentifierTest().sampleNewAdditionalAccountIdentifier,
+            bankName = "dbBankAccount.bankName"
+        )
+
+        @Test
+        fun `update BankAccount - without previous value`() {
+            val updatedBankAccount = updateBankAccount(
+                sampleNewBankAccount,
+                null
+            )
+            assertEquals(sampleNewBankAccount.toJson(), updatedBankAccount.toJson())
+        }
+
+        @Test
+        fun `update BankAccount - partial updating`() {
+
+            val newBankAccount = sampleNewBankAccount.copy(
+                identifier = AccountIdentifierTest().sampleNewAccountIdentifier,
+                accountIdentification = AccountIdentifierTest().sampleNewAccountIdentifier,
+                additionalAccountIdentifiers = emptyList(),
+                address = null,
+                description = null,
+                bankName = null
+            )
+
+            val updatedBankAccount = updateBankAccount(
+                newBankAccount,
+                prevBankAccount
+            )
+
+            assertEquals(prevBankAccount.address!!.toJson(), updatedBankAccount.address!!.toJson())
+            assertEquals(prevBankAccount.description!!.toJson(), updatedBankAccount.description!!.toJson())
+            assertEquals(prevBankAccount.bankName!!.toJson(), updatedBankAccount.bankName!!.toJson())
+            assertEquals(newBankAccount.identifier.toJson(), updatedBankAccount.identifier.toJson())
+            assertEquals(
+                newBankAccount.accountIdentification!!.toJson(),
+                updatedBankAccount.accountIdentification!!.toJson()
+            )
+            assertEquals(
+                prevBankAccount.additionalAccountIdentifiers.toJson(),
+                updatedBankAccount.additionalAccountIdentifiers.toJson()
+            )
+        }
+    }
+
+    @Nested
+    inner class BankAccountsTest {
+
+        private val COMMON_ID = "id-161"
+
+        private val prevBanckAccounts = listOf(
+            RecordBankAccount(
+                identifier = AccountIdentifierTest().prevAccountIdentifier.copy(id = COMMON_ID),
+                address = AddressTest().prevAddress,
+                description = "dbBankAccount.description",
+                accountIdentification = AccountIdentifierTest().prevAccountIdentifier,
+                additionalAccountIdentifiers = AdditionalAccountIdentifierTest().prevAdditionalAccountIdentifier,
+                bankName = "dbBankAccount.bankName"
+            )
+        )
+
+        private val sampleNewBankAccount = listOf(
+            RequestBankAccount(
+                identifier = AccountIdentifierTest().sampleNewAccountIdentifier.copy(id = COMMON_ID),
+                address = AddressTest().sampleNewAddress,
+                description = "dbBankAccount.description-513",
+                accountIdentification = AccountIdentifierTest().sampleNewAccountIdentifier,
+                additionalAccountIdentifiers = AdditionalAccountIdentifierTest().sampleNewAdditionalAccountIdentifier,
+                bankName = "dbBankAccount.bankName-675"
+            ),
+            RequestBankAccount(
+                identifier = AccountIdentifierTest().sampleNewAccountIdentifier,
+                address = null,
+                description = "dbBankAccount.description-874",
+                accountIdentification = null,
+                additionalAccountIdentifiers = emptyList(),
+                bankName = "dbBankAccount.bankName-976"
+            )
+        )
+
+        @Test
+        fun `update BankAccount - without previous value`() {
+            val updatedBankAccount = updateStrategy(
+                receivedElements = sampleNewBankAccount,
+                keyExtractorForReceivedElement = { it.identifier.id!! },
+                availableElements = emptyList(),
+                keyExtractorForAvailableElement = { it.identifier.id },
+                block = ::updateBankAccount
+            )
+            assertEquals(sampleNewBankAccount.toJson(), updatedBankAccount.toJson())
+        }
+
+        @Test
+        fun `update BankAccount - empty collection in request`() {
+            val updatedBankAccount = updateStrategy(
+                receivedElements = emptyList(),
+                keyExtractorForReceivedElement = { it.identifier.id!! },
+                availableElements = prevBanckAccounts,
+                keyExtractorForAvailableElement = { it.identifier.id },
+                block = ::updateBankAccount
+            )
+            assertEquals(prevBanckAccounts.toJson(), updatedBankAccount.toJson())
+        }
+
+        @Test
+        fun `update BankAccount - partial updating`() {
+            val dbIds = prevBanckAccounts.map { it.identifier.id }
+            val requestIds = sampleNewBankAccount.map { it.identifier.id }
+            val distinctIds = (dbIds + requestIds).toSet()
+
+            val updatedBankAccounts = updateStrategy(
+                receivedElements = sampleNewBankAccount,
+                keyExtractorForReceivedElement = { it.identifier.id!! },
+                availableElements = prevBanckAccounts,
+                keyExtractorForAvailableElement = { it.identifier.id },
+                block = ::updateBankAccount
+            ).map { it.identifier.id }
+
+            assertEquals(distinctIds.size, updatedBankAccounts.size)
+            assertTrue(updatedBankAccounts.containsAll(requestIds))
+            assertTrue(updatedBankAccounts.containsAll(dbIds))
+        }
+    }
+
+    @Nested
+    inner class LegalFormTest {
+
+        val prevLegalForm = RecordLegalForm(
+            id = "dbLegalForm.id",
+            description = "dbLegalForm.description",
+            uri = "dbLegalForm?.uri",
+            scheme = "dbLegalForm.scheme"
+        )
+
+        val sampleNewLegalForm = RequestLegalForm(
+            id = "dbLegalForm.id",
+            description = "dbLegalForm.description-542",
+            uri = "dbLegalForm?.uri-649",
+            scheme = "dbLegalForm.scheme"
+        )
+
+        @Test
+        fun `update LegalForm - without previous value`() {
+            val updatedLegalForm = updateLegalForm(
+                sampleNewLegalForm,
+                null
+            )!!
+            assertEquals(sampleNewLegalForm.toJson(), updatedLegalForm.toJson())
+        }
+
+        @Test
+        fun `update LegalForm - full update`() {
+            val updatedLegalForm = updateLegalForm(
+                sampleNewLegalForm,
+                prevLegalForm
+            )!!
+            assertEquals(updatedLegalForm.toJson(), sampleNewLegalForm.toJson())
+        }
+
+        @Test
+        fun `update LegalForm - partial updating`() {
+            val newLegalForm = sampleNewLegalForm.copy(uri = null)
+
+            val expectedValue = RecordLegalForm(
+                id = newLegalForm.id,
+                description = newLegalForm.description,
+                scheme = newLegalForm.scheme,
+                uri = prevLegalForm.uri
+            )
+            val updatedLegalForm = updateLegalForm(
+                newLegalForm,
+                prevLegalForm
+            )!!
+
+            assertEquals(expectedValue.toJson(), updatedLegalForm.toJson())
+        }
+
+        @Test
+        fun `update LegalForm - without new value`() {
+            val updatedLegalForm = updateLegalForm(
+                null,
+                prevLegalForm
+            )!!
+            assertEquals(prevLegalForm.toJson(), updatedLegalForm.toJson())
+        }
+
+        @Test
+        fun `update LegalForm - same id`() {
+            assertThrows<ErrorException> {
+                updateLegalForm(
+                    sampleNewLegalForm.copy(id = "ID-1"),
+                    prevLegalForm
+                )
+            }
+        }
+    }
+
+    @Nested
+    inner class ClassificationTest {
+
+        val prevClassification = RecordClassification(
+            id = "dbClassification.id",
+            description = "dbClassification.description",
+            uri = "dbClassification?.uri",
+            scheme = "dbClassification.scheme"
+        )
+
+        val sampleNewClassification = RequestClassification(
+            id = "dbClassification.id",
+            description = "dbClassification.description-542",
+            uri = "dbClassification?.uri-649",
+            scheme = "dbClassification.scheme"
+        )
+
+        @Test
+        fun `update Classification - without previous value`() {
+            val updatedClassification = updateClassification(
+                sampleNewClassification,
+                null
+            )!!
+            assertEquals(sampleNewClassification.toJson(), updatedClassification.toJson())
+        }
+
+        @Test
+        fun `update Classification - full update`() {
+            val updatedClassification = updateClassification(
+                sampleNewClassification,
+                prevClassification
+            )!!
+            assertEquals(updatedClassification.toJson(), sampleNewClassification.toJson())
+        }
+
+        @Test
+        fun `update Classification - partial updating`() {
+            val newClassification = sampleNewClassification.copy(uri = null)
+
+            val expectedValue = RecordClassification(
+                id = newClassification.id,
+                description = newClassification.description,
+                scheme = newClassification.scheme,
+                uri = prevClassification.uri
+            )
+            val updatedClassification = updateClassification(
+                newClassification,
+                prevClassification
+            )!!
+
+            assertEquals(expectedValue.toJson(), updatedClassification.toJson())
+        }
+
+        @Test
+        fun `update Classification - without new value`() {
+            val updatedClassification = updateClassification(
+                null,
+                prevClassification
+            )!!
+            assertEquals(prevClassification.toJson(), updatedClassification.toJson())
+        }
+
+        @Test
+        fun `update Classification - same id`() {
+            assertThrows<ErrorException> {
+                updateClassification(
+                    sampleNewClassification.copy(id = "ID-1"),
+                    prevClassification
+                )
+            }
+        }
+    }
+
+    @Nested
+    inner class UnitTest {
+
+        val prevUnit = RecordUnit(
+            id = "unitId",
+            name = "available?.name",
+            uri = "available?.uri",
+            scheme = "available?.scheme",
+            value = Value(BigDecimal.ZERO, "MDL", null, null)
+        )
+
+        val sampleNewUnit = RequestUnit(
+            id = "unitId",
+            name = "rqUnit.name",
+            uri = "rqUnit.uri",
+            scheme = "available?.scheme",
+            value = Value(BigDecimal.TEN, "MDL", null, null)
+        )
+
+        @Test
+        fun `update Unit - partial updating`() {
+            val newUnit = sampleNewUnit.copy(uri = null)
+
+            val expectedValue = RecordUnit(
+                id = sampleNewUnit.id,
+                scheme = sampleNewUnit.scheme,
+                name = sampleNewUnit.name,
+                value = sampleNewUnit.value,
+                uri = prevUnit.uri
+            )
+            val updatedUnit = updateUnit(
+                newUnit,
+                prevUnit
+            )!!
+
+            assertEquals(expectedValue.toJson(), updatedUnit.toJson())
+        }
+
+        @Test
+        fun `update Unit - without new value`() {
+            val updatedUnit = updateUnit(
+                null,
+                prevUnit
+            )!!
+            assertEquals(prevUnit.toJson(), updatedUnit.toJson())
+        }
+
+        @Test
+        fun `update Unit - same id`() {
+            assertThrows<ErrorException> {
+                updateUnit(
+                    sampleNewUnit.copy(id = "ID-1"),
+                    prevUnit
+                )
+            }
+        }
+    }
+
+    @Nested
+    inner class PeriodTest {
+
+        val prevPeriod = RecordPeriod(
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now().plusDays(10),
+            durationInDays = 20,
+            maxExtentDate = LocalDateTime.now().plusDays(30)
+        )
+
+        val sampleNewPeriod = RequestPeriod(
+            startDate = LocalDateTime.now().plusDays(20),
+            endDate = LocalDateTime.now().plusDays(30),
+            durationInDays = 20,
+            maxExtentDate = LocalDateTime.now().plusDays(30)
+        )
+
+        @Test
+        fun `update Period - without previous value`() {
+            val updatedPeriod = updatePeriod(
+                sampleNewPeriod,
+                null
+            )!!
+            assertEquals(sampleNewPeriod.toJson(), updatedPeriod.toJson())
+        }
+
+        @Test
+        fun `update Period - full update`() {
+            val updatedPeriod = updatePeriod(
+                sampleNewPeriod,
+                prevPeriod
+            )!!
+            assertEquals(updatedPeriod.toJson(), sampleNewPeriod.toJson())
+        }
+
+        @Test
+        fun `update Period - partial updating`() {
+            val newPeriod = sampleNewPeriod.copy(
+                endDate = null,
+                maxExtentDate = null
+            )
+
+            val expectedValue = RecordPeriod(
+                startDate = sampleNewPeriod.startDate,
+                durationInDays = sampleNewPeriod.durationInDays,
+                endDate = prevPeriod.endDate,
+                maxExtentDate = prevPeriod.maxExtentDate
+            )
+            val updatedPeriod = updatePeriod(
+                newPeriod,
+                prevPeriod
+            )!!
+
+            assertEquals(expectedValue.toJson(), updatedPeriod.toJson())
+        }
+
+        @Test
+        fun `update Period - without new value`() {
+            val updatedPeriod = updatePeriod(
+                null,
+                prevPeriod
+            )!!
+            assertEquals(prevPeriod.toJson(), updatedPeriod.toJson())
+        }
+    }
+
+    @Nested
+    inner class BidsStatisticTest {
+
+        val prevBidsStatistic = RecordBidsStatistic(
+            id = "id",
+            date = LocalDateTime.now(),
+            value = Double.MIN_VALUE,
+            notes = "dbBidsStatistic?.notes",
+            measure = "dbBidsStatistic?.measure",
+            relatedLot = "dbBidsStatistic?.relatedLot"
+        )
+
+        val sampleNewBidsStatistic = RequestBidsStatistic(
+            id = "id",
+            date = LocalDateTime.now(),
+            value = Double.MAX_VALUE,
+            notes = "rqBidsStatistic.notes",
+            measure = "rqBidsStatistic.measure",
+            relatedLot = "rqBidsStatistic.relatedLot"
+        )
+
+        @Test
+        fun `update BidsStatistic - without previous value`() {
+            val updatedBidsStatistic = updateBidsStatistic(
+                sampleNewBidsStatistic,
+                null
+            )
+            assertEquals(sampleNewBidsStatistic.toJson(), updatedBidsStatistic.toJson())
+        }
+
+        @Test
+        fun `update BidsStatistic - full update`() {
+            val updatedBidsStatistic = updateBidsStatistic(
+                sampleNewBidsStatistic,
+                prevBidsStatistic
+            )
+            assertEquals(updatedBidsStatistic.toJson(), sampleNewBidsStatistic.toJson())
+        }
+
+        @Test
+        fun `update BidsStatistic - partial updating`() {
+            val newBidsStatistic = sampleNewBidsStatistic.copy(
+                notes = null,
+                measure = null
+            )
+
+            val expectedValue = RecordBidsStatistic(
+                id = sampleNewBidsStatistic.id,
+                date = sampleNewBidsStatistic.date,
+                value = sampleNewBidsStatistic.value,
+                relatedLot = sampleNewBidsStatistic.relatedLot,
+                measure = prevBidsStatistic.measure,
+                notes = prevBidsStatistic.notes
+            )
+            val updatedBidsStatistic = updateBidsStatistic(
+                newBidsStatistic,
+                prevBidsStatistic
+            )
+
+            assertEquals(expectedValue.toJson(), updatedBidsStatistic.toJson())
+        }
+    }
+
+    @Nested
+    inner class BudgetSourceTest {
+
+        val prevBudgetSource = RecordBudgetSource(
+            id = "budgetSource.id",
+            currency = "dbBudgetSource?.currency",
+            amount = BigDecimal.ZERO
+        )
+
+        val sampleNewBudgetSource = RequestBudgetSource(
+            id = "budgetSource.id",
+            currency = "rqBudgetSource?.currency",
+            amount = BigDecimal.TEN
+        )
+
+        @Test
+        fun `update BudgetSource - without previous value`() {
+            val updatedBudgetSource = updateBudgetSource(
+                sampleNewBudgetSource,
+                null
+            )
+            assertEquals(sampleNewBudgetSource.toJson(), updatedBudgetSource.toJson())
+        }
+
+        @Test
+        fun `update BudgetSource - full update`() {
+            val updatedBudgetSource = updateBudgetSource(
+                sampleNewBudgetSource,
+                prevBudgetSource
+            )
+            assertEquals(updatedBudgetSource.toJson(), sampleNewBudgetSource.toJson())
+        }
+
+        @Test
+        fun `update BudgetSource - partial updating`() {
+            val newBudgetSource = sampleNewBudgetSource.copy(
+                currency = null
+            )
+
+            val expectedValue = RecordBudgetSource(
+                id = sampleNewBudgetSource.id,
+                amount = sampleNewBudgetSource.amount,
+                currency = prevBudgetSource.currency
+            )
+            val updatedBudgetSource = updateBudgetSource(
+                newBudgetSource,
+                prevBudgetSource
+            )
+
+            assertEquals(expectedValue.toJson(), updatedBudgetSource.toJson())
+        }
+    }
+
+    @Nested
+    inner class RequestTest {
+
+        val prevRequest = RecordRequest(
+            id = "dbRequest.id",
+            relatedPerson = null,
+            description = "dbRequest.description",
+            title = "dbRequest.title"
+        )
+
+        val sampleNewRequest = RequestRequest(
+            id = "rqRequest.id",
+            relatedPerson = null,
+            description = "rqRequest.description",
+            title = "rqRequest.title"
+        )
+
+        @Test
+        fun `update Request - without previous value`() {
+            val updatedRequest = updateRequest(
+                sampleNewRequest,
+                null
+            )
+            assertEquals(sampleNewRequest.toJson(), updatedRequest.toJson())
+        }
+
+        @Test
+        fun `update Request - full update`() {
+            val updatedRequest = updateRequest(
+                sampleNewRequest,
+                prevRequest
+            )
+            assertEquals(updatedRequest.toJson(), sampleNewRequest.toJson())
+        }
+
+        @Test
+        fun `update Request - partial updating`() {
+            val newRequest = sampleNewRequest.copy(
+                relatedPerson = null
+            )
+
+            val expectedValue = RecordRequest(
+                id = sampleNewRequest.id,
+                description = sampleNewRequest.description,
+                title = sampleNewRequest.title,
+                relatedPerson = prevRequest.relatedPerson
+            )
+            val updatedRequest = updateRequest(
+                newRequest,
+                prevRequest
+            )
+
+            assertEquals(expectedValue.toJson(), updatedRequest.toJson())
+        }
+    }
+
+    @Nested
+    inner class ConfirmationRequestTest {
+
+        val prevConfirmationRequest = RecordConfirmationRequest(
+            id = "dbConfirmationRequest.id",
+            title = "dbConfirmationRequest?.title",
+            description = "dbConfirmationRequest?.description",
+            relatesTo = "dbConfirmationRequest?.relatesTo",
+            relatedItem = "dbConfirmationRequest.relatedItem",
+            type = "dbConfirmationRequest?.type",
+            source = "dbConfirmationRequest.source",
+            requestGroups = emptyList()
+        )
+
+        val sampleNewConfirmationRequest = RequestConfirmationRequest(
+            id = "rqConfirmationRequest.id",
+            title = "dbConfirmationRequest?.title",
+            description = "dbConfirmationRequest?.description",
+            relatesTo = "dbConfirmationRequest?.relatesTo",
+            relatedItem = "dbConfirmationRequest.relatedItem",
+            type = "dbConfirmationRequest?.type",
+            source = "dbConfirmationRequest.source",
+            requestGroups = emptyList()
+        )
+
+        @Test
+        fun `update ConfirmationRequest - without previous value`() {
+            val updatedConfirmationRequest = updateConfirmationRequest(
+                sampleNewConfirmationRequest,
+                null
+            )
+            assertEquals(sampleNewConfirmationRequest.toJson(), updatedConfirmationRequest.toJson())
+        }
+
+        @Test
+        fun `update ConfirmationRequest - full update`() {
+            val updatedConfirmationRequest = updateConfirmationRequest(
+                sampleNewConfirmationRequest,
+                prevConfirmationRequest
+            )
+            assertEquals(updatedConfirmationRequest.toJson(), sampleNewConfirmationRequest.toJson())
+        }
+
+        @Test
+        fun `update ConfirmationRequest - partial updating`() {
+            val newConfirmationRequest = sampleNewConfirmationRequest.copy(
+                description = null,
+                type = null,
+                relatesTo = null
+            )
+
+            val expectedValue = RecordConfirmationRequest(
+                id = sampleNewConfirmationRequest.id,
+                relatesTo = prevConfirmationRequest.relatesTo,
+                type = prevConfirmationRequest.type,
+                description = prevConfirmationRequest.description,
+                title = sampleNewConfirmationRequest.title,
+                requestGroups = emptyList(),
+                source = sampleNewConfirmationRequest.source,
+                relatedItem = sampleNewConfirmationRequest.relatedItem
+            )
+            val updatedConfirmationRequest = updateConfirmationRequest(
+                newConfirmationRequest,
+                prevConfirmationRequest
+            )
+
+            assertEquals(expectedValue.toJson(), updatedConfirmationRequest.toJson())
+        }
+    }
+
+    @Nested
+    inner class ConfirmationResponseTest {
+
+        val prevConfirmationResponse = RecordConfirmationResponse(
+            id = "dbConfirmationResponse.id",
+            value = null,
+            request = "dbConfirmationResponse?.request"
+        )
+
+        val sampleNewConfirmationResponse = RequestConfirmationResponse(
+            id = "rqConfirmationResponse.id",
+            value = null,
+            request = "rqConfirmationResponse.request"
+        )
+
+        @Test
+        fun `update ConfirmationResponse - without previous value`() {
+            val updatedConfirmationResponse = updateConfirmationResponse(
+                sampleNewConfirmationResponse,
+                null
+            )
+            assertEquals(sampleNewConfirmationResponse.toJson(), updatedConfirmationResponse.toJson())
+        }
+
+        @Test
+        fun `update ConfirmationResponse - full update`() {
+            val updatedConfirmationResponse = updateConfirmationResponse(
+                sampleNewConfirmationResponse,
+                prevConfirmationResponse
+            )
+            assertEquals(updatedConfirmationResponse.toJson(), sampleNewConfirmationResponse.toJson())
+        }
+
+        @Test
+        fun `update ConfirmationResponse - partial updating`() {
+            val newConfirmationResponse = sampleNewConfirmationResponse.copy(
+                value = null
+            )
+
+            val expectedValue = RecordConfirmationResponse(
+                id = sampleNewConfirmationResponse.id,
+                value = prevConfirmationResponse.value,
+                request = sampleNewConfirmationResponse.request
+            )
+            val updatedConfirmationResponse = updateConfirmationResponse(
+                newConfirmationResponse,
+                prevConfirmationResponse
+            )
+
+            assertEquals(expectedValue.toJson(), updatedConfirmationResponse.toJson())
+        }
+    }
+
+    @Nested
+    inner class RelatedPartyTest {
+
+        val prevRelatedParty = RecordRelatedParty(
+            id = "dbRelatedParty.id",
+            name = "dbRelatedParty?.name"
+        )
+
+        val sampleNewRelatedParty = RequestRelatedParty(
+            id = "rqRelatedParty.id",
+            name = "rqRelatedParty.name"
+        )
+
+        @Test
+        fun `update RelatedParty - without previous value`() {
+            val updatedRelatedParty = updateRelatedParty(
+                sampleNewRelatedParty,
+                null
+            )
+            assertEquals(sampleNewRelatedParty.toJson(), updatedRelatedParty.toJson())
+        }
+
+        @Test
+        fun `update RelatedParty - full update`() {
+            val updatedRelatedParty = updateRelatedParty(
+                sampleNewRelatedParty,
+                prevRelatedParty
+            )
+            assertEquals(updatedRelatedParty.toJson(), sampleNewRelatedParty.toJson())
+        }
+
+        @Test
+        fun `update RelatedParty - partial updating`() {
+            val newRelatedParty = sampleNewRelatedParty.copy(
+                name = null
+            )
+
+            val expectedValue = RecordRelatedParty(
+                id = sampleNewRelatedParty.id,
+                name = prevRelatedParty.name
+            )
+            val updatedRelatedParty = updateRelatedParty(
+                newRelatedParty,
+                prevRelatedParty
+            )
+
+            assertEquals(expectedValue.toJson(), updatedRelatedParty.toJson())
+        }
+    }
+
+    @Nested
+    inner class MilestoneTest {
+
+        val prevMilestone = RecordMilestone(
+            id = "dbMilestone.id",
+            title = "dbMilestone?.title",
+            description = "dbMilestone?.description",
+            type = "dbMilestone?.type",
+            status = "dbMilestone?.status",
+            dateMet = LocalDateTime.now(),
+            dateModified = LocalDateTime.now(),
+            additionalInformation = "dbMilestone?.additionalInformation",
+            dueDate = LocalDateTime.now(),
+            relatedItems = emptyList(),
+            relatedParties = emptyList()
+        )
+
+        val sampleNewMilestone = RequestMilestone(
+            id = "rqMilestone.id",
+            title = "rqMilestone?.title",
+            description = "rqMilestone?.description",
+            type = "rqMilestone?.type",
+            status = "rqMilestone?.status",
+            dateMet = LocalDateTime.now(),
+            dateModified = LocalDateTime.now(),
+            additionalInformation = "rqMilestone?.additionalInformation",
+            dueDate = LocalDateTime.now(),
+            relatedItems = emptyList(),
+            relatedParties = emptyList()
+        )
+
+        @Test
+        fun `update Milestone - without previous value`() {
+            val updatedMilestone = updateMilestone(
+                sampleNewMilestone,
+                null
+            )
+            assertEquals(sampleNewMilestone.toJson(), updatedMilestone.toJson())
+        }
+
+        @Test
+        fun `update Milestone - full update`() {
+            val updatedMilestone = updateMilestone(
+                sampleNewMilestone,
+                prevMilestone
+            )
+            assertEquals(updatedMilestone.toJson(), sampleNewMilestone.toJson())
+        }
+
+        @Test
+        fun `update Milestone - partial updating`() {
+            val newMilestone = sampleNewMilestone.copy(
+                type = null,
+                status = null,
+                dateModified = null
+            )
+
+            val expectedValue = RecordMilestone(
+                id = sampleNewMilestone.id,
+                dateModified = prevMilestone.dateModified,
+                status = prevMilestone.status,
+                type = prevMilestone.type,
+                title = sampleNewMilestone.title,
+                description = sampleNewMilestone.description,
+                relatedParties = emptyList(),
+                relatedItems = emptyList(),
+                dueDate = sampleNewMilestone.dueDate,
+                additionalInformation = sampleNewMilestone.additionalInformation,
+                dateMet = sampleNewMilestone.dateMet
+            )
+            val updatedMilestone = updateMilestone(
+                newMilestone,
+                prevMilestone
+            )
+
+            assertEquals(expectedValue.toJson(), updatedMilestone.toJson())
+        }
+    }
+
+    @Nested
+    inner class PermitDetailsTest {
+
+        val prevPermitDetails = RecordPermitDetails(
+            issuedBy = RecordIssue(
+                id = "dbPermitDetails?.issuedBy?.id",
+                name = "dbPermitDetails?.issuedBy?.name"
+            ),
+            issuedThought = RecordIssue(
+                id = "dbPermitDetails?.issuedBy?.id",
+                name = "dbPermitDetails?.issuedBy?.name"
+            ),
+            validityPeriod = PeriodTest().prevPeriod
+        )
+
+        val sampleNewPermitDetails = RequestPermitDetails(
+            issuedBy = RequestIssue(
+                id = "dbPermitDetails?.issuedBy?.id",
+                name = "dbPermitDetails?.issuedBy?.name-382"
+            ),
+            issuedThought = RequestIssue(
+                id = "dbPermitDetails?.issuedBy?.id",
+                name = "dbPermitDetails?.issuedBy?.name-860"
+            ),
+            validityPeriod = PeriodTest().sampleNewPeriod
+        )
+
+        @Test
+        fun `update PermitDetails - without previous value`() {
+            val updatedPermitDetails = updatePermitDetails(
+                sampleNewPermitDetails,
+                null
+            )!!
+            assertEquals(sampleNewPermitDetails.toJson(), updatedPermitDetails.toJson())
+        }
+
+        @Test
+        fun `update PermitDetails - full update`() {
+            val updatedPermitDetails = updatePermitDetails(
+                sampleNewPermitDetails,
+                prevPermitDetails
+            )!!
+            assertEquals(updatedPermitDetails.toJson(), sampleNewPermitDetails.toJson())
+        }
+
+        @Test
+        fun `update PermitDetails - partial updating`() {
+            val newPermitDetails = sampleNewPermitDetails.copy(
+                issuedBy = null,
+                validityPeriod = null
+            )
+
+            val updatedPermitDetails = updatePermitDetails(
+                newPermitDetails,
+                prevPermitDetails
+            )!!
+
+            assertEquals(prevPermitDetails.issuedBy!!.toJson(), updatedPermitDetails.issuedBy!!.toJson())
+            assertEquals(prevPermitDetails.validityPeriod!!.toJson(), updatedPermitDetails.validityPeriod!!.toJson())
+            assertEquals(newPermitDetails.issuedThought!!.toJson(), updatedPermitDetails.issuedThought!!.toJson())
+        }
+
+        @Test
+        fun `update PermitDetails - without new value`() {
+            val updatedPermitDetails = updatePermitDetails(
+                null,
+                prevPermitDetails
+            )!!
+            assertEquals(prevPermitDetails.toJson(), updatedPermitDetails.toJson())
+        }
+    }
+
+    @Nested
+    inner class PermitsTest {
+
+        private val COMMON_ID = "id-161"
+
+        private val prevPermits = listOf(
+            RecordPermits(
+                id = COMMON_ID,
+                scheme = "dbPermit.scheme-664",
+                url = "dbPermit.url-48",
+                permitDetails = PermitDetailsTest().prevPermitDetails
+            ), RecordPermits(
+                id = "dbPermit.id-905",
+                scheme = "dbPermit.scheme-873",
+                url = "dbPermit.url-991",
+                permitDetails = PermitDetailsTest().prevPermitDetails
+            )
+        )
+
+        private val sampleNewPermits = listOf(
+            RequestPermits(
+                id = COMMON_ID,
+                scheme = "dbPermit.scheme-593",
+                url = "dbPermit.url-115",
+                permitDetails = PermitDetailsTest().sampleNewPermitDetails
+            ),
+            RequestPermits(
+                id = "dbPermit.id-115",
+                scheme = "dbPermit.scheme-705",
+                url = "dbPermit.url-615",
+                permitDetails = PermitDetailsTest().sampleNewPermitDetails
+            )
+        )
+
+        @Test
+        fun `update Permits - without previous value`() {
+            val updatedPermits = updateStrategy(
+                receivedElements = sampleNewPermits,
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = emptyList(),
+                keyExtractorForAvailableElement = { it.id },
+                block = ::updatePermits
+            )
+            assertEquals(sampleNewPermits.toJson(), updatedPermits.toJson())
+        }
+
+        @Test
+        fun `update Permits - empty collection in request`() {
+            val updatedPermits = updateStrategy(
+                receivedElements = emptyList(),
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = prevPermits,
+                keyExtractorForAvailableElement = { it.id },
+                block = ::updatePermits
+            )
+            assertEquals(prevPermits.toJson(), updatedPermits.toJson())
+        }
+
+        @Test
+        fun `update Permits - partial updating`() {
+            val dbIds = prevPermits.map { it.id }
+            val requestIds = sampleNewPermits.map { it.id }
+            val distinctIds = (dbIds + requestIds).toSet()
+
+            val updatedPermits = updateStrategy(
+                receivedElements = sampleNewPermits,
+                keyExtractorForReceivedElement = { it.id!! },
+                availableElements = prevPermits,
+                keyExtractorForAvailableElement = { it.id },
+                block = ::updatePermits
+            ).associateBy { it.id }
+
+            val updatedCommonPermit = updatedPermits[COMMON_ID]!!
+            val commonPermitFromRequest = sampleNewPermits.find { it.id == COMMON_ID }
+
+            assertEquals(distinctIds.size, updatedPermits.size)
+            assertEquals(commonPermitFromRequest!!.toJson(), updatedCommonPermit.toJson())
+
+            assertTrue(updatedPermits.keys.containsAll(requestIds))
+            assertTrue(updatedPermits.keys.containsAll(dbIds))
+        }
+    }
+
+    @Test
+    fun `update strategy`() {
+        val commonId = "rqRelatedProcess.id-2"
+
+        val existsElements = listOf(
+            RecordRelatedProcess(
+                id = "rqRelatedProcess.id-1",
+                scheme = null,
+                identifier = "available?.identifier-1",
+                uri = "available?.uri-1",
+                relationship = listOf(RelatedProcessType.PARENT)
+            ),
+            RecordRelatedProcess(
+                id = commonId,
+                scheme = null,
+                identifier = "available?.identifier",
+                uri = "available?.uri",
+                relationship = listOf(RelatedProcessType.PLANNING)
+            )
+        )
+
+        val newElements = listOf(
+            RequestRelatedProcess(
+                id = commonId,
+                scheme = null,
+                identifier = "available?.identifier-3",
+                uri = null,
+                relationship = listOf(RelatedProcessType.X_EVALUATION)
+            ),
+            RequestRelatedProcess(
+                id = "rqRelatedProcess.id-4",
+                scheme = null,
+                identifier = "available?.identifier-4",
+                uri = "available?.uri-4",
+                relationship = listOf(RelatedProcessType.X_EXPENDITURE_ITEM)
+            )
+        )
+
+        val updatedElements = updateStrategy(
+            receivedElements = newElements,
+            keyExtractorForReceivedElement = { it.id },
+            availableElements = existsElements,
+            keyExtractorForAvailableElement = { it.id },
+            block = ::updateRelatedProcess
+        ).associateBy { it.id }
+
+        val existsElementsIds = existsElements.toSetBy { it.id }
+        val newElementsIds = newElements.toSetBy { it.id }
+        val distinctIds = (existsElementsIds + newElementsIds).toSet()
+
+        assertEquals(distinctIds.size, updatedElements.size)
+        assertTrue(updatedElements.keys.containsAll(newElementsIds))
+        assertTrue(updatedElements.keys.containsAll(existsElementsIds))
+
+        val commonElementUpdated = updatedElements.getValue(commonId)
+        val commonElementsForUpdate = newElements.find { it.id == commonId }!!
+        val commonElementsPrev = existsElements.find { it.id == commonId }!!
+        val expectedCommonElement = RecordRelatedProcess(
+            id = commonId,
+            uri = commonElementsPrev.uri,
+            scheme = commonElementsPrev.scheme,
+            relationship = commonElementsForUpdate.relationship,
+            identifier = commonElementsForUpdate.identifier
+        )
+        assertEquals(expectedCommonElement, commonElementUpdated)
+
+    }
+}
