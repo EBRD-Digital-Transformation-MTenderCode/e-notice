@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.procurement.notice.infrastructure.bind.apiversion.ApiVersionDeserializer
-import com.procurement.notice.infrastructure.bind.apiversion.ApiVersionSerializer
+import com.procurement.notice.infrastructure.bind.apiversion.ApiVersion2Deserializer
+import com.procurement.notice.infrastructure.bind.apiversion.ApiVersion2Serializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.infrastructure.dto.ApiVersion2
@@ -23,8 +23,8 @@ fun ObjectMapper.configuration() {
         /**
          * Serializer/Deserializer for ApiVersion type
          */
-        addSerializer(ApiVersion2::class.java, ApiVersionSerializer())
-        addDeserializer(ApiVersion2::class.java, ApiVersionDeserializer())
+        addSerializer(ApiVersion2::class.java, ApiVersion2Serializer())
+        addDeserializer(ApiVersion2::class.java, ApiVersion2Deserializer())
 
 
     }
