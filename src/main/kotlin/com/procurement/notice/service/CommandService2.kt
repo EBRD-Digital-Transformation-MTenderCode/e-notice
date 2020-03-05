@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.handler.UpdateRecordHandler
 import com.procurement.notice.model.bpe.CommandType2
-import com.procurement.notice.model.bpe.getAction
-import com.procurement.notice.utils.toObject
+import com.procurement.notice.model.bpe.tryGetAction
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -17,11 +16,17 @@ class CommandService2(
         private val log = LoggerFactory.getLogger(CommandService2::class.java)
     }
 
-    fun execute(node: JsonNode): ApiResponse2 {
-        val action = node.getAction().toObject(CommandType2::class.java)
-        return when (action) {
-            CommandType2.UPDATE_RECORD -> updateRecordHandler.handle(node)
+    fun execute(request: JsonNode): ApiResponse2 {
+        val response = when (request.tryGetAction().get) {
+            CommandType2.UPDATE_RECORD -> {
+                updateRecordHandler.handle(node = request)
+            }
         }
+
+        if (log.isDebugEnabled)
+            log.debug("DataOfResponse: '$response'.")
+
+        return response
     }
 }
 

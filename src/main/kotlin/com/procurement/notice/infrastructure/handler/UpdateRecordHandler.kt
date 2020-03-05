@@ -28,6 +28,7 @@ class UpdateRecordHandler(
 
     override fun execute(node: JsonNode): UpdateResult<UpdateError> {
         val request = node.getParams(RequestRelease::class.java)
+
         val ocid = request.ocid ?: throw ErrorException(
             error = ErrorType.OCID_ERROR,
             message = "Missing 'ocid' field in request payload"

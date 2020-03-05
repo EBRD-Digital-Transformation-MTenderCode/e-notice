@@ -27,23 +27,50 @@ class ApiSuccessResponse2(
     override val status: ResponseStatus = ResponseStatus.SUCCESS
 }
 
-class ApiFailResponse2(version: ApiVersion2, id: UUID, result: List<Error>) :
-    ApiResponse2(version = version, id = id, result = result) {
-
+class ApiDataErrorResponse(
+    version: ApiVersion2,
+    id: UUID,
+    result: List<Error>
+) : ApiResponse2(
+    version = version,
+    result = result,
+    id = id
+) {
     @field:JsonProperty("status")
-    override val status: ResponseStatus = ResponseStatus.FAIL
+    override val status: ResponseStatus = ResponseStatus.ERROR
 
-    class Error(val code: String, val description: String?)
+    class Error(val code: String?, val description: String?, val attributeName: String)
 }
 
-class ApiIncidentResponse2(version: ApiVersion2, id: UUID, result: Incident) :
-    ApiResponse2(version = version, id = id, result = result) {
+class ApiErrorResponse(
+    version: ApiVersion2,
+    id: UUID,
+    result: List<Error>
+) : ApiResponse2(
+    version = version,
+    result = result,
+    id = id
+) {
+    @field:JsonProperty("status")
+    override val status: ResponseStatus = ResponseStatus.ERROR
 
+    class Error(val code: String?, val description: String?)
+}
+
+class ApiIncidentResponse(
+    version: ApiVersion2,
+    id: UUID,
+    result: Incident
+) : ApiResponse2(
+    version = version,
+    result = result,
+    id = id
+) {
     @field:JsonProperty("status")
     override val status: ResponseStatus = ResponseStatus.INCIDENT
 
     class Incident(val id: UUID, val date: LocalDateTime, val service: Service, val errors: List<Error>) {
-        class Service(val id: String, val name: String, val version: ApiVersion2)
+        class Service(val id: String, val name: String, val version: String)
         class Error(val code: String, val description: String, val metadata: Any?)
     }
 }
@@ -51,7 +78,7 @@ class ApiIncidentResponse2(version: ApiVersion2, id: UUID, result: Incident) :
 enum class ResponseStatus(private val value: String) {
 
     SUCCESS("success"),
-    FAIL("fail"),
+    ERROR("error"),
     INCIDENT("incident");
 
     @JsonValue

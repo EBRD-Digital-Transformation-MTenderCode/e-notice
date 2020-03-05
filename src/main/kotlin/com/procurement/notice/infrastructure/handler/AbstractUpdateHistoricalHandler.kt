@@ -2,11 +2,11 @@ package com.procurement.notice.infrastructure.handler
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.HistoryDao
-import com.procurement.notice.infrastructure.dto.Action
+import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse2
-import com.procurement.notice.model.bpe.getId
-import com.procurement.notice.model.bpe.getVersion
+import com.procurement.notice.model.bpe.tryGetId
+import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.slf4j.LoggerFactory
@@ -19,8 +19,8 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : UpdateError>
     }
 
     override fun handle(node: JsonNode): ApiResponse2 {
-        val id = node.getId()
-        val version = node.getVersion()
+        val id = node.tryGetId().get
+        val version = node.tryGetVersion().get
 
         val history = historyDao.getHistory(id.toString(), action.value)
         if (history != null) {

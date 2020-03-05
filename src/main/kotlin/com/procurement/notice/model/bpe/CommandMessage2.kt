@@ -4,90 +4,197 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
 import com.procurement.notice.config.properties.GlobalProperties
-import com.procurement.notice.exception.EnumException
-import com.procurement.notice.exception.ErrorException
-import com.procurement.notice.infrastructure.dto.Action
-import com.procurement.notice.infrastructure.dto.ApiFailResponse2
-import com.procurement.notice.infrastructure.dto.ApiIncidentResponse2
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.fail.error.DataErrors
+import com.procurement.notice.domain.utils.Action
+import com.procurement.notice.domain.utils.Result
+import com.procurement.notice.domain.utils.ValidationResult
+import com.procurement.notice.domain.utils.bind
+import com.procurement.notice.infrastructure.dto.ApiErrorResponse
+import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiVersion2
 import com.procurement.notice.utils.toObject
+import com.procurement.notice.utils.tryToObject
 import java.time.LocalDateTime
 import java.util.*
 
-enum class CommandType2(override val value: String): Action {
+enum class CommandType2(@JsonValue override val value: String) : Action {
     UPDATE_RECORD("updateRecord");
 
-    @JsonValue
-    fun value(): String {
-        return this.value
+    companion object {
+        private val elements: Map<String, CommandType2> = values().associateBy { it.value.toUpperCase() }
+
+        fun tryOf(value: String): Result<CommandType2, String> = elements[value.toUpperCase()]
+            ?.let {
+                Result.success(it)
+            }
+            ?: Result.failure(
+                "Unknown value for enumType ${CommandType2::class.java.canonicalName}: " +
+                    "$value, Allowed values are ${values().joinToString { it.value }}"
+            )
     }
 
-    override fun toString(): String {
-        return this.value
-    }
+    override fun toString(): String = this.value
 }
 
-fun errorResponse2(exception: Exception, id: UUID = NaN, version: ApiVersion2): ApiResponse2 =
-    when (exception) {
-        is ErrorException -> ApiFailResponse2(
+fun errorResponse(fail: Fail, id: UUID = NaN, version: ApiVersion2): ApiResponse2 =
+    when (fail) {
+        is Fail.Error    -> getApiFailResponse(
             id = id,
             version = version,
-            result = listOf(
-                ApiFailResponse2.Error(
-                    code = getFullErrorCode(exception.code),
-                    description = exception.message!!
-                )
-            )
+            code = fail.code,
+            message = fail.description
         )
-        is EnumException -> ApiFailResponse2(
+        is Fail.Incident -> getApiIncidentResponse(
             id = id,
             version = version,
-            result = listOf(
-                ApiFailResponse2.Error(
-                    code = getFullErrorCode(exception.code),
-                    description = exception.message!!
-                )
-            )
-        )
-        else -> ApiIncidentResponse2(
-            id = id,
-            version = version,
-            result = createIncident("00.00", exception.message ?: "Internal server error.")
+            code = fail.code,
+            message = fail.description
         )
     }
 
-fun createIncident(code: String, message: String, metadata: Any? = null): ApiIncidentResponse2.Incident {
-    return ApiIncidentResponse2.Incident(
-        date = LocalDateTime.now(),
-        id = UUID.randomUUID(),
-        service = ApiIncidentResponse2.Incident.Service(
-            id = GlobalProperties.serviceId,
-            version = GlobalProperties.App.apiVersion,
-            name = GlobalProperties.serviceName
-        ),
-        errors = listOf(
-            ApiIncidentResponse2.Incident.Error(
-                code = getFullErrorCode(code),
-                description = message,
-                metadata = metadata
+private fun getApiFailResponse(
+    id: UUID,
+    version: ApiVersion2,
+    code: String,
+    message: String
+): ApiErrorResponse {
+    return ApiErrorResponse(
+        id = id,
+        version = version,
+        result = listOf(
+            ApiErrorResponse.Error(
+                code = "${code}/${GlobalProperties.service.id}",
+                description = message
             )
         )
     )
 }
 
-private fun getFullErrorCode(code: String): String = "400.${GlobalProperties.serviceId}." + code
+private fun getApiIncidentResponse(
+    id: UUID,
+    version: ApiVersion2,
+    code: String,
+    message: String
+): ApiIncidentResponse {
+    return ApiIncidentResponse(
+        id = id,
+        version = version,
+        result = ApiIncidentResponse.Incident(
+            id = UUID.randomUUID(),
+            date = LocalDateTime.now(),
+            errors = listOf(
+                ApiIncidentResponse.Incident.Error(
+                    code = "${code}/${GlobalProperties.service.id}",
+                    description = message,
+                    metadata = null
+                )
+            ),
+            service = ApiIncidentResponse.Incident.Service(
+                id = GlobalProperties.service.id,
+                version = GlobalProperties.service.version,
+                name = GlobalProperties.service.name
+            )
+        )
+    )
+}
 
 val NaN: UUID
     get() = UUID(0, 0)
 
+fun JsonNode.tryGetAttribute(name: String): Result<JsonNode, DataErrors> {
+    val node = get(name) ?: return Result.failure(
+        DataErrors.MissingRequiredAttribute(name)
+    )
+    if (node is NullNode) return Result.failure(
+        DataErrors.DataTypeMismatch(name)
+    )
+
+    return Result.success(node)
+}
+
 fun JsonNode.getBy(parameter: String): JsonNode {
     val node = get(parameter)
-    if(node == null || node is NullNode)  throw IllegalArgumentException("$parameter is absent")
+    if (node == null || node is NullNode) throw IllegalArgumentException("$parameter is absent")
     return node
 }
 
-fun JsonNode.getId() = UUID.fromString(getBy("id").asText())
-fun JsonNode.getVersion() = ApiVersion2.valueOf(getBy("version").asText())
-fun JsonNode.getAction() = getBy("action")
-fun <T: Any> JsonNode.getParams(clazz: Class<T>) = getBy("params").toObject(clazz)
+fun JsonNode.tryGetId(): Result<UUID, DataErrors> {
+    return this.getAttribute("id")
+        .bind {
+            val value = it.asText()
+            asUUID(value)
+        }
+}
+
+fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataErrors> {
+    return this.getAttribute("version")
+        .bind {
+            val value = it.asText()
+            when (val result = ApiVersion2.tryOf(value)) {
+                is Result.Success -> result
+                is Result.Failure -> result.mapError {
+                    DataErrors.DataFormatMismatch(attributeName = result.error)
+                }
+            }
+        }
+}
+
+fun JsonNode.tryGetAction(): Result<CommandType2, DataErrors> {
+    return this.getAttribute("action")
+        .bind {
+            val value = it.asText()
+            when (val result = CommandType2.tryOf(value)) {
+                is Result.Success -> result
+                is Result.Failure -> result.mapError {
+                    DataErrors.DataFormatMismatch(attributeName = result.error)
+                }
+            }
+        }
+}
+
+fun <T : Any> JsonNode.getParams(clazz: Class<T>) = getBy("params").toObject(clazz)
+
+private fun asUUID(value: String): Result<UUID, DataErrors> =
+    try {
+        Result.success<UUID>(UUID.fromString(value))
+    } catch (exception: IllegalArgumentException) {
+        Result.failure(
+            DataErrors.DataFormatMismatch(attributeName = "id")
+        )
+    }
+
+fun JsonNode.getAttribute(name: String): Result<JsonNode, DataErrors> {
+    return if (has(name)) {
+        val attr = get(name)
+        if (attr !is NullNode)
+            Result.success(attr)
+        else
+            Result.failure(
+                DataErrors.DataTypeMismatch(attributeName = "$attr")
+            )
+    } else
+        Result.failure(
+            DataErrors.MissingRequiredAttribute(attributeName = name)
+        )
+}
+
+fun <T : Any> JsonNode.tryGetParams(target: Class<T>): Result<T, DataErrors> =
+    getAttribute("params").bind { node ->
+        when (val result = node.tryToObject(target)) {
+            is Result.Success -> result
+            is Result.Failure -> result.mapError {
+                DataErrors.DataFormatMismatch(attributeName = result.error)
+            }
+        }
+    }
+
+fun JsonNode.hasParams(): ValidationResult<DataErrors> =
+    if (this.has("params"))
+        ValidationResult.ok()
+    else
+        ValidationResult.error(
+            DataErrors.MissingRequiredAttribute(attributeName = "params")
+        )
+

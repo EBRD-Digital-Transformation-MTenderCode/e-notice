@@ -10,12 +10,10 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toNode
 import com.procurement.notice.utils.toObject
 import org.junit.jupiter.api.Test
-import org.springframework.web.client.RestTemplate
 import java.io.File
 
 class UpdateReleaseDtoMappingTest {
 
-    private val restTemplate = RestTemplate()
     private val objectMapper = jacksonObjectMapper().apply { configuration() }
 
     @Test
@@ -24,7 +22,7 @@ class UpdateReleaseDtoMappingTest {
         releaseNodes.forEach { release ->
             val dto = toObject(RequestRelease::class.java, release)
             val actualRelease = toJson(dto).toNode()
-            compareByKeys(expected = release, actual = actualRelease)
+            compareByKeys(expected = release, actual = actualRelease.get)
         }
     }
 }

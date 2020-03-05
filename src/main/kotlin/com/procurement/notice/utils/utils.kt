@@ -3,6 +3,9 @@ package com.procurement.notice.utils
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.fail.error.DataErrors
+import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeFormatter
 import com.procurement.notice.infrastructure.bind.jackson.configuration
 import java.io.IOException
@@ -73,8 +76,20 @@ fun <T : Any> JsonNode.toObject(target: Class<T>): T {
     }
 }
 
-fun String.toNode(): JsonNode = try {
-    JsonMapper.mapper.readTree(this)
+fun <T : Any> JsonNode.tryToObject(target: Class<T>): Result<T, String> = try {
+    Result.success(JsonMapper.mapper.treeToValue(this, target))
+} catch (expected: Exception) {
+    Result.failure("Error binding JSON to an object of type '${target.canonicalName}'.")
+}
+
+fun <T : Any> String.tryToObject(target: Class<T>): Result<T, String> = try {
+    Result.success(JsonMapper.mapper.readValue(this, target))
+} catch (expected: Exception) {
+    Result.failure("Error binding JSON to an object of type '${target.canonicalName}'.")
+}
+
+fun String.toNode(): com.procurement.notice.domain.utils.Result<JsonNode, Fail> = try {
+    com.procurement.notice.domain.utils.Result.success(JsonMapper.mapper.readTree(this))
 } catch (exception: JsonProcessingException) {
-    throw IllegalArgumentException("Error parsing String to JsonNode.", exception)
+    com.procurement.notice.domain.utils.Result.failure(DataErrors.DataTypeMismatch(this))
 }
