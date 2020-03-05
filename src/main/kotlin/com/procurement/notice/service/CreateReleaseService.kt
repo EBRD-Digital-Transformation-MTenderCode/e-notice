@@ -200,20 +200,20 @@ class CreateReleaseService(private val budgetService: BudgetService,
         }
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordPN = releaseService.getRelease(recordEntity.jsonData)
-        recordPN.apply {
+        val releasePN = releaseService.getRelease(recordEntity.jsonData)
+        releasePN.apply {
             id = releaseService.newReleaseId(ocid) //BR-2.4.16.16
             date = releaseDate //BR-2.4.16.15
             tag = listOf(Tag.PLANNING_UPDATE) //BR-2.4.16.13
             tender.status = TenderStatus.COMPLETE //BR-2.4.16.18
             tender.statusDetails = TenderStatusDetails.EMPTY //BR-2.4.16.18
         }
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, release = recordPN, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, release = releasePN, publishDate = recordEntity.publishDate)
 
         //BR-2.4.16.6
         val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
 
-        val releaseNP = recordPN.copy(
+        val releaseNP = releasePN.copy(
             ocid = newOcId, //BR-2.4.16.6
             id = releaseService.newReleaseId(newOcId), //BR-2.4.16.7
             date = releaseDate, //BR-2.4.16.8

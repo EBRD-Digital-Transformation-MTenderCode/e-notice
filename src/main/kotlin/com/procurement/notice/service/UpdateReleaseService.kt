@@ -247,33 +247,33 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val recordEV = releaseService.getRelease(recordEntity.jsonData)
+        val releaseEV = releaseService.getRelease(recordEntity.jsonData)
 
         val newReleaseID = releaseService.newReleaseId(context.ocid)
-        val actualReleaseID = recordEV.id!!
+        val actualReleaseID = releaseEV.id!!
         val newAmendment: ReleaseAmendment =
             newAmendment(context = context, data = data, actualReleaseID = actualReleaseID, newReleaseID = newReleaseID)
-        val updatedAmendments: List<ReleaseAmendment> = recordEV.tender.amendments.plus(newAmendment)
+        val updatedAmendments: List<ReleaseAmendment> = releaseEV.tender.amendments.plus(newAmendment)
 
-        val updatedReleaseEV = recordEV.copy(
+        val updatedReleaseEV = releaseEV.copy(
             id = newReleaseID, //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
-            relatedProcesses = recordEV.relatedProcesses, //FR-ER-5.5.2.3.2
-            parties = recordEV.parties, //FR-ER-5.5.2.3.2
+            relatedProcesses = releaseEV.relatedProcesses, //FR-ER-5.5.2.3.2
+            parties = releaseEV.parties, //FR-ER-5.5.2.3.2
             tender = data.tender.let { tender ->
                 ReleaseTender(
                     id = tender.id,
                     status = tender.status,
                     statusDetails = tender.statusDetails,
-                    title = recordEV.tender.title, //FR-ER-5.5.2.3.3
-                    description = recordEV.tender.description, //FR-ER-5.5.2.3.3
-                    hasEnquiries = recordEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
-                    enquiries = recordEV.tender.enquiries, //FR-ER-5.5.2.3.3
-                    criteria = recordEV.tender.criteria, //FR-ER-5.5.2.3.3
-                    conversions = recordEV.tender.conversions, //FR-ER-5.5.2.3.3
-                    awardCriteria = recordEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
-                    awardCriteriaDetails = recordEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
+                    title = releaseEV.tender.title, //FR-ER-5.5.2.3.3
+                    description = releaseEV.tender.description, //FR-ER-5.5.2.3.3
+                    hasEnquiries = releaseEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
+                    enquiries = releaseEV.tender.enquiries, //FR-ER-5.5.2.3.3
+                    criteria = releaseEV.tender.criteria, //FR-ER-5.5.2.3.3
+                    conversions = releaseEV.tender.conversions, //FR-ER-5.5.2.3.3
+                    awardCriteria = releaseEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
+                    awardCriteriaDetails = releaseEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
                     awardPeriod = null,
                     standstillPeriod = null,
                     amendments = updatedAmendments, //FR-ER-5.5.2.3.4
@@ -281,17 +281,17 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                     auctionPeriod = getAuctionPeriod(
                         context = context,
                         data = data,
-                        previous = recordEV.tender.auctionPeriod
+                        previous = releaseEV.tender.auctionPeriod
                     ),
                     //FR-ER-5.5.2.3.6
                     electronicAuctions = getElectronicAuctions(
                         context = context,
-                        data = data, previous = recordEV.tender.electronicAuctions
+                        data = data, previous = releaseEV.tender.electronicAuctions
                     ),
                     procurementMethodModalities = getProcurementMethodModalities(
                         context = context,
                         data = data,
-                        previous = recordEV.tender.procurementMethodModalities
+                        previous = releaseEV.tender.procurementMethodModalities
                     ),
                     tenderPeriod = tender.tenderPeriod.let { tenderPeriod ->
                         Period(

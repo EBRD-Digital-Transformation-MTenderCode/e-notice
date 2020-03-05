@@ -60,8 +60,8 @@ class ActivationContractStrategy(
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRelease(recordEvEntity.jsonData)
-        val updatedReleaseEv = recordEv.copy(
+        val releaseEV = releaseService.getRelease(recordEvEntity.jsonData)
+        val updatedReleaseEv = releaseEV.copy(
             //BR-2.4.12.4
             id = releaseService.newReleaseId(recordEvEntity.ocId),
 
@@ -72,24 +72,24 @@ class ActivationContractStrategy(
             tag = listOf(Tag.TENDER_UPDATE),
 
             //BR-2.4.12.6
-            tender = recordEv.tender.copy(
-                lots = updating(lots = recordEv.tender.lots, lotsFromRequest = data.lots).toList()
+            tender = releaseEV.tender.copy(
+                lots = updating(lots = releaseEV.tender.lots, lotsFromRequest = data.lots).toList()
             ),
 
             //BR-2.4.12.8
             contracts = updatingContractsEv(
-                contracts = recordEv.contracts,
+                contracts = releaseEV.contracts,
                 cans = data.cans
             ).toList(),
 
             //BR-2.4.12.9
             awards = updatingAwardsEv(
-                awards = recordEv.awards,
+                awards = releaseEV.awards,
                 awardsFromRequest = data.awards
             ).toList(),
 
             //BR-2.4.12.10
-            bids = recordEv.bids?.let { bids ->
+            bids = releaseEV.bids?.let { bids ->
                 bids.copy(
                     details = updatingBidsEv(
                         bids = bids.details ?: emptyList(),

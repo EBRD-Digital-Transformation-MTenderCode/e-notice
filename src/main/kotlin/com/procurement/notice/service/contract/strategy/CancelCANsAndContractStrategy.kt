@@ -35,15 +35,15 @@ class CancelCANsAndContractStrategy(
     ): ResponseDto {
         val request = toObject(CancelCANsAndContractRequest::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordEV: Release = releaseService.getRelease(recordEntity.jsonData)
+        val releaseEV: Release = releaseService.getRelease(recordEntity.jsonData)
 
         val cancelledCAN: CancelCANsAndContractRequest.CancelledCAN = request.cancelledCan
 
         /** BR-2.8.3.4 */
         val releaseId = releaseService.newReleaseId(ocid)
-        val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseId, releaseDate)
+        val amendment: Amendment = cancelledCAN.createAmendment(releaseEV, releaseId, releaseDate)
 
-        val updatedReleaseEV = recordEV.copy(
+        val updatedReleaseEV = releaseEV.copy(
             /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
             /** BR-2.8.3.3 */
@@ -51,23 +51,23 @@ class CancelCANsAndContractStrategy(
             /** BR-2.8.3.4 */
             id = releaseId,
             /** BR-2.8.3.8 */
-            contracts = recordEV.contracts
+            contracts = releaseEV.contracts
                 .updateContracts(
                     cancelledCAN = cancelledCAN,
                     relatedCANs = request.relatedCANs,
                     amendment = amendment
                 ),
             /** BR-2.8.3.12 */
-            tender = recordEV.tender.copy(
+            tender = releaseEV.tender.copy(
                 /** BR-2.8.3.13 */
-                lots = recordEV.tender.lots.updateLots(request.lot)
+                lots = releaseEV.tender.lots.updateLots(request.lot)
             ),
 
-            bids = recordEV.bids?.copy(
+            bids = releaseEV.bids?.copy(
                 /** BR-2.8.3.6 */
-                details = recordEV.bids?.details?.updateBids(request.bids)
+                details = releaseEV.bids?.details?.updateBids(request.bids)
             ),
-            awards = recordEV.awards.updateAwards(request.awards)
+            awards = releaseEV.awards.updateAwards(request.awards)
         )
 
         val contractId = request.contract.id

@@ -84,10 +84,10 @@ class TenderService(
         data: TenderPeriodEndData
     ): TenderPeriodEndResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRelease(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedAwards = updateAwards(data = data, awards = record.awards)
-        val updatedLots = updateLots(data = data, lots = record.tender.lots)
+        val updatedAwards = updateAwards(data = data, awards = release.awards)
+        val updatedLots = updateLots(data = data, lots = release.tender.lots)
 
         val newCriteria = data.criteria
             ?.let { criteria ->
@@ -109,21 +109,21 @@ class TenderService(
             }
 
         val updatedCriteria: List<Criteria> = if (newCriteria != null)
-            record.tender.criteria + newCriteria
+            release.tender.criteria + newCriteria
         else
-            record.tender.criteria
+            release.tender.criteria
 
         //FR-5.7.2.1.3
-        val updatedBids = updateBids(data = data, bids = record.bids)
+        val updatedBids = updateBids(data = data, bids = release.bids)
 
         //FR-5.7.2.1.5
-        val updatedParties = updateParties(data = data, parties = record.parties)
+        val updatedParties = updateParties(data = data, parties = release.parties)
 
-        val updatedRelease = record.copy(
+        val updatedRelease = release.copy(
             id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.AWARD), //FR-5.7.2.1.1
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 //FR-5.7.2.1.6
                 awardPeriod = Period(
                     startDate = data.awardPeriod.startDate,
@@ -1025,10 +1025,10 @@ class TenderService(
         context: StartAwardPeriodAuctionContext
     ): StartAwardPeriodAuctionResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRelease(recordEntity.jsonData)
-        val updatedLots = setUnsuccessfulStatusToLots(data, record)
-        val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, record)
-        val updatedRelease = record.copy(
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        val updatedLots = setUnsuccessfulStatusToLots(data, release)
+        val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, release)
+        val updatedRelease = release.copy(
             id = releaseService.newReleaseId(context.ocid),
             date = context.startDate,
             tag = listOf(Tag.AWARD),
@@ -1058,8 +1058,8 @@ class TenderService(
                     )
                 }
                 .toList()
-                .ifEmpty { record.awards },
-            tender = record.tender.copy(
+                .ifEmpty { release.awards },
+            tender = release.tender.copy(
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
                 lots = updatedLots.toList(),
                 electronicAuctions = updatedElectronicAuctions
@@ -1198,20 +1198,20 @@ class TenderService(
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRelease(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedLots = updateLots(data = data, lots = record.tender.lots)
-        val updatedBids = updateBids(data = data, bids = record.bids)
+        val updatedLots = updateLots(data = data, lots = release.tender.lots)
+        val updatedBids = updateBids(data = data, bids = release.bids)
         val updatedAwards = updateAwards(data = data)
-        val updatedParties = updateParties(data = data, parties = record.parties)
+        val updatedParties = updateParties(data = data, parties = release.parties)
 
-        val updatedRelease = record.copy(
+        val updatedRelease = release.copy(
             id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_CANCELLATION), //FR-ER-5.7.2.2.1
 
             //FR-ER-5.7.2.1.6
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 status = TenderStatus.fromValue(data.tender.status.value),
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value),
                 lots = updatedLots.toList()

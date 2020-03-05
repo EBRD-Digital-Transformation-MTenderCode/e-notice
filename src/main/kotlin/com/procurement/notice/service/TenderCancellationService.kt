@@ -50,14 +50,14 @@ class TenderCancellationService(
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRelease(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
         //BR-2.4.8.10
-        val newAmendments: List<ReleaseAmendment> = newAmendments(context, data, record)
-        val amendments = record.tender.amendments
+        val newAmendments: List<ReleaseAmendment> = newAmendments(context, data, release)
+        val amendments = release.tender.amendments
         val updatedAmendment = amendments + newAmendments
 
-        val updatedRecord = record.copy(
+        val updatedRecord = release.copy(
             //BR-2.4.8.4
             id = releaseService.newReleaseId(ocid),
 
@@ -68,7 +68,7 @@ class TenderCancellationService(
             tag = listOf(Tag.TENDER_CANCELLATION),
 
             //BR-2.4.8.6
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 //BR-2.4.8.9
                 statusDetails = TenderStatusDetails.CANCELLATION,
 

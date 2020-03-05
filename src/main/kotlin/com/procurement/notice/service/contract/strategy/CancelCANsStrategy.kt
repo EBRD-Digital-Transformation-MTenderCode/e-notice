@@ -23,12 +23,12 @@ class CancelCANsStrategy(
     fun cancelCan(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val request = toObject(CancelCANRequest::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordEV: Release = releaseService.getRelease(recordEntity.jsonData)
+        val releaseEV: Release = releaseService.getRelease(recordEntity.jsonData)
 
         val cancelledCAN: CancelCANRequest.CancelledCAN = request.cancelledCan
-        val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseDate)
+        val amendment: Amendment = cancelledCAN.createAmendment(releaseEV, releaseDate)
 
-        val updatedReleaseEV = recordEV.copy(
+        val updatedReleaseEV = releaseEV.copy(
             /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
             /** BR-2.8.3.3 */
@@ -36,11 +36,11 @@ class CancelCANsStrategy(
             /** BR-2.8.3.4 */
             id = releaseService.newReleaseId(ocid),
             /** BR-2.8.3.8 */
-            contracts = recordEV.contracts.updateContracts(cancelledCAN, amendment),
+            contracts = releaseEV.contracts.updateContracts(cancelledCAN, amendment),
             /** BR-2.8.3.12 */
-            tender = recordEV.tender.copy(
+            tender = releaseEV.tender.copy(
                 /** BR-2.8.3.13 */
-                lots = recordEV.tender.lots.updateLots(request.lot)
+                lots = releaseEV.tender.lots.updateLots(request.lot)
             )
         )
 
