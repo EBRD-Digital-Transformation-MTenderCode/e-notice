@@ -24,7 +24,7 @@ sealed class UpdateResult<out T> {
     }
 
     object Ok : UpdateResult<Nothing>() {
-        override val get: Nothing get() = throw NoSuchElementException("ValidationResult does not contain value.")
+        override val get: Nothing get() = throw NoSuchElementException("UpdateResult does not contain value.")
         override val isOk: Boolean = true
         override val isError: Boolean = !isOk
     }

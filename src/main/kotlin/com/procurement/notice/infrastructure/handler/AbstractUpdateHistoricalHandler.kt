@@ -2,6 +2,7 @@ package com.procurement.notice.infrastructure.handler
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse2
@@ -11,7 +12,7 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.slf4j.LoggerFactory
 
-abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : UpdateError>(
+abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : DataErrors>(
     private val historyDao: HistoryDao
 ) : Handler<ACTION, ApiResponse2> {
     companion object {
@@ -35,6 +36,6 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : UpdateError>
             }
     }
 
-    abstract fun execute(node: JsonNode): UpdateResult<UpdateError>
+    abstract fun execute(node: JsonNode): UpdateResult<DataErrors>
 }
 
