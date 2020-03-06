@@ -14,39 +14,25 @@ sealed class ApiResponse2(
     abstract val status: ResponseStatus
 }
 
-class ApiSuccessResponse2(
-    id: UUID,
-    version: ApiVersion2,
-    @JsonInclude(JsonInclude.Include.NON_NULL) result: Any?
-) : ApiResponse2(
-    version = version,
-    id = id,
-    result = result
-) {
+class ApiSuccessResponse(id: UUID, version: ApiVersion2, @JsonInclude(JsonInclude.Include.NON_NULL) result: Any?) :
+    ApiResponse2(version = version, id = id, result = result) {
     @field:JsonProperty("status")
     override val status: ResponseStatus = ResponseStatus.SUCCESS
 }
 
-class ApiDataErrorResponse(
-    version: ApiVersion2,
-    id: UUID,
-    result: List<Error>
-) : ApiResponse2(
+class ApiFailResponse(version: ApiVersion2, id: UUID, result: List<Error>) : ApiResponse2(
     version = version,
-    result = result,
-    id = id
+    id = id,
+    result = result
 ) {
+
     @field:JsonProperty("status")
     override val status: ResponseStatus = ResponseStatus.ERROR
 
-    class Error(val code: String?, val description: String?, val attributeName: String)
+    class Error(val code: String, val description: String?)
 }
 
-class ApiErrorResponse(
-    version: ApiVersion2,
-    id: UUID,
-    result: List<Error>
-) : ApiResponse2(
+class ApiErrorResponse(version: ApiVersion2, id: UUID, result: List<Error>) : ApiResponse2(
     version = version,
     result = result,
     id = id
@@ -57,11 +43,7 @@ class ApiErrorResponse(
     class Error(val code: String?, val description: String?)
 }
 
-class ApiIncidentResponse(
-    version: ApiVersion2,
-    id: UUID,
-    result: Incident
-) : ApiResponse2(
+class ApiIncidentResponse(version: ApiVersion2, id: UUID, result: Incident) : ApiResponse2(
     version = version,
     result = result,
     id = id

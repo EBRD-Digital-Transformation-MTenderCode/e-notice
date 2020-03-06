@@ -14,11 +14,9 @@ import java.time.LocalDateTime
 
 data class RequestRelease(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("cpid") @param:JsonProperty("cpid") val cpid: String?,
+    @field:JsonProperty("cpid") @param:JsonProperty("cpid") val cpid: String,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("ocid") @param:JsonProperty("ocid") val ocid: String?,
+    @field:JsonProperty("ocid") @param:JsonProperty("ocid") val ocid: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,

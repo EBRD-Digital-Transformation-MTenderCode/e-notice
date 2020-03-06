@@ -6,10 +6,7 @@ import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiVersion2
 import com.procurement.notice.model.bpe.NaN
 import com.procurement.notice.model.bpe.errorResponse
-import com.procurement.notice.model.bpe.hasParams
-import com.procurement.notice.model.bpe.tryGetAction
 import com.procurement.notice.model.bpe.tryGetId
-import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.service.CommandService2
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toNode
@@ -42,17 +39,6 @@ class CommandController2(private val commandService: CommandService2) {
             .doOnError { error -> return createErrorResponseEntity(expected = error) }
             .get
 
-        val version = node.tryGetVersion()
-            .doOnError { error -> return createErrorResponseEntity(id = id, expected = error) }
-            .get
-
-        node.tryGetAction()
-            .doOnError { error -> return createErrorResponseEntity(id = id, expected = error, version = version) }
-
-        val hasParams = node.hasParams()
-        if (hasParams.isError)
-            return createErrorResponseEntity(id = id, expected = hasParams.error, version = version)
-
         val response = commandService.execute(request = node)
             .also { response ->
                 if (log.isDebugEnabled)
@@ -67,11 +53,7 @@ class CommandController2(private val commandService: CommandService2) {
         id: UUID = NaN,
         version: ApiVersion2 = GlobalProperties.App.apiVersion
     ): ResponseEntity<ApiResponse2> {
-        val response = errorResponse(
-            fail = expected,
-            version = version,
-            id = id
-        )
+        val response = errorResponse(fail = expected, version = version, id = id)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

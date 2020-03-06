@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.handler.UpdateRecordHandler
 import com.procurement.notice.model.bpe.CommandType2
+import com.procurement.notice.model.bpe.errorResponse
 import com.procurement.notice.model.bpe.tryGetAction
+import com.procurement.notice.model.bpe.tryGetId
+import com.procurement.notice.model.bpe.tryGetVersion
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -17,7 +20,20 @@ class CommandService2(
     }
 
     fun execute(request: JsonNode): ApiResponse2 {
-        val response = when (request.tryGetAction().get) {
+
+        val id = request.tryGetId()
+            .doOnError { error -> return errorResponse(fail = error) }
+            .get
+
+        val version = request.tryGetVersion()
+            .doOnError { error -> return errorResponse(fail = error, id = id) }
+            .get
+
+        val action = request.tryGetAction()
+            .doOnError { error -> return errorResponse(fail = error, id = id, version = version) }
+            .get
+
+        val response = when (action) {
             CommandType2.UPDATE_RECORD -> {
                 updateRecordHandler.handle(node = request)
             }

@@ -2102,7 +2102,7 @@ fun updateRelease(releaseId: String, requestRelease: RequestRelease, dbRelease: 
     requestRelease.let { rqRelease ->
         Record(
             id = releaseId,
-            ocid = rqRelease.ocid ?: dbRelease.ocid,
+            ocid = dbRelease.ocid,
             date = rqRelease.date ?: dbRelease.date,
             relatedProcesses = updateStrategy(
                 receivedElements = rqRelease.relatedProcesses.toList(),
@@ -2157,7 +2157,7 @@ fun updateRelease(releaseId: String, requestRelease: RequestRelease, dbRelease: 
                 keyExtractorForAvailableElement = { it.id!! },
                 block = ::updateAgreedMetric
             ),
-            cpid = rqRelease.cpid ?: dbRelease.cpid,
+            cpid = dbRelease.cpid,
             planning = updatePlanning(
                 rqRelease.planning,
                 dbRelease.planning

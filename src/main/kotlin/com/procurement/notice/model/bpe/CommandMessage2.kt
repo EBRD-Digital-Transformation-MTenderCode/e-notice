@@ -14,7 +14,6 @@ import com.procurement.notice.infrastructure.dto.ApiErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiVersion2
-import com.procurement.notice.utils.toObject
 import com.procurement.notice.utils.tryToObject
 import java.time.LocalDateTime
 import java.util.*
@@ -38,20 +37,12 @@ enum class CommandType2(@JsonValue override val value: String) : Action {
     override fun toString(): String = this.value
 }
 
-fun errorResponse(fail: Fail, id: UUID = NaN, version: ApiVersion2): ApiResponse2 =
+fun errorResponse(fail: Fail, id: UUID = NaN, version: ApiVersion2 = GlobalProperties.App.apiVersion): ApiResponse2 =
     when (fail) {
-        is Fail.Error    -> getApiFailResponse(
-            id = id,
-            version = version,
-            code = fail.code,
-            message = fail.description
-        )
-        is Fail.Incident -> getApiIncidentResponse(
-            id = id,
-            version = version,
-            code = fail.code,
-            message = fail.description
-        )
+        is Fail.Error    ->
+            getApiFailResponse(id = id, version = version, code = fail.code, message = fail.description)
+        is Fail.Incident ->
+            getApiIncidentResponse(id = id, version = version, code = fail.code, message = fail.description)
     }
 
 private fun getApiFailResponse(
@@ -153,8 +144,6 @@ fun JsonNode.tryGetAction(): Result<CommandType2, DataErrors> {
             }
         }
 }
-
-fun <T : Any> JsonNode.getParams(clazz: Class<T>) = getBy("params").toObject(clazz)
 
 private fun asUUID(value: String): Result<UUID, DataErrors> =
     try {

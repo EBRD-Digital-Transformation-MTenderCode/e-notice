@@ -30,14 +30,12 @@ class UpdateRecordHandler(
             .doOnError { error: DataErrors -> return UpdateResult.error(error) }
             .get
 
-        val ocid = request.ocid ?: return UpdateResult.error(
-            DataErrors.MissingRequiredAttribute("ocid")
-        )
+        val ocid = request.ocid
         val stage = extractStage(ocid) ?: return UpdateResult.error(
             DataErrors.DataMismatchToPattern("ocid")
         )
 
-        val recordEntity = releaseService.getRecordEntity(request.cpid!!, ocid)
+        val recordEntity = releaseService.getRecordEntity(request.cpid, ocid)
         val record = releaseService.getRecord(recordEntity.jsonData)
 
         val updatedRelease = updateRelease(
