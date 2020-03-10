@@ -1,7 +1,10 @@
 package com.procurement.notice.infrastructure.service.record
 
-import com.procurement.notice.exception.ErrorException
-import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.utils.Result
+import com.procurement.notice.domain.utils.Result.Companion.failure
+import com.procurement.notice.domain.utils.asSuccess
+import com.procurement.notice.infrastructure.dto.enObservationtity.awards.RecordAward
 import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordAgreedMetric
@@ -39,7 +42,6 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionProgressBreakdown
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionResult
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionsDetails
-import com.procurement.notice.infrastructure.dto.entity.awards.RecordAward
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
@@ -185,2192 +187,2831 @@ import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.Value
 
-fun updateLot(received: RequestLot, available: RecordLot?): RecordLot =
-    received.let { rqLot ->
-        RecordLot(
-            id = rqLot.id,
-            status = rqLot.status ?: available?.status,
-            statusDetails = rqLot.statusDetails ?: available?.statusDetails,
-            value = rqLot.value ?: available?.value,
-            title = rqLot.title ?: available?.title,
-            description = rqLot.description ?: available?.description,
-            recurrentProcurement = updateRecurrentProcurement(
-                rqLot.recurrentProcurement,
-                available?.recurrentProcurement.orEmpty()
-            ),
-            contractPeriod = updateContractPeriod(
-                rqLot.contractPeriod,
-                available?.contractPeriod
-            ),
-            internalId = rqLot.internalId ?: available?.internalId,
-            options = updateOptions(
-                rqLot.options,
-                available?.options.orEmpty()
-            ),
-            placeOfPerformance = updatePlaceOfPerformance(
-                rqLot.placeOfPerformance,
-                available?.placeOfPerformance
-            ),
-            renewals = updateRenewals(
-                rqLot.renewals,
-                available?.renewals.orEmpty()
-            ),
-            variants = updateVariants(
-                rqLot.variants,
-                available?.variants.orEmpty()
-            )
-        )
-    }
+typealias UpdateRecordResult<T> = Result<T, Fail.Error.BadRequest>
 
-fun updateVariants(received: List<RequestVariant>, available: List<RecordVariant>): List<RecordVariant> =
+fun RecordLot.updateLot(received: RequestLot): UpdateRecordResult<RecordLot> {
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValue(it)
+        }
+        ?: this.value
+
+    val contractPeriod = received.contractPeriod
+        ?.let {
+            this.contractPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.contractPeriod
+
+    val placeOfPerformance = received.placeOfPerformance
+        ?.let {
+            this.placeOfPerformance?.updatePlaceOfPerformance(it) ?: createPlaceOfPerformance(it)
+        }
+        ?: this.placeOfPerformance
+
+    return this
+        .copy(
+            value = value,
+            title = received.title ?: this.title,
+            status = received.status ?: this.status,
+            description = received.description ?: this.description,
+            statusDetails = received.statusDetails ?: this.statusDetails,
+            recurrentProcurement = this.recurrentProcurement.updateRecurrentProcurement(received.recurrentProcurement),
+            contractPeriod = contractPeriod,
+            internalId = received.internalId ?: this.internalId,
+            options = this.options.updateOptions(received.options),
+            placeOfPerformance = placeOfPerformance,
+            renewals = this.renewals.updateRenewals(received.renewals),
+            variants = this.variants.updateVariants(received.variants)
+        )
+        .asSuccess()
+}
+
+fun List<RecordVariant>.updateVariants(received: List<RequestVariant>): List<RecordVariant> =
     received.mapIfNotEmpty { requestVariant ->
         RecordVariant(
             hasVariants = requestVariant.hasVariants,
             variantDetails = requestVariant.variantDetails
         )
-    } ?: available
+    } ?: this
 
-fun updateRenewals(received: List<RequestRenewal>, available: List<RecordRenewal>): List<RecordRenewal> =
+fun List<RecordRenewal>.updateRenewals(received: List<RequestRenewal>): List<RecordRenewal> =
     received.mapIfNotEmpty { requestRenewal ->
         RecordRenewal(
             hasRenewals = requestRenewal.hasRenewals,
             renewalConditions = requestRenewal.renewalConditions,
             maxNumber = requestRenewal.maxNumber
         )
-    } ?: available
+    } ?: this
 
-fun updatePlaceOfPerformance(
-    received: RequestPlaceOfPerformance?,
-    available: RecordPlaceOfPerformance?
-): RecordPlaceOfPerformance? =
-    received?.let { placeOfPerformance ->
-        RecordPlaceOfPerformance(
-            address = updateAddress(
-                placeOfPerformance.address,
-                available?.address
-            ),
-            description = placeOfPerformance.description ?: available?.description,
-            nutScode = placeOfPerformance.nutScode ?: available?.nutScode
-        )
-    } ?: available
+fun RecordPlaceOfPerformance.updatePlaceOfPerformance(received: RequestPlaceOfPerformance): RecordPlaceOfPerformance {
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
 
-fun updateAddress(received: RequestAddress?, available: RecordAddress?): RecordAddress? =
-    received?.let { address ->
-        RecordAddress(
-            streetAddress = address.streetAddress ?: available?.streetAddress,
-            addressDetails = address.addressDetails
-                ?.let { addressDetails ->
-                    RecordAddressDetails(
-                        country = addressDetails.country
-                            .let { country ->
-                                RecordCountryDetails(
-                                    id = country.id,
-                                    scheme = country.scheme ?: available?.addressDetails?.country?.scheme,
-                                    description = country.description ?: available?.addressDetails?.country?.description,
-                                    uri = country.uri ?: available?.addressDetails?.country?.uri
-                                )
-                            },
-                        region = addressDetails.region
-                            .let { region ->
-                                RecordRegionDetails(
-                                    id = region.id,
-                                    scheme = region.scheme ?: available?.addressDetails?.region?.scheme,
-                                    description = region.description ?: available?.addressDetails?.region?.description,
-                                    uri = region.uri ?: available?.addressDetails?.region?.uri
-                                )
-                            },
-                        locality = addressDetails.locality
-                            .let { locality ->
-                                RecordLocalityDetails(
-                                    id = locality.id,
-                                    scheme = locality.scheme,
-                                    description = locality.description,
-                                    uri = locality.uri ?: available?.addressDetails?.locality?.uri
-                                )
-                            }
-                    )
-                } ?: available?.addressDetails,
-            postalCode = address.postalCode ?: available?.postalCode
-        )
-    } ?: available
+    return this.copy(
+        address = address,
+        description = received.description ?: this.description,
+        nutScode = received.nutScode ?: this.nutScode
+    )
+}
 
-fun updateOptions(received: List<RequestOption>, available: List<RecordOption>): List<RecordOption> =
+fun RecordAddress.updateAddress(received: RequestAddress): RecordAddress =
+    this.copy(
+        streetAddress = received.streetAddress ?: this.streetAddress,
+        addressDetails = received.addressDetails
+            ?.let { addressDetails ->
+                RecordAddressDetails(
+                    country = addressDetails.country
+                        .let { country ->
+                            RecordCountryDetails(
+                                id = country.id,
+                                scheme = country.scheme,
+                                description = country.description
+                                    ?: this.addressDetails?.country?.description,
+                                uri = country.uri ?: this.addressDetails?.country?.uri
+                            )
+                        },
+                    region = addressDetails.region
+                        .let { region ->
+                            RecordRegionDetails(
+                                id = region.id,
+                                scheme = region.scheme,
+                                description = region.description
+                                    ?: this.addressDetails?.region?.description,
+                                uri = region.uri ?: this.addressDetails?.region?.uri
+                            )
+                        },
+                    locality = addressDetails.locality
+                        .let { locality ->
+                            RecordLocalityDetails(
+                                id = locality.id,
+                                scheme = locality.scheme,
+                                description = locality.description,
+                                uri = locality.uri
+                                    ?: this.addressDetails?.locality?.uri
+                            )
+                        }
+                )
+            } ?: this.addressDetails,
+        postalCode = received.postalCode ?: this.postalCode
+    )
+
+fun List<RecordOption>.updateOptions(received: List<RequestOption>): List<RecordOption> =
     received.mapIfNotEmpty { requestOption ->
         RecordOption(
             hasOptions = requestOption.hasOptions,
             optionDetails = requestOption.optionDetails
         )
-    } ?: available
+    } ?: this
 
-fun updateContractPeriod(received: RequestPeriod?, available: RecordPeriod?): RecordPeriod? =
-    received?.let { rqPeriod ->
-        RecordPeriod(
-            startDate = rqPeriod.startDate ?: available?.startDate,
-            endDate = rqPeriod.endDate ?: available?.endDate,
-            durationInDays = rqPeriod.durationInDays ?: available?.durationInDays,
-            maxExtentDate = rqPeriod.maxExtentDate ?: available?.maxExtentDate
-        )
-    } ?: available
+fun RecordPeriod.updateContractPeriod(received: RequestPeriod): RecordPeriod =
+    this.copy(
+        startDate = received.startDate ?: this.startDate,
+        endDate = received.endDate ?: this.endDate,
+        durationInDays = received.durationInDays ?: this.durationInDays,
+        maxExtentDate = received.maxExtentDate ?: this.maxExtentDate
+    )
 
-fun updateRecurrentProcurement(
-    received: List<RequestRecurrentProcurement>,
-    available: List<RecordRecurrentProcurement>
-): List<RecordRecurrentProcurement> =
+fun List<RecordRecurrentProcurement>.updateRecurrentProcurement(received: List<RequestRecurrentProcurement>): List<RecordRecurrentProcurement> =
     received.mapIfNotEmpty { recurrentProcurement ->
         RecordRecurrentProcurement(
             isRecurrent = recurrentProcurement.isRecurrent,
             description = recurrentProcurement.description,
             dates = recurrentProcurement.dates
-                .map { date ->
-                    updatePeriod(
-                        date,
-                        null
-                    )!!
-                }
+                .map { date -> createPeriod(date) }
         )
-    } ?: available
+    } ?: this
 
-fun updateItem(received: RequestItem, available: RecordItem?): RecordItem =
-    received.let { rqItem ->
-        RecordItem(
-            id = rqItem.id,
-            description = rqItem.description ?: available?.description,
-            internalId = rqItem.internalId ?: available?.internalId,
-            unit = updateUnit(
-                rqItem.unit,
-                available?.unit
-            ),
-            quantity = rqItem.quantity ?: available?.quantity,
-            classification = updateClassification(
-                rqItem.classification,
-                available?.classification
-            ),
-            additionalClassifications = updateStrategy(
-                receivedElements = rqItem.additionalClassifications,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.additionalClassifications?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateClassificationElement
-            ),
-            deliveryAddress = updateAddress(
-                rqItem.deliveryAddress,
-                available?.deliveryAddress
-            ),
-            relatedLot = rqItem.relatedLot ?: available?.relatedLot
+fun RecordItem.updateItem(received: RequestItem): UpdateRecordResult<RecordItem> {
+    val classification = received.classification
+        ?.let {
+            this.classification
+                ?.updateClassification(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createClassification(it)
+        }
+        ?: this.classification
+
+    val unit = received.unit
+        ?.let {
+            this.unit
+                ?.updateUnit(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createUnit(it)
+        }
+        ?: this.unit
+
+    val additionalClassifications = updateStrategy(
+        receivedElements = received.additionalClassifications,
+        keyExtractorForReceivedElement = requestClassificationKeyExtractor,
+        availableElements = this.additionalClassifications.toList(),
+        keyExtractorForAvailableElement = recordClassificationKeyExtractor,
+        updateBlock = RecordClassification::updateClassification,
+        createBlock = ::createClassification
+    )
+        .doReturn { e -> return failure(e) }
+
+    val deliveryAddress = received.deliveryAddress
+        ?.let {
+            this.deliveryAddress?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.deliveryAddress
+
+    return this
+        .copy(
+            id = received.id,
+            description = received.description ?: this.description,
+            internalId = received.internalId ?: this.internalId,
+            unit = unit,
+            quantity = received.quantity ?: this.quantity,
+            classification = classification,
+            additionalClassifications = additionalClassifications,
+            deliveryAddress = deliveryAddress,
+            relatedLot = received.relatedLot ?: this.relatedLot
         )
-    }
+        .asSuccess()
+}
 
-fun updateClassification(received: RequestClassification?, available: RecordClassification?): RecordClassification? =
-    received?.let { classification ->
-        val classificationIdent = if (available == null || (classification.id == available.id && classification.scheme == available.scheme))
-            classification.id to classification.scheme
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'classification'. Ids mismatching: " +
-                    "Classification from request (id = '${classification.id}', scheme = '${classification.scheme}'), " +
-                    "Classification from release (id = '${available.id}', scheme = '${available.scheme}'). "
+val recordClassificationKeyExtractor: (RecordClassification) -> String = { it.id }
+val requestClassificationKeyExtractor: (RequestClassification) -> String = { it.id }
+
+fun RecordClassification.updateClassification(received: RequestClassification): UpdateRecordResult<RecordClassification> {
+    val classificationIdent = if (received.id == this.id && received.scheme == this.scheme)
+        received.id to received.scheme
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'classification'. Ids mismatching: " +
+                    "Classification from request (id = '${received.id}', scheme = '${received.scheme}'), " +
+                    "Classification from release (id = '${this.id}', scheme = '${this.scheme}'). "
             )
-        RecordClassification(
+        )
+
+    return this
+        .copy(
             id = classificationIdent.first,
             scheme = classificationIdent.second,
-            uri = classification.uri ?: available?.uri,
-            description = classification.description ?: available?.description
+            uri = received.uri ?: this.uri,
+            description = received.description ?: this.description
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateClassificationElement(
-    received: RequestClassification,
-    available: RecordClassification?
-): RecordClassification =
-    received.let { classification ->
-        RecordClassification(
-            id = classification.id,
-            scheme = classification.scheme ?: available?.scheme,
-            uri = classification.uri ?: available?.uri,
-            description = classification.description ?: available?.description
-        )
-    }
-
-fun updateUnit(received: RequestUnit?, available: RecordUnit?): RecordUnit? =
-    received?.let { rqUnit ->
-        val unitIdent = if (available == null || rqUnit.id == available.id && rqUnit.scheme == available.scheme)
-            rqUnit.id to rqUnit.scheme
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'unit'. Ids mismatching: " +
-                    "Unit from request (id = '${rqUnit.id}', scheme = '${rqUnit.scheme}'), " +
-                    "Unit from release (id = '${available.id}, scheme = '${available.scheme}''). "
+fun RecordUnit.updateUnit(received: RequestUnit): UpdateRecordResult<RecordUnit> {
+    val unitIdent = if (received.id == this.id && received.scheme == this.scheme)
+        received.id to received.scheme
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'unit'. Ids mismatching: " +
+                    "Unit from request (id = '${received.id}', scheme = '${received.scheme}'), " +
+                    "Unit from release (id = '${this.id}, scheme = '${this.scheme}''). "
             )
-        RecordUnit(
+        )
+
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValue(it)
+        }
+        ?: this.value
+
+    return this
+        .copy(
             id = unitIdent.first,
             scheme = unitIdent.second,
-            name = rqUnit.name ?: available?.name,
-            uri = rqUnit.uri ?: available?.uri,
-            value = rqUnit.value ?: available?.value
+            name = received.name ?: this.name,
+            uri = received.uri ?: this.uri,
+            value = value
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateCriteria(received: RequestCriteria, available: RecordCriteria?): RecordCriteria =
-    received.let { rqCriteria ->
-        RecordCriteria(
-            id = rqCriteria.id,
-            description = rqCriteria.description ?: available?.description,
-            title = rqCriteria.title,
-            relatesTo = rqCriteria.relatesTo ?: available?.relatesTo,
-            relatedItem = rqCriteria.relatedItem ?: available?.relatedItem,
-            source = rqCriteria.source ?: available?.source,
-            requirementGroups = updateStrategy(
-                receivedElements = rqCriteria.requirementGroups,
-                keyExtractorForReceivedElement = { bs -> bs.id },
-                availableElements = available?.requirementGroups.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateRequirementGroup
-            )
+fun RecordCriteria.updateCriteria(received: RequestCriteria): UpdateRecordResult<RecordCriteria> {
+    val requirementGroups = updateStrategy(
+        receivedElements = received.requirementGroups,
+        keyExtractorForReceivedElement = requestRequirementGroupsKeyExtractor,
+        availableElements = this.requirementGroups,
+        keyExtractorForAvailableElement = recordRequirementGroupsKeyExtractor,
+        updateBlock = RecordRequirementGroup::updateRequirementGroup,
+        createBlock = ::createRequirementGroup
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            description = received.description ?: this.description,
+            title = received.title,
+            relatesTo = received.relatesTo ?: this.relatesTo,
+            relatedItem = received.relatedItem ?: this.relatedItem,
+            source = received.source ?: this.source,
+            requirementGroups = requirementGroups
         )
-    }
+        .asSuccess()
+}
 
-fun updateRequirementGroup(
-    received: RequestRequirementGroup,
-    available: RecordRequirementGroup?
-): RecordRequirementGroup =
-    received.let { rqRequirementGroup ->
-        RecordRequirementGroup(
-            id = rqRequirementGroup.id,
-            description = rqRequirementGroup.description,
-            requirements = updateStrategy(
-                receivedElements = rqRequirementGroup.requirements,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.requirements.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateRequirement
-            )
+val recordRequirementGroupsKeyExtractor: (RecordRequirementGroup) -> String = { it.id }
+val requestRequirementGroupsKeyExtractor: (RequestRequirementGroup) -> String = { it.id }
+
+fun RecordRequirementGroup.updateRequirementGroup(received: RequestRequirementGroup): UpdateRecordResult<RecordRequirementGroup> {
+    val requirements = updateStrategy(
+        receivedElements = received.requirements,
+        keyExtractorForReceivedElement = recordRequirementKeyExtractor,
+        availableElements = this.requirements,
+        keyExtractorForAvailableElement = recordRequirementKeyExtractor,
+        updateBlock = Requirement::updateRequirement,
+        createBlock = ::createRequirement
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            description = received.description,
+            requirements = requirements
         )
-    }
+        .asSuccess()
+}
 
-fun updateRequirement(received: Requirement, available: Requirement?): Requirement =
-    received.let { rqRequirement ->
-        Requirement(
-            id = rqRequirement.id,
-            description = rqRequirement.description ?: available?.description,
-            title = rqRequirement.title,
-            value = rqRequirement.value,
-            period = rqRequirement.period ?: available?.period,
-            dataType = rqRequirement.dataType
+val recordRequirementKeyExtractor: (Requirement) -> String = { it.id }
+
+fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Requirement> =
+    Requirement(
+        id = received.id,
+        description = received.description ?: this.description,
+        title = received.title,
+        value = received.value,
+        period = received.period ?: this.period,
+        dataType = received.dataType
+    )
+        .asSuccess()
+
+fun RecordConversion.updateConversion(received: RequestConversion): UpdateRecordResult<RecordConversion> {
+    val coefficients = updateStrategy(
+        receivedElements = received.coefficients,
+        keyExtractorForReceivedElement = requestCoefficientsKeyExtractor,
+        availableElements = this.coefficients,
+        keyExtractorForAvailableElement = recordCoefficientsKeyExtractor,
+        updateBlock = RecordCoefficient::updateCoefficient,
+        createBlock = ::createCoefficient
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            description = received.description ?: this.description,
+            relatedItem = received.relatedItem,
+            relatesTo = received.relatesTo,
+            rationale = received.rationale,
+            coefficients = coefficients
         )
-    }
+        .asSuccess()
+}
 
-fun updateConversion(received: RequestConversion, available: RecordConversion?): RecordConversion =
-    received.let { rqConversion ->
-        RecordConversion(
-            id = rqConversion.id,
-            description = rqConversion.description ?: available?.description,
-            relatedItem = rqConversion.relatedItem,
-            relatesTo = rqConversion.relatesTo,
-            rationale = rqConversion.rationale,
-            coefficients = updateStrategy(
-                receivedElements = rqConversion.coefficients,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.coefficients.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateCoefficient
-            )
-        )
-    }
+val recordCoefficientsKeyExtractor: (RecordCoefficient) -> String = { it.id }
+val requestCoefficientsKeyExtractor: (RequestCoefficient) -> String = { it.id }
 
-fun updateCoefficient(received: RequestCoefficient, available: RecordCoefficient?): RecordCoefficient =
-    received.let { rqCoefficient ->
-        RecordCoefficient(
-            id = rqCoefficient.id,
-            value = rqCoefficient.value,
-            coefficient = rqCoefficient.coefficient
-        )
-    }
+fun RecordCoefficient.updateCoefficient(received: RequestCoefficient): UpdateRecordResult<RecordCoefficient> =
+    this.copy(
+        id = received.id,
+        value = received.value,
+        coefficient = received.coefficient
+    )
+        .asSuccess()
 
-fun updateLotGroup(received: RequestLotGroup, available: RecordLotGroup?): RecordLotGroup =
-    received.let { rqLotGroup ->
+fun List<RecordLotGroup>.updateLotGroups(received: List<RequestLotGroup>): UpdateRecordResult<List<RecordLotGroup>> {
+    val result = received.mapIfNotEmpty {
         RecordLotGroup(
-            id = rqLotGroup.id,
-            relatedLots = updateNonIdentifiable(
-                rqLotGroup.relatedLots,
-                available?.relatedLots.orEmpty()
-            ),
-            maximumValue = rqLotGroup.maximumValue ?: available?.maximumValue,
-            optionToCombine = rqLotGroup.optionToCombine ?: available?.optionToCombine
+            id = it.id,
+            relatedLots = it.relatedLots,
+            maximumValue = it.maximumValue,
+            optionToCombine = it.optionToCombine
         )
-    }
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updatePeriod(received: RequestPeriod?, available: RecordPeriod?): RecordPeriod? =
-    received?.let { period ->
-        RecordPeriod(
-            startDate = period.startDate ?: available?.startDate,
-            endDate = period.endDate ?: available?.endDate,
-            durationInDays = period.durationInDays ?: available?.durationInDays,
-            maxExtentDate = period.maxExtentDate ?: available?.maxExtentDate
-        )
-    } ?: available
+fun RecordPeriod.updatePeriod(received: RequestPeriod): UpdateRecordResult<RecordPeriod> =
+    this.copy(
+        startDate = received.startDate ?: this.startDate,
+        endDate = received.endDate ?: this.endDate,
+        durationInDays = received.durationInDays ?: this.durationInDays,
+        maxExtentDate = received.maxExtentDate ?: this.maxExtentDate
+    )
+        .asSuccess()
 
-fun updateRecordEnquiry(received: RequestRecordEnquiry, available: RecordRecordEnquiry?): RecordRecordEnquiry =
-    received.let { rqRecordEnquiry ->
-        RecordRecordEnquiry(
-            id = rqRecordEnquiry.id,
-            relatedItem = rqRecordEnquiry.relatedItem ?: available?.relatedItem,
-            description = rqRecordEnquiry.description ?: available?.description,
-            title = rqRecordEnquiry.title ?: available?.title,
-            relatedLot = rqRecordEnquiry.relatedLot ?: available?.relatedLot,
-            date = rqRecordEnquiry.date ?: available?.date,
-            answer = rqRecordEnquiry.answer ?: available?.answer,
-            author = updateAuthor(
-                rqRecordEnquiry.author,
-                available?.author
-            ),
-            dateAnswered = rqRecordEnquiry.dateAnswered ?: available?.dateAnswered
-        )
-    }
+fun RecordRecordEnquiry.updateRecordEnquiry(received: RequestRecordEnquiry): UpdateRecordResult<RecordRecordEnquiry> {
+    val author = received.author
+        ?.let {
+            this.author
+                ?.updateAuthor(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAuthor(it)
+        }
+        ?: this.author
 
-fun updateAuthor(
-    received: RequestOrganizationReference?,
-    available: RecordOrganizationReference?
-): RecordOrganizationReference? =
-    received?.let { requestOrganizationReference ->
-        val authorId = if (available == null || requestOrganizationReference.id == available.id)
-            requestOrganizationReference.id
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'author'. Ids mismatching: " +
-                    "Author from request (id = '${requestOrganizationReference.id}'), " +
-                    "Author from release (id = '${available.id}'). "
+    return this.copy(
+        id = received.id,
+        relatedItem = received.relatedItem ?: this.relatedItem,
+        description = received.description ?: this.description,
+        title = received.title ?: this.title,
+        relatedLot = received.relatedLot ?: this.relatedLot,
+        date = received.date ?: this.date,
+        answer = received.answer ?: this.answer,
+        author = author,
+        dateAnswered = received.dateAnswered ?: this.dateAnswered
+    )
+        .asSuccess()
+}
+
+fun RecordOrganizationReference.updateAuthor(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
+    val authorId = if (received.id == this.id)
+        received.id
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'author'. Ids mismatching: " +
+                    "Author from request (id = '${received.id}'), " +
+                    "Author from release (id = '${this.id}'). "
             )
-        RecordOrganizationReference(
+        )
+
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
+
+    val details = received.details
+        ?.let {
+            this.details
+                ?.updateDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDetails(it)
+        }
+        ?: this.details
+
+    val identifier = received.identifier
+        ?.let {
+            this.identifier
+                ?.updateIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createIdentifier(it)
+        }
+        ?: this.identifier
+
+    val contactPoint = received.contactPoint
+        ?.let {
+            this.contactPoint
+                ?.updateContactPoint(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createContactPoint(it)
+        }
+        ?: this.contactPoint
+
+    val additionalIdentifiers = updateStrategy(
+        receivedElements = received.additionalIdentifiers,
+        keyExtractorForReceivedElement = requestIdentifierKeyExtractor,
+        availableElements = this.additionalIdentifiers,
+        keyExtractorForAvailableElement = recordIdentifierKeyExtractor,
+        updateBlock = RecordIdentifier::updateIdentifierElement,
+        createBlock = ::createIdentifier
+    )
+        .doReturn { e -> return failure(e) }
+
+    val persones = updateStrategy(
+        receivedElements = received.persones,
+        keyExtractorForReceivedElement = requestPersonKeyExtractor,
+        availableElements = this.persones,
+        keyExtractorForAvailableElement = recordPersonKeyExtractor,
+        updateBlock = RecordPerson::updatePerson,
+        createBlock = ::createPerson
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
             id = authorId,
-            name = requestOrganizationReference.name ?: available?.name,
-            address = updateAddress(
-                requestOrganizationReference.address,
-                available?.address
-            ),
-            details = updateDetails(
-                requestOrganizationReference.details,
-                available?.details
-            ),
-            identifier = updateIdentifier(
-                requestOrganizationReference.identifier,
-                available?.identifier
-            ),
-            contactPoint = updateContactPoint(
-                requestOrganizationReference.contactPoint,
-                available?.contactPoint
-            ),
-            additionalIdentifiers = updateStrategy(
-                receivedElements = requestOrganizationReference.additionalIdentifiers,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.additionalIdentifiers.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateIdentifierElement
-            ),
-            buyerProfile = requestOrganizationReference.buyerProfile ?: available?.buyerProfile,
-            persones = updateStrategy(
-                receivedElements = requestOrganizationReference.persones,
-                keyExtractorForReceivedElement = { it.identifier.id },
-                availableElements = available?.persones.orEmpty(),
-                keyExtractorForAvailableElement = { it.identifier.id },
-                block = ::updatePerson
-            )
+            name = received.name ?: this.name,
+            address = address,
+            details = details,
+            identifier = identifier,
+            contactPoint = contactPoint,
+            additionalIdentifiers = additionalIdentifiers,
+            buyerProfile = received.buyerProfile ?: this.buyerProfile,
+            persones = persones
         )
-    }
+        .asSuccess()
+}
 
-fun updatePerson(received: RequestPerson, available: RecordPerson?): RecordPerson =
-    received.let { rqPerson ->
-        RecordPerson(
-            title = rqPerson.title,
-            name = rqPerson.name,
-            identifier = updateIdentifier(
-                rqPerson.identifier,
-                available?.identifier
-            )!!,
-            businessFunctions = updateStrategy(
-                receivedElements = rqPerson.businessFunctions,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.businessFunctions.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateBusinessFunction
-            )
+val recordIdentifierKeyExtractor: (RecordIdentifier) -> String = { it.id }
+val requestIdentifierKeyExtractor: (RequestIdentifier) -> String = { it.id }
+
+val recordPersonKeyExtractor: (RecordPerson) -> String = { it.identifier.id }
+val requestPersonKeyExtractor: (RequestPerson) -> String = { it.identifier.id }
+
+fun RecordPerson.updatePerson(received: RequestPerson): UpdateRecordResult<RecordPerson> {
+    val identifier = this.identifier.updateIdentifier(received.identifier)
+        .doReturn { e -> return failure(e) }
+
+    val businessFunctions = updateStrategy(
+        receivedElements = received.businessFunctions,
+        keyExtractorForReceivedElement = requestBusinessFunctionKeyExtractor,
+        availableElements = this.businessFunctions,
+        keyExtractorForAvailableElement = recordBusinessFunctionKeyExtractor,
+        updateBlock = RecordBusinessFunction::updateBusinessFunction,
+        createBlock = ::createBusinessFunction
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            title = received.title,
+            name = received.name,
+            identifier = identifier,
+            businessFunctions = businessFunctions
         )
-    }
+        .asSuccess()
+}
 
-fun updateBusinessFunction(
-    received: RequestBusinessFunction,
-    available: RecordBusinessFunction?
-): RecordBusinessFunction =
-    received.let { rqBusinessFunction ->
-        RecordBusinessFunction(
-            id = rqBusinessFunction.id,
-            period = updatePeriod(
-                rqBusinessFunction.period,
-                available?.period
-            )!!,
-            documents = updateStrategy(
-                receivedElements = rqBusinessFunction.documents,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.documents.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateDocumentBF
-            ),
-            type = rqBusinessFunction.type,
-            jobTitle = rqBusinessFunction.jobTitle
+val recordBusinessFunctionKeyExtractor: (RecordBusinessFunction) -> String = { it.id }
+val requestBusinessFunctionKeyExtractor: (RequestBusinessFunction) -> String = { it.id }
+
+fun RecordBusinessFunction.updateBusinessFunction(received: RequestBusinessFunction): UpdateRecordResult<RecordBusinessFunction> {
+    val period = this.period.updatePeriod(received.period)
+        .doReturn { e -> return failure(e) }
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentBFKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentBFKeyExtractor,
+        updateBlock = RecordDocumentBF::updateDocumentBF,
+        createBlock = ::createDocumentBF
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            period = period,
+            documents = documents,
+            type = received.type,
+            jobTitle = received.jobTitle
         )
-    }
+        .asSuccess()
+}
 
-fun updateDocumentBF(received: RequestDocumentBF, available: RecordDocumentBF?): RecordDocumentBF =
-    received.let { rqDocument ->
-        RecordDocumentBF(
-            id = rqDocument.id,
-            title = rqDocument.title ?: available?.title,
-            url = rqDocument.url ?: available?.url,
-            description = rqDocument.description ?: available?.description,
-            dateModified = rqDocument.dateModified ?: available?.dateModified,
-            datePublished = rqDocument.datePublished ?: available?.datePublished,
-            documentType = rqDocument.documentType
-        )
-    }
+val recordDocumentBFKeyExtractor: (RecordDocumentBF) -> String = { it.id }
+val requestDocumentBFKeyExtractor: (RequestDocumentBF) -> String = { it.id }
 
-fun updateContactPoint(received: RequestContactPoint?, available: RecordContactPoint?): RecordContactPoint? =
-    received?.let { _requestContactPoint ->
-        RecordContactPoint(
-            name = _requestContactPoint.name ?: available?.name,
-            url = _requestContactPoint.url ?: available?.url,
-            faxNumber = _requestContactPoint.faxNumber ?: available?.faxNumber,
-            telephone = _requestContactPoint.telephone ?: available?.telephone,
-            email = _requestContactPoint.email ?: available?.email
-        )
-    } ?: available
+fun RecordDocumentBF.updateDocumentBF(received: RequestDocumentBF): UpdateRecordResult<RecordDocumentBF> =
+    this.copy(
+        id = received.id,
+        title = received.title ?: this.title,
+        url = received.url ?: this.url,
+        description = received.description ?: this.description,
+        dateModified = received.dateModified ?: this.dateModified,
+        datePublished = received.datePublished ?: this.datePublished,
+        documentType = received.documentType
+    )
+        .asSuccess()
 
-fun updateIdentifier(received: RequestIdentifier?, available: RecordIdentifier?): RecordIdentifier? =
-    received?.let { _requestIdentifier ->
-        val identifierIdent = if (available == null || received.id == available.id && received.scheme == available.scheme)
-            received.id to received.scheme
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'identifier'. Ids mismatching: " +
+fun RecordContactPoint.updateContactPoint(received: RequestContactPoint): UpdateRecordResult<RecordContactPoint> =
+    this.copy(
+        name = received.name ?: this.name,
+        url = received.url ?: this.url,
+        faxNumber = received.faxNumber ?: this.faxNumber,
+        telephone = received.telephone ?: this.telephone,
+        email = received.email ?: this.email
+    )
+        .asSuccess()
+
+fun RecordIdentifier.updateIdentifier(received: RequestIdentifier): UpdateRecordResult<RecordIdentifier> {
+    val identifierIdent = if (received.id == this.id && received.scheme == this.scheme)
+        received.id to received.scheme
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'identifier'. Ids mismatching: " +
                     "Identifier from request (id = '${received.id}, scheme = '${received.scheme}''), " +
-                    "Identifier from release (id = '${available.id}, scheme = '${available.scheme}''). "
+                    "Identifier from release (id = '${this.id}, scheme = '${this.scheme}''). "
             )
-        RecordIdentifier(
+        )
+    return this
+        .copy(
             id = identifierIdent.first,
             scheme = identifierIdent.second,
-            uri = _requestIdentifier.uri ?: available?.uri,
-            legalName = _requestIdentifier.legalName ?: available?.legalName
+            uri = received.uri ?: this.uri,
+            legalName = received.legalName ?: this.legalName
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateIdentifierElement(received: RequestIdentifier, available: RecordIdentifier?): RecordIdentifier =
-    received.let { rqIdentifier ->
-        RecordIdentifier(
-            id = rqIdentifier.id,
-            scheme = rqIdentifier.scheme ?: available?.scheme,
-            uri = rqIdentifier.uri ?: available?.uri,
-            legalName = rqIdentifier.legalName ?: available?.legalName
+fun RecordIdentifier.updateIdentifierElement(received: RequestIdentifier): UpdateRecordResult<RecordIdentifier> =
+    this.copy(
+        id = received.id,
+        scheme = received.scheme,
+        uri = received.uri ?: this.uri,
+        legalName = received.legalName ?: this.legalName
+    )
+        .asSuccess()
+
+fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<RecordDetails> {
+    val bankAccounts = updateStrategy(
+        receivedElements = received.bankAccounts,
+        keyExtractorForReceivedElement = requestBankAccountKeyExtractor,
+        availableElements = this.bankAccounts,
+        keyExtractorForAvailableElement = recordBankAccountKeyExtractor,
+        updateBlock = RecordBankAccount::updateBankAccount,
+        createBlock = ::createBankAccount
+    )
+        .doReturn { e -> return failure(e) }
+
+    val legalForm = received.legalForm
+        ?.let {
+            this.legalForm
+                ?.updateLegalForm(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createLegalForm(it)
+        }
+        ?: this.legalForm
+
+    val permits = updateStrategy(
+        receivedElements = received.permits,
+        keyExtractorForReceivedElement = requestPermitsKeyExtractor,
+        availableElements = this.permits,
+        keyExtractorForAvailableElement = recordPermitsKeyExtractor,
+        updateBlock = RecordPermits::updatePermits,
+        createBlock = ::createPermits
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            typeOfBuyer = received.typeOfBuyer ?: this.typeOfBuyer,
+            bankAccounts = bankAccounts,
+            isACentralPurchasingBody = received.isACentralPurchasingBody ?: this.isACentralPurchasingBody,
+            legalForm = legalForm,
+            mainEconomicActivities = this.mainEconomicActivities.update(received.mainEconomicActivities),
+            mainGeneralActivity = received.mainGeneralActivity ?: this.mainGeneralActivity,
+            mainSectoralActivity = received.mainSectoralActivity ?: this.mainSectoralActivity,
+            nutsCode = received.nutsCode ?: this.nutsCode,
+            permits = permits,
+            scale = received.scale ?: this.scale,
+            typeOfSupplier = received.typeOfSupplier ?: this.typeOfSupplier
         )
-    }
+        .asSuccess()
+}
 
-fun updateDetails(received: RequestDetails?, available: RecordDetails?): RecordDetails? =
-    received?.let { rqDetails ->
-        RecordDetails(
-            typeOfBuyer = rqDetails.typeOfBuyer ?: available?.typeOfBuyer,
-            bankAccounts = updateStrategy(
-                receivedElements = rqDetails.bankAccounts,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
-                availableElements = available?.bankAccounts.orEmpty(),
-                keyExtractorForAvailableElement = { it.identifier.id },
-                block = ::updateBankAccount
-            ),
-            isACentralPurchasingBody = rqDetails.isACentralPurchasingBody ?: available?.isACentralPurchasingBody,
-            legalForm = updateLegalForm(
-                rqDetails.legalForm,
-                available?.legalForm
-            ),
-            mainEconomicActivities = updateNonIdentifiable(
-                rqDetails.mainEconomicActivities,
-                available?.mainEconomicActivities.orEmpty()
-            ),
-            mainGeneralActivity = rqDetails.mainGeneralActivity ?: available?.mainGeneralActivity,
-            mainSectoralActivity = rqDetails.mainSectoralActivity ?: available?.mainSectoralActivity,
-            nutsCode = rqDetails.nutsCode ?: available?.nutsCode,
-            permits = updateStrategy(
-                receivedElements = rqDetails.permits,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.permits.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updatePermits
-            ),
-            scale = rqDetails.scale ?: available?.scale,
-            typeOfSupplier = rqDetails.typeOfSupplier ?: available?.typeOfSupplier
+val recordBankAccountKeyExtractor: (RecordBankAccount) -> String = { it.identifier.id }
+val requestBankAccountKeyExtractor: (RequestBankAccount) -> String = { it.identifier.id }
+
+val recordPermitsKeyExtractor: (RecordPermits) -> String = { it.id }
+val requestPermitsKeyExtractor: (RequestPermits) -> String = { it.id }
+
+fun RecordPermits.updatePermits(received: RequestPermits): UpdateRecordResult<RecordPermits> {
+    val permitDetails = received.permitDetails
+        ?.let {
+            this.permitDetails
+                ?.updatePermitDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPermitDetails(it)
+        }
+        ?: this.permitDetails
+
+    return this
+        .copy(
+            id = received.id,
+            scheme = received.scheme,
+            url = received.url ?: this.url,
+            permitDetails = permitDetails
         )
-    }
+        .asSuccess()
+}
 
-fun updatePermits(received: RequestPermits, available: RecordPermits?): RecordPermits =
-    received.let { rqPermit ->
-        RecordPermits(
-            id = rqPermit.id,
-            scheme = rqPermit.scheme ?: available?.scheme,
-            url = rqPermit.url ?: available?.url,
-            permitDetails = updatePermitDetails(
-                rqPermit.permitDetails,
-                available?.permitDetails
-            )
-        )
-    }
+fun RecordPermitDetails.updatePermitDetails(received: RequestPermitDetails): UpdateRecordResult<RecordPermitDetails> {
+    val validityPeriod = received.validityPeriod
+        ?.let {
+            this.validityPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.validityPeriod
 
-fun updatePermitDetails(received: RequestPermitDetails?, available: RecordPermitDetails?): RecordPermitDetails? =
-    received?.let { rqPermitDetails ->
-        RecordPermitDetails(
-            issuedBy = rqPermitDetails.issuedBy?.let { requestIssue ->
-                val issuedById = if (available == null || requestIssue.id == available.issuedBy?.id)
+    return this
+        .copy(
+            issuedBy = received.issuedBy?.let { requestIssue ->
+                val issuedById = if (requestIssue.id == this.issuedBy?.id)
                     requestIssue.id
                 else
-                    throw ErrorException(
-                        error = ErrorType.INCORRENT_ID,
-                        message = "Cannot update 'issuedBy'. Ids mismatching: " +
-                            "issuedBy from request (id = '${requestIssue.id}'), " +
-                            "issuedBy from release (id = '${available.issuedBy?.id}'). "
+                    return failure(
+                        Fail.Error.BadRequest(
+                            description = "Cannot update 'issuedBy'. Ids mismatching: " +
+                                "issuedBy from request (id = '${requestIssue.id}'), " +
+                                "issuedBy from release (id = '${this.issuedBy?.id}'). "
+                        )
                     )
                 RecordIssue(
                     id = issuedById,
-                    name = requestIssue.name ?: available?.issuedBy?.name
+                    name = requestIssue.name ?: this.issuedBy?.name
                 )
-            } ?: available?.issuedBy,
-            issuedThought = rqPermitDetails.issuedThought?.let { requestIssue ->
-                val issuedByThought = if (available == null || requestIssue.id == available.issuedThought?.id)
+            } ?: this.issuedBy,
+            issuedThought = received.issuedThought?.let { requestIssue ->
+                val issuedByThought = if (requestIssue.id == this.issuedThought?.id)
                     requestIssue.id
                 else
-                    throw ErrorException(
-                        error = ErrorType.INCORRENT_ID,
-                        message = "Cannot update 'issuedThought'. Ids mismatching: " +
-                            "issuedThought from request (id = '${requestIssue.id}'), " +
-                            "issuedThought from release (id = '${available.issuedThought?.id}'). "
+                    return failure(
+                        Fail.Error.BadRequest(
+                            description = "Cannot update 'issuedThought'. Ids mismatching: " +
+                                "issuedThought from request (id = '${requestIssue.id}'), " +
+                                "issuedThought from release (id = '${this.issuedThought?.id}'). "
+                        )
                     )
                 RecordIssue(
                     id = issuedByThought,
-                    name = requestIssue.name ?: available?.issuedThought?.name
+                    name = requestIssue.name ?: this.issuedThought?.name
                 )
-            } ?: available?.issuedThought,
-            validityPeriod = updatePeriod(
-                rqPermitDetails.validityPeriod,
-                available?.validityPeriod
+            } ?: this.issuedThought,
+            validityPeriod = validityPeriod
+        )
+        .asSuccess()
+}
+
+fun RecordLegalForm.updateLegalForm(received: RequestLegalForm): UpdateRecordResult<RecordLegalForm> {
+    val legalFormIdent = if (received.id == this.id && received.scheme == this.scheme)
+        received.id to received.scheme
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'legalForm'. Ids mismatching: " +
+                    "LegalForm from request (id = '${received.id}', scheme = '${received.scheme}'), " +
+                    "LegalForm from release (id = '${this.id}', scheme = '${this.scheme}'). "
             )
         )
-    } ?: available
-
-fun updateLegalForm(received: RequestLegalForm?, available: RecordLegalForm?): RecordLegalForm? =
-    received?.let { rqLegalForm ->
-        val legalFormIdent = if (available == null || rqLegalForm.id == available.id && rqLegalForm.scheme == available.scheme)
-            received.id to received.scheme
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'legalForm'. Ids mismatching: " +
-                    "LegalForm from request (id = '${received.id}', scheme = '${received.scheme}'), " +
-                    "LegalForm from release (id = '${available.id}', scheme = '${available.scheme}'). "
-            )
-        RecordLegalForm(
+    return this
+        .copy(
             id = legalFormIdent.first,
-            description = rqLegalForm.description,
-            uri = rqLegalForm.uri ?: available?.uri,
+            description = received.description,
+            uri = received.uri ?: this.uri,
             scheme = legalFormIdent.second
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateBankAccount(received: RequestBankAccount, available: RecordBankAccount?): RecordBankAccount =
-    received.let { rqBankAccount ->
-        RecordBankAccount(
-            identifier = updateAccountIdentifier(
-                rqBankAccount.identifier,
-                available?.identifier
-            )!!,
-            address = updateAddress(
-                rqBankAccount.address,
-                available?.address
-            ),
-            description = rqBankAccount.description ?: available?.description,
-            accountIdentification = updateAccountIdentifier(
-                rqBankAccount.accountIdentification,
-                available?.accountIdentification
-            ),
-            additionalAccountIdentifiers = updateStrategy(
-                receivedElements = rqBankAccount.additionalAccountIdentifiers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.additionalAccountIdentifiers?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAccountIdentifierElement
-            ),
-            bankName = rqBankAccount.bankName ?: available?.bankName
+fun RecordBankAccount.updateBankAccount(received: RequestBankAccount): UpdateRecordResult<RecordBankAccount> {
+    val identifier = this.identifier.updateAccountIdentifier(received.identifier)
+        .doReturn { e -> return failure(e) }
+
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
+
+    val accountIdentification = received.accountIdentification
+        ?.let {
+            this.accountIdentification
+                ?.updateAccountIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAccountIdentifier(it)
+        }
+        ?: this.accountIdentification
+
+    val additionalAccountIdentifiers = updateStrategy(
+        receivedElements = received.additionalAccountIdentifiers,
+        keyExtractorForReceivedElement = requestAccountIdentifierKeyExtractor,
+        availableElements = this.additionalAccountIdentifiers.toList(),
+        keyExtractorForAvailableElement = recordAccountIdentifierKeyExtractor,
+        updateBlock = RecordAccountIdentifier::updateAccountIdentifierElement,
+        createBlock = ::createAccountIdentifier
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            identifier = identifier,
+            address = address,
+            description = received.description ?: this.description,
+            accountIdentification = accountIdentification,
+            additionalAccountIdentifiers = additionalAccountIdentifiers,
+            bankName = received.bankName ?: this.bankName
         )
-    }
+        .asSuccess()
+}
 
-fun updateAccountIdentifier(
-    received: RequestAccountIdentifier?,
-    available: RecordAccountIdentifier?
-): RecordAccountIdentifier? =
-    received?.let { requestAccountIdentifier ->
-        val accountIdentifierIdent = if (available == null || requestAccountIdentifier.id == available.id && requestAccountIdentifier.scheme == available.scheme)
-            requestAccountIdentifier.id to requestAccountIdentifier.scheme
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'accountIdentifier'. Ids mismatching: " +
-                    "AccountIdentifier from request (id = '${requestAccountIdentifier.id}', scheme = '${received.scheme}'), " +
-                    "AccountIdentifier from release (id = '${available.id}', scheme = '${available.scheme}'). "
+val recordAccountIdentifierKeyExtractor: (RecordAccountIdentifier) -> String = { it.id }
+val requestAccountIdentifierKeyExtractor: (RequestAccountIdentifier) -> String = { it.id }
+
+fun RecordAccountIdentifier.updateAccountIdentifier(received: RequestAccountIdentifier): UpdateRecordResult<RecordAccountIdentifier> {
+    val accountIdentifierIdent = if (received.id == this.id && received.scheme == this.scheme)
+        received.id to received.scheme
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'accountIdentifier'. Ids mismatching: " +
+                    "AccountIdentifier from request (id = '${received.id}', scheme = '${received.scheme}'), " +
+                    "AccountIdentifier from release (id = '${this.id}', scheme = '${this.scheme}'). "
             )
-        RecordAccountIdentifier(
+        )
+    return this
+        .copy(
             id = accountIdentifierIdent.first,
             scheme = accountIdentifierIdent.second
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateAccountIdentifierElement(
-    received: RequestAccountIdentifier,
-    available: RecordAccountIdentifier?
-): RecordAccountIdentifier =
-    received.let { requestAccountIdentifier ->
-        RecordAccountIdentifier(
-            id = received.id,
-            scheme = requestAccountIdentifier.scheme ?: available?.scheme
-        )
-    }
+fun RecordAccountIdentifier.updateAccountIdentifierElement(received: RequestAccountIdentifier): UpdateRecordResult<RecordAccountIdentifier> =
+    this.copy(
+        id = received.id,
+        scheme = received.scheme
+    )
+        .asSuccess()
 
-fun updateReleaseAmendment(received: RequestAmendment, available: RecordAmendment?): RecordAmendment =
-    received.let { rqAmendment ->
-        RecordAmendment(
-            id = rqAmendment.id,
-            description = rqAmendment.description ?: available?.description,
-            relatedLots = rqAmendment.relatedLots
-                .mapIfNotEmpty { it }
-                ?: available?.relatedLots.orEmpty(),
-            documents = updateStrategy(
-                receivedElements = rqAmendment.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            date = rqAmendment.date ?: available?.date,
-            rationale = rqAmendment.rationale ?: available?.rationale,
-            amendsReleaseID = rqAmendment.amendsReleaseID ?: available?.amendsReleaseID,
-            changes = updateChanges(
-                rqAmendment.changes,
-                available?.changes.orEmpty()
-            ),
-            releaseID = rqAmendment.releaseID ?: available?.releaseID,
-            status = rqAmendment.status ?: available?.status,
-            type = rqAmendment.type ?: available?.type,
-            relatedItem = rqAmendment.relatedItem ?: available?.relatedItem,
-            relatesTo = rqAmendment.relatesTo ?: available?.relatesTo
-        )
-    }
-
-fun updateChanges(received: List<RequestChange>, available: List<RecordChange>): List<RecordChange> =
-    received.mapIfNotEmpty { rqChange ->
+fun List<RecordChange>.updateChanges(received: List<RequestChange>): UpdateRecordResult<List<RecordChange>> {
+    val result = received.mapIfNotEmpty { rqChange ->
         RecordChange(
             property = rqChange.property,
             formerValue = rqChange.formerValue
         )
-    } ?: available
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updateDocument(received: RequestDocument, available: RecordDocument?): RecordDocument =
-    received.let { rqDocument ->
-        RecordDocument(
-            id = rqDocument.id,
-            relatedLots = updateNonIdentifiable(
-                rqDocument.relatedLots,
-                available?.relatedLots.orEmpty()
-            ),
-            description = rqDocument.description ?: available?.description,
-            url = rqDocument.url ?: available?.url,
-            documentType = rqDocument.documentType ?: available?.documentType,
-            datePublished = rqDocument.datePublished ?: available?.datePublished,
-            language = rqDocument.language ?: available?.language,
-            dateModified = rqDocument.dateModified ?: available?.dateModified,
-            format = rqDocument.format ?: available?.format,
-            relatedConfirmations = updateNonIdentifiable(
-                rqDocument.relatedConfirmations,
-                available?.relatedConfirmations.orEmpty()
-            ),
-            title = rqDocument.title ?: available?.title
+fun RecordDocument.updateDocument(received: RequestDocument): UpdateRecordResult<RecordDocument> =
+    this.copy(
+        id = received.id,
+        relatedLots = this.relatedLots.update(received.relatedLots),
+        description = received.description ?: this.description,
+        url = received.url ?: this.url,
+        documentType = received.documentType ?: this.documentType,
+        datePublished = received.datePublished ?: this.datePublished,
+        language = received.language ?: this.language,
+        dateModified = received.dateModified ?: this.dateModified,
+        format = received.format ?: this.format,
+        relatedConfirmations = this.relatedConfirmations.update(received.relatedConfirmations),
+        title = received.title ?: this.title
+    )
+        .asSuccess()
+
+fun RecordElectronicAuctions.updateElectronicAuctions(received: RequestElectronicAuctions): UpdateRecordResult<RecordElectronicAuctions> =
+    this.copy(
+        details = updateStrategy(
+            receivedElements = received.details,
+            keyExtractorForReceivedElement = requestElectronicAuctionsDetailsKeyExtractor,
+            availableElements = this.details.toList(),
+            keyExtractorForAvailableElement = recordElectronicAuctionsDetailsKeyExtractor,
+            updateBlock = RecordElectronicAuctionsDetails::updateElectronicAuctionsDetails,
+            createBlock = ::createElectronicAuctionsDetails
         )
-    }
+            .doReturn { e -> return failure(e) }
+    )
+        .asSuccess()
 
-fun updateElectronicAuctions(
-    received: RequestElectronicAuctions?,
-    available: RecordElectronicAuctions?
-): RecordElectronicAuctions? =
-    received?.let { rqElectronicAuctions ->
-        RecordElectronicAuctions(
-            details = updateStrategy(
-                receivedElements = rqElectronicAuctions.details,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.details?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateElectronicAuctionsDetails
-            )
+val recordElectronicAuctionsDetailsKeyExtractor: (RecordElectronicAuctionsDetails) -> String = { it.id }
+val requestElectronicAuctionsDetailsKeyExtractor: (RequestElectronicAuctionsDetails) -> String = { it.id }
+
+fun RecordElectronicAuctionsDetails.updateElectronicAuctionsDetails(received: RequestElectronicAuctionsDetails): UpdateRecordResult<RecordElectronicAuctionsDetails> {
+    val electronicAuctionModalities = this.electronicAuctionModalities.updateElectronicAuctionModalities(received.electronicAuctionModalities)
+        .doReturn { e -> return failure(e) }
+
+    val electronicAuctionProgress = updateStrategy(
+        receivedElements = received.electronicAuctionProgress,
+        keyExtractorForReceivedElement = requestElectronicAuctionProgressKeyExtractor,
+        availableElements = this.electronicAuctionProgress.toList(),
+        keyExtractorForAvailableElement = recordElectronicAuctionProgressKeyExtractor,
+        updateBlock = RecordElectronicAuctionProgress::updateElectronicAuctionProgress,
+        createBlock = ::createElectronicAuctionProgress
+    )
+        .doReturn { e -> return failure(e) }
+
+    val electronicAuctionResult = this.electronicAuctionResult.updateElectronicAuctionResult(received.electronicAuctionResult)
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            relatedLot = received.relatedLot ?: this.relatedLot,
+            auctionPeriod = received.auctionPeriod ?: this.auctionPeriod,
+            electronicAuctionModalities = electronicAuctionModalities,
+            electronicAuctionProgress = electronicAuctionProgress,
+            electronicAuctionResult = electronicAuctionResult
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateElectronicAuctionsDetails(
-    received: RequestElectronicAuctionsDetails,
-    available: RecordElectronicAuctionsDetails?
-): RecordElectronicAuctionsDetails =
-    received.let { rqElectronicAuctionsDetail ->
-        RecordElectronicAuctionsDetails(
-            id = rqElectronicAuctionsDetail.id,
-            relatedLot = rqElectronicAuctionsDetail.relatedLot ?: available?.relatedLot,
-            auctionPeriod = rqElectronicAuctionsDetail.auctionPeriod ?: available?.auctionPeriod,
-            electronicAuctionModalities = updateElectronicAuctionModalities(
-                rqElectronicAuctionsDetail.electronicAuctionModalities,
-                available?.electronicAuctionModalities.orEmpty()
-            ),
-            electronicAuctionProgress = updateStrategy(
-                receivedElements = rqElectronicAuctionsDetail.electronicAuctionProgress,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.electronicAuctionProgress?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateElectronicAuctionProgress
-            ),
-            electronicAuctionResult = udpdateElectronicAuctionResult(
-                rqElectronicAuctionsDetail.electronicAuctionResult,
-                available?.electronicAuctionResult.orEmpty()
-            )
-        )
-    }
+val recordElectronicAuctionProgressKeyExtractor: (RecordElectronicAuctionProgress) -> String = { it.id }
+val requestElectronicAuctionProgressKeyExtractor: (RequestElectronicAuctionProgress) -> String = { it.id }
 
-fun udpdateElectronicAuctionResult(
-    received: List<RequestElectronicAuctionResult>,
-    available: List<RecordElectronicAuctionResult>
-): List<RecordElectronicAuctionResult> =
-    received.mapIfNotEmpty { rqElectronicAuctionResult ->
+fun List<RecordElectronicAuctionResult>.updateElectronicAuctionResult(received: List<RequestElectronicAuctionResult>): UpdateRecordResult<List<RecordElectronicAuctionResult>> {
+    val result = received.mapIfNotEmpty { rqElectronicAuctionResult ->
         RecordElectronicAuctionResult(
             relatedBid = rqElectronicAuctionResult.relatedBid,
             value = rqElectronicAuctionResult.value
         )
-    } ?: available
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updateElectronicAuctionModalities(
-    received: List<RequestElectronicAuctionModalities>,
-    available: List<RecordElectronicAuctionModalities>
-): List<RecordElectronicAuctionModalities> =
-    received.mapIfNotEmpty { rqElectronicAuctionModality ->
+fun List<RecordElectronicAuctionModalities>.updateElectronicAuctionModalities(received: List<RequestElectronicAuctionModalities>): UpdateRecordResult<List<RecordElectronicAuctionModalities>> {
+    val result = received.mapIfNotEmpty { rqElectronicAuctionModality ->
         RecordElectronicAuctionModalities(
             url = rqElectronicAuctionModality.url,
             eligibleMinimumDifference = rqElectronicAuctionModality.eligibleMinimumDifference
         )
-    } ?: available
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updateElectronicAuctionProgress(
-    received: RequestElectronicAuctionProgress,
-    available: RecordElectronicAuctionProgress?
-): RecordElectronicAuctionProgress =
-    received.let { rqElectronicAuctionProgress ->
-        RecordElectronicAuctionProgress(
-            id = rqElectronicAuctionProgress.id,
-            period = updatePeriod(
-                rqElectronicAuctionProgress.period,
-                available?.period
-            ),
-            breakdown = updateElectronicAuctionProgressBreakdown(
-                rqElectronicAuctionProgress.breakdown,
-                available?.breakdown.orEmpty()
-            )
+fun RecordElectronicAuctionProgress.updateElectronicAuctionProgress(
+    received: RequestElectronicAuctionProgress
+): UpdateRecordResult<RecordElectronicAuctionProgress> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val breakdown = this.breakdown.updateElectronicAuctionProgressBreakdown(received.breakdown)
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            period = period,
+            breakdown = breakdown
         )
-    }
+        .asSuccess()
+}
 
-fun updateElectronicAuctionProgressBreakdown(
-    received: List<RequestElectronicAuctionProgressBreakdown>,
-    available: List<RecordElectronicAuctionProgressBreakdown>
-): List<RecordElectronicAuctionProgressBreakdown> =
-    received.mapIfNotEmpty { rqBreakdown ->
+fun List<RecordElectronicAuctionProgressBreakdown>.updateElectronicAuctionProgressBreakdown(
+    received: List<RequestElectronicAuctionProgressBreakdown>
+): UpdateRecordResult<List<RecordElectronicAuctionProgressBreakdown>> {
+    val result = received.mapIfNotEmpty { rqBreakdown ->
         RecordElectronicAuctionProgressBreakdown(
             relatedBid = rqBreakdown.relatedBid,
             value = rqBreakdown.value,
             status = rqBreakdown.status,
             dateMet = rqBreakdown.dateMet
         )
-    } ?: available
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updateNonIdentifiable(received: List<String>, available: List<String>): List<String> =
-    received.mapIfNotEmpty { it } ?: available
+fun List<String>.update(received: List<String>): List<String> = received.mapIfNotEmpty { it } ?: this
 
-fun updateReleaseTender(received: RequestTender, available: RecordTender): RecordTender =
-    received.let { rqTender ->
-        val tenderId = if (rqTender.id == available.id)
-            rqTender.id
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'tender'. Ids mismatching: " +
-                    "Tender from request (id = '${rqTender.id}'), " +
-                    "Tender from release (id = '${available.id}'). "
+fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResult<RecordTender> {
+    val tenderId = if (received.id == this.id)
+        received.id
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'tender'. Ids mismatching: " +
+                    "Tender from request (id = '${received.id}'), " +
+                    "Tender from release (id = '${this.id}'). "
             )
-        RecordTender(
+        )
+
+    val auctionPeriod = received.auctionPeriod
+        ?.let {
+            this.auctionPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.auctionPeriod
+
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
+    val amendments = updateStrategy(
+        receivedElements = received.amendments,
+        keyExtractorForReceivedElement = requestAmendmentKeyExtractor,
+        availableElements = this.amendments,
+        keyExtractorForAvailableElement = recordAmendmentKeyExtractor,
+        updateBlock = RecordAmendment::updateAmendment,
+        createBlock = ::createAmendment
+    )
+        .doReturn { e -> return failure(e) }
+
+    val awardPeriod = received.awardPeriod
+        ?.let {
+            this.awardPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.awardPeriod
+
+    val conversions = updateStrategy(
+        receivedElements = received.conversions,
+        keyExtractorForReceivedElement = requestConversionKeyExtractor,
+        availableElements = this.conversions,
+        keyExtractorForAvailableElement = recordConversionKeyExtractor,
+        updateBlock = RecordConversion::updateConversion,
+        createBlock = ::createConversion
+    )
+        .doReturn { e -> return failure(e) }
+
+    val criteria = updateStrategy(
+        receivedElements = received.criteria,
+        keyExtractorForReceivedElement = requestCriteriaKeyExtractor,
+        availableElements = this.criteria,
+        keyExtractorForAvailableElement = recordCriteriaKeyExtractor,
+        updateBlock = RecordCriteria::updateCriteria,
+        createBlock = ::createCriteria
+    )
+        .doReturn { e -> return failure(e) }
+
+    val electronicAuctions = received.electronicAuctions
+        ?.let {
+            this.electronicAuctions
+                ?.updateElectronicAuctions(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createElectronicAuctions(it)
+        }
+        ?: this.electronicAuctions
+
+    val enquiries = updateStrategy(
+        receivedElements = received.enquiries,
+        keyExtractorForReceivedElement = requestRecordEnquiryKeyExtractor,
+        availableElements = this.enquiries,
+        keyExtractorForAvailableElement = recordRecordEnquiryKeyExtractor,
+        updateBlock = RecordRecordEnquiry::updateRecordEnquiry,
+        createBlock = ::createRecordEnquiry
+    )
+        .doReturn { e -> return failure(e) }
+        .toMutableList()
+
+    val enquiryPeriod = received.enquiryPeriod
+        ?.let {
+            this.enquiryPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.enquiryPeriod
+
+    val items = updateStrategy(
+        receivedElements = received.items,
+        keyExtractorForReceivedElement = requestItemKeyExtractor,
+        availableElements = this.items,
+        keyExtractorForAvailableElement = recordItemKeyExtractor,
+        updateBlock = RecordItem::updateItem,
+        createBlock = ::createItem
+    )
+        .doReturn { e -> return failure(e) }
+
+    val lotGroups = this.lotGroups.updateLotGroups(received.lotGroups)
+        .doReturn { e -> return failure(e) }
+
+    val lots = updateStrategy(
+        receivedElements = received.lots,
+        keyExtractorForReceivedElement = requestLotKeyExtractor,
+        availableElements = this.lots,
+        keyExtractorForAvailableElement = recordLotKeyExtractor,
+        updateBlock = RecordLot::updateLot,
+        createBlock = ::createLot
+    )
+        .doReturn { e -> return failure(e) }
+
+    val standstillPeriod = received.standstillPeriod
+        ?.let {
+            this.standstillPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.standstillPeriod
+
+    val tenderPeriod = received.tenderPeriod
+        ?.let {
+            this.tenderPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.tenderPeriod
+
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValue(it)
+        }
+        ?: this.value
+
+    val milestones = updateStrategy(
+        receivedElements = received.milestones,
+        keyExtractorForReceivedElement = requestMilestoneKeyExtractor,
+        availableElements = this.milestones,
+        keyExtractorForAvailableElement = recordMilestoneKeyExtractor,
+        updateBlock = RecordMilestone::updateMilestone,
+        createBlock = ::createMilestone
+    )
+        .doReturn { e -> return failure(e) }
+
+    val classification = received.classification
+        ?.let {
+            this.classification
+                ?.updateClassification(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createClassification(it)
+        }
+        ?: this.classification
+
+    val amendment = received.amendment
+        ?.let {
+            this.amendment
+                ?.updateAmendment(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAmendment(it)
+        }
+        ?: this.amendment
+
+    val contractPeriod = received.contractPeriod
+        ?.let {
+            this.contractPeriod?.updateContractPeriod(it) ?: createContractPeriod(it)
+        }
+        ?: this.contractPeriod
+
+    val minValue = received.minValue
+        ?.let {
+            this.minValue
+                ?.updateValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValue(it)
+        }
+        ?: this.minValue
+
+    val tenderers = updateStrategy(
+        receivedElements = received.tenderers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.tenderers,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    val acceleratedProcedure = received.acceleratedProcedure
+        ?.let {
+            this.acceleratedProcedure
+                ?.updateAcceleratedProcedure(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAcceleratedProcedure(it)
+        }
+        ?: this.acceleratedProcedure
+
+    val designContest = received.designContest
+        ?.let {
+            this.designContest
+                ?.updateDesignContest(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDesignContest(it)
+        }
+        ?: this.designContest
+
+    val dynamicPurchasingSystem = received.dynamicPurchasingSystem
+        ?.let {
+            this.dynamicPurchasingSystem
+                ?.updateDynamicPurchasingSystem(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDynamicPurchasingSystem(it)
+        }
+        ?: this.dynamicPurchasingSystem
+
+    val electronicWorkflows = received.electronicWorkflows
+        ?.let {
+            this.electronicWorkflows
+                ?.updateElectronicWorkflows(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createElectronicWorkflows(it)
+        }
+        ?: this.electronicWorkflows
+
+    val framework = received.framework
+        ?.let {
+            this.framework
+                ?.updateFramework(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createFramework(it)
+        }
+        ?: this.framework
+
+    val jointProcurement = received.jointProcurement
+        ?.let {
+            this.jointProcurement
+                ?.updateJointProcurement(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createJointProcurement(it)
+        }
+        ?: this.jointProcurement
+
+    val lotDetails = received.lotDetails
+        ?.let {
+            this.lotDetails
+                ?.updateLotDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createLotDetails(it)
+        }
+        ?: this.lotDetails
+
+    val objectives = received.objectives
+        ?.let {
+            this.objectives
+                ?.updateObjectives(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createObjectives(it)
+        }
+        ?: this.objectives
+
+    val participationFees = this.participationFees.updateParticipationFee(received.participationFees)
+        .doReturn { e -> return failure(e) }
+
+    val procedureOutsourcing = received.procedureOutsourcing
+        ?.let {
+            this.procedureOutsourcing
+                ?.updateProcedureOutsourcing(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createProcedureOutsourcing(it)
+        }
+        ?: this.procedureOutsourcing
+
+    val procuringEntity = received.procuringEntity
+        ?.let {
+            this.procuringEntity
+                ?.updateOrganizationReference(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createOrganizationReference(it)
+        }
+        ?: this.procuringEntity
+
+    val reviewParties = updateStrategy(
+        receivedElements = received.reviewParties,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.reviewParties,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    val reviewPeriod = received.reviewPeriod
+        ?.let {
+            this.reviewPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.reviewPeriod
+
+    return this
+        .copy(
             id = tenderId,
-            status = received.status ?: available.status,
-            auctionPeriod = updatePeriod(
-                received.auctionPeriod,
-                available.auctionPeriod
-            ),
-            title = received.title ?: available.title,
-            description = received.description ?: available.description,
-            documents = updateStrategy(
-                receivedElements = received.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available.documents,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            statusDetails = received.statusDetails ?: available.statusDetails,
-            amendments = updateStrategy(
-                receivedElements = received.amendments,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available.amendments,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateReleaseAmendment
-            ),
-            submissionMethodRationale = updateNonIdentifiable(
-                received.submissionMethodRationale,
-                available.submissionMethodRationale
-            ),
-            submissionMethodDetails = received.submissionMethodDetails ?: available.submissionMethodDetails,
-            awardCriteria = received.awardCriteria ?: available.awardCriteria,
-            awardCriteriaDetails = received.awardCriteriaDetails ?: available.awardCriteriaDetails,
-            awardPeriod = updatePeriod(
-                received.awardPeriod,
-                available.awardPeriod
-            ),
-            conversions = updateStrategy(
-                receivedElements = received.conversions,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.conversions,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateConversion
-            ),
-            criteria = updateStrategy(
-                receivedElements = received.criteria,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.criteria,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateCriteria
-            ),
-            electronicAuctions = updateElectronicAuctions(
-                received.electronicAuctions,
-                available.electronicAuctions
-            ),
-            enquiries = updateStrategy(
-                receivedElements = received.enquiries,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available.enquiries,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRecordEnquiry
-            ).toMutableList(),
-            enquiryPeriod = updatePeriod(
-                received.enquiryPeriod,
-                available.enquiryPeriod
-            ),
-            hasEnquiries = received.hasEnquiries ?: available.hasEnquiries,
-            items = updateStrategy(
-                receivedElements = received.items,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available.items,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateItem
-            ),
-            lotGroups = updateStrategy(
-                receivedElements = received.lotGroups,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.lotGroups,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateLotGroup
-            ),
-            lots = updateStrategy(
-                receivedElements = received.lots,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.lots,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateLot
-            ),
-            procurementMethodModalities = updateNonIdentifiable(
-                received.procurementMethodModalities,
-                available.procurementMethodModalities
-            ),
-            requiresElectronicCatalogue = received.requiresElectronicCatalogue ?: available.requiresElectronicCatalogue,
-            standstillPeriod = updatePeriod(
-                received.standstillPeriod,
-                available.standstillPeriod
-            ),
-            submissionMethod = updateNonIdentifiable(
-                received.submissionMethod,
-                available.submissionMethod
-            ),
-            tenderPeriod = updatePeriod(
-                received.tenderPeriod,
-                available.tenderPeriod
-            ),
-            value = updateValue(
-                received.value,
-                available.value
-            ),
-            milestones = updateStrategy(
-                receivedElements = received.milestones,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.milestones,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateMilestone
-            ),
-            classification = updateClassification(
-                received.classification,
-                available.classification
-            ),
-            amendment = updateAmendment(
-                received.amendment,
-                available.amendment
-            ),
-            contractPeriod = updateContractPeriod(
-                received.contractPeriod,
-                available.contractPeriod
-            ),
-            procurementMethodDetails = received.procurementMethodDetails ?: available.procurementMethodDetails,
-            legalBasis = received.legalBasis ?: available.legalBasis,
-            mainProcurementCategory = received.mainProcurementCategory ?: available.mainProcurementCategory,
-            eligibilityCriteria = received.eligibilityCriteria ?: available.eligibilityCriteria,
-            minValue = updateValue(
-                received.minValue,
-                available.minValue
-            ),
-            numberOfTenderers = received.numberOfTenderers ?: available.numberOfTenderers,
-            procurementMethod = received.procurementMethod ?: available.procurementMethod,
-            procurementMethodRationale = received.procurementMethodRationale ?: available.procurementMethodRationale,
-            additionalProcurementCategories = updateNonIdentifiable(
-                received.additionalProcurementCategories,
-                available.additionalProcurementCategories
-            ),
-            procurementMethodAdditionalInfo = received.procurementMethodAdditionalInfo ?: available.procurementMethodAdditionalInfo,
-            submissionLanguages = updateNonIdentifiable(
-                received.submissionLanguages,
-                available.submissionLanguages
-            ),
-            tenderers = updateStrategy(
-                receivedElements = received.tenderers,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.tenderers,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateOrganizationReference
-            ),
-            acceleratedProcedure = updateAcceleratedProcedure(
-                received.acceleratedProcedure,
-                available.acceleratedProcedure
-            ),
-            designContest = updateDesignContest(
-                received.designContest,
-                available.designContest
-            ),
-            dynamicPurchasingSystem = updateDynamicPurchasingSystem(
-                received.dynamicPurchasingSystem,
-                available.dynamicPurchasingSystem
-            ),
-            electronicWorkflows = updateElectronicWorkflows(
-                received.electronicWorkflows,
-                available.electronicWorkflows
-            ),
-            framework = updateFramework(
-                received.framework,
-                available.framework
-            ),
-            jointProcurement = updateJointProcurement(
-                received.jointProcurement,
-                available.jointProcurement
-            ),
-            lotDetails = updateLotDetails(
-                received.lotDetails,
-                available.lotDetails
-            ),
-            objectives = updateObjectives(
-                received.objectives,
-                available.objectives
-            ),
-            participationFees = updateParticipationFee(
-                received.participationFees,
-                available.participationFees
-            ),
-            procedureOutsourcing = updateProcedureOutsourcing(
-                received.procedureOutsourcing,
-                available.procedureOutsourcing
-            ),
-            procuringEntity = received.procuringEntity?.let {
-                updateOrganizationReference(
-                    it,
-                    available.procuringEntity
-                )
-            } ?: available.procuringEntity,
-            reviewParties = updateStrategy(
-                receivedElements = received.reviewParties,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available.reviewParties,
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateOrganizationReference
-            ),
-            reviewPeriod = updatePeriod(
-                received.reviewPeriod,
-                available.reviewPeriod
-            )
+            status = received.status ?: this.status,
+            auctionPeriod = auctionPeriod,
+            title = received.title ?: this.title,
+            description = received.description ?: this.description,
+            documents = documents,
+            statusDetails = received.statusDetails ?: this.statusDetails,
+            amendments = amendments,
+            submissionMethodRationale = this.submissionMethodRationale.update(received.submissionMethodRationale),
+            submissionMethodDetails = received.submissionMethodDetails ?: this.submissionMethodDetails,
+            awardCriteria = received.awardCriteria ?: this.awardCriteria,
+            awardCriteriaDetails = received.awardCriteriaDetails ?: this.awardCriteriaDetails,
+            awardPeriod = awardPeriod,
+            conversions = conversions,
+            criteria = criteria,
+            electronicAuctions = electronicAuctions,
+            enquiries = enquiries,
+            enquiryPeriod = enquiryPeriod,
+            hasEnquiries = received.hasEnquiries ?: this.hasEnquiries,
+            items = items,
+            lotGroups = lotGroups,
+            lots = lots,
+            procurementMethodModalities = this.procurementMethodModalities.update(received.procurementMethodModalities),
+            requiresElectronicCatalogue = received.requiresElectronicCatalogue ?: this.requiresElectronicCatalogue,
+            standstillPeriod = standstillPeriod,
+            submissionMethod = this.submissionMethod.update(received.submissionMethod),
+            tenderPeriod = tenderPeriod,
+            value = value,
+            milestones = milestones,
+            classification = classification,
+            amendment = amendment,
+            contractPeriod = contractPeriod,
+            procurementMethodDetails = received.procurementMethodDetails ?: this.procurementMethodDetails,
+            legalBasis = received.legalBasis ?: this.legalBasis,
+            mainProcurementCategory = received.mainProcurementCategory ?: this.mainProcurementCategory,
+            eligibilityCriteria = received.eligibilityCriteria ?: this.eligibilityCriteria,
+            minValue = minValue,
+            numberOfTenderers = received.numberOfTenderers ?: this.numberOfTenderers,
+            procurementMethod = received.procurementMethod ?: this.procurementMethod,
+            procurementMethodRationale = received.procurementMethodRationale ?: this.procurementMethodRationale,
+            additionalProcurementCategories = this.additionalProcurementCategories.update(received.additionalProcurementCategories),
+            procurementMethodAdditionalInfo = received.procurementMethodAdditionalInfo ?: this.procurementMethodAdditionalInfo,
+            submissionLanguages = this.submissionLanguages.update(received.submissionLanguages),
+            tenderers = tenderers,
+            acceleratedProcedure = acceleratedProcedure,
+            designContest = designContest,
+            dynamicPurchasingSystem = dynamicPurchasingSystem,
+            electronicWorkflows = electronicWorkflows,
+            framework = framework,
+            jointProcurement = jointProcurement,
+            lotDetails = lotDetails,
+            objectives = objectives,
+            participationFees = participationFees,
+            procedureOutsourcing = procedureOutsourcing,
+            procuringEntity = procuringEntity,
+            reviewParties = reviewParties,
+            reviewPeriod = reviewPeriod
         )
-    }
+        .asSuccess()
+}
 
-fun updateProcedureOutsourcing(
-    received: RequestProcedureOutsourcing?,
-    available: RecordProcedureOutsourcing?
-): RecordProcedureOutsourcing? =
-    received?.let {
-        RecordProcedureOutsourcing(
-            procedureOutsourced = it.procedureOutsourced ?: available?.procedureOutsourced,
-            outsourcedTo = it.outsourcedTo?.let {
-                updateOrganization(
-                    it,
-                    available?.outsourcedTo
-                )
-            } ?: available?.outsourcedTo
+val recordDocumentKeyExtractor: (RecordDocument) -> String = { it.id }
+val requestDocumentKeyExtractor: (RequestDocument) -> String = { it.id }
+
+val recordAmendmentKeyExtractor: (RecordAmendment) -> String = { it.id }
+val requestAmendmentKeyExtractor: (RequestAmendment) -> String = { it.id }
+
+val recordConversionKeyExtractor: (RecordConversion) -> String = { it.id }
+val requestConversionKeyExtractor: (RequestConversion) -> String = { it.id }
+
+val recordCriteriaKeyExtractor: (RecordCriteria) -> String = { it.id }
+val requestCriteriaKeyExtractor: (RequestCriteria) -> String = { it.id }
+
+val recordRecordEnquiryKeyExtractor: (RecordRecordEnquiry) -> String = { it.id }
+val requestRecordEnquiryKeyExtractor: (RequestRecordEnquiry) -> String = { it.id }
+
+val recordItemKeyExtractor: (RecordItem) -> String = { it.id }
+val requestItemKeyExtractor: (RequestItem) -> String = { it.id }
+
+val recordLotKeyExtractor: (RecordLot) -> String = { it.id }
+val requestLotKeyExtractor: (RequestLot) -> String = { it.id }
+
+val recordMilestoneKeyExtractor: (RecordMilestone) -> String = { it.id }
+val requestMilestoneKeyExtractor: (RequestMilestone) -> String = { it.id }
+
+val recordOrganizationReferenceKeyExtractor: (RecordOrganizationReference) -> String = { it.id }
+val requestOrganizationReferenceKeyExtractor: (RequestOrganizationReference) -> String = { it.id }
+
+fun RecordProcedureOutsourcing.updateProcedureOutsourcing(
+    received: RequestProcedureOutsourcing
+): UpdateRecordResult<RecordProcedureOutsourcing> {
+    val outsourcedTo = received.outsourcedTo
+        ?.let {
+            this.outsourcedTo
+                ?.updateOrganization(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createOrganization(it)
+        }
+        ?: this.outsourcedTo
+
+    return this
+        .copy(
+            procedureOutsourced = received.procedureOutsourced ?: this.procedureOutsourced,
+            outsourcedTo = outsourcedTo
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateParticipationFee(
-    received: List<RequestParticipationFee>,
-    available: List<RecordParticipationFee>
-): List<RecordParticipationFee> =
-    received.mapIfNotEmpty {
+fun List<RecordParticipationFee>.updateParticipationFee(received: List<RequestParticipationFee>): UpdateRecordResult<List<RecordParticipationFee>> {
+    val result = received.mapIfNotEmpty {
         RecordParticipationFee(
             type = it.type,
             value = it.value,
             description = it.description,
             methodOfPayment = it.methodOfPayment
         )
-    } ?: available
+    } ?: this
+    return result.asSuccess()
+}
 
-fun updateObjectives(received: RequestObjectives?, available: RecordObjectives?): RecordObjectives? =
-    received?.let {
-        RecordObjectives(
-            types = updateNonIdentifiable(
-                it.types,
-                available?.types.orEmpty()
-            ),
-            additionalInformation = it.additionalInformation ?: available?.additionalInformation
+fun RecordObjectives.updateObjectives(received: RequestObjectives): UpdateRecordResult<RecordObjectives> =
+    this.copy(
+        types = this.types.update(received.types),
+        additionalInformation = received.additionalInformation ?: this.additionalInformation
+    )
+        .asSuccess()
+
+fun RecordLotDetails.updateLotDetails(received: RequestLotDetails): UpdateRecordResult<RecordLotDetails> =
+    this.copy(
+        maximumLotsAwardedPerSupplier = received.maximumLotsAwardedPerSupplier
+            ?: this.maximumLotsAwardedPerSupplier,
+        maximumLotsBidPerSupplier = received.maximumLotsBidPerSupplier ?: this.maximumLotsBidPerSupplier
+    )
+        .asSuccess()
+
+fun RecordJointProcurement.updateJointProcurement(
+    received: RequestJointProcurement
+): UpdateRecordResult<RecordJointProcurement> =
+    this.copy(
+        isJointProcurement = received.isJointProcurement ?: this.isJointProcurement,
+        country = received.country ?: this.country
+    )
+        .asSuccess()
+
+fun RecordFramework.updateFramework(received: RequestFramework): UpdateRecordResult<RecordFramework> =
+    this.copy(
+        isAFramework = received.isAFramework ?: this.isAFramework,
+        additionalBuyerCategories = this.additionalBuyerCategories.update(received.additionalBuyerCategories),
+        exceptionalDurationRationale = received.exceptionalDurationRationale
+            ?: this.exceptionalDurationRationale,
+        maxSuppliers = received.maxSuppliers ?: this.maxSuppliers,
+        typeOfFramework = received.typeOfFramework ?: this.typeOfFramework
+    )
+        .asSuccess()
+
+fun RecordElectronicWorkflows.updateElectronicWorkflows(
+    received: RequestElectronicWorkflows
+): UpdateRecordResult<RecordElectronicWorkflows> =
+    this.copy(
+        useOrdering = received.useOrdering ?: this.useOrdering,
+        acceptInvoicing = received.acceptInvoicing ?: this.acceptInvoicing,
+        usePayment = received.usePayment ?: this.usePayment
+    )
+        .asSuccess()
+
+fun RecordDynamicPurchasingSystem.updateDynamicPurchasingSystem(
+    received: RequestDynamicPurchasingSystem
+): UpdateRecordResult<RecordDynamicPurchasingSystem> =
+    this.copy(
+        hasDynamicPurchasingSystem = received.hasDynamicPurchasingSystem ?: this.hasDynamicPurchasingSystem,
+        hasOutsideBuyerAccess = received.hasOutsideBuyerAccess ?: this.hasOutsideBuyerAccess,
+        noFurtherContracts = received.noFurtherContracts ?: this.noFurtherContracts
+    )
+        .asSuccess()
+
+fun RecordDesignContest.updateDesignContest(received: RequestDesignContest): UpdateRecordResult<RecordDesignContest> {
+    val juryMembers = updateStrategy(
+        receivedElements = received.juryMembers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.juryMembers,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    val participants = updateStrategy(
+        receivedElements = received.participants,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.participants,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    val prizes = updateStrategy(
+        receivedElements = received.prizes,
+        keyExtractorForReceivedElement = requestItemKeyExtractor,
+        availableElements = this.prizes,
+        keyExtractorForAvailableElement = recordItemKeyExtractor,
+        updateBlock = RecordItem::updateItem,
+        createBlock = ::createItem
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            hasPrizes = received.hasPrizes ?: this.hasPrizes,
+            juryDecisionBinding = received.juryDecisionBinding ?: this.juryDecisionBinding,
+            juryMembers = juryMembers,
+            participants = participants,
+            paymentsToParticipants = received.paymentsToParticipants ?: this.paymentsToParticipants,
+            prizes = prizes,
+            serviceContractAward = received.serviceContractAward ?: this.serviceContractAward
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateLotDetails(received: RequestLotDetails?, available: RecordLotDetails?): RecordLotDetails? =
-    received?.let {
-        RecordLotDetails(
-            maximumLotsAwardedPerSupplier = it.maximumLotsAwardedPerSupplier ?: available?.maximumLotsAwardedPerSupplier,
-            maximumLotsBidPerSupplier = it.maximumLotsBidPerSupplier ?: available?.maximumLotsBidPerSupplier
+fun RecordAcceleratedProcedure.updateAcceleratedProcedure(
+    received: RequestAcceleratedProcedure
+): UpdateRecordResult<RecordAcceleratedProcedure> =
+    this.copy(
+        isAcceleratedProcedure = received.isAcceleratedProcedure ?: this.isAcceleratedProcedure,
+        acceleratedProcedureJustification = received.acceleratedProcedureJustification
+            ?: this.acceleratedProcedureJustification
+    )
+        .asSuccess()
+
+fun Value.updateValue(received: Value): UpdateRecordResult<Value> =
+    this.copy(
+        amount = received.amount ?: this.amount,
+        currency = received.currency ?: this.currency,
+        amountNet = received.amountNet ?: this.amountNet,
+        valueAddedTaxIncluded = received.valueAddedTaxIncluded ?: this.valueAddedTaxIncluded
+    )
+        .asSuccess()
+
+fun RecordOrganization.updateOrganization(received: RequestOrganization): UpdateRecordResult<RecordOrganization> {
+    val details = received.details
+        ?.let {
+            this.details
+                ?.updateDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDetails(it)
+        }
+        ?: this.details
+
+    val identifier = received.identifier
+        ?.let {
+            this.identifier
+                ?.updateIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createIdentifier(it)
+        }
+        ?: this.identifier
+
+    val persones = updateStrategy(
+        receivedElements = received.persones,
+        keyExtractorForReceivedElement = requestPersonKeyExtractor,
+        availableElements = this.persones.toList(),
+        keyExtractorForAvailableElement = recordPersonKeyExtractor,
+        updateBlock = RecordPerson::updatePerson,
+        createBlock = ::createPerson
+    )
+        .doReturn { e -> return failure(e) }
+
+    val additionalIdentifiers = updateStrategy(
+        receivedElements = received.additionalIdentifiers,
+        keyExtractorForReceivedElement = requestIdentifierKeyExtractor,
+        availableElements = this.additionalIdentifiers.toList(),
+        keyExtractorForAvailableElement = recordIdentifierKeyExtractor,
+        updateBlock = RecordIdentifier::updateIdentifierElement,
+        createBlock = ::createIdentifier
+    )
+        .doReturn { e -> return failure(e) }
+
+    val contactPoint = received.contactPoint
+        ?.let {
+            this.contactPoint
+                ?.updateContactPoint(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createContactPoint(it)
+        }
+        ?: this.contactPoint
+
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
+
+    return this
+        .copy(
+            id = received.id,
+            name = received.name ?: this.name,
+            details = details,
+            identifier = identifier,
+            persones = persones,
+            buyerProfile = received.buyerProfile ?: this.buyerProfile,
+            additionalIdentifiers = additionalIdentifiers,
+            contactPoint = contactPoint,
+            address = address,
+            roles = received.roles
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateJointProcurement(
-    received: RequestJointProcurement?,
-    available: RecordJointProcurement?
-): RecordJointProcurement? =
-    received?.let {
-        RecordJointProcurement(
-            isJointProcurement = it.isJointProcurement ?: available?.isJointProcurement,
-            country = it.country ?: available?.country
+fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAward> {
+    val contractPeriod = received.contractPeriod
+        ?.let {
+            this.contractPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.contractPeriod
+
+    val reviewProceedings = received.reviewProceedings
+        ?.let {
+            this.reviewProceedings
+                ?.updateReviewProceedings(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createReviewProceedings(it)
+        }
+        ?: this.reviewProceedings
+
+    val items = updateStrategy(
+        receivedElements = received.items,
+        keyExtractorForReceivedElement = requestItemKeyExtractor,
+        availableElements = this.items,
+        keyExtractorForAvailableElement = recordItemKeyExtractor,
+        updateBlock = RecordItem::updateItem,
+        createBlock = ::createItem
+    )
+        .doReturn { e -> return failure(e) }
+
+    val amendments = updateStrategy(
+        receivedElements = received.amendments,
+        keyExtractorForReceivedElement = requestAmendmentKeyExtractor,
+        availableElements = this.amendments,
+        keyExtractorForAvailableElement = recordAmendmentKeyExtractor,
+        updateBlock = RecordAmendment::updateAmendment,
+        createBlock = ::createAmendment
+    )
+        .doReturn { e -> return failure(e) }
+
+    val amendment = received.amendment
+        ?.let {
+            this.amendment
+                ?.updateAmendment(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAmendment(it)
+        }
+        ?: this.amendment
+
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses,
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    val suppliers = updateStrategy(
+        receivedElements = received.suppliers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.suppliers,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateSupplier,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+
+    return this
+        .copy(
+            id = received.id,
+            status = received.status ?: this.status,
+            statusDetails = received.statusDetails ?: this.statusDetails,
+            title = received.title ?: this.title,
+            description = received.description ?: this.description,
+            value = received.value ?: this.value,
+            relatedBid = received.relatedBid ?: this.relatedBid,
+            relatedLots = this.relatedLots.update(received.relatedLots),
+            date = received.date ?: this.date,
+            contractPeriod = contractPeriod,
+            weightedValue = received.weightedValue ?: this.weightedValue,
+            reviewProceedings = reviewProceedings,
+            items = items,
+            amendments = amendments,
+            amendment = amendment,
+            documents = documents,
+            requirementResponses = requirementResponses,
+            suppliers = suppliers
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateFramework(received: RequestFramework?, available: RecordFramework?): RecordFramework? =
-    received?.let {
-        RecordFramework(
-            isAFramework = it.isAFramework ?: available?.isAFramework,
-            additionalBuyerCategories = updateNonIdentifiable(
-                it.additionalBuyerCategories,
-                available?.additionalBuyerCategories.orEmpty()
-            ),
-            exceptionalDurationRationale = it.exceptionalDurationRationale ?: available?.exceptionalDurationRationale,
-            maxSuppliers = it.maxSuppliers ?: available?.maxSuppliers,
-            typeOfFramework = it.typeOfFramework ?: available?.typeOfFramework
-        )
-    } ?: available
+val recordRequirementResponseKeyExtractor: (RecordRequirementResponse) -> String = { it.id }
+val requestRequirementResponseKeyExtractor: (RequestRequirementResponse) -> String = { it.id }
 
-fun updateElectronicWorkflows(
-    received: RequestElectronicWorkflows?,
-    available: RecordElectronicWorkflows?
-): RecordElectronicWorkflows? =
-    received?.let {
-        RecordElectronicWorkflows(
-            useOrdering = it.useOrdering ?: available?.useOrdering,
-            acceptInvoicing = it.acceptInvoicing ?: available?.acceptInvoicing,
-            usePayment = it.usePayment ?: available?.usePayment
-        )
-    } ?: available
-
-fun updateDynamicPurchasingSystem(
-    received: RequestDynamicPurchasingSystem?,
-    available: RecordDynamicPurchasingSystem?
-): RecordDynamicPurchasingSystem? =
-    received?.let {
-        RecordDynamicPurchasingSystem(
-            hasDynamicPurchasingSystem = it.hasDynamicPurchasingSystem ?: available?.hasDynamicPurchasingSystem,
-            hasOutsideBuyerAccess = it.hasOutsideBuyerAccess ?: available?.hasOutsideBuyerAccess,
-            noFurtherContracts = it.noFurtherContracts ?: available?.noFurtherContracts
-        )
-    } ?: available
-
-fun updateDesignContest(received: RequestDesignContest?, available: RecordDesignContest?): RecordDesignContest? =
-    received?.let {
-        RecordDesignContest(
-            hasPrizes = it.hasPrizes ?: available?.hasPrizes,
-            juryDecisionBinding = it.juryDecisionBinding ?: available?.juryDecisionBinding,
-            juryMembers = updateStrategy(
-                receivedElements = it.juryMembers,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.juryMembers.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateOrganizationReference
-            ),
-            participants = updateStrategy(
-                receivedElements = it.participants.orEmpty(),
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.participants.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateOrganizationReference
-            ),
-            paymentsToParticipants = it.paymentsToParticipants ?: available?.paymentsToParticipants,
-            prizes = updateStrategy(
-                receivedElements = it.prizes.orEmpty(),
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.prizes.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateItem
-            ),
-            serviceContractAward = it.serviceContractAward ?: available?.serviceContractAward
-        )
-    } ?: available
-
-fun updateAcceleratedProcedure(
-    received: RequestAcceleratedProcedure?,
-    available: RecordAcceleratedProcedure?
-): RecordAcceleratedProcedure? =
-    received?.let {
-        RecordAcceleratedProcedure(
-            isAcceleratedProcedure = it.isAcceleratedProcedure ?: available?.isAcceleratedProcedure,
-            acceleratedProcedureJustification = it.acceleratedProcedureJustification ?: available?.acceleratedProcedureJustification
-        )
-    } ?: available
-
-fun updateValue(received: Value?, available: Value?): Value? =
-    received?.let { rqValue ->
-        Value(
-            amount = rqValue.amount ?: available?.amount,
-            currency = rqValue.currency ?: available?.currency,
-            amountNet = rqValue.amountNet ?: available?.amountNet,
-            valueAddedTaxIncluded = rqValue.valueAddedTaxIncluded ?: available?.valueAddedTaxIncluded
-        )
-    } ?: available
-
-fun updateOrganization(received: RequestOrganization, available: RecordOrganization?): RecordOrganization =
-    received.let { rqOrganization ->
-        RecordOrganization(
-            id = rqOrganization.id,
-            name = rqOrganization.name ?: available?.name,
-            details = updateDetails(
-                rqOrganization.details,
-                available?.details
-            ),
-            identifier = updateIdentifier(
-                rqOrganization.identifier,
-                available?.identifier
-            ),
-            persones = updateStrategy(
-                receivedElements = rqOrganization.persones,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
-                availableElements = available?.persones?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.identifier.id!! },
-                block = ::updatePerson
-            ),
-            buyerProfile = rqOrganization.buyerProfile ?: available?.buyerProfile,
-            additionalIdentifiers = updateStrategy(
-                receivedElements = rqOrganization.additionalIdentifiers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.additionalIdentifiers?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateIdentifierElement
-            ),
-            contactPoint = updateContactPoint(
-                rqOrganization.contactPoint,
-                available?.contactPoint
-            ),
-            address = updateAddress(
-                rqOrganization.address,
-                available?.address
-            ),
-            roles = rqOrganization.roles
-        )
-    }
-
-fun updateAward(received: RequestAward, available: RecordAward?): RecordAward =
-    received.let { rqAward ->
-        RecordAward(
-            id = rqAward.id,
-            status = rqAward.status ?: available?.status,
-            statusDetails = rqAward.statusDetails ?: available?.statusDetails,
-            title = rqAward.title ?: available?.title,
-            description = rqAward.description ?: available?.description,
-            value = rqAward.value ?: available?.value,
-            relatedBid = rqAward.relatedBid ?: available?.relatedBid,
-            relatedLots = updateNonIdentifiable(
-                rqAward.relatedLots,
-                available?.relatedLots.orEmpty()
-            ),
-            date = rqAward.date ?: available?.date,
-            contractPeriod = updateContractPeriod(
-                rqAward.contractPeriod,
-                available?.contractPeriod
-            ),
-            weightedValue = rqAward.weightedValue ?: available?.weightedValue,
-            reviewProceedings = updateReviewProceedings(
-                rqAward.reviewProceedings,
-                available?.reviewProceedings
-            ),
-            items = updateStrategy(
-                receivedElements = rqAward.items,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.items.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateItem
-            ),
-            amendments = updateStrategy(
-                receivedElements = rqAward.amendments,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.amendments.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAmendmentElement
-            ),
-            amendment = updateAmendment(
-                rqAward.amendment,
-                available?.amendment
-            ),
-            documents = updateStrategy(
-                receivedElements = rqAward.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            requirementResponses = updateStrategy(
-                receivedElements = rqAward.requirementResponses,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.requirementResponses.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRequirementResponse
-            ),
-            suppliers = updateStrategy(
-                receivedElements = rqAward.suppliers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.suppliers.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateSupplier
+fun RecordAmendment.updateAmendment(received: RequestAmendment): UpdateRecordResult<RecordAmendment> {
+    val amendmentId = if (received.id == this.id)
+        received.id
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'amendment'. Ids mismatching: " +
+                    "Amendment from request (id = '${received.id}'), " +
+                    "Amendment from release (id = '${received.id}'). "
             )
         )
-    }
 
-fun updateAmendmentElement(received: RequestAmendment, available: RecordAmendment?): RecordAmendment =
-    received.let { rqAmendment ->
-        RecordAmendment(
-            id = rqAmendment.id,
-            date = rqAmendment.date ?: available?.date,
-            description = rqAmendment.description ?: available?.description,
-            rationale = rqAmendment.rationale ?: available?.rationale,
-            documents = updateStrategy(
-                receivedElements = rqAmendment.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            relatedLots = updateNonIdentifiable(
-                rqAmendment.relatedLots,
-                available?.relatedLots.orEmpty()
-            ),
-            releaseID = rqAmendment.releaseID ?: available?.releaseID,
-            changes = updateChanges(
-                rqAmendment.changes,
-                available?.changes.orEmpty()
-            ),
-            amendsReleaseID = rqAmendment.amendsReleaseID ?: available?.amendsReleaseID,
-            type = rqAmendment.type ?: available?.type,
-            status = rqAmendment.status ?: available?.status,
-            relatedItem = rqAmendment.relatedItem ?: available?.relatedItem,
-            relatesTo = rqAmendment.relatesTo ?: available?.relatesTo
-        )
-    }
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
 
-fun updateAmendment(received: RequestAmendment?, available: RecordAmendment?): RecordAmendment? =
-    received?.let { rqAmendment ->
-        val amendmentId = if (available == null || rqAmendment.id == available.id)
-            rqAmendment.id
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'amendment'. Ids mismatching: " +
-                    "Amendment from request (id = '${rqAmendment.id}'), " +
-                    "Amendment from release (id = '${available.id}'). "
-            )
-        RecordAmendment(
+    val changes = this.changes.updateChanges(received.changes)
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
             id = amendmentId,
-            date = rqAmendment.date ?: available?.date,
-            description = rqAmendment.description ?: available?.description,
-            rationale = rqAmendment.rationale ?: available?.rationale,
-            documents = updateStrategy(
-                receivedElements = rqAmendment.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            relatedLots = rqAmendment.relatedLots
-                .mapIfNotEmpty { it }
-                ?: available?.relatedLots.orEmpty(),
-            releaseID = rqAmendment.releaseID ?: available?.releaseID,
-            changes = updateChanges(
-                rqAmendment.changes,
-                available?.changes.orEmpty()
-            ),
-            amendsReleaseID = rqAmendment.amendsReleaseID ?: available?.amendsReleaseID,
-            type = rqAmendment.type ?: available?.type,
-            status = rqAmendment.status ?: available?.status,
-            relatedItem = rqAmendment.relatedItem ?: available?.relatedItem,
-            relatesTo = rqAmendment.relatesTo ?: available?.relatesTo
+            date = received.date ?: this.date,
+            description = received.description ?: this.description,
+            rationale = received.rationale ?: this.rationale,
+            documents = documents,
+            relatedLots = this.relatedLots.update(received.relatedLots),
+            releaseID = received.releaseID ?: this.releaseID,
+            changes = changes,
+            amendsReleaseID = received.amendsReleaseID ?: this.amendsReleaseID,
+            type = received.type ?: this.type,
+            status = received.status ?: this.status,
+            relatedItem = received.relatedItem ?: this.relatedItem,
+            relatesTo = received.relatesTo ?: this.relatesTo
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateReviewProceedings(
-    received: RequestReviewProceedings?,
-    available: RecordReviewProceedings?
-): RecordReviewProceedings? =
-    received?.let { rqReviewProceeding ->
-        RecordReviewProceedings(
-            buyerProcedureReview = rqReviewProceeding.buyerProcedureReview ?: available?.buyerProcedureReview,
-            legalProcedures = updateStrategy(
-                receivedElements = rqReviewProceeding.legalProcedures,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.legalProcedures?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateLegalProceeding
-            ),
-            reviewBodyChallenge = rqReviewProceeding.reviewBodyChallenge ?: available?.reviewBodyChallenge
+fun RecordReviewProceedings.updateReviewProceedings(received: RequestReviewProceedings): UpdateRecordResult<RecordReviewProceedings> {
+    val legalProcedures = updateStrategy(
+        receivedElements = received.legalProcedures,
+        keyExtractorForReceivedElement = requestLegalProceedingsKeyExtractor,
+        availableElements = this.legalProcedures.toList(),
+        keyExtractorForAvailableElement = recordLegalProceedingsKeyExtractor,
+        updateBlock = RecordLegalProceedings::updateLegalProceeding,
+        createBlock = ::createLegalProceeding
+    )
+        .doReturn { e -> return failure(e) }
 
+    return this
+        .copy(
+            buyerProcedureReview = received.buyerProcedureReview ?: this.buyerProcedureReview,
+            legalProcedures = legalProcedures,
+            reviewBodyChallenge = received.reviewBodyChallenge ?: this.reviewBodyChallenge
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateLegalProceeding(
-    received: RequestLegalProceedings,
-    available: RecordLegalProceedings?
-): RecordLegalProceedings =
-    received.let { rqLegalProceeding ->
-        RecordLegalProceedings(
-            id = rqLegalProceeding.id,
-            title = rqLegalProceeding.title ?: available?.title,
-            uri = rqLegalProceeding.uri ?: available?.uri
+val recordLegalProceedingsKeyExtractor: (RecordLegalProceedings) -> String = { it.id }
+val requestLegalProceedingsKeyExtractor: (RequestLegalProceedings) -> String = { it.id }
+
+fun RecordLegalProceedings.updateLegalProceeding(received: RequestLegalProceedings): UpdateRecordResult<RecordLegalProceedings> =
+    this.copy(
+        id = received.id,
+        title = received.title ?: this.title,
+        uri = received.uri ?: this.uri
+    )
+        .asSuccess()
+
+fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequirementResponse): UpdateRecordResult<RecordRequirementResponse> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val relatedTenderer = received.relatedTenderer
+        ?.let {
+            this.relatedTenderer
+                ?.updateOrganizationReference(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createOrganizationReference(it)
+        }
+        ?: this.relatedTenderer
+
+    val requirement = received.requirement
+        ?.let {
+            this.requirement
+                ?.updateRequirement(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createRequirement(it)
+        }
+        ?: this.requirement
+
+    return this
+        .copy(
+            id = received.id,
+            title = received.title ?: this.title,
+            value = received.value,
+            description = received.description ?: this.description,
+            period = period,
+            relatedTenderer = relatedTenderer,
+            requirement = requirement
         )
-    }
+        .asSuccess()
+}
 
-fun updateRequirementResponse(
-    received: RequestRequirementResponse,
-    available: RecordRequirementResponse?
-): RecordRequirementResponse =
-    received.let { rqRequirementResponse ->
-        RecordRequirementResponse(
-            id = rqRequirementResponse.id,
-            title = rqRequirementResponse.title ?: available?.title,
-            value = rqRequirementResponse.value,
-            description = rqRequirementResponse.description ?: available?.description,
-            period = updatePeriod(
-                rqRequirementResponse.period,
-                available?.period
-            ),
-            relatedTenderer = rqRequirementResponse.relatedTenderer
-                ?.let {
-                    updateOrganizationReference(
-                        it,
-                        available?.relatedTenderer
-                    )
-                }
-                ?: available?.relatedTenderer,
-            requirement = updateRequirement(
-                rqRequirementResponse.requirement,
-                available?.requirement
-            )
+fun RecordRequirementReference.updateRequirement(received: RequestRequirementReference): UpdateRecordResult<RecordRequirementReference> =
+    this.copy(
+        id = received.id,
+        title = received.title ?: this.title
+    )
+        .asSuccess()
+
+fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
+
+    val contactPoint = received.contactPoint
+        ?.let {
+            this.contactPoint
+                ?.updateContactPoint(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createContactPoint(it)
+        }
+        ?: this.contactPoint
+
+    val additionalIdentifiers = updateStrategy(
+        receivedElements = received.additionalIdentifiers,
+        keyExtractorForReceivedElement = requestIdentifierKeyExtractor,
+        availableElements = this.additionalIdentifiers.toList(),
+        keyExtractorForAvailableElement = recordIdentifierKeyExtractor,
+        updateBlock = RecordIdentifier::updateIdentifierElement,
+        createBlock = ::createIdentifier
+    )
+        .doReturn { e -> return failure(e) }
+
+    val persones = updateStrategy(
+        receivedElements = received.persones,
+        keyExtractorForReceivedElement = requestPersonKeyExtractor,
+        availableElements = this.persones.toList(),
+        keyExtractorForAvailableElement = recordPersonKeyExtractor,
+        updateBlock = RecordPerson::updatePerson,
+        createBlock = ::createPerson
+    )
+        .doReturn { e -> return failure(e) }
+
+    val identifier = received.identifier
+        ?.let {
+            this.identifier
+                ?.updateIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createIdentifier(it)
+        }
+        ?: this.identifier
+
+    val details = received.details
+        ?.let {
+            this.details
+                ?.updateDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDetails(it)
+        }
+        ?: this.details
+
+
+    return this
+        .copy(
+            id = this.id,
+            address = address,
+            contactPoint = contactPoint,
+            additionalIdentifiers = additionalIdentifiers,
+            persones = persones,
+            identifier = identifier,
+            name = received.name ?: this.name,
+            details = details,
+            buyerProfile = received.buyerProfile ?: this.buyerProfile
         )
-    }
+        .asSuccess()
+}
 
-fun updateRequirement(
-    received: RequestRequirementReference?,
-    available: RecordRequirementReference?
-): RecordRequirementReference? =
-    received?.let { rqRequirement ->
-        RecordRequirementReference(
-            id = rqRequirement.id,
-            title = rqRequirement.title ?: available?.title
+fun RecordOrganizationReference.updateSupplier(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
+    val address = received.address
+        ?.let {
+            this.address?.updateAddress(it) ?: createAddress(it)
+        }
+        ?: this.address
+
+    val contactPoint = received.contactPoint
+        ?.let {
+            this.contactPoint
+                ?.updateContactPoint(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createContactPoint(it)
+        }
+        ?: this.contactPoint
+
+    val additionalIdentifiers = updateStrategy(
+        receivedElements = received.additionalIdentifiers,
+        keyExtractorForReceivedElement = requestIdentifierKeyExtractor,
+        availableElements = this.additionalIdentifiers.toList(),
+        keyExtractorForAvailableElement = recordIdentifierKeyExtractor,
+        updateBlock = RecordIdentifier::updateIdentifierElement,
+        createBlock = ::createIdentifier
+    )
+        .doReturn { e -> return failure(e) }
+
+    val persones = updateStrategy(
+        receivedElements = received.persones,
+        keyExtractorForReceivedElement = requestPersonKeyExtractor,
+        availableElements = this.persones.toList(),
+        keyExtractorForAvailableElement = recordPersonKeyExtractor,
+        updateBlock = RecordPerson::updatePerson,
+        createBlock = ::createPerson
+    )
+        .doReturn { e -> return failure(e) }
+
+    val identifier = received.identifier
+        ?.let {
+            this.identifier
+                ?.updateIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createIdentifier(it)
+        }
+        ?: this.identifier
+
+    val details = received.details
+        ?.let {
+            this.details
+                ?.updateDetails(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDetails(it)
+        }
+        ?: this.details
+
+    return this
+        .copy(
+            id = this.id,
+            address = address,
+            contactPoint = contactPoint,
+            additionalIdentifiers = additionalIdentifiers,
+            persones = persones,
+            identifier = identifier,
+            name = received.name ?: this.name,
+            details = details,
+            buyerProfile = received.buyerProfile ?: this.buyerProfile
         )
-    } ?: available
+        .asSuccess()
+}
 
-fun updateOrganizationReference(
-    received: RequestOrganizationReference,
-    available: RecordOrganizationReference?
-): RecordOrganizationReference =
-    received.let { requestOrganizationReference ->
-        RecordOrganizationReference(
-            id = available?.id,
-            address = updateAddress(
-                requestOrganizationReference.address,
-                available?.address
-            ),
-            contactPoint = updateContactPoint(
-                requestOrganizationReference.contactPoint,
-                available?.contactPoint
-            ),
-            additionalIdentifiers = updateStrategy(
-                receivedElements = requestOrganizationReference.additionalIdentifiers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.additionalIdentifiers?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateIdentifierElement
-            ),
-            persones = updateStrategy(
-                receivedElements = requestOrganizationReference.persones,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
-                availableElements = available?.persones?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.identifier.id!! },
-                block = ::updatePerson
-            ),
-            identifier = updateIdentifier(
-                requestOrganizationReference.identifier,
-                available?.identifier
-            ),
-            name = requestOrganizationReference.name ?: available?.name,
-            details = updateDetails(
-                requestOrganizationReference.details,
-                available?.details
-            ),
-            buyerProfile = requestOrganizationReference.buyerProfile ?: available?.buyerProfile
+fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents.toList(),
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses.toList(),
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    val tenderers = updateStrategy(
+        receivedElements = received.tenderers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.tenderers,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            value = received.value ?: this.value,
+            relatedLots = this.relatedLots.update(received.relatedLots),
+            documents = documents,
+            date = received.date ?: this.date,
+            requirementResponses = requirementResponses,
+            statusDetails = received.statusDetails ?: this.statusDetails,
+            status = received.status ?: this.status,
+            tenderers = tenderers
         )
-    }
+        .asSuccess()
+}
 
-fun updateSupplier(
-    received: RequestOrganizationReference,
-    available: RecordOrganizationReference?
-): RecordOrganizationReference =
-    received.let { rqOrganizationRefference ->
-        RecordOrganizationReference(
-            id = available?.id,
-            address = updateAddress(
-                rqOrganizationRefference.address,
-                available?.address
-            ),
-            contactPoint = updateContactPoint(
-                rqOrganizationRefference.contactPoint,
-                available?.contactPoint
-            ),
-            additionalIdentifiers = updateStrategy(
-                receivedElements = rqOrganizationRefference.additionalIdentifiers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.additionalIdentifiers?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateIdentifierElement
-            ),
-            persones = updateStrategy(
-                receivedElements = rqOrganizationRefference.persones,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
-                availableElements = available?.persones?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.identifier.id!! },
-                block = ::updatePerson
-            ),
-            identifier = updateIdentifier(
-                rqOrganizationRefference.identifier,
-                available?.identifier
-            ),
-            name = rqOrganizationRefference.name ?: available?.name,
-            details = updateDetails(
-                rqOrganizationRefference.details,
-                available?.details
-            ),
-            buyerProfile = rqOrganizationRefference.buyerProfile ?: available?.buyerProfile
+fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult<RecordContract> {
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses.toList(),
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents.toList(),
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateValueTax(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValueTax(it)
+        }
+        ?: this.value
+
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val amendment = received.amendment
+        ?.let {
+            this.amendment
+                ?.updateAmendment(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createAmendment(it)
+        }
+        ?: this.amendment
+
+    val amendments = updateStrategy(
+        receivedElements = received.amendments,
+        keyExtractorForReceivedElement = requestAmendmentKeyExtractor,
+        availableElements = this.amendments,
+        keyExtractorForAvailableElement = recordAmendmentKeyExtractor,
+        updateBlock = RecordAmendment::updateAmendment,
+        createBlock = ::createAmendment
+    )
+        .doReturn { e -> return failure(e) }
+
+    val items = updateStrategy(
+        receivedElements = received.items,
+        keyExtractorForReceivedElement = requestItemKeyExtractor,
+        availableElements = this.items.toList(),
+        keyExtractorForAvailableElement = recordItemKeyExtractor,
+        updateBlock = RecordItem::updateItem,
+        createBlock = ::createItem
+    )
+        .doReturn { e -> return failure(e) }
+
+    val classification = received.classification
+        ?.let {
+            this.classification
+                ?.updateClassification(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createClassification(it)
+        }
+        ?: this.classification
+
+    val agreedMetrics = updateStrategy(
+        receivedElements = received.agreedMetrics,
+        keyExtractorForReceivedElement = requestAgreedMetricKeyExtractor,
+        availableElements = this.agreedMetrics.toList(),
+        keyExtractorForAvailableElement = recordAgreedMetricKeyExtractor,
+        updateBlock = RecordAgreedMetric::updateAgreedMetric,
+        createBlock = ::createAgreedMetric
+    )
+        .doReturn { e -> return failure(e) }
+
+    val budgetSource = updateStrategy(
+        receivedElements = received.budgetSource,
+        keyExtractorForReceivedElement = requestBudgetSourceKeyExtractor,
+        availableElements = this.budgetSource,
+        keyExtractorForAvailableElement = recordBudgetSourceKeyExtractor,
+        updateBlock = RecordBudgetSource::updateBudgetSource,
+        createBlock = ::createBudgetSource
+    )
+        .doReturn { e -> return failure(e) }
+
+    val confirmationRequests = updateStrategy(
+        receivedElements = received.confirmationRequests,
+        keyExtractorForReceivedElement = requestConfirmationRequestKeyExtractor,
+        availableElements = this.confirmationRequests,
+        keyExtractorForAvailableElement = recordConfirmationRequestKeyExtractor,
+        updateBlock = RecordConfirmationRequest::updateConfirmationRequest,
+        createBlock = ::createConfirmationRequest
+    )
+        .doReturn { e -> return failure(e) }
+
+    val confirmationResponses = updateStrategy(
+        receivedElements = received.confirmationResponses,
+        keyExtractorForReceivedElement = requestConfirmationResponseKeyExtractor,
+        availableElements = this.confirmationResponses.toList(),
+        keyExtractorForAvailableElement = recordConfirmationResponseKeyExtractor,
+        updateBlock = RecordConfirmationResponse::updateConfirmationResponse,
+        createBlock = ::createConfirmationResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    val milestones = updateStrategy(
+        receivedElements = received.milestones,
+        keyExtractorForReceivedElement = requestMilestoneKeyExtractor,
+        availableElements = this.milestones,
+        keyExtractorForAvailableElement = recordMilestoneKeyExtractor,
+        updateBlock = RecordMilestone::updateMilestone,
+        createBlock = ::createMilestone
+    )
+        .doReturn { e -> return failure(e) }
+
+    val relatedProcesses = updateStrategy(
+        receivedElements = received.relatedProcesses,
+        keyExtractorForReceivedElement = requestRelatedProcessKeyExtractor,
+        availableElements = this.relatedProcesses.toList(),
+        keyExtractorForAvailableElement = recordRelatedProcessKeyExtractor,
+        updateBlock = RecordRelatedProcess::updateRelatedProcess,
+        createBlock = ::createRelatedProcess
+    )
+        .doReturn { e -> return failure(e) }
+
+    val valueBreakdown = updateStrategy(
+        receivedElements = received.valueBreakdown,
+        keyExtractorForReceivedElement = requestValueBreakdownKeyExtractor,
+        availableElements = this.valueBreakdown.toList(),
+        keyExtractorForAvailableElement = recordValueBreakdownKeyExtractor,
+        updateBlock = RecordValueBreakdown::updateValueBreakdown,
+        createBlock = ::createValueBreakdown
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            status = received.status,
+            statusDetails = received.statusDetails,
+            requirementResponses = requirementResponses,
+            date = received.date ?: this.date,
+            documents = documents,
+            relatedLots = this.relatedLots.update(received.relatedLots),
+            value = value,
+            title = received.title ?: this.title,
+            period = period,
+            description = received.description ?: this.description,
+            amendment = amendment,
+            amendments = amendments,
+            items = items,
+            classification = classification,
+            agreedMetrics = agreedMetrics,
+            awardId = received.awardId ?: this.awardId,
+            budgetSource = budgetSource,
+            confirmationRequests = confirmationRequests,
+            confirmationResponses = confirmationResponses,
+            countryOfOrigin = received.countryOfOrigin ?: this.countryOfOrigin,
+            dateSigned = received.dateSigned ?: this.dateSigned,
+            extendsContractId = received.extendsContractId ?: this.extendsContractId,
+            isFrameworkOrDynamic = received.isFrameworkOrDynamic ?: this.isFrameworkOrDynamic,
+            lotVariant = this.lotVariant.update(lotVariant),
+            milestones = milestones,
+            relatedProcesses = relatedProcesses,
+            valueBreakdown = valueBreakdown
         )
-    }
+        .asSuccess()
+}
 
-fun updateBid(received: RequestBid, available: RecordBid?): RecordBid =
-    received.let { rqBid ->
-        RecordBid(
-            id = rqBid.id,
-            value = rqBid.value ?: available?.value,
-            relatedLots = updateNonIdentifiable(
-                rqBid.relatedLots,
-                available?.relatedLots.orEmpty()
-            ),
-            documents = updateStrategy(
-                receivedElements = rqBid.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            date = rqBid.date ?: available?.date,
-            requirementResponses = updateStrategy(
-                receivedElements = rqBid.requirementResponses,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.requirementResponses?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRequirementResponse
-            ),
-            statusDetails = rqBid.statusDetails ?: available?.statusDetails,
-            status = rqBid.status ?: available?.status,
-            tenderers = updateStrategy(
-                receivedElements = rqBid.tenderers,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.tenderers.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateSupplier
-            )
+val recordAgreedMetricKeyExtractor: (RecordAgreedMetric) -> String = { it.id }
+val requestAgreedMetricKeyExtractor: (RequestAgreedMetric) -> String = { it.id }
+
+val recordBudgetSourceKeyExtractor: (RecordBudgetSource) -> String = { it.id }
+val requestBudgetSourceKeyExtractor: (RequestBudgetSource) -> String = { it.id }
+
+val recordConfirmationRequestKeyExtractor: (RecordConfirmationRequest) -> String = { it.id }
+val requestConfirmationRequestKeyExtractor: (RequestConfirmationRequest) -> String = { it.id }
+
+val recordConfirmationResponseKeyExtractor: (RecordConfirmationResponse) -> String = { it.id }
+val requestConfirmationResponseKeyExtractor: (RequestConfirmationResponse) -> String = { it.id }
+
+val recordRelatedProcessKeyExtractor: (RecordRelatedProcess) -> String = { it.id }
+val requestRelatedProcessKeyExtractor: (RequestRelatedProcess) -> String = { it.id }
+
+val recordValueBreakdownKeyExtractor: (RecordValueBreakdown) -> String = { it.id }
+val requestValueBreakdownKeyExtractor: (RequestValueBreakdown) -> String = { it.id }
+
+fun RecordValueBreakdown.updateValueBreakdown(received: RequestValueBreakdown): UpdateRecordResult<RecordValueBreakdown> =
+    this.copy(
+        id = received.id,
+        type = this.type.update(received.type),
+        description = received.description ?: this.description,
+        amount = received.amount ?: this.amount,
+        estimationMethod = received.estimationMethod ?: this.estimationMethod
+    )
+        .asSuccess()
+
+fun RecordRelatedProcess.updateRelatedProcess(received: RequestRelatedProcess): UpdateRecordResult<RecordRelatedProcess> =
+    this.copy(
+        id = received.id,
+        scheme = received.scheme,
+        identifier = received.identifier ?: this.identifier,
+        uri = received.uri ?: this.uri,
+        relationship = received.relationship
+            .mapIfNotEmpty { it }
+            ?: this.relationship
+    )
+        .asSuccess()
+
+fun RecordMilestone.updateMilestone(received: RequestMilestone): UpdateRecordResult<RecordMilestone> {
+    val relatedParties = updateStrategy(
+        receivedElements = received.relatedParties,
+        keyExtractorForReceivedElement = requestRelatedPartyKeyExtractor,
+        availableElements = this.relatedParties,
+        keyExtractorForAvailableElement = recordRelatedPartyKeyExtractor,
+        updateBlock = RecordRelatedParty::updateRelatedParty,
+        createBlock = ::createRelatedParty
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            title = received.title ?: this.title,
+            description = received.description ?: this.description,
+            type = received.type ?: this.type,
+            status = received.status ?: this.status,
+            dateMet = received.dateMet ?: this.dateMet,
+            dateModified = received.dateModified ?: this.dateModified,
+            additionalInformation = received.additionalInformation ?: this.additionalInformation,
+            dueDate = received.dueDate ?: this.dueDate,
+            relatedItems = this.relatedItems.update(received.relatedItems),
+            relatedParties = relatedParties
         )
-    }
+        .asSuccess()
+}
 
-fun updateContract(received: RequestContract, available: RecordContract?): RecordContract =
-    received.let { rqContract ->
-        RecordContract(
-            id = rqContract.id,
-            status = rqContract.status,
-            statusDetails = rqContract.statusDetails,
-            requirementResponses = updateStrategy(
-                receivedElements = rqContract.requirementResponses,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.requirementResponses?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRequirementResponse
-            ),
-            date = rqContract.date ?: available?.date,
-            documents = updateStrategy(
-                receivedElements = rqContract.documents,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.documents?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateDocument
-            ),
-            relatedLots = rqContract.relatedLots
-                .mapIfNotEmpty { it }
-                ?: available?.relatedLots.orEmpty(),
-            value = updateValueTax(
-                rqContract.value,
-                available?.value
-            ),
-            title = rqContract.title ?: available?.title,
-            period = updatePeriod(
-                rqContract.period,
-                available?.period
-            ),
-            description = rqContract.description ?: available?.description,
-            amendment = updateAmendment(
-                rqContract.amendment,
-                available?.amendment
-            ),
-            amendments = updateStrategy(
-                receivedElements = rqContract.amendments,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.amendments.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAmendmentElement
-            ),
-            items = updateStrategy(
-                receivedElements = rqContract.items,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.items?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateItem
-            ),
-            classification = updateClassification(
-                rqContract.classification,
-                available?.classification
-            ),
-            agreedMetrics = updateStrategy(
-                receivedElements = rqContract.agreedMetrics,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.agreedMetrics?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateAgreedMetric
-            ),
-            awardId = rqContract.awardId ?: available?.awardId,
-            budgetSource = updateStrategy(
-                receivedElements = rqContract.budgetSource,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.budgetSource.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateBudgetSource
-            ),
-            confirmationRequests = updateStrategy(
-                receivedElements = rqContract.confirmationRequests,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.confirmationRequests.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateConfirmationRequest
-            ),
-            confirmationResponses = updateStrategy(
-                receivedElements = rqContract.confirmationResponses,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.confirmationResponses?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateConfirmationResponse
-            ),
-            countryOfOrigin = rqContract.countryOfOrigin ?: available?.countryOfOrigin,
-            dateSigned = rqContract.dateSigned ?: available?.dateSigned,
-            extendsContractId = rqContract.extendsContractId ?: available?.extendsContractId,
-            isFrameworkOrDynamic = rqContract.isFrameworkOrDynamic ?: available?.isFrameworkOrDynamic,
-            lotVariant = updateNonIdentifiable(
-                rqContract.lotVariant,
-                available?.lotVariant.orEmpty()
-            ),
-            milestones = updateStrategy(
-                receivedElements = rqContract.milestones,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.milestones.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateMilestone
-            ),
-            relatedProcesses = updateStrategy(
-                receivedElements = rqContract.relatedProcesses,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.relatedProcesses?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRelatedProcess
-            ),
-            valueBreakdown = updateStrategy(
-                receivedElements = rqContract.valueBreakdown,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.valueBreakdown?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateValueBreakdown
-            )
+val recordRelatedPartyKeyExtractor: (RecordRelatedParty) -> String = { it.id }
+val requestRelatedPartyKeyExtractor: (RequestRelatedParty) -> String = { it.id }
+
+fun RecordRelatedParty.updateRelatedParty(received: RequestRelatedParty): UpdateRecordResult<RecordRelatedParty> =
+    this.copy(
+        id = received.id,
+        name = received.name ?: this.name
+    )
+        .asSuccess()
+
+fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfirmationResponse): UpdateRecordResult<RecordConfirmationResponse> {
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateConfirmationResponseValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createConfirmationResponseValue(it)
+        }
+        ?: this.value
+
+    return this
+        .copy(
+            id = received.id,
+            value = value,
+            request = received.request ?: this.request
         )
-    }
+        .asSuccess()
+}
 
-fun updateValueBreakdown(
-    received: RequestValueBreakdown,
-    available: RecordValueBreakdown?
-): RecordValueBreakdown =
-    received.let { rqValueBreakdown ->
-        RecordValueBreakdown(
-            id = rqValueBreakdown.id,
-            type = updateNonIdentifiable(
-                rqValueBreakdown.type,
-                available?.type.orEmpty()
-            ),
-            description = rqValueBreakdown.description ?: available?.description,
-            amount = rqValueBreakdown.amount ?: available?.amount,
-            estimationMethod = rqValueBreakdown.estimationMethod ?: available?.estimationMethod
+fun RecordConfirmationResponseValue.updateConfirmationResponseValue(
+    received: RequestConfirmationResponseValue
+): UpdateRecordResult<RecordConfirmationResponseValue> {
+    val relatedPerson = received.relatedPerson
+        ?.let {
+            this.relatedPerson
+                ?.updateRelatedPerson(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createRelatedPerson(it)
+        }
+        ?: this.relatedPerson
+
+    val verification = this.verification.updateVerification(received.verification)
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = this.id,
+            name = received.name ?: this.name,
+            date = received.date ?: this.date,
+            relatedPerson = relatedPerson,
+            verification = verification
         )
-    }
+        .asSuccess()
+}
 
-fun updateRelatedProcess(
-    received: RequestRelatedProcess,
-    available: RecordRelatedProcess?
-): RecordRelatedProcess =
-    received.let { rqRelatedProcess ->
-        RecordRelatedProcess(
-            id = rqRelatedProcess.id,
-            scheme = rqRelatedProcess.scheme ?: available?.scheme,
-            identifier = rqRelatedProcess.identifier ?: available?.identifier,
-            uri = rqRelatedProcess.uri ?: available?.uri,
-            relationship = rqRelatedProcess.relationship
-                .mapIfNotEmpty { it }
-                ?: available?.relationship.orEmpty()
-        )
-    }
-
-fun updateMilestone(received: RequestMilestone, available: RecordMilestone?): RecordMilestone =
-    received.let { rqMilestone ->
-        RecordMilestone(
-            id = rqMilestone.id,
-            title = rqMilestone.title ?: available?.title,
-            description = rqMilestone.description ?: available?.description,
-            type = rqMilestone.type ?: available?.type,
-            status = rqMilestone.status ?: available?.status,
-            dateMet = rqMilestone.dateMet ?: available?.dateMet,
-            dateModified = rqMilestone.dateModified ?: available?.dateModified,
-            additionalInformation = rqMilestone.additionalInformation ?: available?.additionalInformation,
-            dueDate = rqMilestone.dueDate ?: available?.dueDate,
-            relatedItems = updateNonIdentifiable(
-                rqMilestone.relatedItems,
-                available?.relatedItems.orEmpty()
-            ),
-            relatedParties = updateStrategy(
-                receivedElements = rqMilestone.relatedParties,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.relatedParties.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateRelatedParty
-            )
-        )
-    }
-
-fun updateRelatedParty(received: RequestRelatedParty, available: RecordRelatedParty?): RecordRelatedParty =
-    received.let { rqRelatedParty ->
-        RecordRelatedParty(
-            id = rqRelatedParty.id,
-            name = rqRelatedParty.name ?: available?.name
-        )
-    }
-
-fun updateConfirmationResponse(
-    received: RequestConfirmationResponse,
-    available: RecordConfirmationResponse?
-): RecordConfirmationResponse =
-    received.let { rqConfirmationResponse ->
-        RecordConfirmationResponse(
-            id = rqConfirmationResponse.id,
-            value = updateConfirmationResponseValue(
-                rqConfirmationResponse.value,
-                available?.value
-            ),
-            request = rqConfirmationResponse.request ?: available?.request
-        )
-    }
-
-fun updateConfirmationResponseValue(
-    received: RequestConfirmationResponseValue?,
-    available: RecordConfirmationResponseValue?
-): RecordConfirmationResponseValue? =
-    received?.let { rqValue ->
-        RecordConfirmationResponseValue(
-            id = available?.id,
-            name = rqValue.name ?: available?.name,
-            date = rqValue.date ?: available?.date,
-            relatedPerson = updateRelatedPerson(
-                rqValue.relatedPerson,
-                available?.relatedPerson
-            ),
-            verification = updateVerification(
-                rqValue.verification,
-                available?.verification.orEmpty()
-            )
-        )
-    } ?: available
-
-fun updateVerification(
-    received: List<RequestVerification>,
-    available: List<RecordVerification>
-): List<RecordVerification> =
-    received.mapIfNotEmpty { rqVerification ->
+fun List<RecordVerification>.updateVerification(received: List<RequestVerification>): UpdateRecordResult<List<RecordVerification>> {
+    val result = received.mapIfNotEmpty { rqVerification ->
         RecordVerification(
             type = rqVerification.type,
             value = rqVerification.value,
             rationale = rqVerification.rationale
         )
-    } ?: available
-
-fun updateRelatedPerson(received: RequestRelatedPerson?, available: RecordRelatedPerson?): RecordRelatedPerson? =
-    received?.let { rqRelatedPerson ->
-        val personId = if (available == null || rqRelatedPerson.id == available.id)
-            rqRelatedPerson.id
-        else
-            throw ErrorException(
-                error = ErrorType.INCORRENT_ID,
-                message = "Cannot update 'relatedPerson'. Ids mismatching: " +
-                    "RelatedPerson from request (id = '${rqRelatedPerson.id}'), " +
-                    "RelatedPerson from release (id = '${available.id}'). "
-            )
-        RecordRelatedPerson(
-            id = personId,
-            name = rqRelatedPerson.name
-        )
-    } ?: available
-
-fun updateConfirmationRequest(
-    received: RequestConfirmationRequest,
-    available: RecordConfirmationRequest?
-): RecordConfirmationRequest =
-    received.let { rqConfirmationRequest ->
-        RecordConfirmationRequest(
-            id = received.id,
-            title = rqConfirmationRequest.title ?: available?.title,
-            description = rqConfirmationRequest.description ?: available?.description,
-            relatesTo = rqConfirmationRequest.relatesTo ?: available?.relatesTo,
-            relatedItem = rqConfirmationRequest.relatedItem,
-            type = rqConfirmationRequest.type ?: available?.type,
-            source = rqConfirmationRequest.source,
-            requestGroups = updateStrategy(
-                receivedElements = rqConfirmationRequest.requestGroups,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.requestGroups?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateRequestGroup
-            )
-        )
-    }
-
-fun updateRequestGroup(received: RequestRequestGroup, available: RecordRequestGroup?): RecordRequestGroup =
-    received.let { rqRequestGroup ->
-        RecordRequestGroup(
-            id = rqRequestGroup.id,
-            requests = updateStrategy(
-                receivedElements = rqRequestGroup.requests,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.requests?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateRequest
-            )
-        )
-    }
-
-fun updateRequest(received: RequestRequest, available: RecordRequest?): RecordRequest =
-    received.let { rqRequest ->
-        RecordRequest(
-            id = rqRequest.id,
-            relatedPerson = updateRelatedPerson(
-                rqRequest.relatedPerson,
-                available?.relatedPerson
-            ),
-            description = rqRequest.description,
-            title = rqRequest.title
-        )
-    }
-
-fun updateBudgetSource(received: RequestBudgetSource, available: RecordBudgetSource?): RecordBudgetSource =
-    received.let { rqBudgetSource ->
-        RecordBudgetSource(
-            id = rqBudgetSource.id,
-            currency = rqBudgetSource.currency ?: available?.currency,
-            amount = rqBudgetSource.amount ?: available?.amount
-        )
-    }
-
-fun updateAgreedMetric(received: RequestAgreedMetric, available: RecordAgreedMetric?): RecordAgreedMetric =
-    received.let { rqAgreedMetric ->
-        RecordAgreedMetric(
-            id = rqAgreedMetric.id,
-            description = rqAgreedMetric.description ?: available?.description,
-            title = rqAgreedMetric.title ?: available?.title,
-            observations = updateStrategy(
-                receivedElements = rqAgreedMetric.observations,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.observations?.toList().orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateObservation
-            )
-        )
-    }
-
-fun updateObservationUnit(
-    received: RequestObservationUnit?,
-    available: RecordObservationUnit?
-): RecordObservationUnit? =
-    received?.let { rqUnit ->
-        RecordObservationUnit(
-            id = available?.id,
-            name = rqUnit.name ?: available?.name,
-            scheme = rqUnit.scheme ?: available?.scheme
-        )
-    } ?: available
-
-fun updateObservation(received: RequestObservation, available: RecordObservation?): RecordObservation =
-    received.let { rqObservation ->
-        RecordObservation(
-            id = rqObservation.id,
-            unit = updateObservationUnit(
-                rqObservation.unit,
-                available?.unit
-            ),
-            measure = rqObservation.measure ?: available?.measure,
-            notes = rqObservation.notes ?: available?.notes
-        )
-    }
-
-fun updateValueTax(received: RequestValueTax?, available: RecordValueTax?): RecordValueTax? =
-    received?.let { rqValue ->
-        RecordValueTax(
-            amount = rqValue.amount ?: available?.amount,
-            valueAddedTaxIncluded = rqValue.valueAddedTaxIncluded ?: available?.valueAddedTaxIncluded,
-            amountNet = rqValue.amountNet ?: available?.amountNet,
-            currency = rqValue.currency ?: available?.currency
-        )
-    } ?: available
-
-fun updateRelease(releaseId: String, requestRelease: RequestRelease, dbRelease: Record): Record =
-    requestRelease.let { rqRelease ->
-        Record(
-            id = releaseId,
-            ocid = dbRelease.ocid,
-            date = rqRelease.date ?: dbRelease.date,
-            relatedProcesses = updateStrategy(
-                receivedElements = rqRelease.relatedProcesses.toList(),
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = dbRelease.relatedProcesses.toList(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateRelatedProcess
-            ).toMutableList(),
-            bids = updateBidsObject(
-                rqRelease.bids,
-                dbRelease.bids
-            ),
-            awards = updateStrategy(
-                receivedElements = rqRelease.awards,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = dbRelease.awards,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAward
-            ),
-            contracts = updateStrategy(
-                receivedElements = rqRelease.contracts,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = dbRelease.contracts,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateContract
-            ),
-            hasPreviousNotice = rqRelease.hasPreviousNotice ?: dbRelease.hasPreviousNotice,
-            initiationType = rqRelease.initiationType ?: dbRelease.initiationType,
-            parties = updateStrategy(
-                receivedElements = rqRelease.parties.toList(),
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = dbRelease.parties.toList(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateOrganization
-            ).toMutableList(),
-            purposeOfNotice = updatePurposeOfNotice(
-                rqRelease.purposeOfNotice,
-                dbRelease.purposeOfNotice
-            ),
-            tag = updateTag(
-                rqRelease.tag,
-                dbRelease.tag
-            ),
-            tender = updateReleaseTender(
-                rqRelease.tender,
-                dbRelease.tender
-            ),
-            agreedMetrics = updateStrategy(
-                receivedElements = rqRelease.agreedMetrics,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = dbRelease.agreedMetrics,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAgreedMetric
-            ),
-            cpid = dbRelease.cpid,
-            planning = updatePlanning(
-                rqRelease.planning,
-                dbRelease.planning
-            )
-        )
-    }
-
-fun updateTag(received: List<Tag>, available: List<Tag>): List<Tag> = received.mapIfNotEmpty { it } ?: available
-fun updatePlanning(
-    received: RequestPlanning?,
-    available: RecordPlanning?
-): RecordPlanning? =
-    received?.let {
-        RecordPlanning(
-            implementation = updateImplementation(
-                it.implementation,
-                available?.implementation
-            ),
-            rationale = it.rationale ?: available?.rationale,
-            budget = updateBudget(
-                it.budget,
-                available?.budget
-            )
-        )
-    } ?: available
-
-fun updateImplementation(
-    received: RequestImplementation?,
-    available: RecordImplementation?
-): RecordImplementation? =
-    received?.let {
-        RecordImplementation(
-            transactions = updateStrategy(
-                receivedElements = it.transactions,
-                keyExtractorForReceivedElement = { it.id!! },
-                availableElements = available?.transactions.orEmpty(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateTransaction
-            )
-        )
-    } ?: available
-
-fun updateTransaction(
-    received: RequestTransaction,
-    available: RecordTransaction?
-): RecordTransaction =
-    received.let {
-        RecordTransaction(
-            id = it.id ?: available?.id,
-            type = it.type ?: available?.type,
-            value = updateValue(
-                it.value,
-                available?.value
-            ),
-            executionPeriod = updateExecutionPeriod(
-                it.executionPeriod,
-                available?.executionPeriod
-            ),
-            relatedContractMilestone = it.relatedContractMilestone ?: available?.relatedContractMilestone
-        )
-    }
-
-fun updateExecutionPeriod(
-    received: RequestExecutionPeriod?,
-    available: RecordExecutionPeriod?
-): RecordExecutionPeriod? =
-    received?.let {
-        RecordExecutionPeriod(
-            durationInDays = it.durationInDays ?: available?.durationInDays
-        )
-    } ?: available
-
-fun updateBudget(received: RequestPlanningBudget?, available: RecordPlanningBudget?): RecordPlanningBudget? =
-    received?.let {
-        RecordPlanningBudget(
-            description = it.description ?: available?.description,
-            amount = it.amount ?: available?.amount,
-            isEuropeanUnionFunded = it.isEuropeanUnionFunded ?: available?.isEuropeanUnionFunded,
-            budgetSource = updateStrategy(
-                receivedElements = it.budgetSource,
-                keyExtractorForReceivedElement = { it.budgetBreakdownID!! },
-                availableElements = available?.budgetSource.orEmpty(),
-                keyExtractorForAvailableElement = { it.budgetBreakdownID!! },
-                block = ::updatePlanningBudgetSource
-            ),
-            budgetAllocation = updateStrategy(
-                receivedElements = it.budgetAllocation,
-                keyExtractorForReceivedElement = { it.budgetBreakdownID!! },
-                availableElements = available?.budgetAllocation.orEmpty(),
-                keyExtractorForAvailableElement = { it.budgetBreakdownID!! },
-                block = ::updateBudgetAllocation
-            ),
-            budgetBreakdown = updateStrategy(
-                receivedElements = it.budgetBreakdown,
-                keyExtractorForReceivedElement = { it.id },
-                availableElements = available?.budgetBreakdown.orEmpty(),
-                keyExtractorForAvailableElement = { it.id },
-                block = ::updateBudgetBreakdown
-            )
-        )
-    } ?: available
-
-fun updateBudgetBreakdown(received: RequestBudgetBreakdown, available: RecordBudgetBreakdown?): RecordBudgetBreakdown =
-    received.let {
-        RecordBudgetBreakdown(
-            id = it.id,
-            amount = it.amount ?: available?.amount,
-            period = updatePeriod(
-                it.period,
-                available?.period
-            ),
-            description = it.description ?: available?.description,
-            europeanUnionFunding = updateEuropeanUnionFunding(
-                it.europeanUnionFunding,
-                available?.europeanUnionFunding
-            ),
-            sourceParty = it.sourceParty?.let {
-                updateOrganizationReference(
-                    it,
-                    available?.sourceParty
-                )
-            } ?: available?.sourceParty
-        )
-    }
-
-fun updateEuropeanUnionFunding(
-    received: RequestEuropeanUnionFunding?,
-    available: RecordEuropeanUnionFunding?
-): RecordEuropeanUnionFunding? =
-    received?.let {
-        RecordEuropeanUnionFunding(
-            projectIdentifier = it.projectIdentifier ?: available?.projectIdentifier,
-            uri = it.uri ?: available?.uri,
-            projectName = it.projectName ?: available?.projectName
-        )
-    } ?: available
-
-fun updateBudgetAllocation(
-    received: RequestBudgetAllocation,
-    available: RecordBudgetAllocation?
-): RecordBudgetAllocation =
-    received.let {
-        RecordBudgetAllocation(
-            budgetBreakdownID = it.budgetBreakdownID ?: available?.budgetBreakdownID,
-            amount = it.amount ?: available?.amount,
-            relatedItem = it.relatedItem ?: available?.relatedItem,
-            period = updatePeriod(
-                it.period,
-                available?.period
-            )
-        )
-    }
-
-fun updatePlanningBudgetSource(
-    received: RequestPlanningBudgetSource,
-    available: RecordPlanningBudgetSource?
-): RecordPlanningBudgetSource =
-    received.let {
-        RecordPlanningBudgetSource(
-            budgetBreakdownID = it.budgetBreakdownID ?: available?.budgetBreakdownID,
-            amount = it.amount ?: available?.amount,
-            currency = it.currency ?: available?.currency
-        )
-    }
-
-fun updatePurposeOfNotice(
-    received: RequestPurposeOfNotice?,
-    available: RecordPurposeOfNotice?
-): RecordPurposeOfNotice? =
-    received?.let { rqPurposeOfNotice ->
-        RecordPurposeOfNotice(
-            isACallForCompetition = rqPurposeOfNotice.isACallForCompetition ?: available?.isACallForCompetition
-        )
-    } ?: available
-
-fun updateBidsObject(received: RequestBids?, available: RecordBids?): RecordBids? = received?.let { rqBids ->
-    RecordBids(
-        statistics = updateStrategy(
-            receivedElements = rqBids.statistics,
-            keyExtractorForReceivedElement = { it.id!! },
-            availableElements = available?.statistics.orEmpty(),
-            keyExtractorForAvailableElement = { it.id!! },
-            block = ::updateBidsStatistic
-        ),
-        details = updateStrategy(
-            receivedElements = rqBids.details,
-            keyExtractorForReceivedElement = { it.id!! },
-            availableElements = available?.details.orEmpty(),
-            keyExtractorForAvailableElement = { it.id!! },
-            block = ::updateBid
-        )
-    )
+    } ?: this
+    return result.asSuccess()
 }
 
-fun updateBidsStatistic(received: RequestBidsStatistic, available: RecordBidsStatistic?): RecordBidsStatistic =
-    received.let {
-        RecordBidsStatistic(
-            id = it.id ?: available?.id,
-            date = it.date ?: available?.date,
-            value = it.value ?: available?.value,
-            notes = it.notes ?: available?.notes,
-            measure = it.measure ?: available?.measure,
-            relatedLot = it.relatedLot ?: available?.relatedLot
+fun RecordRelatedPerson.updateRelatedPerson(received: RequestRelatedPerson): UpdateRecordResult<RecordRelatedPerson> {
+    val personId = if (received.id == this.id)
+        received.id
+    else
+        return failure(
+            Fail.Error.BadRequest(
+                description = "Cannot update 'relatedPerson'. Ids mismatching: " +
+                    "RelatedPerson from request (id = '${received.id}'), " +
+                    "RelatedPerson from release (id = '${this.id}'). "
+            )
         )
-    }
+    return this
+        .copy(
+            id = personId,
+            name = received.name
+        )
+        .asSuccess()
+}
+
+fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirmationRequest): UpdateRecordResult<RecordConfirmationRequest> {
+    val requestGroups = updateStrategy(
+        receivedElements = received.requestGroups,
+        keyExtractorForReceivedElement = requestRequestGroupKeyExtractor,
+        availableElements = this.requestGroups.toList(),
+        keyExtractorForAvailableElement = recordRequestGroupKeyExtractor,
+        updateBlock = RecordRequestGroup::updateRequestGroup,
+        createBlock = ::createRequestGroup
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            title = received.title ?: this.title,
+            description = received.description ?: this.description,
+            relatesTo = received.relatesTo ?: this.relatesTo,
+            relatedItem = received.relatedItem,
+            type = received.type ?: this.type,
+            source = received.source,
+            requestGroups = requestGroups
+        )
+        .asSuccess()
+}
+
+val recordRequestGroupKeyExtractor: (RecordRequestGroup) -> String = { it.id }
+val requestRequestGroupKeyExtractor: (RequestRequestGroup) -> String = { it.id }
+
+fun RecordRequestGroup.updateRequestGroup(received: RequestRequestGroup): UpdateRecordResult<RecordRequestGroup> {
+    val requests = updateStrategy(
+        receivedElements = received.requests,
+        keyExtractorForReceivedElement = requestRequestKeyExtractor,
+        availableElements = this.requests.toList(),
+        keyExtractorForAvailableElement = recordRequestKeyExtractor,
+        updateBlock = RecordRequest::updateRequest,
+        createBlock = ::createRequest
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            requests = requests
+        )
+        .asSuccess()
+}
+
+val recordRequestKeyExtractor: (RecordRequest) -> String = { it.id }
+val requestRequestKeyExtractor: (RequestRequest) -> String = { it.id }
+
+fun RecordRequest.updateRequest(received: RequestRequest): UpdateRecordResult<RecordRequest> {
+    val relatedPerson = received.relatedPerson
+        ?.let {
+            this.relatedPerson
+                ?.updateRelatedPerson(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createRelatedPerson(it)
+        }
+        ?: this.relatedPerson
+
+    return this
+        .copy(
+            id = received.id,
+            relatedPerson = relatedPerson,
+            description = received.description,
+            title = received.title
+        )
+        .asSuccess()
+}
+
+fun RecordBudgetSource.updateBudgetSource(received: RequestBudgetSource): UpdateRecordResult<RecordBudgetSource> =
+    this.copy(
+        id = received.id,
+        currency = received.currency ?: this.currency,
+        amount = received.amount ?: this.amount
+    )
+        .asSuccess()
+
+fun RecordAgreedMetric.updateAgreedMetric(received: RequestAgreedMetric): UpdateRecordResult<RecordAgreedMetric> {
+    val observations = updateStrategy(
+        receivedElements = received.observations,
+        keyExtractorForReceivedElement = requestObservationKeyExtractor,
+        availableElements = this.observations.toList(),
+        keyExtractorForAvailableElement = recordObservationKeyExtractor,
+        updateBlock = RecordObservation::updateObservation,
+        createBlock = ::createObservation
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            description = received.description ?: this.description,
+            title = received.title ?: this.title,
+            observations = observations
+        )
+        .asSuccess()
+}
+
+val recordObservationKeyExtractor: (RecordObservation) -> String = { it.id }
+val requestObservationKeyExtractor: (RequestObservation) -> String = { it.id }
+
+fun RecordObservationUnit.updateObservationUnit(received: RequestObservationUnit): UpdateRecordResult<RecordObservationUnit> =
+    this.copy(
+        id = this.id,
+        name = received.name ?: this.name,
+        scheme = received.scheme
+    )
+        .asSuccess()
+
+fun RecordObservation.updateObservation(received: RequestObservation): UpdateRecordResult<RecordObservation> {
+    val unit = received.unit
+        ?.let {
+            this.unit
+                ?.updateObservationUnit(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createObservationUnit(it)
+        }
+        ?: this.unit
+
+    return this
+        .copy(
+            id = received.id,
+            unit = unit,
+            measure = received.measure ?: this.measure,
+            notes = received.notes ?: this.notes
+        )
+        .asSuccess()
+}
+
+fun RecordValueTax.updateValueTax(received: RequestValueTax): UpdateRecordResult<RecordValueTax> =
+    this.copy(
+        amount = received.amount ?: this.amount,
+        valueAddedTaxIncluded = received.valueAddedTaxIncluded ?: this.valueAddedTaxIncluded,
+        amountNet = received.amountNet ?: this.amountNet,
+        currency = received.currency ?: this.currency
+    )
+        .asSuccess()
+
+fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRecordResult<Record> {
+    val relatedProcesses = updateStrategy(
+        receivedElements = received.relatedProcesses.toList(),
+        keyExtractorForReceivedElement = requestRelatedProcessKeyExtractor,
+        availableElements = this.relatedProcesses.toList(),
+        keyExtractorForAvailableElement = recordRelatedProcessKeyExtractor,
+        updateBlock = RecordRelatedProcess::updateRelatedProcess,
+        createBlock = ::createRelatedProcess
+    )
+        .doReturn { e -> return failure(e) }
+        .toMutableList()
+
+    val bids = received.bids
+        ?.let {
+            this.bids
+                ?.updateBidsObject(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createBidsObject(it)
+        }
+        ?: this.bids
+
+    val awards = updateStrategy(
+        receivedElements = received.awards,
+        keyExtractorForReceivedElement = requestAwardKeyExtractor,
+        availableElements = this.awards,
+        keyExtractorForAvailableElement = recordAwardKeyExtractor,
+        updateBlock = RecordAward::updateAward,
+        createBlock = ::createAward
+    )
+        .doReturn { e -> return failure(e) }
+
+    val contracts = updateStrategy(
+        receivedElements = received.contracts,
+        keyExtractorForReceivedElement = requestContractKeyExtractor,
+        availableElements = this.contracts,
+        keyExtractorForAvailableElement = recordContractKeyExtractor,
+        updateBlock = RecordContract::updateContract,
+        createBlock = ::createContract
+    )
+        .doReturn { e -> return failure(e) }
+
+    val parties = updateStrategy(
+        receivedElements = received.parties.toList(),
+        keyExtractorForReceivedElement = requestOrganizationKeyExtractor,
+        availableElements = this.parties.toList(),
+        keyExtractorForAvailableElement = recordOrganizationKeyExtractor,
+        updateBlock = RecordOrganization::updateOrganization,
+        createBlock = ::createOrganization
+    )
+        .doReturn { e -> return failure(e) }
+        .toMutableList()
+
+    val purposeOfNotice = received.purposeOfNotice
+        ?.let {
+            this.purposeOfNotice
+                ?.updatePurposeOfNotice(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPurposeOfNotice(it)
+        }
+        ?: this.purposeOfNotice
+
+    val tender = this.tender.updateReleaseTender(received.tender)
+        .doReturn { e -> return failure(e) }
+
+    val agreedMetrics = updateStrategy(
+        receivedElements = received.agreedMetrics,
+        keyExtractorForReceivedElement = requestAgreedMetricKeyExtractor,
+        availableElements = this.agreedMetrics,
+        keyExtractorForAvailableElement = recordAgreedMetricKeyExtractor,
+        updateBlock = RecordAgreedMetric::updateAgreedMetric,
+        createBlock = ::createAgreedMetric
+    )
+        .doReturn { e -> return failure(e) }
+
+    val planning = received.planning
+        ?.let {
+            this.planning
+                ?.updatePlanning(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPlanning(it)
+        }
+        ?: this.planning
+
+    return this
+        .copy(
+            id = releaseId,
+            ocid = this.ocid,
+            date = received.date ?: this.date,
+            relatedProcesses = relatedProcesses,
+            bids = bids,
+            awards = awards,
+            contracts = contracts,
+            hasPreviousNotice = received.hasPreviousNotice ?: this.hasPreviousNotice,
+            initiationType = received.initiationType ?: this.initiationType,
+            parties = parties,
+            purposeOfNotice = purposeOfNotice,
+            tag = this.tag.updateTags(received.tag),
+            tender = tender,
+            agreedMetrics = agreedMetrics,
+            cpid = this.cpid,
+            planning = planning
+        )
+        .asSuccess()
+}
+
+val recordOrganizationKeyExtractor: (RecordOrganization) -> String = { it.id }
+val requestOrganizationKeyExtractor: (RequestOrganization) -> String = { it.id }
+
+val recordAwardKeyExtractor: (RecordAward) -> String = { it.id }
+val requestAwardKeyExtractor: (RequestAward) -> String = { it.id }
+
+val recordContractKeyExtractor: (RecordContract) -> String = { it.id }
+val requestContractKeyExtractor: (RequestContract) -> String = { it.id }
+
+fun List<Tag>.updateTags(received: List<Tag>): List<Tag> = received.mapIfNotEmpty { it } ?: this
+
+fun RecordPlanning.updatePlanning(received: RequestPlanning): UpdateRecordResult<RecordPlanning> {
+    val implementation = received.implementation
+        ?.let {
+            this.implementation
+                ?.updateImplementation(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createImplementation(it)
+        }
+        ?: this.implementation
+
+    val budget = received.budget
+        ?.let {
+            this.budget
+                ?.updateBudget(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createBudget(it)
+        }
+        ?: this.budget
+
+    return this
+        .copy(
+            implementation = implementation,
+            rationale = received.rationale ?: this.rationale,
+            budget = budget
+        )
+        .asSuccess()
+}
+
+fun RecordImplementation.updateImplementation(received: RequestImplementation): UpdateRecordResult<RecordImplementation> =
+    this.copy(
+        transactions = updateStrategy(
+            receivedElements = received.transactions,
+            keyExtractorForReceivedElement = requestTransactionKeyExtractor,
+            availableElements = this.transactions,
+            keyExtractorForAvailableElement = recordTransactionKeyExtractor,
+            updateBlock = RecordTransaction::updateTransaction,
+            createBlock = ::createTransaction
+        )
+            .doReturn { e -> return failure(e) }
+    )
+        .asSuccess()
+
+val recordTransactionKeyExtractor: (RecordTransaction) -> String = { it.id }
+val requestTransactionKeyExtractor: (RequestTransaction) -> String = { it.id }
+
+fun RecordTransaction.updateTransaction(received: RequestTransaction): UpdateRecordResult<RecordTransaction> {
+    val value = received.value
+        ?.let {
+            this.value
+                ?.updateValue(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createValue(it)
+        }
+        ?: this.value
+
+    val executionPeriod = received.executionPeriod
+        ?.let {
+            this.executionPeriod
+                ?.updateExecutionPeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createExecutionPeriod(it)
+        }
+        ?: this.executionPeriod
+
+    return this
+        .copy(
+            id = received.id,
+            type = received.type ?: this.type,
+            value = value,
+            executionPeriod = executionPeriod,
+            relatedContractMilestone = received.relatedContractMilestone ?: this.relatedContractMilestone
+        )
+        .asSuccess()
+}
+
+fun RecordExecutionPeriod.updateExecutionPeriod(received: RequestExecutionPeriod): UpdateRecordResult<RecordExecutionPeriod> =
+    this.copy(
+        durationInDays = received.durationInDays ?: this.durationInDays
+    )
+        .asSuccess()
+
+fun RecordPlanningBudget.updateBudget(received: RequestPlanningBudget): UpdateRecordResult<RecordPlanningBudget> {
+    val budgetSource = updateStrategy(
+        receivedElements = received.budgetSource,
+        keyExtractorForReceivedElement = requestPlanningBudgetSourceKeyExtractor,
+        availableElements = this.budgetSource,
+        keyExtractorForAvailableElement = recordPlanningBudgetSourceKeyExtractor,
+        updateBlock = RecordPlanningBudgetSource::updatePlanningBudgetSource,
+        createBlock = ::createPlanningBudgetSource
+    )
+        .doReturn { e -> return failure(e) }
+
+    val budgetAllocation = updateStrategy(
+        receivedElements = received.budgetAllocation,
+        keyExtractorForReceivedElement = requestBudgetAllocationKeyExtractor,
+        availableElements = this.budgetAllocation,
+        keyExtractorForAvailableElement = recordBudgetAllocationKeyExtractor,
+        updateBlock = RecordBudgetAllocation::updateBudgetAllocation,
+        createBlock = ::createBudgetAllocation
+    )
+        .doReturn { e -> return failure(e) }
+
+    val budgetBreakdown = updateStrategy(
+        receivedElements = received.budgetBreakdown,
+        keyExtractorForReceivedElement = requestBudgetBreakdownKeyExtractor,
+        availableElements = this.budgetBreakdown,
+        keyExtractorForAvailableElement = recordBudgetBreakdownKeyExtractor,
+        updateBlock = RecordBudgetBreakdown::updateBudgetBreakdown,
+        createBlock = ::createBudgetBreakdown
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            description = received.description ?: this.description,
+            amount = received.amount ?: this.amount,
+            isEuropeanUnionFunded = received.isEuropeanUnionFunded ?: this.isEuropeanUnionFunded,
+            budgetSource = budgetSource,
+            budgetAllocation = budgetAllocation,
+            budgetBreakdown = budgetBreakdown
+        )
+        .asSuccess()
+}
+
+val recordPlanningBudgetSourceKeyExtractor: (RecordPlanningBudgetSource) -> String = { it.budgetBreakdownID }
+val requestPlanningBudgetSourceKeyExtractor: (RequestPlanningBudgetSource) -> String = { it.budgetBreakdownID }
+
+val recordBudgetAllocationKeyExtractor: (RecordBudgetAllocation) -> String = { it.budgetBreakdownID }
+val requestBudgetAllocationKeyExtractor: (RequestBudgetAllocation) -> String = { it.budgetBreakdownID }
+
+val recordBudgetBreakdownKeyExtractor: (RecordBudgetBreakdown) -> String = { it.id }
+val requestBudgetBreakdownKeyExtractor: (RequestBudgetBreakdown) -> String = { it.id }
+
+fun RecordBudgetBreakdown.updateBudgetBreakdown(received: RequestBudgetBreakdown): UpdateRecordResult<RecordBudgetBreakdown> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val europeanUnionFunding = received.europeanUnionFunding
+        ?.let {
+            this.europeanUnionFunding
+                ?.updateEuropeanUnionFunding(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createEuropeanUnionFunding(it)
+        }
+        ?: this.europeanUnionFunding
+
+    val sourceParty = received.sourceParty
+        ?.let {
+            this.sourceParty
+                ?.updateOrganizationReference(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createOrganizationReference(it)
+        }
+        ?: this.sourceParty
+
+    return this
+        .copy(
+            id = received.id,
+            amount = received.amount ?: this.amount,
+            period = period,
+            description = received.description ?: this.description,
+            europeanUnionFunding = europeanUnionFunding,
+            sourceParty = sourceParty
+        )
+        .asSuccess()
+}
+
+fun RecordEuropeanUnionFunding.updateEuropeanUnionFunding(received: RequestEuropeanUnionFunding): UpdateRecordResult<RecordEuropeanUnionFunding> =
+    this.copy(
+        projectIdentifier = received.projectIdentifier ?: this.projectIdentifier,
+        uri = received.uri ?: this.uri,
+        projectName = received.projectName ?: this.projectName
+    )
+        .asSuccess()
+
+fun RecordBudgetAllocation.updateBudgetAllocation(received: RequestBudgetAllocation): UpdateRecordResult<RecordBudgetAllocation> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    return this
+        .copy(
+            budgetBreakdownID = received.budgetBreakdownID,
+            amount = received.amount ?: this.amount,
+            relatedItem = received.relatedItem ?: this.relatedItem,
+            period = period
+        )
+        .asSuccess()
+}
+
+fun RecordPlanningBudgetSource.updatePlanningBudgetSource(received: RequestPlanningBudgetSource): UpdateRecordResult<RecordPlanningBudgetSource> =
+    this.copy(
+        budgetBreakdownID = received.budgetBreakdownID,
+        amount = received.amount ?: this.amount,
+        currency = received.currency ?: this.currency
+    )
+        .asSuccess()
+
+fun RecordPurposeOfNotice.updatePurposeOfNotice(received: RequestPurposeOfNotice): UpdateRecordResult<RecordPurposeOfNotice> =
+    this.copy(
+        isACallForCompetition = received.isACallForCompetition ?: this.isACallForCompetition
+    )
+        .asSuccess()
+
+fun RecordBids.updateBidsObject(received: RequestBids): UpdateRecordResult<RecordBids> {
+    val statistics = updateStrategy(
+        receivedElements = received.statistics,
+        keyExtractorForReceivedElement = requestBidsStatisticKeyExtractor,
+        availableElements = this.statistics,
+        keyExtractorForAvailableElement = recordBidsStatisticKeyExtractor,
+        updateBlock = RecordBidsStatistic::updateBidsStatistic,
+        createBlock = ::createBidsStatistic
+    )
+        .doReturn { e -> return failure(e) }
+
+    val details = updateStrategy(
+        receivedElements = received.details,
+        keyExtractorForReceivedElement = requestBidKeyExtractor,
+        availableElements = this.details,
+        keyExtractorForAvailableElement = recordBidKeyExtractor,
+        updateBlock = RecordBid::updateBid,
+        createBlock = ::createBid
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            statistics = statistics,
+            details = details
+        )
+        .asSuccess()
+}
+
+val recordBidsStatisticKeyExtractor: (RecordBidsStatistic) -> String = { it.id }
+val requestBidsStatisticKeyExtractor: (RequestBidsStatistic) -> String = { it.id }
+
+val recordBidKeyExtractor: (RecordBid) -> String = { it.id }
+val requestBidKeyExtractor: (RequestBid) -> String = { it.id }
+
+fun RecordBidsStatistic.updateBidsStatistic(received: RequestBidsStatistic): UpdateRecordResult<RecordBidsStatistic> =
+    this.copy(
+        id = received.id,
+        date = received.date ?: this.date,
+        value = received.value ?: this.value,
+        notes = received.notes ?: this.notes,
+        measure = received.measure ?: this.measure,
+        relatedLot = received.relatedLot ?: this.relatedLot
+    )
+        .asSuccess()
 
 fun <R, A, K> updateStrategy(
     receivedElements: List<R>,
     keyExtractorForReceivedElement: (R) -> K,
     availableElements: List<A>,
     keyExtractorForAvailableElement: (A) -> K,
-    block: (R, A?) -> A
-): List<A> {
+    updateBlock: A.(R) -> UpdateRecordResult<A>,
+    createBlock: (R) -> A
+): UpdateRecordResult<List<A>> {
     val receivedElementsById = receivedElements.associateBy { keyExtractorForReceivedElement(it) }
     val availableElementsIds = availableElements.toSetBy { keyExtractorForAvailableElement(it) }
 
@@ -2380,7 +3021,8 @@ fun <R, A, K> updateStrategy(
         val id = keyExtractorForAvailableElement(availableElement)
         val element = receivedElementsById[id]
             ?.let { receivedElement ->
-                block(receivedElement, availableElement)
+                availableElement.updateBlock(receivedElement)
+                    .doReturn { e -> return failure(e) }
             }
             ?: availableElement
         updatedElements.add(element)
@@ -2389,9 +3031,9 @@ fun <R, A, K> updateStrategy(
     val newIds = receivedElementsById.keys - availableElementsIds
     newIds.forEach { id ->
         val receivedElement = receivedElementsById.getValue(id)
-        val element = block(receivedElement, null)
+        val element = createBlock(receivedElement)
         updatedElements.add(element)
     }
 
-    return updatedElements
+    return updatedElements.asSuccess()
 }

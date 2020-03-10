@@ -6,8 +6,7 @@ import com.procurement.notice.model.ocds.Period
 
 data class RequestElectronicAuctionsDetails(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedLot") @param:JsonProperty("relatedLot") val relatedLot: String?,

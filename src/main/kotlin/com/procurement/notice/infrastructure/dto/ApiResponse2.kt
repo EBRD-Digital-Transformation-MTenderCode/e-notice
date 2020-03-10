@@ -20,6 +20,17 @@ class ApiSuccessResponse(id: UUID, version: ApiVersion2, @JsonInclude(JsonInclud
     override val status: ResponseStatus = ResponseStatus.SUCCESS
 }
 
+class ApiDataErrorResponse(
+    version: ApiVersion2, id: UUID, result: List<Error>
+) : ApiResponse2(version = version, result = result, id = id) {
+    @field:JsonProperty("status")
+
+    override val status: ResponseStatus = ResponseStatus.ERROR
+
+    class Error(val code: String?, val description: String?, val attributeName: String)
+}
+
+
 class ApiFailResponse(version: ApiVersion2, id: UUID, result: List<Error>) : ApiResponse2(
     version = version,
     id = id,

@@ -1,6 +1,5 @@
 package com.procurement.notice.domain.utils
 
-
 fun <T, E> T.asSuccess(): Result<T, E> = Result.success(this)
 fun <T, E> E.asFailure(): Result<T, E> = Result.failure(this)
 
@@ -32,6 +31,17 @@ sealed class Result<out T, out E> {
     inline fun doOnError(block: (error: E) -> Unit): Result<T, E> {
         if (this.isFail) block(this.error)
         return this
+    }
+
+    /*inline fun doReturn(block: (error: E) -> Unit): T {
+        if (this.isFail) block(this.error)
+        return this.get
+    }*/
+    inline fun doReturn(error: (E) -> Nothing): T {
+        return when (this) {
+            is Success -> this.get
+            else       -> error(this.error)
+        }
     }
 
     val orNull: T?
@@ -83,7 +93,7 @@ sealed class Result<out T, out E> {
 }
 
 infix fun <T, E> T.validate(rule: ValidationRule<T, E>): Result<T, E> = when (val result = rule.test(this)) {
-    is ValidationResult.Ok -> Result.success(this)
+    is ValidationResult.Ok   -> Result.success(this)
     is ValidationResult.Fail -> Result.failure(result.error)
 }
 

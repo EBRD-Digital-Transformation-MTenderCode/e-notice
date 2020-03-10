@@ -1,5 +1,6 @@
 package com.procurement.notice.model.bpe
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
@@ -7,6 +8,7 @@ import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.domain.utils.Action
+import com.procurement.notice.domain.utils.EnumElementProvider
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.ValidationResult
 import com.procurement.notice.domain.utils.bind
@@ -18,23 +20,18 @@ import com.procurement.notice.utils.tryToObject
 import java.time.LocalDateTime
 import java.util.*
 
-enum class CommandType2(@JsonValue override val value: String) : Action {
+enum class CommandType2(@JsonValue override val key: String) : EnumElementProvider.Key, Action {
+
     UPDATE_RECORD("updateRecord");
 
-    companion object {
-        private val elements: Map<String, CommandType2> = values().associateBy { it.value.toUpperCase() }
+    override fun toString(): String = key
 
-        fun tryOf(value: String): Result<CommandType2, String> = elements[value.toUpperCase()]
-            ?.let {
-                Result.success(it)
-            }
-            ?: Result.failure(
-                "Unknown value for enumType ${CommandType2::class.java.canonicalName}: " +
-                    "$value, Allowed values are ${values().joinToString { it.value }}"
-            )
+    companion object : EnumElementProvider<CommandType2>(info = info()) {
+
+        @JvmStatic
+        @JsonCreator
+        fun creator(name: String) = CommandType2.orThrow(name)
     }
-
-    override fun toString(): String = this.value
 }
 
 fun errorResponse(fail: Fail, id: UUID = NaN, version: ApiVersion2 = GlobalProperties.App.apiVersion): ApiResponse2 =
@@ -91,18 +88,24 @@ private fun getApiIncidentResponse(
     )
 }
 
+fun getFullErrorCode(code: String): String = "${code}/${GlobalProperties.service.id}"
+
 val NaN: UUID
     get() = UUID(0, 0)
 
 fun JsonNode.tryGetAttribute(name: String): Result<JsonNode, DataErrors> {
-    val node = get(name) ?: return Result.failure(
-        DataErrors.MissingRequiredAttribute(name)
-    )
-    if (node is NullNode) return Result.failure(
-        DataErrors.DataTypeMismatch(name)
-    )
-
-    return Result.success(node)
+    return if (has(name)) {
+        val attr = get(name)
+        if (attr !is NullNode)
+            Result.success(attr)
+        else
+            Result.failure(
+                DataErrors.Validation.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
+            )
+    } else
+        Result.failure(
+            DataErrors.Validation.MissingRequiredAttribute(name = name)
+        )
 }
 
 fun JsonNode.getBy(parameter: String): JsonNode {
@@ -126,7 +129,11 @@ fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataErrors> {
             when (val result = ApiVersion2.tryOf(value)) {
                 is Result.Success -> result
                 is Result.Failure -> result.mapError {
-                    DataErrors.DataFormatMismatch(attributeName = result.error)
+                    DataErrors.Validation.DataFormatMismatch(
+                        name = "version",
+                        actualValue = value,
+                        expectedFormat = "00.00.00"
+                    )
                 }
             }
         }
@@ -139,7 +146,11 @@ fun JsonNode.tryGetAction(): Result<CommandType2, DataErrors> {
             when (val result = CommandType2.tryOf(value)) {
                 is Result.Success -> result
                 is Result.Failure -> result.mapError {
-                    DataErrors.DataFormatMismatch(attributeName = result.error)
+                    DataErrors.Validation.UnknownValue(
+                        name = "action",
+                        actualValue = value,
+                        expectedValues = CommandType2.allowedValues
+                    )
                 }
             }
         }
@@ -150,7 +161,11 @@ private fun asUUID(value: String): Result<UUID, DataErrors> =
         Result.success<UUID>(UUID.fromString(value))
     } catch (exception: IllegalArgumentException) {
         Result.failure(
-            DataErrors.DataFormatMismatch(attributeName = "id")
+            DataErrors.Validation.DataFormatMismatch(
+                name = "id",
+                expectedFormat = "uuid",
+                actualValue = value
+            )
         )
     }
 
@@ -161,11 +176,11 @@ fun JsonNode.getAttribute(name: String): Result<JsonNode, DataErrors> {
             Result.success(attr)
         else
             Result.failure(
-                DataErrors.DataTypeMismatch(attributeName = "$attr")
+                DataErrors.Validation.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
             )
     } else
         Result.failure(
-            DataErrors.MissingRequiredAttribute(attributeName = name)
+            DataErrors.Validation.MissingRequiredAttribute(name = name)
         )
 }
 
@@ -174,7 +189,7 @@ fun <T : Any> JsonNode.tryGetParams(target: Class<T>): Result<T, DataErrors> =
         when (val result = node.tryToObject(target)) {
             is Result.Success -> result
             is Result.Failure -> result.mapError {
-                DataErrors.DataFormatMismatch(attributeName = result.error)
+                DataErrors.Parsing(result.error)
             }
         }
     }
@@ -184,6 +199,6 @@ fun JsonNode.hasParams(): ValidationResult<DataErrors> =
         ValidationResult.ok()
     else
         ValidationResult.error(
-            DataErrors.MissingRequiredAttribute(attributeName = "params")
+            DataErrors.Validation.MissingRequiredAttribute(name = "params")
         )
 

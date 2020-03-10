@@ -6,8 +6,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 
 data class RecordElectronicAuctionProgress(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("period") @param:JsonProperty("period") val period: RecordPeriod?,

@@ -88,8 +88,8 @@ fun <T : Any> String.tryToObject(target: Class<T>): Result<T, String> = try {
     Result.failure("Error binding JSON to an object of type '${target.canonicalName}'.")
 }
 
-fun String.toNode(): com.procurement.notice.domain.utils.Result<JsonNode, Fail> = try {
-    com.procurement.notice.domain.utils.Result.success(JsonMapper.mapper.readTree(this))
-} catch (exception: JsonProcessingException) {
-    com.procurement.notice.domain.utils.Result.failure(DataErrors.DataTypeMismatch(this))
+fun String.toNode(): Result<JsonNode, Fail> = try {
+    Result.success(JsonMapper.mapper.readTree(this))
+} catch (expected: JsonProcessingException) {
+    Result.failure(DataErrors.Parsing("Can not parse Sting to Node"))
 }

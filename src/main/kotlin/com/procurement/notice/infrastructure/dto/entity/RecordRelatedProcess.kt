@@ -7,8 +7,7 @@ import com.procurement.notice.model.ocds.RelatedProcessType
 
 data class RecordRelatedProcess(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("relationship") @param:JsonProperty("relationship") val relationship: List<RelatedProcessType> = emptyList(),

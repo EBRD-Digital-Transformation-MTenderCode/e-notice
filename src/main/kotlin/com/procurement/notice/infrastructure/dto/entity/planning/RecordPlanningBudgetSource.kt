@@ -10,8 +10,7 @@ import java.math.BigDecimal
 
 data class RecordPlanningBudgetSource(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("budgetBreakdownID") @param:JsonProperty("budgetBreakdownID") val budgetBreakdownID: String?,
+    @field:JsonProperty("budgetBreakdownID") @param:JsonProperty("budgetBreakdownID") val budgetBreakdownID: String,
 
     @param:JsonDeserialize(using = AmountDeserializer::class)
     @field:JsonSerialize(using = AmountSerializer::class)

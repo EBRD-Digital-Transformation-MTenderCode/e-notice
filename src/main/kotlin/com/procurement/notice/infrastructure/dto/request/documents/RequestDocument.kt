@@ -6,8 +6,7 @@ import java.time.LocalDateTime
 
 data class RequestDocument(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("documentType") @param:JsonProperty("documentType") val documentType: String?,

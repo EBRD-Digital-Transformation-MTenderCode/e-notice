@@ -6,8 +6,7 @@ import com.procurement.notice.model.ocds.Value
 
 data class RequestValueBreakdown(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("type") @param:JsonProperty("type") val type: List<String> = emptyList(),

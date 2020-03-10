@@ -1,6 +1,5 @@
 package com.procurement.notice.infrastructure.service.update
 
-import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordClassification
 import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
@@ -47,6 +46,23 @@ import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDe
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermits
 import com.procurement.notice.infrastructure.dto.request.tender.RequestMilestone
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
+import com.procurement.notice.infrastructure.service.record.createAccountIdentifier
+import com.procurement.notice.infrastructure.service.record.createAddress
+import com.procurement.notice.infrastructure.service.record.createBankAccount
+import com.procurement.notice.infrastructure.service.record.createBidsStatistic
+import com.procurement.notice.infrastructure.service.record.createBudgetSource
+import com.procurement.notice.infrastructure.service.record.createClassification
+import com.procurement.notice.infrastructure.service.record.createConfirmationRequest
+import com.procurement.notice.infrastructure.service.record.createConfirmationResponse
+import com.procurement.notice.infrastructure.service.record.createContractPeriod
+import com.procurement.notice.infrastructure.service.record.createIdentifier
+import com.procurement.notice.infrastructure.service.record.createLegalForm
+import com.procurement.notice.infrastructure.service.record.createMilestone
+import com.procurement.notice.infrastructure.service.record.createPermitDetails
+import com.procurement.notice.infrastructure.service.record.createPermits
+import com.procurement.notice.infrastructure.service.record.createRelatedParty
+import com.procurement.notice.infrastructure.service.record.createRelatedProcess
+import com.procurement.notice.infrastructure.service.record.createRequest
 import com.procurement.notice.infrastructure.service.record.updateAccountIdentifier
 import com.procurement.notice.infrastructure.service.record.updateAccountIdentifierElement
 import com.procurement.notice.infrastructure.service.record.updateAddress
@@ -66,7 +82,7 @@ import com.procurement.notice.infrastructure.service.record.updateRelatedParty
 import com.procurement.notice.infrastructure.service.record.updateRelatedProcess
 import com.procurement.notice.infrastructure.service.record.updateRequest
 import com.procurement.notice.infrastructure.service.record.updateStrategy
-import com.procurement.notice.infrastructure.service.record.updateTag
+import com.procurement.notice.infrastructure.service.record.updateTags
 import com.procurement.notice.infrastructure.service.record.updateUnit
 import com.procurement.notice.json.toJson
 import com.procurement.notice.lib.toSetBy
@@ -76,6 +92,7 @@ import com.procurement.notice.model.ocds.CountryDetails
 import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.LocalityDetails
 import com.procurement.notice.model.ocds.RegionDetails
+import com.procurement.notice.model.ocds.RelatedProcessScheme
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.Value
@@ -84,7 +101,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -99,10 +115,7 @@ class UpdatedRecordTest {
             val newTags = listOf(Tag.AWARD, Tag.CONTRACT)
             val tagsDiff = prevTags - newTags
 
-            val updatedTags = updateTag(
-                newTags,
-                prevTags
-            )
+            val updatedTags = prevTags.updateTags(newTags)
 
             assertTrue(updatedTags.size == newTags.size)
             assertTrue(updatedTags.containsAll(newTags))
@@ -129,19 +142,16 @@ class UpdatedRecordTest {
 
         @Test
         fun `update identifier - without previous value`() {
-            val updatedIdentifier = updateIdentifier(
-                sampleNewdentifier,
-                null
-            )!!
-            assertEquals(sampleNewdentifier.toJson(), updatedIdentifier.toJson())
+            val createdIdentifier = createIdentifier(
+                sampleNewdentifier
+            )
+            assertEquals(sampleNewdentifier.toJson(), createdIdentifier.toJson())
         }
 
         @Test
         fun `update identifier - full update`() {
-            val updatedTags = updateIdentifier(
-                sampleNewdentifier,
-                prevIdentifier
-            )!!
+            val updatedTags = prevIdentifier.updateIdentifier(sampleNewdentifier)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedTags.toJson(), sampleNewdentifier.toJson())
         }
 
@@ -158,20 +168,9 @@ class UpdatedRecordTest {
                 scheme = sampleNewdentifier.scheme
             )
 
-            val updatedIdentifier = updateIdentifier(
-                newIdentifier,
-                prevIdentifier
-            )!!
+            val updatedIdentifier = prevIdentifier.updateIdentifier(newIdentifier)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedIdentifier.toJson(), updatedIdentifier.toJson())
-        }
-
-        @Test
-        fun `update identifier - without new value`() {
-            val updatedIdentifier = updateIdentifier(
-                null,
-                prevIdentifier
-            )!!
-            assertEquals(prevIdentifier.toJson(), updatedIdentifier.toJson())
         }
     }
 
@@ -230,19 +229,13 @@ class UpdatedRecordTest {
 
         @Test
         fun `update Address - without previous value`() {
-            val updatedAddress = updateAddress(
-                sampleNewAddress,
-                null
-            )!!
-            assertEquals(sampleNewAddress.toJson(), updatedAddress.toJson())
+            val createdAddress = createAddress(sampleNewAddress)
+            assertEquals(sampleNewAddress.toJson(), createdAddress.toJson())
         }
 
         @Test
         fun `update Address - full update`() {
-            val updatedAddress = updateAddress(
-                sampleNewAddress,
-                prevAddress
-            )!!
+            val updatedAddress = prevAddress.updateAddress(sampleNewAddress)
             assertEquals(updatedAddress.toJson(), sampleNewAddress.toJson())
         }
 
@@ -257,7 +250,6 @@ class UpdatedRecordTest {
                         description = null
                     ),
                     region = sampleNewAddress.addressDetails!!.region.copy(
-                        scheme = null,
                         description = null
                     ),
                     locality = sampleNewAddress.addressDetails!!.locality.copy(
@@ -278,7 +270,7 @@ class UpdatedRecordTest {
                     region = RegionDetails(
                         id = sampleNewAddress.addressDetails!!.region.id,
                         description = prevAddress.addressDetails!!.region.description,
-                        scheme = prevAddress.addressDetails!!.region.scheme,
+                        scheme = sampleNewAddress.addressDetails!!.region.scheme,
                         uri = sampleNewAddress.addressDetails!!.region.uri
                     ),
                     locality = LocalityDetails(
@@ -291,22 +283,9 @@ class UpdatedRecordTest {
                 postalCode = newAddress.postalCode
             )
 
-            val updatedAddress = updateAddress(
-                newAddress,
-                prevAddress
-            )!!
+            val updatedAddress = prevAddress.updateAddress(newAddress)
 
             assertEquals(expectedAddress.toJson(), updatedAddress.toJson())
-        }
-
-        @Test
-        fun `update Address - without new value`() {
-            val updatedAddress = updateAddress(
-                null,
-                prevAddress
-            )!!
-
-            assertEquals(prevAddress.toJson(), updatedAddress.toJson())
         }
     }
 
@@ -325,30 +304,15 @@ class UpdatedRecordTest {
 
         @Test
         fun `update AccountIdentifier - without previous value`() {
-            val updatedAccountIdentifier = updateAccountIdentifier(
-                sampleNewAccountIdentifier,
-                null
-            )!!
-            assertEquals(sampleNewAccountIdentifier.toJson(), updatedAccountIdentifier.toJson())
+            val createdAccountIdentifier = createAccountIdentifier(sampleNewAccountIdentifier)
+            assertEquals(sampleNewAccountIdentifier.toJson(), createdAccountIdentifier.toJson())
         }
 
         @Test
         fun `update AccountIdentifier - full update`() {
-            val updatedAccountIdentifier = updateAccountIdentifier(
-                sampleNewAccountIdentifier,
-                prevAccountIdentifier
-            )!!
+            val updatedAccountIdentifier = prevAccountIdentifier.updateAccountIdentifier(sampleNewAccountIdentifier)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedAccountIdentifier.toJson(), sampleNewAccountIdentifier.toJson())
-        }
-
-        @Test
-        fun `update AccountIdentification - without new value`() {
-            val updatedAccountIdentification = updateAccountIdentifier(
-                null,
-                prevAccountIdentifier
-            )!!
-
-            assertEquals(prevAccountIdentifier.toJson(), updatedAccountIdentification.toJson())
         }
     }
 
@@ -387,11 +351,12 @@ class UpdatedRecordTest {
         fun `update AdditionalAccountIdentifier - without previous value`() {
             val updatedAdditionalAccountIdentifier = updateStrategy(
                 receivedElements = sampleNewAdditionalAccountIdentifier,
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = emptyList(),
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAccountIdentifierElement
-            )
+                keyExtractorForAvailableElement = { it.id },
+                updateBlock = RecordAccountIdentifier::updateAccountIdentifierElement,
+                createBlock = ::createAccountIdentifier
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(sampleNewAdditionalAccountIdentifier.toJson(), updatedAdditionalAccountIdentifier.toJson())
         }
 
@@ -399,18 +364,19 @@ class UpdatedRecordTest {
         fun `update AdditionalAccountIdentifier - empty collection in request`() {
             val updatedAdditionalAccountIdentifier = updateStrategy(
                 receivedElements = emptyList(),
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = prevAdditionalAccountIdentifier,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAccountIdentifierElement
-            )
+                keyExtractorForAvailableElement = { it.id },
+                updateBlock = RecordAccountIdentifier::updateAccountIdentifierElement,
+                createBlock = ::createAccountIdentifier
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(prevAdditionalAccountIdentifier.toJson(), updatedAdditionalAccountIdentifier.toJson())
         }
 
         @Test
         fun `update AdditionalAccountIdentifier - partial updating`() {
             val newAdditionalAccountIdentifier = sampleNewAdditionalAccountIdentifier.map {
-                it.copy(scheme = null)
+                it.copy()
             }.associateBy { it.id }
 
             val dbIds = prevAdditionalAccountIdentifier.map { it.id }
@@ -419,11 +385,14 @@ class UpdatedRecordTest {
 
             val updatedAccountIdentification = updateStrategy(
                 receivedElements = newAdditionalAccountIdentifier.values.toList(),
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = prevAdditionalAccountIdentifier,
-                keyExtractorForAvailableElement = { it.id!! },
-                block = ::updateAccountIdentifierElement
-            ).associateBy { it.id }
+                keyExtractorForAvailableElement = { it.id },
+                updateBlock = RecordAccountIdentifier::updateAccountIdentifierElement,
+                createBlock = ::createAccountIdentifier
+            )
+                .doReturn { _ -> throw RuntimeException() }
+                .associateBy { it.id }
 
             assertEquals(distinctIds.size, updatedAccountIdentification.size)
             assertTrue(updatedAccountIdentification.keys.containsAll(requestIds))
@@ -454,11 +423,8 @@ class UpdatedRecordTest {
 
         @Test
         fun `update BankAccount - without previous value`() {
-            val updatedBankAccount = updateBankAccount(
-                sampleNewBankAccount,
-                null
-            )
-            assertEquals(sampleNewBankAccount.toJson(), updatedBankAccount.toJson())
+            val createdBankAccount = createBankAccount(sampleNewBankAccount)
+            assertEquals(sampleNewBankAccount.toJson(), createdBankAccount.toJson())
         }
 
         @Test
@@ -473,10 +439,8 @@ class UpdatedRecordTest {
                 bankName = null
             )
 
-            val updatedBankAccount = updateBankAccount(
-                newBankAccount,
-                prevBankAccount
-            )
+            val updatedBankAccount = prevBankAccount.updateBankAccount(newBankAccount)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(prevBankAccount.address!!.toJson(), updatedBankAccount.address!!.toJson())
             assertEquals(prevBankAccount.description!!.toJson(), updatedBankAccount.description!!.toJson())
@@ -532,11 +496,12 @@ class UpdatedRecordTest {
         fun `update BankAccount - without previous value`() {
             val updatedBankAccount = updateStrategy(
                 receivedElements = sampleNewBankAccount,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
+                keyExtractorForReceivedElement = { it.identifier.id },
                 availableElements = emptyList(),
                 keyExtractorForAvailableElement = { it.identifier.id },
-                block = ::updateBankAccount
-            )
+                updateBlock = RecordBankAccount::updateBankAccount,
+                createBlock = ::createBankAccount
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(sampleNewBankAccount.toJson(), updatedBankAccount.toJson())
         }
 
@@ -544,11 +509,12 @@ class UpdatedRecordTest {
         fun `update BankAccount - empty collection in request`() {
             val updatedBankAccount = updateStrategy(
                 receivedElements = emptyList(),
-                keyExtractorForReceivedElement = { it.identifier.id!! },
+                keyExtractorForReceivedElement = { it.identifier.id },
                 availableElements = prevBanckAccounts,
                 keyExtractorForAvailableElement = { it.identifier.id },
-                block = ::updateBankAccount
-            )
+                updateBlock = RecordBankAccount::updateBankAccount,
+                createBlock = ::createBankAccount
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(prevBanckAccounts.toJson(), updatedBankAccount.toJson())
         }
 
@@ -560,11 +526,14 @@ class UpdatedRecordTest {
 
             val updatedBankAccounts = updateStrategy(
                 receivedElements = sampleNewBankAccount,
-                keyExtractorForReceivedElement = { it.identifier.id!! },
+                keyExtractorForReceivedElement = { it.identifier.id },
                 availableElements = prevBanckAccounts,
                 keyExtractorForAvailableElement = { it.identifier.id },
-                block = ::updateBankAccount
-            ).map { it.identifier.id }
+                updateBlock = RecordBankAccount::updateBankAccount,
+                createBlock = ::createBankAccount
+            )
+                .doReturn { _ -> throw RuntimeException() }
+                .map { it.identifier.id }
 
             assertEquals(distinctIds.size, updatedBankAccounts.size)
             assertTrue(updatedBankAccounts.containsAll(requestIds))
@@ -591,19 +560,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update LegalForm - without previous value`() {
-            val updatedLegalForm = updateLegalForm(
-                sampleNewLegalForm,
-                null
-            )!!
-            assertEquals(sampleNewLegalForm.toJson(), updatedLegalForm.toJson())
+            val createdLegalForm = createLegalForm(sampleNewLegalForm)
+            assertEquals(sampleNewLegalForm.toJson(), createdLegalForm.toJson())
         }
 
         @Test
         fun `update LegalForm - full update`() {
-            val updatedLegalForm = updateLegalForm(
-                sampleNewLegalForm,
-                prevLegalForm
-            )!!
+            val updatedLegalForm = prevLegalForm.updateLegalForm(sampleNewLegalForm)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedLegalForm.toJson(), sampleNewLegalForm.toJson())
         }
 
@@ -617,31 +581,15 @@ class UpdatedRecordTest {
                 scheme = newLegalForm.scheme,
                 uri = prevLegalForm.uri
             )
-            val updatedLegalForm = updateLegalForm(
-                newLegalForm,
-                prevLegalForm
-            )!!
-
+            val updatedLegalForm = prevLegalForm.updateLegalForm(newLegalForm)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedLegalForm.toJson())
         }
 
         @Test
-        fun `update LegalForm - without new value`() {
-            val updatedLegalForm = updateLegalForm(
-                null,
-                prevLegalForm
-            )!!
-            assertEquals(prevLegalForm.toJson(), updatedLegalForm.toJson())
-        }
-
-        @Test
         fun `update LegalForm - same id`() {
-            assertThrows<ErrorException> {
-                updateLegalForm(
-                    sampleNewLegalForm.copy(id = "ID-1"),
-                    prevLegalForm
-                )
-            }
+            val result = prevLegalForm.updateLegalForm(sampleNewLegalForm.copy(id = "ID-1"))
+            assertTrue(result.isFail)
         }
     }
 
@@ -664,19 +612,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update Classification - without previous value`() {
-            val updatedClassification = updateClassification(
-                sampleNewClassification,
-                null
-            )!!
-            assertEquals(sampleNewClassification.toJson(), updatedClassification.toJson())
+            val createdClassification = createClassification(sampleNewClassification)
+            assertEquals(sampleNewClassification.toJson(), createdClassification.toJson())
         }
 
         @Test
         fun `update Classification - full update`() {
-            val updatedClassification = updateClassification(
-                sampleNewClassification,
-                prevClassification
-            )!!
+            val updatedClassification = prevClassification.updateClassification(sampleNewClassification)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedClassification.toJson(), sampleNewClassification.toJson())
         }
 
@@ -690,31 +633,16 @@ class UpdatedRecordTest {
                 scheme = newClassification.scheme,
                 uri = prevClassification.uri
             )
-            val updatedClassification = updateClassification(
-                newClassification,
-                prevClassification
-            )!!
+            val updatedClassification = prevClassification.updateClassification(newClassification)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedClassification.toJson())
         }
 
         @Test
-        fun `update Classification - without new value`() {
-            val updatedClassification = updateClassification(
-                null,
-                prevClassification
-            )!!
-            assertEquals(prevClassification.toJson(), updatedClassification.toJson())
-        }
-
-        @Test
         fun `update Classification - same id`() {
-            assertThrows<ErrorException> {
-                updateClassification(
-                    sampleNewClassification.copy(id = "ID-1"),
-                    prevClassification
-                )
-            }
+            val result = prevClassification.updateClassification(sampleNewClassification.copy(id = "ID-1"))
+            assertTrue(result.isFail)
         }
     }
 
@@ -748,31 +676,15 @@ class UpdatedRecordTest {
                 value = sampleNewUnit.value,
                 uri = prevUnit.uri
             )
-            val updatedUnit = updateUnit(
-                newUnit,
-                prevUnit
-            )!!
-
+            val updatedUnit = prevUnit.updateUnit(newUnit)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedUnit.toJson())
         }
 
         @Test
-        fun `update Unit - without new value`() {
-            val updatedUnit = updateUnit(
-                null,
-                prevUnit
-            )!!
-            assertEquals(prevUnit.toJson(), updatedUnit.toJson())
-        }
-
-        @Test
         fun `update Unit - same id`() {
-            assertThrows<ErrorException> {
-                updateUnit(
-                    sampleNewUnit.copy(id = "ID-1"),
-                    prevUnit
-                )
-            }
+            val result = prevUnit.updateUnit(sampleNewUnit.copy(id = "ID-1"))
+            assertTrue(result.isFail)
         }
     }
 
@@ -795,19 +707,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update Period - without previous value`() {
-            val updatedPeriod = updatePeriod(
-                sampleNewPeriod,
-                null
-            )!!
-            assertEquals(sampleNewPeriod.toJson(), updatedPeriod.toJson())
+            val createdPeriod = createContractPeriod(sampleNewPeriod)
+            assertEquals(sampleNewPeriod.toJson(), createdPeriod.toJson())
         }
 
         @Test
         fun `update Period - full update`() {
-            val updatedPeriod = updatePeriod(
-                sampleNewPeriod,
-                prevPeriod
-            )!!
+            val updatedPeriod = prevPeriod.updatePeriod(sampleNewPeriod)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedPeriod.toJson(), sampleNewPeriod.toJson())
         }
 
@@ -824,21 +731,10 @@ class UpdatedRecordTest {
                 endDate = prevPeriod.endDate,
                 maxExtentDate = prevPeriod.maxExtentDate
             )
-            val updatedPeriod = updatePeriod(
-                newPeriod,
-                prevPeriod
-            )!!
+            val updatedPeriod = prevPeriod.updatePeriod(newPeriod)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedPeriod.toJson())
-        }
-
-        @Test
-        fun `update Period - without new value`() {
-            val updatedPeriod = updatePeriod(
-                null,
-                prevPeriod
-            )!!
-            assertEquals(prevPeriod.toJson(), updatedPeriod.toJson())
         }
     }
 
@@ -865,19 +761,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update BidsStatistic - without previous value`() {
-            val updatedBidsStatistic = updateBidsStatistic(
-                sampleNewBidsStatistic,
-                null
-            )
-            assertEquals(sampleNewBidsStatistic.toJson(), updatedBidsStatistic.toJson())
+            val createdBidsStatistic = createBidsStatistic(sampleNewBidsStatistic)
+            assertEquals(sampleNewBidsStatistic.toJson(), createdBidsStatistic.toJson())
         }
 
         @Test
         fun `update BidsStatistic - full update`() {
-            val updatedBidsStatistic = updateBidsStatistic(
-                sampleNewBidsStatistic,
-                prevBidsStatistic
-            )
+            val updatedBidsStatistic = prevBidsStatistic.updateBidsStatistic(sampleNewBidsStatistic)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedBidsStatistic.toJson(), sampleNewBidsStatistic.toJson())
         }
 
@@ -896,10 +787,8 @@ class UpdatedRecordTest {
                 measure = prevBidsStatistic.measure,
                 notes = prevBidsStatistic.notes
             )
-            val updatedBidsStatistic = updateBidsStatistic(
-                newBidsStatistic,
-                prevBidsStatistic
-            )
+            val updatedBidsStatistic = prevBidsStatistic.updateBidsStatistic(newBidsStatistic)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedBidsStatistic.toJson())
         }
@@ -922,19 +811,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update BudgetSource - without previous value`() {
-            val updatedBudgetSource = updateBudgetSource(
-                sampleNewBudgetSource,
-                null
-            )
-            assertEquals(sampleNewBudgetSource.toJson(), updatedBudgetSource.toJson())
+            val createdBudgetSource = createBudgetSource(sampleNewBudgetSource)
+            assertEquals(sampleNewBudgetSource.toJson(), createdBudgetSource.toJson())
         }
 
         @Test
         fun `update BudgetSource - full update`() {
-            val updatedBudgetSource = updateBudgetSource(
-                sampleNewBudgetSource,
-                prevBudgetSource
-            )
+            val updatedBudgetSource = prevBudgetSource.updateBudgetSource(sampleNewBudgetSource)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedBudgetSource.toJson(), sampleNewBudgetSource.toJson())
         }
 
@@ -949,11 +833,8 @@ class UpdatedRecordTest {
                 amount = sampleNewBudgetSource.amount,
                 currency = prevBudgetSource.currency
             )
-            val updatedBudgetSource = updateBudgetSource(
-                newBudgetSource,
-                prevBudgetSource
-            )
-
+            val updatedBudgetSource = prevBudgetSource.updateBudgetSource(newBudgetSource)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedBudgetSource.toJson())
         }
     }
@@ -977,19 +858,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update Request - without previous value`() {
-            val updatedRequest = updateRequest(
-                sampleNewRequest,
-                null
-            )
-            assertEquals(sampleNewRequest.toJson(), updatedRequest.toJson())
+            val createdRequest = createRequest(sampleNewRequest)
+            assertEquals(sampleNewRequest.toJson(), createdRequest.toJson())
         }
 
         @Test
         fun `update Request - full update`() {
-            val updatedRequest = updateRequest(
-                sampleNewRequest,
-                prevRequest
-            )
+            val updatedRequest = prevRequest.updateRequest(sampleNewRequest)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedRequest.toJson(), sampleNewRequest.toJson())
         }
 
@@ -1005,11 +881,8 @@ class UpdatedRecordTest {
                 title = sampleNewRequest.title,
                 relatedPerson = prevRequest.relatedPerson
             )
-            val updatedRequest = updateRequest(
-                newRequest,
-                prevRequest
-            )
-
+            val updatedRequest = prevRequest.updateRequest(newRequest)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedRequest.toJson())
         }
     }
@@ -1041,19 +914,15 @@ class UpdatedRecordTest {
 
         @Test
         fun `update ConfirmationRequest - without previous value`() {
-            val updatedConfirmationRequest = updateConfirmationRequest(
-                sampleNewConfirmationRequest,
-                null
-            )
-            assertEquals(sampleNewConfirmationRequest.toJson(), updatedConfirmationRequest.toJson())
+            val createdConfirmationRequest = createConfirmationRequest(sampleNewConfirmationRequest)
+            assertEquals(sampleNewConfirmationRequest.toJson(), createdConfirmationRequest.toJson())
         }
 
         @Test
         fun `update ConfirmationRequest - full update`() {
-            val updatedConfirmationRequest = updateConfirmationRequest(
-                sampleNewConfirmationRequest,
-                prevConfirmationRequest
-            )
+            val updatedConfirmationRequest = prevConfirmationRequest
+                .updateConfirmationRequest(sampleNewConfirmationRequest)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedConfirmationRequest.toJson(), sampleNewConfirmationRequest.toJson())
         }
 
@@ -1075,10 +944,8 @@ class UpdatedRecordTest {
                 source = sampleNewConfirmationRequest.source,
                 relatedItem = sampleNewConfirmationRequest.relatedItem
             )
-            val updatedConfirmationRequest = updateConfirmationRequest(
-                newConfirmationRequest,
-                prevConfirmationRequest
-            )
+            val updatedConfirmationRequest = prevConfirmationRequest.updateConfirmationRequest(newConfirmationRequest)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedConfirmationRequest.toJson())
         }
@@ -1101,19 +968,15 @@ class UpdatedRecordTest {
 
         @Test
         fun `update ConfirmationResponse - without previous value`() {
-            val updatedConfirmationResponse = updateConfirmationResponse(
-                sampleNewConfirmationResponse,
-                null
-            )
-            assertEquals(sampleNewConfirmationResponse.toJson(), updatedConfirmationResponse.toJson())
+            val createdConfirmationResponse = createConfirmationResponse(sampleNewConfirmationResponse)
+            assertEquals(sampleNewConfirmationResponse.toJson(), createdConfirmationResponse.toJson())
         }
 
         @Test
         fun `update ConfirmationResponse - full update`() {
-            val updatedConfirmationResponse = updateConfirmationResponse(
-                sampleNewConfirmationResponse,
-                prevConfirmationResponse
-            )
+            val updatedConfirmationResponse = prevConfirmationResponse
+                .updateConfirmationResponse(sampleNewConfirmationResponse)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedConfirmationResponse.toJson(), sampleNewConfirmationResponse.toJson())
         }
 
@@ -1128,10 +991,9 @@ class UpdatedRecordTest {
                 value = prevConfirmationResponse.value,
                 request = sampleNewConfirmationResponse.request
             )
-            val updatedConfirmationResponse = updateConfirmationResponse(
-                newConfirmationResponse,
-                prevConfirmationResponse
-            )
+            val updatedConfirmationResponse = prevConfirmationResponse
+                .updateConfirmationResponse(newConfirmationResponse)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedConfirmationResponse.toJson())
         }
@@ -1152,19 +1014,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update RelatedParty - without previous value`() {
-            val updatedRelatedParty = updateRelatedParty(
-                sampleNewRelatedParty,
-                null
-            )
-            assertEquals(sampleNewRelatedParty.toJson(), updatedRelatedParty.toJson())
+            val createdRelatedParty = createRelatedParty(sampleNewRelatedParty)
+            assertEquals(sampleNewRelatedParty.toJson(), createdRelatedParty.toJson())
         }
 
         @Test
         fun `update RelatedParty - full update`() {
-            val updatedRelatedParty = updateRelatedParty(
-                sampleNewRelatedParty,
-                prevRelatedParty
-            )
+            val updatedRelatedParty = prevRelatedParty.updateRelatedParty(sampleNewRelatedParty)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedRelatedParty.toJson(), sampleNewRelatedParty.toJson())
         }
 
@@ -1178,11 +1035,8 @@ class UpdatedRecordTest {
                 id = sampleNewRelatedParty.id,
                 name = prevRelatedParty.name
             )
-            val updatedRelatedParty = updateRelatedParty(
-                newRelatedParty,
-                prevRelatedParty
-            )
-
+            val updatedRelatedParty = prevRelatedParty.updateRelatedParty(newRelatedParty)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedRelatedParty.toJson())
         }
     }
@@ -1220,19 +1074,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update Milestone - without previous value`() {
-            val updatedMilestone = updateMilestone(
-                sampleNewMilestone,
-                null
-            )
-            assertEquals(sampleNewMilestone.toJson(), updatedMilestone.toJson())
+            val createdMilestone = createMilestone(sampleNewMilestone)
+            assertEquals(sampleNewMilestone.toJson(), createdMilestone.toJson())
         }
 
         @Test
         fun `update Milestone - full update`() {
-            val updatedMilestone = updateMilestone(
-                sampleNewMilestone,
-                prevMilestone
-            )
+            val updatedMilestone = prevMilestone.updateMilestone(sampleNewMilestone)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedMilestone.toJson(), sampleNewMilestone.toJson())
         }
 
@@ -1257,11 +1106,8 @@ class UpdatedRecordTest {
                 additionalInformation = sampleNewMilestone.additionalInformation,
                 dateMet = sampleNewMilestone.dateMet
             )
-            val updatedMilestone = updateMilestone(
-                newMilestone,
-                prevMilestone
-            )
-
+            val updatedMilestone = prevMilestone.updateMilestone(newMilestone)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(expectedValue.toJson(), updatedMilestone.toJson())
         }
     }
@@ -1295,19 +1141,14 @@ class UpdatedRecordTest {
 
         @Test
         fun `update PermitDetails - without previous value`() {
-            val updatedPermitDetails = updatePermitDetails(
-                sampleNewPermitDetails,
-                null
-            )!!
-            assertEquals(sampleNewPermitDetails.toJson(), updatedPermitDetails.toJson())
+            val createdPermitDetails = createPermitDetails(sampleNewPermitDetails)
+            assertEquals(sampleNewPermitDetails.toJson(), createdPermitDetails.toJson())
         }
 
         @Test
         fun `update PermitDetails - full update`() {
-            val updatedPermitDetails = updatePermitDetails(
-                sampleNewPermitDetails,
-                prevPermitDetails
-            )!!
+            val updatedPermitDetails = prevPermitDetails.updatePermitDetails(sampleNewPermitDetails)
+                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedPermitDetails.toJson(), sampleNewPermitDetails.toJson())
         }
 
@@ -1318,23 +1159,12 @@ class UpdatedRecordTest {
                 validityPeriod = null
             )
 
-            val updatedPermitDetails = updatePermitDetails(
-                newPermitDetails,
-                prevPermitDetails
-            )!!
+            val updatedPermitDetails = prevPermitDetails.updatePermitDetails(newPermitDetails)
+                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(prevPermitDetails.issuedBy!!.toJson(), updatedPermitDetails.issuedBy!!.toJson())
             assertEquals(prevPermitDetails.validityPeriod!!.toJson(), updatedPermitDetails.validityPeriod!!.toJson())
             assertEquals(newPermitDetails.issuedThought!!.toJson(), updatedPermitDetails.issuedThought!!.toJson())
-        }
-
-        @Test
-        fun `update PermitDetails - without new value`() {
-            val updatedPermitDetails = updatePermitDetails(
-                null,
-                prevPermitDetails
-            )!!
-            assertEquals(prevPermitDetails.toJson(), updatedPermitDetails.toJson())
         }
     }
 
@@ -1376,11 +1206,12 @@ class UpdatedRecordTest {
         fun `update Permits - without previous value`() {
             val updatedPermits = updateStrategy(
                 receivedElements = sampleNewPermits,
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = emptyList(),
                 keyExtractorForAvailableElement = { it.id },
-                block = ::updatePermits
-            )
+                updateBlock = RecordPermits::updatePermits,
+                createBlock = ::createPermits
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(sampleNewPermits.toJson(), updatedPermits.toJson())
         }
 
@@ -1388,11 +1219,12 @@ class UpdatedRecordTest {
         fun `update Permits - empty collection in request`() {
             val updatedPermits = updateStrategy(
                 receivedElements = emptyList(),
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = prevPermits,
                 keyExtractorForAvailableElement = { it.id },
-                block = ::updatePermits
-            )
+                updateBlock = RecordPermits::updatePermits,
+                createBlock = ::createPermits
+            ).doReturn { _ -> throw RuntimeException() }
             assertEquals(prevPermits.toJson(), updatedPermits.toJson())
         }
 
@@ -1404,11 +1236,14 @@ class UpdatedRecordTest {
 
             val updatedPermits = updateStrategy(
                 receivedElements = sampleNewPermits,
-                keyExtractorForReceivedElement = { it.id!! },
+                keyExtractorForReceivedElement = { it.id },
                 availableElements = prevPermits,
                 keyExtractorForAvailableElement = { it.id },
-                block = ::updatePermits
-            ).associateBy { it.id }
+                updateBlock = RecordPermits::updatePermits,
+                createBlock = ::createPermits
+            )
+                .doReturn { _ -> throw RuntimeException() }
+                .associateBy { it.id }
 
             val updatedCommonPermit = updatedPermits[COMMON_ID]!!
             val commonPermitFromRequest = sampleNewPermits.find { it.id == COMMON_ID }
@@ -1445,14 +1280,14 @@ class UpdatedRecordTest {
         val newElements = listOf(
             RequestRelatedProcess(
                 id = commonId,
-                scheme = null,
+                scheme = RelatedProcessScheme.OCID,
                 identifier = "available?.identifier-3",
                 uri = null,
                 relationship = listOf(RelatedProcessType.X_EVALUATION)
             ),
             RequestRelatedProcess(
                 id = "rqRelatedProcess.id-4",
-                scheme = null,
+                scheme = RelatedProcessScheme.OCID,
                 identifier = "available?.identifier-4",
                 uri = "available?.uri-4",
                 relationship = listOf(RelatedProcessType.X_EXPENDITURE_ITEM)
@@ -1464,8 +1299,11 @@ class UpdatedRecordTest {
             keyExtractorForReceivedElement = { it.id },
             availableElements = existsElements,
             keyExtractorForAvailableElement = { it.id },
-            block = ::updateRelatedProcess
-        ).associateBy { it.id }
+            updateBlock = RecordRelatedProcess::updateRelatedProcess,
+            createBlock = ::createRelatedProcess
+        )
+            .doReturn { _ -> throw RuntimeException() }
+            .associateBy { it.id }
 
         val existsElementsIds = existsElements.toSetBy { it.id }
         val newElementsIds = newElements.toSetBy { it.id }
@@ -1481,11 +1319,10 @@ class UpdatedRecordTest {
         val expectedCommonElement = RecordRelatedProcess(
             id = commonId,
             uri = commonElementsPrev.uri,
-            scheme = commonElementsPrev.scheme,
+            scheme = commonElementsForUpdate.scheme,
             relationship = commonElementsForUpdate.relationship,
             identifier = commonElementsForUpdate.identifier
         )
         assertEquals(expectedCommonElement, commonElementUpdated)
-
     }
 }

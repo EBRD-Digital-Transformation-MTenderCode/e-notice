@@ -10,8 +10,7 @@ import java.time.LocalDateTime
 
 data class RequestAmendment(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("type") @param:JsonProperty("type") val type: AmendmentType?,

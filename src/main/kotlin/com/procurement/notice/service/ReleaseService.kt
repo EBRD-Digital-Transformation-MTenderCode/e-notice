@@ -2,6 +2,8 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.entity.Record
@@ -55,6 +57,10 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
 
     fun getRecordEntity(cpId: String, ocId: String): ReleaseEntity {
         return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+    }
+
+    fun tryGetRecordEntity(cpId: String, ocId: String): Result<ReleaseEntity?, Fail.Incident.Database> {
+        return releaseDao.tryGetByCpIdAndOcId(cpId, ocId)
     }
 
     fun getPartiesWithActualPersones(

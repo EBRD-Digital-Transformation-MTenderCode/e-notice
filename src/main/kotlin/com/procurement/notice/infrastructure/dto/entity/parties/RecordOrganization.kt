@@ -9,8 +9,7 @@ import com.procurement.notice.model.ocds.PartyRole
 
 data class RecordOrganization(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("name") @param:JsonProperty("name") val name: String?,

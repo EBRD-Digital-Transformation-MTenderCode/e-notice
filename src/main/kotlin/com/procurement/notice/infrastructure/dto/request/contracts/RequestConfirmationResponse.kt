@@ -6,8 +6,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestConfirmationResp
 
 data class RequestConfirmationResponse(
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("value") @param:JsonProperty("value") val value: RequestConfirmationResponseValue?,

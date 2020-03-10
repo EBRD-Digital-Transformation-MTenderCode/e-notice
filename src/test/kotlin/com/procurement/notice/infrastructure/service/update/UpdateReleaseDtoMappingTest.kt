@@ -18,7 +18,7 @@ class UpdateReleaseDtoMappingTest {
 
     @Test
     fun mapRelease() {
-        val releaseNodes = objectMapper.readTree(File("src/test/resources/json/dto/release/releases.json"))
+        val releaseNodes = objectMapper.readTree(File("src/test/resources/json/dto/release/releases.json")) as ArrayNode
         releaseNodes.forEach { release ->
             val dto = toObject(RequestRelease::class.java, release)
             val actualRelease = toJson(dto).toNode()
