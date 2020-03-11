@@ -18,7 +18,7 @@ import com.procurement.notice.model.bpe.tryGetId
 import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.model.entity.HistoryEntity
 import com.procurement.notice.utils.toJson
-import com.procurement.notice.utils.toObject
+import com.procurement.notice.utils.tryToObject
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.util.*
@@ -36,7 +36,16 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
 
         val history: HistoryEntity? = historyDao.getHistory(id.toString(), action.key)
         if (history != null) {
-            return toObject(ApiSuccessResponse::class.java, history.jsonData)
+            val data = history.jsonData
+            val result = data.tryToObject(ApiSuccessResponse::class.java)
+                .doOnError {
+                    return generateResponseOnFailure(
+                        fail = Fail.Incident.ParseFromDatabaseIncident(data),
+                        id = id,
+                        version = version
+                    )
+                }
+            return result.get
         }
 
         val result: UpdateResult<Fail> = execute(node)

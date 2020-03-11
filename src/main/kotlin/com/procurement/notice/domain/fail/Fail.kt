@@ -43,17 +43,11 @@ sealed class Fail {
             description = "Internal error"
         )
 
-//        class ParseFromDatabaseIncident(jsonData: String) : Incident(
-//            level = Level.ERROR,
-//            number = "3",
-//            description = "Could not parse data '$jsonData' stored in database. "
-//        )
-
-//        class DatabaseIncident : Incident(
-//            level = Level.ERROR,
-//            number = "03",
-//            description = "Could not process data from database."
-//        )
+        class ParseFromDatabaseIncident(jsonData: String) : Incident(
+            level = Level.ERROR,
+            number = "3",
+            description = "Could not parse data '$jsonData' stored in database. "
+        )
 
         enum class Level(override val key: String) : EnumElementProvider.Key {
             ERROR("error"),

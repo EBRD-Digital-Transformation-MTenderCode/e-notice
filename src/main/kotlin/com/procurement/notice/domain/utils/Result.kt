@@ -33,10 +33,6 @@ sealed class Result<out T, out E> {
         return this
     }
 
-    /*inline fun doReturn(block: (error: E) -> Unit): T {
-        if (this.isFail) block(this.error)
-        return this.get
-    }*/
     inline fun doReturn(error: (E) -> Nothing): T {
         return when (this) {
             is Success -> this.get
