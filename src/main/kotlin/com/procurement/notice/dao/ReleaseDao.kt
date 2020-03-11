@@ -129,8 +129,7 @@ class ReleaseDao(private val session: Session) {
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
                 row.getString(JSON_DATA)) }
-            ?.asSuccess()
-            ?: success(null)
+            .asSuccess()
     }
 
     protected fun load(statement: BuiltStatement): Result<ResultSet, Fail.Incident.Database> = try {
