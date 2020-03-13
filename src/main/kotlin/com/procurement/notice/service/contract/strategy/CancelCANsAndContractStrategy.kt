@@ -15,7 +15,7 @@ import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toObject
 import java.time.LocalDateTime
@@ -35,15 +35,15 @@ class CancelCANsAndContractStrategy(
     ): ResponseDto {
         val request = toObject(CancelCANsAndContractRequest::class.java, data)
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val recordEV: Record = releaseService.getRecord(recordEntity.jsonData)
+        val releaseEV: Release = releaseService.getRelease(recordEntity.jsonData)
 
         val cancelledCAN: CancelCANsAndContractRequest.CancelledCAN = request.cancelledCan
 
         /** BR-2.8.3.4 */
         val releaseId = releaseService.newReleaseId(ocid)
-        val amendment: Amendment = cancelledCAN.createAmendment(recordEV, releaseId, releaseDate)
+        val amendment: Amendment = cancelledCAN.createAmendment(releaseEV, releaseId, releaseDate)
 
-        val updatedRecordEV = recordEV.copy(
+        val updatedReleaseEV = releaseEV.copy(
             /** BR-2.8.3.1 */
             tag = listOf(Tag.AWARD_CANCELLATION),
             /** BR-2.8.3.3 */
@@ -51,23 +51,23 @@ class CancelCANsAndContractStrategy(
             /** BR-2.8.3.4 */
             id = releaseId,
             /** BR-2.8.3.8 */
-            contracts = recordEV.contracts
-                ?.updateContracts(
+            contracts = releaseEV.contracts
+                .updateContracts(
                     cancelledCAN = cancelledCAN,
                     relatedCANs = request.relatedCANs,
                     amendment = amendment
                 ),
             /** BR-2.8.3.12 */
-            tender = recordEV.tender.copy(
+            tender = releaseEV.tender.copy(
                 /** BR-2.8.3.13 */
-                lots = recordEV.tender.lots?.updateLots(request.lot)
+                lots = releaseEV.tender.lots.updateLots(request.lot)
             ),
 
-            bids = recordEV.bids?.copy(
+            bids = releaseEV.bids?.copy(
                 /** BR-2.8.3.6 */
-                details = recordEV.bids?.details?.updateBids(request.bids)
+                details = releaseEV.bids?.details?.updateBids(request.bids)
             ),
-            awards = recordEV.awards?.updateAwards(request.awards) ?: request.createAwards()
+            awards = releaseEV.awards.updateAwards(request.awards)
         )
 
         val contractId = request.contract.id
@@ -84,7 +84,7 @@ class CancelCANsAndContractStrategy(
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage,
-            record = updatedRecordEV,
+            release = updatedReleaseEV,
             publishDate = recordEntity.publishDate
         )
         releaseService.saveContractRecord(
@@ -102,7 +102,7 @@ class CancelCANsAndContractStrategy(
      * BR-2.8.3.11
      */
     private fun CancelCANsAndContractRequest.CancelledCAN.createAmendment(
-        record: Record,
+        record: Release,
         releaseId: String,
         releaseDate: LocalDateTime
     ): Amendment {
@@ -142,11 +142,11 @@ class CancelCANsAndContractStrategy(
     /**
      * BR-2.8.3.8
      */
-    private fun HashSet<Contract>.updateContracts(
+    private fun List<Contract>.updateContracts(
         cancelledCAN: CancelCANsAndContractRequest.CancelledCAN,
         relatedCANs: List<CancelCANsAndContractRequest.RelatedCAN>?,
         amendment: Amendment
-    ): HashSet<Contract> {
+    ): List<Contract> {
         val relatedCANsById = relatedCANs?.associateBy { it.id } ?: emptyMap()
 
         return this.asSequence()
@@ -168,13 +168,13 @@ class CancelCANsAndContractStrategy(
                     else -> contract
                 }
             }
-            .toHashSet()
+            .toList()
     }
 
     /**
      * BR-2.8.3.13
      */
-    private fun HashSet<Lot>.updateLots(lot: CancelCANsAndContractRequest.Lot): HashSet<Lot> {
+    private fun List<Lot>.updateLots(lot: CancelCANsAndContractRequest.Lot): List<Lot> {
         return this.asSequence()
             .map {
                 if (it.id == lot.id)
@@ -185,7 +185,7 @@ class CancelCANsAndContractStrategy(
                 else
                     it
 
-            }.toHashSet()
+            }.toList()
     }
 
     /**
@@ -208,7 +208,7 @@ class CancelCANsAndContractStrategy(
     /**
      * BR-2.8.3.7
      */
-    private fun HashSet<Award>.updateAwards(awards: List<CancelCANsAndContractRequest.Award>): HashSet<Award> {
+    private fun List<Award>.updateAwards(awards: List<CancelCANsAndContractRequest.Award>): List<Award> {
         val awardsById = awards.associateBy { it.id }
         return this.asSequence()
             .map { award ->
@@ -220,7 +220,7 @@ class CancelCANsAndContractStrategy(
                     )
                 } ?: award
             }
-            .toHashSet()
+            .toList()
     }
 
     /**

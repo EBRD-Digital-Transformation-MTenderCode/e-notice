@@ -27,18 +27,18 @@ class EnquiryService(private val releaseService: ReleaseService) {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         enquiry.author = null
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
             id = releaseService.newReleaseId(ocid)
             tag = listOf(Tag.TENDER)
             date = releaseDate
             tender.hasEnquiries = true
         }
-        val enquiries = record.tender.enquiries ?: hashSetOf()
+        val enquiries = release.tender.enquiries
         if (enquiries.asSequence().none { it.id == enquiry.id }) {
             enquiries.add(enquiry)
 //            organizationService.processRecordPartiesFromEnquiry(record = record, enquiry = enquiry)
-            record.tender.enquiries = enquiries
+            release.tender.enquiries = enquiries
             if (enquiries.size == 1) {
                 val msEntity = releaseService.getMsEntity(cpid)
                 val ms = releaseService.getMs(msEntity.jsonData)
@@ -51,7 +51,7 @@ class EnquiryService(private val releaseService: ReleaseService) {
                 releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
             }
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -62,16 +62,16 @@ class EnquiryService(private val releaseService: ReleaseService) {
                   data: JsonNode): ResponseDto {
         val enquiry = toObject(RecordEnquiry::class.java, toJson(data.get(ENQUIRY_JSON)))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
             id = releaseService.newReleaseId(ocid)
             date = releaseDate
         }
-        record.tender.enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
+        release.tender.enquiries.asSequence().firstOrNull { it.id == enquiry.id }?.apply {
             this.answer = enquiry.answer
             this.dateAnswered = enquiry.dateAnswered
         } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 }

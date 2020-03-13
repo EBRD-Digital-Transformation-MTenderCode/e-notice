@@ -23,5 +23,5 @@ data class CancellationStandstillPeriodDto @JsonCreator constructor(
     val bids: HashSet<Bid>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val awards: HashSet<Award>?
+    val awards: List<Award> = emptyList()
 )

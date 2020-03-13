@@ -31,7 +31,7 @@ data class Ms @JsonCreator constructor(
     var tender: MsTender,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var parties: HashSet<Organization>?,
+    var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var relatedProcesses: HashSet<RelatedProcess>?

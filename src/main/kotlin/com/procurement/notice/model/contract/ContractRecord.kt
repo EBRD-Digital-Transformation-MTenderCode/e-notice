@@ -41,7 +41,7 @@ data class ContractRecord @JsonCreator constructor(
     var contracts: HashSet<Contract>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var parties: HashSet<Organization>? = null,
+    var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var relatedProcesses: HashSet<RelatedProcess>? = null

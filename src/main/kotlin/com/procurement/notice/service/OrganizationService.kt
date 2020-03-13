@@ -11,7 +11,7 @@ import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.ms.Ms
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import org.springframework.stereotype.Service
 
 @Service
@@ -54,14 +54,13 @@ class OrganizationService {
                     buyerProfile = null,
                     persones = null
             )
-            if (fs.parties == null) fs.parties = hashSetOf()
-            fs.parties?.add(partyFunder)
+            fs.parties.add(partyFunder)
             fs.funder = null
         }
         val payer = fs.payer
         if (payer != null) {
             val payerId = payer.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
-            val partyPresent = fs.parties?.let { getParty(parties = it, partyId = payerId) }
+            val partyPresent = fs.parties.let { getParty(parties = it, partyId = payerId) }
             if (partyPresent != null) {
                 partyPresent.roles.add(PartyRole.PAYER)
             } else {
@@ -77,17 +76,14 @@ class OrganizationService {
                         buyerProfile = null,
                         persones = null
                 )
-                if (fs.parties == null) fs.parties = hashSetOf()
-                fs.parties?.add(partyPayer)
+                fs.parties.add(partyPayer)
             }
             fs.payer = null
         }
-        if (fs.parties != null && fs.parties!!.isEmpty()) fs.parties = null
     }
 
     fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
-        if (ms.parties == null) ms.parties = hashSetOf()
-        ms.parties?.let { parties ->
+        ms.parties.let { parties ->
             if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties = parties, organization = buyer, role = PartyRole.BUYER) }
             if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties = parties, organization = payer, role = PartyRole.PAYER) }
             if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties = parties, organization = funder, role = PartyRole.FUNDER) }
@@ -96,88 +92,77 @@ class OrganizationService {
                 clearOrganizationReference(procuringEntity)
             }
         }
-        if (ms.parties != null && ms.parties!!.isEmpty()) ms.parties = null
     }
 
-    fun processRecordPartiesFromBids(record: Record) {
-        if (record.parties == null) record.parties = hashSetOf()
-        record.bids?.details?.let { bids ->
+    fun processRecordPartiesFromBids(release: Release) {
+        release.bids?.details?.let { bids ->
             bids.forEach { bid ->
                 bid.tenderers?.let { tenderers ->
                     tenderers.forEach { tenderer ->
-                        record.parties?.let { addParty(parties = it, organization = tenderer, role = PartyRole.TENDERER) }
+                        release.parties.let { addParty(parties = it, organization = tenderer, role = PartyRole.TENDERER) }
                         clearOrganizationReference(tenderer)
                     }
                 }
             }
         }
-        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
-    fun processRecordPartiesFromAwards(record: Record) {
-        if (record.parties == null) record.parties = hashSetOf()
-        record.awards?.let { awards ->
+    fun processRecordPartiesFromAwards(release: Release) {
+        release.awards.let { awards ->
             awards.forEach { award ->
                 award.suppliers?.let { suppliers ->
                     suppliers.forEach { supplier ->
-                        record.parties?.let { addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER) }
+                        release.parties.let { addParty(parties = it, organization = supplier, role = PartyRole.SUPPLIER) }
                         clearOrganizationReference(supplier)
                     }
                 }
             }
         }
-        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     fun processContractRecordPartiesFromAwards(record: ContractRecord) {
-        if (record.parties == null) record.parties = hashSetOf()
         record.awards?.let { awards ->
             awards.forEach { award ->
                 award.suppliers?.let { suppliers ->
                     suppliers.forEach { supplier ->
-                        addContractParty(parties = record.parties!!, organization = supplier, role = PartyRole.SUPPLIER)
-                        addContractParty(parties = record.parties!!, organization = supplier, role = PartyRole.PAYEE)
+                        addContractParty(parties = record.parties, organization = supplier, role = PartyRole.SUPPLIER)
+                        addContractParty(parties = record.parties, organization = supplier, role = PartyRole.PAYEE)
                         clearOrganizationReference(supplier)
                     }
                 }
             }
         }
-        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
     fun processContractRecordPartiesFromBudget(record: ContractRecord,
                                                buyer: OrganizationReference?,
                                                funders: HashSet<OrganizationReference>?,
                                                payers: HashSet<OrganizationReference>?) {
-        if (record.parties == null) record.parties = hashSetOf()
         buyer?.let {
-            addContractParty(parties = record.parties!!, organization = it, role = PartyRole.BUYER)
+            addContractParty(parties = record.parties, organization = it, role = PartyRole.BUYER)
         }
         funders?.let {
             it.forEach { funder ->
-                addContractParty(parties = record.parties!!, organization = funder, role = PartyRole.FUNDER)
+                addContractParty(parties = record.parties, organization = funder, role = PartyRole.FUNDER)
                 clearOrganizationReference(funder)
             }
         }
         payers?.let {
             it.forEach { payer ->
-                addContractParty(parties = record.parties!!, organization = payer, role = PartyRole.PAYER)
+                addContractParty(parties = record.parties, organization = payer, role = PartyRole.PAYER)
                 clearOrganizationReference(payer)
             }
         }
-        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
-    fun processRecordPartiesFromEnquiry(record: Record, enquiry: RecordEnquiry) {
-        if (record.parties == null) record.parties = hashSetOf()
+    fun processRecordPartiesFromEnquiry(release: Release, enquiry: RecordEnquiry) {
         enquiry.author?.let { author ->
-            record.parties?.let { addParty(parties = it, organization = author, role = PartyRole.ENQUIRER) }
+            release.parties.let { addParty(parties = it, organization = author, role = PartyRole.ENQUIRER) }
             clearOrganizationReference(author)
         }
-        if (record.parties != null && record.parties!!.isEmpty()) record.parties = null
     }
 
-    private fun addParty(parties: HashSet<Organization>, organization: OrganizationReference?, role: PartyRole) {
+    private fun addParty(parties: MutableList<Organization>, organization: OrganizationReference?, role: PartyRole) {
         if (organization != null) {
             organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
             val partyPresent = getParty(parties, organization.id)
@@ -209,7 +194,7 @@ class OrganizationService {
         }
     }
 
-    private fun addContractParty(parties: HashSet<Organization>, organization: OrganizationReference?, role: PartyRole) {
+    private fun addContractParty(parties: MutableList<Organization>, organization: OrganizationReference?, role: PartyRole) {
         if (organization != null) {
             organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
             val partyPresent = getParty(parties, organization.id)
@@ -241,7 +226,7 @@ class OrganizationService {
         }
     }
 
-    private fun getParty(parties: HashSet<Organization>, partyId: String): Organization? {
+    private fun getParty(parties: List<Organization>, partyId: String): Organization? {
         return parties.asSequence().firstOrNull { it.id == partyId }
     }
 

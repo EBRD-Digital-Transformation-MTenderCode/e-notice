@@ -1,4 +1,4 @@
-package com.procurement.notice.config
+package com.procurement.notice.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
