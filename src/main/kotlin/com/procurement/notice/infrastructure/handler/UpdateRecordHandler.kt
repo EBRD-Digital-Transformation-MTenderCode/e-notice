@@ -1,6 +1,7 @@
 package com.procurement.notice.infrastructure.handler
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.JsonNodeType
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.dao.HistoryDao
@@ -11,6 +12,7 @@ import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse
 import com.procurement.notice.infrastructure.dto.request.RequestRelease
+import com.procurement.notice.infrastructure.extention.tryGetAttribute
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.model.bpe.CommandType2
 import com.procurement.notice.model.bpe.tryGetId
@@ -35,7 +37,7 @@ class UpdateRecordHandler(
         val id = node.tryGetId().get
         val version = node.tryGetVersion().get
 
-        val paramsNode = node.tryGetParams()
+        val dataNode = node.tryGetParams()
             .doOnError { error ->
                 ApiFailResponse(
                     id = id,
@@ -47,8 +49,11 @@ class UpdateRecordHandler(
                 )
             }
             .get
+            .tryGetAttribute("data", JsonNodeType.OBJECT)
+            .get
 
-        val requestRelease = transform.tryMapping(paramsNode, RequestRelease::class.java)
+
+        val requestRelease = transform.tryMapping(dataNode, RequestRelease::class.java)
             .doOnError { error ->
                 ApiFailResponse(
                     id = id,
