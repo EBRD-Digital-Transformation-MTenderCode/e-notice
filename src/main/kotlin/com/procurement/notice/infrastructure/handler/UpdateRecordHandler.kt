@@ -70,8 +70,8 @@ class UpdateRecordHandler(
             )
             is UpdateResult.Error -> {
                 updateResult.get.logging(logger)
-                when(updateResult.get) {
-                    is Fail.Error                              -> {
+                when (updateResult.get) {
+                    is Fail.Error    -> {
                         ApiFailResponse(
                             id = id,
                             version = version,
@@ -81,17 +81,7 @@ class UpdateRecordHandler(
                             ).toList()
                         )
                     }
-                    is Fail.Incident.Transform.Parsing         ,
-                    is Fail.Incident.Transform.Mapping         ,
-                    is Fail.Incident.Transform.Deserialization ,
-                    is Fail.Incident.Transform.Serialization   ,
-                    is Fail.Incident.NetworkError              ,
-                    is Fail.Incident.BadResponse               ,
-                    is Fail.Incident.ResponseError             ,
-                    is Fail.Incident.Database.Access           ,
-                    is Fail.Incident.Database.NotFound         ,
-                    is Fail.Incident.Database.InvalidData      ,
-                    is Fail.Incident.InternalError             -> {
+                    is Fail.Incident -> {
                         ApiIncidentResponse(
                             id = id,
                             version = version,
@@ -112,7 +102,6 @@ class UpdateRecordHandler(
                         )
                     }
                 }
-
             }
         }
     }
