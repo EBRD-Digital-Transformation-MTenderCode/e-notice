@@ -2,10 +2,12 @@ package com.procurement.notice.infrastructure.handler
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.Logger
+import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.ApiFailResponse
+import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse
 import com.procurement.notice.infrastructure.dto.request.RequestRelease
@@ -16,6 +18,7 @@ import com.procurement.notice.model.bpe.tryGetParams
 import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.service.UpdateRecordService
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 @Component
 class UpdateRecordHandler(
@@ -67,14 +70,49 @@ class UpdateRecordHandler(
             )
             is UpdateResult.Error -> {
                 updateResult.get.logging(logger)
-                ApiFailResponse(
-                    id = id,
-                    version = version,
-                    result = ApiFailResponse.Error(
-                        code = updateResult.get.code,
-                        description = updateResult.get.message
-                    ).toList()
-                )
+                when(updateResult.get) {
+                    is Fail.Error                              -> {
+                        ApiFailResponse(
+                            id = id,
+                            version = version,
+                            result = ApiFailResponse.Error(
+                                code = updateResult.get.code,
+                                description = updateResult.get.message
+                            ).toList()
+                        )
+                    }
+                    is Fail.Incident.Transform.Parsing         ,
+                    is Fail.Incident.Transform.Mapping         ,
+                    is Fail.Incident.Transform.Deserialization ,
+                    is Fail.Incident.Transform.Serialization   ,
+                    is Fail.Incident.NetworkError              ,
+                    is Fail.Incident.BadResponse               ,
+                    is Fail.Incident.ResponseError             ,
+                    is Fail.Incident.Database.Access           ,
+                    is Fail.Incident.Database.NotFound         ,
+                    is Fail.Incident.Database.InvalidData      ,
+                    is Fail.Incident.InternalError             -> {
+                        ApiIncidentResponse(
+                            id = id,
+                            version = version,
+                            result = ApiIncidentResponse.Incident(
+                                id = id,
+                                date = LocalDateTime.now(),
+                                service = ApiIncidentResponse.Incident.Service(
+                                    id = GlobalProperties.service.id,
+                                    version = GlobalProperties.service.version,
+                                    name = GlobalProperties.service.name
+                                ),
+                                errors = ApiIncidentResponse.Incident.Error(
+                                    code = updateResult.get.code,
+                                    description = updateResult.get.description,
+                                    metadata = null
+                                ).toList()
+                            )
+                        )
+                    }
+                }
+
             }
         }
     }
