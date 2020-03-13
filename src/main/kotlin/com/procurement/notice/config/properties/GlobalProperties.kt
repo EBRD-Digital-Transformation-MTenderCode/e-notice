@@ -1,8 +1,6 @@
 package com.procurement.notice.config.properties
 
 import com.procurement.notice.infrastructure.dto.ApiVersion2
-import com.procurement.notice.infrastructure.io.getResourcePath
-import com.procurement.notice.infrastructure.io.load
 import com.procurement.notice.infrastructure.io.orThrow
 import java.util.*
 
@@ -21,8 +19,15 @@ object GlobalProperties {
     )
 
     private fun loadVersion(): String {
-        val pathToFile = this.javaClass.getResourcePath("git.properties")
-        val gitProps: Properties = Properties().load(pathToFile = pathToFile)
+        val gitProps: Properties = try {
+            GlobalProperties::class.java.getResourceAsStream("/git.properties")
+                .use { stream ->
+                    Properties().apply { load(stream) }
+                }
+        } catch (expected: Exception) {
+            throw IllegalStateException(expected)
+        }
         return gitProps.orThrow("git.commit.id.abbrev")
     }
+
 }
