@@ -3,6 +3,7 @@ package com.procurement.notice.model.bpe
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.JsonNodeType
 import com.fasterxml.jackson.databind.node.NullNode
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.fail.Fail
@@ -10,13 +11,12 @@ import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.domain.utils.EnumElementProvider
 import com.procurement.notice.domain.utils.Result
-import com.procurement.notice.domain.utils.ValidationResult
 import com.procurement.notice.domain.utils.bind
 import com.procurement.notice.infrastructure.dto.ApiErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiVersion2
-import com.procurement.notice.utils.tryToObject
+import com.procurement.notice.infrastructure.extention.tryGetAttribute
 import java.time.LocalDateTime
 import java.util.*
 
@@ -92,21 +92,6 @@ fun getFullErrorCode(code: String): String = "${code}/${GlobalProperties.service
 
 val NaN: UUID
     get() = UUID(0, 0)
-
-fun JsonNode.tryGetAttribute(name: String): Result<JsonNode, DataErrors> {
-    return if (has(name)) {
-        val attr = get(name)
-        if (attr !is NullNode)
-            Result.success(attr)
-        else
-            Result.failure(
-                DataErrors.Validation.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
-            )
-    } else
-        Result.failure(
-            DataErrors.Validation.MissingRequiredAttribute(name = name)
-        )
-}
 
 fun JsonNode.getBy(parameter: String): JsonNode {
     val node = get(parameter)
@@ -184,21 +169,6 @@ fun JsonNode.getAttribute(name: String): Result<JsonNode, DataErrors> {
         )
 }
 
-fun <T : Any> JsonNode.tryGetParams(target: Class<T>): Result<T, DataErrors> =
-    getAttribute("params").bind { node ->
-        when (val result = node.tryToObject(target)) {
-            is Result.Success -> result
-            is Result.Failure -> result.mapError {
-                DataErrors.Parsing(result.error)
-            }
-        }
-    }
-
-fun JsonNode.hasParams(): ValidationResult<DataErrors> =
-    if (this.has("params"))
-        ValidationResult.ok()
-    else
-        ValidationResult.error(
-            DataErrors.Validation.MissingRequiredAttribute(name = "params")
-        )
+fun JsonNode.tryGetParams(): Result<JsonNode, DataErrors> =
+    this.tryGetAttribute(name = "params", type = JsonNodeType.OBJECT)
 
