@@ -12,8 +12,7 @@ data class RecordRelatedProcess(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("relationship") @param:JsonProperty("relationship") val relationship: List<RelatedProcessType> = emptyList(),
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: RelatedProcessScheme?,
+    @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: RelatedProcessScheme,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("identifier") @param:JsonProperty("identifier") val identifier: String?,

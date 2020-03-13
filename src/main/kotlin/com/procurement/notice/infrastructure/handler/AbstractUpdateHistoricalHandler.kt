@@ -74,8 +74,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                     result = fail.let { dataError ->
                         ApiDataErrorResponse.Error(
                             code = getFullErrorCode(dataError.code),
-                            description = dataError.description,
-                            attributeName = dataError.name
+                            description = dataError.description
                         )
                     }.toList()
                 )

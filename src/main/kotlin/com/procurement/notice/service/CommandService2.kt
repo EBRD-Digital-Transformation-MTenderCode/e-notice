@@ -8,6 +8,7 @@ import com.procurement.notice.model.bpe.errorResponse
 import com.procurement.notice.model.bpe.tryGetAction
 import com.procurement.notice.model.bpe.tryGetId
 import com.procurement.notice.model.bpe.tryGetVersion
+import com.procurement.notice.utils.toJson
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -40,7 +41,7 @@ class CommandService2(
         }
 
         if (log.isDebugEnabled)
-            log.debug("DataOfResponse: '$response'.")
+            log.debug("DataOfResponse: '${toJson(response)}'.")
 
         return response
     }

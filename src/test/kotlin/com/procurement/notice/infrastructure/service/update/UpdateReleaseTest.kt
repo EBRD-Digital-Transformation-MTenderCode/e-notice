@@ -1263,14 +1263,14 @@ class UpdatedRecordTest {
         val existsElements = listOf(
             RecordRelatedProcess(
                 id = "rqRelatedProcess.id-1",
-                scheme = null,
+                scheme = RelatedProcessScheme.OCID,
                 identifier = "available?.identifier-1",
                 uri = "available?.uri-1",
                 relationship = listOf(RelatedProcessType.PARENT)
             ),
             RecordRelatedProcess(
                 id = commonId,
-                scheme = null,
+                scheme = RelatedProcessScheme.OCID,
                 identifier = "available?.identifier",
                 uri = "available?.uri",
                 relationship = listOf(RelatedProcessType.PLANNING)
