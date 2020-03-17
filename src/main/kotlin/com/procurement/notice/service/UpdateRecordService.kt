@@ -1,7 +1,9 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.application.model.extractStage
+import com.procurement.notice.application.model.parseCpid
+import com.procurement.notice.application.model.parseOcid
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.request.RequestRelease
 import com.procurement.notice.infrastructure.handler.UpdateResult
@@ -18,21 +20,19 @@ class UpdateRecordService(
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(UpdateRecordService::class.java)
-        private val regex = "(?<=[A-Za-z0-9]{4}-[A-Za-z0-9]{6}-[A-Z]{2}-[0-9]{13}-)([A-Z]{2})(?=-[0-9]{13})".toRegex()
     }
 
     fun updateRecord(data: RequestRelease): UpdateResult<Fail> {
-        val ocid = data.ocid
-        val stage = extractStage(ocid)
-            ?: return UpdateResult.error(
-                DataErrors.Validation.DataMismatchToPattern(
-                    name = "ocid",
-                    pattern = regex.pattern,
-                    actualValue = ocid
-                )
-            )
+        val ocid = parseOcid(data.ocid)
+            .doReturn { error -> return UpdateResult.error(error) }
 
-        val recordEntity = releaseService.tryGetRecordEntity(data.cpid, ocid)
+        val cpid = parseCpid(data.cpid)
+            .doReturn { error -> return UpdateResult.error(error) }
+
+        val stage = extractStage(ocid)
+            .doReturn { error -> return UpdateResult.error(error) }
+
+        val recordEntity = releaseService.tryGetRecordEntity(cpid.value, ocid.value)
             .doOnError { error -> return UpdateResult.error(error) }
             .get
             ?: return UpdateResult.error(Fail.Incident.Database.NotFound("Record not found."))
@@ -42,7 +42,7 @@ class UpdateRecordService(
             .doOnError { error -> return UpdateResult.error(Fail.Incident.Database.InvalidData(recordData)) }
             .get
 
-        val releaseId = releaseService.newReleaseId(ocid)
+        val releaseId = releaseService.newReleaseId(ocid.value)
         val updatedRelease = record.updateRelease(releaseId = releaseId, received = data)
             .doReturn { e -> return UpdateResult.error(e) }
             .also {
@@ -51,12 +51,10 @@ class UpdateRecordService(
 
         releaseService.saveRecord(
             cpId = data.cpid,
-            stage = stage,
+            stage = stage.value,
             record = updatedRelease,
             publishDate = recordEntity.publishDate
         )
         return UpdateResult.ok()
     }
-
-    private fun extractStage(ocid: String): String? = regex.find(ocid)?.value
 }
