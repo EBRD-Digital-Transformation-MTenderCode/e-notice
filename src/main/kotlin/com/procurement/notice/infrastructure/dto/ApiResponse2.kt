@@ -2,10 +2,12 @@ package com.procurement.notice.infrastructure.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonValue
 import java.time.LocalDateTime
 import java.util.*
 
+@JsonPropertyOrder("version", "id", "status", "result")
 sealed class ApiResponse2(
     @field:JsonProperty("version") @param:JsonProperty("version") val version: ApiVersion2,
     @field:JsonProperty("id") @param:JsonProperty("id") val id: UUID,
