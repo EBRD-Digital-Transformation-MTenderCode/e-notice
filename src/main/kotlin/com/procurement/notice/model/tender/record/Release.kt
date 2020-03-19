@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 data class Release (
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("ocid") @param:JsonProperty("ocid") var ocid: String,
+    @field:JsonProperty("ocid") @param:JsonProperty("ocid") var ocid: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("id") @param:JsonProperty("id") var id: String?,
@@ -23,7 +23,8 @@ data class Release (
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("date") @param:JsonProperty("date") var date: LocalDateTime?,
 
-    @field:JsonProperty("tag") @param:JsonProperty("tag") var tag: List<Tag>,
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("tag") @param:JsonProperty("tag") var tag: List<Tag> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("initiationType") @param:JsonProperty("initiationType") var initiationType: InitiationType?,
