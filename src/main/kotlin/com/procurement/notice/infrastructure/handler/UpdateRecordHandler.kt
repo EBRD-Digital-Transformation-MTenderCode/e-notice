@@ -98,7 +98,7 @@ class UpdateRecordHandler(
                                     version = GlobalProperties.service.version,
                                     name = GlobalProperties.service.name
                                 ),
-                                errors = ApiIncidentResponse.Incident.Error(
+                                details = ApiIncidentResponse.Incident.Details(
                                     code = updateResult.get.code,
                                     description = updateResult.get.description,
                                     metadata = null

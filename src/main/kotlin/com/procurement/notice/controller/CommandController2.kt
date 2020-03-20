@@ -1,5 +1,6 @@
 package com.procurement.notice.controller
 
+import com.procurement.notice.application.service.Logger
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.Result.Failure
@@ -24,7 +25,10 @@ import java.util.*
 
 @RestController
 @RequestMapping("/command2")
-class CommandController2(private val commandService: CommandService2) {
+class CommandController2(
+    private val commandService: CommandService2,
+    private val logger: Logger
+) {
     companion object {
         private val log = LoggerFactory.getLogger(CommandController2::class.java)
     }
@@ -66,7 +70,7 @@ class CommandController2(private val commandService: CommandService2) {
         id: UUID = NaN,
         version: ApiVersion2 = GlobalProperties.App.apiVersion
     ): ResponseEntity<ApiResponse2> {
-        val response = errorResponse(fail = fail, version = version, id = id)
+        val response = errorResponse(fail = fail, version = version, id = id, logger = logger)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
