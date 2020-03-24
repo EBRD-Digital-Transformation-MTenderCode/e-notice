@@ -1,10 +1,8 @@
 package com.procurement.notice.application.model
 
 import com.fasterxml.jackson.annotation.JsonValue
-import com.procurement.notice.domain.extention.toMilliseconds
-import java.time.LocalDateTime
 
-class Ocid private constructor(private val value: String) {
+class Ocid private constructor(private val value: String, val stage: Stage) {
 
     override fun equals(other: Any?): Boolean {
         return if (this !== other)
@@ -29,9 +27,11 @@ class Ocid private constructor(private val value: String) {
         val pattern: String
             get() = regex.pattern
 
-        fun tryCreateOrNull(value: String): Ocid? = if (value.matches(regex)) Ocid(value = value) else null
-
-        fun generate(cpid: Cpid, stage: Stage, timestamp: LocalDateTime): Ocid =
-            Ocid("$cpid-$stage-${timestamp.toMilliseconds()}")
+        fun tryCreateOrNull(value: String): Ocid? =
+            if (value.matches(regex)) {
+                val stage = Stage.orNull(value.split("-")[4])
+                Ocid(value = value, stage = stage!!)
+            } else
+                null
     }
 }

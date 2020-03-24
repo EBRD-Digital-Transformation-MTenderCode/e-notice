@@ -1,9 +1,6 @@
 package com.procurement.notice.application.model
 
 import com.fasterxml.jackson.annotation.JsonValue
-import com.procurement.notice.domain.extention.toMilliseconds
-import com.procurement.notice.domain.model.country.CountryId
-import java.time.LocalDateTime
 
 class Cpid private constructor(private val value: String) {
 
@@ -27,8 +24,5 @@ class Cpid private constructor(private val value: String) {
             get() = regex.pattern
 
         fun tryCreateOrNull(value: String): Cpid? = if (value.matches(regex)) Cpid(value = value) else null
-
-        fun generate(prefix: String, country: CountryId, timestamp: LocalDateTime): Cpid =
-            Cpid("${prefix.toLowerCase()}-${country.toUpperCase()}-${timestamp.toMilliseconds()}")
     }
 }

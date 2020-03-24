@@ -1,6 +1,5 @@
 package com.procurement.notice.service
 
-import com.procurement.notice.application.model.extractStage
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
 import com.procurement.notice.domain.fail.Fail
@@ -30,9 +29,6 @@ class UpdateRecordService(
             .doReturn { error -> return UpdateResult.error(error) }
             .toString()
 
-        val stage = extractStage(ocid)
-            .doReturn { error -> return UpdateResult.error(error) }
-
         val recordEntity = releaseService.tryGetRecordEntity(cpid, ocid.toString())
             .doOnError { error -> return UpdateResult.error(error) }
             .get
@@ -52,7 +48,7 @@ class UpdateRecordService(
 
         releaseService.saveRecord(
             cpId = data.cpid,
-            stage = stage.toString(),
+            stage = ocid.stage.toString(),
             record = updatedRelease,
             publishDate = recordEntity.publishDate
         )
