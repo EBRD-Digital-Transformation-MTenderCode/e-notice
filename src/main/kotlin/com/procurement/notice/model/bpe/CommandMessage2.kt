@@ -116,7 +116,19 @@ fun JsonNode.tryGetId(): Result<UUID, DataErrors> {
     return this.getAttribute("id")
         .bind {
             val value = it.asText()
-            asUUID(value)
+            val actualType = it.nodeType
+            when (actualType) {
+                JsonNodeType.STRING  -> asUUID(value)
+                else ->
+                    Result.failure(
+                        DataErrors.Validation.DataTypeMismatch(
+                            name = "id",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
+                    )
+
+            }
         }
 }
 
@@ -125,16 +137,31 @@ fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataErrors> {
         .bind {
             val value = it.asText()
             val actualType = it.nodeType
-            when (val result = ApiVersion2.tryValueOf(value)) {
-                is Result.Success -> result
-                is Result.Failure -> result.mapError {
-                    DataErrors.Validation.DataTypeMismatch(
-                        name = "version",
-                        expectedType = JsonNodeType.STRING.toString(),
-                        actualType = actualType.toString()
+
+            when (actualType) {
+                JsonNodeType.STRING  ->
+                    when (val result = ApiVersion2.tryValueOf(value)) {
+                        is Result.Success -> result
+                        is Result.Failure -> result.mapError {
+                            DataErrors.Validation.DataFormatMismatch(
+                                name = "version",
+                                actualValue = value,
+                                expectedFormat = "00.00.00"
+                            )
+                        }
+                    }
+
+                else ->
+                    Result.failure(
+                        DataErrors.Validation.DataTypeMismatch(
+                            name = "version",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
                     )
-                }
+
             }
+
         }
 }
 
@@ -142,16 +169,31 @@ fun JsonNode.tryGetAction(): Result<CommandType2, DataErrors> {
     return this.getAttribute("action")
         .bind {
             val value = it.asText()
-            when (val result = CommandType2.tryOf(value)) {
-                is Result.Success -> result
-                is Result.Failure -> result.mapError {
-                    DataErrors.Validation.UnknownValue(
-                        name = "action",
-                        actualValue = value,
-                        expectedValues = CommandType2.allowedValues
+            val actualType = it.nodeType
+
+            when (actualType) {
+                JsonNodeType.STRING  ->
+                    when (val result = CommandType2.tryOf(value)) {
+                        is Result.Success -> result
+                        is Result.Failure -> result.mapError {
+                            DataErrors.Validation.UnknownValue(
+                                name = "action",
+                                actualValue = value,
+                                expectedValues = CommandType2.allowedValues
+                            )
+                        }
+                    }
+                else ->
+                    Result.failure(
+                        DataErrors.Validation.DataTypeMismatch(
+                            name = "action",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
                     )
-                }
+
             }
+
         }
 }
 

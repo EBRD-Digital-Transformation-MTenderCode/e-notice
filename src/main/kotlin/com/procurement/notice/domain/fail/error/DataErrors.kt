@@ -13,7 +13,7 @@ sealed class DataErrors(number: String, override val description: String) :
     }
 
     sealed class Validation(numberError: String, val name: String, description: String) :
-        DataErrors(number = "1.$numberError", description = description) {
+        DataErrors(number = numberError, description = description) {
 
         companion object {
             const val ATTRIBUTE_NAME_KEY = "attributeName"
