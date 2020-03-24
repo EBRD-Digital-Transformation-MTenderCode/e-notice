@@ -28,11 +28,12 @@ class UpdateRecordService(
 
         val cpid = parseCpid(data.cpid)
             .doReturn { error -> return UpdateResult.error(error) }
+            .toString()
 
         val stage = extractStage(ocid)
             .doReturn { error -> return UpdateResult.error(error) }
 
-        val recordEntity = releaseService.tryGetRecordEntity(cpid.value, ocid.value)
+        val recordEntity = releaseService.tryGetRecordEntity(cpid, ocid.toString())
             .doOnError { error -> return UpdateResult.error(error) }
             .get
             ?: return UpdateResult.error(Fail.Incident.Database.NotFound("Record not found."))
@@ -42,7 +43,7 @@ class UpdateRecordService(
             .doOnError { error -> return UpdateResult.error(Fail.Incident.Database.InvalidData(recordData)) }
             .get
 
-        val releaseId = releaseService.newReleaseId(ocid.value)
+        val releaseId = releaseService.newReleaseId(ocid.toString())
         val updatedRelease = record.updateRelease(releaseId = releaseId, received = data)
             .doReturn { e -> return UpdateResult.error(e) }
             .also {
@@ -51,7 +52,7 @@ class UpdateRecordService(
 
         releaseService.saveRecord(
             cpId = data.cpid,
-            stage = stage.value,
+            stage = stage.toString(),
             record = updatedRelease,
             publishDate = recordEntity.publishDate
         )
