@@ -39,7 +39,7 @@ class UpdateRecordHandler(
 
         val dataNode = node.tryGetParams()
             .doOnError { error ->
-                ApiFailResponse(
+                return ApiFailResponse(
                     id = id,
                     version = version,
                     result = ApiFailResponse.Error(
@@ -50,12 +50,22 @@ class UpdateRecordHandler(
             }
             .get
             .tryGetAttribute("data", JsonNodeType.OBJECT)
+            .doOnError { error ->
+                return ApiFailResponse(
+                    id = id,
+                    version = version,
+                    result = ApiFailResponse.Error(
+                        code = error.code,
+                        description = error.description
+                    ).toList()
+                )
+            }
             .get
 
 
         val requestRelease = transform.tryMapping(dataNode, RequestRelease::class.java)
             .doOnError { error ->
-                ApiFailResponse(
+                return ApiFailResponse(
                     id = id,
                     version = version,
                     result = ApiFailResponse.Error(
