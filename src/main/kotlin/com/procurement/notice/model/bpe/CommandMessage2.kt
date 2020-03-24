@@ -124,13 +124,14 @@ fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataErrors> {
     return this.getAttribute("version")
         .bind {
             val value = it.asText()
+            val actualType = it.nodeType
             when (val result = ApiVersion2.tryValueOf(value)) {
                 is Result.Success -> result
                 is Result.Failure -> result.mapError {
-                    DataErrors.Validation.DataFormatMismatch(
+                    DataErrors.Validation.DataTypeMismatch(
                         name = "version",
-                        actualValue = value,
-                        expectedFormat = "00.00.00"
+                        expectedType = JsonNodeType.STRING.toString(),
+                        actualType = actualType.toString()
                     )
                 }
             }
