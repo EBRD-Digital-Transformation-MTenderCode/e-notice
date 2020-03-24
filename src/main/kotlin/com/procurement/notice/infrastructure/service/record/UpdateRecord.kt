@@ -659,8 +659,8 @@ fun RecordOrganizationReference.updateAuthor(received: RequestOrganizationRefere
 val recordIdentifierKeyExtractor: (RecordIdentifier) -> String = { it.id }
 val requestIdentifierKeyExtractor: (RequestIdentifier) -> String = { it.id }
 
-val recordPersonKeyExtractor: (RecordPerson) -> String = { it.identifier.id }
-val requestPersonKeyExtractor: (RequestPerson) -> String = { it.identifier.id }
+val recordPersonKeyExtractor: (RecordPerson) -> String = { it.identifier.id + it.identifier.scheme }
+val requestPersonKeyExtractor: (RequestPerson) -> String = { it.identifier.id + it.identifier.scheme }
 
 fun RecordPerson.updatePerson(received: RequestPerson): UpdateRecordResult<RecordPerson> {
     val identifier = this.identifier.updateIdentifier(received.identifier)

@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.Logger
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.handler.UpdateRecordHandler
 import com.procurement.notice.model.bpe.CommandType2
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class CommandService2(
-    private val updateRecordHandler: UpdateRecordHandler
+    private val updateRecordHandler: UpdateRecordHandler,
+    private val logger: Logger
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(CommandService2::class.java)
@@ -23,15 +25,15 @@ class CommandService2(
     fun execute(request: JsonNode): ApiResponse2 {
 
         val id = request.tryGetId()
-            .doOnError { error -> return errorResponse(fail = error) }
+            .doOnError { error -> return errorResponse(fail = error, logger = logger) }
             .get
 
         val version = request.tryGetVersion()
-            .doOnError { error -> return errorResponse(fail = error, id = id) }
+            .doOnError { error -> return errorResponse(fail = error, id = id, logger = logger) }
             .get
 
         val action = request.tryGetAction()
-            .doOnError { error -> return errorResponse(fail = error, id = id, version = version) }
+            .doOnError { error -> return errorResponse(fail = error, id = id, version = version, logger = logger) }
             .get
 
         val response = when (action) {

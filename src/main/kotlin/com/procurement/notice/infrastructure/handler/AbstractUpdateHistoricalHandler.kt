@@ -15,7 +15,6 @@ import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse
 import com.procurement.notice.infrastructure.dto.ApiVersion2
-import com.procurement.notice.model.bpe.getFullErrorCode
 import com.procurement.notice.model.bpe.tryGetId
 import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.model.entity.HistoryEntity
@@ -73,8 +72,11 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                     id = id,
                     result = fail.let { dataError ->
                         ApiDataErrorResponse.Error(
-                            code = getFullErrorCode(dataError.code),
-                            description = dataError.description
+                            code = dataError.code,
+                            description = dataError.description,
+                            details = listOf(
+                                ApiDataErrorResponse.Error.Detail(name = fail.name)
+                            )
                         )
                     }.toList()
                 )
@@ -84,15 +86,15 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                     id = id,
                     result = fail.let { error ->
                         ApiFailResponse.Error(
-                            code = getFullErrorCode(error.code),
+                            code = error.code,
                             description = error.description
                         )
                     }.toList()
                 )
             is Fail.Incident         -> {
                 val errors = fail.let { incident ->
-                    ApiIncidentResponse.Incident.Error(
-                        code = getFullErrorCode(incident.code),
+                    ApiIncidentResponse.Incident.Details(
+                        code = incident.code,
                         description = incident.description,
                         metadata = null
                     )
@@ -103,7 +105,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
     }
 
     private fun generateIncident(
-        errors: List<ApiIncidentResponse.Incident.Error>, version: ApiVersion2, id: UUID
+        errors: List<ApiIncidentResponse.Incident.Details>, version: ApiVersion2, id: UUID
     ): ApiIncidentResponse =
         ApiIncidentResponse(
             version = version,
@@ -116,7 +118,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                     version = GlobalProperties.service.version,
                     name = GlobalProperties.service.name
                 ),
-                errors = errors
+                details = errors
             )
         )
 
