@@ -1,5 +1,6 @@
 package com.procurement.notice.domain.extention
 
+import com.procurement.notice.domain.utils.Result
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -14,3 +15,10 @@ fun LocalDateTime.format(): String = this.format(formatter)
 fun String.parse(): LocalDateTime = LocalDateTime.parse(this, formatter)
 
 fun nowDefaultUTC(): LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
+
+fun String.tryParse(): Result<LocalDateTime, String> = try {
+    Result.success(LocalDateTime.parse(this, formatter))
+} catch (ignore: Exception) {
+    Result.failure(FORMAT_PATTERN)
+}
+

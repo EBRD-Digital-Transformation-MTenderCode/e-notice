@@ -1,12 +1,10 @@
 package com.procurement.notice.infrastructure.handler
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeType
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.infrastructure.dto.request.RequestRelease
-import com.procurement.notice.infrastructure.extention.tryGetAttribute
+import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.model.bpe.CommandType2
 import com.procurement.notice.model.bpe.tryGetParams
@@ -25,24 +23,25 @@ class UpdateRecordHandler(
         get() = CommandType2.UPDATE_RECORD
 
     override fun execute(node: JsonNode): UpdateResult<Fail> {
-        val dataNode = node.tryGetParams()
-            .doOnError { error -> return UpdateResult.error(error) }
-            .get
-            .tryGetAttribute("data", JsonNodeType.OBJECT)
+        val paramsNode = node.tryGetParams()
             .doOnError { error -> return UpdateResult.error(error) }
             .get
 
-        val requestRelease = transform.tryMapping(dataNode, RequestRelease::class.java)
+        val params = transform.tryMapping(paramsNode, UpdateRecordRequest::class.java)
             .doOnError { error ->
                 return UpdateResult.error(
                     Fail.Error.BadRequest(
-                        description = "Can not parse 'data'.",
+                        description = error.message,
                         exception = error.exception
                     )
                 )
             }
             .get
+            .convert()
+            .doOnError { error -> return UpdateResult.error(error) }
+            .get
 
-        return updateRecordService.updateRecord(data = requestRelease)
+
+        return updateRecordService.updateRecord(params = params)
     }
 }

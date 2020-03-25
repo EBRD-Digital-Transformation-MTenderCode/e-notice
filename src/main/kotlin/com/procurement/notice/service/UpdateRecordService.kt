@@ -2,12 +2,12 @@ package com.procurement.notice.service
 
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
+import com.procurement.notice.application.model.record.UpdateRecordParams
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.entity.Record
-import com.procurement.notice.infrastructure.dto.request.RequestRelease
 import com.procurement.notice.infrastructure.handler.UpdateResult
 import com.procurement.notice.infrastructure.service.Transform
-import com.procurement.notice.infrastructure.service.record.updateRelease
+import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -21,7 +21,10 @@ class UpdateRecordService(
         private val log = LoggerFactory.getLogger(UpdateRecordService::class.java)
     }
 
-    fun updateRecord(data: RequestRelease): UpdateResult<Fail> {
+    fun updateRecord(params: UpdateRecordParams): UpdateResult<Fail> {
+
+        val data = params.data
+
         val ocid = parseOcid(data.ocid)
             .doReturn { error -> return UpdateResult.error(error) }
 
@@ -50,7 +53,7 @@ class UpdateRecordService(
             cpId = data.cpid,
             stage = ocid.stage.toString(),
             record = updatedRelease,
-            publishDate = recordEntity.publishDate
+            publishDate = params.startDate.toDate()
         )
         return UpdateResult.ok()
     }
