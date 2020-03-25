@@ -9,7 +9,7 @@ import com.procurement.notice.application.service.Logger
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.extention.nowDefaultUTC
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.domain.fail.error.DataErrors
+import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.domain.utils.EnumElementProvider
 import com.procurement.notice.domain.utils.Result
@@ -46,7 +46,7 @@ fun errorResponse(
     return when (fail) {
         is Fail.Error -> {
             when (fail) {
-                is DataErrors.Validation ->
+                is DataValidationErrors ->
                     ApiDataErrorResponse(
                         version = version,
                         id = id,
@@ -112,55 +112,97 @@ fun JsonNode.getBy(parameter: String): JsonNode {
     return node
 }
 
-fun JsonNode.tryGetId(): Result<UUID, DataErrors> {
+fun JsonNode.tryGetId(): Result<UUID, DataValidationErrors> {
     return this.getAttribute("id")
         .bind {
             val value = it.asText()
-            asUUID(value)
+            val actualType = it.nodeType
+            when (actualType) {
+                JsonNodeType.STRING  -> asUUID(value)
+                else ->
+                    Result.failure(
+                        DataValidationErrors.DataTypeMismatch(
+                            name = "id",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
+                    )
+
+            }
         }
 }
 
-fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataErrors> {
+fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataValidationErrors> {
     return this.getAttribute("version")
         .bind {
             val value = it.asText()
             val actualType = it.nodeType
-            when (val result = ApiVersion2.tryValueOf(value)) {
-                is Result.Success -> result
-                is Result.Failure -> result.mapError {
-                    DataErrors.Validation.DataTypeMismatch(
-                        name = "version",
-                        expectedType = JsonNodeType.STRING.toString(),
-                        actualType = actualType.toString()
+
+            when (actualType) {
+                JsonNodeType.STRING  ->
+                    when (val result = ApiVersion2.tryValueOf(value)) {
+                        is Result.Success -> result
+                        is Result.Failure -> result.mapError {
+                            DataValidationErrors.DataFormatMismatch(
+                                name = "version",
+                                actualValue = value,
+                                expectedFormat = "00.00.00"
+                            )
+                        }
+                    }
+
+                else ->
+                    Result.failure(
+                        DataValidationErrors.DataTypeMismatch(
+                            name = "version",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
                     )
-                }
+
             }
+
         }
 }
 
-fun JsonNode.tryGetAction(): Result<CommandType2, DataErrors> {
+fun JsonNode.tryGetAction(): Result<CommandType2, DataValidationErrors> {
     return this.getAttribute("action")
         .bind {
             val value = it.asText()
-            when (val result = CommandType2.tryOf(value)) {
-                is Result.Success -> result
-                is Result.Failure -> result.mapError {
-                    DataErrors.Validation.UnknownValue(
-                        name = "action",
-                        actualValue = value,
-                        expectedValues = CommandType2.allowedValues
+            val actualType = it.nodeType
+
+            when (actualType) {
+                JsonNodeType.STRING  ->
+                    when (val result = CommandType2.tryOf(value)) {
+                        is Result.Success -> result
+                        is Result.Failure -> result.mapError {
+                            DataValidationErrors.UnknownValue(
+                                name = "action",
+                                actualValue = value,
+                                expectedValues = CommandType2.allowedValues
+                            )
+                        }
+                    }
+                else ->
+                    Result.failure(
+                        DataValidationErrors.DataTypeMismatch(
+                            name = "action",
+                            expectedType = JsonNodeType.STRING.toString(),
+                            actualType = actualType.toString()
+                        )
                     )
-                }
+
             }
+
         }
 }
 
-private fun asUUID(value: String): Result<UUID, DataErrors> =
+private fun asUUID(value: String): Result<UUID, DataValidationErrors> =
     try {
         Result.success<UUID>(UUID.fromString(value))
     } catch (exception: IllegalArgumentException) {
         Result.failure(
-            DataErrors.Validation.DataFormatMismatch(
+            DataValidationErrors.DataFormatMismatch(
                 name = "id",
                 expectedFormat = "uuid",
                 actualValue = value
@@ -168,21 +210,21 @@ private fun asUUID(value: String): Result<UUID, DataErrors> =
         )
     }
 
-fun JsonNode.getAttribute(name: String): Result<JsonNode, DataErrors> {
+fun JsonNode.getAttribute(name: String): Result<JsonNode, DataValidationErrors> {
     return if (has(name)) {
         val attr = get(name)
         if (attr !is NullNode)
             Result.success(attr)
         else
             Result.failure(
-                DataErrors.Validation.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
+                DataValidationErrors.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
             )
     } else
         Result.failure(
-            DataErrors.Validation.MissingRequiredAttribute(name = name)
+            DataValidationErrors.MissingRequiredAttribute(name = name)
         )
 }
 
-fun JsonNode.tryGetParams(): Result<JsonNode, DataErrors> =
+fun JsonNode.tryGetParams(): Result<JsonNode, DataValidationErrors> =
     this.tryGetAttribute(name = "params", type = JsonNodeType.OBJECT)
 

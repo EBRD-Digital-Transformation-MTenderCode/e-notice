@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeFormatter
 import com.procurement.notice.infrastructure.bind.jackson.configuration
@@ -91,5 +90,5 @@ fun <T : Any> String.tryToObject(target: Class<T>): Result<T, String> = try {
 fun String.toNode(): Result<JsonNode, Fail> = try {
     Result.success(JsonMapper.mapper.readTree(this))
 } catch (expected: JsonProcessingException) {
-    Result.failure(DataErrors.Parsing("Can not parse Sting to Node"))
+    Result.failure(Fail.Incident.Transform.Parsing("Can not parse Sting to Node", exception = expected))
 }
