@@ -6,7 +6,7 @@ import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure
 import com.procurement.notice.infrastructure.dto.request.RequestRelease
-import com.procurement.notice.utils.tryMapping
+import com.procurement.notice.utils.tryDeserialize
 import java.time.LocalDateTime
 
 class UpdateRecordParams private constructor(
@@ -31,7 +31,7 @@ class UpdateRecordParams private constructor(
                 }
                 .get
 
-            val dataParsed = tryMapping(data, RequestRelease::class.java)
+            val dataParsed = tryDeserialize(data, RequestRelease::class.java)
                 .doOnError { error ->
                     return failure(
                         Fail.Error.BadRequest(

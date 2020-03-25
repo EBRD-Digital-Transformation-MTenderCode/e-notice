@@ -93,7 +93,7 @@ fun String.toNode(): Result<JsonNode, Fail> = try {
     Result.failure(Fail.Incident.Transform.Parsing("Can not parse Sting to Node", exception = expected))
 }
 
-fun <R> tryMapping(value: String, target: Class<R>): Result<R, Fail.Incident.Transform.Mapping> =
+fun <R> tryDeserialize(value: String, target: Class<R>): Result<R, Fail.Incident.Transform.Mapping> =
     try {
         Result.success(JsonMapper.mapper.readValue(value, target))
     } catch (expected: Exception) {
