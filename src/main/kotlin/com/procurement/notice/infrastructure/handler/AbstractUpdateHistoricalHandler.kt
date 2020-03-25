@@ -9,7 +9,6 @@ import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.infrastructure.dto.ApiDataErrorResponse
-import com.procurement.notice.infrastructure.dto.ApiErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiFailResponse
 import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
@@ -46,21 +45,19 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
             return result.get
         }
 
-        val result: ApiResponse2 = execute(node)
-        return when(result) {
-            is ApiSuccessResponse -> {
-                historyDao.saveHistory(result.id.toString(), action.key, result)
-                logger.info("${action.key} has been executed. Result: ${toJson(result)}")
-                result
-            }
-            is ApiDataErrorResponse,
-            is ApiFailResponse,
-            is ApiErrorResponse,
-            is ApiIncidentResponse -> result
+        val result: UpdateResult<Fail> = execute(node)
+
+        return when (result) {
+            is UpdateResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = result)
+                .also {
+                    historyDao.saveHistory(id.toString(), action.key, result)
+                    logger.info("${action.key} has been executed. Result: ${toJson(result)}")
+                }
+            is UpdateResult.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
         }
     }
 
-    abstract fun execute(node: JsonNode): ApiResponse2
+    abstract fun execute(node: JsonNode): UpdateResult<Fail>
 
     fun generateResponseOnFailure(fail: Fail, version: ApiVersion2, id: UUID): ApiResponse2 {
         fail.logging(logger)
@@ -121,7 +118,5 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                 details = errors
             )
         )
-
-
 }
 
