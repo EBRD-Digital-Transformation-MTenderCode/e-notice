@@ -6,7 +6,7 @@ import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.domain.fail.error.DataErrors
+import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.infrastructure.dto.ApiDataErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiErrorResponse
@@ -66,7 +66,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
         fail.logging(logger)
 
         return when (fail) {
-            is DataErrors.Validation ->
+            is DataValidationErrors ->
                 ApiDataErrorResponse(
                     version = version,
                     id = id,
