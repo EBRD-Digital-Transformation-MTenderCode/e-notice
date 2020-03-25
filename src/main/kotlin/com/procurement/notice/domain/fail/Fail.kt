@@ -15,12 +15,12 @@ sealed class Fail(prefix: String, number: String) {
     abstract fun logging(logger: Logger)
 
     abstract class Error(prefix: String, number: String) : Fail(prefix = prefix, number = number) {
-        class BadRequest(override val description: String) : Error(
+        class BadRequest(override val description: String, val exception: Exception? = null) : Error(
             prefix = "B-",
             number = "7"
         ) {
             override fun logging(logger: Logger) {
-                logger.error(message = message)
+                logger.error(message = message, exception = exception)
             }
         }
     }
