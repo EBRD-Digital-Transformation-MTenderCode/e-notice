@@ -7,6 +7,8 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder.eq
 import com.datastax.driver.core.querybuilder.QueryBuilder.insertInto
 import com.datastax.driver.core.querybuilder.QueryBuilder.select
+import com.procurement.notice.application.model.Cpid
+import com.procurement.notice.application.model.Ocid
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure
@@ -110,12 +112,12 @@ class ReleaseDao(private val session: Session) {
                 row.getString(JSON_DATA)) else null
     }
 
-    fun tryGetByCpIdAndOcId(cpId: String, ocId: String): Result<ReleaseEntity?, Fail.Incident.Database> {
+    fun tryGetByCpIdAndOcId(cpid: Cpid, ocid: Ocid): Result<ReleaseEntity?, Fail.Incident.Database> {
         val query = select()
                 .all()
                 .from(TENDER_COMPILED_TABLE)
-                .where(eq(CP_ID, cpId))
-                .and(eq(OC_ID, ocId))
+                .where(eq(CP_ID, cpid.toString()))
+                .and(eq(OC_ID, ocid.toString()))
                 .limit(1)
         return load(query)
             .doOnError { error -> return failure(error) }

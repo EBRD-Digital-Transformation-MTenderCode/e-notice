@@ -31,9 +31,8 @@ class UpdateRecordService(
 
         val cpid = parseCpid(data.cpid)
             .doReturn { error -> return UpdateResult.error(error) }
-            .toString()
 
-        val recordEntity = releaseService.tryGetRecordEntity(cpid, ocid.toString())
+        val recordEntity = releaseService.tryGetRecordEntity(cpid, ocid)
             .doOnError { error -> return UpdateResult.error(error) }
             .get
             ?: return UpdateResult.error(Fail.Incident.Database.NotFound("Record not found."))
