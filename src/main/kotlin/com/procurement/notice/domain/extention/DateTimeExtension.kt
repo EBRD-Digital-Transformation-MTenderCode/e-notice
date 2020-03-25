@@ -17,7 +17,7 @@ fun String.parseLocalDateTime(): LocalDateTime = LocalDateTime.parse(this, forma
 fun nowDefaultUTC(): LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
 
 fun String.tryParseLocalDateTime(): Result<LocalDateTime, String> = try {
-    Result.success(LocalDateTime.parse(this, formatter))
+    Result.success(this.parseLocalDateTime())
 } catch (ignore: Exception) {
     Result.failure(FORMAT_PATTERN)
 }
