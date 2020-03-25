@@ -12,11 +12,11 @@ private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(FORMAT_PA
 
 fun LocalDateTime.format(): String = this.format(formatter)
 
-fun String.parse(): LocalDateTime = LocalDateTime.parse(this, formatter)
+fun String.parseLocalDateTime(): LocalDateTime = LocalDateTime.parse(this, formatter)
 
 fun nowDefaultUTC(): LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
 
-fun String.tryParse(): Result<LocalDateTime, String> = try {
+fun String.tryParseLocalDateTime(): Result<LocalDateTime, String> = try {
     Result.success(LocalDateTime.parse(this, formatter))
 } catch (ignore: Exception) {
     Result.failure(FORMAT_PATTERN)

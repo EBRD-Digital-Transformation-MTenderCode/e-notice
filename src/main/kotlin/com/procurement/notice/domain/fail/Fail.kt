@@ -15,7 +15,10 @@ sealed class Fail(prefix: String, number: String) {
     abstract fun logging(logger: Logger)
 
     abstract class Error(prefix: String, number: String) : Fail(prefix = prefix, number = number) {
-        class BadRequest(override val description: String, val exception: Exception? = null) : Error(
+        class BadRequest(
+            override val description: String,
+            val json: String? = null,
+            val exception: Exception? = null) : Error(
             prefix = "B-",
             number = "7"
         ) {
@@ -79,12 +82,12 @@ sealed class Fail(prefix: String, number: String) {
             class NotFound(description: String) :
                 Database(number = "5.2", description = description)
 
-            class InvalidData(val data: String) : Database(
+            class InvalidData(val data: String, val exception: Exception? = null) : Database(
                 number = "5.3",
                 description = "Could not parse data stored in database. "
             ) {
                 override fun logging(logger: Logger) {
-                    logger.error(message, mdc = mapOf("data" to data))
+                    logger.error(message, mdc = mapOf("data" to data), exception = exception)
                 }
             }
         }

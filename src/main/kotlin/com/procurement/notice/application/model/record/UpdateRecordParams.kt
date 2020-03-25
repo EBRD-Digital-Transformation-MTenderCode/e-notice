@@ -1,6 +1,6 @@
 package com.procurement.notice.application.model.record
 
-import com.procurement.notice.domain.extention.tryParse
+import com.procurement.notice.domain.extention.tryParseLocalDateTime
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Result
@@ -19,7 +19,7 @@ class UpdateRecordParams private constructor(
             data: String
         ): Result<UpdateRecordParams, Fail> {
 
-            val startDateParsed = startDate.tryParse()
+            val startDateParsed = startDate.tryParseLocalDateTime()
                 .doOnError { expectedFormat ->
                     return failure(
                         DataValidationErrors.DataFormatMismatch(
@@ -36,6 +36,7 @@ class UpdateRecordParams private constructor(
                     return failure(
                         Fail.Error.BadRequest(
                             description = "Can not parse 'data'.",
+                            json = data,
                             exception = error.exception
                         )
                     )

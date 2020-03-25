@@ -7,6 +7,7 @@ import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.handler.UpdateResult
 import com.procurement.notice.infrastructure.service.Transform
+import com.procurement.notice.infrastructure.service.record.updateRelease
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import org.slf4j.LoggerFactory
@@ -38,8 +39,12 @@ class UpdateRecordService(
             ?: return UpdateResult.error(Fail.Incident.Database.NotFound("Record not found."))
 
         val recordData = recordEntity.jsonData
-        val record = jacksonJsonTransform.tryMapping(recordData, Record::class.java)
-            .doOnError { error -> return UpdateResult.error(Fail.Incident.Database.InvalidData(recordData)) }
+        val record = jacksonJsonTransform.tryDeserialization(recordData, Record::class.java)
+            .doOnError { error: Fail.Incident.Transform.Deserialization ->
+                return UpdateResult.error(
+                    Fail.Incident.Database.InvalidData(data = recordData, exception = error.exception )
+                )
+            }
             .get
 
         val releaseId = releaseService.newReleaseId(ocid.toString())

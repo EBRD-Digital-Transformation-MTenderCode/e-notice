@@ -32,6 +32,7 @@ class UpdateRecordHandler(
                 return UpdateResult.error(
                     Fail.Error.BadRequest(
                         description = error.message,
+                        json = paramsNode.toString(),
                         exception = error.exception
                     )
                 )
