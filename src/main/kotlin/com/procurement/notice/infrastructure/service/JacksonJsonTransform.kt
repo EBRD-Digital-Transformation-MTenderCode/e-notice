@@ -30,13 +30,6 @@ class JacksonJsonTransform(private val mapper: ObjectMapper) : Transform {
             failure(Fail.Incident.Transform.Mapping(description = "Error of binding.", exception = expected))
         }
 
-    override fun <R> tryMapping(value: String, target: Class<R>): Result<R, Fail.Incident.Transform.Mapping> =
-        try {
-            success(mapper.readValue(value, target))
-        } catch (expected: Exception) {
-            failure(Fail.Incident.Transform.Mapping(description = "Error of binding.", exception = expected))
-        }
-
     override fun <R> tryMapping(
         value: JsonNode,
         typeRef: TypeReference<R>

@@ -1117,17 +1117,6 @@ fun List<RecordElectronicAuctionProgressBreakdown>.updateElectronicAuctionProgre
 fun List<String>.update(received: List<String>): List<String> = received.mapIfNotEmpty { it } ?: this
 
 fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResult<RecordTender> {
-    val tenderId = if (received.id == this.id)
-        received.id
-    else
-        return failure(
-            Fail.Error.BadRequest(
-                description = "Cannot update 'tender'. Ids mismatching: " +
-                    "Tender from request (id = '${received.id}'), " +
-                    "Tender from release (id = '${this.id}'). "
-            )
-        )
-
     val auctionPeriod = received.auctionPeriod
         ?.let {
             this.auctionPeriod
@@ -1432,7 +1421,7 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
 
     return this
         .copy(
-            id = tenderId,
+            id = this.id,
             status = received.status ?: this.status,
             auctionPeriod = auctionPeriod,
             title = received.title ?: this.title,

@@ -599,7 +599,7 @@ fun createElectronicAuctionProgressBreakdown(received: List<RequestElectronicAuc
 
 fun createReleaseTender(received: RequestTender): RecordTender =
     RecordTender(
-        id = received.id,
+        id = received.id!!,
         status = received.status,
         auctionPeriod = received.auctionPeriod?.let { createPeriod(it) },
         title = received.title,

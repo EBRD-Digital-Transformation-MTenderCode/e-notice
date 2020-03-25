@@ -1,5 +1,6 @@
 package com.procurement.notice.domain.extention
 
+import com.procurement.notice.domain.utils.Result
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -11,6 +12,13 @@ private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(FORMAT_PA
 
 fun LocalDateTime.format(): String = this.format(formatter)
 
-fun String.parse(): LocalDateTime = LocalDateTime.parse(this, formatter)
+fun String.parseLocalDateTime(): LocalDateTime = LocalDateTime.parse(this, formatter)
 
 fun nowDefaultUTC(): LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
+
+fun String.tryParseLocalDateTime(): Result<LocalDateTime, String> = try {
+    Result.success(this.parseLocalDateTime())
+} catch (ignore: Exception) {
+    Result.failure(FORMAT_PATTERN)
+}
+

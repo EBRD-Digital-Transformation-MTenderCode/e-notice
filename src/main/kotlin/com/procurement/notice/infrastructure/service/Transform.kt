@@ -16,7 +16,6 @@ interface Transform {
      * Mapping
      */
     fun <R> tryMapping(value: JsonNode, target: Class<R>): Result<R, Fail.Incident.Transform.Mapping>
-    fun <R> tryMapping(value: String, target: Class<R>): Result<R, Fail.Incident.Transform.Mapping>
     fun <R> tryMapping(value: JsonNode, typeRef: TypeReference<R>): Result<R, Fail.Incident.Transform.Mapping>
 
 
