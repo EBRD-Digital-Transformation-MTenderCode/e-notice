@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonValue
+import com.procurement.notice.domain.fail.Fail
 import java.time.LocalDateTime
 import java.util.*
 
@@ -29,8 +30,20 @@ class ApiDataErrorResponse(
 
     override val status: ResponseStatus = ResponseStatus.ERROR
 
-    class Error(val code: String, val description: String, val details: List<Detail>) {
-        class Detail(val name: String)
+    class Error(
+        val code: String,
+        val description: String,
+
+        @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+        val details: List<Detail>? = null
+    ) {
+        class Detail(
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
+            val name: String? = null,
+
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
+            val id: String? = null
+        )
     }
 }
 
@@ -44,23 +57,18 @@ class ApiFailResponse(version: ApiVersion2, id: UUID, result: List<Error>) :
     class Error(val code: String, val description: String)
 }
 
-class ApiErrorResponse(version: ApiVersion2, id: UUID, result: List<Error>) : ApiResponse2(
-    version = version,
-    result = result,
-    id = id
-) {
-    @field:JsonProperty("status")
-    override val status: ResponseStatus = ResponseStatus.ERROR
-
-    class Error(val code: String, val description: String)
-}
-
 class ApiIncidentResponse(version: ApiVersion2, id: UUID, result: Incident) :
     ApiResponse2(version = version, result = result, id = id) {
     @field:JsonProperty("status")
     override val status: ResponseStatus = ResponseStatus.INCIDENT
 
-    class Incident(val id: UUID, val date: LocalDateTime, val service: Service, val details: List<Details>) {
+    class Incident(
+        val id: UUID,
+        val level: Fail.Incident.Level,
+        val date: LocalDateTime,
+        val service: Service,
+        val details: List<Details>
+    ) {
         class Service(val id: String, val name: String, val version: String)
         class Details(
             val code: String,
@@ -87,3 +95,4 @@ enum class ResponseStatus(private val value: String) {
         return this.value
     }
 }
+

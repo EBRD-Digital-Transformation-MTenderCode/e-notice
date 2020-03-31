@@ -94,6 +94,7 @@ private fun generateIncident(
         result = ApiIncidentResponse.Incident(
             date = nowDefaultUTC(),
             id = UUID.randomUUID(),
+            level = Fail.Incident.Level.ERROR,
             service = ApiIncidentResponse.Incident.Service(
                 id = GlobalProperties.service.id,
                 version = GlobalProperties.service.version,

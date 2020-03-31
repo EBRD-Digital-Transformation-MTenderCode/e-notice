@@ -110,6 +110,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
             result = ApiIncidentResponse.Incident(
                 date = LocalDateTime.now(),
                 id = UUID.randomUUID(),
+                level = Fail.Incident.Level.ERROR,
                 service = ApiIncidentResponse.Incident.Service(
                     id = GlobalProperties.service.id,
                     version = GlobalProperties.service.version,
