@@ -1,5 +1,6 @@
 package com.procurement.notice.domain.fail
 
+import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.utils.EnumElementProvider
@@ -98,7 +99,7 @@ sealed class Fail(prefix: String, number: String) {
             description = "Internal error"
         )
 
-        enum class Level(override val key: String) : EnumElementProvider.Key {
+        enum class Level(@JsonValue override val key: String) : EnumElementProvider.Key {
             ERROR("error"),
             WARNING("warning"),
             INFO("info");
