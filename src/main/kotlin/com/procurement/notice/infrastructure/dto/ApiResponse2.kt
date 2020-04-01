@@ -35,7 +35,7 @@ class ApiDataErrorResponse(
         val description: String,
 
         @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-        val details: List<Detail>? = null
+        val details: List<Detail> = emptyList()
     ) {
         class Detail(
             @field:JsonInclude(JsonInclude.Include.NON_NULL)
