@@ -71,9 +71,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                         ApiDataErrorResponse.Error(
                             code = dataError.code,
                             description = dataError.description,
-                            details = listOf(
-                                ApiDataErrorResponse.Error.Detail(name = fail.name)
-                            )
+                            details = ApiDataErrorResponse.Error.Detail.tryCreateOrNull(name = fail.name).toList()
                         )
                     }.toList()
                 )

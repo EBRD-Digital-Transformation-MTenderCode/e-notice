@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.config.properties.GlobalProperties
 import com.procurement.notice.domain.extention.nowDefaultUTC
+import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
@@ -54,9 +55,7 @@ fun errorResponse(
                             ApiDataErrorResponse.Error(
                                 code = fail.code,
                                 description = fail.description,
-                                details = listOf(
-                                    ApiDataErrorResponse.Error.Detail(name = fail.name)
-                                )
+                                details = ApiDataErrorResponse.Error.Detail.tryCreateOrNull(name = fail.name).toList()
                             )
                         )
                     )
