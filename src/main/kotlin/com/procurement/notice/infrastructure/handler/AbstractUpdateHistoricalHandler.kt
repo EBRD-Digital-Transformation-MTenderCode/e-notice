@@ -71,9 +71,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
                         ApiDataErrorResponse.Error(
                             code = dataError.code,
                             description = dataError.description,
-                            details = listOf(
-                                ApiDataErrorResponse.Error.Detail(name = fail.name)
-                            )
+                            details = ApiDataErrorResponse.Error.Detail.tryCreateOrNull(name = fail.name).toList()
                         )
                     }.toList()
                 )
@@ -110,6 +108,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
             result = ApiIncidentResponse.Incident(
                 date = LocalDateTime.now(),
                 id = UUID.randomUUID(),
+                level = Fail.Incident.Level.ERROR,
                 service = ApiIncidentResponse.Incident.Service(
                     id = GlobalProperties.service.id,
                     version = GlobalProperties.service.version,
