@@ -20,8 +20,8 @@ sealed class Fail(prefix: String, number: String) {
             override val description: String,
             val json: String? = null,
             val exception: Exception? = null) : Error(
-            prefix = "RQ-",
-            number = "1"
+            prefix = "SCR-",
+            number = "7"
         ) {
             override fun logging(logger: Logger) {
                 logger.error(message = message, exception = exception)
