@@ -10,21 +10,21 @@ import com.procurement.notice.utils.tryDeserialize
 import java.time.LocalDateTime
 
 class UpdateRecordParams private constructor(
-    val startDate: LocalDateTime,
+    val date: LocalDateTime,
     val data: RequestRelease
 ) {
     companion object {
         fun tryCreate(
-            startDate: String,
+            date: String,
             data: String
         ): Result<UpdateRecordParams, Fail> {
 
-            val startDateParsed = startDate.tryParseLocalDateTime()
+            val startDateParsed = date.tryParseLocalDateTime()
                 .doOnError { expectedFormat ->
                     return failure(
                         DataValidationErrors.DataFormatMismatch(
-                            name = "startDate",
-                            actualValue = startDate,
+                            name = "date",
+                            actualValue = date,
                             expectedFormat = expectedFormat
                         )
                     )
@@ -45,7 +45,7 @@ class UpdateRecordParams private constructor(
 
             return Result.success(
                 UpdateRecordParams(
-                    startDate = startDateParsed,
+                    date = startDateParsed,
                     data = dataParsed
                 )
             )
