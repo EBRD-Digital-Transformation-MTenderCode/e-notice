@@ -217,7 +217,7 @@ fun JsonNode.getAttribute(name: String): Result<JsonNode, DataValidationErrors> 
             Result.success(attr)
         else
             Result.failure(
-                DataValidationErrors.DataTypeMismatch(name = "$attr", actualType = "null", expectedType = "not null")
+                DataValidationErrors.DataTypeMismatch(name = name, actualType = "null", expectedType = "not null")
             )
     } else
         Result.failure(
