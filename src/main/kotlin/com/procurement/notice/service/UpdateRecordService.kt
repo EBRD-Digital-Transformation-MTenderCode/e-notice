@@ -57,7 +57,7 @@ class UpdateRecordService(
             cpId = data.cpid,
             stage = ocid.stage.toString(),
             record = updatedRelease,
-            publishDate = params.startDate.toDate()
+            publishDate = params.date.toDate()
         )
         return UpdateResult.ok()
     }

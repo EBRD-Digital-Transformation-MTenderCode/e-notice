@@ -8,7 +8,7 @@ import com.procurement.notice.infrastructure.handler.UpdateRecordRequest
 
 fun UpdateRecordRequest.convert(): Result<UpdateRecordParams, Fail> {
     return UpdateRecordParams.tryCreate(
-        startDate = this.startDate,
+        date = this.date,
         data = this.data
     )
 }
