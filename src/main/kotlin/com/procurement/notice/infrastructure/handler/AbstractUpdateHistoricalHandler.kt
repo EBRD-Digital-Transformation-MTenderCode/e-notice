@@ -50,8 +50,8 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
         return when (result) {
             is UpdateResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = result)
                 .also {
-                    historyDao.saveHistory(id.toString(), action.key, result)
-                    logger.info("${action.key} has been executed. Result: ${toJson(result)}")
+                    historyDao.saveHistory(id.toString(), action.key, it)
+                    logger.info("${action.key} has been executed. Result: ${toJson(it)}")
                 }
             is UpdateResult.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
         }
