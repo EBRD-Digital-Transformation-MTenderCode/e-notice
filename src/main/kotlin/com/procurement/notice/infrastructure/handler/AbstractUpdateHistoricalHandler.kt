@@ -48,7 +48,7 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
         val result: UpdateResult<Fail> = execute(node)
 
         return when (result) {
-            is UpdateResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = result)
+            is UpdateResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = null)
                 .also {
                     historyDao.saveHistory(id.toString(), action.key, it)
                     logger.info("${action.key} has been executed. Result: ${toJson(it)}")
