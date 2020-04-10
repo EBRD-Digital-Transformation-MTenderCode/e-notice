@@ -2677,8 +2677,13 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         }
         ?: this.purposeOfNotice
 
-    val tender = this.tender.updateReleaseTender(received.tender)
-        .doReturn { e -> return failure(e) }
+    val tender = received.tender
+        ?.let {
+            this.tender
+                .updateReleaseTender(it)
+                .doReturn { e -> return failure(e) }
+        }
+        ?: this.tender
 
     val agreedMetrics = updateStrategy(
         receivedElements = received.agreedMetrics,
