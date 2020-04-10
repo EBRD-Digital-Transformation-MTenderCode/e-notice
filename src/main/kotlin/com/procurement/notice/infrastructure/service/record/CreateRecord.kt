@@ -1,7 +1,6 @@
 package com.procurement.notice.infrastructure.service.record
 
 import com.procurement.notice.infrastructure.dto.enObservationtity.awards.RecordAward
-import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordAgreedMetric
 import com.procurement.notice.infrastructure.dto.entity.RecordAmendment
@@ -113,7 +112,6 @@ import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcure
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedPerson
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
-import com.procurement.notice.infrastructure.dto.request.RequestRelease
 import com.procurement.notice.infrastructure.dto.request.RequestRequirementGroup
 import com.procurement.notice.infrastructure.dto.request.RequestVerification
 import com.procurement.notice.infrastructure.dto.request.address.RequestAddress
@@ -1067,33 +1065,6 @@ fun createValueTax(received: RequestValueTax): RecordValueTax =
         valueAddedTaxIncluded = received.valueAddedTaxIncluded,
         amountNet = received.amountNet,
         currency = received.currency
-    )
-
-fun createRelease(releaseId: String, received: RequestRelease): Record =
-    Record(
-        id = releaseId,
-        ocid = received.ocid,
-        date = received.date,
-        relatedProcesses = received.relatedProcesses
-            .map { createRelatedProcess(it) }
-            .toMutableList(),
-        bids = received.bids?.let { createBidsObject(it) },
-        awards = received.awards
-            .map { createAward(it) },
-        contracts = received.contracts
-            .map { createContract(it) },
-        hasPreviousNotice = received.hasPreviousNotice,
-        initiationType = received.initiationType,
-        parties = received.parties
-            .map { createOrganization(it) }
-            .toMutableList(),
-        purposeOfNotice = received.purposeOfNotice?.let { createPurposeOfNotice(it) },
-        tag = createTags(received.tag),
-        tender = createReleaseTender(received.tender),
-        agreedMetrics = received.agreedMetrics
-            .map { createAgreedMetric(it) },
-        cpid = received.cpid,
-        planning = received.planning?.let { createPlanning(it) }
     )
 
 fun createTags(received: List<Tag>): List<Tag> = received.mapIfNotEmpty { it }.orEmpty()

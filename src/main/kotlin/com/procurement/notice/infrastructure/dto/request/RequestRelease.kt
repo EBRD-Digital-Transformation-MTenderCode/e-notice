@@ -36,7 +36,8 @@ data class RequestRelease(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("parties") @param:JsonProperty("parties") val parties: MutableList<RequestOrganization> = mutableListOf(),
 
-    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: RequestTender,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: RequestTender?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<RequestAward> = emptyList(),
