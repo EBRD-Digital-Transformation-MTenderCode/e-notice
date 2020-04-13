@@ -53,7 +53,7 @@ class CommandController2(
         }
 
         val id = node.tryGetId()
-            .doOnError { error -> return createErrorResponseEntity(fail = error) }
+            .doOnError { error -> return createErrorResponseEntity(fail = error, version = version) }
             .get
 
         val response = commandService.execute(request = node)
