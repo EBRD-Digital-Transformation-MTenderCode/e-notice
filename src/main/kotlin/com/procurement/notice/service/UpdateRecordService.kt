@@ -47,7 +47,7 @@ class UpdateRecordService(
             .get
 
         val releaseId = releaseService.newReleaseId(ocid.toString())
-        val updatedRelease = record.updateRelease(releaseId = releaseId, received = data)
+        val updatedRelease = record.updateRelease(releaseId = releaseId, params = params)
             .doReturn { e -> return UpdateResult.error(e) }
             .also {
                 log.debug("UPDATED RELEASE (id: '${releaseId}'): '${toJson(it)}'.")

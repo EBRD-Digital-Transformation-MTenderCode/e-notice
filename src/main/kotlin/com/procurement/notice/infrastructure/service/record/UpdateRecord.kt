@@ -1,5 +1,6 @@
 package com.procurement.notice.infrastructure.service.record
 
+import com.procurement.notice.application.model.record.UpdateRecordParams
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure
@@ -117,7 +118,6 @@ import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcure
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedPerson
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
-import com.procurement.notice.infrastructure.dto.request.RequestRelease
 import com.procurement.notice.infrastructure.dto.request.RequestRequirementGroup
 import com.procurement.notice.infrastructure.dto.request.RequestVerification
 import com.procurement.notice.infrastructure.dto.request.address.RequestAddress
@@ -2616,9 +2616,10 @@ fun RecordValueTax.updateValueTax(received: RequestValueTax): UpdateRecordResult
     )
         .asSuccess()
 
-fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRecordResult<Record> {
+fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateRecordResult<Record> {
+    val receivedRelease = params.data
     val relatedProcesses = updateStrategy(
-        receivedElements = received.relatedProcesses.toList(),
+        receivedElements = receivedRelease.relatedProcesses.toList(),
         keyExtractorForReceivedElement = requestRelatedProcessKeyExtractor,
         availableElements = this.relatedProcesses.toList(),
         keyExtractorForAvailableElement = recordRelatedProcessKeyExtractor,
@@ -2628,7 +2629,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         .doReturn { e -> return failure(e) }
         .toMutableList()
 
-    val bids = received.bids
+    val bids = receivedRelease.bids
         ?.let {
             this.bids
                 ?.updateBidsObject(it)
@@ -2638,7 +2639,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         ?: this.bids
 
     val awards = updateStrategy(
-        receivedElements = received.awards,
+        receivedElements = receivedRelease.awards,
         keyExtractorForReceivedElement = requestAwardKeyExtractor,
         availableElements = this.awards,
         keyExtractorForAvailableElement = recordAwardKeyExtractor,
@@ -2648,7 +2649,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         .doReturn { e -> return failure(e) }
 
     val contracts = updateStrategy(
-        receivedElements = received.contracts,
+        receivedElements = receivedRelease.contracts,
         keyExtractorForReceivedElement = requestContractKeyExtractor,
         availableElements = this.contracts,
         keyExtractorForAvailableElement = recordContractKeyExtractor,
@@ -2658,7 +2659,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         .doReturn { e -> return failure(e) }
 
     val parties = updateStrategy(
-        receivedElements = received.parties.toList(),
+        receivedElements = receivedRelease.parties.toList(),
         keyExtractorForReceivedElement = requestOrganizationKeyExtractor,
         availableElements = this.parties.toList(),
         keyExtractorForAvailableElement = recordOrganizationKeyExtractor,
@@ -2668,7 +2669,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         .doReturn { e -> return failure(e) }
         .toMutableList()
 
-    val purposeOfNotice = received.purposeOfNotice
+    val purposeOfNotice = receivedRelease.purposeOfNotice
         ?.let {
             this.purposeOfNotice
                 ?.updatePurposeOfNotice(it)
@@ -2677,7 +2678,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         }
         ?: this.purposeOfNotice
 
-    val tender = received.tender
+    val tender = receivedRelease.tender
         ?.let {
             this.tender
                 .updateReleaseTender(it)
@@ -2686,7 +2687,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         ?: this.tender
 
     val agreedMetrics = updateStrategy(
-        receivedElements = received.agreedMetrics,
+        receivedElements = receivedRelease.agreedMetrics,
         keyExtractorForReceivedElement = requestAgreedMetricKeyExtractor,
         availableElements = this.agreedMetrics,
         keyExtractorForAvailableElement = recordAgreedMetricKeyExtractor,
@@ -2695,7 +2696,7 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
     )
         .doReturn { e -> return failure(e) }
 
-    val planning = received.planning
+    val planning = receivedRelease.planning
         ?.let {
             this.planning
                 ?.updatePlanning(it)
@@ -2708,16 +2709,16 @@ fun Record.updateRelease(releaseId: String, received: RequestRelease): UpdateRec
         .copy(
             id = releaseId,
             ocid = this.ocid,
-            date = received.date ?: this.date,
+            date = params.date,
             relatedProcesses = relatedProcesses,
             bids = bids,
             awards = awards,
             contracts = contracts,
-            hasPreviousNotice = received.hasPreviousNotice ?: this.hasPreviousNotice,
-            initiationType = received.initiationType ?: this.initiationType,
+            hasPreviousNotice = receivedRelease.hasPreviousNotice ?: this.hasPreviousNotice,
+            initiationType = receivedRelease.initiationType ?: this.initiationType,
             parties = parties,
             purposeOfNotice = purposeOfNotice,
-            tag = this.tag.updateTags(received.tag),
+            tag = this.tag.updateTags(receivedRelease.tag),
             tender = tender,
             agreedMetrics = agreedMetrics,
             cpid = this.cpid,
