@@ -596,7 +596,7 @@ class AwardServiceImpl(
             cpId = cpid,
             stage = stage.name,
             release = newRecord,
-            publishDate = releaseDate.toDate()
+            publishDate = recordEntity.publishDate
         )
     }
 
