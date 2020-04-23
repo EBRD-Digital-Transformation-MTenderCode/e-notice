@@ -8,7 +8,6 @@ import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.handler.UpdateResult
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.infrastructure.service.record.updateRelease
-import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -57,7 +56,7 @@ class UpdateRecordService(
             cpId = data.cpid,
             stage = ocid.stage.toString(),
             record = updatedRelease,
-            publishDate = params.date.toDate()
+            publishDate = recordEntity.publishDate
         )
         return UpdateResult.ok()
     }
