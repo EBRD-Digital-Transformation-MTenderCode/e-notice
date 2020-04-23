@@ -903,7 +903,7 @@ class AwardServiceImpl(
             cpId = context.cpid,
             stage = context.stage,
             release = updatedRecord,
-            publishDate = context.releaseDate.toDate()
+            publishDate = recordEntity.publishDate
         )
     }
 }
