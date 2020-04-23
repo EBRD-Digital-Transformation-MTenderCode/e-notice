@@ -21,9 +21,6 @@ data class RequestRelease(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("id") @param:JsonProperty("id") val id: String?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime?,
-
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("tag") @param:JsonProperty("tag") val tag: List<Tag> = emptyList(),
 
