@@ -94,7 +94,7 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
-    fun newRecordEntity(cpid: Cpid, stage: String, record: Record, publishDate: Date): ReleaseEntity {
+    fun newRecordEntity(cpid: Cpid, ocid: Ocid.SingleStage, record: Record, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
@@ -104,7 +104,7 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
             releaseId = releaseId,
             releaseDate = releaseDate,
             publishDate = publishDate,
-            stage = stage,
+            stage = ocid.stage.toString(),
             json = toJson(record),
             status = record.tender.status.toString()
         )
@@ -196,7 +196,7 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
     fun saveRecord(cpid: Cpid, ocid: Ocid, record: Record, publishDate: Date) {
         when (ocid) {
             is Ocid.SingleStage ->
-                releaseDao.saveRecord(newRecordEntity(cpid = cpid, stage = ocid.stage.toString(), record = record, publishDate = publishDate))
+                releaseDao.saveRecord(newRecordEntity(cpid = cpid, ocid = ocid, record = record, publishDate = publishDate))
             is Ocid.MultiStage ->
                 releaseDao.saveMs(newMSEntity(cpid = cpid, record = record, publishDate = publishDate))
         }
