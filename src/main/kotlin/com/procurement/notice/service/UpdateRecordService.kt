@@ -53,7 +53,7 @@ class UpdateRecordService(
             }
 
         releaseService.saveRecord(
-            cpId = data.cpid,
+            cpid = cpid,
             ocid = ocid,
             record = updatedRelease,
             publishDate = recordEntity.publishDate

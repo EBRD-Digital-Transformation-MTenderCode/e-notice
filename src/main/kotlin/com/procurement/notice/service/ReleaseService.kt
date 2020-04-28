@@ -94,12 +94,12 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
-    fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
+    fun newRecordEntity(cpid: Cpid, stage: String, record: Record, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
-            cpId = cpId,
+            cpId = cpid.toString(),
             ocId = ocId,
             releaseId = releaseId,
             releaseDate = releaseDate,
@@ -125,12 +125,12 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
-    fun newMSEntity(cpId: String, record: Record, publishDate: Date): ReleaseEntity {
+    fun newMSEntity(cpid: Cpid, record: Record, publishDate: Date): ReleaseEntity {
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
-                cpId = cpId,
-                ocId = cpId,
+                cpId = cpid.toString(),
+                ocId = cpid.toString(),
                 releaseId = releaseId,
                 releaseDate = releaseDate,
                 publishDate = publishDate,
@@ -189,20 +189,16 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
     }
 
-    fun saveMs(cpId: String, record: Record, publishDate: Date) {
-        releaseDao.saveMs(newMSEntity(cpId = cpId, record = record, publishDate = publishDate))
-    }
-
     fun saveRecord(cpId: String, stage: String, release: Release, publishDate: Date) {
         releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, release = release, publishDate = publishDate))
     }
 
-    fun saveRecord(cpId: String, ocid: Ocid, record: Record, publishDate: Date) {
+    fun saveRecord(cpid: Cpid, ocid: Ocid, record: Record, publishDate: Date) {
         when (ocid) {
             is Ocid.SingleStage ->
-                releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = ocid.stage.toString(), record = record, publishDate = publishDate))
+                releaseDao.saveRecord(newRecordEntity(cpid = cpid, stage = ocid.stage.toString(), record = record, publishDate = publishDate))
             is Ocid.MultiStage ->
-                releaseDao.saveMs(newMSEntity(cpId = cpId, record = record, publishDate = publishDate))
+                releaseDao.saveMs(newMSEntity(cpid = cpid, record = record, publishDate = publishDate))
         }
     }
 
