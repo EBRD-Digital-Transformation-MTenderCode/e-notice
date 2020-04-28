@@ -197,8 +197,13 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, release = release, publishDate = publishDate))
     }
 
-    fun saveRecord(cpId: String, stage: String, record: Record, publishDate: Date) {
-        releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, record = record, publishDate = publishDate))
+    fun saveRecord(cpId: String, ocid: Ocid, record: Record, publishDate: Date) {
+        when (ocid) {
+            is Ocid.SingleStage ->
+                releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = ocid.stage.toString(), record = record, publishDate = publishDate))
+            is Ocid.MultiStage ->
+                releaseDao.saveMs(newMSEntity(cpId = cpId, record = record, publishDate = publishDate))
+        }
     }
 
     fun saveContractRecord(cpId: String, stage: String, record: ContractRecord, publishDate: Date) {
