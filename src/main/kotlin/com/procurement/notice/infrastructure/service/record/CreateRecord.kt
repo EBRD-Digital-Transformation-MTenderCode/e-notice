@@ -41,6 +41,7 @@ import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordResponder
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordReviewProceedings
 import com.procurement.notice.infrastructure.dto.entity.bids.RecordBids
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordBudgetSource
@@ -125,6 +126,7 @@ import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
+import com.procurement.notice.infrastructure.dto.request.awards.RequestResponder
 import com.procurement.notice.infrastructure.dto.request.awards.RequestReviewProceedings
 import com.procurement.notice.infrastructure.dto.request.bids.RequestBids
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestBudgetSource
@@ -839,7 +841,9 @@ fun createRequirementResponse(received: RequestRequirementResponse): RecordRequi
         relatedTenderer = received.relatedTenderer
             ?.let { createOrganizationReference(it) },
         requirement = received.requirement
-            ?.let { createRequirement(it) }
+            ?.let { createRequirement(it) },
+        responder = received.responder
+            ?.let { createResponder(it) }
     )
 
 fun createRequirement(received: RequestRequirementReference): RecordRequirementReference? =
@@ -847,6 +851,21 @@ fun createRequirement(received: RequestRequirementReference): RecordRequirementR
         id = received.id,
         title = received.title
     )
+
+fun createResponder(received: RequestResponder): RecordResponder {
+    val identifier = received.identifier
+        .let {
+            RecordResponder.Identifier(
+                id = it.id,
+                scheme = it.scheme
+            )
+        }
+
+    return RecordResponder(
+        name = received.name,
+        identifier = identifier
+    )
+}
 
 fun createOrganizationReference(received: RequestOrganizationReference): RecordOrganizationReference =
     RecordOrganizationReference(
