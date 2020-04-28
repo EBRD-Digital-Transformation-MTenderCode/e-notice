@@ -31,5 +31,8 @@ data class RecordRequirementResponse(
     @field:JsonProperty("requirement") @param:JsonProperty("requirement") val requirement: RecordRequirementReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @param:JsonProperty("responder") @field:JsonProperty("responder") val responder: RecordResponder?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedTenderer") @param:JsonProperty("relatedTenderer") val relatedTenderer: RecordOrganizationReference?
 )

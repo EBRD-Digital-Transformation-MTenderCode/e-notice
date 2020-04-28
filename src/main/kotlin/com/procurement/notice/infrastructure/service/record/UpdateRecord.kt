@@ -47,6 +47,7 @@ import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordResponder
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordReviewProceedings
 import com.procurement.notice.infrastructure.dto.entity.bids.RecordBids
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordBudgetSource
@@ -131,6 +132,7 @@ import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
+import com.procurement.notice.infrastructure.dto.request.awards.RequestResponder
 import com.procurement.notice.infrastructure.dto.request.awards.RequestReviewProceedings
 import com.procurement.notice.infrastructure.dto.request.bids.RequestBids
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestBudgetSource
@@ -1938,6 +1940,15 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
         }
         ?: this.requirement
 
+    val responder = received.responder
+        ?.let {
+            this.responder
+                ?.updateResponder(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createResponder(it)
+        }
+        ?: this.responder
+
     return this
         .copy(
             id = received.id,
@@ -1946,7 +1957,8 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
             description = received.description ?: this.description,
             period = period,
             relatedTenderer = relatedTenderer,
-            requirement = requirement
+            requirement = requirement,
+            responder = responder
         )
         .asSuccess()
 }
@@ -1957,6 +1969,22 @@ fun RecordRequirementReference.updateRequirement(received: RequestRequirementRef
         title = received.title ?: this.title
     )
         .asSuccess()
+
+fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> {
+    val identifier = received.identifier
+        .let {
+            RecordResponder.Identifier(
+                id = it.id,
+                scheme = it.scheme
+            )
+        }
+
+    return RecordResponder(
+        name = received.name,
+        identifier = identifier
+    )
+        .asSuccess()
+}
 
 fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
     val address = received.address

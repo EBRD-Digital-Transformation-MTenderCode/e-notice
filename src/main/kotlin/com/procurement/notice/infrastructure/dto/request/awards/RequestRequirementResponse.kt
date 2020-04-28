@@ -31,5 +31,8 @@ data class RequestRequirementResponse(
     @field:JsonProperty("requirement") @param:JsonProperty("requirement") val requirement: RequestRequirementReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @param:JsonProperty("responder") @field:JsonProperty("responder") val responder: RequestResponder?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedTenderer") @param:JsonProperty("relatedTenderer") val relatedTenderer: RequestOrganizationReference?
 )
