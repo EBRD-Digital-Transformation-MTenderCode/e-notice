@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeType
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.EnumElementProvider
+import com.procurement.notice.domain.utils.EnumElementProvider.Companion.keysAsStrings
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure
 import com.procurement.notice.domain.utils.Result.Companion.success
@@ -54,7 +55,7 @@ fun <T> JsonNode.tryGetAttributeAsEnum(name: String, enumProvider: EnumElementPr
             ?: failure(
                 DataValidationErrors.UnknownValue(
                     name = name,
-                    expectedValues = enumProvider.allowedValues,
+                    expectedValues = enumProvider.allowedElements.keysAsStrings(),
                     actualValue = text
                 )
             )

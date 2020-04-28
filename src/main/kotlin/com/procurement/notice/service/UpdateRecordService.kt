@@ -53,11 +53,12 @@ class UpdateRecordService(
             }
 
         releaseService.saveRecord(
-            cpId = data.cpid,
-            stage = ocid.stage.toString(),
+            cpid = cpid,
+            ocid = ocid,
             record = updatedRelease,
             publishDate = recordEntity.publishDate
         )
+
         return UpdateResult.ok()
     }
 }

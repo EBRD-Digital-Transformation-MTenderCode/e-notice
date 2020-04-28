@@ -19,14 +19,16 @@ fun parseCpid(value: String): Result<Cpid, DataValidationErrors.DataMismatchToPa
 }
 
 fun parseOcid(value: String): Result<Ocid, DataValidationErrors.DataMismatchToPattern> {
-    val ocid = Ocid.tryCreateOrNull(value = value)
+    val ocid = Ocid.SingleStage.tryCreateOrNull(value = value)
+        ?: Ocid.MultiStage.tryCreateOrNull(value = value)
+
     return if (ocid != null)
         success(ocid)
     else
         Result.failure(
             DataValidationErrors.DataMismatchToPattern(
                 name = "ocid",
-                pattern = Ocid.pattern,
+                pattern = "${Ocid.SingleStage.pattern}, ${Ocid.MultiStage.pattern} ",
                 actualValue = value
             )
         )

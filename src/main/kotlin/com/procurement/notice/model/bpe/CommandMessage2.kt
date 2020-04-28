@@ -13,6 +13,7 @@ import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
 import com.procurement.notice.domain.utils.EnumElementProvider
+import com.procurement.notice.domain.utils.EnumElementProvider.Companion.keysAsStrings
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.bind
 import com.procurement.notice.infrastructure.dto.ApiDataErrorResponse
@@ -45,7 +46,7 @@ fun errorResponse(
 ): ApiResponse2 {
     fail.logging(logger)
     return when (fail) {
-        is Fail.Error -> {
+        is Fail.Error    -> {
             when (fail) {
                 is DataValidationErrors ->
                     ApiDataErrorResponse(
@@ -59,7 +60,7 @@ fun errorResponse(
                             )
                         )
                     )
-                else -> ApiFailResponse(
+                else                    -> ApiFailResponse(
                     version = version,
                     id = id,
                     result = listOf(
@@ -118,8 +119,8 @@ fun JsonNode.tryGetId(): Result<UUID, DataValidationErrors> {
             val value = it.asText()
             val actualType = it.nodeType
             when (actualType) {
-                JsonNodeType.STRING  -> asUUID(value)
-                else ->
+                JsonNodeType.STRING -> asUUID(value)
+                else                ->
                     Result.failure(
                         DataValidationErrors.DataTypeMismatch(
                             name = "id",
@@ -139,7 +140,7 @@ fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataValidationErrors> {
             val actualType = it.nodeType
 
             when (actualType) {
-                JsonNodeType.STRING  ->
+                JsonNodeType.STRING ->
                     when (val result = ApiVersion2.tryValueOf(value)) {
                         is Result.Success -> result
                         is Result.Failure -> result.mapError {
@@ -151,7 +152,7 @@ fun JsonNode.tryGetVersion(): Result<ApiVersion2, DataValidationErrors> {
                         }
                     }
 
-                else ->
+                else                ->
                     Result.failure(
                         DataValidationErrors.DataTypeMismatch(
                             name = "version",
@@ -172,18 +173,18 @@ fun JsonNode.tryGetAction(): Result<CommandType2, DataValidationErrors> {
             val actualType = it.nodeType
 
             when (actualType) {
-                JsonNodeType.STRING  ->
+                JsonNodeType.STRING ->
                     when (val result = CommandType2.tryOf(value)) {
                         is Result.Success -> result
                         is Result.Failure -> result.mapError {
                             DataValidationErrors.UnknownValue(
                                 name = "action",
                                 actualValue = value,
-                                expectedValues = CommandType2.allowedValues
+                                expectedValues = CommandType2.allowedElements.keysAsStrings()
                             )
                         }
                     }
-                else ->
+                else                ->
                     Result.failure(
                         DataValidationErrors.DataTypeMismatch(
                             name = "action",
