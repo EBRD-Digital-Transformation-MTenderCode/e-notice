@@ -1,5 +1,6 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.application.model.Ocid
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
 import com.procurement.notice.application.model.record.UpdateRecordParams
@@ -52,12 +53,24 @@ class UpdateRecordService(
                 log.debug("UPDATED RELEASE (id: '${releaseId}'): '${toJson(it)}'.")
             }
 
-        releaseService.saveRecord(
-            cpId = data.cpid,
-            stage = ocid.stage.toString(),
-            record = updatedRelease,
-            publishDate = recordEntity.publishDate
-        )
+        when (ocid) {
+            is Ocid.SingleStage -> {
+                releaseService.saveRecord(
+                    cpId = data.cpid,
+                    stage = ocid.stage.toString(),
+                    record = updatedRelease,
+                    publishDate = recordEntity.publishDate
+                )
+            }
+            is Ocid.MultiStage  -> {
+                releaseService.saveMs(
+                    cpId = data.cpid,
+                    record = updatedRelease,
+                    publishDate = recordEntity.publishDate
+                )
+            }
+        }
+
         return UpdateResult.ok()
     }
 }

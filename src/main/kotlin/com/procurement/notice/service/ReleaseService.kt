@@ -125,6 +125,21 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
+    fun newMSEntity(cpId: String, record: Record, publishDate: Date): ReleaseEntity {
+        val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        return newEntity(
+                cpId = cpId,
+                ocId = cpId,
+                releaseId = releaseId,
+                releaseDate = releaseDate,
+                publishDate = publishDate,
+                stage = "",
+                json = toJson(record),
+                status = record.tender.status.toString()
+        )
+    }
+
     fun newContractRecordEntity(cpId: String, stage: String, record: ContractRecord, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
@@ -172,7 +187,10 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
 
     fun saveMs(cpId: String, ms: Ms, publishDate: Date) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
+    }
 
+    fun saveMs(cpId: String, record: Record, publishDate: Date) {
+        releaseDao.saveMs(newMSEntity(cpId = cpId, record = record, publishDate = publishDate))
     }
 
     fun saveRecord(cpId: String, stage: String, release: Release, publishDate: Date) {
