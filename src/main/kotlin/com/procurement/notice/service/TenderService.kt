@@ -1924,7 +1924,9 @@ class TenderService(
             contracts = emptyList(),
             hasPreviousNotice = prevRelease.hasPreviousNotice,
             purposeOfNotice = prevRelease.purposeOfNotice,
-            relatedProcesses = mutableListOf())
+            relatedProcesses = mutableListOf(),
+            preQualification = null
+        )
         processTenderDocuments(release = release, prevRelease = prevRelease)
         organizationService.processRecordPartiesFromBids(release)
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = relatedProcessType)

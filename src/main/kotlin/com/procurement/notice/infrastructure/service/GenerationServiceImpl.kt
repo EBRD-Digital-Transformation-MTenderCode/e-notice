@@ -1,5 +1,6 @@
 package com.procurement.notice.infrastructure.service
 
+import com.datastax.driver.core.utils.UUIDs
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.utils.milliNowUTC
 import org.springframework.stereotype.Service
@@ -13,7 +14,7 @@ class GenerationServiceImpl : GenerationService {
     }
 
     override fun generateAmendmentId(): UUID {
-        return UUID.randomUUID()
+        return generateRandomUUID()
     }
 
     override fun generateOcid(cpid: String, stage: String): String {
@@ -23,4 +24,12 @@ class GenerationServiceImpl : GenerationService {
     override fun generateReleaseId(cpid: String): String {
         return cpid + SEPARATOR + milliNowUTC()
     }
+
+    override fun generateRelatedProcessId(): String = generateTimeBasedRandomUUID().toString()
+
+
+    private fun generateRandomUUID() = UUID.randomUUID()
+
+    private fun generateTimeBasedRandomUUID(): UUID = UUIDs.timeBased();
+
 }

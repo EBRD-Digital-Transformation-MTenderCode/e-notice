@@ -456,7 +456,8 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
                             language = null,
                             relatedConfirmations = null
                         )
-                    }.toList()
+                    }.toList(),
+                    secondStage = null
                 )
             }
         )

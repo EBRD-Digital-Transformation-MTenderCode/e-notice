@@ -34,6 +34,9 @@ data class Release (
 
     @field:JsonProperty("tender") @param:JsonProperty("tender") var tender: ReleaseTender,
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") var preQualification: ReleasePreQualification?,
+
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("awards") @param:JsonProperty("awards") var awards: List<Award> = emptyList(),
 
