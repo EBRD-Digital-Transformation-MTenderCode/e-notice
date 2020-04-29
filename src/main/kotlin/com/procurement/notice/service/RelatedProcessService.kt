@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.datastax.driver.core.utils.UUIDs
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class RelatedProcessService {
+class RelatedProcessService(
+    private val generationService: GenerationService
+) {
 
     @Value("\${uri.budget}")
     private val budgetUri: String? = null
@@ -120,12 +123,14 @@ class RelatedProcessService {
     }
 
     fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType) {
-        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        if (ms.relatedProcesses == null)
+            ms.relatedProcesses = hashSetOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+
         if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocid })
             ms.relatedProcesses?.add(
                 RelatedProcess(
-                    id = UUIDs.timeBased().toString(),
+                    id = generationService.generateRelatedProcessId(),
                     relationship = listOf(processType),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocid,
@@ -138,7 +143,7 @@ class RelatedProcessService {
         if (release.relatedProcesses.asSequence().none { it.identifier == ocId })
             release.relatedProcesses.add(
                 RelatedProcess(
-                    id = UUIDs.timeBased().toString(),
+                    id = generationService.generateRelatedProcessId(),
                     relationship = listOf(processType),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocId,
@@ -297,11 +302,11 @@ class RelatedProcessService {
     }
 
     fun getTenderUri(cpId: String, ocId: String?): String {
-        var uri = tenderUri + cpId
-        if (ocId != null) {
-            uri = uri + URI_SEPARATOR + ocId
+        return if (ocId != null) {
+            tenderUri + cpId + URI_SEPARATOR + ocId
+        } else {
+            tenderUri + cpId
         }
-        return uri
     }
 
     companion object {

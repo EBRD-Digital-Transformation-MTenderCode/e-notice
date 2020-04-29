@@ -262,11 +262,14 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
                 params.relatedProcessType = RelatedProcessType.X_EVALUATION
             }
             Stage.NP -> {
-                if(operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
+                if (operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
                     params.statusDetails = TenderStatusDetails.NEGOTIATION
                     params.relatedProcessType = RelatedProcessType.X_NEGOTIATION
                 } else
                     throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+            }
+            Stage.TP -> {
+                params.relatedProcessType = RelatedProcessType.X_TENDERING
             }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
