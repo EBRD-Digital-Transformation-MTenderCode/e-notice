@@ -1726,7 +1726,7 @@ fun RecordOrganization.updateOrganization(received: RequestOrganization): Update
             additionalIdentifiers = additionalIdentifiers,
             contactPoint = contactPoint,
             address = address,
-            roles = received.roles
+            roles = updateEnums(this.roles, received.roles).toList()
         )
         .asSuccess()
 }
@@ -3026,6 +3026,16 @@ fun RecordBidsStatistic.updateBidsStatistic(received: RequestBidsStatistic): Upd
         relatedLot = received.relatedLot ?: this.relatedLot
     )
         .asSuccess()
+
+fun <T> updateEnums(vararg values: List<T>): Set<T> {
+    val collection = LinkedHashSet<T>()
+    values.forEach { list ->
+        list.forEach { element ->
+            collection.add(element)
+        }
+    }
+    return collection
+}
 
 fun <R, A, K> updateStrategy(
     receivedElements: List<R>,
