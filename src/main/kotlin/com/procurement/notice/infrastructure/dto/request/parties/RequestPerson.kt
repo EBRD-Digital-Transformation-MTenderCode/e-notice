@@ -14,5 +14,5 @@ data class RequestPerson (
     @field:JsonProperty("identifier") @param:JsonProperty("identifier") val identifier: RequestIdentifier,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("businessFunctions") @param:JsonProperty("businessFunctions") val businessFunctions: List<RequestBusinessFunction>
+    @field:JsonProperty("businessFunctions") @param:JsonProperty("businessFunctions") val businessFunctions: List<RequestBusinessFunction> = emptyList()
 )

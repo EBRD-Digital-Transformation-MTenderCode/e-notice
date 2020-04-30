@@ -12,5 +12,5 @@ data class RequestConversion(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
-    @field:JsonProperty("coefficients") @param:JsonProperty("coefficients") val coefficients: List<RequestCoefficient>
+    @field:JsonProperty("coefficients") @param:JsonProperty("coefficients") val coefficients: List<RequestCoefficient> = emptyList()
 )

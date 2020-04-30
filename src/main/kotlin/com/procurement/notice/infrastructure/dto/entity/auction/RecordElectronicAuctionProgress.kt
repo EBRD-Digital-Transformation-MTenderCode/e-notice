@@ -12,5 +12,5 @@ data class RecordElectronicAuctionProgress(
     @field:JsonProperty("period") @param:JsonProperty("period") val period: RecordPeriod?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdown: List<RecordElectronicAuctionProgressBreakdown>
+    @field:JsonProperty("breakdown") @param:JsonProperty("breakdown") val breakdown: List<RecordElectronicAuctionProgressBreakdown> = emptyList()
 )
