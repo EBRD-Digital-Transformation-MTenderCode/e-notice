@@ -7,5 +7,5 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 data class RecordElectronicAuctions(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("details") @param:JsonProperty("details") val details: List<RecordElectronicAuctionsDetails>
+    @field:JsonProperty("details") @param:JsonProperty("details") val details: List<RecordElectronicAuctionsDetails> = emptyList()
 )

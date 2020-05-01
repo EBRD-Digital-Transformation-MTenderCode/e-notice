@@ -36,5 +36,5 @@ data class RequestOrganization(
     @field:JsonProperty("buyerProfile") @param:JsonProperty("buyerProfile") val buyerProfile: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("roles") @param:JsonProperty("roles") val roles: List<PartyRole>
+    @field:JsonProperty("roles") @param:JsonProperty("roles") val roles: List<PartyRole> = emptyList()
 )

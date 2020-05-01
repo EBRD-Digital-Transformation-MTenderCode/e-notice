@@ -12,5 +12,5 @@ data class RecordConversion(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
-    @field:JsonProperty("coefficients") @param:JsonProperty("coefficients") val coefficients: List<RecordCoefficient>
+    @field:JsonProperty("coefficients") @param:JsonProperty("coefficients") val coefficients: List<RecordCoefficient> = emptyList()
 )

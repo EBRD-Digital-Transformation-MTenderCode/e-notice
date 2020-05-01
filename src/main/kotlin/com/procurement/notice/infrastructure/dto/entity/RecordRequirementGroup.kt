@@ -16,6 +16,6 @@ data class RecordRequirementGroup(
 
     @JsonDeserialize(using = RequirementDeserializer::class)
     @JsonSerialize(using = RequirementSerializer::class)
-    @field:JsonProperty("requirements") @param:JsonProperty("requirements") val requirements: List<Requirement>
+    @field:JsonProperty("requirements") @param:JsonProperty("requirements") val requirements: List<Requirement> = emptyList()
 )
 

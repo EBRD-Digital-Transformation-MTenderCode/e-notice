@@ -14,5 +14,5 @@ data class RecordPerson (
     @field:JsonProperty("identifier") @param:JsonProperty("identifier") val identifier: RecordIdentifier,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("businessFunctions") @param:JsonProperty("businessFunctions") val businessFunctions: List<RecordBusinessFunction>
+    @field:JsonProperty("businessFunctions") @param:JsonProperty("businessFunctions") val businessFunctions: List<RecordBusinessFunction> = emptyList()
 )
