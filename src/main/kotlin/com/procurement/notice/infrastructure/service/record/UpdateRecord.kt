@@ -1726,7 +1726,7 @@ fun RecordOrganization.updateOrganization(received: RequestOrganization): Update
             additionalIdentifiers = additionalIdentifiers,
             contactPoint = contactPoint,
             address = address,
-            roles = received.roles
+            roles = this.roles.union(received.roles).toList()
         )
         .asSuccess()
 }
