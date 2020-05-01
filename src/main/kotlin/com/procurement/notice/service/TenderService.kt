@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionData
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionResult
@@ -76,7 +77,8 @@ import java.time.LocalDateTime
 class TenderService(
     private val releaseService: ReleaseService,
     private val organizationService: OrganizationService,
-    private val relatedProcessService: RelatedProcessService
+    private val relatedProcessService: RelatedProcessService,
+    private val generationService: GenerationService
 ) {
 
     fun tenderPeriodEnd(
@@ -120,7 +122,7 @@ class TenderService(
         val updatedParties = updateParties(data = data, parties = release.parties)
 
         val updatedRelease = release.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.AWARD), //FR-5.7.2.1.1
             tender = release.tender.copy(
@@ -1029,7 +1031,7 @@ class TenderService(
         val updatedLots = setUnsuccessfulStatusToLots(data, release)
         val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, release)
         val updatedRelease = release.copy(
-            id = releaseService.newReleaseId(context.ocid),
+            id = generationService.generateReleaseId(context.ocid),
             date = context.startDate,
             tag = listOf(Tag.AWARD),
             awards = data.awards
@@ -1151,7 +1153,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = dto.tenderStatusDetails
         }
@@ -1168,7 +1170,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
             tender.tenderPeriod = dto.tender.tenderPeriod
@@ -1189,7 +1191,7 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(context.cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         val updatedMS = ms.copy(
-            id = releaseService.newReleaseId(context.cpid), //FR-5.0.1
+            id = generationService.generateReleaseId(context.cpid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.7.2.2.1
             tender = ms.tender.copy(
@@ -1206,7 +1208,7 @@ class TenderService(
         val updatedParties = updateParties(data = data, parties = release.parties)
 
         val updatedRelease = release.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_CANCELLATION), //FR-ER-5.7.2.2.1
 
@@ -1799,7 +1801,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             updateAward(this, dto.award)
@@ -1818,7 +1820,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
@@ -1846,7 +1848,7 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
@@ -1854,7 +1856,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = statusDetails
             tender.standstillPeriod = dto.standstillPeriod
@@ -1893,7 +1895,7 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
@@ -1902,18 +1904,18 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val prevRelease = releaseService.getRelease(recordEntity.jsonData)
         prevRelease.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         /*new record*/
-        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
         dto.tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
         dto.tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
         val release = Release(
             ocid = newOcId,
-            id = releaseService.newReleaseId(newOcId),
+            id = generationService.generateReleaseId(newOcId),
             date = releaseDate,
             tag = listOf(Tag.COMPILED),
             initiationType = InitiationType.TENDER,
@@ -1924,7 +1926,9 @@ class TenderService(
             contracts = emptyList(),
             hasPreviousNotice = prevRelease.hasPreviousNotice,
             purposeOfNotice = prevRelease.purposeOfNotice,
-            relatedProcesses = mutableListOf())
+            relatedProcesses = mutableListOf(),
+            preQualification = null
+        )
         processTenderDocuments(release = release, prevRelease = prevRelease)
         organizationService.processRecordPartiesFromBids(release)
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = relatedProcessType)

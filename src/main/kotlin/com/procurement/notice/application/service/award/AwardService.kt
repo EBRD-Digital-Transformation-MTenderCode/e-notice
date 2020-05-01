@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.award
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
@@ -52,7 +53,8 @@ interface AwardService {
 @Service
 class AwardServiceImpl(
     private val releaseService: ReleaseService,
-    private val releaseDao: ReleaseDao
+    private val releaseDao: ReleaseDao,
+    private val generationService: GenerationService
 ) : AwardService {
     override fun createAward(context: CreateAwardContext, data: CreateAwardData) {
         val cpid = context.cpid
@@ -77,7 +79,7 @@ class AwardServiceImpl(
 
         val newRecord = release.copy(
             //BR-2.6.18.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //BR-2.6.18.1
             tag = listOf(Tag.AWARD),
@@ -296,7 +298,7 @@ class AwardServiceImpl(
 
         val newRecord = release.copy(
             //BR-2.6.20.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //BR-2.6.20.1
             tag = listOf(Tag.AWARD),
@@ -577,7 +579,7 @@ class AwardServiceImpl(
 
         val newRecord = release.copy(
             //FR-5.0.1
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //FR-5.7.1.1.1
             tag = listOf(Tag.AWARD_UPDATE),
@@ -652,7 +654,7 @@ class AwardServiceImpl(
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         val updatedMS = ms.copy(
-            id = releaseService.newReleaseId(ocId = context.cpid),
+            id = generationService.generateReleaseId(ocid = context.cpid),
             date = context.releaseDate,
             tag = listOf(Tag.COMPILED),
             tender = ms.tender.copy(
@@ -678,7 +680,7 @@ class AwardServiceImpl(
 
         val updatedRecordEV = releaseEV.let { record ->
             record.copy(
-                id = releaseService.newReleaseId(recordEvEntity.ocId),
+                id = generationService.generateReleaseId(ocid = recordEvEntity.ocId),
                 date = context.releaseDate,
                 tag = listOf(Tag.TENDER_UPDATE),
                 tender = record.tender.let { tender ->
@@ -708,7 +710,7 @@ class AwardServiceImpl(
                 val contractRecord = toObject(ContractRecord::class.java, contractRecordEntity.jsonData)
 
                 contractRecord.copy(
-                    id = releaseService.newReleaseId(context.ocid),
+                    id = generationService.generateReleaseId(ocid = context.ocid),
                     tag = listOf(Tag.CONTRACT_UPDATE),
                     date = context.releaseDate,
                     contracts = updateContracts(contract, contractRecord.contracts!!).toHashSet()
@@ -883,7 +885,7 @@ class AwardServiceImpl(
         }?.toHashSet()
 
         val updatedRecord = release.copy(
-            id = releaseService.newReleaseId(context.ocid),
+            id = generationService.generateReleaseId(ocid = context.ocid),
             date = context.releaseDate,
             tag = listOf(Tag.AWARD_UPDATE),
             awards = release.awards

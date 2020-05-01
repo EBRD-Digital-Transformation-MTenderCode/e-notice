@@ -41,7 +41,7 @@ class TenderCancellationService(
         val ms = releaseService.getMs(msEntity.jsonData)
 
         val updatedMs = ms.copy(
-            id = releaseService.newReleaseId(cpid),
+            id = generationService.generateReleaseId(cpid),
             date = context.releaseDate,
             tag = listOf(Tag.TENDER_CANCELLATION),
             tender = ms.tender.copy(
@@ -59,7 +59,7 @@ class TenderCancellationService(
 
         val updatedRecord = release.copy(
             //BR-2.4.8.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid),
 
             //BR-2.4.8.3
             date = context.releaseDate,
@@ -112,7 +112,7 @@ class TenderCancellationService(
             amendsReleaseID = release.id,
 
             //BR-2.4.8.13
-            releaseID = releaseService.newReleaseId(context.ocid),
+            releaseID = generationService.generateReleaseId(context.ocid),
 
             //BR-2.4.8.14
             date = context.releaseDate,
@@ -154,7 +154,7 @@ class TenderCancellationService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.CANCELLED
@@ -163,7 +163,7 @@ class TenderCancellationService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.CANCELLED

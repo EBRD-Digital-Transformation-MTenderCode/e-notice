@@ -40,7 +40,7 @@ class CancelCANsAndContractStrategy(
         val cancelledCAN: CancelCANsAndContractRequest.CancelledCAN = request.cancelledCan
 
         /** BR-2.8.3.4 */
-        val releaseId = releaseService.newReleaseId(ocid)
+        val releaseId = generationService.generateReleaseId(ocid)
         val amendment: Amendment = cancelledCAN.createAmendment(releaseEV, releaseId, releaseDate)
 
         val updatedReleaseEV = releaseEV.copy(
@@ -75,7 +75,7 @@ class CancelCANsAndContractStrategy(
         val recordAC = toObject(ContractRecord::class.java, recordACEntity.jsonData)
 
         val updatedRecordAC = recordAC.copy(
-            id = releaseService.newReleaseId(contractId),
+            id = generationService.generateReleaseId(contractId),
             tag = listOf(Tag.CONTRACT_TERMINATION),
             date = releaseDate,
             contracts = recordAC.contracts?.updateContract(request.contract)

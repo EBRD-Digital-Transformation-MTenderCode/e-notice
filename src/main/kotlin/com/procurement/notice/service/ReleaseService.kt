@@ -23,7 +23,6 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Params
 import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.model.tender.record.ReleaseTender
-import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -176,15 +175,6 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
-    fun newOcId(cpId: String, stage: String): String {
-        return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
-    }
-
-    fun newReleaseId(ocId: String): String {
-        return ocId + SEPARATOR + milliNowUTC()
-    }
-
-
     fun saveMs(cpId: String, ms: Ms, publishDate: Date) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
     }
@@ -262,11 +252,14 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
                 params.relatedProcessType = RelatedProcessType.X_EVALUATION
             }
             Stage.NP -> {
-                if(operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
+                if (operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
                     params.statusDetails = TenderStatusDetails.NEGOTIATION
                     params.relatedProcessType = RelatedProcessType.X_NEGOTIATION
                 } else
                     throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+            }
+            Stage.TP -> {
+                params.relatedProcessType = RelatedProcessType.X_TENDERING
             }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }

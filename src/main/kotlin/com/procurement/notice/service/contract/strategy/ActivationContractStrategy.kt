@@ -1,5 +1,6 @@
 package com.procurement.notice.service.contract.strategy
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.contract.activate.ActivateContractContext
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.dao.ReleaseDao
@@ -21,7 +22,8 @@ import com.procurement.notice.utils.toObject
 
 class ActivationContractStrategy(
     private val releaseService: ReleaseService,
-    private val releaseDao: ReleaseDao
+    private val releaseDao: ReleaseDao,
+    private val generationService: GenerationService
 ) {
     fun activateContract(context: ActivateContractContext, data: ActivateContractData): ResponseDto {
         val recordContractEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
@@ -34,7 +36,7 @@ class ActivationContractStrategy(
         )
         val updatedRecordContract = recordContract.copy(
             //BR-2.7.3.4
-            id = releaseService.newReleaseId(context.ocid),
+            id = generationService.generateReleaseId(context.ocid),
 
             //BR-2.7.3.1
             tag = listOf(Tag.CONTRACT_UPDATE),
@@ -63,7 +65,7 @@ class ActivationContractStrategy(
         val releaseEV = releaseService.getRelease(recordEvEntity.jsonData)
         val updatedReleaseEv = releaseEV.copy(
             //BR-2.4.12.4
-            id = releaseService.newReleaseId(recordEvEntity.ocId),
+            id = generationService.generateReleaseId(recordEvEntity.ocId),
 
             //BR-2.4.12.3
             date = context.releaseDate,

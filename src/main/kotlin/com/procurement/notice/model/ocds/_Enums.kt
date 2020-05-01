@@ -110,7 +110,8 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_NEGOTIATION("x_negotiation"),
     PLANNING("planning"),
     X_PLANNED("x_planned"),
-    X_CONTRACTING("x_contracting");
+    X_CONTRACTING("x_contracting"),
+    X_TENDERING("x_tendering");
 
     override fun toString(): String {
         return this.value
@@ -187,7 +188,8 @@ enum class TenderDescription(val text: String) {
     EV("Evaluation stage of contracting process"),
     PN("Contracting process is planned"),
     PIN("Date of tender launch is determined"),
-    NP("Negotiation stage of contracting process")
+    NP("Negotiation stage of contracting process"),
+    TP("Tendering Phase stage of contracting process")
 }
 
 enum class TenderTitle(val text: String) {
@@ -197,7 +199,8 @@ enum class TenderTitle(val text: String) {
     EV("Evaluation"),
     PN("Planning Notice"),
     PIN("Prior Notice"),
-    NP("Negotiation")
+    NP("Negotiation"),
+    TP("Tendering Phase")
 }
 
 enum class TenderStatus constructor(private val value: String) {
@@ -368,7 +371,8 @@ enum class Stage {
     PIN,
     EV,
     CT,
-    NP
+    NP,
+    TP
 }
 
 enum class Operation(val value: String) {

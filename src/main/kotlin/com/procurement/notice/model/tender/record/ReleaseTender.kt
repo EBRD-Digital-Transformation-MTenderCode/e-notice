@@ -97,5 +97,8 @@ data class ReleaseTender (
     @field:JsonProperty("procurementMethodModalities") @param:JsonProperty("procurementMethodModalities") var procurementMethodModalities: List<String> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") var electronicAuctions: ElectronicAuctions?
+    @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") var electronicAuctions: ElectronicAuctions?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?
 )
