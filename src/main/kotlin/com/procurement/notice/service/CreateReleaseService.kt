@@ -42,18 +42,18 @@ class CreateReleaseService(
         ms.apply {
             ocid = cpid
             date = releaseDate
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             tag = listOf(Tag.COMPILED)
             initiationType = InitiationType.TENDER
             tender.statusDetails = params.statusDetails
             organizationService.processMsParties(this, checkFs)
         }
         val release = releaseService.getRelease(data)
-        val ocId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val ocId = generationService.generateOcid(cpid = cpid, stage = stage)
         release.apply {
             date = releaseDate
             ocid = ocId
-            id = releaseService.newReleaseId(ocId)
+            id = generationService.generateReleaseId(ocId)
             tag = params.tag
             initiationType = InitiationType.TENDER
             tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
@@ -83,7 +83,7 @@ class CreateReleaseService(
         val ms = releaseService.getMs(msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -93,15 +93,15 @@ class CreateReleaseService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
-        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
         val newRelease = release.copy(
-                id = releaseService.newReleaseId(newOcId),
+                id = generationService.generateReleaseId(newOcId),
                 date = releaseDate,
                 tag = listOf(Tag.PLANNING),
                 tender = recordTender.copy(
@@ -135,7 +135,7 @@ class CreateReleaseService(
         val prevProcuringEntity = ms.tender.procuringEntity
         val params = releaseService.getParamsForUpdateCnOnPnPin(Stage.valueOf(stage.toUpperCase()))
         val updatedMS = ms.copy(
-            id = generationService.generateReleaseId(cpid = cpid),
+            id = generationService.generateReleaseId(ocid = cpid),
             date = releaseDate,
             tag = listOf(Tag.COMPILED),
             parties = releaseService.getPartiesWithActualPersones(msTender.procuringEntity!!, ms.parties),
@@ -217,7 +217,7 @@ class CreateReleaseService(
             operation = operation
         )
         ms.apply {
-            id = releaseService.newReleaseId(cpid) //BR-2.4.16.24
+            id = generationService.generateReleaseId(cpid) //BR-2.4.16.24
             date = releaseDate //BR-2.4.16.25
             tag = listOf(Tag.COMPILED) //BR-2.4.16.23
             tender = msTender //BR-2.4.16.19
@@ -229,7 +229,7 @@ class CreateReleaseService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val releasePN = releaseService.getRelease(recordEntity.jsonData)
         releasePN.apply {
-            id = releaseService.newReleaseId(ocid) //BR-2.4.16.16
+            id = generationService.generateReleaseId(ocid) //BR-2.4.16.16
             date = releaseDate //BR-2.4.16.15
             tag = listOf(Tag.PLANNING_UPDATE) //BR-2.4.16.13
             tender.status = TenderStatus.COMPLETE //BR-2.4.16.18
@@ -238,11 +238,11 @@ class CreateReleaseService(
         releaseService.saveRecord(cpId = cpid, stage = prevStage, release = releasePN, publishDate = recordEntity.publishDate)
 
         //BR-2.4.16.6
-        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
 
         val releaseNP = releasePN.copy(
             ocid = newOcId, //BR-2.4.16.6
-            id = releaseService.newReleaseId(newOcId), //BR-2.4.16.7
+            id = generationService.generateReleaseId(newOcId), //BR-2.4.16.7
             date = releaseDate, //BR-2.4.16.8
             tag = listOf(Tag.TENDER), //BR-2.4.16.3
             tender = recordTender.copy( //BR-2.4.16.11
@@ -279,7 +279,7 @@ class CreateReleaseService(
         val prevProcuringEntity = ms.tender.procuringEntity
         val params = releaseService.getParamsForUpdateCnOnPnPin(Stage.valueOf(stage.toUpperCase()))
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender = msTender
@@ -290,16 +290,16 @@ class CreateReleaseService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         releaseService.saveRecord(cpId = cpid, stage = prevStage, release = release, publishDate = recordEntity.publishDate)
-        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
         val newRelease = release.copy(
-                id = releaseService.newReleaseId(newOcId),
+                id = generationService.generateReleaseId(newOcId),
                 date = releaseDate,
                 tag = listOf(Tag.TENDER),
                 tender = recordTender.copy(

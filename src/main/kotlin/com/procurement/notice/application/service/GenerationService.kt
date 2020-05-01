@@ -7,7 +7,7 @@ interface GenerationService {
 
     fun generateOcid(cpid: String, stage: String): String
 
-    fun generateReleaseId(cpid: String): String
+    fun generateReleaseId(ocid: String): String
 
     fun generateRelatedProcessId(): String
 }

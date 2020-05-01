@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -22,7 +23,9 @@ import java.util.*
 @Service
 class TenderServiceEv(private val releaseService: ReleaseService,
                       private val organizationService: OrganizationService,
-                      private val relatedProcessService: RelatedProcessService) {
+                      private val relatedProcessService: RelatedProcessService,
+                      private val generationService: GenerationService
+) {
 
     fun awardByBidEv(cpid: String,
                      ocid: String,
@@ -33,7 +36,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             updateAward(this, dto.award)
@@ -55,7 +58,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
         }
@@ -75,7 +78,7 @@ class TenderServiceEv(private val releaseService: ReleaseService,
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER)
             tender.statusDetails = dto.tenderStatusDetails

@@ -21,8 +21,8 @@ class GenerationServiceImpl : GenerationService {
         return cpid + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
     }
 
-    override fun generateReleaseId(cpid: String): String {
-        return cpid + SEPARATOR + milliNowUTC()
+    override fun generateReleaseId(ocid: String): String {
+        return ocid + SEPARATOR + milliNowUTC()
     }
 
     override fun generateRelatedProcessId(): String = generateTimeBasedRandomUUID().toString()

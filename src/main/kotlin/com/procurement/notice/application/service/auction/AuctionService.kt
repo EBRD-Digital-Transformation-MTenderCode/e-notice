@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.auction
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.model.ocds.AccountIdentifier
 import com.procurement.notice.model.ocds.Address
@@ -48,7 +49,8 @@ interface AuctionService {
 
 @Service
 class AuctionServiceImpl(
-    private val releaseService: ReleaseService
+    private val releaseService: ReleaseService,
+    private val generationService: GenerationService
 ) : AuctionService {
     override fun periodEnd(context: AuctionPeriodEndContext, data: AuctionPeriodEndData) {
         val entity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
@@ -61,7 +63,7 @@ class AuctionServiceImpl(
         val criteria = data.criteria?.convert()
 
         val updatedRecord = release.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+            id = generationService.generateReleaseId(ocid = context.ocid), //FR-5.0.1
             date = context.releaseDate,                     //FR-5.0.2
             tag = listOf(Tag.AWARD),                        //FR-5.7.2.6.1
             //FR-5.7.2.6.6

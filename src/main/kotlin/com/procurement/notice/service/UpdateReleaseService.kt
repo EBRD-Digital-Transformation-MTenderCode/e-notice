@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.cn.UpdateCNContext
 import com.procurement.notice.application.service.cn.UpdateCNData
 import com.procurement.notice.application.service.cn.UpdatedCN
@@ -53,7 +54,10 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Service
-class UpdateReleaseService(private val releaseService: ReleaseService) {
+class UpdateReleaseService(
+    private val releaseService: ReleaseService,
+    private val generationService: GenerationService
+) {
 
     fun updateCn(
         context: UpdateCNContext,
@@ -62,7 +66,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val recordMS = releaseService.getMs(msEntity.jsonData)
         val updatedRecordMS: Ms = recordMS.copy(
-            id = releaseService.newReleaseId(ocId = context.cpid), //FR-5.0.1
+            id = generationService.generateReleaseId(ocid = context.cpid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.5.2.3.1
             //FR-MR-5.5.2.3.6
@@ -249,7 +253,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val releaseEV = releaseService.getRelease(recordEntity.jsonData)
 
-        val newReleaseID = releaseService.newReleaseId(context.ocid)
+        val newReleaseID = generationService.generateReleaseId(context.ocid)
         val actualReleaseID = releaseEV.id!!
         val newAmendment: ReleaseAmendment =
             newAmendment(context = context, data = data, actualReleaseID = actualReleaseID, newReleaseID = newReleaseID)
@@ -588,7 +592,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             hasEnquiries = ms.tender.hasEnquiries
         }
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             planning = msReq.planning
             tender = msReq.tender
@@ -600,7 +604,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
             description = release.tender.description
         }
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.PLANNING_UPDATE)
             tender = recordTender
@@ -622,7 +626,7 @@ class UpdateReleaseService(private val releaseService: ReleaseService) {
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         val actualReleaseID = release.id
-        val newReleaseID = releaseService.newReleaseId(ocid)
+        val newReleaseID = generationService.generateReleaseId(ocid)
         val amendments = release.tender.amendments.toMutableList()
         amendments.add(
             ReleaseAmendment(

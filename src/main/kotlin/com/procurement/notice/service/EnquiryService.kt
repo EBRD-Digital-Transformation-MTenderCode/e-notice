@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class EnquiryService(private val releaseService: ReleaseService) {
+class EnquiryService(private val releaseService: ReleaseService, private val generationService: GenerationService) {
 
     companion object {
         private const val ENQUIRY_JSON = "enquiry"
@@ -29,7 +30,7 @@ class EnquiryService(private val releaseService: ReleaseService) {
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.TENDER)
             date = releaseDate
             tender.hasEnquiries = true
@@ -43,7 +44,7 @@ class EnquiryService(private val releaseService: ReleaseService) {
                 val msEntity = releaseService.getMsEntity(cpid)
                 val ms = releaseService.getMs(msEntity.jsonData)
                 ms.apply {
-                    id = releaseService.newReleaseId(cpid)
+                    id = generationService.generateReleaseId(cpid)
                     date = releaseDate
                     tag = listOf(Tag.COMPILED)
                     tender.hasEnquiries = true
@@ -64,7 +65,7 @@ class EnquiryService(private val releaseService: ReleaseService) {
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
         release.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
         }
         release.tender.enquiries.asSequence().firstOrNull { it.id == enquiry.id }?.apply {

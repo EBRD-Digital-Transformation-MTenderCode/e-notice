@@ -34,7 +34,7 @@ class CancelCANsStrategy(
             /** BR-2.8.3.3 */
             date = releaseDate,
             /** BR-2.8.3.4 */
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid),
             /** BR-2.8.3.8 */
             contracts = releaseEV.contracts.updateContracts(cancelledCAN, amendment),
             /** BR-2.8.3.12 */

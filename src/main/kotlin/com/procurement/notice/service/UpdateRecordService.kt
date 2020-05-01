@@ -3,6 +3,7 @@ package com.procurement.notice.service
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
 import com.procurement.notice.application.model.record.UpdateRecordParams
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.handler.UpdateResult
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service
 @Service
 class UpdateRecordService(
     private val releaseService: ReleaseService,
-    private val jacksonJsonTransform: Transform
+    private val jacksonJsonTransform: Transform,
+    private val generationService: GenerationService
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(UpdateRecordService::class.java)
@@ -45,7 +47,7 @@ class UpdateRecordService(
             }
             .get
 
-        val releaseId = releaseService.newReleaseId(ocid.toString())
+        val releaseId = generationService.generateReleaseId(ocid = ocid.toString())
         val updatedRelease = record.updateRelease(releaseId = releaseId, params = params)
             .doReturn { e -> return UpdateResult.error(e) }
             .also {

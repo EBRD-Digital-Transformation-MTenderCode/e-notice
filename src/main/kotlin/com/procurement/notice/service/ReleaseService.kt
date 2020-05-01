@@ -23,7 +23,6 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Params
 import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.model.tender.record.ReleaseTender
-import com.procurement.notice.utils.milliNowUTC
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -175,15 +174,6 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
                 status = status
         )
     }
-
-    fun newOcId(cpId: String, stage: String): String {
-        return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
-    }
-
-    fun newReleaseId(ocId: String): String {
-        return ocId + SEPARATOR + milliNowUTC()
-    }
-
 
     fun saveMs(cpId: String, ms: Ms, publishDate: Date) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
