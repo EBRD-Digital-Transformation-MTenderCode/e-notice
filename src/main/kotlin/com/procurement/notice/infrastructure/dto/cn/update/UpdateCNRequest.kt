@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.procurement.notice.infrastructure.bind.money.MoneyDeserializer
-import com.procurement.notice.infrastructure.bind.money.MoneySerializer
 import com.procurement.access.infrastructure.bind.quantity.QuantitySerializer
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.money.Money
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
+import com.procurement.notice.infrastructure.bind.money.MoneyDeserializer
+import com.procurement.notice.infrastructure.bind.money.MoneySerializer
 import com.procurement.notice.infrastructure.bind.quantity.QuantityDeserializer
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
@@ -22,11 +22,30 @@ data class UpdateCNRequest(
     @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: PreQualification?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("amendment") @param:JsonProperty("amendment") val amendment: Amendment?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @get:JsonProperty("isAuctionPeriodChanged") @param:JsonProperty("isAuctionPeriodChanged") val isAuctionPeriodChanged: Boolean?
 ) {
+
+    data class PreQualification(
+        @field:JsonProperty("period") @param:JsonProperty("period") val period: Period
+    ) {
+        data class Period(
+            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("startDate") @param:JsonProperty("startDate") val startDate: LocalDateTime?,
+
+            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @JsonDeserialize(using = JsonDateTimeDeserializer::class)
+            @JsonSerialize(using = JsonDateTimeSerializer::class)
+            @field:JsonProperty("endDate") @param:JsonProperty("endDate") val endDate: LocalDateTime?
+        )
+    }
 
     data class Planning(
         @JsonInclude(JsonInclude.Include.NON_NULL)

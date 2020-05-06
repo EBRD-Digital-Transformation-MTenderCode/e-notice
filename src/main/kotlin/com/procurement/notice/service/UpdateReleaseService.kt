@@ -255,8 +255,12 @@ class UpdateReleaseService(
 
         val newReleaseID = generationService.generateReleaseId(context.ocid)
         val actualReleaseID = releaseEV.id!!
-        val newAmendment: ReleaseAmendment =
-            newAmendment(context = context, data = data, actualReleaseID = actualReleaseID, newReleaseID = newReleaseID)
+        val newAmendment: ReleaseAmendment = newAmendment(
+            context = context,
+            data = data,
+            actualReleaseID = actualReleaseID,
+            newReleaseID = newReleaseID
+        )
         val updatedAmendments: List<ReleaseAmendment> = releaseEV.tender.amendments.plus(newAmendment)
 
         val updatedReleaseEV = releaseEV.copy(

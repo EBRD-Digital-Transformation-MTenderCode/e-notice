@@ -1,14 +1,26 @@
 package com.procurement.notice.infrastructure.dto.convert
 
-import com.procurement.notice.lib.errorIfEmpty
-import com.procurement.notice.lib.orThrow
 import com.procurement.notice.application.service.cn.UpdateCNData
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.cn.update.UpdateCNRequest
+import com.procurement.notice.lib.errorIfEmpty
+import com.procurement.notice.lib.orThrow
 
 fun UpdateCNRequest.convert(): UpdateCNData =
     UpdateCNData(
+        preQualification = this.preQualification
+            .let { qualification ->
+                UpdateCNData.PreQualification(
+                    period = qualification?.period
+                        .let { period ->
+                            UpdateCNData.PreQualification.Period(
+                                startDate = period?.startDate,
+                                endDate = period?.endDate
+                            )
+                        }
+                )
+            },
         planning = this.planning.let { planning ->
             UpdateCNData.Planning(
                 rationale = planning.rationale,

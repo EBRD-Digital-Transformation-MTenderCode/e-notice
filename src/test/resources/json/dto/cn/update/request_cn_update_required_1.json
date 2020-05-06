@@ -29,6 +29,10 @@
       ]
     }
   },
+  "preQualification": {
+    "period": {
+    }
+  },
   "tender": {
     "id": "ocid-1",
     "status": "planning",
