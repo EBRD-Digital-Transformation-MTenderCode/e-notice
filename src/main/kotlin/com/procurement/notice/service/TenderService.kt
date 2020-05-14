@@ -36,6 +36,7 @@ import com.procurement.notice.model.ocds.Issue
 import com.procurement.notice.model.ocds.LegalForm
 import com.procurement.notice.model.ocds.LocalityDetails
 import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.MainEconomicActivity
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
@@ -316,7 +317,15 @@ class TenderService(
                                         .let { details ->
                                             Details(
                                                 typeOfSupplier = details.typeOfSupplier.value,
-                                                mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                                mainEconomicActivities = details.mainEconomicActivities
+                                                    .map { mainEconomicActivity ->
+                                                        MainEconomicActivity(
+                                                            id = mainEconomicActivity.id,
+                                                            description = mainEconomicActivity.description,
+                                                            scheme = mainEconomicActivity.scheme,
+                                                            uri = mainEconomicActivity.uri
+                                                        )
+                                                    }.toSet(),
                                                 scale = details.scale.value,
                                                 permits = details.permits
                                                     .map { permit ->
@@ -634,7 +643,15 @@ class TenderService(
                                 .let { details ->
                                     Details(
                                         typeOfSupplier = details.typeOfSupplier.value,
-                                        mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                        mainEconomicActivities = details.mainEconomicActivities
+                                            .map { mainEconomicActivity ->
+                                                MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
+                                            }.toSet(),
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -882,7 +899,15 @@ class TenderService(
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier.value,
-                            mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                            mainEconomicActivities = details.mainEconomicActivities
+                                .map { mainEconomicActivity ->
+                                    MainEconomicActivity(
+                                        id = mainEconomicActivity.id,
+                                        description = mainEconomicActivity.description,
+                                        scheme = mainEconomicActivity.scheme,
+                                        uri = mainEconomicActivity.uri
+                                    )
+                                }.toSet(),
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->
@@ -1430,7 +1455,15 @@ class TenderService(
                                 .let { details ->
                                     Details(
                                         typeOfSupplier = details.typeOfSupplier?.value,
-                                        mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                        mainEconomicActivities = details.mainEconomicActivities
+                                            .map { mainEconomicActivity ->
+                                                MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
+                                            }.toSet(),
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -1667,7 +1700,15 @@ class TenderService(
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier?.value,
-                            mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                            mainEconomicActivities = details.mainEconomicActivities
+                                .map { mainEconomicActivity ->
+                                    MainEconomicActivity(
+                                        id = mainEconomicActivity.id,
+                                        description = mainEconomicActivity.description,
+                                        scheme = mainEconomicActivity.scheme,
+                                        uri = mainEconomicActivity.uri
+                                    )
+                                }.toSet(),
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->

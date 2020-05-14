@@ -20,6 +20,7 @@ import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.Issue
 import com.procurement.notice.model.ocds.LegalForm
 import com.procurement.notice.model.ocds.LocalityDetails
+import com.procurement.notice.model.ocds.MainEconomicActivity
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
@@ -468,7 +469,14 @@ class AuctionServiceImpl(
     private fun AuctionPeriodEndData.Bid.Tenderer.Details.convertToPartiesDetails() = Details(
         typeOfSupplier = this.typeOfSupplier?.value,
         mainEconomicActivities = this.mainEconomicActivities
-            .toSet(),
+            .map { mainEconomicActivity ->
+                MainEconomicActivity(
+                    id = mainEconomicActivity.id,
+                    uri = mainEconomicActivity.uri,
+                    scheme = mainEconomicActivity.scheme,
+                    description = mainEconomicActivity.description
+                )
+            }.toSet(),
         scale = this.scale.value,
         permits = this.permits
             .map { permit ->
