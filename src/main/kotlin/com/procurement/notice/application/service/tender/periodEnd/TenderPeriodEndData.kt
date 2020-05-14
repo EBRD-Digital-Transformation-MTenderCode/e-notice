@@ -143,12 +143,18 @@ data class TenderPeriodEndData(
 
             data class Details(
                 val typeOfSupplier: TypeOfSupplier,
-                val mainEconomicActivities: List<String>,
+                val mainEconomicActivities: List<MainEconomicActivity>,
                 val scale: Scale,
                 val permits: List<Permit>,
                 val bankAccounts: List<BankAccount>,
                 val legalForm: LegalForm?
             ) {
+                data class MainEconomicActivity(
+                    val scheme: String,
+                    val id: String,
+                    val description: String,
+                    val uri: String?
+                )
 
                 data class Permit(
                     val scheme: String,
