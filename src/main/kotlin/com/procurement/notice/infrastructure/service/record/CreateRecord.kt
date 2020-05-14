@@ -56,6 +56,7 @@ import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentBF
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordDetails
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordOrganization
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermits
@@ -141,6 +142,7 @@ import com.procurement.notice.infrastructure.dto.request.documents.RequestDocume
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentBF
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
+import com.procurement.notice.infrastructure.dto.request.parties.RequestMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermits
@@ -464,7 +466,7 @@ fun createDetails(received: RequestDetails): RecordDetails =
             .map { createBankAccount(it) },
         isACentralPurchasingBody = received.isACentralPurchasingBody,
         legalForm = received.legalForm?.let { createLegalForm(it) },
-        mainEconomicActivities = received.mainEconomicActivities,
+        mainEconomicActivities = received.mainEconomicActivities.map { createMainEconomicActivity(it) },
         mainGeneralActivity = received.mainGeneralActivity,
         mainSectoralActivity = received.mainSectoralActivity,
         nutsCode = received.nutsCode,
@@ -472,6 +474,14 @@ fun createDetails(received: RequestDetails): RecordDetails =
             .map { createPermits(it) },
         scale = received.scale,
         typeOfSupplier = received.typeOfSupplier
+    )
+
+fun createMainEconomicActivity(received: RequestMainEconomicActivity) =
+    RecordMainEconomicActivity(
+        id = received.id,
+        uri = received.uri,
+        scheme = received.scheme,
+        description = received.description
     )
 
 fun createPermits(received: RequestPermits): RecordPermits =
