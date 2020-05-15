@@ -210,7 +210,7 @@ data class TenderUnsuccessfulRequest(
                 @field:JsonProperty("typeOfSupplier") @param:JsonProperty("typeOfSupplier") val typeOfSupplier: TypeOfSupplier?,
 
                 @JsonInclude(JsonInclude.Include.NON_NULL)
-                @field:JsonProperty("mainEconomicActivities") @param:JsonProperty("mainEconomicActivities") val mainEconomicActivities: List<String>?,
+                @field:JsonProperty("mainEconomicActivities") @param:JsonProperty("mainEconomicActivities") val mainEconomicActivities: List<MainEconomicActivity>?,
 
                 @field:JsonProperty("scale") @param:JsonProperty("scale") val scale: Scale,
 
@@ -223,6 +223,14 @@ data class TenderUnsuccessfulRequest(
                 @JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("legalForm") @param:JsonProperty("legalForm") val legalForm: LegalForm?
             ) {
+                data class MainEconomicActivity(
+                    @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String,
+                    @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
+                    @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
+
+                    @JsonInclude(JsonInclude.Include.NON_NULL)
+                    @param:JsonProperty("uri") @field:JsonProperty("uri") val uri: String?
+                )
 
                 data class Permit(
                     @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String,

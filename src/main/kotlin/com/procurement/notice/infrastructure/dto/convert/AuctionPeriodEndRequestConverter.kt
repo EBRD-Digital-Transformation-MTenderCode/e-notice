@@ -109,7 +109,14 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                                         message = "The bid '${bid.id}' contain empty list of the 'mainEconomicActivities' in tenderer '${tenderer.id}'."
                                                     )
                                                 }
-                                                ?.toList()
+                                                ?.map { mainEconomicActivity ->
+                                                    AuctionPeriodEndData.Bid.Tenderer.Details.MainEconomicActivity(
+                                                        id = mainEconomicActivity.id,
+                                                        description = mainEconomicActivity.description,
+                                                        scheme = mainEconomicActivity.scheme,
+                                                        uri = mainEconomicActivity.uri
+                                                    )
+                                                }
                                                 .orEmpty(),
                                             scale = details.scale,
                                             permits = details.permits

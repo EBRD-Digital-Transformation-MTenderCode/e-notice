@@ -116,8 +116,13 @@ fun TenderUnsuccessfulRequest.convert(): TenderUnsuccessfulData =
                                                     message = "The bid '${bid.id}' contain empty list of the main economic activities in tenderer '${tenderer.id}'."
                                                 )
                                             }
-                                            ?.map {
-                                                it
+                                            ?.map { mainEconomicActivity ->
+                                                TenderUnsuccessfulData.Bid.Tenderer.Details.MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
                                             }
                                             .orEmpty(),
                                         scale = details.scale,

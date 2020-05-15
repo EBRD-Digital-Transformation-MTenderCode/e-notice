@@ -806,7 +806,7 @@ fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<Re
             bankAccounts = bankAccounts,
             isACentralPurchasingBody = received.isACentralPurchasingBody ?: this.isACentralPurchasingBody,
             legalForm = legalForm,
-            mainEconomicActivities = this.mainEconomicActivities.update(received.mainEconomicActivities),
+            mainEconomicActivities = mainEconomicActivities,
             mainGeneralActivity = received.mainGeneralActivity ?: this.mainGeneralActivity,
             mainSectoralActivity = received.mainSectoralActivity ?: this.mainSectoralActivity,
             nutsCode = received.nutsCode ?: this.nutsCode,
