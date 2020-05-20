@@ -13,6 +13,7 @@ import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.enums.BidStatus
 import com.procurement.notice.domain.model.enums.BidStatusDetails
 import com.procurement.notice.domain.model.enums.BusinessFunctionType
+import com.procurement.notice.domain.model.enums.CriteriaRelatesTo
 import com.procurement.notice.domain.model.enums.CriteriaSource
 import com.procurement.notice.domain.model.enums.Scale
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
@@ -203,7 +204,9 @@ data class TenderPeriodEndRequest(
 
             data class Details(
                 @field:JsonProperty("typeOfSupplier") @param:JsonProperty("typeOfSupplier") val typeOfSupplier: TypeOfSupplier,
-                @field:JsonProperty("mainEconomicActivities") @param:JsonProperty("mainEconomicActivities") val mainEconomicActivities: List<String>,
+
+                @JsonInclude(JsonInclude.Include.NON_EMPTY)
+                @field:JsonProperty("mainEconomicActivities") @param:JsonProperty("mainEconomicActivities") val mainEconomicActivities: List<MainEconomicActivity>?,
                 @field:JsonProperty("scale") @param:JsonProperty("scale") val scale: Scale,
 
                 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -215,6 +218,15 @@ data class TenderPeriodEndRequest(
                 @JsonInclude(JsonInclude.Include.NON_NULL)
                 @field:JsonProperty("legalForm") @param:JsonProperty("legalForm") val legalForm: LegalForm?
             ) {
+
+                data class MainEconomicActivity(
+                    @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String,
+                    @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
+                    @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
+
+                    @JsonInclude(JsonInclude.Include.NON_NULL)
+                    @param:JsonProperty("uri") @field:JsonProperty("uri") val uri: String?
+                )
 
                 data class Permit(
                     @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String,
@@ -375,6 +387,9 @@ data class TenderPeriodEndRequest(
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("source") @param:JsonProperty("source") val source: CriteriaSource?,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("relatesTo") @param:JsonProperty("relatesTo") val relatesTo: CriteriaRelatesTo?,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,

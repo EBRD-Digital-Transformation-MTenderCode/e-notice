@@ -1,8 +1,19 @@
 package com.procurement.notice.dao
 
+import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Session
+import com.datastax.driver.core.querybuilder.BuiltStatement
 import com.datastax.driver.core.querybuilder.QueryBuilder
-import com.datastax.driver.core.querybuilder.QueryBuilder.*
+import com.datastax.driver.core.querybuilder.QueryBuilder.eq
+import com.datastax.driver.core.querybuilder.QueryBuilder.insertInto
+import com.datastax.driver.core.querybuilder.QueryBuilder.select
+import com.procurement.notice.application.model.Cpid
+import com.procurement.notice.application.model.Ocid
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.utils.Result
+import com.procurement.notice.domain.utils.Result.Companion.failure
+import com.procurement.notice.domain.utils.Result.Companion.success
+import com.procurement.notice.domain.utils.asSuccess
 import com.procurement.notice.model.entity.ReleaseEntity
 import org.springframework.stereotype.Service
 
@@ -99,6 +110,34 @@ class ReleaseDao(private val session: Session) {
                 row.getString(RELEASE_ID),
                 row.getString(STAGE),
                 row.getString(JSON_DATA)) else null
+    }
+
+    fun tryGetByCpIdAndOcId(cpid: Cpid, ocid: Ocid): Result<ReleaseEntity?, Fail.Incident.Database> {
+        val query = select()
+                .all()
+                .from(TENDER_COMPILED_TABLE)
+                .where(eq(CP_ID, cpid.toString()))
+                .and(eq(OC_ID, ocid.toString()))
+                .limit(1)
+        return load(query)
+            .doOnError { error -> return failure(error) }
+            .get
+            .one()
+            ?.let { row -> ReleaseEntity(
+                row.getString(CP_ID),
+                row.getString(OC_ID),
+                row.getTimestamp(PUBLISH_DATE),
+                row.getTimestamp(RELEASE_DATE),
+                row.getString(RELEASE_ID),
+                row.getString(STAGE),
+                row.getString(JSON_DATA)) }
+            .asSuccess()
+    }
+
+    protected fun load(statement: BuiltStatement): Result<ResultSet, Fail.Incident.Database> = try {
+        success(session.execute(statement))
+    } catch (expected: Exception) {
+        failure(Fail.Incident.Database.Access("Error accessing to database.", expected))
     }
 
     fun getByCpIdAndStage(cpId: String, stage: String): ReleaseEntity? {

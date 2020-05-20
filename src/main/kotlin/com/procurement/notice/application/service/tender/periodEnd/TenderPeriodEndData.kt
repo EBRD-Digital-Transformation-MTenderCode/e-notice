@@ -9,6 +9,7 @@ import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.enums.BidStatus
 import com.procurement.notice.domain.model.enums.BidStatusDetails
 import com.procurement.notice.domain.model.enums.BusinessFunctionType
+import com.procurement.notice.domain.model.enums.CriteriaRelatesTo
 import com.procurement.notice.domain.model.enums.CriteriaSource
 import com.procurement.notice.domain.model.enums.Scale
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
@@ -142,12 +143,18 @@ data class TenderPeriodEndData(
 
             data class Details(
                 val typeOfSupplier: TypeOfSupplier,
-                val mainEconomicActivities: List<String>,
+                val mainEconomicActivities: List<MainEconomicActivity>,
                 val scale: Scale,
                 val permits: List<Permit>,
                 val bankAccounts: List<BankAccount>,
                 val legalForm: LegalForm?
             ) {
+                data class MainEconomicActivity(
+                    val scheme: String,
+                    val id: String,
+                    val description: String,
+                    val uri: String?
+                )
 
                 data class Permit(
                     val scheme: String,
@@ -275,6 +282,7 @@ data class TenderPeriodEndData(
         val id: String,
         val title: String,
         val source: CriteriaSource?,
+        val relatesTo: CriteriaRelatesTo?,
         val description: String?,
         val requirementGroups: List<RequirementGroup>
     ) {

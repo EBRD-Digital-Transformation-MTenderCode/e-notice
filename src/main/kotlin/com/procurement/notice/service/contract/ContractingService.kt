@@ -12,8 +12,12 @@ import com.procurement.notice.application.service.contract.activate.ActivateCont
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionData
+import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionResult
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -55,7 +59,7 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.ValueTax
 import com.procurement.notice.model.ocds.Verification
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.service.OrganizationService
 import com.procurement.notice.service.RelatedProcessService
 import com.procurement.notice.service.ReleaseService
@@ -76,14 +80,15 @@ class ContractingService(
     private val relatedProcessService: RelatedProcessService,
     private val budgetDao: BudgetDao,
     private val releaseDao: ReleaseDao,
-    generationService: GenerationService
+    private val generationService: GenerationService
 ) {
 
     private val cancelCANsStrategy = CancelCANsStrategy(releaseService, generationService)
     private val cancelCANsAndContractStrategy = CancelCANsAndContractStrategy(releaseService, generationService)
     private val activationContractStrategy = ActivationContractStrategy(
         releaseService = releaseService,
-        releaseDao = releaseDao
+        releaseDao = releaseDao,
+        generationService = generationService
     )
 
     fun createAc(
@@ -98,17 +103,17 @@ class ContractingService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
         }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.AWARD_UPDATE)
             if (dto.cans.isNotEmpty()) {
-                contracts?.let { updateCanContracts(it, cans) }
+                contracts.let { updateCanContracts(it, cans) }
             }
         }
 
@@ -118,7 +123,7 @@ class ContractingService(
         contract.agreedMetrics = dto.contractTerm.agreedMetrics
 
         val contractedTender = ContractTender(
-            id = record.tender.id,
+            id = release.tender.id,
             lots = dto.contractedTender.lots,
             classification = dto.contractedTender.classification,
             mainProcurementCategory = dto.contractedTender.mainProcurementCategory,
@@ -127,10 +132,10 @@ class ContractingService(
         )
         val recordContract = ContractRecord(
             ocid = ocIdContract,
-            id = releaseService.newReleaseId(ocIdContract),
+            id = generationService.generateReleaseId(ocIdContract),
             date = releaseDate,
             tag = listOf(Tag.CONTRACT),
-            initiationType = record.initiationType,
+            initiationType = release.initiationType,
             tender = contractedTender,
             awards = hashSetOf(contractedAward),
             contracts = hashSetOf(contract)
@@ -158,7 +163,7 @@ class ContractingService(
             processType = processType
         )
         relatedProcessService.addContractRelatedProcessToCAN(
-            record = record,
+            release = release,
             ocId = ocIdContract,
             cpId = cpid,
             contract = contract,
@@ -166,7 +171,7 @@ class ContractingService(
         )
 
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         releaseService.saveContractRecord(
             cpId = cpid,
             stage = "AC",
@@ -189,7 +194,7 @@ class ContractingService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
             planning = dto.planning
@@ -259,7 +264,7 @@ class ContractingService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
         }
@@ -291,7 +296,7 @@ class ContractingService(
             agreedMetrics = recordContract.contracts?.firstOrNull()?.agreedMetrics
         }
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
             contracts = hashSetOf(dto.contract)
@@ -326,7 +331,7 @@ class ContractingService(
         }
 
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
             contracts = hashSetOf(dto.contract)
@@ -356,7 +361,7 @@ class ContractingService(
         }
 
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
             contracts = hashSetOf(dto.contract)
@@ -382,7 +387,7 @@ class ContractingService(
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordEntity.jsonData)
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
             contracts?.firstOrNull()?.apply {
@@ -413,7 +418,7 @@ class ContractingService(
         }
 
         recordContract.apply {
-            id = releaseService.newReleaseId(ocid)
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             contracts = hashSetOf(dto.contract)
         }
@@ -448,7 +453,7 @@ class ContractingService(
 
             val updatedRecordContract = contractRecord.copy(
                 //BR-2.7.6.8
-                id = releaseService.newReleaseId(clarificationContext.ocid),
+                id = generationService.generateReleaseId(clarificationContext.ocid),
                 //BR-2.7.6.2
                 date = clarificationContext.releaseDate,
                 //BR-2.7.6.6
@@ -463,20 +468,20 @@ class ContractingService(
             clarificationContext: TreasuryClarificationContext,
             clarificationData: TreasuryClarificationData,
             entity: ReleaseEntity
-        ): Record {
-            val record: Record = releaseService.getRecord(entity.jsonData)
-            val contracts = record.contracts?.toList() ?: emptyList()
+        ): Release {
+            val release: Release = releaseService.getRelease(entity.jsonData)
+            val contracts = release.contracts.toList()
             val updatedContracts = getContractsUpdatedWithCansSection(contracts, clarificationData.cans)
 
-            val updatedRecord = record.copy(
+            val updatedRecord = release.copy(
                 //BR-2.8.6.4
-                id = releaseService.newReleaseId(clarificationContext.ocid),
+                id = generationService.generateReleaseId(clarificationContext.ocid),
                 //BR-2.8.6.3
                 date = clarificationContext.releaseDate,
                 //BR-2.8.6.1
                 tag = listOf(Tag.TENDER_UPDATE),
                 //BR-2.8.6.6
-                contracts = updatedContracts.toHashSet()
+                contracts = updatedContracts.toList()
             )
             return updatedRecord
         }
@@ -490,10 +495,22 @@ class ContractingService(
             clarificationData = data
         )
 
-        val entityForEvaluationOrNegotiationRelease =
-            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
 
-        val updatedRecord = getUpdatedRecord(
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+
+        val updatedRelease = getUpdatedRecord(
             clarificationContext = context,
             entity = entityForEvaluationOrNegotiationRelease,
             clarificationData = data
@@ -508,17 +525,137 @@ class ContractingService(
 
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = context.stage,
-            record = updatedRecord,
+            stage = recordStage,
+            release = updatedRelease,
             publishDate = entityForEvaluationOrNegotiationRelease.publishDate
         )
 
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
+    fun treasuryRejectionAC(
+        context: TreasuryRejectionContext,
+        data: TreasuryRejectionData
+    ): TreasuryRejectionResult {
+
+        fun getUpdatedContractRecord(
+            rejectionContext: TreasuryRejectionContext,
+            rejectionData: TreasuryRejectionData,
+            entity: ReleaseEntity
+        ): ContractRecord {
+            val contractRecord = toObject(ContractRecord::class.java, entity.jsonData)
+            val contract = getContractFromData(rejectionData.contract)
+
+            //BR-2.7.6.7
+            val updatedMetrics = contractRecord.contracts?.firstOrNull()?.agreedMetrics
+            val updatedContract = contract.copy(
+                agreedMetrics = updatedMetrics
+            )
+
+            val updatedRecordContract = contractRecord.copy(
+                //BR-2.7.6.8
+                id = generationService.generateReleaseId(rejectionContext.ocid),
+                //BR-2.7.6.2
+                date = rejectionContext.releaseDate,
+                //BR-2.7.6.6
+                contracts = hashSetOf(updatedContract),
+                //BR-2.7.6.1
+                tag = listOf(Tag.CONTRACT_UPDATE)
+            )
+            return updatedRecordContract
+        }
+
+        fun getUpdatedRecord(
+            rejectionContext: TreasuryRejectionContext,
+            rejectionData: TreasuryRejectionData,
+            entity: ReleaseEntity
+        ): Release {
+            val release: Release = releaseService.getRelease(entity.jsonData)
+            val contracts = release.contracts.toList()
+            val updatedContracts = updateContractWithCansSection(contracts, rejectionData.cans)
+
+            val updatedRecord = release.copy(
+                //BR-2.8.6.4
+                id = generationService.generateReleaseId(rejectionContext.ocid),
+                //BR-2.8.6.3
+                date = rejectionContext.releaseDate,
+                //BR-2.8.6.1
+                tag = listOf(Tag.TENDER_UPDATE),
+                //BR-2.8.6.6
+                contracts = updatedContracts.toList()
+            )
+            return updatedRecord
+        }
+
+        val entityForContractRelease =
+            releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+
+        val updatedRecordContract = getUpdatedContractRecord(
+            rejectionContext = context,
+            entity = entityForContractRelease,
+            rejectionData = data
+        )
+
+        val recordStage = when (context.pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> "EV"
+
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+        val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
+                ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
+
+        val updatedRelease = getUpdatedRecord(
+            rejectionContext = context,
+            entity = entityForEvaluationOrNegotiationRelease,
+            rejectionData = data
+        )
+
+        releaseService.saveContractRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            record = updatedRecordContract,
+            publishDate = entityForContractRelease.publishDate
+        )
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = recordStage,
+            release = updatedRelease,
+            publishDate = entityForEvaluationOrNegotiationRelease.publishDate
+        )
+
+        return TreasuryRejectionResult(cpid = context.cpid, ocid = context.ocid)
+    }
+
     private fun getContractsUpdatedWithCansSection(
         contracts: List<Contract>,
         cans: List<TreasuryClarificationData.Can>
+    ): List<Contract> =
+        contracts.map { contract ->
+            val matchedCan = cans
+                .asSequence()
+                .filter { can -> can.id == contract.id }
+                .firstOrNull()
+            if (matchedCan != null) {
+                contract.copy(
+                    status = matchedCan.status,
+                    statusDetails = matchedCan.statusDetails
+                )
+            } else {
+                contract
+            }
+        }
+
+    private fun updateContractWithCansSection(
+        contracts: List<Contract>,
+        cans: List<TreasuryRejectionData.Can>
     ): List<Contract> =
         contracts.map { contract ->
             val matchedCan = cans
@@ -572,7 +709,139 @@ class ContractingService(
                 )
             },
             agreedMetrics = null,
-            awardId = contractData.awardID,
+            awardId = contractData.awardId,
+            confirmationRequests = contractData.confirmationRequests.map { confirmationRequest ->
+                ConfirmationRequest(
+                    title = confirmationRequest.title,
+                    description = confirmationRequest.description,
+                    id = confirmationRequest.id,
+                    relatedItem = confirmationRequest.relatedItem,
+                    relatesTo = confirmationRequest.relatesTo,
+                    requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
+                        RequestGroup(
+                            id = requestGroup.id,
+                            requests = requestGroup.requests.asSequence().map { request ->
+                                Request(
+                                    id = request.id,
+                                    description = request.description,
+                                    title = request.title,
+                                    relatedPerson = request.relatedPerson?.let { relatedPerson ->
+                                        RelatedPerson(
+                                            id = relatedPerson.id,
+                                            name = relatedPerson.name
+                                        )
+                                    }
+                                )
+                            }.toSet()
+                        )
+                    }.toSet(),
+                    source = confirmationRequest.source,
+                    type = confirmationRequest.type
+                )
+            },
+            confirmationResponses = contractData.confirmationResponses.asSequence().map { confirmationResponse ->
+                ConfirmationResponse(
+                    id = confirmationResponse.id,
+                    value = confirmationResponse.value.let { value ->
+                        ConfirmationResponseValue(
+                            name = value.name,
+                            id = value.id,
+                            relatedPerson = value.relatedPerson?.let { relatedPerson ->
+                                RelatedPerson(
+                                    id = relatedPerson.id,
+                                    name = relatedPerson.name
+                                )
+                            },
+                            date = value.date,
+                            verification = value.verification.map { verification ->
+                                Verification(
+                                    type = verification.type,
+                                    value = verification.value,
+                                    rationale = verification.rationale
+                                )
+                            }
+                        )
+                    },
+                    request = confirmationResponse.request
+                )
+            }.toHashSet(),
+            date = contractData.date,
+            milestones = contractData.milestones.map { milestone ->
+                Milestone(
+                    id = milestone.id,
+                    type = milestone.type,
+                    title = milestone.title,
+                    description = milestone.description,
+                    additionalInformation = milestone.additionalInformation,
+                    dateMet = milestone.dateMet,
+                    dateModified = milestone.dateModified,
+                    dueDate = milestone.dueDate,
+                    relatedItems = milestone.relatedItems?.asSequence()?.map { it.toString() }?.toSet(),
+                    relatedParties = milestone.relatedParties.map { relatedParty ->
+                        RelatedParty(
+                            id = relatedParty.id,
+                            name = relatedParty.name
+                        )
+                    },
+                    status = milestone.status
+                )
+            },
+            status = contractData.status,
+            statusDetails = contractData.statusDetails,
+            relatedLots = null,
+            items = null,
+            classification = null,
+            amendment = null,
+            amendments = null,
+            budgetSource = null,
+            countryOfOrigin = null,
+            dateSigned = null,
+            extendsContractId = null,
+            isFrameworkOrDynamic = null,
+            lotVariant = null,
+            relatedProcesses = null,
+            requirementResponses = null,
+            valueBreakdown = null
+        )
+
+    private fun getContractFromData(contractData: TreasuryRejectionData.Contract): Contract =
+        Contract(
+            id = contractData.id,
+            documents = contractData.documents.asSequence().map { document ->
+                Document(
+                    documentType = document.documentType,
+                    relatedConfirmations = document.relatedConfirmations,
+                    relatedLots = document.relatedLots?.map { it.toString() },
+                    description = document.description,
+                    title = document.title,
+                    id = document.id,
+                    url = document.url,
+                    datePublished = document.datePublished,
+                    dateModified = null,
+                    format = null,
+                    language = null
+                )
+            }.toHashSet(),
+            title = contractData.title,
+            description = contractData.description,
+            period = contractData.period.let { period ->
+                Period(
+                    startDate = period.startDate,
+                    endDate = period.endDate,
+                    durationInDays = null,
+                    maxExtentDate = null
+                )
+            },
+            value = contractData.value.let { value ->
+                ValueTax(
+                    amount = value.amount,
+                    currency = value.currency,
+                    amountNet = value.amountNet,
+                    valueAddedTaxIncluded = value.valueAddedTaxincluded
+                )
+            },
+            agreedMetrics = null,
+            awardId = contractData.awardId,
             confirmationRequests = contractData.confirmationRequests.map { confirmationRequest ->
                 ConfirmationRequest(
                     title = confirmationRequest.title,
@@ -681,7 +950,7 @@ class ContractingService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.apply {
@@ -690,26 +959,26 @@ class ContractingService(
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
-        recordEv.apply {
-            id = releaseService.newReleaseId(recordEvEntity.ocId)
+        val releaseEv = releaseService.getRelease(recordEvEntity.jsonData)
+        releaseEv.apply {
+            id = generationService.generateReleaseId(recordEvEntity.ocId)
             date = releaseDate
             tag = listOf(Tag.TENDER_UPDATE)
             tender.apply {
                 awardPeriod = dto.awardPeriod
                 status = TenderStatus.fromValue(dto.tender.status)
                 statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
-                lots?.let { updateLots(it, dto.lots) }
+                lots.let { updateLots(it, dto.lots) }
             }
             bids?.details?.let { updateBids(it, dto.bids) }
-            awards?.let { updateAwards(it, dto.awards) }
-            contracts?.let { updateCanContracts(it, dto.cans) }
+            awards.let { updateAwards(it, dto.awards) }
+            contracts.let { updateCanContracts(it, dto.cans) }
         }
         val recordContractEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val recordContract = toObject(ContractRecord::class.java, recordContractEntity.jsonData)
         if (dto.contract != null) {
             recordContract.apply {
-                id = releaseService.newReleaseId(ocid)
+                id = generationService.generateReleaseId(ocid)
                 tag = listOf(Tag.CONTRACT_UPDATE)
                 date = releaseDate
                 contracts?.firstOrNull()?.apply {
@@ -731,13 +1000,13 @@ class ContractingService(
         releaseService.saveRecord(
             cpId = cpid,
             stage = "EV",
-            record = recordEv,
+            release = releaseEv,
             publishDate = recordEvEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun updateCanContracts(recordContracts: HashSet<Contract>, dtoCans: HashSet<Can>) {
+    private fun updateCanContracts(recordContracts: List<Contract>, dtoCans: HashSet<Can>) {
         for (contract in recordContracts) {
             dtoCans.firstOrNull { it.id == contract.id }?.apply {
                 contract.status = this.status!!
@@ -788,15 +1057,15 @@ class ContractingService(
         val cpid = context.cpid
         val ocid = context.ocid
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedBids = updatedBids(context = context, data = data, bids = record.bids)
-        val updatedContracts = updateContracts(can = data.can, contracts = record.contracts ?: emptyList())
-        val updatedLots = updateLots(lot = data.lot, lots = record.tender.lots ?: emptyList())
+        val updatedBids = updatedBids(context = context, data = data, bids = release.bids)
+        val updatedContracts = updateContracts(can = data.can, contracts = release.contracts)
+        val updatedLots = updateLots(lot = data.lot, lots = release.tender.lots)
 
-        val updatedRecord = record.copy(
+        val updatedRecord = release.copy(
             //BR-2.8.4.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid),
 
             //BR-2.8.4.1
             tag = listOf(Tag.AWARD_UPDATE),
@@ -808,19 +1077,19 @@ class ContractingService(
             bids = updatedBids,
 
             //BR-2.8.4.7
-            contracts = updatedContracts.toHashSet(),
+            contracts = updatedContracts.toList(),
 
             //BR-2.8.4.9
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 //BR-2.8.4.8
-                lots = updatedLots.toHashSet()
+                lots = updatedLots.toList()
             )
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRecord,
             publishDate = recordEntity.publishDate
         )
     }
@@ -917,13 +1186,13 @@ class ContractingService(
         val cpid = context.cpid
         val ocid = context.ocid
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedContracts = updateContracts(can = data.can, contracts = record.contracts ?: emptyList())
+        val updatedContracts = updateContracts(can = data.can, contracts = release.contracts)
 
-        val updatedRecord = record.copy(
+        val updatedRelease = release.copy(
             //BR-2.8.4.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid),
 
             //BR-2.8.4.1
             tag = listOf(Tag.AWARD_UPDATE),
@@ -932,13 +1201,13 @@ class ContractingService(
             date = context.releaseDate,
 
             //BR-2.8.4.6
-            contracts = updatedContracts.toHashSet()
+            contracts = updatedContracts.toList()
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRelease,
             publishDate = recordEntity.publishDate
         )
     }
@@ -979,14 +1248,14 @@ class ContractingService(
         val dto = toObject(UpdateCanDocumentsDto::class.java, data)
         val recordEntity = releaseDao.getByCpIdAndOcId(cpId = cpid, ocId = ocid)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
-            contracts?.asSequence()
-                ?.firstOrNull { it.id == dto.contract.id }
+            contracts.asSequence()
+                .firstOrNull { it.id == dto.contract.id }
                 ?.apply {
                     documents = dto.contract.documents.toHashSet()
                 }
@@ -995,7 +1264,7 @@ class ContractingService(
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage,
-            record = record,
+            release = release,
             publishDate = recordEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
@@ -1093,27 +1362,27 @@ class ContractingService(
 
         val recordEntity = releaseDao.getByCpIdAndOcId(cpId = context.cpid, ocId = context.ocid)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid),
+        val updatedRelease = release.copy(
+            id = generationService.generateReleaseId(context.ocid),
             date = context.releaseDate,
             tag = listOf(Tag.TENDER_UPDATE),
-            tender = record.tender.let { tender ->
+            tender = release.tender.let { tender ->
                 tender.copy(
-                    lots = tender.lots?.updating(data)?.toHashSet()
+                    lots = tender.lots.updating(data).toList()
                 )
             },
-            awards = record.awards?.updating(data)?.toHashSet(),
-            bids = record.bids?.let { bids ->
+            awards = release.awards.updating(data).toList(),
+            bids = release.bids?.let { bids ->
                 bids.copy(details = bids.details?.updating(data)?.toHashSet())
             },
-            contracts = record.contracts?.updating(data)?.toHashSet()
+            contracts = release.contracts.updating(data).toList()
         )
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = "EV",
-            record = updatedRecord,
+            release = updatedRelease,
             publishDate = recordEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
@@ -1131,7 +1400,7 @@ class ContractingService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.apply {
@@ -1141,32 +1410,32 @@ class ContractingService(
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
-        recordEv.apply {
-            id = releaseService.newReleaseId(ocid)
+        val releaseEv = releaseService.getRelease(recordEvEntity.jsonData)
+        releaseEv.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_UPDATE)
             tender.apply {
                 awardPeriod = dto.awardPeriod
                 status = TenderStatus.fromValue(dto.tender.status)
                 statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
-                lots?.let { updateLots(it, dto.lots) }
+                lots.let { updateLots(it, dto.lots) }
             }
             bids?.details?.let { updateBids(it, dto.bids) }
-            awards?.let { updateAwards(it, dto.awards) }
-            contracts?.let { updateCanContracts(it, dto.cans) }
+            awards.let { updateAwards(it, dto.awards) }
+            contracts.let { updateCanContracts(it, dto.cans) }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(
             cpId = cpid,
             stage = "EV",
-            record = recordEv,
+            release = releaseEv,
             publishDate = recordEvEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
+    private fun updateAwards(recordAwards: List<Award>, dtoAwards: HashSet<Award>) {
         for (award in recordAwards) {
             dtoAwards.firstOrNull { it.id == award.id }?.apply {
                 award.status = this.status
@@ -1184,7 +1453,7 @@ class ContractingService(
         }
     }
 
-    private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
+    private fun updateLots(recordLots: List<Lot>, dtoLots: HashSet<Lot>) {
         for (lot in recordLots) {
             dtoLots.firstOrNull { it.id == lot.id }?.apply {
                 lot.status = this.status

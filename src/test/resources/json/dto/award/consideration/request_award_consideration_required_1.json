@@ -1,0 +1,16 @@
+{
+  "award": {
+    "id": "af5b9044-4b45-40cb-8985-5962550bda70",
+    "statusDetails": "consideration"
+  },
+  "bid": {
+    "id": "af5b9044-4b45-40cb-8985-5962550bda70",
+    "documents": [
+      {
+        "id": "doc.id",
+        "datePublished": "2019-10-29T16:51:00Z",
+        "documentType": "x_eligibilityDocuments"
+      }
+    ]
+  }
+}

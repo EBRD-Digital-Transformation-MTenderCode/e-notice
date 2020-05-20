@@ -1,5 +1,6 @@
 package com.procurement.notice.application.service.auction
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.model.ocds.AccountIdentifier
 import com.procurement.notice.model.ocds.Address
@@ -19,6 +20,7 @@ import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.Issue
 import com.procurement.notice.model.ocds.LegalForm
 import com.procurement.notice.model.ocds.LocalityDetails
+import com.procurement.notice.model.ocds.MainEconomicActivity
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
@@ -48,24 +50,25 @@ interface AuctionService {
 
 @Service
 class AuctionServiceImpl(
-    private val releaseService: ReleaseService
+    private val releaseService: ReleaseService,
+    private val generationService: GenerationService
 ) : AuctionService {
     override fun periodEnd(context: AuctionPeriodEndContext, data: AuctionPeriodEndData) {
         val entity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(entity.jsonData)
+        val release = releaseService.getRelease(entity.jsonData)
 
-        val updatedAwards = updateAwards(awards = record.awards ?: emptyList(), data = data)
+        val updatedAwards = updateAwards(awards = release.awards, data = data)
         val updatedBids = updateBids(data)
-        val updatedParties = updateParties(parties = record.parties ?: emptyList(), data = data)
-        val updatedElectronicAuctions = record.tender.electronicAuctions?.updateElectronicAuctions(data = data)
+        val updatedParties = updateParties(parties = release.parties, data = data)
+        val updatedElectronicAuctions = release.tender.electronicAuctions?.updateElectronicAuctions(data = data)
         val criteria = data.criteria?.convert()
 
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+        val updatedRecord = release.copy(
+            id = generationService.generateReleaseId(ocid = context.ocid), //FR-5.0.1
             date = context.releaseDate,                     //FR-5.0.2
             tag = listOf(Tag.AWARD),                        //FR-5.7.2.6.1
             //FR-5.7.2.6.6
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
                 auctionPeriod = data.tender.auctionPeriod
                     .let { auctionPeriod ->
@@ -84,20 +87,20 @@ class AuctionServiceImpl(
                 ),
                 electronicAuctions = updatedElectronicAuctions,
                 criteria = if (criteria != null) {
-                    record.tender.criteria?.plus(criteria) ?: listOf(criteria)
+                    release.tender.criteria.plus(criteria)
                 } else
-                    record.tender.criteria
+                    release.tender.criteria
 
             ),
-            awards = updatedAwards.toHashSet(),             //FR-5.7.2.6.4
+            awards = updatedAwards.toList(),             //FR-5.7.2.6.4
             bids = updatedBids,                             //FR-5.7.2.6.3
-            parties = updatedParties.toHashSet()            //FR-5.7.2.6.5
+            parties = updatedParties.toMutableList()            //FR-5.7.2.6.5
         )
 
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRecord,
             publishDate = entity.publishDate
         )
     }
@@ -466,7 +469,14 @@ class AuctionServiceImpl(
     private fun AuctionPeriodEndData.Bid.Tenderer.Details.convertToPartiesDetails() = Details(
         typeOfSupplier = this.typeOfSupplier?.value,
         mainEconomicActivities = this.mainEconomicActivities
-            .toSet(),
+            .map { mainEconomicActivity ->
+                MainEconomicActivity(
+                    id = mainEconomicActivity.id,
+                    uri = mainEconomicActivity.uri,
+                    scheme = mainEconomicActivity.scheme,
+                    description = mainEconomicActivity.description
+                )
+            }.toSet(),
         scale = this.scale.value,
         permits = this.permits
             .map { permit ->
@@ -666,7 +676,7 @@ class AuctionServiceImpl(
     private fun AuctionPeriodEndData.Criteria.convert() = Criteria(
         id = this.id,
         title = this.title,
-        relatesTo = this.relatedTo?.value,
+        relatesTo = this.relatesTo?.value,
         relatedItem = this.relatedItem,
         source = this.source,
         description = this.description,

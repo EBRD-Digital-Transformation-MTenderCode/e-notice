@@ -1,0 +1,3928 @@
+[
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114797602",
+    "cpid": "ocds-t1s2t3-MD-1580114797602",
+    "id": "ocds-t1s2t3-MD-1580114797602-1580114797657",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "budgetBreakdown/description",
+        "amount": {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+            "description": "description",
+            "amount": {
+              "amount": 15.0,
+              "currency": "EUR"
+            },
+            "period": {
+              "startDate": "2019-10-01T00:00:00Z",
+              "endDate": "2020-02-01T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1",
+              "name": "name of buyerei"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "reason for budget"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114797602",
+      "title": "title of tender",
+      "description": "desription of tender",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 10.0,
+        "currency": "EUR"
+      },
+      "procurementMethod": "open",
+      "procurementMethodDetails": "TEST_microValue",
+      "procurementMethodRationale": "tender/procurementMethodRationale",
+      "mainProcurementCategory": "goods",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-27T10:30:40Z",
+        "endDate": "2020-01-30T10:30:40Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-1",
+        "name": "name of procuringEntity"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "15500000-3",
+        "description": "Produse lactate"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "REGULATION_966_2012",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "tender/procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-1",
+        "name": "name of buyerei",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "1",
+          "legalName": "identifier/legal name",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "street address",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "other",
+              "id": "localityid",
+              "description": "locality/description"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idno",
+            "id": "445521",
+            "legalName": "legalName",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "contactPoint/name",
+          "email": "contactPoint/email",
+          "telephone": "contactPoint/456-95-96",
+          "faxNumber": "fax-number",
+          "url": "url"
+        },
+        "details": {
+          "typeOfBuyer": "MINISTRY",
+          "mainSectoralActivity": "WATER"
+        },
+        "roles": [
+          "buyer",
+          "procuringEntity"
+        ]
+      },
+      {
+        "id": "MD-IDNO-123456789000",
+        "name": "Payer's Name",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "123456789000",
+          "legalName": "Legal Name",
+          "uri": "http://454.to"
+        },
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-K",
+            "id": "additional identifier",
+            "legalName": "legalname",
+            "uri": "http://k.to"
+          }
+        ],
+        "contactPoint": {
+          "name": "contact person",
+          "email": "string@mail.ccc",
+          "telephone": "98-79-87",
+          "faxNumber": "78-56-55",
+          "url": "http://url.com"
+        },
+        "roles": [
+          "payer"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "87b11492-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266-FS-1578479333528"
+      },
+      {
+        "id": "87b11490-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114797602-PN-1580114797657",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114797602/ocds-t1s2t3-MD-1580114797602-PN-1580114797657"
+      },
+      {
+        "id": "87b11491-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114797602-PN-1580114797657",
+    "cpid": "ocds-t1s2t3-MD-1580114797602-PN-1580114797657",
+    "id": "ocds-t1s2t3-MD-1580114797602-PN-1580114797657-1580114797657",
+    "date": "2020-01-27T08:46:37Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114797602",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "items": [
+        {
+          "id": "6cc0a2ce-9685-47c9-9ed6-88efcdddcc22",
+          "internalId": "75875",
+          "description": "items description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15500000-3",
+            "description": "Produse lactate"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AB06-7",
+              "description": "Plastic"
+            }
+          ],
+          "quantity": 1.0,
+          "unit": {
+            "name": "Metru cub consistent",
+            "id": "121"
+          },
+          "relatedLot": "b1019924-66bc-4da6-9743-63c7171b4e2b"
+        }
+      ],
+      "lots": [
+        {
+          "id": "b1019924-66bc-4da6-9743-63c7171b4e2b",
+          "internalId": "22",
+          "title": "lots title",
+          "description": "lots description",
+          "status": "planning",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10.0,
+            "currency": "EUR"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-27T10:30:40Z",
+            "endDate": "2020-01-30T10:30:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "placeOfPerformance streetAddress",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "locality scheme",
+                  "id": "locality id",
+                  "description": "locality description"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-09-01T10:30:40Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "87b11493-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114797602",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114797602/ocds-t1s2t3-MD-1580114797602"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114806248",
+    "cpid": "ocds-t1s2t3-MD-1580114806248",
+    "id": "ocds-t1s2t3-MD-1580114806248-1580114806278",
+    "date": "2020-01-27T08:46:46Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "budgetBreakdown/description",
+        "amount": {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+            "description": "description",
+            "amount": {
+              "amount": 15.0,
+              "currency": "EUR"
+            },
+            "period": {
+              "startDate": "2019-10-01T00:00:00Z",
+              "endDate": "2020-02-01T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1",
+              "name": "name of buyerei"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "reason for budget"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114806248",
+      "title": "title of tender",
+      "description": "desription of tender",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 10.0,
+        "currency": "EUR"
+      },
+      "procurementMethod": "open",
+      "procurementMethodDetails": "TEST_microValue",
+      "procurementMethodRationale": "tender/procurementMethodRationale",
+      "mainProcurementCategory": "goods",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-27T10:30:40Z",
+        "endDate": "2020-01-30T10:30:40Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-1",
+        "name": "name of procuringEntity"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "15500000-3",
+        "description": "Produse lactate"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "REGULATION_966_2012",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "tender/procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-1",
+        "name": "name of buyerei",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "1",
+          "legalName": "identifier/legal name",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "street address",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "other",
+              "id": "localityid",
+              "description": "locality/description"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idno",
+            "id": "445521",
+            "legalName": "legalName",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "contactPoint/name",
+          "email": "contactPoint/email",
+          "telephone": "contactPoint/456-95-96",
+          "faxNumber": "fax-number",
+          "url": "url"
+        },
+        "details": {
+          "typeOfBuyer": "MINISTRY",
+          "mainSectoralActivity": "WATER"
+        },
+        "roles": [
+          "buyer",
+          "procuringEntity"
+        ]
+      },
+      {
+        "id": "MD-IDNO-123456789000",
+        "name": "Payer's Name",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "123456789000",
+          "legalName": "Legal Name",
+          "uri": "http://454.to"
+        },
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-K",
+            "id": "additional identifier",
+            "legalName": "legalname",
+            "uri": "http://k.to"
+          }
+        ],
+        "contactPoint": {
+          "name": "contact person",
+          "email": "string@mail.ccc",
+          "telephone": "98-79-87",
+          "faxNumber": "78-56-55",
+          "url": "http://url.com"
+        },
+        "roles": [
+          "payer"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "8cd4b171-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266"
+      },
+      {
+        "id": "8cd4b172-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266-FS-1578479333528"
+      },
+      {
+        "id": "8cd4b170-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114806248-PN-1580114806279",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114806248/ocds-t1s2t3-MD-1580114806248-PN-1580114806279"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114806248-PN-1580114806279",
+    "cpid": "ocds-t1s2t3-MD-1580114806248-PN-1580114806279",
+    "id": "ocds-t1s2t3-MD-1580114806248-PN-1580114806279-1580114806279",
+    "date": "2020-01-27T08:46:46Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114806248",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "items": [
+        {
+          "id": "84ea0c81-f543-418b-9a2a-264fcfe66767",
+          "internalId": "75875",
+          "description": "items description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15500000-3",
+            "description": "Produse lactate"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AB06-7",
+              "description": "Plastic"
+            }
+          ],
+          "quantity": 1.0,
+          "unit": {
+            "name": "Metru cub consistent",
+            "id": "121"
+          },
+          "relatedLot": "8c642f6d-7061-45df-9c69-83b519c40cd3"
+        }
+      ],
+      "lots": [
+        {
+          "id": "8c642f6d-7061-45df-9c69-83b519c40cd3",
+          "internalId": "22",
+          "title": "lots title",
+          "description": "lots description",
+          "status": "planning",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10.0,
+            "currency": "EUR"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-27T10:30:40Z",
+            "endDate": "2020-01-30T10:30:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "placeOfPerformance streetAddress",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "locality scheme",
+                  "id": "locality id",
+                  "description": "locality description"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-09-01T10:30:40Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "8cd4b173-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114806248",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114806248/ocds-t1s2t3-MD-1580114806248"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114838053",
+    "cpid": "ocds-t1s2t3-MD-1580114838053",
+    "id": "ocds-t1s2t3-MD-1580114838053-1580114838084",
+    "date": "2020-01-27T08:47:17Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "budgetBreakdown/description",
+        "amount": {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+            "description": "description",
+            "amount": {
+              "amount": 15.0,
+              "currency": "EUR"
+            },
+            "period": {
+              "startDate": "2019-10-01T00:00:00Z",
+              "endDate": "2020-02-01T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1",
+              "name": "name of buyerei"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "reason for budget"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114838053",
+      "title": "title of tender",
+      "description": "desription of tender",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 10.0,
+        "currency": "EUR"
+      },
+      "procurementMethod": "open",
+      "procurementMethodDetails": "TEST_microValue",
+      "procurementMethodRationale": "tender/procurementMethodRationale",
+      "mainProcurementCategory": "goods",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-27T10:30:40Z",
+        "endDate": "2020-01-30T10:30:40Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-1",
+        "name": "name of procuringEntity"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "15500000-3",
+        "description": "Produse lactate"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "REGULATION_966_2012",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "tender/procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-1",
+        "name": "name of buyerei",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "1",
+          "legalName": "identifier/legal name",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "street address",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "other",
+              "id": "localityid",
+              "description": "locality/description"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idno",
+            "id": "445521",
+            "legalName": "legalName",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "contactPoint/name",
+          "email": "contactPoint/email",
+          "telephone": "contactPoint/456-95-96",
+          "faxNumber": "fax-number",
+          "url": "url"
+        },
+        "details": {
+          "typeOfBuyer": "MINISTRY",
+          "mainSectoralActivity": "WATER"
+        },
+        "roles": [
+          "buyer",
+          "procuringEntity"
+        ]
+      },
+      {
+        "id": "MD-IDNO-123456789000",
+        "name": "Payer's Name",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "123456789000",
+          "legalName": "Legal Name",
+          "uri": "http://454.to"
+        },
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-K",
+            "id": "additional identifier",
+            "legalName": "legalname",
+            "uri": "http://k.to"
+          }
+        ],
+        "contactPoint": {
+          "name": "contact person",
+          "email": "string@mail.ccc",
+          "telephone": "98-79-87",
+          "faxNumber": "78-56-55",
+          "url": "http://url.com"
+        },
+        "roles": [
+          "payer"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "9fc9e750-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114838053-PN-1580114838084",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114838053/ocds-t1s2t3-MD-1580114838053-PN-1580114838084"
+      },
+      {
+        "id": "9fc9e752-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266-FS-1578479333528"
+      },
+      {
+        "id": "9fc9e751-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580114838053-PN-1580114838084",
+    "cpid": "ocds-t1s2t3-MD-1580114838053-PN-1580114838084",
+    "id": "ocds-t1s2t3-MD-1580114838053-PN-1580114838084-1580114838084",
+    "date": "2020-01-27T08:47:17Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580114838053",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "items": [
+        {
+          "id": "0fe91ba4-4344-4689-a594-7d6880f71db8",
+          "internalId": "75875",
+          "description": "items description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15500000-3",
+            "description": "Produse lactate"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AB06-7",
+              "description": "Plastic"
+            }
+          ],
+          "quantity": 1.0,
+          "unit": {
+            "name": "Metru cub consistent",
+            "id": "121"
+          },
+          "relatedLot": "6d75a558-ec46-4073-a063-87eb5fe576b0"
+        }
+      ],
+      "lots": [
+        {
+          "id": "6d75a558-ec46-4073-a063-87eb5fe576b0",
+          "internalId": "22",
+          "title": "lots title",
+          "description": "lots description",
+          "status": "planning",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10.0,
+            "currency": "EUR"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-27T10:30:40Z",
+            "endDate": "2020-01-30T10:30:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "placeOfPerformance streetAddress",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "locality scheme",
+                  "id": "locality id",
+                  "description": "locality description"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-09-01T10:30:40Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "9fc9e753-40e1-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580114838053",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580114838053/ocds-t1s2t3-MD-1580114838053"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580115185281",
+    "cpid": "ocds-t1s2t3-MD-1580115185281",
+    "id": "ocds-t1s2t3-MD-1580115185281-1580115185326",
+    "date": "2020-01-27T08:53:05Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "budgetBreakdown/description",
+        "amount": {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+            "description": "description",
+            "amount": {
+              "amount": 15.0,
+              "currency": "EUR"
+            },
+            "period": {
+              "startDate": "2019-10-01T00:00:00Z",
+              "endDate": "2020-02-01T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1",
+              "name": "name of buyerei"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "reason for budget"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580115185281",
+      "title": "title of tender",
+      "description": "desription of tender",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 10.0,
+        "currency": "EUR"
+      },
+      "procurementMethod": "open",
+      "procurementMethodDetails": "TEST_microValue",
+      "procurementMethodRationale": "tender/procurementMethodRationale",
+      "mainProcurementCategory": "goods",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-27T10:30:40Z",
+        "endDate": "2020-01-30T10:30:40Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-1",
+        "name": "name of procuringEntity"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "15500000-3",
+        "description": "Produse lactate"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "REGULATION_966_2012",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "tender/procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-1",
+        "name": "name of buyerei",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "1",
+          "legalName": "identifier/legal name",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "street address",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "other",
+              "id": "localityid",
+              "description": "locality/description"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idno",
+            "id": "445521",
+            "legalName": "legalName",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "contactPoint/name",
+          "email": "contactPoint/email",
+          "telephone": "contactPoint/456-95-96",
+          "faxNumber": "fax-number",
+          "url": "url"
+        },
+        "details": {
+          "typeOfBuyer": "MINISTRY",
+          "mainSectoralActivity": "WATER"
+        },
+        "roles": [
+          "buyer",
+          "procuringEntity"
+        ]
+      },
+      {
+        "id": "MD-IDNO-123456789000",
+        "name": "Payer's Name",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "123456789000",
+          "legalName": "Legal Name",
+          "uri": "http://454.to"
+        },
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-K",
+            "id": "additional identifier",
+            "legalName": "legalname",
+            "uri": "http://k.to"
+          }
+        ],
+        "contactPoint": {
+          "name": "contact person",
+          "email": "string@mail.ccc",
+          "telephone": "98-79-87",
+          "faxNumber": "78-56-55",
+          "url": "http://url.com"
+        },
+        "roles": [
+          "payer"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "6ec2ace0-40e2-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580115185281-PN-1580115185326",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580115185281/ocds-t1s2t3-MD-1580115185281-PN-1580115185326"
+      },
+      {
+        "id": "6ec2ace1-40e2-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266"
+      },
+      {
+        "id": "6ec2ace2-40e2-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266-FS-1578479333528"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580115185281-PN-1580115185326",
+    "cpid": "ocds-t1s2t3-MD-1580115185281-PN-1580115185326",
+    "id": "ocds-t1s2t3-MD-1580115185281-PN-1580115185326-1580115185326",
+    "date": "2020-01-27T08:53:05Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580115185281",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "items": [
+        {
+          "id": "b2f256ba-7e75-45a3-9195-7131575af923",
+          "internalId": "75875",
+          "description": "items description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15500000-3",
+            "description": "Produse lactate"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AB06-7",
+              "description": "Plastic"
+            }
+          ],
+          "quantity": 1.0,
+          "unit": {
+            "name": "Metru cub consistent",
+            "id": "121"
+          },
+          "relatedLot": "fd6d5ff8-b3d4-4de4-8a1f-8a768b3623f2"
+        }
+      ],
+      "lots": [
+        {
+          "id": "fd6d5ff8-b3d4-4de4-8a1f-8a768b3623f2",
+          "internalId": "22",
+          "title": "lots title",
+          "description": "lots description",
+          "status": "planning",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10.0,
+            "currency": "EUR"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-27T10:30:40Z",
+            "endDate": "2020-01-30T10:30:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "placeOfPerformance streetAddress",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "locality scheme",
+                  "id": "locality id",
+                  "description": "locality description"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-09-01T10:30:40Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "6ec2ace3-40e2-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580115185281",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580115185281/ocds-t1s2t3-MD-1580115185281"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580119555121",
+    "cpid": "ocds-t1s2t3-MD-1580119555121",
+    "id": "ocds-t1s2t3-MD-1580119555121-1580119555143",
+    "date": "2020-01-27T10:05:54Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "budgetBreakdown/description",
+        "amount": {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+            "description": "description",
+            "amount": {
+              "amount": 15.0,
+              "currency": "EUR"
+            },
+            "period": {
+              "startDate": "2019-10-01T00:00:00Z",
+              "endDate": "2020-02-01T00:00:00Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-1",
+              "name": "name of buyerei"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "reason for budget"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580119555121",
+      "title": "title of tender",
+      "description": "desription of tender",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 10.0,
+        "currency": "EUR"
+      },
+      "procurementMethod": "open",
+      "procurementMethodDetails": "TEST_microValue",
+      "procurementMethodRationale": "tender/procurementMethodRationale",
+      "mainProcurementCategory": "goods",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-27T10:30:40Z",
+        "endDate": "2020-01-30T10:30:40Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-1",
+        "name": "name of procuringEntity"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "15500000-3",
+        "description": "Produse lactate"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "REGULATION_966_2012",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "tender/procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-1",
+        "name": "name of buyerei",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "1",
+          "legalName": "identifier/legal name",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "street address",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "other",
+              "id": "localityid",
+              "description": "locality/description"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idno",
+            "id": "445521",
+            "legalName": "legalName",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "contactPoint/name",
+          "email": "contactPoint/email",
+          "telephone": "contactPoint/456-95-96",
+          "faxNumber": "fax-number",
+          "url": "url"
+        },
+        "details": {
+          "typeOfBuyer": "MINISTRY",
+          "mainSectoralActivity": "WATER"
+        },
+        "roles": [
+          "buyer",
+          "procuringEntity"
+        ]
+      },
+      {
+        "id": "MD-IDNO-123456789000",
+        "name": "Payer's Name",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "123456789000",
+          "legalName": "Legal Name",
+          "uri": "http://454.to"
+        },
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-K",
+            "id": "additional identifier",
+            "legalName": "legalname",
+            "uri": "http://k.to"
+          }
+        ],
+        "contactPoint": {
+          "name": "contact person",
+          "email": "string@mail.ccc",
+          "telephone": "98-79-87",
+          "faxNumber": "78-56-55",
+          "url": "http://url.com"
+        },
+        "roles": [
+          "payer"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "9b5fd571-40ec-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266"
+      },
+      {
+        "id": "9b5fd570-40ec-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580119555121-PN-1580119555143",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580119555121/ocds-t1s2t3-MD-1580119555121-PN-1580119555143"
+      },
+      {
+        "id": "9b5fd572-40ec-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1578479159266-FS-1578479333528",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1578479159266/ocds-t1s2t3-MD-1578479159266-FS-1578479333528"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580119555121-PN-1580119555143",
+    "cpid": "ocds-t1s2t3-MD-1580119555121-PN-1580119555143",
+    "id": "ocds-t1s2t3-MD-1580119555121-PN-1580119555143-1580119555143",
+    "date": "2020-01-27T10:05:54Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580119555121",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "items": [
+        {
+          "id": "86d4250c-7750-4f50-8eff-3b48d7b6319b",
+          "internalId": "75875",
+          "description": "items description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "15500000-3",
+            "description": "Produse lactate"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AB06-7",
+              "description": "Plastic"
+            }
+          ],
+          "quantity": 1.0,
+          "unit": {
+            "name": "Metru cub consistent",
+            "id": "121"
+          },
+          "relatedLot": "8c0432d7-0ff0-4c76-935a-df776694324a"
+        }
+      ],
+      "lots": [
+        {
+          "id": "8c0432d7-0ff0-4c76-935a-df776694324a",
+          "internalId": "22",
+          "title": "lots title",
+          "description": "lots description",
+          "status": "planning",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 10.0,
+            "currency": "EUR"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-27T10:30:40Z",
+            "endDate": "2020-01-30T10:30:40Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "placeOfPerformance streetAddress",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "1000000",
+                  "description": "Anenii Noi",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "locality scheme",
+                  "id": "locality id",
+                  "description": "locality description"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-09-01T10:30:40Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "9b5fd573-40ec-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580119555121",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580119555121/ocds-t1s2t3-MD-1580119555121"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580121043226",
+    "cpid": "ocds-t1s2t3-MD-1580121043226",
+    "id": "ocds-t1s2t3-MD-1580121043226-1580121043276",
+    "date": "2020-01-27T10:30:43Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "description",
+        "amount": {
+          "amount": 15000.0,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+            "description": "planning.budget.description",
+            "amount": {
+              "amount": 15000.0,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T16:12:45Z",
+              "endDate": "2020-12-01T16:12:45Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-380632074071",
+              "name": "LLC Petrusenko"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "a reason for this budget to be used"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580121043226",
+      "title": "TEST procedure DA",
+      "description": "descr",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 15000.0,
+        "currency": "MDL"
+      },
+      "procurementMethod": "limited",
+      "procurementMethodDetails": "TEST_directAward",
+      "procurementMethodRationale": "procurementMethodRationale",
+      "mainProcurementCategory": "services",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "procuringEntity": {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "90400000-1",
+        "description": "Servicii privind apele reziduale"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-380632074071",
+        "name": "LLC Petrusenko",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "380632074071",
+          "legalName": "LLC Petrusenko"
+        },
+        "address": {
+          "streetAddress": "Zakrevskogo",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "1700000",
+              "description": "Cahul",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "1701000",
+              "description": "mun.Cahul",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-IDNO",
+            "id": "string",
+            "legalName": "380935103469",
+            "uri": "http://petrusenko.com/svetlana"
+          }
+        ],
+        "contactPoint": {
+          "name": "Illia Petrusenko",
+          "email": "illya.petrusenko@gmail.com",
+          "telephone": "+380632074071"
+        },
+        "roles": [
+          "buyer",
+          "payer"
+        ]
+      },
+      {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "555-555",
+          "legalName": "legal name of pe",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "address of pe",
+          "postalCode": "10200",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idnooo",
+            "id": "142536",
+            "legalName": "legal name",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "NAME of contact person IN PE",
+          "email": "stricddng@mail.ccc",
+          "telephone": "9879ddd87",
+          "faxNumber": "22-65-88",
+          "url": "url"
+        },
+        "roles": [
+          "procuringEntity"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "125ee8c2-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992-FS-1579691203351"
+      },
+      {
+        "id": "125ee8c0-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580121043226-PN-1580121043276",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580121043226/ocds-t1s2t3-MD-1580121043226-PN-1580121043276"
+      },
+      {
+        "id": "125ee8c1-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580121043226-PN-1580121043276",
+    "cpid": "ocds-t1s2t3-MD-1580121043226-PN-1580121043276",
+    "id": "ocds-t1s2t3-MD-1580121043226-PN-1580121043276-1580121043276",
+    "date": "2020-01-27T10:30:43Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580121043226",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-08-01T00:00:00Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "125ee8c3-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580121043226",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580121043226/ocds-t1s2t3-MD-1580121043226"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580121058349",
+    "cpid": "ocds-t1s2t3-MD-1580121058349",
+    "id": "ocds-t1s2t3-MD-1580121058349-1580121058374",
+    "date": "2020-01-27T10:30:58Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "description",
+        "amount": {
+          "amount": 15000.0,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+            "description": "planning.budget.description",
+            "amount": {
+              "amount": 15000.0,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T16:12:45Z",
+              "endDate": "2020-12-01T16:12:45Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-380632074071",
+              "name": "LLC Petrusenko"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "a reason for this budget to be used"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580121058349",
+      "title": "TEST procedure DA",
+      "description": "descr",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 15000.0,
+        "currency": "MDL"
+      },
+      "procurementMethod": "limited",
+      "procurementMethodDetails": "TEST_directAward",
+      "procurementMethodRationale": "procurementMethodRationale",
+      "mainProcurementCategory": "services",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "procuringEntity": {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "90400000-1",
+        "description": "Servicii privind apele reziduale"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-380632074071",
+        "name": "LLC Petrusenko",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "380632074071",
+          "legalName": "LLC Petrusenko"
+        },
+        "address": {
+          "streetAddress": "Zakrevskogo",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "1700000",
+              "description": "Cahul",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "1701000",
+              "description": "mun.Cahul",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-IDNO",
+            "id": "string",
+            "legalName": "380935103469",
+            "uri": "http://petrusenko.com/svetlana"
+          }
+        ],
+        "contactPoint": {
+          "name": "Illia Petrusenko",
+          "email": "illya.petrusenko@gmail.com",
+          "telephone": "+380632074071"
+        },
+        "roles": [
+          "buyer",
+          "payer"
+        ]
+      },
+      {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "555-555",
+          "legalName": "legal name of pe",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "address of pe",
+          "postalCode": "10200",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idnooo",
+            "id": "142536",
+            "legalName": "legal name",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "NAME of contact person IN PE",
+          "email": "stricddng@mail.ccc",
+          "telephone": "9879ddd87",
+          "faxNumber": "22-65-88",
+          "url": "url"
+        },
+        "roles": [
+          "procuringEntity"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "1b5eae60-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580121058349-PN-1580121058374",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580121058349/ocds-t1s2t3-MD-1580121058349-PN-1580121058374"
+      },
+      {
+        "id": "1b5eae62-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992-FS-1579691203351"
+      },
+      {
+        "id": "1b5eae61-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580121058349-PN-1580121058374",
+    "cpid": "ocds-t1s2t3-MD-1580121058349-PN-1580121058374",
+    "id": "ocds-t1s2t3-MD-1580121058349-PN-1580121058374-1580121058374",
+    "date": "2020-01-27T10:30:58Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580121058349",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-08-01T00:00:00Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "1b5eae63-40f0-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580121058349",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580121058349/ocds-t1s2t3-MD-1580121058349"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580122833021",
+    "cpid": "ocds-t1s2t3-MD-1580122833021",
+    "id": "ocds-t1s2t3-MD-1580122833021-1580122833047",
+    "date": "2020-01-27T11:00:32Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "description",
+        "amount": {
+          "amount": 15000.0,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+            "description": "planning.budget.description",
+            "amount": {
+              "amount": 15000.0,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T16:12:45Z",
+              "endDate": "2020-12-01T16:12:45Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-380632074071",
+              "name": "LLC Petrusenko"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "a reason for this budget to be used"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580122833021",
+      "title": "TEST procedure DA",
+      "description": "descr",
+      "status": "planning",
+      "statusDetails": "planning notice",
+      "value": {
+        "amount": 15000.0,
+        "currency": "MDL"
+      },
+      "procurementMethod": "limited",
+      "procurementMethodDetails": "TEST_directAward",
+      "procurementMethodRationale": "procurementMethodRationale",
+      "mainProcurementCategory": "services",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "procuringEntity": {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "90400000-1",
+        "description": "Servicii privind apele reziduale"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-380632074071",
+        "name": "LLC Petrusenko",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "380632074071",
+          "legalName": "LLC Petrusenko"
+        },
+        "address": {
+          "streetAddress": "Zakrevskogo",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "1700000",
+              "description": "Cahul",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "1701000",
+              "description": "mun.Cahul",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-IDNO",
+            "id": "string",
+            "legalName": "380935103469",
+            "uri": "http://petrusenko.com/svetlana"
+          }
+        ],
+        "contactPoint": {
+          "name": "Illia Petrusenko",
+          "email": "illya.petrusenko@gmail.com",
+          "telephone": "+380632074071"
+        },
+        "roles": [
+          "buyer",
+          "payer"
+        ]
+      },
+      {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "555-555",
+          "legalName": "legal name of pe",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "address of pe",
+          "postalCode": "10200",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idnooo",
+            "id": "142536",
+            "legalName": "legal name",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "NAME of contact person IN PE",
+          "email": "stricddng@mail.ccc",
+          "telephone": "9879ddd87",
+          "faxNumber": "22-65-88",
+          "url": "url"
+        },
+        "roles": [
+          "procuringEntity"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "3d284a71-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992"
+      },
+      {
+        "id": "3d284a72-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1579691167992-FS-1579691203351",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1579691167992/ocds-t1s2t3-MD-1579691167992-FS-1579691203351"
+      },
+      {
+        "id": "3d284a70-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580122833021-PN-1580122833047",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580122833021/ocds-t1s2t3-MD-1580122833021-PN-1580122833047"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580122833021-PN-1580122833047",
+    "cpid": "ocds-t1s2t3-MD-1580122833021-PN-1580122833047",
+    "id": "ocds-t1s2t3-MD-1580122833021-PN-1580122833047-1580122833047",
+    "date": "2020-01-27T11:00:32Z",
+    "tag": [
+      "planning"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580122833021",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "planning",
+      "statusDetails": "planning",
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-08-01T00:00:00Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "3d284a73-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580122833021",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580122833021/ocds-t1s2t3-MD-1580122833021"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580123110516",
+    "cpid": "ocds-t1s2t3-MD-1580123110516",
+    "id": "ocds-t1s2t3-MD-1580123110516-1580123166121",
+    "date": "2020-01-27T11:06:05Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "description",
+        "amount": {
+          "amount": 15000.0,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1580123032303-FS-1580123067841",
+            "description": "planning.budget.description",
+            "amount": {
+              "amount": 15000.0,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T16:12:45Z",
+              "endDate": "2020-12-01T16:12:45Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-380632074071",
+              "name": "LLC Petrusenko"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "a reason for this budget to be used"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580123110516",
+      "title": "TEST procedure DA",
+      "description": "descr",
+      "status": "active",
+      "statusDetails": "negotiation",
+      "value": {
+        "amount": 1350.0,
+        "currency": "MDL"
+      },
+      "procurementMethod": "limited",
+      "procurementMethodDetails": "TEST_directAward",
+      "procurementMethodRationale": "procurementMethodRationale",
+      "mainProcurementCategory": "services",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-30T00:00:00Z",
+        "endDate": "2020-02-01T00:20:00Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "76400000-7",
+        "description": "Servicii de poziţionare a echipamentelor de foraj"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-380632074071",
+        "name": "LLC Petrusenko",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "380632074071",
+          "legalName": "LLC Petrusenko"
+        },
+        "address": {
+          "streetAddress": "Zakrevskogo",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "1700000",
+              "description": "Cahul",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "1701000",
+              "description": "mun.Cahul",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-IDNO",
+            "id": "string",
+            "legalName": "380935103469",
+            "uri": "http://petrusenko.com/svetlana"
+          }
+        ],
+        "contactPoint": {
+          "name": "Illia Petrusenko",
+          "email": "illya.petrusenko@gmail.com",
+          "telephone": "+380632074071"
+        },
+        "roles": [
+          "buyer",
+          "payer"
+        ]
+      },
+      {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "555-555",
+          "legalName": "legal name of pe",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "address of pe",
+          "postalCode": "10200",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idnooo",
+            "id": "142536",
+            "legalName": "legal name",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "NAME of contact person IN PE",
+          "email": "stricddng@mail.ccc",
+          "telephone": "9879ddd87",
+          "faxNumber": "22-65-88",
+          "url": "url"
+        },
+        "roles": [
+          "procuringEntity"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "e28d9971-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123032303",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1580123032303/ocds-t1s2t3-MD-1580123032303"
+      },
+      {
+        "id": "03af80a0-40f5-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_negotiation"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123110516-NP-1580123166122",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580123110516/ocds-t1s2t3-MD-1580123110516-NP-1580123166122"
+      },
+      {
+        "id": "e28d9972-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123032303-FS-1580123067841",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1580123032303/ocds-t1s2t3-MD-1580123032303-FS-1580123067841"
+      },
+      {
+        "id": "e28d9970-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123110516-PN-1580123110535",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580123110516/ocds-t1s2t3-MD-1580123110516-PN-1580123110535"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580123110516-NP-1580123166122",
+    "cpid": "ocds-t1s2t3-MD-1580123110516-NP-1580123166122",
+    "id": "ocds-t1s2t3-MD-1580123110516-NP-1580123166122-1580123166122",
+    "date": "2020-01-27T11:06:05Z",
+    "tag": [
+      "tender"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580123110516",
+      "title": "Negotiation",
+      "description": "Negotiation stage of contracting process",
+      "status": "active",
+      "statusDetails": "negotiation",
+      "items": [
+        {
+          "id": "dc1a733e-bdbd-4ac3-a5d7-dda2a351486f",
+          "internalId": "ITEM1",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "15a69a36-7a12-4c65-bd1b-1693e86b27b9"
+        },
+        {
+          "id": "b8a2df2f-a366-43e1-b47c-b26761ac8287",
+          "internalId": "ITEM2",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "28b0d884-3978-4a23-83e0-c89864c10834"
+        },
+        {
+          "id": "23666892-5ac0-436f-83a3-3b647c1fd3a0",
+          "internalId": "ITEM3",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "260ff031-4712-46bf-88f8-beb1aa158691"
+        }
+      ],
+      "lots": [
+        {
+          "id": "15a69a36-7a12-4c65-bd1b-1693e86b27b9",
+          "internalId": "LOT1",
+          "title": "LOT 1 TITLE",
+          "description": "LOT 1 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        },
+        {
+          "id": "28b0d884-3978-4a23-83e0-c89864c10834",
+          "internalId": "LOT1",
+          "title": "LOT 2 TITLE",
+          "description": "LOT 2 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        },
+        {
+          "id": "260ff031-4712-46bf-88f8-beb1aa158691",
+          "internalId": "LOT3",
+          "title": "LOT 3 TITLE",
+          "description": "LOT 3 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "hasEnquiries": false,
+      "documents": [
+        {
+          "id": "b59d97f3-2c8d-40c9-bede-f7cc1b0484de-1576061731211",
+          "documentType": "tenderNotice",
+          "title": "tender.documents.title",
+          "description": "tender.documents.description",
+          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/b59d97f3-2c8d-40c9-bede-f7cc1b0484de-1576061731211",
+          "datePublished": "2019-12-11T10:55:46Z",
+          "relatedLots": [
+            "260ff031-4712-46bf-88f8-beb1aa158691"
+          ]
+        }
+      ],
+      "awardCriteria": "priceOnly",
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": true,
+    "purposeOfNotice": {
+      "isACallForCompetition": true
+    },
+    "relatedProcesses": [
+      {
+        "id": "03af80a1-40f5-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123110516-PN-1580123110535",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580123110516/ocds-t1s2t3-MD-1580123110516-PN-1580123110535"
+      },
+      {
+        "id": "e28d9973-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123110516",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580123110516/ocds-t1s2t3-MD-1580123110516"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580123110516-PN-1580123110535",
+    "cpid": "ocds-t1s2t3-MD-1580123110516-PN-1580123110535",
+    "id": "ocds-t1s2t3-MD-1580123110516-PN-1580123110535-1580123166121",
+    "date": "2020-01-27T11:06:05Z",
+    "tag": [
+      "planningUpdate"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580123110516",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "complete",
+      "statusDetails": "empty",
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-08-01T00:00:00Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "e28d9973-40f4-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123110516",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580123110516/ocds-t1s2t3-MD-1580123110516"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580128169989",
+    "cpid": "ocds-t1s2t3-MD-1580128169989",
+    "id": "ocds-t1s2t3-MD-1580128169989-1580128242576",
+    "date": "2020-01-27T12:30:42Z",
+    "tag": [
+      "compiled"
+    ],
+    "initiationType": "tender",
+    "planning": {
+      "budget": {
+        "description": "description",
+        "amount": {
+          "amount": 15000.0,
+          "currency": "MDL"
+        },
+        "isEuropeanUnionFunded": true,
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1580123032303-FS-1580123067841",
+            "description": "planning.budget.description",
+            "amount": {
+              "amount": 15000.0,
+              "currency": "MDL"
+            },
+            "period": {
+              "startDate": "2019-01-01T16:12:45Z",
+              "endDate": "2020-12-01T16:12:45Z"
+            },
+            "sourceParty": {
+              "id": "MD-IDNO-380632074071",
+              "name": "LLC Petrusenko"
+            },
+            "europeanUnionFunding": {
+              "projectIdentifier": "projectIdentifier",
+              "projectName": "Name of this project",
+              "uri": "http://uriuri.th"
+            }
+          }
+        ]
+      },
+      "rationale": "a reason for this budget to be used"
+    },
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580128169989",
+      "title": "TEST procedure DA",
+      "description": "descr",
+      "status": "active",
+      "statusDetails": "negotiation",
+      "value": {
+        "amount": 1350.0,
+        "currency": "MDL"
+      },
+      "procurementMethod": "limited",
+      "procurementMethodDetails": "TEST_directAward",
+      "procurementMethodRationale": "procurementMethodRationale",
+      "mainProcurementCategory": "services",
+      "hasEnquiries": false,
+      "eligibilityCriteria": "Regulile generale privind naționalitatea și originea, precum și alte criterii de eligibilitate sunt enumerate în Ghidul practic privind procedurile de contractare a acțiunilor externe ale UE (PRAG)",
+      "contractPeriod": {
+        "startDate": "2020-01-30T00:00:00Z",
+        "endDate": "2020-02-01T00:20:00Z"
+      },
+      "procuringEntity": {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE"
+      },
+      "acceleratedProcedure": {
+        "isAcceleratedProcedure": false
+      },
+      "classification": {
+        "scheme": "CPV",
+        "id": "76400000-7",
+        "description": "Servicii de poziţionare a echipamentelor de foraj"
+      },
+      "designContest": {
+        "serviceContractAward": false
+      },
+      "electronicWorkflows": {
+        "useOrdering": false,
+        "usePayment": false,
+        "acceptInvoicing": false
+      },
+      "jointProcurement": {
+        "isJointProcurement": false
+      },
+      "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+      "procedureOutsourcing": {
+        "procedureOutsourced": false
+      },
+      "procurementMethodAdditionalInfo": "procurementMethodAdditionalInfo",
+      "dynamicPurchasingSystem": {
+        "hasDynamicPurchasingSystem": false
+      },
+      "framework": {
+        "isAFramework": false
+      }
+    },
+    "parties": [
+      {
+        "id": "MD-IDNO-380632074071",
+        "name": "LLC Petrusenko",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "380632074071",
+          "legalName": "LLC Petrusenko"
+        },
+        "address": {
+          "streetAddress": "Zakrevskogo",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "1700000",
+              "description": "Cahul",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "1701000",
+              "description": "mun.Cahul",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "MD-IDNO",
+            "id": "string",
+            "legalName": "380935103469",
+            "uri": "http://petrusenko.com/svetlana"
+          }
+        ],
+        "contactPoint": {
+          "name": "Illia Petrusenko",
+          "email": "illya.petrusenko@gmail.com",
+          "telephone": "+380632074071"
+        },
+        "roles": [
+          "buyer",
+          "payer"
+        ]
+      },
+      {
+        "id": "MD-IDNO-555-555",
+        "name": "Name of CN pE",
+        "identifier": {
+          "scheme": "MD-IDNO",
+          "id": "555-555",
+          "legalName": "legal name of pe",
+          "uri": "uri"
+        },
+        "address": {
+          "streetAddress": "address of pe",
+          "postalCode": "10200",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
+            },
+            "region": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "0101000",
+              "description": "mun.Chişinău",
+              "uri": "http://statistica.md"
+            }
+          }
+        },
+        "additionalIdentifiers": [
+          {
+            "scheme": "md-idnooo",
+            "id": "142536",
+            "legalName": "legal name",
+            "uri": "uri"
+          }
+        ],
+        "contactPoint": {
+          "name": "NAME of contact person IN PE",
+          "email": "stricddng@mail.ccc",
+          "telephone": "9879ddd87",
+          "faxNumber": "22-65-88",
+          "url": "url"
+        },
+        "roles": [
+          "procuringEntity"
+        ]
+      }
+    ],
+    "relatedProcesses": [
+      {
+        "id": "d57d1010-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_negotiation"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580128169989-NP-1580128242577",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580128169989/ocds-t1s2t3-MD-1580128169989-NP-1580128242577"
+      },
+      {
+        "id": "aa3be980-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580128169989-PN-1580128170008",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580128169989/ocds-t1s2t3-MD-1580128169989-PN-1580128170008"
+      },
+      {
+        "id": "aa3be982-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_fundingSource"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123032303-FS-1580123067841",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1580123032303/ocds-t1s2t3-MD-1580123032303-FS-1580123067841"
+      },
+      {
+        "id": "aa3be981-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "x_expenditureItem"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580123032303",
+        "uri": "http://dev.public.eprocurement.systems/budgets/ocds-t1s2t3-MD-1580123032303/ocds-t1s2t3-MD-1580123032303"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580128169989-NP-1580128242577",
+    "cpid": "ocds-t1s2t3-MD-1580128169989-NP-1580128242577",
+    "id": "ocds-t1s2t3-MD-1580128169989-NP-1580128242577-1580128242577",
+    "date": "2020-01-27T12:30:42Z",
+    "tag": [
+      "tender"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580128169989",
+      "title": "Negotiation",
+      "description": "Negotiation stage of contracting process",
+      "status": "active",
+      "statusDetails": "negotiation",
+      "items": [
+        {
+          "id": "19f2afbb-543e-4f91-bd57-28f91fb3957b",
+          "internalId": "ITEM1",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "bb10dbb8-ee71-4e30-a026-da6a6a4befd0"
+        },
+        {
+          "id": "90a9de59-afde-4e5a-b8d5-ea3fb4a8c09a",
+          "internalId": "ITEM2",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "e3677924-76dd-48b4-83bb-b0e3f890b2c5"
+        },
+        {
+          "id": "d0c844b3-1cc0-4f3a-b6e1-592dc73fffd1",
+          "internalId": "ITEM3",
+          "description": "Items[1].description",
+          "classification": {
+            "scheme": "CPV",
+            "id": "76400000-7",
+            "description": "Servicii de poziţionare a echipamentelor de foraj"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "CPVS",
+              "id": "AA12-4",
+              "description": "Oţel carbon"
+            }
+          ],
+          "quantity": 400.0,
+          "unit": {
+            "name": "Parsec",
+            "id": "10"
+          },
+          "relatedLot": "5f3c6f11-4099-467b-b3fc-2ec58916843b"
+        }
+      ],
+      "lots": [
+        {
+          "id": "bb10dbb8-ee71-4e30-a026-da6a6a4befd0",
+          "internalId": "LOT1",
+          "title": "LOT 1 TITLE",
+          "description": "LOT 1 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        },
+        {
+          "id": "e3677924-76dd-48b4-83bb-b0e3f890b2c5",
+          "internalId": "LOT1",
+          "title": "LOT 2 TITLE",
+          "description": "LOT 2 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        },
+        {
+          "id": "5f3c6f11-4099-467b-b3fc-2ec58916843b",
+          "internalId": "LOT3",
+          "title": "LOT 3 TITLE",
+          "description": "LOT 3 DESCRIPTION",
+          "status": "active",
+          "statusDetails": "empty",
+          "value": {
+            "amount": 450.0,
+            "currency": "MDL"
+          },
+          "options": [
+            {
+              "hasOptions": false
+            }
+          ],
+          "recurrentProcurement": [
+            {
+              "isRecurrent": false
+            }
+          ],
+          "renewals": [
+            {
+              "hasRenewals": false
+            }
+          ],
+          "variants": [
+            {
+              "hasVariants": false
+            }
+          ],
+          "contractPeriod": {
+            "startDate": "2020-01-30T00:00:00Z",
+            "endDate": "2020-02-01T00:20:00Z"
+          },
+          "placeOfPerformance": {
+            "address": {
+              "streetAddress": "Dankevicha,7a",
+              "postalCode": "02222",
+              "addressDetails": {
+                "country": {
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "MOLDOVA",
+                  "uri": "http://reference.iatistandard.org"
+                },
+                "region": {
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "mun.Chişinău",
+                  "uri": "http://statistica.md"
+                },
+                "locality": {
+                  "scheme": "other",
+                  "id": "002125",
+                  "description": "Tender.lots[1].placeOfPerformance.locality.description"
+                }
+              }
+            },
+            "description": "Tender.lots[1].placeOfPerformance.description"
+          }
+        }
+      ],
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "hasEnquiries": false,
+      "documents": [
+        {
+          "id": "b59d97f3-2c8d-40c9-bede-f7cc1b0484de-1576061731211",
+          "documentType": "tenderNotice",
+          "title": "tender.documents.title",
+          "description": "tender.documents.description",
+          "url": "http://dev.bpe.eprocurement.systems/api/v1/storage/get/b59d97f3-2c8d-40c9-bede-f7cc1b0484de-1576061731211",
+          "datePublished": "2019-12-11T10:55:46Z",
+          "relatedLots": [
+            "5f3c6f11-4099-467b-b3fc-2ec58916843b"
+          ]
+        }
+      ],
+      "awardCriteria": "priceOnly",
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": true,
+    "purposeOfNotice": {
+      "isACallForCompetition": true
+    },
+    "relatedProcesses": [
+      {
+        "id": "d57d1011-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "planning"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580128169989-PN-1580128170008",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580128169989/ocds-t1s2t3-MD-1580128169989-PN-1580128170008"
+      },
+      {
+        "id": "aa3be983-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580128169989",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580128169989/ocds-t1s2t3-MD-1580128169989"
+      }
+    ]
+  },
+  {
+    "ocid": "ocds-t1s2t3-MD-1580128169989-PN-1580128170008",
+    "cpid": "ocds-t1s2t3-MD-1580128169989-PN-1580128170008",
+    "id": "ocds-t1s2t3-MD-1580128169989-PN-1580128170008-1580128242576",
+    "date": "2020-01-27T12:30:42Z",
+    "tag": [
+      "planningUpdate"
+    ],
+    "initiationType": "tender",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1580128169989",
+      "title": "Planning Notice",
+      "description": "Contracting process is planned",
+      "status": "complete",
+      "statusDetails": "empty",
+      "lotGroups": [
+        {
+          "optionToCombine": false
+        }
+      ],
+      "tenderPeriod": {
+        "startDate": "2019-08-01T00:00:00Z"
+      },
+      "hasEnquiries": false,
+      "submissionMethod": [
+        "electronicSubmission"
+      ],
+      "submissionMethodDetails": "Lista platformelor: achizitii, ebs, licitatie, yptender",
+      "submissionMethodRationale": [
+        "Ofertele vor fi primite prin intermediul unei platforme electronice de achiziții publice"
+      ],
+      "requiresElectronicCatalogue": false
+    },
+    "hasPreviousNotice": false,
+    "purposeOfNotice": {
+      "isACallForCompetition": false
+    },
+    "relatedProcesses": [
+      {
+        "id": "aa3be983-4100-11ea-bfed-bb8b4ce35b4a",
+        "relationship": [
+          "parent"
+        ],
+        "scheme": "ocid",
+        "identifier": "ocds-t1s2t3-MD-1580128169989",
+        "uri": "http://dev.public.eprocurement.systems/tenders/ocds-t1s2t3-MD-1580128169989/ocds-t1s2t3-MD-1580128169989"
+      }
+    ]
+  }
+]

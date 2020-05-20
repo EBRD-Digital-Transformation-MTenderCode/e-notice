@@ -7,17 +7,17 @@ import com.procurement.notice.application.service.tender.cancel.CancelStandStill
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
-import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
+import com.procurement.notice.model.ocds.ReleaseAmendment
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.dto.CancellationStandstillPeriodDto
-import com.procurement.notice.model.tender.record.Record
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -41,7 +41,7 @@ class TenderCancellationService(
         val ms = releaseService.getMs(msEntity.jsonData)
 
         val updatedMs = ms.copy(
-            id = releaseService.newReleaseId(cpid),
+            id = generationService.generateReleaseId(cpid),
             date = context.releaseDate,
             tag = listOf(Tag.TENDER_CANCELLATION),
             tender = ms.tender.copy(
@@ -50,16 +50,16 @@ class TenderCancellationService(
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
         //BR-2.4.8.10
-        val newAmendments: List<Amendment> = newAmendments(context, data, record)
-        val amendments = record.tender.amendments ?: emptyList()
+        val newAmendments: List<ReleaseAmendment> = newAmendments(context, data, release)
+        val amendments = release.tender.amendments
         val updatedAmendment = amendments + newAmendments
 
-        val updatedRecord = record.copy(
+        val updatedRecord = release.copy(
             //BR-2.4.8.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid),
 
             //BR-2.4.8.3
             date = context.releaseDate,
@@ -68,7 +68,7 @@ class TenderCancellationService(
             tag = listOf(Tag.TENDER_CANCELLATION),
 
             //BR-2.4.8.6
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 //BR-2.4.8.9
                 statusDetails = TenderStatusDetails.CANCELLATION,
 
@@ -89,7 +89,7 @@ class TenderCancellationService(
         releaseService.saveRecord(
             cpId = cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRecord,
             publishDate = recordEntity.publishDate
         )
         val amendmentsIds = newAmendments.map { it.id!! }
@@ -102,23 +102,23 @@ class TenderCancellationService(
     private fun newAmendments(
         context: CancelStandStillPeriodContext,
         data: CancelStandStillPeriodData,
-        record: Record
-    ): List<Amendment> = data.amendments.map { amendment ->
-        Amendment(
+        release: Release
+    ): List<ReleaseAmendment> = data.amendments.map { amendment ->
+        ReleaseAmendment(
             //BR-2.4.8.11
             id = generationService.generateAmendmentId().toString(),
 
             //BR-2.4.8.12
-            amendsReleaseID = record.id,
+            amendsReleaseID = release.id,
 
             //BR-2.4.8.13
-            releaseID = releaseService.newReleaseId(context.ocid),
+            releaseID = generationService.generateReleaseId(context.ocid),
 
             //BR-2.4.8.14
             date = context.releaseDate,
-            relatedLots = null,
+            relatedLots = emptyList(),
             rationale = amendment.rationale,
-            changes = null,
+            changes = emptyList(),
             description = amendment.description,
             documents = amendment.documents?.map { document ->
                 Document(
@@ -135,6 +135,11 @@ class TenderCancellationService(
                     relatedConfirmations = null
                 )
             }
+                .orEmpty(),
+            type = null,
+            status = null,
+            relatedItem = null,
+            relatesTo = null
         )
     }
 
@@ -149,36 +154,36 @@ class TenderCancellationService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.CANCELLED
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.TENDER_CANCELLATION)
             tender.status = TenderStatus.CANCELLED
             tender.statusDetails = TenderStatusDetails.EMPTY
-            if (dto.lots != null) tender.lots?.let { updateLots(it, dto.lots) }
+            if (dto.lots != null) tender.lots.let { updateLots(it, dto.lots) }
             if (dto.bids != null) bids?.details?.let { updateBids(it, dto.bids) }
-            if (dto.awards != null) {
-                if (awards != null) {
-                    awards = updateAwards(awards!!, dto.awards).toHashSet()
+            if (dto.awards.isNotEmpty()) {
+                if (awards.isNotEmpty()) {
+                    awards = updateAwards(awards, dto.awards)
                 } else {
                     awards = dto.awards
                 }
             }
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, awardsIds = dto.awards?.map { it.id!! }))
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, awardsIds = dto.awards.map { it.id!! }))
     }
 
-    private fun updateAwards(persistAwards: HashSet<Award>, requestAwards: HashSet<Award>): List<Award> {
+    private fun updateAwards(persistAwards: List<Award>, requestAwards: List<Award>): List<Award> {
         val persistAwardsById: Map<String, Award> = persistAwards.associateBy { it.id!! }
         val requestAwardsByIds: Map<String, Award> = requestAwards.associateBy { it.id!! }
         val allAwardIds: Set<String> = persistAwardsById.keys + requestAwardsByIds.keys
@@ -226,7 +231,7 @@ class TenderCancellationService(
         }
     }
 
-    private fun updateLots(recordLots: HashSet<Lot>, dtoLots: HashSet<Lot>) {
+    private fun updateLots(recordLots: List<Lot>, dtoLots: HashSet<Lot>) {
         for (lot in recordLots) {
             dtoLots.firstOrNull { it.id == lot.id }?.apply {
                 lot.status = this.status

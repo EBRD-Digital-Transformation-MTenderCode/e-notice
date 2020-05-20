@@ -1,5 +1,6 @@
 package com.procurement.notice.service.contract.strategy
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.contract.activate.ActivateContractContext
 import com.procurement.notice.application.service.contract.activate.ActivateContractData
 import com.procurement.notice.dao.ReleaseDao
@@ -21,7 +22,8 @@ import com.procurement.notice.utils.toObject
 
 class ActivationContractStrategy(
     private val releaseService: ReleaseService,
-    private val releaseDao: ReleaseDao
+    private val releaseDao: ReleaseDao,
+    private val generationService: GenerationService
 ) {
     fun activateContract(context: ActivateContractContext, data: ActivateContractData): ResponseDto {
         val recordContractEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
@@ -34,7 +36,7 @@ class ActivationContractStrategy(
         )
         val updatedRecordContract = recordContract.copy(
             //BR-2.7.3.4
-            id = releaseService.newReleaseId(context.ocid),
+            id = generationService.generateReleaseId(context.ocid),
 
             //BR-2.7.3.1
             tag = listOf(Tag.CONTRACT_UPDATE),
@@ -60,10 +62,10 @@ class ActivationContractStrategy(
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
-        val updatedRecordEv = recordEv.copy(
+        val releaseEV = releaseService.getRelease(recordEvEntity.jsonData)
+        val updatedReleaseEv = releaseEV.copy(
             //BR-2.4.12.4
-            id = releaseService.newReleaseId(recordEvEntity.ocId),
+            id = generationService.generateReleaseId(recordEvEntity.ocId),
 
             //BR-2.4.12.3
             date = context.releaseDate,
@@ -72,24 +74,24 @@ class ActivationContractStrategy(
             tag = listOf(Tag.TENDER_UPDATE),
 
             //BR-2.4.12.6
-            tender = recordEv.tender.copy(
-                lots = updating(lots = recordEv.tender.lots ?: emptyList(), lotsFromRequest = data.lots).toHashSet()
+            tender = releaseEV.tender.copy(
+                lots = updating(lots = releaseEV.tender.lots, lotsFromRequest = data.lots).toList()
             ),
 
             //BR-2.4.12.8
             contracts = updatingContractsEv(
-                contracts = recordEv.contracts ?: emptyList(),
+                contracts = releaseEV.contracts,
                 cans = data.cans
-            ).toHashSet(),
+            ).toList(),
 
             //BR-2.4.12.9
             awards = updatingAwardsEv(
-                awards = recordEv.awards ?: emptyList(),
+                awards = releaseEV.awards,
                 awardsFromRequest = data.awards
-            ).toHashSet(),
+            ).toList(),
 
             //BR-2.4.12.10
-            bids = recordEv.bids?.let { bids ->
+            bids = releaseEV.bids?.let { bids ->
                 bids.copy(
                     details = updatingBidsEv(
                         bids = bids.details ?: emptyList(),
@@ -108,7 +110,7 @@ class ActivationContractStrategy(
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = recordStage,
-            record = updatedRecordEv,
+            release = updatedReleaseEv,
             publishDate = recordEvEntity.publishDate
         )
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))

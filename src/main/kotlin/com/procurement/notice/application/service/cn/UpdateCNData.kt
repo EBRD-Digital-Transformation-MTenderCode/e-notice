@@ -11,8 +11,18 @@ data class UpdateCNData(
     val planning: Planning,
     val tender: Tender,
     val amendment: Amendment?,
+    val preQualification: PreQualification?,
     val isAuctionPeriodChanged: Boolean
 ) {
+
+    data class PreQualification(
+        val period: Period
+    ) {
+        data class Period(
+            val startDate: LocalDateTime?,
+            val endDate: LocalDateTime?
+        )
+    }
 
     data class Planning(
         val rationale: String?,

@@ -13,7 +13,7 @@ data class Details @JsonCreator constructor(
     val typeOfSupplier: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val mainEconomicActivities: Set<String>?,
+    val mainEconomicActivities: Set<MainEconomicActivity>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val mainGeneralActivity: String?,

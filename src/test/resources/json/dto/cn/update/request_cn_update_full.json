@@ -33,6 +33,12 @@
       ]
     }
   },
+  "preQualification": {
+    "period": {
+      "startDate": "2019-04-01T10:00:00Z",
+      "endDate": "2019-04-29T10:00:00Z"
+    }
+  },
   "tender": {
     "id": "ocid-1",
     "status": "planning",

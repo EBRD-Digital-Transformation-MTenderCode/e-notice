@@ -10,8 +10,6 @@ import java.time.LocalDateTime
 
 data class CancelCANRequest(
     @field:JsonProperty("cancelledCan") @param:JsonProperty("cancelledCan") val cancelledCan: CancelledCAN,
-    @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
-    @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
     @field:JsonProperty("lot") @param:JsonProperty("lot") val lot: Lot
 ) {
     data class CancelledCAN(
@@ -45,24 +43,6 @@ data class CancelCANRequest(
             )
         }
     }
-
-    data class Award(
-        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
-
-        @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
-        @field:JsonSerialize(using = JsonDateTimeSerializer::class)
-        @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime,
-
-        @field:JsonProperty("relatedBid") @param:JsonProperty("relatedBid") val relatedBid: String,
-        @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
-    )
-
-    data class Bid(
-        @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
-        @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
-    )
 
     data class Lot(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,

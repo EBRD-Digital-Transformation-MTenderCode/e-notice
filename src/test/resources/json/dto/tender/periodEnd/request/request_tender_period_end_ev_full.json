@@ -89,7 +89,12 @@
           "details": {
             "typeOfSupplier": "company",
             "mainEconomicActivities": [
-              "bids[0].tenderers[0].details.mainEconomicActivities[0]"
+              {
+                "scheme": "MD-CAEM",
+                "id": "bids[0].tenderers[0].details.mainEconomicActivities[0].id",
+                "description": "bids[0].tenderers[0].details.mainEconomicActivities[0].description",
+                "uri": "bids[0].tenderers[0].details.mainEconomicActivities[0].uri"
+              }
             ],
             "scale": "sme",
             "permits": [
@@ -199,6 +204,7 @@
     "id": "criteria.id",
     "title": "Conflict of interest",
     "source": "procuringEntity",
+    "relatesTo": "award",
     "description": "Is there conflict of interest with any of tenderers submitted bids",
     "requirementGroups": [
       {
@@ -209,6 +215,11 @@
             "title": "Your answer?",
             "dataType": "boolean",
             "expectedValue": false
+          },
+          {
+            "id": "974c8196-9d1c-419c-9ca9-45bb9f5fd59a",
+            "title": "Your answer?",
+            "dataType": "boolean"
           },
           {
             "id": "804eb103-49d1-45b8-86cb-187b01ab03b4",

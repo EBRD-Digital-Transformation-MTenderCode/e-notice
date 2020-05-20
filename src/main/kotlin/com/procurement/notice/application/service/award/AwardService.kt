@@ -1,9 +1,11 @@
 package com.procurement.notice.application.service.award
 
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.award.auction.AwardConsiderationContext
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.award.AwardId
+import com.procurement.notice.domain.model.bid.BidId
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -51,7 +53,8 @@ interface AwardService {
 @Service
 class AwardServiceImpl(
     private val releaseService: ReleaseService,
-    private val releaseDao: ReleaseDao
+    private val releaseDao: ReleaseDao,
+    private val generationService: GenerationService
 ) : AwardService {
     override fun createAward(context: CreateAwardContext, data: CreateAwardData) {
         val cpid = context.cpid
@@ -60,23 +63,23 @@ class AwardServiceImpl(
         val releaseDate = context.releaseDate
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val tender = record.tender
+        val tender = release.tender
 
         //BR-2.6.18.8 + BR-2.6.18.9
         val newAward = convertAward(data.award)
-        val updatedAwards = record.awards?.plus(newAward) ?: setOf(newAward)
+        val updatedAwards = release.awards.plus(newAward)
 
         //BR-2.6.18.10
         val updatedParties = updateParties(
-            parties = record.parties ?: emptyList(),
+            parties = release.parties,
             suppliers = data.award.suppliers
         )
 
-        val newRecord = record.copy(
+        val newRecord = release.copy(
             //BR-2.6.18.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //BR-2.6.18.1
             tag = listOf(Tag.AWARD),
@@ -85,16 +88,16 @@ class AwardServiceImpl(
             date = releaseDate,
 
             //BR-2.6.18.8
-            awards = updatedAwards.toHashSet(),
+            awards = updatedAwards.toList(),
 
             //BR-2.6.18.10
-            parties = updatedParties.toHashSet()
+            parties = updatedParties.toMutableList()
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage.name,
-            record = newRecord,
+            release = newRecord,
             publishDate = releaseDate.toDate()
         )
     }
@@ -279,23 +282,23 @@ class AwardServiceImpl(
         val releaseDate = context.releaseDate
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val tender = record.tender
+        val tender = release.tender
 
         //BR-2.6.18.8 + BR-2.6.18.9
         val newAward = convertAward(data.award)
-        val updatedAwards = record.awards?.plus(newAward) ?: setOf(newAward)
+        val updatedAwards = release.awards.plus(newAward)
 
         //BR-2.6.18.10
         val updatedParties = updateParties2(
-            parties = record.parties ?: emptyList(),
+            parties = release.parties,
             suppliers = data.award.suppliers
         )
 
-        val newRecord = record.copy(
+        val newRecord = release.copy(
             //BR-2.6.20.4
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //BR-2.6.20.1
             tag = listOf(Tag.AWARD),
@@ -320,16 +323,16 @@ class AwardServiceImpl(
             ),
 
             //BR-2.6.18.8
-            awards = updatedAwards.toHashSet(),
+            awards = updatedAwards.toList(),
 
             //BR-2.6.18.10
-            parties = updatedParties.toHashSet()
+            parties = updatedParties.toMutableList()
         )
 
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage.name,
-            record = newRecord,
+            release = newRecord,
             publishDate = releaseDate.toDate()
         )
     }
@@ -508,11 +511,11 @@ class AwardServiceImpl(
         val releaseDate = context.releaseDate
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
         //FR-5.7.1.1.3 1)-3)
-        val awards: Set<Award> = record.awards
-            ?.takeIf {awards ->
+        val awards: List<Award> = release.awards
+            .takeIf {awards ->
                 awards.isNotEmpty()
             }
             ?:throw ErrorException(
@@ -539,7 +542,7 @@ class AwardServiceImpl(
         //FR-5.7.1.1.4
         val updatedBids = if (requestBid != null) {
             val requestBidId = requestBid.id.toString()
-            record.bids
+            release.bids
                 ?.let { bids ->
                     bids.copy(
                         details = bids.details
@@ -572,11 +575,11 @@ class AwardServiceImpl(
                     )
                 }
         } else
-            record.bids
+            release.bids
 
-        val newRecord = record.copy(
+        val newRecord = release.copy(
             //FR-5.0.1
-            id = releaseService.newReleaseId(ocid),
+            id = generationService.generateReleaseId(ocid = ocid),
 
             //FR-5.7.1.1.1
             tag = listOf(Tag.AWARD_UPDATE),
@@ -585,7 +588,7 @@ class AwardServiceImpl(
             date = releaseDate,
 
             //FR-5.7.1.1.3 4)
-            awards = updatedAwards.toHashSet(),
+            awards = updatedAwards.toList(),
 
             //FR-5.7.1.1.4
             bids = updatedBids
@@ -594,8 +597,8 @@ class AwardServiceImpl(
         releaseService.saveRecord(
             cpId = cpid,
             stage = stage.name,
-            record = newRecord,
-            publishDate = releaseDate.toDate()
+            release = newRecord,
+            publishDate = recordEntity.publishDate
         )
     }
 
@@ -651,7 +654,7 @@ class AwardServiceImpl(
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         val updatedMS = ms.copy(
-            id = releaseService.newReleaseId(ocId = context.cpid),
+            id = generationService.generateReleaseId(ocid = context.cpid),
             date = context.releaseDate,
             tag = listOf(Tag.COMPILED),
             tender = ms.tender.copy(
@@ -673,11 +676,11 @@ class AwardServiceImpl(
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
-        val recordEv = releaseService.getRecord(recordEvEntity.jsonData)
+        val releaseEV = releaseService.getRelease(recordEvEntity.jsonData)
 
-        val updatedRecordEV = recordEv.let { record ->
+        val updatedRecordEV = releaseEV.let { record ->
             record.copy(
-                id = releaseService.newReleaseId(recordEvEntity.ocId),
+                id = generationService.generateReleaseId(ocid = recordEvEntity.ocId),
                 date = context.releaseDate,
                 tag = listOf(Tag.TENDER_UPDATE),
                 tender = record.tender.let { tender ->
@@ -692,12 +695,12 @@ class AwardServiceImpl(
                         },
                         status = data.tender.status,
                         statusDetails = data.tender.statusDetails,
-                        lots = updateLots(data, tender.lots).toHashSet()
+                        lots = updateLots(data, tender.lots).toList()
                     )
                 },
                 bids = updateBids(data, record.bids),
-                awards = updateAwards(data, record.awards).toHashSet(),
-                contracts = updateCanContracts(data, record.contracts).toHashSet()
+                awards = updateAwards(data, record.awards).toList(),
+                contracts = updateCanContracts(data, record.contracts).toList()
             )
         }
 
@@ -707,7 +710,7 @@ class AwardServiceImpl(
                 val contractRecord = toObject(ContractRecord::class.java, contractRecordEntity.jsonData)
 
                 contractRecord.copy(
-                    id = releaseService.newReleaseId(context.ocid),
+                    id = generationService.generateReleaseId(ocid = context.ocid),
                     tag = listOf(Tag.CONTRACT_UPDATE),
                     date = context.releaseDate,
                     contracts = updateContracts(contract, contractRecord.contracts!!).toHashSet()
@@ -723,7 +726,7 @@ class AwardServiceImpl(
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = recordStage,
-            record = updatedRecordEV,
+            release = updatedRecordEV,
             publishDate = recordEvEntity.publishDate
         )
         if (updatedContractRecord != null)
@@ -853,28 +856,56 @@ class AwardServiceImpl(
 
     override fun consider(context: AwardConsiderationContext, data: AwardConsiderationData) {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid),
+        val release = releaseService.getRelease(recordEntity.jsonData)
+
+        val updatedBids = release.bids?.details?.map { dbBid ->
+            val bidId = BidId.fromString(dbBid.id)
+            if (bidId == data.bid.id) {
+                dbBid.copy(
+                    documents = data.bid.documents
+                        .map { document ->
+                            Document(
+                                id = document.id,
+                                description = document.description,
+                                title = document.title,
+                                documentType = document.documentType.toString(),
+                                relatedLots = document.relatedLots.map { it.toString() },
+                                url = document.url,
+                                datePublished = document.datePublished,
+                                language = null,
+                                dateModified = null,
+                                format = null,
+                                relatedConfirmations = null
+                            )
+                        }.toHashSet()
+                )
+            } else {
+                dbBid
+            }
+        }?.toHashSet()
+
+        val updatedRecord = release.copy(
+            id = generationService.generateReleaseId(ocid = context.ocid),
             date = context.releaseDate,
             tag = listOf(Tag.AWARD_UPDATE),
-            awards = record.awards
-                ?.asSequence()
-                ?.map { award ->
+            awards = release.awards
+                .asSequence()
+                .map { award ->
                     val requestAward = data.award
                     if (award.id == requestAward.id.toString())
                         award.copy(statusDetails = requestAward.statusDetails.value)
                     else
                         award
                 }
-                ?.toHashSet()
+                .toList(),
+            bids = release.bids?.copy(details = updatedBids)
         )
 
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
-            publishDate = context.releaseDate.toDate()
+            release = updatedRecord,
+            publishDate = recordEntity.publishDate
         )
     }
 }

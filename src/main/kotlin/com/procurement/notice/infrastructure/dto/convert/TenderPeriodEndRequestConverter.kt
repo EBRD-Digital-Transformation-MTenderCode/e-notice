@@ -97,7 +97,21 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                                 details = tenderer.details.let { details ->
                                     TenderPeriodEndData.Bid.Tenderer.Details(
                                         typeOfSupplier = details.typeOfSupplier,
-                                        mainEconomicActivities = details.mainEconomicActivities.toList(),
+                                        mainEconomicActivities = details.mainEconomicActivities.errorIfEmpty {
+                                            ErrorException(
+                                                error = ErrorType.IS_EMPTY,
+                                                message = "The bid '${bid.id}' contains empty list of the 'mainEconomicActivities' in tenderer '${tenderer.id}'."
+                                            )
+                                        }
+                                            ?.map { mainEconomicActivity ->
+                                                TenderPeriodEndData.Bid.Tenderer.Details.MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
+                                            }
+                                            .orEmpty(),
                                         scale = details.scale,
                                         permits = details.permits
                                             .errorIfEmpty {
@@ -354,6 +368,7 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                     id = criteria.id,
                     title = criteria.title,
                     source = criteria.source,
+                    relatesTo = criteria.relatesTo,
                     description = criteria.description,
                     requirementGroups = criteria.requirementGroups
                         .mapIfNotEmpty { requirementGroup ->

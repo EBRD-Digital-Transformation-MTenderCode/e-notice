@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionContext
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionData
 import com.procurement.notice.application.service.award.auction.StartAwardPeriodAuctionResult
@@ -35,6 +36,7 @@ import com.procurement.notice.model.ocds.Issue
 import com.procurement.notice.model.ocds.LegalForm
 import com.procurement.notice.model.ocds.LocalityDetails
 import com.procurement.notice.model.ocds.Lot
+import com.procurement.notice.model.ocds.MainEconomicActivity
 import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
@@ -64,8 +66,8 @@ import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
-import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
+import com.procurement.notice.model.tender.record.Release
+import com.procurement.notice.model.tender.record.ReleaseTender
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -76,7 +78,8 @@ import java.time.LocalDateTime
 class TenderService(
     private val releaseService: ReleaseService,
     private val organizationService: OrganizationService,
-    private val relatedProcessService: RelatedProcessService
+    private val relatedProcessService: RelatedProcessService,
+    private val generationService: GenerationService
 ) {
 
     fun tenderPeriodEnd(
@@ -84,10 +87,10 @@ class TenderService(
         data: TenderPeriodEndData
     ): TenderPeriodEndResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedAwards = updateAwards(data = data, awards = record.awards)
-        val updatedLots = updateLots(data = data, lots = record.tender.lots)
+        val updatedAwards = updateAwards(data = data, awards = release.awards)
+        val updatedLots = updateLots(data = data, lots = release.tender.lots)
 
         val newCriteria = data.criteria
             ?.let { criteria ->
@@ -97,7 +100,7 @@ class TenderService(
                     description = criteria.description,
                     source = criteria.source,
                     relatedItem = null,
-                    relatesTo = null,
+                    relatesTo = criteria.relatesTo?.value,
                     requirementGroups = criteria.requirementGroups.map { requirementGroup ->
                         RequirementGroup(
                             id = requirementGroup.id,
@@ -108,22 +111,22 @@ class TenderService(
                 )
             }
 
-        val updatedCriteria: List<Criteria>? = if (newCriteria != null)
-            (record.tender.criteria ?: emptyList()) + newCriteria
+        val updatedCriteria: List<Criteria> = if (newCriteria != null)
+            release.tender.criteria + newCriteria
         else
-            record.tender.criteria
+            release.tender.criteria
 
         //FR-5.7.2.1.3
-        val updatedBids = updateBids(data = data, bids = record.bids)
+        val updatedBids = updateBids(data = data, bids = release.bids)
 
         //FR-5.7.2.1.5
-        val updatedParties = updateParties(data = data, parties = record.parties ?: emptyList())
+        val updatedParties = updateParties(data = data, parties = release.parties)
 
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+        val updatedRelease = release.copy(
+            id = generationService.generateReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.AWARD), //FR-5.7.2.1.1
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 //FR-5.7.2.1.6
                 awardPeriod = Period(
                     startDate = data.awardPeriod.startDate,
@@ -132,19 +135,19 @@ class TenderService(
                     durationInDays = null
                 ),
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value), //FR-5.7.2.1.6
-                lots = updatedLots?.toHashSet(), //FR-5.7.2.1.6
+                lots = updatedLots.toList(), //FR-5.7.2.1.6
                 criteria = updatedCriteria //FR-5.7.2.1.6
             ),
-            awards = updatedAwards?.toHashSet(),
+            awards = updatedAwards.toList(),
             bids = updatedBids, //FR-5.7.2.1.3
-            parties = updatedParties.toHashSet() //FR-5.7.2.1.5
+            parties = updatedParties.toMutableList() //FR-5.7.2.1.5
         )
-        organizationService.processRecordPartiesFromBids(updatedRecord)
-        organizationService.processRecordPartiesFromAwards(updatedRecord)
+        organizationService.processRecordPartiesFromBids(updatedRelease)
+        organizationService.processRecordPartiesFromAwards(updatedRelease)
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRelease,
             publishDate = recordEntity.publishDate
         )
         return TenderPeriodEndResult(cpid = context.cpid, ocid = context.ocid)
@@ -154,7 +157,7 @@ class TenderService(
      * FR-5.7.2.1.4
      * eNotice Get.Awards list from Request and saves them as release.awards list in new Release:
      */
-    private fun updateAwards(data: TenderPeriodEndData, awards: Collection<Award>?): Collection<Award>? =
+    private fun updateAwards(data: TenderPeriodEndData, awards: List<Award>): List<Award> =
         if (data.awards.isNotEmpty())
             data.awards.map { award ->
                 Award(
@@ -199,10 +202,10 @@ class TenderService(
      *   a. Finds in new Release tender.lots object where lots.ID == unsuccessfulLots.ID;
      *   b. Changes value of lots.status in lot (found before) getting value from unsuccessfulLots object of request;
      */
-    private fun updateLots(data: TenderPeriodEndData, lots: Collection<Lot>?): Collection<Lot>? =
+    private fun updateLots(data: TenderPeriodEndData, lots: List<Lot>): List<Lot> =
         if (data.unsuccessfulLots.isNotEmpty()) {
             val unsuccessfulLotsById = data.unsuccessfulLots.associateBy { it.id.toString() }
-            lots!!.map { lot ->
+            lots.map { lot ->
                 if (lot.id in unsuccessfulLotsById)
                     lot.copy(
                         status = unsuccessfulLotsById.getValue(lot.id).status.value
@@ -314,7 +317,15 @@ class TenderService(
                                         .let { details ->
                                             Details(
                                                 typeOfSupplier = details.typeOfSupplier.value,
-                                                mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                                mainEconomicActivities = details.mainEconomicActivities
+                                                    .map { mainEconomicActivity ->
+                                                        MainEconomicActivity(
+                                                            id = mainEconomicActivity.id,
+                                                            description = mainEconomicActivity.description,
+                                                            scheme = mainEconomicActivity.scheme,
+                                                            uri = mainEconomicActivity.uri
+                                                        )
+                                                    }.toSet(),
                                                 scale = details.scale.value,
                                                 permits = details.permits
                                                     .map { permit ->
@@ -632,7 +643,15 @@ class TenderService(
                                 .let { details ->
                                     Details(
                                         typeOfSupplier = details.typeOfSupplier.value,
-                                        mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                        mainEconomicActivities = details.mainEconomicActivities
+                                            .map { mainEconomicActivity ->
+                                                MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
+                                            }.toSet(),
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -880,7 +899,15 @@ class TenderService(
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier.value,
-                            mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                            mainEconomicActivities = details.mainEconomicActivities
+                                .map { mainEconomicActivity ->
+                                    MainEconomicActivity(
+                                        id = mainEconomicActivity.id,
+                                        description = mainEconomicActivity.description,
+                                        scheme = mainEconomicActivity.scheme,
+                                        uri = mainEconomicActivity.uri
+                                    )
+                                }.toSet(),
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->
@@ -1025,11 +1052,11 @@ class TenderService(
         context: StartAwardPeriodAuctionContext
     ): StartAwardPeriodAuctionResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        val updatedLots = setUnsuccessfulStatusToLots(data, record)
-        val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, record)
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid),
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        val updatedLots = setUnsuccessfulStatusToLots(data, release)
+        val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, release)
+        val updatedRelease = release.copy(
+            id = generationService.generateReleaseId(context.ocid),
             date = context.startDate,
             tag = listOf(Tag.AWARD),
             awards = data.awards
@@ -1057,18 +1084,18 @@ class TenderService(
 
                     )
                 }
-                .toHashSet()
-                .ifEmpty { record.awards },
-            tender = record.tender.copy(
+                .toList()
+                .ifEmpty { release.awards },
+            tender = release.tender.copy(
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
-                lots = updatedLots?.toHashSet(),
+                lots = updatedLots.toList(),
                 electronicAuctions = updatedElectronicAuctions
             )
         )
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRelease,
             publishDate = recordEntity.publishDate
         )
         return StartAwardPeriodAuctionResult(
@@ -1079,13 +1106,13 @@ class TenderService(
 
     private fun getUpdatedElectronicAuctions(
         data: StartAwardPeriodAuctionData,
-        record: Record
+        release: Release
     ): ElectronicAuctions? {
         val requestAuctionsById = data.electronicAuctions.details.associateBy { it.id }
 
-        return record.tender.electronicAuctions.let { recordAuctions ->
-            recordAuctions?.copy(
-                details = recordAuctions.details
+        return release.tender.electronicAuctions.let { releaseAuctions ->
+            releaseAuctions?.copy(
+                details = releaseAuctions.details
                     .asSequence()
                     .map { detail ->
                         val id = detail.id!!
@@ -1125,13 +1152,13 @@ class TenderService(
 
     private fun setUnsuccessfulStatusToLots(
         data: StartAwardPeriodAuctionData,
-        record: Record
-    ): List<Lot>? {
+        release: Release
+    ): List<Lot> {
         val unsuccessfulLotsById = data.unsuccessfulLots.associateBy { it.id.toString() }
 
-        return record.tender.lots
-            ?.asSequence()
-            ?.map { lot ->
+        return release.tender.lots
+            .asSequence()
+            .map { lot ->
                 val id = lot.id
                 val unsuccessfulLot = unsuccessfulLotsById[id]
                 if (unsuccessfulLot != null)
@@ -1139,7 +1166,7 @@ class TenderService(
                 else
                     lot
             }
-            ?.toList()
+            .toList()
     }
 
     fun suspendTender(cpid: String,
@@ -1149,13 +1176,13 @@ class TenderService(
                       data: JsonNode): ResponseDto {
         val dto = toObject(TenderStatusDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = dto.tenderStatusDetails
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -1166,19 +1193,19 @@ class TenderService(
                         data: JsonNode): ResponseDto {
         val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = dto.tender.statusDetails
             tender.tenderPeriod = dto.tender.tenderPeriod
             tender.enquiryPeriod = dto.tender.enquiryPeriod
             tender.auctionPeriod = dto.tender.auctionPeriod
-            tender.procurementMethodModalities = dto.tender.procurementMethodModalities
+            tender.procurementMethodModalities = dto.tender.procurementMethodModalities ?: emptyList()
             tender.electronicAuctions = dto.tender.electronicAuctions
         }
-        addAnswerToEnquiry(record.tender.enquiries, dto.enquiry)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        addAnswerToEnquiry(release.tender.enquiries, dto.enquiry)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -1189,7 +1216,7 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(context.cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         val updatedMS = ms.copy(
-            id = releaseService.newReleaseId(context.cpid), //FR-5.0.1
+            id = generationService.generateReleaseId(context.cpid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.7.2.2.1
             tender = ms.tender.copy(
@@ -1198,33 +1225,33 @@ class TenderService(
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
+        val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedLots = updateLots(data = data, lots = record.tender.lots ?: emptyList())
-        val updatedBids = updateBids(data = data, bids = record.bids)
+        val updatedLots = updateLots(data = data, lots = release.tender.lots)
+        val updatedBids = updateBids(data = data, bids = release.bids)
         val updatedAwards = updateAwards(data = data)
-        val updatedParties = updateParties(data = data, parties = record.parties ?: emptyList())
+        val updatedParties = updateParties(data = data, parties = release.parties)
 
-        val updatedRecord = record.copy(
-            id = releaseService.newReleaseId(context.ocid), //FR-5.0.1
+        val updatedRelease = release.copy(
+            id = generationService.generateReleaseId(context.ocid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_CANCELLATION), //FR-ER-5.7.2.2.1
 
             //FR-ER-5.7.2.1.6
-            tender = record.tender.copy(
+            tender = release.tender.copy(
                 status = TenderStatus.fromValue(data.tender.status.value),
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value),
-                lots = updatedLots.toHashSet()
+                lots = updatedLots.toList()
             ),
             bids = updatedBids,//FR-ER-5.7.2.2.3
-            awards = updatedAwards.toHashSet(), //FR-ER-5.7.2.2.4
-            parties = updatedParties.toHashSet() //FR-ER-5.7.2.2.5
+            awards = updatedAwards.toList(), //FR-ER-5.7.2.2.4
+            parties = updatedParties.toMutableList() //FR-ER-5.7.2.2.5
         )
         releaseService.saveMs(context.cpid, updatedMS, publishDate = msEntity.publishDate)
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
-            record = updatedRecord,
+            release = updatedRelease,
             publishDate = recordEntity.publishDate
         )
         return TenderUnsuccessfulResult(cpid = context.cpid, ocid = context.ocid)
@@ -1428,7 +1455,15 @@ class TenderService(
                                 .let { details ->
                                     Details(
                                         typeOfSupplier = details.typeOfSupplier?.value,
-                                        mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                                        mainEconomicActivities = details.mainEconomicActivities
+                                            .map { mainEconomicActivity ->
+                                                MainEconomicActivity(
+                                                    id = mainEconomicActivity.id,
+                                                    description = mainEconomicActivity.description,
+                                                    scheme = mainEconomicActivity.scheme,
+                                                    uri = mainEconomicActivity.uri
+                                                )
+                                            }.toSet(),
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -1665,7 +1700,15 @@ class TenderService(
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier?.value,
-                            mainEconomicActivities = details.mainEconomicActivities.toSet(),
+                            mainEconomicActivities = details.mainEconomicActivities
+                                .map { mainEconomicActivity ->
+                                    MainEconomicActivity(
+                                        id = mainEconomicActivity.id,
+                                        description = mainEconomicActivity.description,
+                                        scheme = mainEconomicActivity.scheme,
+                                        uri = mainEconomicActivity.uri
+                                    )
+                                }.toSet(),
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->
@@ -1797,15 +1840,15 @@ class TenderService(
                    data: JsonNode): ResponseDto {
         val dto = toObject(AwardByBidDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.AWARD_UPDATE)
             date = releaseDate
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -1816,19 +1859,19 @@ class TenderService(
                        data: JsonNode): ResponseDto {
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = TenderStatusDetails.COMPLETE
             tender.awardPeriod = dto.awardPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
-            if (dto.awards.isNotEmpty()) awards?.let { updateAwards(it, dto.awards) }
+            if (dto.awards.isNotEmpty()) awards.let { updateAwards(it, dto.awards) }
             if (dto.bids.isNotEmpty()) bids?.details?.let { updateBids(it, dto.bids) }
         }
-        organizationService.processRecordPartiesFromBids(record)
-        organizationService.processRecordPartiesFromAwards(record)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        organizationService.processRecordPartiesFromBids(release)
+        organizationService.processRecordPartiesFromAwards(release)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -1846,22 +1889,22 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
         }
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val record = releaseService.getRecord(recordEntity.jsonData)
-        record.apply {
-            id = releaseService.newReleaseId(ocid)
+        val release = releaseService.getRelease(recordEntity.jsonData)
+        release.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.statusDetails = statusDetails
             tender.standstillPeriod = dto.standstillPeriod
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -1893,54 +1936,56 @@ class TenderService(
         val msEntity = releaseService.getMsEntity(cpid)
         val ms = releaseService.getMs(msEntity.jsonData)
         ms.apply {
-            id = releaseService.newReleaseId(cpid)
+            id = generationService.generateReleaseId(cpid)
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.statusDetails = statusDetails
         }
         /*prev record*/
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val prevRecord = releaseService.getRecord(recordEntity.jsonData)
-        prevRecord.apply {
-            id = releaseService.newReleaseId(ocid)
+        val prevRelease = releaseService.getRelease(recordEntity.jsonData)
+        prevRelease.apply {
+            id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tender.status = TenderStatus.COMPLETE
             tender.statusDetails = TenderStatusDetails.EMPTY
         }
         /*new record*/
-        val newOcId = releaseService.newOcId(cpId = cpid, stage = stage)
+        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
         dto.tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
         dto.tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
-        val record = Record(
-                ocid = newOcId,
-                id = releaseService.newReleaseId(newOcId),
-                date = releaseDate,
-                tag = listOf(Tag.COMPILED),
-                initiationType = InitiationType.TENDER,
-                parties = null,
-                tender = dto.tender,
-                awards = null,
-                bids = dto.bids,
-                contracts = null,
-                hasPreviousNotice = prevRecord.hasPreviousNotice,
-                purposeOfNotice = prevRecord.purposeOfNotice,
-                relatedProcesses = null)
-        processTenderDocuments(record = record, prevRecord = prevRecord)
-        organizationService.processRecordPartiesFromBids(record)
+        val release = Release(
+            ocid = newOcId,
+            id = generationService.generateReleaseId(newOcId),
+            date = releaseDate,
+            tag = listOf(Tag.COMPILED),
+            initiationType = InitiationType.TENDER,
+            parties = mutableListOf(),
+            tender = dto.tender,
+            awards = emptyList(),
+            bids = dto.bids,
+            contracts = emptyList(),
+            hasPreviousNotice = prevRelease.hasPreviousNotice,
+            purposeOfNotice = prevRelease.purposeOfNotice,
+            relatedProcesses = mutableListOf(),
+            preQualification = null
+        )
+        processTenderDocuments(release = release, prevRelease = prevRelease)
+        organizationService.processRecordPartiesFromBids(release)
         relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = relatedProcessType)
-        relatedProcessService.addMsRelatedProcessToRecord(record = record, cpId = cpid)
-        relatedProcessService.addRecordRelatedProcessToRecord(record = record, ocId = ocid, cpId = cpid, processType = prRelatedProcessType)
+        relatedProcessService.addMsRelatedProcessToRecord(release = release, cpId = cpid)
+        relatedProcessService.addRecordRelatedProcessToRecord(release = release, ocId = ocid, cpId = cpid, processType = prRelatedProcessType)
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, record = prevRecord, publishDate = recordEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, record = record, publishDate = releaseDate.toDate())
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, release = prevRelease, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun processTenderDocuments(record: Record, prevRecord: Record) {
-        prevRecord.tender.documents?.let { updateTenderDocuments(record.tender, it) }
+    private fun processTenderDocuments(release: Release, prevRelease: Release) {
+        prevRelease.tender.documents.let { updateTenderDocuments(release.tender, it) }
     }
 
-    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
+    private fun updateAwards(recordAwards: List<Award>, dtoAwards: HashSet<Award>) {
         for (award in recordAwards) {
             dtoAwards.firstOrNull { it.id == award.id }?.apply {
                 award.date = this.date
@@ -1960,8 +2005,8 @@ class TenderService(
         }
     }
 
-    private fun updateTenderDocuments(tender: RecordTender, documents: HashSet<Document>) {
-        tender.documents?.let { tenderDocuments ->
+    private fun updateTenderDocuments(tender: ReleaseTender, documents: List<Document>) {
+        tender.documents.let { tenderDocuments ->
             documents.forEach { document ->
                 tenderDocuments.firstOrNull { it.id == document.id }?.apply {
                     datePublished = document.datePublished
@@ -1971,8 +2016,8 @@ class TenderService(
         }
     }
 
-    private fun updateAward(record: Record, award: Award) {
-        record.awards?.let { awards ->
+    private fun updateAward(release: Release, award: Award) {
+        release.awards.let { awards ->
             val upAward = awards.asSequence().firstOrNull { it.id == award.id }
                     ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
             award.date?.let { upAward.date = it }
@@ -1982,8 +2027,8 @@ class TenderService(
         }
     }
 
-    private fun updateBid(record: Record, bid: Bid) {
-        record.bids?.details?.let { bids ->
+    private fun updateBid(release: Release, bid: Bid) {
+        release.bids?.details?.let { bids ->
             val upBid = bids.asSequence().firstOrNull { it.id == bid.id }
                     ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
             bid.date?.let { upBid.date = it }
@@ -1991,7 +2036,7 @@ class TenderService(
         }
     }
 
-    private fun addAnswerToEnquiry(enquiries: HashSet<RecordEnquiry>?, enquiry: RecordEnquiry) {
+    private fun addAnswerToEnquiry(enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry) {
         enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
             this.answer = enquiry.answer
             this.dateAnswered = enquiry.dateAnswered

@@ -1,9 +1,14 @@
 package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.model.Cpid
+import com.procurement.notice.application.model.Ocid
 import com.procurement.notice.dao.ReleaseDao
+import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.Operation
@@ -16,9 +21,8 @@ import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Params
-import com.procurement.notice.model.tender.record.Record
-import com.procurement.notice.model.tender.record.RecordTender
-import com.procurement.notice.utils.milliNowUTC
+import com.procurement.notice.model.tender.record.Release
+import com.procurement.notice.model.tender.record.ReleaseTender
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
@@ -40,47 +44,13 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
 
     fun getMsTender(data: JsonNode): MsTender = toObject(MsTender::class.java, data.get(TENDER_JSON))
 
-    fun getRecordTender(data: JsonNode): RecordTender {
-        val recordTender = toObject(RecordTender::class.java, data.get(TENDER_JSON))
-        if (recordTender.items != null && recordTender.items!!.isEmpty()) {
-            recordTender.items = null
-        }
-        if (recordTender.lots != null && recordTender.lots!!.isEmpty()) {
-            recordTender.lots = null
-        }
-        if (recordTender.documents != null && recordTender.documents!!.isEmpty()) {
-            recordTender.documents = null
-        }
-        return recordTender
-    }
+    fun getRecordTender(data: JsonNode): ReleaseTender = toObject(ReleaseTender::class.java, data.get(TENDER_JSON))
 
-    fun getRecord(data: JsonNode): Record {
-        val record = toObject(Record::class.java, data)
-        if (record.tender.items != null && record.tender.items!!.isEmpty()) {
-            record.tender.items = null
-        }
-        if (record.tender.lots != null && record.tender.lots!!.isEmpty()) {
-            record.tender.lots = null
-        }
-        if (record.tender.documents != null && record.tender.documents!!.isEmpty()) {
-            record.tender.documents = null
-        }
-        return record
-    }
+    fun getRelease(data: JsonNode): Release = toObject(Release::class.java, data)
 
-    fun getRecord(data: String): Record {
-        val record = toObject(Record::class.java, data)
-        if (record.tender.items != null && record.tender.items!!.isEmpty()) {
-            record.tender.items = null
-        }
-        if (record.tender.lots != null && record.tender.lots!!.isEmpty()) {
-            record.tender.lots = null
-        }
-        if (record.tender.documents != null && record.tender.documents!!.isEmpty()) {
-            record.tender.documents = null
-        }
-        return record
-    }
+    fun getRelease(data: String): Release  = toObject(Release::class.java, data)
+
+    fun getRecord(data: String): Record = toObject(Record::class.java, data)
 
     fun getMsEntity(cpid: String): ReleaseEntity {
         return releaseDao.getByCpIdAndOcId(cpid, cpid) ?: throw ErrorException(ErrorType.MS_NOT_FOUND)
@@ -90,31 +60,52 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         return releaseDao.getByCpIdAndOcId(cpId, ocId) ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
     }
 
+    fun tryGetRecordEntity(cpid: Cpid, ocid: Ocid): Result<ReleaseEntity?, Fail.Incident.Database> {
+        return releaseDao.tryGetByCpIdAndOcId(cpid, ocid)
+    }
+
     fun getPartiesWithActualPersones(
         requestProcuringEntity: OrganizationReference,
         parties: Collection<Organization>?
-    ): List<Organization>? = parties?.map { party ->
+    ): MutableList<Organization> = parties?.map { party ->
         if (party.id == requestProcuringEntity.id) {
             party.copy(
                 persones = requestProcuringEntity.persones
             )
         } else
             party
+    }?.toMutableList()
+        ?: mutableListOf()
+
+    fun newRecordEntity(cpId: String, stage: String, release: Release, publishDate: Date): ReleaseEntity {
+        val ocId = release.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseId = release.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = release.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        return newEntity(
+            cpId = cpId,
+            ocId = ocId,
+            releaseId = releaseId,
+            releaseDate = releaseDate,
+            publishDate = publishDate,
+            stage = stage,
+            json = toJson(release),
+            status = release.tender.status.toString()
+        )
     }
 
-    fun newRecordEntity(cpId: String, stage: String, record: Record, publishDate: Date): ReleaseEntity {
+    fun newRecordEntity(cpid: Cpid, ocid: Ocid.SingleStage, record: Record, publishDate: Date): ReleaseEntity {
         val ocId = record.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
         val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return newEntity(
-                cpId = cpId,
-                ocId = ocId,
-                releaseId = releaseId,
-                releaseDate = releaseDate,
-                publishDate = publishDate,
-                stage = stage,
-                json = toJson(record),
-                status = record.tender.status.toString()
+            cpId = cpid.toString(),
+            ocId = ocId,
+            releaseId = releaseId,
+            releaseDate = releaseDate,
+            publishDate = publishDate,
+            stage = ocid.stage.toString(),
+            json = toJson(record),
+            status = record.tender.status.toString()
         )
     }
 
@@ -130,6 +121,21 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
                 stage = "",
                 json = toJson(ms),
                 status = ms.tender.status.toString()
+        )
+    }
+
+    fun newMSEntity(cpid: Cpid, record: Record, publishDate: Date): ReleaseEntity {
+        val releaseId = record.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val releaseDate = record.date?.toDate() ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        return newEntity(
+                cpId = cpid.toString(),
+                ocId = cpid.toString(),
+                releaseId = releaseId,
+                releaseDate = releaseDate,
+                publishDate = publishDate,
+                stage = "",
+                json = toJson(record),
+                status = record.tender.status.toString()
         )
     }
 
@@ -169,22 +175,21 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         )
     }
 
-    fun newOcId(cpId: String, stage: String): String {
-        return cpId + SEPARATOR + stage.toUpperCase() + SEPARATOR + milliNowUTC()
-    }
-
-    fun newReleaseId(ocId: String): String {
-        return ocId + SEPARATOR + milliNowUTC()
-    }
-
-
     fun saveMs(cpId: String, ms: Ms, publishDate: Date) {
         releaseDao.saveMs(newMSEntity(cpId = cpId, ms = ms, publishDate = publishDate))
-
     }
 
-    fun saveRecord(cpId: String, stage: String, record: Record, publishDate: Date) {
-        releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, record = record, publishDate = publishDate))
+    fun saveRecord(cpId: String, stage: String, release: Release, publishDate: Date) {
+        releaseDao.saveRecord(newRecordEntity(cpId = cpId, stage = stage, release = release, publishDate = publishDate))
+    }
+
+    fun saveRecord(cpid: Cpid, ocid: Ocid, record: Record, publishDate: Date) {
+        when (ocid) {
+            is Ocid.SingleStage ->
+                releaseDao.saveRecord(newRecordEntity(cpid = cpid, ocid = ocid, record = record, publishDate = publishDate))
+            is Ocid.MultiStage ->
+                releaseDao.saveMs(newMSEntity(cpid = cpid, record = record, publishDate = publishDate))
+        }
     }
 
     fun saveContractRecord(cpId: String, stage: String, record: ContractRecord, publishDate: Date) {
@@ -247,11 +252,14 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
                 params.relatedProcessType = RelatedProcessType.X_EVALUATION
             }
             Stage.NP -> {
-                if(operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
+                if (operation == Operation.CREATE_NEGOTIATION_CN_ON_PN) {
                     params.statusDetails = TenderStatusDetails.NEGOTIATION
                     params.relatedProcessType = RelatedProcessType.X_NEGOTIATION
                 } else
                     throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
+            }
+            Stage.TP -> {
+                params.relatedProcessType = RelatedProcessType.X_TENDERING
             }
             else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
         }
