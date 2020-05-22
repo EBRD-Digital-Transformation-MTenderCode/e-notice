@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.infrastructure.dto.entity.RecordBusinessFunction
 import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
 
-data class RecordPerson (
+data class RecordPerson(
+
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: PersonId,
 
     @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 

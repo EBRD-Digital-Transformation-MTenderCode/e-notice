@@ -13,6 +13,7 @@ import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsu
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulResult
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.lib.mapIfNotEmpty
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
@@ -442,6 +443,10 @@ class TenderService(
                                     persones = tenderer.persons
                                         .map { person ->
                                             Person(
+                                                id = PersonId.generate(
+                                                    scheme = person.identifier.scheme,
+                                                    id = person.identifier.id
+                                                ),
                                                 title = person.title,
                                                 name = person.name,
                                                 identifier = person.identifier
@@ -530,7 +535,8 @@ class TenderService(
                                                 maxExtentDate = null
                                             )
                                         },
-                                    relatedTenderer = null
+                                    relatedTenderer = null,
+                                    responder = null
                                 )
                             }
                             .toHashSet()
@@ -598,6 +604,10 @@ class TenderService(
                             persones = tenderer.persons
                                 .mapIfNotEmpty { person ->
                                     Person(
+                                        id = PersonId.generate(
+                                            scheme = person.identifier.scheme,
+                                            id = person.identifier.id
+                                        ),
                                         title = person.title,
                                         name = person.name,
                                         identifier = person.identifier
@@ -856,6 +866,10 @@ class TenderService(
                     persones = tenderer.persons
                         .map { person ->
                             Person(
+                                id = PersonId.generate(
+                                    scheme = person.identifier.scheme,
+                                    id = person.identifier.id
+                                ),
                                 title = person.title,
                                 name = person.name,
                                 identifier = person.identifier
@@ -1339,7 +1353,8 @@ class TenderService(
                                             maxExtentDate = null
                                         )
                                     },
-                                relatedTenderer = null
+                                relatedTenderer = null,
+                                responder = null
                             )
                         }
                         .toHashSet()
@@ -1410,6 +1425,10 @@ class TenderService(
                             persones = tenderer.persons
                                 .mapIfNotEmpty { person ->
                                     Person(
+                                        id = PersonId.generate(
+                                            scheme = person.identifier.scheme,
+                                            id = person.identifier.id
+                                        ),
                                         title = person.title,
                                         name = person.name,
                                         identifier = person.identifier
@@ -1657,6 +1676,10 @@ class TenderService(
                     persones = tenderer.persons
                         .map { person ->
                             Person(
+                                id = PersonId.generate(
+                                    scheme = person.identifier.scheme,
+                                    id = person.identifier.id
+                                ),
                                 title = person.title,
                                 name = person.name,
                                 identifier = person.identifier

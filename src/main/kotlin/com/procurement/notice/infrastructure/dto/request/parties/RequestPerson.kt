@@ -2,10 +2,13 @@ package com.procurement.notice.infrastructure.dto.request.parties
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.infrastructure.dto.request.RequestBusinessFunction
 import com.procurement.notice.infrastructure.dto.request.RequestIdentifier
 
-data class RequestPerson (
+data class RequestPerson(
+
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: PersonId,
 
     @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
 

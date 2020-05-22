@@ -31,5 +31,8 @@ data class RequirementResponse @JsonCreator constructor(
     val requirement: RequirementReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val relatedTenderer: OrganizationReference?
+    val relatedTenderer: OrganizationReference?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val responder: OrganizationReference?
 )
