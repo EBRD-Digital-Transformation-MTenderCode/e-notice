@@ -2,6 +2,7 @@ package com.procurement.notice.application.service.auction
 
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.model.award.AwardId
+import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.model.ocds.AccountIdentifier
 import com.procurement.notice.model.ocds.Address
 import com.procurement.notice.model.ocds.AddressDetails
@@ -224,7 +225,8 @@ class AuctionServiceImpl(
                                         id = requirementResponse.requirement.id,
                                         title = null
                                     ),
-                                    relatedTenderer = null
+                                    relatedTenderer = null,
+                                    responder = null
                                 )
                             }
                             .toHashSet(),
@@ -427,6 +429,10 @@ class AuctionServiceImpl(
     )
 
     private fun AuctionPeriodEndData.Bid.Tenderer.Person.convert() = Person(
+        id = PersonId.generate(
+            scheme = identifier.scheme,
+            id = identifier.id
+        ),
         title = this.title,
         name = this.name,
         identifier = this.identifier

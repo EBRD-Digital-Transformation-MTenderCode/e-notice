@@ -414,6 +414,7 @@ fun createAuthor(received: RequestOrganizationReference): RecordOrganizationRefe
 
 fun createPerson(received: RequestPerson): RecordPerson =
     RecordPerson(
+        id = received.id,
         title = received.title,
         name = received.name,
         identifier = createIdentifier(received.identifier),

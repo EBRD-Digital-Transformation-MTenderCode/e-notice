@@ -5,6 +5,7 @@ import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.cn.UpdateCNContext
 import com.procurement.notice.application.service.cn.UpdateCNData
 import com.procurement.notice.application.service.cn.UpdatedCN
+import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.lib.mapIfNotEmpty
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
@@ -206,40 +207,47 @@ class UpdateReleaseService(
                             persones = data.tender.procuringEntity.persons
                                 .map { person ->
                                     Person(
+                                        id = PersonId.generate(
+                                            scheme = person.identifier.scheme,
+                                            id = person.identifier.id
+                                        ),
                                         title = person.title,
                                         name = person.name,
-                                        identifier = person.identifier.let { identifier ->
-                                            Identifier(
-                                                scheme = identifier.scheme,
-                                                id = identifier.id,
-                                                uri = identifier.uri,
-                                                legalName = null
-                                            )
-                                        },
-                                        businessFunctions = person.businessFunctions.map { businessFunction ->
-                                            BusinessFunction(
-                                                id = businessFunction.id,
-                                                type = businessFunction.type,
-                                                jobTitle = businessFunction.jobTitle,
-                                                period = Period(
-                                                    startDate = businessFunction.period.startDate,
-                                                    endDate = null,
-                                                    durationInDays = null,
-                                                    maxExtentDate = null
-                                                ),
-                                                documents = businessFunction.documents.map { document ->
-                                                    DocumentBF(
-                                                        id = document.id,
-                                                        documentType = document.documentType,
-                                                        title = document.title,
-                                                        description = document.description,
-                                                        datePublished = document.datePublished,
-                                                        dateModified = null,
-                                                        url = document.url
-                                                    )
-                                                }
-                                            )
-                                        }
+                                        identifier = person.identifier
+                                            .let { identifier ->
+                                                Identifier(
+                                                    scheme = identifier.scheme,
+                                                    id = identifier.id,
+                                                    uri = identifier.uri,
+                                                    legalName = null
+                                                )
+                                            },
+                                        businessFunctions = person.businessFunctions
+                                            .map { businessFunction ->
+                                                BusinessFunction(
+                                                    id = businessFunction.id,
+                                                    type = businessFunction.type,
+                                                    jobTitle = businessFunction.jobTitle,
+                                                    period = Period(
+                                                        startDate = businessFunction.period.startDate,
+                                                        endDate = null,
+                                                        durationInDays = null,
+                                                        maxExtentDate = null
+                                                    ),
+                                                    documents = businessFunction.documents
+                                                        .map { document ->
+                                                            DocumentBF(
+                                                                id = document.id,
+                                                                documentType = document.documentType,
+                                                                title = document.title,
+                                                                description = document.description,
+                                                                datePublished = document.datePublished,
+                                                                dateModified = null,
+                                                                url = document.url
+                                                            )
+                                                        }
+                                                )
+                                            }
                                     )
                                 }
                                 .toHashSet()
