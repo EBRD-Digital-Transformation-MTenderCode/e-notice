@@ -1970,21 +1970,12 @@ fun RecordRequirementReference.updateRequirement(received: RequestRequirementRef
     )
         .asSuccess()
 
-fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> {
-    val identifier = received.identifier
-        .let {
-            RecordResponder.Identifier(
-                id = it.id,
-                scheme = it.scheme
-            )
-        }
-
-    return RecordResponder(
+fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> =
+    RecordResponder(
         name = received.name,
-        identifier = identifier
+        id = received.id
     )
         .asSuccess()
-}
 
 fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
     val address = received.address

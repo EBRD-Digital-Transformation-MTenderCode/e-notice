@@ -863,20 +863,10 @@ fun createRequirement(received: RequestRequirementReference): RecordRequirementR
         title = received.title
     )
 
-fun createResponder(received: RequestResponder): RecordResponder {
-    val identifier = received.identifier
-        .let {
-            RecordResponder.Identifier(
-                id = it.id,
-                scheme = it.scheme
-            )
-        }
-
-    return RecordResponder(
-        name = received.name,
-        identifier = identifier
-    )
-}
+fun createResponder(received: RequestResponder) = RecordResponder(
+    id = received.id,
+    name = received.name
+)
 
 fun createOrganizationReference(received: RequestOrganizationReference): RecordOrganizationReference =
     RecordOrganizationReference(
