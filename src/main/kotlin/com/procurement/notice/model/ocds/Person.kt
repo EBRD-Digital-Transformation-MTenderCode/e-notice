@@ -2,9 +2,12 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import java.time.LocalDateTime
 
 data class Person @JsonCreator constructor(
+
+    var id: PersonId,
 
     var title: String,
 

@@ -529,7 +529,7 @@ class AwardServiceImpl(
         val updatedAwards = awards.asSequence()
             .map { award ->
                 if (award.id == requestAwardIdAsString) {
-                    convertAward(data.award)
+                    data.award.convertBy(award)
                 } else if (data.nextAwardForUpdate != null && award.id == data.nextAwardForUpdate.id.toString()) {
                     //FR-5.7.1.1.3 4
                     award.copy(statusDetails = data.nextAwardForUpdate.statusDetails.value)
@@ -611,23 +611,23 @@ class AwardServiceImpl(
             )
         }
     }
-    private fun convertAward(award: EvaluateAwardData.Award): Award = Award(
-        id = award.id.toString(),
-        date = award.date,
+    private fun EvaluateAwardData.Award.convertBy(original: Award): Award = Award(
+        id = id.toString(),
+        date = date,
         title = null,
-        description = award.description,
-        status = award.status.value,
-        statusDetails = award.statusDetails.value,
+        description = description,
+        status = status.value,
+        statusDetails = statusDetails.value,
 
-        value = award.value.toValue(),
-        suppliers = award.suppliers
+        value = value.toValue(),
+        suppliers = suppliers
             .map { supplier ->
                 convertSupplier(id = supplier.id, name = supplier.name)
             },
-        relatedLots = award.relatedLots.map { it.toString() },
+        relatedLots = relatedLots.map { it.toString() },
         items = null,
         contractPeriod = null,
-        documents = award.documents.map { document ->
+        documents = documents.map { document ->
             Document(
                 documentType = document.documentType,
                 id = document.id,
@@ -644,10 +644,10 @@ class AwardServiceImpl(
         },
         amendments = null,
         amendment = null,
-        requirementResponses = null,
+        requirementResponses = original.requirementResponses,
         reviewProceedings = null,
-        relatedBid = award.relatedBid?.toString(),
-        weightedValue = award.weightedValue?.toValue()
+        relatedBid = relatedBid?.toString(),
+        weightedValue = weightedValue?.toValue()
     )
 
     override fun endAwardPeriod(context: EndAwardPeriodContext, data: EndAwardPeriodData) {
