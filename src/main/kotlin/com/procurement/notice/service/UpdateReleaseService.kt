@@ -287,6 +287,7 @@ class UpdateReleaseService(
                     hasEnquiries = releaseEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
                     enquiries = releaseEV.tender.enquiries, //FR-ER-5.5.2.3.3
                     criteria = releaseEV.tender.criteria, //FR-ER-5.5.2.3.3
+                    otherCriteria = releaseEV.tender.otherCriteria, // FR-ER-5.5.2.3.8
                     conversions = releaseEV.tender.conversions, //FR-ER-5.5.2.3.3
                     awardCriteria = releaseEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
                     awardCriteriaDetails = releaseEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
