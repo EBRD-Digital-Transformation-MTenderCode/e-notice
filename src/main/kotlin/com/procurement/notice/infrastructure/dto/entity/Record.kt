@@ -7,6 +7,7 @@ import com.procurement.notice.infrastructure.dto.entity.bids.RecordBids
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordContract
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordOrganization
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
+import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.model.ocds.InitiationType
@@ -52,6 +53,9 @@ data class Record(
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("submissions") @param:JsonProperty("submissions") val submissions: RecordSubmission?,
+
+        @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+        @field:JsonProperty("qualifications") @param:JsonProperty("qualifications") val qualifications: List<RecordQualification> = emptyList(),
 
         @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
         @field:JsonProperty("agreedMetrics") @param:JsonProperty("agreedMetrics") val agreedMetrics: List<RecordAgreedMetric> = emptyList(),

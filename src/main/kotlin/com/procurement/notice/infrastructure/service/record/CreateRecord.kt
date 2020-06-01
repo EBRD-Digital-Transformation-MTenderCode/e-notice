@@ -67,6 +67,7 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudget
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
+import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
@@ -155,6 +156,7 @@ import com.procurement.notice.infrastructure.dto.request.planning.RequestPlannin
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudget
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.request.planning.RequestTransaction
+import com.procurement.notice.infrastructure.dto.request.qualification.RequestQualification
 import com.procurement.notice.infrastructure.dto.request.submissions.RequestCandidate
 import com.procurement.notice.infrastructure.dto.request.submissions.RequestSubmissionDetail
 import com.procurement.notice.infrastructure.dto.request.tender.RequestAcceleratedProcedure
@@ -798,6 +800,15 @@ fun createSubmissionDetail(received: RequestSubmissionDetail): RecordSubmissionD
         requirementResponses = received.requirementResponses
             .map { createRequirementResponse(it) }
         )
+
+fun createQualification(received: RequestQualification): RecordQualification =
+    RecordQualification(
+        id = received.id,
+        status = received.status,
+        date = received.date,
+        relatedSubmission = received.relatedSubmission,
+        scoring = received.scoring
+    )
 
 fun createCandidate(received: RequestCandidate): RecordCandidate =
     RecordCandidate(
