@@ -67,6 +67,8 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudget
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
@@ -153,6 +155,8 @@ import com.procurement.notice.infrastructure.dto.request.planning.RequestPlannin
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudget
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.request.planning.RequestTransaction
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestCandidate
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestSubmissionDetail
 import com.procurement.notice.infrastructure.dto.request.tender.RequestAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficient
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
@@ -780,6 +784,25 @@ fun createOrganization(received: RequestOrganization): RecordOrganization =
         contactPoint = received.contactPoint?.let { createContactPoint(it) },
         address = received.address?.let { createAddress(it) },
         roles = received.roles
+    )
+
+fun createSubmissionDetail(received: RequestSubmissionDetail): RecordSubmissionDetail =
+    RecordSubmissionDetail(
+        id = received.id,
+        status = received.status,
+        date = received.date,
+        documents = received.documents
+            .map { createDocument(it) },
+        candidates = received.candidates
+            .map { createCandidate(it) },
+        requirementResponses = received.requirementResponses
+            .map { createRequirementResponse(it) }
+        )
+
+fun createCandidate(received: RequestCandidate): RecordCandidate =
+    RecordCandidate(
+        id = received.id,
+        name = received.name
     )
 
 fun createAward(received: RequestAward): RecordAward =

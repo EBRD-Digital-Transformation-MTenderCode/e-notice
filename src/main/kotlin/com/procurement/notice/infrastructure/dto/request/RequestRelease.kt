@@ -7,10 +7,10 @@ import com.procurement.notice.infrastructure.dto.request.bids.RequestBids
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanning
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestSubmission
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Tag
-import java.time.LocalDateTime
 
 data class RequestRelease(
 
@@ -44,6 +44,9 @@ data class RequestRelease(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("contracts") @param:JsonProperty("contracts") val contracts: List<RequestContract> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("submissions") @param:JsonProperty("submissions") val submissions: RequestSubmission?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("agreedMetrics") @param:JsonProperty("agreedMetrics") val agreedMetrics: List<RequestAgreedMetric> = emptyList(),
