@@ -34,6 +34,9 @@ data class RecordTender(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("conversions") @param:JsonProperty("conversions") val conversions: List<RecordConversion> = emptyList(),
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("otherCriteria") @param:JsonProperty("otherCriteria") val otherCriteria: RecordOtherCriteria? = null,
+
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("items") @param:JsonProperty("items") val items: List<RecordItem> = emptyList(),
 

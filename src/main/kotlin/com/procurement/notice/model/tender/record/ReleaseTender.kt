@@ -2,6 +2,7 @@ package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordOtherCriteria
 import com.procurement.notice.model.ocds.Conversion
 import com.procurement.notice.model.ocds.Criteria
 import com.procurement.notice.model.ocds.Document
@@ -36,6 +37,9 @@ data class ReleaseTender (
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("conversions") @param:JsonProperty("conversions") var conversions: List<Conversion> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("otherCriteria") @param:JsonProperty("otherCriteria") val otherCriteria: RecordOtherCriteria? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("items") @param:JsonProperty("items") var items: List<Item> = emptyList(),
