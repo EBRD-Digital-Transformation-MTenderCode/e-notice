@@ -474,7 +474,8 @@ class UpdateReleaseService(
                             relatedConfirmations = null
                         )
                     }.toList(),
-                    secondStage = null
+                    secondStage = null,
+                    preQualification = releaseEV.tender.preQualification
                 )
             }
         )
