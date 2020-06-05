@@ -310,7 +310,7 @@ class UpdateReleaseService(
                         data = data,
                         previous = releaseEV.tender.procurementMethodModalities
                     ),
-                    tenderPeriod = tender.tenderPeriod.let { tenderPeriod ->
+                    tenderPeriod = tender.tenderPeriod?.let { tenderPeriod ->
                         Period(
                             startDate = tenderPeriod.startDate,
                             endDate = tenderPeriod.endDate,
@@ -318,7 +318,7 @@ class UpdateReleaseService(
                             durationInDays = null
                         )
                     },
-                    enquiryPeriod = tender.enquiryPeriod.let { enquiryPeriod ->
+                    enquiryPeriod = tender.enquiryPeriod?.let { enquiryPeriod ->
                         Period(
                             startDate = enquiryPeriod.startDate,
                             endDate = enquiryPeriod.endDate,
@@ -474,7 +474,7 @@ class UpdateReleaseService(
                             relatedConfirmations = null
                         )
                     }.toList(),
-                    secondStage = null
+                    secondStage = releaseEV.tender.secondStage //FR-ER-5.5.2.3.9
                 )
             }
         )
