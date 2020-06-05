@@ -49,6 +49,7 @@ data class Context @JsonCreator constructor(
     val operationId: String?,
     val cpid: String,
     val ocid: String?,
+    val ocidCn: String?,
     val stage: String,
     val prevStage: String?,
     val processType: String?,

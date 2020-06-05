@@ -123,6 +123,7 @@ class CreateReleaseService(
     fun createCnOnPn(
         cpid: String,
         ocid: String,
+        ocidCn: String,
         stage: String,
         prevStage: String,
         releaseDate: LocalDateTime,
@@ -164,8 +165,8 @@ class CreateReleaseService(
         )
 
         val newRelease = updatedRelease.copy(
-            ocid = ocid,
-            id = generationService.generateReleaseId(ocid),
+            ocid = ocidCn,
+            id = generationService.generateReleaseId(ocidCn),
             date = releaseDate,
             tag = listOf(Tag.TENDER),
             tender = recordTender.copy(
@@ -183,7 +184,7 @@ class CreateReleaseService(
         //FR-MR-5.5.2.2.5
         relatedProcessService.addRecordRelatedProcessToMs(
             ms = updatedMS,
-            ocid = ocid,
+            ocid = ocidCn,
             processType = params.relatedProcessType
         )
         relatedProcessService.addRecordRelatedProcessToRecord(
@@ -194,7 +195,7 @@ class CreateReleaseService(
         )
         releaseService.saveMs(cpId = cpid, ms = updatedMS, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, release = newRelease, publishDate = releaseDate.toDate())
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocidCn))
     }
 
     fun createNegotiationCnOnPn(
