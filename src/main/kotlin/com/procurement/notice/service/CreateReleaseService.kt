@@ -17,6 +17,7 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.tender.dto.CheckFsDto
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -130,7 +131,7 @@ class CreateReleaseService(
         data: JsonNode
     ): ResponseDto {
         val msTender = releaseService.getMsTender(data = data)
-        val recordTender = releaseService.getRecordTender(data = data)
+        val receivedRelease: Release = releaseService.getRelease(data = data)
         val msEntity = releaseService.getMsEntity(cpid = cpid)
         val ms = releaseService.getMs(data = msEntity.jsonData)
         val prevProcuringEntity = ms.tender.procuringEntity
@@ -169,7 +170,7 @@ class CreateReleaseService(
             id = generationService.generateReleaseId(ocidCn),
             date = releaseDate,
             tag = listOf(Tag.TENDER),
-            tender = recordTender.copy(
+            tender = receivedRelease.tender.copy(
                         //FR-ER-5.5.2.2.7
                         title = TenderTitle.valueOf(stage.toUpperCase()).text,
                         //FR-ER-5.5.2.2.8
@@ -179,7 +180,8 @@ class CreateReleaseService(
             initiationType = InitiationType.TENDER,
             hasPreviousNotice = true,
             purposeOfNotice = PurposeOfNotice(true),
-            parties = mutableListOf()
+            parties = mutableListOf(),
+            preQualification = receivedRelease.preQualification
         )
         //FR-MR-5.5.2.2.5
         relatedProcessService.addRecordRelatedProcessToMs(

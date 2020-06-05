@@ -84,9 +84,6 @@ data class ReleaseTender (
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") var awardCriteriaDetails: String?,
 
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") var preQualification: PreQualification?,
-
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("submissionMethod") @param:JsonProperty("submissionMethod") var submissionMethod: List<String> = emptyList(),
 
