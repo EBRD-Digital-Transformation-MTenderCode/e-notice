@@ -310,22 +310,26 @@ class UpdateReleaseService(
                         data = data,
                         previous = releaseEV.tender.procurementMethodModalities
                     ),
-                    tenderPeriod = tender.tenderPeriod?.let { tenderPeriod ->
-                        Period(
-                            startDate = tenderPeriod.startDate,
-                            endDate = tenderPeriod.endDate,
-                            maxExtentDate = null,
-                            durationInDays = null
-                        )
-                    },
-                    enquiryPeriod = tender.enquiryPeriod?.let { enquiryPeriod ->
-                        Period(
-                            startDate = enquiryPeriod.startDate,
-                            endDate = enquiryPeriod.endDate,
-                            maxExtentDate = null,
-                            durationInDays = null
-                        )
-                    },
+                    tenderPeriod = tender.tenderPeriod
+                        ?.let { tenderPeriod ->
+                            Period(
+                                startDate = tenderPeriod.startDate,
+                                endDate = tenderPeriod.endDate,
+                                maxExtentDate = null,
+                                durationInDays = null
+                            )
+                        }
+                        ?: releaseEV.tender.tenderPeriod,
+                    enquiryPeriod = tender.enquiryPeriod
+                        ?.let { enquiryPeriod ->
+                            Period(
+                                startDate = enquiryPeriod.startDate,
+                                endDate = enquiryPeriod.endDate,
+                                maxExtentDate = null,
+                                durationInDays = null
+                            )
+                        }
+                        ?: releaseEV.tender.tenderPeriod,
                     lotGroups = tender.lotGroups.map { lotGroup ->
                         LotGroup(
                             id = null,
