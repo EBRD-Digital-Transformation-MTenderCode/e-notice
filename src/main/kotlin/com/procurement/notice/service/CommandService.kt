@@ -156,6 +156,7 @@ class CommandService(
     fun createRelease(cm: CommandMessage): ResponseDto {
         val cpId = cm.context.cpid
         val ocId = cm.context.ocid
+        val ocidCn = cm.context.ocidCn
         val stage = cm.context.stage
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
@@ -229,6 +230,7 @@ class CommandService(
             CREATE_CN_ON_PN -> createReleaseService.createCnOnPn(
                 cpid = cpId,
                 ocid = ocId!!,
+                ocidCn = ocidCn!!,
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,

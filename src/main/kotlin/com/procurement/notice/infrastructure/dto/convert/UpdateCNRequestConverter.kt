@@ -73,13 +73,13 @@ fun UpdateCNRequest.convert(): UpdateCNData =
                         description = classification.description
                     )
                 },
-                tenderPeriod = tender.tenderPeriod.let { tenderPeriod ->
+                tenderPeriod = tender.tenderPeriod?.let { tenderPeriod ->
                     UpdateCNData.Tender.TenderPeriod(
                         startDate = tenderPeriod.startDate,
                         endDate = tenderPeriod.endDate
                     )
                 },
-                enquiryPeriod = tender.enquiryPeriod.let { enquiryPeriod ->
+                enquiryPeriod = tender.enquiryPeriod?.let { enquiryPeriod ->
                     UpdateCNData.Tender.EnquiryPeriod(
                         startDate = enquiryPeriod.startDate,
                         endDate = enquiryPeriod.endDate

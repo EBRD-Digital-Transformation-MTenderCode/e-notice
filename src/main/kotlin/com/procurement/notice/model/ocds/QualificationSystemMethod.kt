@@ -1,26 +1,20 @@
-package com.procurement.notice.application.model
+package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.domain.utils.EnumElementProvider
 
-enum class Stage(@JsonValue override val key: String) : EnumElementProvider.Key {
+enum class QualificationSystemMethod(@JsonValue override val key: String) : EnumElementProvider.Key {
 
-    AC("AC"),
-    EI("EI"),
-    EV("EV"),
-    FS("FS"),
-    NP("NP"),
-    PN("PN"),
-    TP("TP");
+    AUTOMATED("automated"),
+    MANUAL("manual");
 
     override fun toString(): String = key
 
-    companion object : EnumElementProvider<Stage>(info = info()) {
+    companion object : EnumElementProvider<QualificationSystemMethod>(info = info()) {
 
         @JvmStatic
         @JsonCreator
         fun creator(name: String) = orThrow(name)
     }
 }
-

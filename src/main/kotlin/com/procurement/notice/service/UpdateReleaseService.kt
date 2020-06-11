@@ -49,6 +49,7 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
+import com.procurement.notice.model.tender.record.ReleasePreQualification
 import com.procurement.notice.model.tender.record.ReleaseTender
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -60,10 +61,7 @@ class UpdateReleaseService(
     private val generationService: GenerationService
 ) {
 
-    fun updateCn(
-        context: UpdateCNContext,
-        data: UpdateCNData
-    ): UpdatedCN {
+    fun updateCn(context: UpdateCNContext, data: UpdateCNData): UpdatedCN {
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val recordMS = releaseService.getMs(msEntity.jsonData)
         val updatedRecordMS: Ms = recordMS.copy(
@@ -277,6 +275,19 @@ class UpdateReleaseService(
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
             relatedProcesses = releaseEV.relatedProcesses, //FR-ER-5.5.2.3.2
             parties = releaseEV.parties, //FR-ER-5.5.2.3.2
+            preQualification = data.preQualification
+                ?.let { preQualification ->
+                    ReleasePreQualification(
+                        period = preQualification.period
+                            .let { period ->
+                                ReleasePreQualification.Period(
+                                    startDate = period.startDate,
+                                    endDate = period.endDate
+                                )
+                            }
+                    )
+                }
+                ?: releaseEV.preQualification,
             tender = data.tender.let { tender ->
                 ReleaseTender(
                     id = tender.id,
@@ -287,6 +298,7 @@ class UpdateReleaseService(
                     hasEnquiries = releaseEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
                     enquiries = releaseEV.tender.enquiries, //FR-ER-5.5.2.3.3
                     criteria = releaseEV.tender.criteria, //FR-ER-5.5.2.3.3
+                    otherCriteria = releaseEV.tender.otherCriteria, // FR-ER-5.5.2.3.8
                     conversions = releaseEV.tender.conversions, //FR-ER-5.5.2.3.3
                     awardCriteria = releaseEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
                     awardCriteriaDetails = releaseEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
@@ -309,22 +321,26 @@ class UpdateReleaseService(
                         data = data,
                         previous = releaseEV.tender.procurementMethodModalities
                     ),
-                    tenderPeriod = tender.tenderPeriod.let { tenderPeriod ->
-                        Period(
-                            startDate = tenderPeriod.startDate,
-                            endDate = tenderPeriod.endDate,
-                            maxExtentDate = null,
-                            durationInDays = null
-                        )
-                    },
-                    enquiryPeriod = tender.enquiryPeriod.let { enquiryPeriod ->
-                        Period(
-                            startDate = enquiryPeriod.startDate,
-                            endDate = enquiryPeriod.endDate,
-                            maxExtentDate = null,
-                            durationInDays = null
-                        )
-                    },
+                    tenderPeriod = tender.tenderPeriod
+                        ?.let { tenderPeriod ->
+                            Period(
+                                startDate = tenderPeriod.startDate,
+                                endDate = tenderPeriod.endDate,
+                                maxExtentDate = null,
+                                durationInDays = null
+                            )
+                        }
+                        ?: releaseEV.tender.tenderPeriod,
+                    enquiryPeriod = tender.enquiryPeriod
+                        ?.let { enquiryPeriod ->
+                            Period(
+                                startDate = enquiryPeriod.startDate,
+                                endDate = enquiryPeriod.endDate,
+                                maxExtentDate = null,
+                                durationInDays = null
+                            )
+                        }
+                        ?: releaseEV.tender.tenderPeriod,
                     lotGroups = tender.lotGroups.map { lotGroup ->
                         LotGroup(
                             id = null,
@@ -473,7 +489,7 @@ class UpdateReleaseService(
                             relatedConfirmations = null
                         )
                     }.toList(),
-                    secondStage = null
+                    secondStage = releaseEV.tender.secondStage //FR-ER-5.5.2.3.9
                 )
             }
         )

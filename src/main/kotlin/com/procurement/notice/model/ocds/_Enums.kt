@@ -267,7 +267,8 @@ enum class TenderStatusDetails constructor(private val value: String) {
     AWARDED_SUSPENDED("awardedSuspended"),
     AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
     COMPLETE("complete"),
-    EMPTY("empty");
+    EMPTY("empty"),
+    SUBMISSION("submission");
 
     override fun toString(): String {
         return this.value
