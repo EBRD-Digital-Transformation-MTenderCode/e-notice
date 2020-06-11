@@ -49,6 +49,7 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
+import com.procurement.notice.model.tender.record.ReleasePreQualification
 import com.procurement.notice.model.tender.record.ReleaseTender
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -60,10 +61,7 @@ class UpdateReleaseService(
     private val generationService: GenerationService
 ) {
 
-    fun updateCn(
-        context: UpdateCNContext,
-        data: UpdateCNData
-    ): UpdatedCN {
+    fun updateCn(context: UpdateCNContext, data: UpdateCNData): UpdatedCN {
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val recordMS = releaseService.getMs(msEntity.jsonData)
         val updatedRecordMS: Ms = recordMS.copy(
@@ -277,6 +275,19 @@ class UpdateReleaseService(
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
             relatedProcesses = releaseEV.relatedProcesses, //FR-ER-5.5.2.3.2
             parties = releaseEV.parties, //FR-ER-5.5.2.3.2
+            preQualification = data.preQualification
+                ?.let { preQualification ->
+                    ReleasePreQualification(
+                        period = preQualification.period
+                            .let { period ->
+                                ReleasePreQualification.Period(
+                                    startDate = period.startDate,
+                                    endDate = period.endDate
+                                )
+                            }
+                    )
+                }
+                ?: releaseEV.preQualification,
             tender = data.tender.let { tender ->
                 ReleaseTender(
                     id = tender.id,
