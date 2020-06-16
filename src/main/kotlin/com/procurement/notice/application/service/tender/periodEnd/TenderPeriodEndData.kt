@@ -142,7 +142,7 @@ data class TenderPeriodEndData(
             }
 
             data class Details(
-                val typeOfSupplier: TypeOfSupplier,
+                val typeOfSupplier: TypeOfSupplier?,
                 val mainEconomicActivities: List<MainEconomicActivity>,
                 val scale: Scale,
                 val permits: List<Permit>,
