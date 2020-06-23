@@ -72,6 +72,9 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudget
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
+import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
@@ -157,6 +160,9 @@ import com.procurement.notice.infrastructure.dto.request.planning.RequestPlannin
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudget
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.request.planning.RequestTransaction
+import com.procurement.notice.infrastructure.dto.request.qualification.RequestQualification
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestCandidate
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestSubmissionDetail
 import com.procurement.notice.infrastructure.dto.request.tender.RequestAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficient
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
@@ -1731,6 +1737,63 @@ fun RecordOrganization.updateOrganization(received: RequestOrganization): Update
         .asSuccess()
 }
 
+val recordCandidateKeyExtractor: (RecordCandidate) -> String = { it.id }
+val requestCandidateKeyExtractor: (RequestCandidate) -> String = { it.id }
+
+fun RecordSubmissionDetail.updateSubmissionDetail(received: RequestSubmissionDetail): UpdateRecordResult<RecordSubmissionDetail> {
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
+    val candidates = updateStrategy(
+        receivedElements = received.candidates,
+        keyExtractorForReceivedElement = requestCandidateKeyExtractor,
+        availableElements = this.candidates,
+        keyExtractorForAvailableElement = recordCandidateKeyExtractor,
+        updateBlock = RecordCandidate::updateCandidate,
+        createBlock = ::createCandidate
+    )
+        .doReturn { e -> return failure(e) }
+
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses,
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this
+        .copy(
+            id = received.id,
+            date = received.date ?: this.date,
+            status = received.status ?: this.status,
+            documents = documents,
+            candidates = candidates,
+            requirementResponses = requirementResponses
+        )
+        .asSuccess()
+}
+
+fun RecordQualification.updateQualification(received: RequestQualification): UpdateRecordResult<RecordQualification> =
+    this.copy(
+        id = received.id,
+        date = received.date ?: this.date,
+        status = received.status ?: this.status,
+        relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
+        scoring = received.scoring ?: this.scoring
+    )
+        .asSuccess()
+
+
 fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAward> {
     val contractPeriod = received.contractPeriod
         ?.let {
@@ -1962,6 +2025,13 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
         )
         .asSuccess()
 }
+
+fun RecordCandidate.updateCandidate(received: RequestCandidate): UpdateRecordResult<RecordCandidate> =
+    this.copy(
+        id = received.id,
+        name = received.name ?: this.name
+    )
+        .asSuccess()
 
 fun RecordRequirementReference.updateRequirement(received: RequestRequirementReference): UpdateRecordResult<RecordRequirementReference> =
     this.copy(
@@ -2724,6 +2794,28 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         }
         ?: this.planning
 
+    val details = updateStrategy(
+        receivedElements = receivedRelease.submissions?.details.orEmpty(),
+        keyExtractorForReceivedElement = requestSubmissionDetailsKeyExtractor,
+        availableElements = this.submissions?.details.orEmpty(),
+        keyExtractorForAvailableElement = recordSubmissionDetailsKeyExtractor,
+        updateBlock = RecordSubmissionDetail::updateSubmissionDetail,
+        createBlock = ::createSubmissionDetail
+    )
+        .doReturn { e -> return failure(e) }
+
+    val submissions = this.submissions?.copy(details = details)
+
+    val qualifications = updateStrategy(
+        receivedElements = receivedRelease.qualifications,
+        keyExtractorForReceivedElement = requestQualificationKeyExtractor,
+        availableElements = this.qualifications,
+        keyExtractorForAvailableElement = recordQualificationKeyExtractor,
+        updateBlock = RecordQualification::updateQualification,
+        createBlock = ::createQualification
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             id = releaseId,
@@ -2741,13 +2833,21 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
             tender = tender,
             agreedMetrics = agreedMetrics,
             cpid = this.cpid,
-            planning = planning
+            planning = planning,
+            submissions = submissions,
+            qualifications = qualifications
         )
         .asSuccess()
 }
 
+val recordQualificationKeyExtractor: (RecordQualification) -> String = { it.id }
+val requestQualificationKeyExtractor: (RequestQualification) -> String = { it.id }
+
 val recordOrganizationKeyExtractor: (RecordOrganization) -> String = { it.id }
 val requestOrganizationKeyExtractor: (RequestOrganization) -> String = { it.id }
+
+val recordSubmissionDetailsKeyExtractor: (RecordSubmissionDetail) -> String = { it.id }
+val requestSubmissionDetailsKeyExtractor: (RequestSubmissionDetail) -> String = { it.id }
 
 val recordAwardKeyExtractor: (RecordAward) -> String = { it.id }
 val requestAwardKeyExtractor: (RequestAward) -> String = { it.id }
