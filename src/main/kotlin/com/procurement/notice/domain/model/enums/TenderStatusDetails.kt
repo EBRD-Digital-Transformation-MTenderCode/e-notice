@@ -4,20 +4,21 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.exception.EnumException
 
 enum class TenderStatusDetails(@JsonValue val value: String) {
-    PLANNING("planning"),
-    PLANNED("planned"),
-    CLARIFICATION("clarification"),
-    NEGOTIATION("negotiation"),
-    TENDERING("tendering"),
-    CANCELLATION("cancellation"),
-    SUSPENDED("suspended"),
-    AWARDING("awarding"),
     AUCTION("auction"),
+    AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
     AWARDED_STANDSTILL("awardedStandStill"),
     AWARDED_SUSPENDED("awardedSuspended"),
-    AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
+    AWARDING("awarding"),
+    CANCELLATION("cancellation"),
+    CLARIFICATION("clarification"),
     COMPLETE("complete"),
-    EMPTY("empty");
+    EMPTY("empty"),
+    NEGOTIATION("negotiation"),
+    PLANNED("planned"),
+    PLANNING("planning"),
+    QUALIFICATION("qualification"),
+    SUSPENDED("suspended"),
+    TENDERING("tendering");
 
     override fun toString(): String = value
 
