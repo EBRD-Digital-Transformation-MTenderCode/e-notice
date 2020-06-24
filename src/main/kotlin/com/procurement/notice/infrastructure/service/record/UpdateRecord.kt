@@ -1783,16 +1783,27 @@ fun RecordSubmissionDetail.updateSubmissionDetail(received: RequestSubmissionDet
         .asSuccess()
 }
 
-fun RecordQualification.updateQualification(received: RequestQualification): UpdateRecordResult<RecordQualification> =
-    this.copy(
+fun RecordQualification.updateQualification(received: RequestQualification): UpdateRecordResult<RecordQualification> {
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses,
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(
         id = received.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
         relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
-        scoring = received.scoring ?: this.scoring
+        scoring = received.scoring ?: this.scoring,
+        requirementResponses = requirementResponses
     )
         .asSuccess()
-
+}
 
 fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAward> {
     val contractPeriod = received.contractPeriod
@@ -2040,12 +2051,35 @@ fun RecordRequirementReference.updateRequirement(received: RequestRequirementRef
     )
         .asSuccess()
 
-fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> =
-    RecordResponder(
+fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> {
+    val businessFunctions = updateStrategy(
+        receivedElements = received.businessFunctions,
+        keyExtractorForReceivedElement = requestBusinessFunctionKeyExtractor,
+        availableElements = this.businessFunctions,
+        keyExtractorForAvailableElement = recordBusinessFunctionKeyExtractor,
+        updateBlock = RecordBusinessFunction::updateBusinessFunction,
+        createBlock = ::createBusinessFunction
+    )
+        .doReturn { e -> return failure(e) }
+
+    val identifier = received.identifier
+        ?.let {
+            this.identifier
+                ?.updateIdentifier(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createIdentifier(it)
+        }
+        ?: this.identifier
+
+    return RecordResponder(
         name = received.name,
-        id = received.id
+        id = received.id,
+        title = received.title,
+        businessFunctions = businessFunctions,
+        identifier = identifier
     )
         .asSuccess()
+}
 
 fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
     val address = received.address
