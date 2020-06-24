@@ -807,7 +807,9 @@ fun createQualification(received: RequestQualification): RecordQualification =
         status = received.status,
         date = received.date,
         relatedSubmission = received.relatedSubmission,
-        scoring = received.scoring
+        scoring = received.scoring,
+        requirementResponses = received.requirementResponses
+            .map { createRequirementResponse(it) }
     )
 
 fun createCandidate(received: RequestCandidate): RecordCandidate =
@@ -899,7 +901,12 @@ fun createRequirement(received: RequestRequirementReference): RecordRequirementR
 
 fun createResponder(received: RequestResponder) = RecordResponder(
     id = received.id,
-    name = received.name
+    name = received.name,
+    title = received.title,
+    identifier = received.identifier
+        ?.let { createIdentifier(it) },
+    businessFunctions = received.businessFunctions
+        .map { createBusinessFunction(it) }
 )
 
 fun createOrganizationReference(received: RequestOrganizationReference): RecordOrganizationReference =
