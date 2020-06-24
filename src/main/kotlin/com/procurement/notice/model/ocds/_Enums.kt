@@ -35,14 +35,15 @@ enum class InitiationType constructor(private val value: String) {
 
 enum class PartyRole constructor(private val value: String) {
     BUYER("buyer"),
-    PROCURING_ENTITY("procuringEntity"),
-    SUPPLIER("supplier"),
-    TENDERER("tenderer"),
-    FUNDER("funder"),
+    CANDIDATE("candidate"),
     ENQUIRER("enquirer"),
-    PAYER("payer"),
+    FUNDER("funder"),
     PAYEE("payee"),
-    REVIEW_BODY("reviewBody");
+    PAYER("payer"),
+    PROCURING_ENTITY("procuringEntity"),
+    REVIEW_BODY("reviewBody"),
+    SUPPLIER("supplier"),
+    TENDERER("tenderer");
 
     override fun toString(): String {
         return this.value
