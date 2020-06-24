@@ -8,6 +8,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.infrastructure.bind.scoring.ScoringDeserializer
 import com.procurement.notice.infrastructure.bind.scoring.ScoringSerializer
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -28,5 +29,8 @@ data class RecordQualification(
     @param:JsonDeserialize(using = ScoringDeserializer::class)
     @field:JsonSerialize(using = ScoringSerializer::class)
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("scoring") @param:JsonProperty("scoring") val scoring: BigDecimal?
+    @field:JsonProperty("scoring") @param:JsonProperty("scoring") val scoring: BigDecimal?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("requirementResponses") @param:JsonProperty("requirementResponses") val requirementResponses: List<RecordRequirementResponse> = emptyList()
 )
