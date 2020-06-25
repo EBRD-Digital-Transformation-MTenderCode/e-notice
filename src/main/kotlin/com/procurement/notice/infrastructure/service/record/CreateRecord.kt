@@ -684,7 +684,8 @@ fun createReleaseTender(received: RequestTender): RecordTender =
         procuringEntity = received.procuringEntity?.let { createOrganizationReference(it) },
         reviewParties = received.reviewParties
             .map { createOrganizationReference(it) },
-        reviewPeriod = received.reviewPeriod?.let { createPeriod(it) }
+        reviewPeriod = received.reviewPeriod?.let { createPeriod(it) },
+        secondStage = received.secondStage
     )
 
 fun createProcedureOutsourcing(received: RequestProcedureOutsourcing): RecordProcedureOutsourcing =

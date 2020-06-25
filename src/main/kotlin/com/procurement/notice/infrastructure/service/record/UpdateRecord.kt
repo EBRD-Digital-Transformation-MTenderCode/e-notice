@@ -1485,7 +1485,8 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
             procedureOutsourcing = procedureOutsourcing,
             procuringEntity = procuringEntity,
             reviewParties = reviewParties,
-            reviewPeriod = reviewPeriod
+            reviewPeriod = reviewPeriod,
+            secondStage = received.secondStage ?: this.secondStage
         )
         .asSuccess()
 }

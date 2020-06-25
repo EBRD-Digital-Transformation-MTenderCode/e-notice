@@ -11,6 +11,7 @@ import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+import com.procurement.notice.model.tender.record.SecondStage
 
 data class RecordTender(
 
@@ -185,6 +186,8 @@ data class RecordTender(
     @field:JsonProperty("dynamicPurchasingSystem") @param:JsonProperty("dynamicPurchasingSystem") val dynamicPurchasingSystem: RecordDynamicPurchasingSystem?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RecordFramework?
+    @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RecordFramework?,
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?
 )
