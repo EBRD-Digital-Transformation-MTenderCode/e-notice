@@ -74,6 +74,7 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningB
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
 import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
@@ -2807,6 +2808,7 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         .doReturn { e -> return failure(e) }
 
     val submissions = this.submissions?.copy(details = details)
+        ?: RecordSubmission(details = details)
 
     val qualifications = updateStrategy(
         receivedElements = receivedRelease.qualifications,
