@@ -20,6 +20,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordObservation
 import com.procurement.notice.infrastructure.dto.entity.RecordObservationUnit
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
@@ -112,6 +113,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestObservation
 import com.procurement.notice.infrastructure.dto.request.RequestObservationUnit
 import com.procurement.notice.infrastructure.dto.request.RequestOrganizationReference
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
@@ -1203,6 +1205,12 @@ fun createPlanningBudgetSource(received: RequestPlanningBudgetSource): RecordPla
 fun createPurposeOfNotice(received: RequestPurposeOfNotice): RecordPurposeOfNotice =
     RecordPurposeOfNotice(
         isACallForCompetition = received.isACallForCompetition
+    )
+
+fun createPreQualification(received: RequestPreQualification): RecordPreQualification =
+    RecordPreQualification(
+        period = received.period?.let { createPeriod(it) },
+        qualificationPeriod = received.qualificationPeriod?.let { createPeriod(it) }
     )
 
 fun createBidsObject(received: RequestBids): RecordBids =

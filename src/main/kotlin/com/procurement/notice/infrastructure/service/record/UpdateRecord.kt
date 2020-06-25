@@ -26,6 +26,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordObservation
 import com.procurement.notice.infrastructure.dto.entity.RecordObservationUnit
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
@@ -118,6 +119,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestObservation
 import com.procurement.notice.infrastructure.dto.request.RequestObservationUnit
 import com.procurement.notice.infrastructure.dto.request.RequestOrganizationReference
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
@@ -2820,6 +2822,15 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
     )
         .doReturn { e -> return failure(e) }
 
+    val preQualification = receivedRelease.preQualification
+        ?.let {
+            this.preQualification
+                ?.updatePreQualification(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPreQualification(it)
+        }
+        ?: this.preQualification
+
     return this
         .copy(
             id = releaseId,
@@ -2839,7 +2850,8 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
             cpid = this.cpid,
             planning = planning,
             submissions = submissions,
-            qualifications = qualifications
+            qualifications = qualifications,
+            preQualification = preQualification
         )
         .asSuccess()
 }
@@ -3075,6 +3087,33 @@ fun RecordPurposeOfNotice.updatePurposeOfNotice(received: RequestPurposeOfNotice
         isACallForCompetition = received.isACallForCompetition ?: this.isACallForCompetition
     )
         .asSuccess()
+
+fun RecordPreQualification.updatePreQualification(received: RequestPreQualification): UpdateRecordResult<RecordPreQualification> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val qualificationPeriod = received.qualificationPeriod
+        ?.let {
+            this.qualificationPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.qualificationPeriod
+
+    return  RecordPreQualification(
+        period = period,
+        qualificationPeriod = qualificationPeriod
+    )
+        .asSuccess()
+}
+
 
 fun RecordBids.updateBidsObject(received: RequestBids): UpdateRecordResult<RecordBids> {
     val statistics = updateStrategy(
