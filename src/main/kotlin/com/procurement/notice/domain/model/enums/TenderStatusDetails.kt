@@ -13,6 +13,7 @@ enum class TenderStatusDetails(@JsonValue val value: String) {
     CLARIFICATION("clarification"),
     COMPLETE("complete"),
     EMPTY("empty"),
+    LACK_OF_SUBMISSIONS("lackOfSubmissions"),
     NEGOTIATION("negotiation"),
     PLANNED("planned"),
     PLANNING("planning"),
