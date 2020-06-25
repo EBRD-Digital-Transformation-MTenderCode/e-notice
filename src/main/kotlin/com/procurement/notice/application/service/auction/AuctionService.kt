@@ -137,7 +137,8 @@ class AuctionServiceImpl(
                                         contactPoint = null,
                                         details = null,
                                         buyerProfile = null,
-                                        persones = null
+                                        persones = null,
+                                        title = null
                                     )
                                 },
                             relatedLots = award.relatedLots.map { it.toString() },
@@ -174,7 +175,8 @@ class AuctionServiceImpl(
                                     contactPoint = null,
                                     details = null,
                                     buyerProfile = null,
-                                    persones = null
+                                    persones = null,
+                                    title = null
                                 )
                             },
                         relatedLots = receivedAward.relatedLots.map { it.toString() },
@@ -241,7 +243,8 @@ class AuctionServiceImpl(
                                     contactPoint = null,
                                     details = null,
                                     persones = null,
-                                    buyerProfile = null
+                                    buyerProfile = null,
+                                    title = null
                                 )
                             },
                         documents = bid.documents

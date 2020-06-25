@@ -155,7 +155,8 @@ class AwardServiceImpl(
             contactPoint = null,
             details = null,
             buyerProfile = null,
-            persones = null
+            persones = null,
+            title = null
         )
 
     /**
@@ -390,7 +391,8 @@ class AwardServiceImpl(
             contactPoint = null,
             details = null,
             buyerProfile = null,
-            persones = null
+            persones = null,
+            title = null
         )
 
     /**

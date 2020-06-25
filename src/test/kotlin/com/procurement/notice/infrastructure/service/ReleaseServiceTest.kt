@@ -46,7 +46,8 @@ class ReleaseServiceTest {
             contactPoint = null,
             details = null,
             buyerProfile = null,
-            address = null
+            address = null,
+            title = null
         )
 
         val previousProcuringEntity = parties.find { it.id == targetProcuringEntityId }
