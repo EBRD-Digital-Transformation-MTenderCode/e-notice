@@ -806,6 +806,7 @@ fun createQualification(received: RequestQualification): RecordQualification =
     RecordQualification(
         id = received.id,
         status = received.status,
+        statusDetails = received.statusDetails,
         date = received.date,
         relatedSubmission = received.relatedSubmission,
         scoring = received.scoring
