@@ -20,6 +20,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordObservation
 import com.procurement.notice.infrastructure.dto.entity.RecordObservationUnit
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
@@ -67,6 +68,9 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudget
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
+import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
@@ -109,6 +113,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestObservation
 import com.procurement.notice.infrastructure.dto.request.RequestObservationUnit
 import com.procurement.notice.infrastructure.dto.request.RequestOrganizationReference
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
@@ -153,6 +158,9 @@ import com.procurement.notice.infrastructure.dto.request.planning.RequestPlannin
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudget
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanningBudgetSource
 import com.procurement.notice.infrastructure.dto.request.planning.RequestTransaction
+import com.procurement.notice.infrastructure.dto.request.qualification.RequestQualification
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestCandidate
+import com.procurement.notice.infrastructure.dto.request.submissions.RequestSubmissionDetail
 import com.procurement.notice.infrastructure.dto.request.tender.RequestAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficient
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
@@ -678,7 +686,8 @@ fun createReleaseTender(received: RequestTender): RecordTender =
         procuringEntity = received.procuringEntity?.let { createOrganizationReference(it) },
         reviewParties = received.reviewParties
             .map { createOrganizationReference(it) },
-        reviewPeriod = received.reviewPeriod?.let { createPeriod(it) }
+        reviewPeriod = received.reviewPeriod?.let { createPeriod(it) },
+        secondStage = received.secondStage
     )
 
 fun createProcedureOutsourcing(received: RequestProcedureOutsourcing): RecordProcedureOutsourcing =
@@ -780,6 +789,35 @@ fun createOrganization(received: RequestOrganization): RecordOrganization =
         contactPoint = received.contactPoint?.let { createContactPoint(it) },
         address = received.address?.let { createAddress(it) },
         roles = received.roles
+    )
+
+fun createSubmissionDetail(received: RequestSubmissionDetail): RecordSubmissionDetail =
+    RecordSubmissionDetail(
+        id = received.id,
+        status = received.status,
+        date = received.date,
+        documents = received.documents
+            .map { createDocument(it) },
+        candidates = received.candidates
+            .map { createCandidate(it) },
+        requirementResponses = received.requirementResponses
+            .map { createRequirementResponse(it) }
+        )
+
+fun createQualification(received: RequestQualification): RecordQualification =
+    RecordQualification(
+        id = received.id,
+        status = received.status,
+        statusDetails = received.statusDetails,
+        date = received.date,
+        relatedSubmission = received.relatedSubmission,
+        scoring = received.scoring
+    )
+
+fun createCandidate(received: RequestCandidate): RecordCandidate =
+    RecordCandidate(
+        id = received.id,
+        name = received.name
     )
 
 fun createAward(received: RequestAward): RecordAward =
@@ -1167,6 +1205,12 @@ fun createPlanningBudgetSource(received: RequestPlanningBudgetSource): RecordPla
 fun createPurposeOfNotice(received: RequestPurposeOfNotice): RecordPurposeOfNotice =
     RecordPurposeOfNotice(
         isACallForCompetition = received.isACallForCompetition
+    )
+
+fun createPreQualification(received: RequestPreQualification): RecordPreQualification =
+    RecordPreQualification(
+        period = received.period?.let { createPeriod(it) },
+        qualificationPeriod = received.qualificationPeriod?.let { createPeriod(it) }
     )
 
 fun createBidsObject(received: RequestBids): RecordBids =
