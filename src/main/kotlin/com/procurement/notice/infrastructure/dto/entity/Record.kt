@@ -67,5 +67,8 @@ data class Record(
         @field:JsonProperty("purposeOfNotice") @param:JsonProperty("purposeOfNotice") val purposeOfNotice: RecordPurposeOfNotice?,
 
         @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-        @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RecordRelatedProcess> = mutableListOf()
+        @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RecordRelatedProcess> = mutableListOf(),
+
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("preQualificationPeriod") @param:JsonProperty("preQualificationPeriod") val preQualificationPeriod: RecordPreQualificationPeriod?
 )
