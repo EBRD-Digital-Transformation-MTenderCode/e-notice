@@ -70,5 +70,5 @@ data class Record(
         @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RecordRelatedProcess> = mutableListOf(),
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualificationPeriod: RecordPreQualificationPeriod?
+        @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RecordPreQualification?
 )

@@ -3,7 +3,7 @@ package com.procurement.notice.infrastructure.dto.entity
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 
-class RecordPreQualificationPeriod(
+class RecordPreQualification(
     @field:JsonProperty("period") @param:JsonProperty("period") val period: Period
 ) {
     data class Period(
