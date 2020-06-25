@@ -23,6 +23,9 @@ data class RecordQualification(
     @field:JsonProperty("status") @param:JsonProperty("status") val status: QualificationStatus?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: QualificationStatusDetails?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedSubmission") @param:JsonProperty("relatedSubmission") val relatedSubmission: String?,
 
     @param:JsonDeserialize(using = ScoringDeserializer::class)

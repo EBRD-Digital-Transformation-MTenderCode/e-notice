@@ -1789,6 +1789,7 @@ fun RecordQualification.updateQualification(received: RequestQualification): Upd
         id = received.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
+        statusDetails = received.statusDetails ?: this.statusDetails,
         relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
         scoring = received.scoring ?: this.scoring
     )
