@@ -317,7 +317,7 @@ class TenderService(
                                     details = tenderer.details
                                         .let { details ->
                                             Details(
-                                                typeOfSupplier = details.typeOfSupplier.value,
+                                                typeOfSupplier = details.typeOfSupplier?.value,
                                                 mainEconomicActivities = details.mainEconomicActivities
                                                     .map { mainEconomicActivity ->
                                                         MainEconomicActivity(
@@ -652,7 +652,7 @@ class TenderService(
                             details = tenderer.details
                                 .let { details ->
                                     Details(
-                                        typeOfSupplier = details.typeOfSupplier.value,
+                                        typeOfSupplier = details.typeOfSupplier?.value,
                                         mainEconomicActivities = details.mainEconomicActivities
                                             .map { mainEconomicActivity ->
                                                 MainEconomicActivity(
@@ -912,7 +912,7 @@ class TenderService(
                         .toHashSet(),
                     details = tenderer.details.let { details ->
                         Details(
-                            typeOfSupplier = details.typeOfSupplier.value,
+                            typeOfSupplier = details.typeOfSupplier?.value,
                             mainEconomicActivities = details.mainEconomicActivities
                                 .map { mainEconomicActivity ->
                                     MainEconomicActivity(
