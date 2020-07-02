@@ -1787,17 +1787,28 @@ fun RecordSubmissionDetail.updateSubmissionDetail(received: RequestSubmissionDet
         .asSuccess()
 }
 
-fun RecordQualification.updateQualification(received: RequestQualification): UpdateRecordResult<RecordQualification> =
-    this.copy(
+fun RecordQualification.updateQualification(received: RequestQualification): UpdateRecordResult<RecordQualification> {
+    val requirementResponses = updateStrategy(
+        receivedElements = received.requirementResponses,
+        keyExtractorForReceivedElement = requestRequirementResponseKeyExtractor,
+        availableElements = this.requirementResponses,
+        keyExtractorForAvailableElement = recordRequirementResponseKeyExtractor,
+        updateBlock = RecordRequirementResponse::updateRequirementResponse,
+        createBlock = ::createRequirementResponse
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(
         id = received.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
         statusDetails = received.statusDetails ?: this.statusDetails,
         relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
-        scoring = received.scoring ?: this.scoring
+        scoring = received.scoring ?: this.scoring,
+        requirementResponses = requirementResponses
     )
         .asSuccess()
-
+}
 
 fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAward> {
     val contractPeriod = received.contractPeriod
@@ -2049,8 +2060,7 @@ fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordRes
     RecordResponder(
         name = received.name,
         id = received.id
-    )
-        .asSuccess()
+    ).asSuccess()
 
 fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
     val address = received.address
@@ -2810,7 +2820,7 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         .doReturn { e -> return failure(e) }
 
     val submissions = this.submissions?.copy(details = details)
-        ?: RecordSubmission(details = details)
+        ?: if (details.isNotEmpty()) RecordSubmission(details = details) else null
 
     val qualifications = updateStrategy(
         receivedElements = receivedRelease.qualifications,

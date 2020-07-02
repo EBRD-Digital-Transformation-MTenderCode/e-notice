@@ -63,7 +63,7 @@ data class RecordTender(
     @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: RecordPeriod?,
 
     @get:JsonInclude(JsonInclude.Include.NON_NULL)
-    @get:JsonProperty("hasEnquiries") @param:JsonProperty("hasEnquiries") val hasEnquiries: Boolean? = false,
+    @get:JsonProperty("hasEnquiries") @param:JsonProperty("hasEnquiries") val hasEnquiries: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("enquiries") @param:JsonProperty("enquiries") val enquiries: MutableList<RecordRecordEnquiry> = mutableListOf(),
