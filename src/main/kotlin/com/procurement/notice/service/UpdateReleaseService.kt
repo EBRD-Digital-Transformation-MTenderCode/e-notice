@@ -102,8 +102,7 @@ class UpdateReleaseService(
                                                 contactPoint = null,
                                                 buyerProfile = null,
                                                 persones = null,
-                                                details = null,
-                                                title = null
+                                                details = null
                                             )
                                         },
                                         europeanUnionFunding = budgetBreakdown.europeanUnionFunding?.let { europeanUnionFunding ->

@@ -181,8 +181,7 @@ class TenderService(
                             contactPoint = null,
                             details = null,
                             buyerProfile = null,
-                            persones = null,
-                            title = null
+                            persones = null
                         )
                     },
                     weightedValue = award.weightedValue?.toValue(),
@@ -487,8 +486,7 @@ class TenderService(
                                                     }
                                             )
                                         }.toHashSet(),
-                                    buyerProfile = null,
-                                    title = null
+                                    buyerProfile = null
                                 )
                             },
                         //FR-5.7.2.1.3
@@ -1307,8 +1305,7 @@ class TenderService(
                                 contactPoint = null,
                                 details = null,
                                 persones = null,
-                                buyerProfile = null,
-                                title = null
+                                buyerProfile = null
                             )
                         },
                     relatedLots = bid.relatedLots
