@@ -11,6 +11,7 @@ import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+import com.procurement.notice.model.tender.record.SecondStage
 
 data class RequestTender(
 
@@ -60,7 +61,7 @@ data class RequestTender(
     @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: RequestPeriod?,
 
     @get:JsonInclude(JsonInclude.Include.NON_NULL)
-    @get:JsonProperty("hasEnquiries") @param:JsonProperty("hasEnquiries") val hasEnquiries: Boolean? = false,
+    @get:JsonProperty("hasEnquiries") @param:JsonProperty("hasEnquiries") val hasEnquiries: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("enquiries") @param:JsonProperty("enquiries") val enquiries: MutableList<RequestRecordEnquiry> = mutableListOf(),
@@ -183,6 +184,8 @@ data class RequestTender(
     @field:JsonProperty("dynamicPurchasingSystem") @param:JsonProperty("dynamicPurchasingSystem") val dynamicPurchasingSystem: RequestDynamicPurchasingSystem?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RequestFramework?
+    @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RequestFramework?,
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?
 )

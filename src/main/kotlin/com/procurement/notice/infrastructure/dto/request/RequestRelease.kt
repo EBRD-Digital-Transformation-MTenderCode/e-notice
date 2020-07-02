@@ -62,5 +62,8 @@ data class RequestRelease(
     @field:JsonProperty("purposeOfNotice") @param:JsonProperty("purposeOfNotice") val purposeOfNotice: RequestPurposeOfNotice?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RequestRelatedProcess> = mutableListOf()
+    @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RequestRelatedProcess> = mutableListOf(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RequestPreQualification?
 )

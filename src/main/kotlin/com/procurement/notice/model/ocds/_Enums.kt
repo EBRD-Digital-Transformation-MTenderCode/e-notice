@@ -35,14 +35,15 @@ enum class InitiationType constructor(private val value: String) {
 
 enum class PartyRole constructor(private val value: String) {
     BUYER("buyer"),
-    PROCURING_ENTITY("procuringEntity"),
-    SUPPLIER("supplier"),
-    TENDERER("tenderer"),
-    FUNDER("funder"),
+    CANDIDATE("candidate"),
     ENQUIRER("enquirer"),
-    PAYER("payer"),
+    FUNDER("funder"),
     PAYEE("payee"),
-    REVIEW_BODY("reviewBody");
+    PAYER("payer"),
+    PROCURING_ENTITY("procuringEntity"),
+    REVIEW_BODY("reviewBody"),
+    SUPPLIER("supplier"),
+    TENDERER("tenderer");
 
     override fun toString(): String {
         return this.value
@@ -238,37 +239,38 @@ enum class TenderStatus constructor(private val value: String) {
 }
 
 enum class TenderStatusDetails constructor(private val value: String) {
-    PRESELECTION("preselection"),
-    PRESELECTED("preselected"),
-    PREQUALIFICATION("prequalification"),
-    PREQUALIFIED("prequalified"),
-    PLANNING_NOTICE("planning notice"),
-    PRIOR_NOTICE("prior notice"),
-    EVALUATION("evaluation"),
-    EVALUATED("evaluated"),
-    EXECUTION("execution"),
-    AWARDED("awarded"),
-    BLOCKED("blocked"),
-    CANCELLED("cancelled"),
-    UNSUCCESSFUL("unsuccessful"),
-    WITHDRAWN("withdrawn"),
-    STANDSTILL("standStill"),
-    /**/
-    PLANNING("planning"),
-    PLANNED("planned"),
-    CLARIFICATION("clarification"),
-    NEGOTIATION("negotiation"),
-    TENDERING("tendering"),
     AUCTION("auction"),
-    CANCELLATION("cancellation"),
-    SUSPENDED("suspended"),
-    AWARDING("awarding"),
+    AWARDED("awarded"),
+    AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
     AWARDED_STANDSTILL("awardedStandStill"),
     AWARDED_SUSPENDED("awardedSuspended"),
-    AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
+    AWARDING("awarding"),
+    BLOCKED("blocked"),
+    CANCELLATION("cancellation"),
+    CANCELLED("cancelled"),
+    CLARIFICATION("clarification"),
     COMPLETE("complete"),
     EMPTY("empty"),
-    SUBMISSION("submission");
+    EVALUATED("evaluated"),
+    EVALUATION("evaluation"),
+    EXECUTION("execution"),
+    LACK_OF_SUBMISSIONS("lackOfSubmissions"),
+    NEGOTIATION("negotiation"),
+    PLANNED("planned"),
+    PLANNING("planning"),
+    PLANNING_NOTICE("planning notice"),
+    PREQUALIFICATION("prequalification"),
+    PREQUALIFIED("prequalified"),
+    PRESELECTED("preselected"),
+    PRESELECTION("preselection"),
+    PRIOR_NOTICE("prior notice"),
+    QUALIFICATION("qualification"),
+    STANDSTILL("standStill"),
+    SUBMISSION("submission"),
+    SUSPENDED("suspended"),
+    TENDERING("tendering"),
+    UNSUCCESSFUL("unsuccessful"),
+    WITHDRAWN("withdrawn");
 
     override fun toString(): String {
         return this.value

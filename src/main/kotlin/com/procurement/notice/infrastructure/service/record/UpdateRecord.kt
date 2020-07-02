@@ -26,6 +26,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordObservation
 import com.procurement.notice.infrastructure.dto.entity.RecordObservationUnit
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
@@ -74,6 +75,7 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningB
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
 import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
@@ -117,6 +119,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestObservation
 import com.procurement.notice.infrastructure.dto.request.RequestObservationUnit
 import com.procurement.notice.infrastructure.dto.request.RequestOrganizationReference
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
@@ -1485,7 +1488,8 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
             procedureOutsourcing = procedureOutsourcing,
             procuringEntity = procuringEntity,
             reviewParties = reviewParties,
-            reviewPeriod = reviewPeriod
+            reviewPeriod = reviewPeriod,
+            secondStage = received.secondStage ?: this.secondStage
         )
         .asSuccess()
 }
@@ -1798,6 +1802,7 @@ fun RecordQualification.updateQualification(received: RequestQualification): Upd
         id = received.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
+        statusDetails = received.statusDetails ?: this.statusDetails,
         relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
         scoring = received.scoring ?: this.scoring,
         requirementResponses = requirementResponses
@@ -2815,6 +2820,7 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         .doReturn { e -> return failure(e) }
 
     val submissions = this.submissions?.copy(details = details)
+        ?: if (details.isNotEmpty()) RecordSubmission(details = details) else null
 
     val qualifications = updateStrategy(
         receivedElements = receivedRelease.qualifications,
@@ -2825,6 +2831,15 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         createBlock = ::createQualification
     )
         .doReturn { e -> return failure(e) }
+
+    val preQualification = receivedRelease.preQualification
+        ?.let {
+            this.preQualification
+                ?.updatePreQualification(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPreQualification(it)
+        }
+        ?: this.preQualification
 
     return this
         .copy(
@@ -2845,7 +2860,8 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
             cpid = this.cpid,
             planning = planning,
             submissions = submissions,
-            qualifications = qualifications
+            qualifications = qualifications,
+            preQualification = preQualification
         )
         .asSuccess()
 }
@@ -3081,6 +3097,33 @@ fun RecordPurposeOfNotice.updatePurposeOfNotice(received: RequestPurposeOfNotice
         isACallForCompetition = received.isACallForCompetition ?: this.isACallForCompetition
     )
         .asSuccess()
+
+fun RecordPreQualification.updatePreQualification(received: RequestPreQualification): UpdateRecordResult<RecordPreQualification> {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val qualificationPeriod = received.qualificationPeriod
+        ?.let {
+            this.qualificationPeriod
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.qualificationPeriod
+
+    return  RecordPreQualification(
+        period = period,
+        qualificationPeriod = qualificationPeriod
+    )
+        .asSuccess()
+}
+
 
 fun RecordBids.updateBidsObject(received: RequestBids): UpdateRecordResult<RecordBids> {
     val statistics = updateStrategy(
