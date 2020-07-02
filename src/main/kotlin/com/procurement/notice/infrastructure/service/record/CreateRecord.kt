@@ -811,7 +811,9 @@ fun createQualification(received: RequestQualification): RecordQualification =
         statusDetails = received.statusDetails,
         date = received.date,
         relatedSubmission = received.relatedSubmission,
-        scoring = received.scoring
+        scoring = received.scoring,
+        requirementResponses = received.requirementResponses
+            .map { createRequirementResponse(it) }
     )
 
 fun createCandidate(received: RequestCandidate): RecordCandidate =
