@@ -2810,7 +2810,7 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         .doReturn { e -> return failure(e) }
 
     val submissions = this.submissions?.copy(details = details)
-        ?: RecordSubmission(details = details)
+        ?: if (details.isNotEmpty()) RecordSubmission(details = details) else null
 
     val qualifications = updateStrategy(
         receivedElements = receivedRelease.qualifications,
