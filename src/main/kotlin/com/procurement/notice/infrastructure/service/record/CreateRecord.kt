@@ -901,12 +901,7 @@ fun createRequirement(received: RequestRequirementReference): RecordRequirementR
 
 fun createResponder(received: RequestResponder) = RecordResponder(
     id = received.id,
-    name = received.name,
-    title = received.title,
-    identifier = received.identifier
-        ?.let { createIdentifier(it) },
-    businessFunctions = received.businessFunctions
-        .map { createBusinessFunction(it) }
+    name = received.name
 )
 
 fun createOrganizationReference(received: RequestOrganizationReference): RecordOrganizationReference =

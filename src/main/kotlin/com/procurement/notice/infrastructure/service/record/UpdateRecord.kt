@@ -2051,35 +2051,11 @@ fun RecordRequirementReference.updateRequirement(received: RequestRequirementRef
     )
         .asSuccess()
 
-fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> {
-    val businessFunctions = updateStrategy(
-        receivedElements = received.businessFunctions,
-        keyExtractorForReceivedElement = requestBusinessFunctionKeyExtractor,
-        availableElements = this.businessFunctions,
-        keyExtractorForAvailableElement = recordBusinessFunctionKeyExtractor,
-        updateBlock = RecordBusinessFunction::updateBusinessFunction,
-        createBlock = ::createBusinessFunction
-    )
-        .doReturn { e -> return failure(e) }
-
-    val identifier = received.identifier
-        ?.let {
-            this.identifier
-                ?.updateIdentifier(it)
-                ?.doReturn { e -> return failure(e) }
-                ?: createIdentifier(it)
-        }
-        ?: this.identifier
-
-    return RecordResponder(
+fun RecordResponder.updateResponder(received: RequestResponder): UpdateRecordResult<RecordResponder> =
+    RecordResponder(
         name = received.name,
-        id = received.id,
-        title = received.title,
-        businessFunctions = businessFunctions,
-        identifier = identifier
-    )
-        .asSuccess()
-}
+        id = received.id
+    ).asSuccess()
 
 fun RecordOrganizationReference.updateOrganizationReference(received: RequestOrganizationReference): UpdateRecordResult<RecordOrganizationReference> {
     val address = received.address
