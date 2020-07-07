@@ -157,6 +157,7 @@ class CommandService(
         val cpId = cm.context.cpid
         val ocId = cm.context.ocid
         val ocidCn = cm.context.ocidCn
+        val pmd = cm.pmd
         val stage = cm.context.stage
         val prevStage = cm.context.prevStage
         val operationType = cm.context.operationType
@@ -323,6 +324,7 @@ class CommandService(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
+                pmd = pmd,
                 releaseDate = releaseDate,
                 data = data
             )
