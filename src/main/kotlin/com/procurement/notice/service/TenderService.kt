@@ -1229,9 +1229,7 @@ class TenderService(
             tender.electronicAuctions = dto.tender.electronicAuctions
         }
         addAnswerToEnquiry(release.tender.enquiries, dto.enquiry)
-
-        if (pmdIsGpa(pmd))
-            setPreQualificationPeriod(release = release, requestPreQualification = dto.preQualification)
+        setPreQualificationPeriod(release = release, requestPreQualification = dto.preQualification, pmd = pmd)
 
         releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
 
@@ -1240,19 +1238,31 @@ class TenderService(
 
     private fun setPreQualificationPeriod(
         release: Release,
-        requestPreQualification: PreQualificationDto?
+        requestPreQualification: PreQualificationDto?,
+        pmd: ProcurementMethod
     ) {
-        if (requestPreQualification != null) {
-            val preQualificationPeriod = requestPreQualification.period
-                .let { period ->
-                    ReleasePreQualification.Period(
-                        startDate = period.startDate,
-                        endDate = period.endDate
-                    )
+        when (pmd) {
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+                if (requestPreQualification != null) {
+                    val preQualificationPeriod = requestPreQualification.period
+                        .let { period ->
+                            ReleasePreQualification.Period(
+                                startDate = period.startDate,
+                                endDate = period.endDate
+                            )
+                        }
+                    release.preQualification = release.preQualification
+                        ?.copy(period = preQualificationPeriod)
+                        ?: ReleasePreQualification(period = preQualificationPeriod)
                 }
-            release.preQualification = release.preQualification
-                ?.copy(period = preQualificationPeriod)
-                ?: ReleasePreQualification(period = preQualificationPeriod)
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
         }
     }
 
@@ -1268,17 +1278,6 @@ class TenderService(
         ProcurementMethod.RT, ProcurementMethod.TEST_RT -> throw ErrorException(ErrorType.INVALID_PMD)
     }
 
-    private fun pmdIsGpa(pmd: ProcurementMethod) = when (pmd) {
-        ProcurementMethod.GPA, ProcurementMethod.TEST_GPA -> true
-        ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-        ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-        ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-        ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-        ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-        ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-        ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-        ProcurementMethod.RT, ProcurementMethod.TEST_RT -> false
-    }
 
     fun tenderUnsuccessful(
         context: TenderUnsuccessfulContext,
