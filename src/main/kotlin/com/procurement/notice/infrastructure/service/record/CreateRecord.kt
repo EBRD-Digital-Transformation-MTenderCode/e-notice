@@ -802,7 +802,7 @@ fun createSubmissionDetail(received: RequestSubmissionDetail): RecordSubmissionD
             .map { createCandidate(it) },
         requirementResponses = received.requirementResponses
             .map { createRequirementResponse(it) }
-        )
+    )
 
 fun createQualification(received: RequestQualification): RecordQualification =
     RecordQualification(
@@ -813,7 +813,11 @@ fun createQualification(received: RequestQualification): RecordQualification =
         relatedSubmission = received.relatedSubmission,
         scoring = received.scoring,
         requirementResponses = received.requirementResponses
-            .map { createRequirementResponse(it) }
+            .map { createRequirementResponse(it) },
+        description = received.description,
+        internalId = received.internalId,
+        documents = received.documents
+            .map { createDocument(it) }
     )
 
 fun createCandidate(received: RequestCandidate): RecordCandidate =

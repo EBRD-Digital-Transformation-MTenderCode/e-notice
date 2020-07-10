@@ -11,6 +11,7 @@ import com.procurement.notice.infrastructure.bind.scoring.ScoringSerializer
 import com.procurement.notice.infrastructure.dto.entity.qualification.QualificationStatus
 import com.procurement.notice.infrastructure.dto.entity.qualification.QualificationStatusDetails
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
+import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -37,5 +38,14 @@ data class RequestQualification(
     @field:JsonProperty("scoring") @param:JsonProperty("scoring") val scoring: BigDecimal?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("requirementResponses") @param:JsonProperty("requirementResponses") val requirementResponses: List<RequestRequirementResponse> = emptyList()
+    @field:JsonProperty("requirementResponses") @param:JsonProperty("requirementResponses") val requirementResponses: List<RequestRequirementResponse> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("internalId") @param:JsonProperty("internalId") val internalId: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<RequestDocument> = emptyList()
 )
