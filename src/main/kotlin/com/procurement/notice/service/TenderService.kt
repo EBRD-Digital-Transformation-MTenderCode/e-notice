@@ -11,6 +11,7 @@ import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodE
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulData
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulResult
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
@@ -59,6 +60,7 @@ import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.dto.AwardByBidDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndDto
+import com.procurement.notice.model.tender.dto.PreQualificationDto
 import com.procurement.notice.model.tender.dto.StandstillPeriodEndDto
 import com.procurement.notice.model.tender.dto.StartNewStageDto
 import com.procurement.notice.model.tender.dto.TenderStatusDto
@@ -68,6 +70,7 @@ import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
 import com.procurement.notice.model.tender.record.Release
+import com.procurement.notice.model.tender.record.ReleasePreQualification
 import com.procurement.notice.model.tender.record.ReleaseTender
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toJson
@@ -1183,11 +1186,13 @@ class TenderService(
             .toList()
     }
 
-    fun suspendTender(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto {
+    fun suspendTender(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(TenderStatusDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
@@ -1200,27 +1205,166 @@ class TenderService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun unsuspendTender(cpid: String,
-                        ocid: String,
-                        stage: String,
-                        releaseDate: LocalDateTime,
-                        data: JsonNode): ResponseDto {
+    fun unsuspendTender(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        pmd: ProcurementMethod,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(UnsuspendTenderDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
+
+        checkPmdForUnsuspendTender(pmd)
+        setReleaseIdAndDate(release, ocid, releaseDate)
+
+        val tender = release.tender
+        addAnswerToEnquiry(tender.enquiries, dto.enquiry, pmd)
+        setStatusDetails(tender, dto, pmd)
+        setTenderPeriod(tender, dto, pmd)
+        setEnquiryPeriod(tender, dto, pmd)
+        setElectronicAuctionsPeriodAndModalities(tender, dto, pmd)
+        setPreQualificationPeriod(release = release, requestPreQualification = dto.preQualification, pmd = pmd)
+
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    private fun checkPmdForUnsuspendTender(pmd: ProcurementMethod) = when (pmd) {
+        ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+        ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+        ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+        ProcurementMethod.GPA, ProcurementMethod.TEST_GPA -> Unit
+        ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+        ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+        ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+        ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+        ProcurementMethod.RT, ProcurementMethod.TEST_RT -> throw ErrorException(ErrorType.INVALID_PMD)
+    }
+
+    private fun setReleaseIdAndDate(release: Release, ocid: String, releaseDate: LocalDateTime) {
         release.apply {
             id = generationService.generateReleaseId(ocid)
             date = releaseDate
-            tender.statusDetails = dto.tender.statusDetails
-            tender.tenderPeriod = dto.tender.tenderPeriod
-            tender.enquiryPeriod = dto.tender.enquiryPeriod
-            tender.auctionPeriod = dto.tender.auctionPeriod
-            tender.procurementMethodModalities = dto.tender.procurementMethodModalities ?: emptyList()
-            tender.electronicAuctions = dto.tender.electronicAuctions
         }
-        addAnswerToEnquiry(release.tender.enquiries, dto.enquiry)
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
+    private fun addAnswerToEnquiry(
+        enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry, pmd: ProcurementMethod
+    ) {
+        when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+                enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
+                    this.answer = enquiry.answer
+                    this.dateAnswered = enquiry.dateAnswered
+                } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
+    }
+
+    private fun setStatusDetails(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
+        when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+                tender.statusDetails = dto.tender.statusDetails
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
+    }
+
+    private fun setTenderPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
+        when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV ->
+                tender.tenderPeriod = dto.tender.tenderPeriod
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
+    }
+
+    private fun setEnquiryPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
+        when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+                tender.enquiryPeriod = dto.tender.enquiryPeriod
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
+    }
+
+    private fun setElectronicAuctionsPeriodAndModalities(
+        tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod
+    ) {
+        when (pmd) {
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> {
+                tender.electronicAuctions = dto.tender.electronicAuctions
+                tender.auctionPeriod = dto.tender.auctionPeriod
+                tender.procurementMethodModalities = dto.tender.procurementMethodModalities
+            }
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
+    }
+
+    private fun setPreQualificationPeriod(
+        release: Release,
+        requestPreQualification: PreQualificationDto?,
+        pmd: ProcurementMethod
+    ) {
+        when (pmd) {
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+                if (requestPreQualification != null) {
+                    val preQualificationPeriod = requestPreQualification.period
+                        .let { period ->
+                            ReleasePreQualification.Period(
+                                startDate = period.startDate,
+                                endDate = period.endDate
+                            )
+                        }
+                    release.preQualification = release.preQualification
+                        ?.copy(period = preQualificationPeriod)
+                        ?: ReleasePreQualification(period = preQualificationPeriod)
+                }
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+        }
     }
 
     fun tenderUnsuccessful(
@@ -1361,7 +1505,7 @@ class TenderService(
                 )
             }
             .toHashSet()
-        return if(details.isNotEmpty())
+        return if (details.isNotEmpty())
             bids?.copy(details = details) ?: Bids(details = details, statistics = null)
         else
             null
@@ -1856,11 +2000,13 @@ class TenderService(
 
     private fun <T> getElementsForUpdate(received: Set<T>, saved: Set<T>) = saved.intersect(received)
 
-    fun awardByBid(cpid: String,
-                   ocid: String,
-                   stage: String,
-                   releaseDate: LocalDateTime,
-                   data: JsonNode): ResponseDto {
+    fun awardByBid(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(AwardByBidDto::class.java, toJson(data))
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
@@ -1871,15 +2017,22 @@ class TenderService(
             updateAward(this, dto.award)
             updateBid(this, dto.bid)
         }
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage,
+            release = release,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun awardPeriodEnd(cpid: String,
-                       ocid: String,
-                       stage: String,
-                       releaseDate: LocalDateTime,
-                       data: JsonNode): ResponseDto {
+    fun awardPeriodEnd(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(AwardPeriodEndDto::class.java, data.toString())
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
@@ -1894,15 +2047,22 @@ class TenderService(
         }
         organizationService.processRecordPartiesFromBids(release)
         organizationService.processRecordPartiesFromAwards(release)
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage,
+            release = release,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun standstillPeriod(cpid: String,
-                         ocid: String,
-                         stage: String,
-                         releaseDate: LocalDateTime,
-                         data: JsonNode): ResponseDto {
+    fun standstillPeriod(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(StandstillPeriodEndDto::class.java, toJson(data))
         val statusDetails = when (Stage.valueOf(stage.toUpperCase())) {
             Stage.PS -> TenderStatusDetails.PRESELECTED
@@ -1927,16 +2087,23 @@ class TenderService(
             if (dto.lots.isNotEmpty()) tender.lots = dto.lots
         }
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage,
+            release = release,
+            publishDate = recordEntity.publishDate
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    fun startNewStage(cpid: String,
-                      ocid: String,
-                      stage: String,
-                      prevStage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode): ResponseDto {
+    fun startNewStage(
+        cpid: String,
+        ocid: String,
+        stage: String,
+        prevStage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode
+    ): ResponseDto {
         val dto = toObject(StartNewStageDto::class.java, toJson(data))
         val statusDetails: TenderStatusDetails?
         val relatedProcessType: RelatedProcessType?
@@ -1995,12 +2162,31 @@ class TenderService(
         )
         processTenderDocuments(release = release, prevRelease = prevRelease)
         organizationService.processRecordPartiesFromBids(release)
-        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = relatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToMs(
+            ms = ms,
+            ocid = newOcId,
+            processType = relatedProcessType
+        )
         relatedProcessService.addMsRelatedProcessToRecord(release = release, cpId = cpid)
-        relatedProcessService.addRecordRelatedProcessToRecord(release = release, ocId = ocid, cpId = cpid, processType = prRelatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToRecord(
+            release = release,
+            ocId = ocid,
+            cpId = cpid,
+            processType = prRelatedProcessType
+        )
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = prevStage, release = prevRelease, publishDate = recordEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = releaseDate.toDate())
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = prevStage,
+            release = prevRelease,
+            publishDate = recordEntity.publishDate
+        )
+        releaseService.saveRecord(
+            cpId = cpid,
+            stage = stage,
+            release = release,
+            publishDate = releaseDate.toDate()
+        )
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
@@ -2042,7 +2228,7 @@ class TenderService(
     private fun updateAward(release: Release, award: Award) {
         release.awards.let { awards ->
             val upAward = awards.asSequence().firstOrNull { it.id == award.id }
-                    ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.AWARD_NOT_FOUND)
             award.date?.let { upAward.date = it }
             award.description?.let { upAward.description = it }
             award.statusDetails?.let { upAward.statusDetails = it }
@@ -2053,17 +2239,9 @@ class TenderService(
     private fun updateBid(release: Release, bid: Bid) {
         release.bids?.details?.let { bids ->
             val upBid = bids.asSequence().firstOrNull { it.id == bid.id }
-                    ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
+                ?: throw ErrorException(ErrorType.BID_NOT_FOUND)
             bid.date?.let { upBid.date = it }
             bid.statusDetails?.let { upBid.statusDetails = it }
         }
     }
-
-    private fun addAnswerToEnquiry(enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry) {
-        enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
-            this.answer = enquiry.answer
-            this.dateAnswered = enquiry.dateAnswered
-        } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
-    }
-
 }

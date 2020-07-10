@@ -7,5 +7,7 @@ data class UnsuspendTenderDto @JsonCreator constructor(
 
     val enquiry: RecordEnquiry,
 
-    val tender: TenderDto
+    val tender: TenderDto,
+
+    val preQualification: PreQualificationDto?
 )
