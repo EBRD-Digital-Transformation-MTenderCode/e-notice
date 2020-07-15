@@ -505,7 +505,8 @@ class ContractingService(
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
             ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA -> throw ErrorException(ErrorType.INVALID_PMD)
         }
         val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
@@ -606,7 +607,8 @@ class ContractingService(
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
             ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA -> throw ErrorException(ErrorType.INVALID_PMD)
         }
         val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
                 ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)

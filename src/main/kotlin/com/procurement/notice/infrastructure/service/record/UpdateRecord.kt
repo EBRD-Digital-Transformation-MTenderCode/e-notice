@@ -1798,6 +1798,16 @@ fun RecordQualification.updateQualification(received: RequestQualification): Upd
     )
         .doReturn { e -> return failure(e) }
 
+    val documents = updateStrategy(
+        receivedElements = received.documents,
+        keyExtractorForReceivedElement = requestDocumentKeyExtractor,
+        availableElements = this.documents,
+        keyExtractorForAvailableElement = recordDocumentKeyExtractor,
+        updateBlock = RecordDocument::updateDocument,
+        createBlock = ::createDocument
+    )
+        .doReturn { e -> return failure(e) }
+
     return this.copy(
         id = received.id,
         date = received.date ?: this.date,
@@ -1805,7 +1815,10 @@ fun RecordQualification.updateQualification(received: RequestQualification): Upd
         statusDetails = received.statusDetails ?: this.statusDetails,
         relatedSubmission = received.relatedSubmission ?: this.relatedSubmission,
         scoring = received.scoring ?: this.scoring,
-        requirementResponses = requirementResponses
+        requirementResponses = requirementResponses,
+        internalId = received.internalId ?: this.internalId,
+        description = received.description ?: this.description,
+        documents = documents
     )
         .asSuccess()
 }

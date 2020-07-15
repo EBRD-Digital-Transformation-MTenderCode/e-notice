@@ -323,6 +323,7 @@ class CommandService(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
+                pmd = cm.pmd,
                 releaseDate = releaseDate,
                 data = data
             )
