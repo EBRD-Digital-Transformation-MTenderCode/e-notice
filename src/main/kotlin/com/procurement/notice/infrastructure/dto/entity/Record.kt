@@ -10,6 +10,7 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanning
 import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
+import com.procurement.notice.infrastructure.dto.invitation.RecordInvitation
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
@@ -70,5 +71,8 @@ data class Record(
         @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RecordRelatedProcess> = mutableListOf(),
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RecordPreQualification?
+        @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RecordPreQualification?,
+
+        @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+        @field:JsonProperty("invitations") @param:JsonProperty("invitations") val invitations: List<RecordInvitation> = emptyList()
 )
