@@ -95,6 +95,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordVariant
+import com.procurement.notice.infrastructure.dto.invitation.RecordInvitation
 import com.procurement.notice.infrastructure.dto.request.RequestAccountIdentifier
 import com.procurement.notice.infrastructure.dto.request.RequestAgreedMetric
 import com.procurement.notice.infrastructure.dto.request.RequestAmendment
@@ -145,6 +146,7 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueB
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentBF
+import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
 import com.procurement.notice.infrastructure.dto.request.parties.RequestMainEconomicActivity
@@ -1235,4 +1237,14 @@ fun createBidsStatistic(received: RequestBidsStatistic): RecordBidsStatistic =
         notes = received.notes,
         measure = received.measure,
         relatedLot = received.relatedLot
+    )
+
+fun createInvitation(received: RequestInvitation): RecordInvitation =
+    RecordInvitation(
+        id = received.id,
+        date = received.date,
+        status = received.status,
+        tenderers = received.tenderers
+            .map { createOrganizationReference(it) },
+        relatedQualification = received.relatedQualification
     )

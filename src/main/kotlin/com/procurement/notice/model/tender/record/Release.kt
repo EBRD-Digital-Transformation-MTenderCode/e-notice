@@ -57,5 +57,8 @@ data class Release (
     @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") var relatedProcesses: MutableList<RelatedProcess> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("qualifications") @param:JsonProperty("qualifications") val qualifications: List<ReleaseQualification> = emptyList()
+    @field:JsonProperty("qualifications") @param:JsonProperty("qualifications") val qualifications: List<ReleaseQualification> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("invitations") @param:JsonProperty("invitations") val invitations: List<ReleaseInvitation> = emptyList()
 )
