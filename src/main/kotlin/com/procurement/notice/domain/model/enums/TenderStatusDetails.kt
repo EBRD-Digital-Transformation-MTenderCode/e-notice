@@ -18,6 +18,7 @@ enum class TenderStatusDetails(@JsonValue val value: String) {
     PLANNED("planned"),
     PLANNING("planning"),
     QUALIFICATION("qualification"),
+    QUALIFICATION_STAND_STILL("qualificationStandStill"),
     SUSPENDED("suspended"),
     TENDERING("tendering");
 
