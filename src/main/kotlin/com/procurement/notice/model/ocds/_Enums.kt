@@ -265,6 +265,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     PRESELECTION("preselection"),
     PRIOR_NOTICE("prior notice"),
     QUALIFICATION("qualification"),
+    QUALIFICATION_STAND_STILL("qualificationStandStill"),
     STANDSTILL("standStill"),
     SUBMISSION("submission"),
     SUSPENDED("suspended"),
