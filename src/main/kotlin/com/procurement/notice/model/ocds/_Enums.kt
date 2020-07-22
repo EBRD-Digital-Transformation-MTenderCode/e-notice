@@ -254,6 +254,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     EVALUATED("evaluated"),
     EVALUATION("evaluation"),
     EXECUTION("execution"),
+    LACK_OF_QUALIFICATIONS("lackOfQualifications"),
     LACK_OF_SUBMISSIONS("lackOfSubmissions"),
     NEGOTIATION("negotiation"),
     PLANNED("planned"),
