@@ -101,6 +101,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordVariant
+import com.procurement.notice.infrastructure.dto.invitation.RecordInvitation
 import com.procurement.notice.infrastructure.dto.request.RequestAccountIdentifier
 import com.procurement.notice.infrastructure.dto.request.RequestAgreedMetric
 import com.procurement.notice.infrastructure.dto.request.RequestAmendment
@@ -151,6 +152,7 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueB
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentBF
+import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
@@ -2854,6 +2856,16 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
         }
         ?: this.preQualification
 
+    val invitations = updateStrategy(
+        receivedElements = receivedRelease.invitations,
+        keyExtractorForReceivedElement = requestInvitationKeyExtractor,
+        availableElements = this.invitations,
+        keyExtractorForAvailableElement = recordInvitationKeyExtractor,
+        updateBlock = RecordInvitation::updateInvitation,
+        createBlock = ::createInvitation
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             id = releaseId,
@@ -2874,7 +2886,8 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
             planning = planning,
             submissions = submissions,
             qualifications = qualifications,
-            preQualification = preQualification
+            preQualification = preQualification,
+            invitations = invitations
         )
         .asSuccess()
 }
@@ -3183,6 +3196,31 @@ fun RecordBidsStatistic.updateBidsStatistic(received: RequestBidsStatistic): Upd
         relatedLot = received.relatedLot ?: this.relatedLot
     )
         .asSuccess()
+
+val recordInvitationKeyExtractor: (RecordInvitation) -> String = { it.id }
+val requestInvitationKeyExtractor: (RequestInvitation) -> String = { it.id }
+
+fun RecordInvitation.updateInvitation(received: RequestInvitation): UpdateRecordResult<RecordInvitation> {
+    val tenderers = updateStrategy(
+        receivedElements = received.tenderers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.tenderers,
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(
+        id = received.id,
+        date = received.date ?: this.date,
+        status = received.status ?: this.status,
+        relatedQualification = received.relatedQualification ?: this.relatedQualification,
+        tenderers = tenderers
+    )
+        .asSuccess()
+}
+
 
 fun <R, A, K> updateStrategy(
     receivedElements: List<R>,

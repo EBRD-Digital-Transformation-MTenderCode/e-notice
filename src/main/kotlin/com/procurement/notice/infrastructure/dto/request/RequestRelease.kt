@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.bids.RequestBids
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
+import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
 import com.procurement.notice.infrastructure.dto.request.planning.RequestPlanning
 import com.procurement.notice.infrastructure.dto.request.qualification.RequestQualification
@@ -65,5 +66,8 @@ data class RequestRelease(
     @field:JsonProperty("relatedProcesses") @param:JsonProperty("relatedProcesses") val relatedProcesses: MutableList<RequestRelatedProcess> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RequestPreQualification?
+    @field:JsonProperty("preQualification") @param:JsonProperty("preQualification") val preQualification: RequestPreQualification?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("invitations") @param:JsonProperty("invitations") val invitations: List<RequestInvitation> = emptyList()
 )
