@@ -142,11 +142,11 @@ class ContractingService(
         )
         //BR-2.7.1.10
         val processType = when(stage) {
-            "EV" -> RelatedProcessType.X_EVALUATION
+            "EV", "TP" -> RelatedProcessType.X_EVALUATION
             "NP" ->RelatedProcessType.X_NEGOTIATION
             else -> throw ErrorException(
                 error = ErrorType.INVALID_STAGE,
-                message = "Current stage '${stage}', required stage: 'EV' or 'NP'."
+                message = "Current stage '${stage}', required stage: 'EV', 'TP' or 'NP'."
             )
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
