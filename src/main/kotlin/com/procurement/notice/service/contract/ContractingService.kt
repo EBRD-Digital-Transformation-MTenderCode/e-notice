@@ -1110,7 +1110,7 @@ class ContractingService(
      */
     private fun updatedBids(context: CreateProtocolContext, data: CreateProtocolData, bids: Bids?): Bids? {
         return when (context.stage) {
-            "EV" -> {
+            "EV", "TP" -> {
                 if (data.bids == null || data.bids.isEmpty())
                     throw ErrorException(error = ErrorType.BIDS_IN_REQUEST_IS_EMPTY)
 
