@@ -284,7 +284,8 @@ class UpdateReleaseService(
                                     startDate = period.startDate,
                                     endDate = period.endDate
                                 )
-                            }
+                            },
+                        qualificationPeriod = null
                     )
                 }
                 ?: releaseEV.preQualification,

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 
 data class ReleasePreQualification(
-    @field:JsonProperty("period") @param:JsonProperty("period") val period: Period
+    @field:JsonProperty("period") @param:JsonProperty("period") val period: Period,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("qualificationPeriod") @param:JsonProperty("qualificationPeriod") val qualificationPeriod: Period?
 ) {
     data class Period(
         @field:JsonInclude(JsonInclude.Include.NON_NULL)

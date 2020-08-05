@@ -59,6 +59,9 @@ data class Release (
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("qualifications") @param:JsonProperty("qualifications") val qualifications: List<ReleaseQualification> = emptyList(),
 
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("submissions") @param:JsonProperty("submissions") val submissions: ReleaseSubmission?,
+
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("invitations") @param:JsonProperty("invitations") val invitations: List<ReleaseInvitation> = emptyList()
 )
