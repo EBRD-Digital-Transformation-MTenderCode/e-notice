@@ -1354,7 +1354,7 @@ class TenderService(
                         }
                     release.preQualification = release.preQualification
                         ?.copy(period = preQualificationPeriod)
-                        ?: ReleasePreQualification(period = preQualificationPeriod)
+                        ?: ReleasePreQualification(period = preQualificationPeriod, qualificationPeriod = null)
                 }
             ProcurementMethod.OT, ProcurementMethod.TEST_OT,
             ProcurementMethod.SV, ProcurementMethod.TEST_SV,
@@ -2158,6 +2158,7 @@ class TenderService(
             hasPreviousNotice = prevRelease.hasPreviousNotice,
             purposeOfNotice = prevRelease.purposeOfNotice,
             relatedProcesses = mutableListOf(),
+            submissions = prevRelease.submissions,
             preQualification = null
         )
         processTenderDocuments(release = release, prevRelease = prevRelease)
