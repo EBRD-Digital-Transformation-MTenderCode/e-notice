@@ -9,8 +9,6 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.contract.ContractRecord
 import com.procurement.notice.model.ocds.Amendment
-import com.procurement.notice.model.ocds.Award
-import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Lot
@@ -62,12 +60,10 @@ class CancelCANsAndContractStrategy(
                 /** BR-2.8.3.13 */
                 lots = releaseEV.tender.lots.updateLots(request.lot)
             ),
-
-            bids = releaseEV.bids?.copy(
-                /** BR-2.8.3.6 */
-                details = releaseEV.bids?.details?.updateBids(request.bids)
-            ),
-            awards = releaseEV.awards.updateAwards(request.awards)
+            /** BR-2.8.3.6 */
+            bids = releaseEV.bids,
+            /** BR-2.8.3.7 */
+            awards = releaseEV.awards
         )
 
         val contractId = request.contract.id
@@ -189,41 +185,6 @@ class CancelCANsAndContractStrategy(
     }
 
     /**
-     * BR-2.8.3.6
-     */
-    private fun HashSet<Bid>.updateBids(bids: List<CancelCANsAndContractRequest.Bid>): HashSet<Bid> {
-        val bidsById = bids.associateBy { it.id }
-        return this.asSequence()
-            .map { bid ->
-                bidsById[bid.id]?.let {
-                    bid.copy(
-                        status = it.status,
-                        statusDetails = it.statusDetails
-                    )
-                } ?: bid
-            }
-            .toHashSet()
-    }
-
-    /**
-     * BR-2.8.3.7
-     */
-    private fun List<Award>.updateAwards(awards: List<CancelCANsAndContractRequest.Award>): List<Award> {
-        val awardsById = awards.associateBy { it.id }
-        return this.asSequence()
-            .map { award ->
-                awardsById[award.id]?.let {
-                    award.copy(
-                        date = it.date,
-                        status = it.status,
-                        statusDetails = it.statusDetails
-                    )
-                } ?: award
-            }
-            .toList()
-    }
-
-    /**
      * BR-2.7.8.6
      * BR-2.7.8.7
      */
@@ -241,32 +202,6 @@ class CancelCANsAndContractStrategy(
                     updatedContract
                 } else
                     it
-            }
-            .toHashSet()
-    }
-
-    private fun CancelCANsAndContractRequest.createAwards(): HashSet<Award> {
-        return this.awards.asSequence()
-            .map { award ->
-                Award(
-                    id = award.id,
-                    date = award.date,
-                    relatedBid = award.relatedBid,
-                    status = award.status,
-                    statusDetails = award.statusDetails,
-                    title = null,
-                    description = null,
-                    value = null,
-                    suppliers = null,
-                    items = null,
-                    contractPeriod = null,
-                    documents = null,
-                    amendments = null,
-                    amendment = null,
-                    requirementResponses = null,
-                    reviewProceedings = null,
-                    relatedLots = null
-                )
             }
             .toHashSet()
     }
