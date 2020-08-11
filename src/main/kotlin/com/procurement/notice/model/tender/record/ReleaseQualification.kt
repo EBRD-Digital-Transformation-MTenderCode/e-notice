@@ -9,6 +9,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.infrastructure.bind.scoring.ScoringDeserializer
 import com.procurement.notice.infrastructure.bind.scoring.ScoringSerializer
 import com.procurement.notice.infrastructure.dto.entity.qualification.QualificationStatus
+import com.procurement.notice.infrastructure.dto.entity.qualification.QualificationStatusDetails
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.RequirementResponse
 import java.math.BigDecimal
@@ -24,6 +25,9 @@ data class ReleaseQualification(
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("status") @param:JsonProperty("status") val status: QualificationStatus?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: QualificationStatusDetails?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedSubmission") @param:JsonProperty("relatedSubmission") val relatedSubmission: String?,
