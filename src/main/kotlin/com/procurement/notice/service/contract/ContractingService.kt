@@ -1410,7 +1410,7 @@ class ContractingService(
                 statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
             }
         }
-        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = "EV")
+        val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = stage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
         val releaseEv = releaseService.getRelease(recordEvEntity.jsonData)
         releaseEv.apply {
