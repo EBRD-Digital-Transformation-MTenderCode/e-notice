@@ -25,8 +25,8 @@ data class AddressDetails(
     @field:Valid @field:NotNull
     val region: RegionDetails,
 
-    @field:Valid @field:NotNull
-    val locality: LocalityDetails
+    @field:Valid
+    val locality: LocalityDetails?
 )
 
 data class CountryDetails(
