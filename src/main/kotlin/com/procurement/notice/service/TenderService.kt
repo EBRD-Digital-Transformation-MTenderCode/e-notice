@@ -1234,15 +1234,19 @@ class TenderService(
     }
 
     private fun checkPmdForUnsuspendTender(pmd: ProcurementMethod) = when (pmd) {
-        ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-        ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+        ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
         ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-        ProcurementMethod.GPA, ProcurementMethod.TEST_GPA -> Unit
+        ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+        ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+        ProcurementMethod.SV, ProcurementMethod.TEST_SV -> Unit
+        
+        ProcurementMethod.CD, ProcurementMethod.TEST_CD,
         ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+        ProcurementMethod.DC, ProcurementMethod.TEST_DC,
         ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+        ProcurementMethod.IP, ProcurementMethod.TEST_IP,
         ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-        ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-        ProcurementMethod.RT, ProcurementMethod.TEST_RT -> throw ErrorException(ErrorType.INVALID_PMD)
+        ProcurementMethod.OP, ProcurementMethod.TEST_OP -> throw ErrorException(ErrorType.INVALID_PMD)
     }
 
     private fun setReleaseIdAndDate(release: Release, ocid: String, releaseDate: LocalDateTime) {
@@ -1256,46 +1260,56 @@ class TenderService(
         enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry, pmd: ProcurementMethod
     ) {
         when (pmd) {
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
             ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV ->
                 enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
                     this.answer = enquiry.answer
                     this.dateAnswered = enquiry.dateAnswered
                 } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
         }
     }
 
     private fun setStatusDetails(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
         when (pmd) {
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
             ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
-                tender.statusDetails = dto.tender.statusDetails
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.statusDetails = dto.tender.statusDetails
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
         }
     }
 
     private fun setTenderPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
         when (pmd) {
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
             ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV ->
-                tender.tenderPeriod = dto.tender.tenderPeriod
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.tenderPeriod = dto.tender.tenderPeriod
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP,
             ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
@@ -1304,16 +1318,19 @@ class TenderService(
 
     private fun setEnquiryPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
         when (pmd) {
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
             ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
-                tender.enquiryPeriod = dto.tender.enquiryPeriod
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.enquiryPeriod = dto.tender.enquiryPeriod
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
         }
     }
 
@@ -1321,16 +1338,20 @@ class TenderService(
         tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod
     ) {
         when (pmd) {
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
             ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV -> {
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> {
                 tender.electronicAuctions = dto.tender.electronicAuctions
                 tender.auctionPeriod = dto.tender.auctionPeriod
                 tender.procurementMethodModalities = dto.tender.procurementMethodModalities
             }
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP,
             ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
@@ -1343,7 +1364,8 @@ class TenderService(
         pmd: ProcurementMethod
     ) {
         when (pmd) {
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA ->
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT ->
                 if (requestPreQualification != null) {
                     val preQualificationPeriod = requestPreQualification.period
                         .let { period ->
@@ -1356,14 +1378,17 @@ class TenderService(
                         ?.copy(period = preQualificationPeriod)
                         ?: ReleasePreQualification(period = preQualificationPeriod, qualificationPeriod = null)
                 }
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD, 
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC, 
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP, 
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> Unit
         }
     }
 
