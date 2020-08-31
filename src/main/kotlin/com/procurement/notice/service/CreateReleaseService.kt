@@ -82,7 +82,6 @@ class CreateReleaseService(
         operation: Operation
     ): ResponseDto {
         val rawMs = releaseService.getMs(data)
-        val params = releaseService.getParamsForCreateAp(operation, Stage.valueOf(stage.toUpperCase()))
         val compiledMs = rawMs.copy(
             ocid = cpid,
             date = releaseDate,
@@ -90,7 +89,7 @@ class CreateReleaseService(
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
             initiationType = InitiationType.TENDER,  // BR-4.75
             tender = rawMs.tender.copy(
-                statusDetails = params.statusDetails // BR-4.66
+                statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
             )
         )
         val rawRelease = releaseService.getRelease(data)
@@ -99,15 +98,15 @@ class CreateReleaseService(
             date = releaseDate, // BR-4.256
             ocid = ocId,
             id = generationService.generateReleaseId(ocId),
-            tag = params.tag,    // BR-4.48
+            tag = listOf(Tag.PLANNING),    // BR-4.48
             initiationType = InitiationType.TENDER,   // BR-4.74
             hasPreviousNotice = false,   // BR-4.50
-            purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition)  // BR-4.51
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = false)  // BR-4.51
         )
         relatedProcessService.addApRecordRelatedProcessToMs(
             ms = compiledMs,
             ocId = ocId,
-            processType = params.relatedProcessType
+            processType = RelatedProcessType.AGGREGATE_PLANNING
         )
         relatedProcessService.addMsRelatedProcessToRecord(release = compiledRelease, cpId = cpid)
         releaseService.saveMs(cpId = cpid, ms = compiledMs, publishDate = releaseDate.toDate())

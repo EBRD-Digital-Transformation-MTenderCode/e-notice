@@ -236,25 +236,6 @@ class ReleaseService(private val releaseDao: ReleaseDao) {
         return params
     }
 
-    fun getParamsForCreateAp(operation: Operation, stage: Stage): Params {
-        val params = Params()
-        when (operation) {
-            Operation.CREATE_AP -> {
-                params.tag = listOf(Tag.PLANNING)
-                params.isACallForCompetition = false
-            }
-            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
-        }
-        when (stage) {
-            Stage.AP -> {
-                params.statusDetails = TenderStatusDetails.AGGREGATE_PLANNING       // BR-4.66
-                params.relatedProcessType = RelatedProcessType.AGGREGATE_PLANNING   // BR-4.41
-            }
-            else -> throw ErrorException(ErrorType.IMPLEMENTATION_ERROR)
-        }
-        return params
-    }
-
     fun getParamsForUpdateCnOnPnPin(stage: Stage, operation: Operation? = null): Params {
         val params = Params()
         when (stage) {
