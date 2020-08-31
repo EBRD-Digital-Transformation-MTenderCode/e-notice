@@ -1239,7 +1239,9 @@ class TenderService(
         ProcurementMethod.OT, ProcurementMethod.TEST_OT,
         ProcurementMethod.RT, ProcurementMethod.TEST_RT,
         ProcurementMethod.SV, ProcurementMethod.TEST_SV -> Unit
-        
+
+        ProcurementMethod.CF, ProcurementMethod.TEST_CF,
+        ProcurementMethod.OF, ProcurementMethod.TEST_OF,
         ProcurementMethod.CD, ProcurementMethod.TEST_CD,
         ProcurementMethod.DA, ProcurementMethod.TEST_DA,
         ProcurementMethod.DC, ProcurementMethod.TEST_DC,
