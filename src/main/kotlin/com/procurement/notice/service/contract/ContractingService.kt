@@ -615,9 +615,9 @@ class ContractingService(
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
-            ProcurementMethod.OF, ProcurementMethod.TEST_OF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
             ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.OF, ProcurementMethod.TEST_OF,
             ProcurementMethod.RT, ProcurementMethod.TEST_RT -> throw ErrorException(ErrorType.INVALID_PMD)
         }
         val entityForEvaluationOrNegotiationRelease = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
