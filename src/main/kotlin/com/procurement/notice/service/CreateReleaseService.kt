@@ -32,11 +32,13 @@ class CreateReleaseService(
     private val generationService: GenerationService
 ) {
 
-    fun createCnPnPin(cpid: String,
-                      stage: String,
-                      releaseDate: LocalDateTime,
-                      data: JsonNode,
-                      operation: Operation): ResponseDto {
+    fun createCnPnPin(
+        cpid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode,
+        operation: Operation
+    ): ResponseDto {
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
         val ms = releaseService.getMs(data)
         val params = releaseService.getParamsForCreateCnPnPin(operation, Stage.valueOf(stage.toUpperCase()))
@@ -69,6 +71,46 @@ class CreateReleaseService(
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
+    }
+
+    fun createAp(
+        cpid: String,
+        stage: String,
+        releaseDate: LocalDateTime,
+        data: JsonNode,
+        operation: Operation
+    ): ResponseDto {
+        val rawMs = releaseService.getMs(data)
+        val compiledMs = rawMs.copy(
+            ocid = cpid,
+            date = releaseDate,
+            id = generationService.generateReleaseId(cpid),
+            tag = listOf(Tag.COMPILED), // BR-BR-4.76
+            initiationType = InitiationType.TENDER,  // BR-4.75
+            tender = rawMs.tender.copy(
+                statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
+            )
+        )
+        val rawRelease = releaseService.getRelease(data)
+        val ocId = generationService.generateOcid(cpid = cpid, stage = stage)
+        val compiledRelease = rawRelease.copy(
+            date = releaseDate, // BR-4.256
+            ocid = ocId,
+            id = generationService.generateReleaseId(ocId),
+            tag = listOf(Tag.PLANNING),    // BR-4.48
+            initiationType = InitiationType.TENDER,   // BR-4.74
+            hasPreviousNotice = false,   // BR-4.50
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = false)  // BR-4.51
+        )
+        relatedProcessService.addApRecordRelatedProcessToMs(
+            ms = compiledMs,
+            ocId = ocId,
+            processType = RelatedProcessType.AGGREGATE_PLANNING
+        )
+        relatedProcessService.addMsRelatedProcessToRecord(release = compiledRelease, cpId = cpid)
+        releaseService.saveMs(cpId = cpid, ms = compiledMs, publishDate = releaseDate.toDate())
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = compiledRelease, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
     }
 
