@@ -216,7 +216,7 @@ class CommandService(
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
-                operation = CREATE_PN
+                operation = CREATE_AP
             )
 
             CREATE_PIN -> createReleaseService.createCnPnPin(

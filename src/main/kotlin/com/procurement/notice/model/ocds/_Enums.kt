@@ -369,19 +369,18 @@ enum class LotStatusDetails constructor(private val value: String) {
     }
 }
 
-
 enum class Stage {
-    EI,
-    FS,
-    PS,
-    PQ,
-    PN,
-    PIN,
-    EV,
+    AP,
     CT,
+    EI,
+    EV,
+    FS,
     NP,
-    TP,
-    AP
+    PIN,
+    PN,
+    PQ,
+    PS,
+    TP
 }
 
 enum class Operation(val value: String) {
