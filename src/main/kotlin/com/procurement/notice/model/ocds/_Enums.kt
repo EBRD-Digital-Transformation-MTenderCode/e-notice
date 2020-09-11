@@ -104,6 +104,7 @@ enum class RelatedProcessType constructor(private val value: String) {
 
     AGGREGATE_PLANNING("aggregatePlanning"),
     PARENT("parent"),
+    FRAMEWORK("framework"),
     PLANNING("planning"),
     X_CONTRACTING("x_contracting"),
     X_EVALUATION("x_evaluation"),
@@ -243,6 +244,7 @@ enum class TenderStatus constructor(private val value: String) {
 enum class TenderStatusDetails constructor(private val value: String) {
     AGGREGATE_PLANNING("aggregatePlanning"),
     AGGREGATION("aggregation"),
+    AGGREGATION_PENDING("aggregationPending"),
     AUCTION("auction"),
     AWARDED("awarded"),
     AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
