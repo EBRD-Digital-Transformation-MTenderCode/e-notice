@@ -243,6 +243,7 @@ enum class TenderStatus constructor(private val value: String) {
 enum class TenderStatusDetails constructor(private val value: String) {
     AGGREGATE_PLANNING("aggregatePlanning"),
     AGGREGATION("aggregation"),
+    AGGREGATION_PENDING("aggregationPending"),
     AUCTION("auction"),
     AWARDED("awarded"),
     AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),

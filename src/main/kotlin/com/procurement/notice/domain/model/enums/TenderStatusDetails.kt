@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.exception.EnumException
 
 enum class TenderStatusDetails(@JsonValue val value: String) {
+    AGGREGATE_PLANNING("aggregatePlanning"),
     AGGREGATION("aggregation"),
+    AGGREGATION_PENDING("aggregationPending"),
     AUCTION("auction"),
     AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
     AWARDED_STANDSTILL("awardedStandStill"),
