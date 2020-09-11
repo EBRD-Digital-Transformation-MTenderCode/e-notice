@@ -10,13 +10,13 @@ import com.procurement.notice.lib.orThrow
 fun UpdateCNRequest.convert(): UpdateCNData =
     UpdateCNData(
         preQualification = this.preQualification
-            .let { qualification ->
+            ?.let { qualification ->
                 UpdateCNData.PreQualification(
-                    period = qualification?.period
+                    period = qualification.period
                         .let { period ->
                             UpdateCNData.PreQualification.Period(
-                                startDate = period?.startDate,
-                                endDate = period?.endDate
+                                startDate = period.startDate,
+                                endDate = period.endDate
                             )
                         }
                 )

@@ -102,17 +102,21 @@ enum class RelatedProcessScheme constructor(private val value: String) {
 
 enum class RelatedProcessType constructor(private val value: String) {
 
+    AGGREGATE_PLANNING("aggregatePlanning"),
+    PARENT("parent"),
+    FRAMEWORK("framework"),
+    PLANNING("planning"),
+    X_CONTRACTING("x_contracting"),
+    X_DEMAND("x_demand"),
+    X_SCOPE("x_scope"),
+    X_EVALUATION("x_evaluation"),
     X_EXECUTION("x_execution"),
     X_EXPENDITURE_ITEM("x_expenditureItem"),
     X_FUNDING_SOURCE("x_fundingSource"),
-    PARENT("parent"),
-    X_PRESELECTION("x_preselection"),
-    X_PREQUALIFICATION("x_prequalification"),
-    X_EVALUATION("x_evaluation"),
     X_NEGOTIATION("x_negotiation"),
-    PLANNING("planning"),
     X_PLANNED("x_planned"),
-    X_CONTRACTING("x_contracting"),
+    X_PREQUALIFICATION("x_prequalification"),
+    X_PRESELECTION("x_preselection"),
     X_TENDERING("x_tendering");
 
     override fun toString(): String {
@@ -240,6 +244,10 @@ enum class TenderStatus constructor(private val value: String) {
 }
 
 enum class TenderStatusDetails constructor(private val value: String) {
+    AGGREGATED("aggregated"),
+    AGGREGATE_PLANNING("aggregatePlanning"),
+    AGGREGATION("aggregation"),
+    AGGREGATION_PENDING("aggregationPending"),
     AUCTION("auction"),
     AWARDED("awarded"),
     AWARDED_CONTRACT_PREPARATION("awardedContractPreparation"),
@@ -367,17 +375,17 @@ enum class LotStatusDetails constructor(private val value: String) {
     }
 }
 
-
 enum class Stage {
-    EI,
-    FS,
-    PS,
-    PQ,
-    PN,
-    PIN,
-    EV,
+    AP,
     CT,
+    EI,
+    EV,
+    FS,
     NP,
+    PIN,
+    PN,
+    PQ,
+    PS,
     TP
 }
 
@@ -388,6 +396,7 @@ enum class Operation(val value: String) {
     UPDATE_FS("updateFS"),
     CREATE_CN("createCN"),
     CREATE_PN("createPN"),
+    CREATE_AP("createAP"),
     CREATE_PIN("createPIN"),
     UPDATE_CN("updateCN"),
     UPDATE_PN("updatePN"),

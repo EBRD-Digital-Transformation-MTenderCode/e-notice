@@ -75,6 +75,7 @@ import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER
 import com.procurement.notice.model.ocds.Operation.CANCEL_TENDER_EV
 import com.procurement.notice.model.ocds.Operation.CONFIRM_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_AC
+import com.procurement.notice.model.ocds.Operation.CREATE_AP
 import com.procurement.notice.model.ocds.Operation.CREATE_AWARD
 import com.procurement.notice.model.ocds.Operation.CREATE_CAN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN
@@ -208,6 +209,14 @@ class CommandService(
                 releaseDate = releaseDate,
                 data = data,
                 operation = CREATE_PN
+            )
+
+            CREATE_AP -> createReleaseService.createAp(
+                cpid = cpId,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data,
+                operation = CREATE_AP
             )
 
             CREATE_PIN -> createReleaseService.createCnPnPin(

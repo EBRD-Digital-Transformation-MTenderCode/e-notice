@@ -112,6 +112,20 @@ class RelatedProcessService(
         }
     }
 
+    fun addApRecordRelatedProcessToMs(ms: Ms, ocId: String, processType: RelatedProcessType) {
+        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        /*record*/
+        if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocId })
+            ms.relatedProcesses?.add(RelatedProcess(
+                id = UUIDs.timeBased().toString(),
+                relationship = listOf(processType),
+                scheme = RelatedProcessScheme.OCID,
+                identifier = ocId,
+                uri = getTenderUri(cpId = msOcId, ocId = ocId)))
+
+    }
+
     fun addMsRelatedProcessToRecord(release: Release, cpId: String) {
         if (release.relatedProcesses.asSequence().none { it.identifier == cpId })
             release.relatedProcesses.add(RelatedProcess(

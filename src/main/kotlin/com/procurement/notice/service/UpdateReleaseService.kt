@@ -341,7 +341,7 @@ class UpdateReleaseService(
                                 durationInDays = null
                             )
                         }
-                        ?: releaseEV.tender.tenderPeriod,
+                        ?: releaseEV.tender.enquiryPeriod,
                     lotGroups = tender.lotGroups.map { lotGroup ->
                         LotGroup(
                             id = null,
