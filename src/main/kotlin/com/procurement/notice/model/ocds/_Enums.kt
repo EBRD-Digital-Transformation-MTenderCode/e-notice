@@ -106,6 +106,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     PARENT("parent"),
     PLANNING("planning"),
     X_CONTRACTING("x_contracting"),
+    X_DEMAND("x_demand"),
     X_EVALUATION("x_evaluation"),
     X_EXECUTION("x_execution"),
     X_EXPENDITURE_ITEM("x_expenditureItem"),
