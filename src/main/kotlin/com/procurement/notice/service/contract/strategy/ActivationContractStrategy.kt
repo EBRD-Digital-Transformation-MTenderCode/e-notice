@@ -60,11 +60,12 @@ class ActivationContractStrategy(
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> "TP"
+
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.OF, ProcurementMethod.TEST_OF,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> throw ErrorException(ErrorType.INVALID_PMD)
+            ProcurementMethod.OF, ProcurementMethod.TEST_OF -> throw ErrorException(ErrorType.INVALID_PMD)
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = context.cpid, stage = recordStage)
             ?: throw ErrorException(ErrorType.RECORD_NOT_FOUND)
