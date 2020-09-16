@@ -400,6 +400,7 @@ enum class Operation(val value: String) {
     CREATE_PIN("createPIN"),
     UPDATE_CN("updateCN"),
     UPDATE_PN("updatePN"),
+    UPDATE_AP("updateAP"),
     UPDATE_TENDER_PERIOD("updateTenderPeriod"),
     CREATE_ENQUIRY("createEnquiry"),
     ADD_ANSWER("addAnswer"),
