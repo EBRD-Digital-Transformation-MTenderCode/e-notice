@@ -109,6 +109,7 @@ import com.procurement.notice.model.ocds.Operation.TREASURY_APPROVING_AC
 import com.procurement.notice.model.ocds.Operation.UNSUCCESSFUL_TENDER
 import com.procurement.notice.model.ocds.Operation.UNSUSPEND_TENDER
 import com.procurement.notice.model.ocds.Operation.UPDATE_AC
+import com.procurement.notice.model.ocds.Operation.UPDATE_AP
 import com.procurement.notice.model.ocds.Operation.UPDATE_BID_DOCS
 import com.procurement.notice.model.ocds.Operation.UPDATE_CAN_DOCS
 import com.procurement.notice.model.ocds.Operation.UPDATE_CN
@@ -289,6 +290,14 @@ class CommandService(
             }
 
             UPDATE_PN -> updateReleaseService.updatePn(
+                cpid = cpId,
+                ocid = ocId!!,
+                stage = stage,
+                releaseDate = releaseDate,
+                data = data
+            )
+
+            UPDATE_AP -> updateReleaseService.updateAp(
                 cpid = cpId,
                 ocid = ocId!!,
                 stage = stage,
