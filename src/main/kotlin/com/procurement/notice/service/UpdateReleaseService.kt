@@ -644,6 +644,49 @@ class UpdateReleaseService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
 
+    fun updateAp(cpid: String, ocid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val receivedMS = releaseService.getMs(data)
+        val receivedRawRelease = releaseService.getRecordTender(data)
+
+        /*ms*/
+        val msEntity = releaseService.getMsEntity(cpid)
+        val storedMS = releaseService.getMs(msEntity.jsonData)
+
+        val updatedReceivedMs = receivedMS.copy(
+            tender = receivedMS.tender.copy(
+                id = storedMS.tender.id,
+                status = storedMS.tender.status,
+                statusDetails = storedMS.tender.statusDetails,
+                procuringEntity = storedMS.tender.procuringEntity,
+                hasEnquiries = storedMS.tender.hasEnquiries
+            )
+        )
+
+        val updatedMs = storedMS.copy(
+            id = generationService.generateReleaseId(cpid),
+            date = releaseDate,
+            planning = updatedReceivedMs.planning,
+            tender = updatedReceivedMs.tender
+        )
+
+        /* release */
+        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val storedRelease = releaseService.getRelease(recordEntity.jsonData)
+        val updatedReceivedRawRelease = receivedRawRelease.copy(
+            title = storedRelease.tender.title,
+            description = storedRelease.tender.description
+        )
+        val updatedRelease = storedRelease.copy(
+            id = generationService.generateReleaseId(ocid),
+            date = releaseDate,
+            tag = listOf(Tag.PLANNING_UPDATE),
+            tender = updatedReceivedRawRelease
+        )
+        releaseService.saveMs(cpId = cpid, ms = updatedMs, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = updatedRelease, publishDate = recordEntity.publishDate)
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+    }
+
     fun updateTenderPeriod(
         cpid: String,
         ocid: String,
