@@ -7,6 +7,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.PurposeOfNotice
@@ -366,36 +367,39 @@ class CreateReleaseService(
 
     fun createFe(context: CreateFeContext, data: JsonNode): ResponseDto {
         val feRelease = createFeReleaseFe(data, context)
-        val apRelease = createFeReleaseAp(data, context)
-        val msRelease = createFeReleaseMs(data, context)
-        val releaseDate = context.releaseDate.toDate()
+
+        val apEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val apRelease = createFeReleaseAp(data, context, apEntity)
+
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
+        val msRelease = createFeReleaseMs(data, context, msEntity)
 
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
             release = feRelease,
-            publishDate = releaseDate
+            publishDate = context.releaseDate.toDate()
         )
 
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
             release = apRelease,
-            publishDate = releaseDate
+            publishDate = apEntity.publishDate
         )
 
-        releaseService.saveMs(cpId = context.cpid, ms = msRelease, publishDate =  releaseDate)
+        releaseService.saveMs(cpId = context.cpid, ms = msRelease, publishDate =  msEntity.publishDate)
 
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
     private fun createFeReleaseAp(
         data: JsonNode,
-        context: CreateFeContext
+        context: CreateFeContext,
+        recordEntity: ReleaseEntity
     ) : Release{
-        val receivedTender = releaseService.getRecordTender(data)
-        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val storedAp = releaseService.getRelease(recordEntity.jsonData)
+        val receivedTender = releaseService.getRecordTender(data)
 
         return storedAp.copy(
             //FR-5.0.1
@@ -416,11 +420,11 @@ class CreateReleaseService(
 
     private fun createFeReleaseMs(
         data: JsonNode,
-        context: CreateFeContext
+        context: CreateFeContext,
+        msEntity: ReleaseEntity
     ) : Ms{
-        val receivedTender = releaseService.getMsTender(data)
-        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val storedMs = releaseService.getMs(data = msEntity.jsonData)
+        val receivedTender = releaseService.getMsTender(data)
 
         val compiledMs = storedMs.copy(
             //FR-5.0.1
