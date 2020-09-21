@@ -366,13 +366,13 @@ class CreateReleaseService(
     }
 
     fun createFe(context: CreateFeContext, data: JsonNode): ResponseDto {
-        val feRelease = createFeReleaseFe(data, context)
+        val feRelease = getFeReleaseForCreateFe(data, context)
 
         val apEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val apRelease = createFeReleaseAp(data, context, apEntity)
+        val apRelease = getApReleaseForCreateFe(data, context, apEntity)
 
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
-        val msRelease = createFeReleaseMs(data, context, msEntity)
+        val msRelease = getMsReleaseForCreateFe(data, context, msEntity)
 
         releaseService.saveRecord(
             cpId = context.cpid,
@@ -393,7 +393,7 @@ class CreateReleaseService(
         return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
     }
 
-    private fun createFeReleaseAp(
+    private fun getApReleaseForCreateFe(
         data: JsonNode,
         context: CreateFeContext,
         recordEntity: ReleaseEntity
@@ -418,7 +418,7 @@ class CreateReleaseService(
         )
     }
 
-    private fun createFeReleaseMs(
+    private fun getMsReleaseForCreateFe(
         data: JsonNode,
         context: CreateFeContext,
         msEntity: ReleaseEntity
@@ -457,7 +457,7 @@ class CreateReleaseService(
         return compiledMs
     }
 
-    private fun createFeReleaseFe(
+    private fun getFeReleaseForCreateFe(
         data: JsonNode,
         context: CreateFeContext
     ): Release {
