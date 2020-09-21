@@ -8,6 +8,5 @@ data class CreateFeContext(
     val ocidCn: String,
     val stage: String,
     val releaseDate: LocalDateTime,
-    val startDate: LocalDateTime,
-    val isAuction: Boolean
+    val startDate: LocalDateTime
 )
