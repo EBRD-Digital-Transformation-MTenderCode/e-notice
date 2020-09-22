@@ -1331,7 +1331,6 @@ class CommandService(
                 val context = AmendFeContext(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
-                    ocidCn = cm.ocidCn,
                     releaseDate = releaseDate,
                     startDate = cm.startDate,
                     stage = cm.stage

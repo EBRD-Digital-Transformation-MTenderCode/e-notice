@@ -366,7 +366,7 @@ class CreateReleaseService(
     }
 
     fun amendFe(context: AmendFeContext, data: JsonNode) : ResponseDto{
-        val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocidCn)
+        val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val feRelease = getFeReleaseForAmendFe(data, context, feEntity)
 
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
