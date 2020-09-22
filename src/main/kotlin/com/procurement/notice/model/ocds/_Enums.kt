@@ -103,12 +103,12 @@ enum class RelatedProcessScheme constructor(private val value: String) {
 enum class RelatedProcessType constructor(private val value: String) {
 
     AGGREGATE_PLANNING("aggregatePlanning"),
-    PARENT("parent"),
     FRAMEWORK("framework"),
+    PARENT("parent"),
     PLANNING("planning"),
     X_CONTRACTING("x_contracting"),
     X_DEMAND("x_demand"),
-    X_SCOPE("x_scope"),
+    X_ESTABLISHMENT("x_establishment"),
     X_EVALUATION("x_evaluation"),
     X_EXECUTION("x_execution"),
     X_EXPENDITURE_ITEM("x_expenditureItem"),
@@ -117,6 +117,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_PLANNED("x_planned"),
     X_PREQUALIFICATION("x_prequalification"),
     X_PRESELECTION("x_preselection"),
+    X_SCOPE("x_scope"),
     X_TENDERING("x_tendering");
 
     override fun toString(): String {
@@ -260,6 +261,7 @@ enum class TenderStatusDetails constructor(private val value: String) {
     CLARIFICATION("clarification"),
     COMPLETE("complete"),
     EMPTY("empty"),
+    ESTABLISHMENT("establishment"),
     EVALUATED("evaluated"),
     EVALUATION("evaluation"),
     EXECUTION("execution"),
@@ -422,6 +424,7 @@ enum class Operation(val value: String) {
     CREATE_CN_ON_PN("createCNonPN"),
     CREATE_NEGOTIATION_CN_ON_PN("createNegotiationCnOnPn"),
     CREATE_CN_ON_PIN("createCNonPIN"),
+    CREATE_FE("createFE"),
     CANCEL_TENDER("cancelTender"),
     CANCEL_TENDER_EV("cancelTenderEv"),
     CANCEL_PLAN("cancelPlan"),
