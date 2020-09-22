@@ -2,10 +2,12 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.fe.amend.AmendFeContext
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.PurposeOfNotice
@@ -17,6 +19,7 @@ import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.tender.dto.CheckFsDto
+import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
@@ -360,6 +363,90 @@ class CreateReleaseService(
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, release = newRelease, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
+    }
+
+    fun amendFe(context: AmendFeContext, data: JsonNode) : ResponseDto{
+        val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocidCn)
+        val feRelease = getFeReleaseForAmendFe(data, context, feEntity)
+
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
+        val msRelease = getMsReleaseForAmendFe(data, context, msEntity)
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            release = feRelease,
+            publishDate = feEntity.publishDate
+        )
+
+        releaseService.saveMs(cpId = context.cpid, ms = msRelease, publishDate =  msEntity.publishDate)
+
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
+    }
+
+    private fun getFeReleaseForAmendFe(
+        data: JsonNode,
+        context: AmendFeContext,
+        recordEntity: ReleaseEntity
+    ): Release {
+        val receivedData = releaseService.getRelease(data)
+        val receivedTender = receivedData.tender
+
+        val storedFe = releaseService.getRelease(recordEntity.jsonData)
+        val storedTender = storedFe.tender
+
+        return storedFe.copy(
+            //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid),
+            //FR-5.0.2
+            date = context.startDate,
+            //FR.COM-3.2.1
+            tag = listOf(Tag.TENDER_AMENDMENT),
+            //FR.COM-3.2.4
+            tender = storedTender.copy(
+                title = receivedTender.title,
+                description = receivedTender.description,
+                procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
+                documents = storedTender.documents + receivedTender.documents
+            ),
+            //FR.COM-3.2.5
+            preQualification = receivedData.preQualification ?: storedFe.preQualification
+        )
+    }
+
+    private fun getMsReleaseForAmendFe(
+        data: JsonNode,
+        context: AmendFeContext,
+        msEntity: ReleaseEntity
+    ) : Ms {
+        val storedMs = releaseService.getMs(data = msEntity.jsonData)
+        val storedTender = storedMs.tender
+        val receivedTender = releaseService.getMsTender(data)
+
+        val compiledMs = storedMs.copy(
+            //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid),
+            //FR-5.0.2
+            date = context.startDate,
+            //FR.COM-3.2.6
+            tag = listOf(Tag.COMPILED),
+            tender = receivedTender.copy(
+                //FR.COM-3.2.7
+                status = storedTender.status,
+                statusDetails = storedTender.statusDetails,
+                id = storedTender.id,
+                hasEnquiries = storedTender.hasEnquiries,
+                //FR.COM-3.2.8
+                procuringEntity = storedTender.procuringEntity
+            ),
+            //FR.COM-3.2.11
+            parties = releaseService.getPartiesWithActualPersones(
+                requestProcuringEntity = receivedTender.procuringEntity!!,
+                parties = storedMs.parties
+            )
+        )
+
+        return compiledMs
     }
 
 }
