@@ -382,6 +382,7 @@ enum class Stage {
     CT,
     EI,
     EV,
+    FE,
     FS,
     NP,
     PIN,
