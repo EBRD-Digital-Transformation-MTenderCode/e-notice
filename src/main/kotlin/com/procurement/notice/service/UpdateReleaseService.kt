@@ -490,7 +490,8 @@ class UpdateReleaseService(
                             relatedConfirmations = null
                         )
                     }.toList(),
-                    secondStage = releaseEV.tender.secondStage //FR-ER-5.5.2.3.9
+                    secondStage = releaseEV.tender.secondStage, //FR-ER-5.5.2.3.9
+                    procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale
                 )
             }
         )
