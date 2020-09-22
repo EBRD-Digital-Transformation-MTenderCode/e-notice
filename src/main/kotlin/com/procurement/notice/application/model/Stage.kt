@@ -10,8 +10,8 @@ enum class Stage(@JsonValue override val key: String) : EnumElementProvider.Key 
     AP("AP"),
     EI("EI"),
     EV("EV"),
-    FS("FS"),
     FE("FE"),
+    FS("FS"),
     NP("NP"),
     PN("PN"),
     TP("TP");
