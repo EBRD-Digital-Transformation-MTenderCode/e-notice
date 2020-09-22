@@ -393,6 +393,7 @@ enum class Stage {
 }
 
 enum class Operation(val value: String) {
+    AMEND_FE("amendFE"),
     CREATE_EI("createEI"),
     UPDATE_EI("updateEI"),
     CREATE_FS("createFS"),

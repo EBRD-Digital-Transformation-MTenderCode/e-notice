@@ -26,6 +26,7 @@ import com.procurement.notice.application.service.contract.clarify.TreasuryClari
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
 import com.procurement.notice.application.service.fe.create.CreateFeContext
+import com.procurement.notice.application.service.fe.amend.AmendFeContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -64,6 +65,7 @@ import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
+import com.procurement.notice.model.ocds.Operation.AMEND_FE
 import com.procurement.notice.model.ocds.Operation.AUCTION_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID
 import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID_EV
@@ -1338,6 +1340,23 @@ class CommandService(
                 )
 
                 createReleaseService.createFe(context = context, data = cm.data)
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocid
+                    )
+                )
+            }
+            AMEND_FE -> {
+                val context = AmendFeContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate,
+                    stage = cm.stage
+                )
+
+                createReleaseService.amendFe(context = context, data = cm.data)
                 ResponseDto(
                     data = DataResponseDto(
                         cpid = context.cpid,
