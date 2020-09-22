@@ -2,6 +2,7 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -365,6 +366,134 @@ class CreateReleaseService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
     }
 
+    fun createFe(context: CreateFeContext, data: JsonNode): ResponseDto {
+        val feRelease = getFeReleaseForCreateFe(data, context)
+
+        val apEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val apRelease = getApReleaseForCreateFe(data, context, apEntity)
+
+        val msEntity = releaseService.getMsEntity(cpid = context.cpid)
+        val msRelease = getMsReleaseForCreateFe(data, context, msEntity)
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            release = feRelease,
+            publishDate = context.releaseDate.toDate()
+        )
+
+        releaseService.saveRecord(
+            cpId = context.cpid,
+            stage = context.stage,
+            release = apRelease,
+            publishDate = apEntity.publishDate
+        )
+
+        releaseService.saveMs(cpId = context.cpid, ms = msRelease, publishDate =  msEntity.publishDate)
+
+        return ResponseDto(data = DataResponseDto(cpid = context.cpid, ocid = context.ocid))
+    }
+
+    private fun getApReleaseForCreateFe(
+        data: JsonNode,
+        context: CreateFeContext,
+        recordEntity: ReleaseEntity
+    ) : Release{
+        val storedAp = releaseService.getRelease(recordEntity.jsonData)
+        val receivedTender = releaseService.getRecordTender(data)
+
+        return storedAp.copy(
+            //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid),
+            //FR-5.0.2
+            date = context.startDate,
+            //FR.COM-3.2.11
+            tag = listOf(Tag.PLANNING_UPDATE),
+            //FR.COM-3.2.14
+            tender = receivedTender.copy(
+                status = TenderStatus.PLANNED,
+                statusDetails = TenderStatusDetails.AGGREGATED,
+                //FR-5.0.3
+                hasEnquiries = storedAp.tender.hasEnquiries
+            )
+        )
+    }
+
+    private fun getMsReleaseForCreateFe(
+        data: JsonNode,
+        context: CreateFeContext,
+        msEntity: ReleaseEntity
+    ) : Ms{
+        val storedMs = releaseService.getMs(data = msEntity.jsonData)
+        val receivedTender = releaseService.getMsTender(data)
+
+        val compiledMs = storedMs.copy(
+            //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid),
+            //FR-5.0.2
+            date = context.startDate,
+            //FR.COM-3.2.15
+            tag = listOf(Tag.COMPILED),
+            //FR.COM-3.2.18
+            tender = receivedTender.copy(
+                //FR.COM-3.2.16
+                statusDetails = TenderStatusDetails.ESTABLISHMENT,
+                //FR.COM-3.2.17
+                procuringEntity = storedMs.tender.procuringEntity,
+                hasEnquiries = storedMs.tender.hasEnquiries
+            ),
+            //FR.COM-3.2.20
+            parties = releaseService.getPartiesWithActualPersones(
+                requestProcuringEntity = receivedTender.procuringEntity!!,
+                parties = storedMs.parties
+            )
+        )
+        //FR.COM-3.2.19
+        relatedProcessService.addRecordRelatedProcessToMs(
+            ms = compiledMs,
+            ocid = context.ocidCn,
+            processType = RelatedProcessType.X_ESTABLISHMENT
+        )
+
+        return compiledMs
+    }
+
+    private fun getFeReleaseForCreateFe(
+        data: JsonNode,
+        context: CreateFeContext
+    ): Release {
+        val receivedFe = releaseService.getRelease(data)
+
+        val updatedFe = receivedFe.copy(
+            //FR-5.0.1
+            id = generationService.generateReleaseId(context.ocid),
+            //FR-5.0.2
+            date = context.startDate,
+            //FR.COM-3.2.1
+            hasPreviousNotice = true,
+            //FR.COM-3.2.2
+            tag = listOf(Tag.TENDER),
+            //FR.COM-3.2.3
+            purposeOfNotice = receivedFe.purposeOfNotice?.copy(isACallForCompetition = true),
+            //FR.COM-3.2.4
+            initiationType = InitiationType.TENDER,
+            //FR.COM-3.2.5
+            ocid = context.ocidCn,
+            //FR.COM-3.2.7
+            tender = receivedFe.tender.copy(hasEnquiries = false)
+        )
+        //FR.COM-3.2.6 1)
+        relatedProcessService.addMsRelatedProcessToRecord(release = updatedFe, cpId = context.cpid)
+        //FR.COM-3.2.6 2)
+        relatedProcessService.addRecordRelatedProcessToRecord(
+            release = updatedFe,
+            cpId = context.cpid,
+            ocId = context.ocid,
+            processType = RelatedProcessType.PLANNING
+        )
+
+        return updatedFe
+    }
     fun amendFe(context: AmendFeContext, data: JsonNode) : ResponseDto{
         val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val feRelease = getFeReleaseForAmendFe(data, context, feEntity)

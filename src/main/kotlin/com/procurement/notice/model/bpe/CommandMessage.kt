@@ -28,6 +28,10 @@ val CommandMessage.ocid: String
     get() = this.context.ocid
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'ocid' attribute in context.")
 
+val CommandMessage.ocidCn: String
+    get() = this.context.ocidCn
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'ocidCn' attribute in context.")
+
 val CommandMessage.stage: String
     get() = this.context.stage
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'stage' attribute in context.")
