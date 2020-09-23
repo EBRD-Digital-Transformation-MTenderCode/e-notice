@@ -25,8 +25,8 @@ import com.procurement.notice.application.service.contract.activate.ActivateCont
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
-import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -1343,7 +1343,7 @@ class CommandService(
                 ResponseDto(
                     data = DataResponseDto(
                         cpid = context.cpid,
-                        ocid = context.ocid
+                        ocid = context.ocidCn
                     )
                 )
             }
