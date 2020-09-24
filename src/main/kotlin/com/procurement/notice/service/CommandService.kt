@@ -25,6 +25,8 @@ import com.procurement.notice.application.service.contract.activate.ActivateCont
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationContext
 import com.procurement.notice.application.service.contract.clarify.TreasuryClarificationData
 import com.procurement.notice.application.service.contract.rejection.TreasuryRejectionContext
+import com.procurement.notice.application.service.fe.amend.AmendFeContext
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodContext
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
@@ -56,12 +58,14 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.bpe.cpid
 import com.procurement.notice.model.bpe.isAuction
 import com.procurement.notice.model.bpe.ocid
+import com.procurement.notice.model.bpe.ocidCn
 import com.procurement.notice.model.bpe.pmd
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.Operation.ACTIVATION_AC
 import com.procurement.notice.model.ocds.Operation.ADD_ANSWER
+import com.procurement.notice.model.ocds.Operation.AMEND_FE
 import com.procurement.notice.model.ocds.Operation.AUCTION_PERIOD_END
 import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID
 import com.procurement.notice.model.ocds.Operation.AWARD_BY_BID_EV
@@ -83,6 +87,7 @@ import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PIN
 import com.procurement.notice.model.ocds.Operation.CREATE_CN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_EI
 import com.procurement.notice.model.ocds.Operation.CREATE_ENQUIRY
+import com.procurement.notice.model.ocds.Operation.CREATE_FE
 import com.procurement.notice.model.ocds.Operation.CREATE_FS
 import com.procurement.notice.model.ocds.Operation.CREATE_NEGOTIATION_CN_ON_PN
 import com.procurement.notice.model.ocds.Operation.CREATE_PIN
@@ -276,7 +281,6 @@ class CommandService(
                 )
                 val request = toObject(UpdateCNRequest::class.java, cm.data)
                 val result: UpdatedCN = updateReleaseService.updateCn(context = context, data = request.convert())
-
 
                 ResponseDto(
                     data = DataResponseDto(
@@ -1318,6 +1322,41 @@ class CommandService(
 
                 val request = toObject(AwardConsiderationRequest::class.java, cm.data)
                 awardService.consider(context = context, data = request.convert())
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocid
+                    )
+                )
+            }
+            CREATE_FE -> {
+                val context = CreateFeContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    ocidCn = cm.ocidCn,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate,
+                    stage = cm.stage
+                )
+
+                createReleaseService.createFe(context = context, data = cm.data)
+                ResponseDto(
+                    data = DataResponseDto(
+                        cpid = context.cpid,
+                        ocid = context.ocidCn
+                    )
+                )
+            }
+            AMEND_FE -> {
+                val context = AmendFeContext(
+                    cpid = cm.cpid,
+                    ocid = cm.ocid,
+                    releaseDate = releaseDate,
+                    startDate = cm.startDate,
+                    stage = cm.stage
+                )
+
+                createReleaseService.amendFe(context = context, data = cm.data)
                 ResponseDto(
                     data = DataResponseDto(
                         cpid = context.cpid,
