@@ -2,8 +2,8 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
-import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -11,6 +11,9 @@ import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.ocds.PurposeOfNotice
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
@@ -92,7 +95,11 @@ class CreateReleaseService(
             id = generationService.generateReleaseId(cpid),
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
             initiationType = InitiationType.TENDER,  // BR-4.75
+            parties = rawMs.tender.procuringEntity
+                ?.let { mutableListOf(createParty(it)) }
+                ?: mutableListOf(),
             tender = rawMs.tender.copy(
+                procuringEntity = rawMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
                 statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
             )
         )
@@ -577,5 +584,32 @@ class CreateReleaseService(
 
         return compiledMs
     }
+
+    fun createParty(requestProcuringEntity: OrganizationReference): Organization =
+        Organization(
+            id = requestProcuringEntity.id,
+            name = requestProcuringEntity.name,
+            contactPoint = requestProcuringEntity.contactPoint,
+            identifier = requestProcuringEntity.identifier,
+            additionalIdentifiers = requestProcuringEntity.additionalIdentifiers,
+            address = requestProcuringEntity.address,
+            buyerProfile = requestProcuringEntity.buyerProfile,
+            roles = hashSetOf(PartyRole.PROCURING_ENTITY),
+            details = requestProcuringEntity.details,
+            persones = requestProcuringEntity.persones
+        )
+
+    fun clearOrganizationReference(requestProcuringEntity: OrganizationReference): OrganizationReference =
+        OrganizationReference(
+            id = requestProcuringEntity.id,
+            name = requestProcuringEntity.name,
+            identifier = null,
+            persones = null,
+            details = null,
+            buyerProfile = null,
+            address = null,
+            additionalIdentifiers = null,
+            contactPoint = null
+        )
 
 }
