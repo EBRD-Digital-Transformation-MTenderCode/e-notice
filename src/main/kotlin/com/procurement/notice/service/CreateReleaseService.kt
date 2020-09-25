@@ -377,7 +377,7 @@ class CreateReleaseService(
         val feRelease = getFeReleaseForCreateFe(data, context)
 
         val apEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val apRelease = getApReleaseForCreateFe(data, context, apEntity)
+        val apRelease = getApReleaseForCreateFe(context, apEntity)
 
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val msRelease = getMsReleaseForCreateFe(data, context, msEntity)
@@ -391,7 +391,7 @@ class CreateReleaseService(
 
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = context.stage,
+            stage = context.prevStage,
             release = apRelease,
             publishDate = apEntity.publishDate
         )
@@ -402,12 +402,10 @@ class CreateReleaseService(
     }
 
     private fun getApReleaseForCreateFe(
-        data: JsonNode,
         context: CreateFeContext,
         recordEntity: ReleaseEntity
     ) : Release{
         val storedAp = releaseService.getRelease(recordEntity.jsonData)
-        val receivedTender = releaseService.getRecordTender(data)
 
         return storedAp.copy(
             //FR-5.0.1
@@ -417,11 +415,9 @@ class CreateReleaseService(
             //FR.COM-3.2.11
             tag = listOf(Tag.PLANNING_UPDATE),
             //FR.COM-3.2.14
-            tender = receivedTender.copy(
+            tender = storedAp.tender.copy(
                 status = TenderStatus.PLANNED,
-                statusDetails = TenderStatusDetails.AGGREGATED,
-                //FR-5.0.3
-                hasEnquiries = storedAp.tender.hasEnquiries
+                statusDetails = TenderStatusDetails.AGGREGATED
             )
         )
     }
