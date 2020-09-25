@@ -2,13 +2,15 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
-import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.lib.toSetBy
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.ReleaseEntity
+import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
 import com.procurement.notice.model.ocds.PurposeOfNotice
@@ -494,6 +496,7 @@ class CreateReleaseService(
 
         return updatedFe
     }
+
     fun amendFe(context: AmendFeContext, data: JsonNode) : ResponseDto{
         val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val feRelease = getFeReleaseForAmendFe(data, context, feEntity)
@@ -524,6 +527,8 @@ class CreateReleaseService(
         val storedFe = releaseService.getRelease(recordEntity.jsonData)
         val storedTender = storedFe.tender
 
+        val updatedDocuments = getUpdatedDocuments(receivedTender.documents, storedTender.documents)
+
         return storedFe.copy(
             //FR-5.0.1
             id = generationService.generateReleaseId(context.ocid),
@@ -536,11 +541,42 @@ class CreateReleaseService(
                 title = receivedTender.title,
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
-                documents = storedTender.documents + receivedTender.documents
+                documents = updatedDocuments
             ),
             //FR.COM-3.2.5
             preQualification = receivedData.preQualification ?: storedFe.preQualification
         )
+    }
+
+    private fun getUpdatedDocuments(
+        receivedDocuments: List<Document>,
+        storedDocuments: List<Document>
+    ): List<Document> {
+        val receivedDocumentsById = receivedDocuments.associateBy { it.id }
+        val updatedStoredDocuments = storedDocuments
+            .map { storedDocument ->
+                receivedDocumentsById[storedDocument.id]
+                    ?.let { receivedDocument ->
+                        storedDocument.copy(
+                            documentType = receivedDocument.documentType ?: storedDocument.documentType,
+                            description = receivedDocument.description ?: storedDocument.description,
+                            dateModified = receivedDocument.dateModified ?: storedDocument.dateModified,
+                            datePublished = receivedDocument.datePublished ?: storedDocument.datePublished,
+                            format = receivedDocument.format ?: storedDocument.format,
+                            language = receivedDocument.language ?: storedDocument.language,
+                            relatedConfirmations = receivedDocument.relatedConfirmations ?: storedDocument.relatedConfirmations,
+                            relatedLots = receivedDocument.relatedLots ?: storedDocument.relatedLots,
+                            title = receivedDocument.title ?: storedDocument.title,
+                            url = receivedDocument.url ?: storedDocument.url
+                        )
+                    }
+                    ?: storedDocument
+            }
+
+        val newDocumentsIds = receivedDocumentsById.keys - storedDocuments.toSetBy { it.id }
+        val newDocuments = newDocumentsIds.map { receivedDocumentsById.getValue(it) }
+
+        return updatedStoredDocuments + newDocuments
     }
 
     private fun getMsReleaseForAmendFe(
