@@ -543,7 +543,8 @@ class CreateReleaseService(
                 title = receivedTender.title,
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
-                documents = storedTender.documents + receivedTender.documents
+                documents = storedTender.documents + receivedTender.documents,
+                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod
             ),
             //FR.COM-3.2.5
             preQualification = receivedData.preQualification ?: storedFe.preQualification
