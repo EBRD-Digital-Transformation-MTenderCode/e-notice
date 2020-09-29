@@ -673,9 +673,16 @@ class UpdateReleaseService(
         /* release */
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val storedRelease = releaseService.getRelease(recordEntity.jsonData)
+        val storedItemsById = storedRelease.tender.items.associateBy { it.id }
+
         val updatedReceivedRawRelease = receivedRawRelease.copy(
             title = storedRelease.tender.title,
-            description = storedRelease.tender.description
+            description = storedRelease.tender.description,
+            items = receivedRawRelease.items.map {  item ->
+                item.copy(
+                    deliveryAddress = item.deliveryAddress ?: storedItemsById[item.id]?.deliveryAddress
+                )
+            }
         )
         val updatedRelease = storedRelease.copy(
             id = generationService.generateReleaseId(ocid),

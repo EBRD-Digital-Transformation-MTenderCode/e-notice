@@ -36,6 +36,10 @@ val CommandMessage.stage: String
     get() = this.context.stage
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'stage' attribute in context.")
 
+val CommandMessage.prevStage: String
+    get() = this.context.prevStage
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'prevStage' attribute in context.")
+
 val CommandMessage.pmd: ProcurementMethod
     get() = this.context.pmd?.let {
         ProcurementMethod.fromString(it)

@@ -60,6 +60,7 @@ import com.procurement.notice.model.bpe.isAuction
 import com.procurement.notice.model.bpe.ocid
 import com.procurement.notice.model.bpe.ocidCn
 import com.procurement.notice.model.bpe.pmd
+import com.procurement.notice.model.bpe.prevStage
 import com.procurement.notice.model.bpe.stage
 import com.procurement.notice.model.bpe.startDate
 import com.procurement.notice.model.ocds.Operation
@@ -1336,7 +1337,8 @@ class CommandService(
                     ocidCn = cm.ocidCn,
                     releaseDate = releaseDate,
                     startDate = cm.startDate,
-                    stage = cm.stage
+                    stage = cm.stage,
+                    prevStage = cm.prevStage
                 )
 
                 createReleaseService.createFe(context = context, data = cm.data)
