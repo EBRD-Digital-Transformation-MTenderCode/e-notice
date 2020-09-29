@@ -558,16 +558,8 @@ class CreateReleaseService(
                 receivedDocumentsById[storedDocument.id]
                     ?.let { receivedDocument ->
                         storedDocument.copy(
-                            documentType = receivedDocument.documentType ?: storedDocument.documentType,
-                            description = receivedDocument.description ?: storedDocument.description,
-                            dateModified = receivedDocument.dateModified ?: storedDocument.dateModified,
-                            datePublished = receivedDocument.datePublished ?: storedDocument.datePublished,
-                            format = receivedDocument.format ?: storedDocument.format,
-                            language = receivedDocument.language ?: storedDocument.language,
-                            relatedConfirmations = receivedDocument.relatedConfirmations ?: storedDocument.relatedConfirmations,
-                            relatedLots = receivedDocument.relatedLots ?: storedDocument.relatedLots,
                             title = receivedDocument.title ?: storedDocument.title,
-                            url = receivedDocument.url ?: storedDocument.url
+                            description = receivedDocument.description ?: storedDocument.description
                         )
                     }
                     ?: storedDocument
