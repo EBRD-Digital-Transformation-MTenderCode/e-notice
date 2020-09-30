@@ -479,7 +479,7 @@ class CreateReleaseService(
             //FR.COM-3.2.2
             tag = listOf(Tag.TENDER),
             //FR.COM-3.2.3
-            purposeOfNotice = receivedFe.purposeOfNotice?.copy(isACallForCompetition = true),
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = true),
             //FR.COM-3.2.4
             initiationType = InitiationType.TENDER,
             //FR.COM-3.2.5
