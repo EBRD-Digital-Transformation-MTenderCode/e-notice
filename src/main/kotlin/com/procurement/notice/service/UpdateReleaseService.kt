@@ -680,7 +680,10 @@ class UpdateReleaseService(
             description = storedRelease.tender.description,
             items = receivedRawRelease.items.map {  item ->
                 item.copy(
-                    deliveryAddress = item.deliveryAddress ?: storedItemsById[item.id]?.deliveryAddress
+                    deliveryAddress = updateDeliveryAddress(
+                        receivedAddress = item.deliveryAddress,
+                        storedAddress = storedItemsById[item.id]?.deliveryAddress
+                    )
                 )
             }
         )
@@ -694,6 +697,16 @@ class UpdateReleaseService(
         releaseService.saveRecord(cpId = cpid, stage = stage, release = updatedRelease, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
+    private fun updateDeliveryAddress(receivedAddress: Address?, storedAddress: Address?) =
+        receivedAddress?.copy(
+            streetAddress = receivedAddress.streetAddress ?: storedAddress?.streetAddress,
+            postalCode = receivedAddress.streetAddress ?: storedAddress?.postalCode,
+            addressDetails = receivedAddress.addressDetails?.copy(
+                locality = receivedAddress.addressDetails.locality ?: storedAddress?.addressDetails?.locality
+            )
+        )
+            ?: storedAddress
 
     fun updateTenderPeriod(
         cpid: String,
