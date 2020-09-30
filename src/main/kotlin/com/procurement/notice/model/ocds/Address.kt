@@ -25,7 +25,7 @@ data class AddressDetails(
     @field:Valid @field:NotNull
     val region: RegionDetails,
 
-    @field:Valid
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val locality: LocalityDetails?
 )
 
