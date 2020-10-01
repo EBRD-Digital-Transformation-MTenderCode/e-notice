@@ -2,15 +2,20 @@ package com.procurement.notice.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.GenerationService
-import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
+import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
+import com.procurement.notice.lib.toSetBy
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.entity.ReleaseEntity
+import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
+import com.procurement.notice.model.ocds.Organization
+import com.procurement.notice.model.ocds.OrganizationReference
+import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.ocds.PurposeOfNotice
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
@@ -92,7 +97,11 @@ class CreateReleaseService(
             id = generationService.generateReleaseId(cpid),
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
             initiationType = InitiationType.TENDER,  // BR-4.75
+            parties = rawMs.tender.procuringEntity
+                ?.let { mutableListOf(createParty(it)) }
+                ?: mutableListOf(),
             tender = rawMs.tender.copy(
+                procuringEntity = rawMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
                 statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
             )
         )
@@ -370,7 +379,7 @@ class CreateReleaseService(
         val feRelease = getFeReleaseForCreateFe(data, context)
 
         val apEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val apRelease = getApReleaseForCreateFe(data, context, apEntity)
+        val apRelease = getApReleaseForCreateFe(context, apEntity)
 
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
         val msRelease = getMsReleaseForCreateFe(data, context, msEntity)
@@ -384,7 +393,7 @@ class CreateReleaseService(
 
         releaseService.saveRecord(
             cpId = context.cpid,
-            stage = context.stage,
+            stage = context.prevStage,
             release = apRelease,
             publishDate = apEntity.publishDate
         )
@@ -395,12 +404,10 @@ class CreateReleaseService(
     }
 
     private fun getApReleaseForCreateFe(
-        data: JsonNode,
         context: CreateFeContext,
         recordEntity: ReleaseEntity
     ) : Release{
         val storedAp = releaseService.getRelease(recordEntity.jsonData)
-        val receivedTender = releaseService.getRecordTender(data)
 
         return storedAp.copy(
             //FR-5.0.1
@@ -410,11 +417,9 @@ class CreateReleaseService(
             //FR.COM-3.2.11
             tag = listOf(Tag.PLANNING_UPDATE),
             //FR.COM-3.2.14
-            tender = receivedTender.copy(
+            tender = storedAp.tender.copy(
                 status = TenderStatus.PLANNED,
-                statusDetails = TenderStatusDetails.AGGREGATED,
-                //FR-5.0.3
-                hasEnquiries = storedAp.tender.hasEnquiries
+                statusDetails = TenderStatusDetails.AGGREGATED
             )
         )
     }
@@ -474,7 +479,7 @@ class CreateReleaseService(
             //FR.COM-3.2.2
             tag = listOf(Tag.TENDER),
             //FR.COM-3.2.3
-            purposeOfNotice = receivedFe.purposeOfNotice?.copy(isACallForCompetition = true),
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = true),
             //FR.COM-3.2.4
             initiationType = InitiationType.TENDER,
             //FR.COM-3.2.5
@@ -494,6 +499,7 @@ class CreateReleaseService(
 
         return updatedFe
     }
+
     fun amendFe(context: AmendFeContext, data: JsonNode) : ResponseDto{
         val feEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val feRelease = getFeReleaseForAmendFe(data, context, feEntity)
@@ -524,6 +530,8 @@ class CreateReleaseService(
         val storedFe = releaseService.getRelease(recordEntity.jsonData)
         val storedTender = storedFe.tender
 
+        val updatedDocuments = getUpdatedDocuments(receivedTender.documents, storedTender.documents)
+
         return storedFe.copy(
             //FR-5.0.1
             id = generationService.generateReleaseId(context.ocid),
@@ -536,11 +544,35 @@ class CreateReleaseService(
                 title = receivedTender.title,
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
-                documents = storedTender.documents + receivedTender.documents
+                documents = updatedDocuments,
+                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod
             ),
             //FR.COM-3.2.5
             preQualification = receivedData.preQualification ?: storedFe.preQualification
         )
+    }
+
+    private fun getUpdatedDocuments(
+        receivedDocuments: List<Document>,
+        storedDocuments: List<Document>
+    ): List<Document> {
+        val receivedDocumentsById = receivedDocuments.associateBy { it.id }
+        val updatedStoredDocuments = storedDocuments
+            .map { storedDocument ->
+                receivedDocumentsById[storedDocument.id]
+                    ?.let { receivedDocument ->
+                        storedDocument.copy(
+                            title = receivedDocument.title ?: storedDocument.title,
+                            description = receivedDocument.description ?: storedDocument.description
+                        )
+                    }
+                    ?: storedDocument
+            }
+
+        val newDocumentsIds = receivedDocumentsById.keys - storedDocuments.toSetBy { it.id }
+        val newDocuments = newDocumentsIds.map { receivedDocumentsById.getValue(it) }
+
+        return updatedStoredDocuments + newDocuments
     }
 
     private fun getMsReleaseForAmendFe(
@@ -577,5 +609,32 @@ class CreateReleaseService(
 
         return compiledMs
     }
+
+    fun createParty(requestProcuringEntity: OrganizationReference): Organization =
+        Organization(
+            id = requestProcuringEntity.id,
+            name = requestProcuringEntity.name,
+            contactPoint = requestProcuringEntity.contactPoint,
+            identifier = requestProcuringEntity.identifier,
+            additionalIdentifiers = requestProcuringEntity.additionalIdentifiers,
+            address = requestProcuringEntity.address,
+            buyerProfile = requestProcuringEntity.buyerProfile,
+            roles = hashSetOf(PartyRole.PROCURING_ENTITY),
+            details = requestProcuringEntity.details,
+            persones = requestProcuringEntity.persones
+        )
+
+    fun clearOrganizationReference(requestProcuringEntity: OrganizationReference): OrganizationReference =
+        OrganizationReference(
+            id = requestProcuringEntity.id,
+            name = requestProcuringEntity.name,
+            identifier = null,
+            persones = null,
+            details = null,
+            buyerProfile = null,
+            address = null,
+            additionalIdentifiers = null,
+            contactPoint = null
+        )
 
 }
