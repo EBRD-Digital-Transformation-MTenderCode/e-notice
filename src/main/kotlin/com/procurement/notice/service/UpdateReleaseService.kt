@@ -673,9 +673,19 @@ class UpdateReleaseService(
         /* release */
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
         val storedRelease = releaseService.getRelease(recordEntity.jsonData)
+        val storedItemsById = storedRelease.tender.items.associateBy { it.id }
+
         val updatedReceivedRawRelease = receivedRawRelease.copy(
             title = storedRelease.tender.title,
-            description = storedRelease.tender.description
+            description = storedRelease.tender.description,
+            items = receivedRawRelease.items.map {  item ->
+                item.copy(
+                    deliveryAddress = updateDeliveryAddress(
+                        receivedAddress = item.deliveryAddress,
+                        storedAddress = storedItemsById[item.id]?.deliveryAddress
+                    )
+                )
+            }
         )
         val updatedRelease = storedRelease.copy(
             id = generationService.generateReleaseId(ocid),
@@ -687,6 +697,16 @@ class UpdateReleaseService(
         releaseService.saveRecord(cpId = cpid, stage = stage, release = updatedRelease, publishDate = recordEntity.publishDate)
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
+
+    private fun updateDeliveryAddress(receivedAddress: Address?, storedAddress: Address?) =
+        receivedAddress?.copy(
+            streetAddress = receivedAddress.streetAddress ?: storedAddress?.streetAddress,
+            postalCode = receivedAddress.streetAddress ?: storedAddress?.postalCode,
+            addressDetails = receivedAddress.addressDetails?.copy(
+                locality = receivedAddress.addressDetails.locality ?: storedAddress?.addressDetails?.locality
+            )
+        )
+            ?: storedAddress
 
     fun updateTenderPeriod(
         cpid: String,
