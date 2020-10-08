@@ -38,6 +38,7 @@ enum class PartyRole constructor(private val value: String) {
     CANDIDATE("candidate"),
     ENQUIRER("enquirer"),
     FUNDER("funder"),
+    INVITED_CANDIDATE("invitedCandidate"),
     INVITED_TENDERER("invitedTenderer"),
     PAYEE("payee"),
     PAYER("payer"),
