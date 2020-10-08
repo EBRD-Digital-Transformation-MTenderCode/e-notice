@@ -7,6 +7,7 @@ data class CreateFeContext(
     val ocid: String,
     val ocidCn: String,
     val stage: String,
+    val prevStage: String,
     val releaseDate: LocalDateTime,
     val startDate: LocalDateTime
 )
