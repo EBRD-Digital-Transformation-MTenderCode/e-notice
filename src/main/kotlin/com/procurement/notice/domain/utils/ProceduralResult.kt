@@ -24,7 +24,7 @@ sealed class ProceduralResult<out T> {
     }
 
     object Ok : ProceduralResult<Nothing>() {
-        override val get: Nothing get() = throw NoSuchElementException("UpdateResult does not contain value.")
+        override val get: Nothing get() = throw NoSuchElementException("ProceduralResult does not contain value.")
         override val isOk: Boolean = true
         override val isError: Boolean = !isOk
     }
