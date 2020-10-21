@@ -1,6 +1,8 @@
 package com.procurement.notice.infrastructure.service.record
 
+import com.procurement.notice.application.model.record.create.CreateRecordParams
 import com.procurement.notice.infrastructure.dto.enObservationtity.awards.RecordAward
+import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordAgreedMetric
 import com.procurement.notice.infrastructure.dto.entity.RecordAmendment
@@ -70,6 +72,7 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningB
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
 import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
@@ -188,11 +191,138 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
 import com.procurement.notice.infrastructure.dto.request.tender.RequestVariant
 import com.procurement.notice.lib.mapIfNotEmpty
+import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+
+fun createRelease(
+    releaseId: String,
+    tag: List<Tag>,
+    initiationType: InitiationType,
+    params: CreateRecordParams
+): Record {
+    val receivedRelease = params.data
+
+    val relatedProcesses = receivedRelease.relatedProcesses
+        .map { createRelatedProcess(it) }
+        .toMutableList()
+
+    val bids = receivedRelease.bids
+        ?.let { createBidsObject(it) }
+
+    val awards = receivedRelease.awards
+        .map { createAward(it) }
+
+    val contracts = receivedRelease.contracts
+        .map { createContract(it) }
+
+    val parties = receivedRelease.parties
+        .map { createOrganization(it) }
+        .toMutableList()
+
+    val purposeOfNotice = receivedRelease.purposeOfNotice
+        ?.let { createPurposeOfNotice(it) }
+
+    val tender = receivedRelease.tender!!
+        .let { createReleaseTender(it) }
+
+    val agreedMetrics = receivedRelease.agreedMetrics
+        .map { createAgreedMetric(it) }
+
+    val planning = receivedRelease.planning
+        ?.let { createPlanning(it) }
+
+    val submissions = receivedRelease.submissions?.details
+        ?.map { createSubmissionDetail(it) }
+        ?.let { RecordSubmission(it) }
+
+    val qualifications = receivedRelease.qualifications
+        .map { createQualification(it) }
+
+    val preQualification = receivedRelease.preQualification
+        ?.let { createPreQualification(it) }
+
+    val invitations = receivedRelease.invitations
+        .map { createInvitation(it) }
+
+    return Record(
+        id = releaseId,
+        ocid = receivedRelease.ocid,
+        date = params.date,
+        relatedProcesses = relatedProcesses,
+        bids = bids,
+        awards = awards,
+        contracts = contracts,
+        hasPreviousNotice = receivedRelease.hasPreviousNotice,
+        initiationType = initiationType,
+        parties = parties,
+        purposeOfNotice = purposeOfNotice,
+        tag = tag,
+        tender = tender,
+        agreedMetrics = agreedMetrics,
+        cpid = receivedRelease.cpid,
+        planning = planning,
+        submissions = submissions,
+        qualifications = qualifications,
+        preQualification = preQualification,
+        invitations = invitations
+    )
+}
+
+fun defineRecordTag(statusDetails: TenderStatusDetails?): List<Tag> =
+    when (statusDetails) {
+        TenderStatusDetails.TENDERING -> listOf(Tag.TENDER)
+
+        TenderStatusDetails.AGGREGATED,
+        TenderStatusDetails.AGGREGATE_PLANNING,
+        TenderStatusDetails.AGGREGATION,
+        TenderStatusDetails.AGGREGATION_PENDING,
+        TenderStatusDetails.AUCTION,
+        TenderStatusDetails.AWARDED,
+        TenderStatusDetails.AWARDED_CONTRACT_PREPARATION,
+        TenderStatusDetails.AWARDED_STANDSTILL,
+        TenderStatusDetails.AWARDED_SUSPENDED,
+        TenderStatusDetails.AWARDING,
+        TenderStatusDetails.BLOCKED,
+        TenderStatusDetails.CANCELLATION,
+        TenderStatusDetails.CANCELLED,
+        TenderStatusDetails.CLARIFICATION,
+        TenderStatusDetails.COMPLETE,
+        TenderStatusDetails.EMPTY,
+        TenderStatusDetails.ESTABLISHMENT,
+        TenderStatusDetails.EVALUATED,
+        TenderStatusDetails.EVALUATION,
+        TenderStatusDetails.EXECUTION,
+        TenderStatusDetails.LACK_OF_QUALIFICATIONS,
+        TenderStatusDetails.LACK_OF_SUBMISSIONS,
+        TenderStatusDetails.NEGOTIATION,
+        TenderStatusDetails.PLANNED,
+        TenderStatusDetails.PLANNING,
+        TenderStatusDetails.PLANNING_NOTICE,
+        TenderStatusDetails.PREQUALIFICATION,
+        TenderStatusDetails.PREQUALIFIED,
+        TenderStatusDetails.PRESELECTED,
+        TenderStatusDetails.PRESELECTION,
+        TenderStatusDetails.PRIOR_NOTICE,
+        TenderStatusDetails.QUALIFICATION,
+        TenderStatusDetails.QUALIFICATION_STAND_STILL,
+        TenderStatusDetails.STANDSTILL,
+        TenderStatusDetails.SUBMISSION,
+        TenderStatusDetails.SUSPENDED,
+        TenderStatusDetails.UNSUCCESSFUL,
+        TenderStatusDetails.WITHDRAWN,
+        null ->
+            /**
+             * It's temporary mock because Tag is mandatory for publication.
+             * Will be changed soon
+             */
+            listOf(Tag.TENDER)
+
+    }
 
 fun createLot(received: RequestLot): RecordLot =
     RecordLot(
