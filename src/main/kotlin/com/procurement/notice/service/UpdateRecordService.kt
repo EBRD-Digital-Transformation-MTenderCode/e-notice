@@ -2,7 +2,7 @@ package com.procurement.notice.service
 
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
-import com.procurement.notice.application.model.record.UpdateRecordParams
+import com.procurement.notice.application.model.record.update.UpdateRecordParams
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.MaybeFail

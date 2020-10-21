@@ -1,4 +1,4 @@
-package com.procurement.notice.application.model.record
+package com.procurement.notice.application.model.record.update
 
 import com.procurement.notice.domain.extention.tryParseLocalDateTime
 import com.procurement.notice.domain.fail.Fail
