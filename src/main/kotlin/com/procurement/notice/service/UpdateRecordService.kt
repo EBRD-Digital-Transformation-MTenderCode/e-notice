@@ -6,7 +6,7 @@ import com.procurement.notice.application.model.record.UpdateRecordParams
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.entity.Record
-import com.procurement.notice.infrastructure.handler.UpdateResult
+import com.procurement.notice.infrastructure.handler.record.update.UpdateResult
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.infrastructure.service.record.updateRelease
 import com.procurement.notice.utils.toJson

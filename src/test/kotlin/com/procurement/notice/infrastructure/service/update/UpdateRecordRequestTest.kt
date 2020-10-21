@@ -1,7 +1,7 @@
 package com.procurement.notice.infrastructure.service.update
 
 import com.procurement.notice.infrastructure.AbstractDTOTestBase
-import com.procurement.notice.infrastructure.handler.UpdateRecordRequest
+import com.procurement.notice.infrastructure.handler.record.update.UpdateRecordRequest
 import org.junit.jupiter.api.Test
 
 class UpdateRecordRequestTest : AbstractDTOTestBase<UpdateRecordRequest>(

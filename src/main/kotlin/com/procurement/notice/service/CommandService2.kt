@@ -3,7 +3,7 @@ package com.procurement.notice.service
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.infrastructure.dto.ApiResponse2
-import com.procurement.notice.infrastructure.handler.UpdateRecordHandler
+import com.procurement.notice.infrastructure.handler.record.update.UpdateRecordHandler
 import com.procurement.notice.model.bpe.CommandType2
 import com.procurement.notice.model.bpe.errorResponse
 import com.procurement.notice.model.bpe.tryGetAction

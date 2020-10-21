@@ -1,4 +1,4 @@
-package com.procurement.notice.infrastructure.handler
+package com.procurement.notice.infrastructure.handler.record.update
 
 sealed class UpdateResult<out T> {
     companion object {
@@ -13,13 +13,13 @@ sealed class UpdateResult<out T> {
     fun onError(block: (T) -> Unit): Unit =
         when (this) {
             is Error -> block(get)
-            is Ok    -> Unit
+            is Ok -> Unit
         }
 
     fun <R> map(block: (T) -> R): UpdateResult<R> = flatMap { Error(block(it)) }
 
     fun <R> flatMap(block: (T) -> UpdateResult<R>): UpdateResult<R> = when (this) {
-        is Ok    -> this
+        is Ok -> this
         is Error -> block(this.value)
     }
 

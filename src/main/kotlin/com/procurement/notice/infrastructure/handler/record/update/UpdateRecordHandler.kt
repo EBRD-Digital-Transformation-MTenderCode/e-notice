@@ -1,10 +1,11 @@
-package com.procurement.notice.infrastructure.handler
+package com.procurement.notice.infrastructure.handler.record.update
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.infrastructure.dto.convert.convert
+import com.procurement.notice.infrastructure.handler.AbstractUpdateHistoricalHandler
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.model.bpe.CommandType2
 import com.procurement.notice.model.bpe.tryGetParams

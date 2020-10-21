@@ -14,6 +14,7 @@ import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse
 import com.procurement.notice.infrastructure.dto.ApiVersion2
+import com.procurement.notice.infrastructure.handler.record.update.UpdateResult
 import com.procurement.notice.model.bpe.tryGetId
 import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.model.entity.HistoryEntity
