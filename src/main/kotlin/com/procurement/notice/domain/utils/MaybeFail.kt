@@ -1,9 +1,9 @@
 package com.procurement.notice.domain.utils
 
-sealed class ProceduralResult<out T> {
+sealed class MaybeFail<out T> {
     companion object {
-        fun <T> ok(): ProceduralResult<T> = Ok
-        fun <T> error(value: T): ProceduralResult<T> = Error(value)
+        fun <T> ok(): MaybeFail<T> = Ok
+        fun <T> error(value: T): MaybeFail<T> = Error(value)
     }
 
     abstract val get: T
@@ -16,20 +16,20 @@ sealed class ProceduralResult<out T> {
             is Ok -> Unit
         }
 
-    fun <R> map(block: (T) -> R): ProceduralResult<R> = flatMap { Error(block(it)) }
+    fun <R> map(block: (T) -> R): MaybeFail<R> = flatMap { Error(block(it)) }
 
-    fun <R> flatMap(block: (T) -> ProceduralResult<R>): ProceduralResult<R> = when (this) {
+    fun <R> flatMap(block: (T) -> MaybeFail<R>): MaybeFail<R> = when (this) {
         is Ok -> this
         is Error -> block(this.value)
     }
 
-    object Ok : ProceduralResult<Nothing>() {
+    object Ok : MaybeFail<Nothing>() {
         override val get: Nothing get() = throw NoSuchElementException("ProceduralResult does not contain value.")
         override val isOk: Boolean = true
         override val isError: Boolean = !isOk
     }
 
-    data class Error<out T>(val value: T) : ProceduralResult<T>() {
+    data class Error<out T>(val value: T) : MaybeFail<T>() {
         override val get: T = value
         override val isOk: Boolean = false
         override val isError: Boolean = !isOk

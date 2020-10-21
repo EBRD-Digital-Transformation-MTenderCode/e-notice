@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.application.service.Logger
 import com.procurement.notice.dao.HistoryDao
 import com.procurement.notice.domain.fail.Fail
-import com.procurement.notice.domain.utils.ProceduralResult
+import com.procurement.notice.domain.utils.MaybeFail
 import com.procurement.notice.infrastructure.dto.convert.convert
 import com.procurement.notice.infrastructure.handler.AbstractUpdateHistoricalHandler
 import com.procurement.notice.infrastructure.service.Transform
@@ -24,14 +24,14 @@ class UpdateRecordHandler(
     override val action: CommandType2
         get() = CommandType2.UPDATE_RECORD
 
-    override fun execute(node: JsonNode): ProceduralResult<Fail> {
+    override fun execute(node: JsonNode): MaybeFail<Fail> {
         val paramsNode = node.tryGetParams()
-            .doOnError { error -> return ProceduralResult.error(error) }
+            .doOnError { error -> return MaybeFail.error(error) }
             .get
 
         val params = transform.tryMapping(paramsNode, UpdateRecordRequest::class.java)
             .doOnError { error ->
-                return ProceduralResult.error(
+                return MaybeFail.error(
                     Fail.Error.BadRequest(
                         description = error.message,
                         json = paramsNode.toString(),
@@ -41,7 +41,7 @@ class UpdateRecordHandler(
             }
             .get
             .convert()
-            .doOnError { error -> return ProceduralResult.error(error) }
+            .doOnError { error -> return MaybeFail.error(error) }
             .get
 
 

@@ -8,7 +8,7 @@ import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
-import com.procurement.notice.domain.utils.ProceduralResult
+import com.procurement.notice.domain.utils.MaybeFail
 import com.procurement.notice.infrastructure.dto.ApiDataErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiFailResponse
 import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
@@ -46,19 +46,19 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
             return result.get
         }
 
-        val result: ProceduralResult<Fail> = execute(node)
+        val result: MaybeFail<Fail> = execute(node)
 
         return when (result) {
-            is ProceduralResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = null)
+            is MaybeFail.Ok    -> ApiSuccessResponse(id = id, version = version, result = null)
                 .also {
                     historyDao.saveHistory(id.toString(), action.key, it)
                     logger.info("${action.key} has been executed. Result: ${toJson(it)}")
                 }
-            is ProceduralResult.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
+            is MaybeFail.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
         }
     }
 
-    abstract fun execute(node: JsonNode): ProceduralResult<Fail>
+    abstract fun execute(node: JsonNode): MaybeFail<Fail>
 
     fun generateResponseOnFailure(fail: Fail, version: ApiVersion2, id: UUID): ApiResponse2 {
         fail.logging(logger)
