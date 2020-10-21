@@ -8,13 +8,13 @@ import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.fail.error.DataValidationErrors
 import com.procurement.notice.domain.utils.Action
+import com.procurement.notice.domain.utils.ProceduralResult
 import com.procurement.notice.infrastructure.dto.ApiDataErrorResponse
 import com.procurement.notice.infrastructure.dto.ApiFailResponse
 import com.procurement.notice.infrastructure.dto.ApiIncidentResponse
 import com.procurement.notice.infrastructure.dto.ApiResponse2
 import com.procurement.notice.infrastructure.dto.ApiSuccessResponse
 import com.procurement.notice.infrastructure.dto.ApiVersion2
-import com.procurement.notice.infrastructure.handler.record.update.UpdateResult
 import com.procurement.notice.model.bpe.tryGetId
 import com.procurement.notice.model.bpe.tryGetVersion
 import com.procurement.notice.model.entity.HistoryEntity
@@ -46,19 +46,19 @@ abstract class AbstractUpdateHistoricalHandler<ACTION : Action, E : Fail>(
             return result.get
         }
 
-        val result: UpdateResult<Fail> = execute(node)
+        val result: ProceduralResult<Fail> = execute(node)
 
         return when (result) {
-            is UpdateResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = null)
+            is ProceduralResult.Ok    -> ApiSuccessResponse(id = id, version = version, result = null)
                 .also {
                     historyDao.saveHistory(id.toString(), action.key, it)
                     logger.info("${action.key} has been executed. Result: ${toJson(it)}")
                 }
-            is UpdateResult.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
+            is ProceduralResult.Error -> generateResponseOnFailure(id = id, version = version, fail = result.value)
         }
     }
 
-    abstract fun execute(node: JsonNode): UpdateResult<Fail>
+    abstract fun execute(node: JsonNode): ProceduralResult<Fail>
 
     fun generateResponseOnFailure(fail: Fail, version: ApiVersion2, id: UUID): ApiResponse2 {
         fail.logging(logger)
