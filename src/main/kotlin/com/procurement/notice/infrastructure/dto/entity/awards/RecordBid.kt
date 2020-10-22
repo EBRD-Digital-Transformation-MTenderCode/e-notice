@@ -27,6 +27,9 @@ data class RecordBid(
     @field:JsonProperty("value") @param:JsonProperty("value") val value: Value?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("items") @param:JsonProperty("items") val items: List<RecordBidItem> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<RecordDocument> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)

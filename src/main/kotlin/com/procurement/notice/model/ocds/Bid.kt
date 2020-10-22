@@ -2,6 +2,7 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 
 data class Bid @JsonCreator constructor(
@@ -23,6 +24,9 @@ data class Bid @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val value: Value?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("items") @param:JsonProperty("items") val items: List<BidItem> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var documents: HashSet<Document>?,

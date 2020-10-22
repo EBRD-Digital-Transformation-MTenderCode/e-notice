@@ -45,6 +45,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionResult
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
@@ -136,6 +137,7 @@ import com.procurement.notice.infrastructure.dto.request.auction.RequestElectron
 import com.procurement.notice.infrastructure.dto.request.auction.RequestElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
+import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
@@ -1019,6 +1021,14 @@ fun RecordDocument.updateDocument(received: RequestDocument): UpdateRecordResult
         title = received.title ?: this.title
     )
         .asSuccess()
+
+fun RecordBidItem.updateItem(received: RequestBidItem): UpdateRecordResult<RecordBidItem> {
+    val unit = received.unit
+        .let { this.unit.updateUnit(it) }
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(id = received.id, unit = unit).asSuccess()
+}
 
 fun RecordElectronicAuctions.updateElectronicAuctions(received: RequestElectronicAuctions): UpdateRecordResult<RecordElectronicAuctions> =
     this.copy(
@@ -2217,6 +2227,16 @@ fun RecordOrganizationReference.updateSupplier(received: RequestOrganizationRefe
 }
 
 fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
+    val items = updateStrategy(
+        receivedElements = received.items,
+        keyExtractorForReceivedElement = requestBidItemsKeyExtractor,
+        availableElements = this.items.toList(),
+        keyExtractorForAvailableElement = recordBidItemsKeyExtractor,
+        updateBlock = RecordBidItem::updateItem,
+        createBlock = ::createBidItem
+    )
+        .doReturn { e -> return failure(e) }
+
     val documents = updateStrategy(
         receivedElements = received.documents,
         keyExtractorForReceivedElement = requestDocumentKeyExtractor,
@@ -2251,6 +2271,7 @@ fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
         .copy(
             id = received.id,
             value = received.value ?: this.value,
+            items = items,
             relatedLots = this.relatedLots.update(received.relatedLots),
             documents = documents,
             date = received.date ?: this.date,
@@ -2261,6 +2282,9 @@ fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
         )
         .asSuccess()
 }
+
+val recordBidItemsKeyExtractor: (RecordBidItem) -> String = { it.id }
+val requestBidItemsKeyExtractor: (RequestBidItem) -> String = { it.id }
 
 fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult<RecordContract> {
     val requirementResponses = updateStrategy(
@@ -3143,13 +3167,12 @@ fun RecordPreQualification.updatePreQualification(received: RequestPreQualificat
         }
         ?: this.qualificationPeriod
 
-    return  RecordPreQualification(
+    return RecordPreQualification(
         period = period,
         qualificationPeriod = qualificationPeriod
     )
         .asSuccess()
 }
-
 
 fun RecordBids.updateBidsObject(received: RequestBids): UpdateRecordResult<RecordBids> {
     val statistics = updateStrategy(
@@ -3220,7 +3243,6 @@ fun RecordInvitation.updateInvitation(received: RequestInvitation): UpdateRecord
     )
         .asSuccess()
 }
-
 
 fun <R, A, K> updateStrategy(
     receivedElements: List<R>,

@@ -39,6 +39,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionResult
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
@@ -130,6 +131,7 @@ import com.procurement.notice.infrastructure.dto.request.auction.RequestElectron
 import com.procurement.notice.infrastructure.dto.request.auction.RequestElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
+import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
@@ -566,6 +568,12 @@ fun createDocument(received: RequestDocument): RecordDocument =
         format = received.format,
         relatedConfirmations = received.relatedConfirmations,
         title = received.title
+    )
+
+fun createBidItem(received: RequestBidItem): RecordBidItem =
+    RecordBidItem(
+        id = received.id,
+        unit = createUnit(received.unit)
     )
 
 fun createElectronicAuctions(received: RequestElectronicAuctions): RecordElectronicAuctions =
