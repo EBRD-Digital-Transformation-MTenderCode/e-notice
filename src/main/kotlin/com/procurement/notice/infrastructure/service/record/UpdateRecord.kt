@@ -1,6 +1,6 @@
 package com.procurement.notice.infrastructure.service.record
 
-import com.procurement.notice.application.model.record.UpdateRecordParams
+import com.procurement.notice.application.model.record.update.UpdateRecordParams
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure

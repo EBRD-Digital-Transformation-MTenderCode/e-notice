@@ -2,11 +2,11 @@ package com.procurement.notice.service
 
 import com.procurement.notice.application.model.parseCpid
 import com.procurement.notice.application.model.parseOcid
-import com.procurement.notice.application.model.record.UpdateRecordParams
+import com.procurement.notice.application.model.record.update.UpdateRecordParams
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.utils.MaybeFail
 import com.procurement.notice.infrastructure.dto.entity.Record
-import com.procurement.notice.infrastructure.handler.UpdateResult
 import com.procurement.notice.infrastructure.service.Transform
 import com.procurement.notice.infrastructure.service.record.updateRelease
 import com.procurement.notice.utils.toJson
@@ -23,25 +23,25 @@ class UpdateRecordService(
         private val log = LoggerFactory.getLogger(UpdateRecordService::class.java)
     }
 
-    fun updateRecord(params: UpdateRecordParams): UpdateResult<Fail> {
+    fun updateRecord(params: UpdateRecordParams): MaybeFail<Fail> {
 
         val data = params.data
 
         val ocid = parseOcid(data.ocid)
-            .doReturn { error -> return UpdateResult.error(error) }
+            .doReturn { error -> return MaybeFail.error(error) }
 
         val cpid = parseCpid(data.cpid)
-            .doReturn { error -> return UpdateResult.error(error) }
+            .doReturn { error -> return MaybeFail.error(error) }
 
         val recordEntity = releaseService.tryGetRecordEntity(cpid, ocid)
-            .doOnError { error -> return UpdateResult.error(error) }
+            .doOnError { error -> return MaybeFail.error(error) }
             .get
-            ?: return UpdateResult.error(Fail.Incident.Database.NotFound("Record not found."))
+            ?: return MaybeFail.error(Fail.Incident.Database.NotFound("Record not found."))
 
         val recordData = recordEntity.jsonData
         val record = jacksonJsonTransform.tryDeserialization(recordData, Record::class.java)
             .doOnError { error: Fail.Incident.Transform.Deserialization ->
-                return UpdateResult.error(
+                return MaybeFail.error(
                     Fail.Incident.Database.InvalidData(data = recordData, exception = error.exception )
                 )
             }
@@ -49,7 +49,7 @@ class UpdateRecordService(
 
         val releaseId = generationService.generateReleaseId(ocid = ocid.toString())
         val updatedRelease = record.updateRelease(releaseId = releaseId, params = params)
-            .doReturn { e -> return UpdateResult.error(e) }
+            .doReturn { e -> return MaybeFail.error(e) }
             .also {
                 log.debug("UPDATED RELEASE (id: '${releaseId}'): '${toJson(it)}'.")
             }
@@ -61,6 +61,6 @@ class UpdateRecordService(
             publishDate = recordEntity.publishDate
         )
 
-        return UpdateResult.ok()
+        return MaybeFail.ok()
     }
 }
