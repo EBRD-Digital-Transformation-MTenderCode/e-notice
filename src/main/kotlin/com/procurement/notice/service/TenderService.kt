@@ -1069,37 +1069,37 @@ class TenderService(
         val release = releaseService.getRelease(recordEntity.jsonData)
         val updatedLots = setUnsuccessfulStatusToLots(data, release)
         val updatedElectronicAuctions = getUpdatedElectronicAuctions(data, release)
+
+        val receivedAwards = data.awards
+            .map { award ->
+                Award(
+                    id = award.id.toString(),
+                    status = award.status.value,
+                    statusDetails = award.statusDetails.value,
+                    relatedLots = award.relatedLots.map { it.toString() },
+                    date = award.date,
+                    description = award.description,
+                    title = award.title,
+                    weightedValue = null,
+                    items = null,
+                    documents = null,
+                    suppliers = null,
+                    relatedBid = null,
+                    value = null,
+                    requirementResponses = null,
+                    amendment = null,
+                    amendments = null,
+                    contractPeriod = null,
+                    reviewProceedings = null
+
+                )
+            }
+
         val updatedRelease = release.copy(
             id = generationService.generateReleaseId(context.ocid),
             date = context.startDate,
             tag = listOf(Tag.AWARD),
-            awards = data.awards
-                .asSequence()
-                .map { award ->
-                    Award(
-                        id = award.id.toString(),
-                        status = award.status.value,
-                        statusDetails = award.statusDetails.value,
-                        relatedLots = award.relatedLots.map { it.toString() },
-                        date = award.date,
-                        description = award.description,
-                        title = award.title,
-                        weightedValue = null,
-                        items = null,
-                        documents = null,
-                        suppliers = null,
-                        relatedBid = null,
-                        value = null,
-                        requirementResponses = null,
-                        amendment = null,
-                        amendments = null,
-                        contractPeriod = null,
-                        reviewProceedings = null
-
-                    )
-                }
-                .toList()
-                .ifEmpty { release.awards },
+            awards = receivedAwards + release.awards, // FR-5.7.2.5.3
             tender = release.tender.copy(
                 statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
                 lots = updatedLots.toList(),
