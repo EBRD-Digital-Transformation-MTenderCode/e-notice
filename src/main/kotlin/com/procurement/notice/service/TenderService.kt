@@ -93,7 +93,7 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
 
-        val updatedAwards = updateAwards(data = data, awards = release.awards)
+        val updatedAwards = updateAwards(data = data) + release.awards
         val updatedLots = updateLots(data = data, lots = release.tender.lots)
 
         val newCriteria = data.criteria
@@ -161,44 +161,41 @@ class TenderService(
      * FR-5.7.2.1.4
      * eNotice Get.Awards list from Request and saves them as release.awards list in new Release:
      */
-    private fun updateAwards(data: TenderPeriodEndData, awards: List<Award>): List<Award> =
-        if (data.awards.isNotEmpty())
-            data.awards.map { award ->
-                Award(
-                    id = award.id,
-                    date = award.date,
-                    status = award.status.value,
-                    statusDetails = award.statusDetails.value,
-                    title = award.title,
-                    description = award.description,
-                    relatedLots = award.relatedLots.map { it.toString() },
-                    relatedBid = award.relatedBid,
-                    value = award.value?.toValue(),
-                    suppliers = award.suppliers.map { supplier ->
-                        OrganizationReference(
-                            id = supplier.id,
-                            name = supplier.name,
-                            additionalIdentifiers = null,
-                            identifier = null,
-                            address = null,
-                            contactPoint = null,
-                            details = null,
-                            buyerProfile = null,
-                            persones = null
-                        )
-                    },
-                    weightedValue = award.weightedValue?.toValue(),
-                    amendment = null,
-                    amendments = null,
-                    items = null,
-                    contractPeriod = null,
-                    documents = null,
-                    requirementResponses = null,
-                    reviewProceedings = null
-                )
-            }
-        else
-            awards
+    private fun updateAwards(data: TenderPeriodEndData): List<Award> =
+        data.awards.map { award ->
+            Award(
+                id = award.id,
+                date = award.date,
+                status = award.status.value,
+                statusDetails = award.statusDetails.value,
+                title = award.title,
+                description = award.description,
+                relatedLots = award.relatedLots.map { it.toString() },
+                relatedBid = award.relatedBid,
+                value = award.value?.toValue(),
+                suppliers = award.suppliers.map { supplier ->
+                    OrganizationReference(
+                        id = supplier.id,
+                        name = supplier.name,
+                        additionalIdentifiers = null,
+                        identifier = null,
+                        address = null,
+                        contactPoint = null,
+                        details = null,
+                        buyerProfile = null,
+                        persones = null
+                    )
+                },
+                weightedValue = award.weightedValue?.toValue(),
+                amendment = null,
+                amendments = null,
+                items = null,
+                contractPeriod = null,
+                documents = null,
+                requirementResponses = null,
+                reviewProceedings = null
+            )
+        }
 
     /**
      * FR-5.7.2.1.6
