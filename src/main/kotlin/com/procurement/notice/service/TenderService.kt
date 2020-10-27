@@ -1411,7 +1411,10 @@ class TenderService(
 
         val updatedLots = updateLots(data = data, lots = release.tender.lots)
         val updatedBids = updateBids(data = data, bids = release.bids)
-        val updatedAwards = updateAwards(data = data)
+
+        // FR-ER-5.7.2.2.4
+        val updatedAwards = updateAwards(data = data) + release.awards
+
         val updatedParties = updateParties(data = data, parties = release.parties)
 
         val updatedRelease = release.copy(
