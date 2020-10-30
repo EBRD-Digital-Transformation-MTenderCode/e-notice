@@ -189,5 +189,8 @@ data class RecordTender(
     @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RecordFramework?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?
+    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("targets") @param:JsonProperty("targets") val targets: List<RecordTarget> = emptyList()
 )
