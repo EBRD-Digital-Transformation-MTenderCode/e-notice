@@ -2,7 +2,7 @@ package com.procurement.notice.infrastructure.dto.entity
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimension
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 
 data class RecordObservation(
 
@@ -21,7 +21,7 @@ data class RecordObservation(
     @field:JsonProperty("period") @param:JsonProperty("period") val period: RecordPeriod?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("dimensions") @param:JsonProperty("dimensions") val dimensions: List<RecordDimension> = emptyList(),
+    @field:JsonProperty("dimensions") @param:JsonProperty("dimensions") val dimensions: RecordDimensions?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedRequirementId") @param:JsonProperty("relatedRequirementId") val relatedRequirementId: String?
