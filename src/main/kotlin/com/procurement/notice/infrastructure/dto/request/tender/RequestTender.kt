@@ -187,5 +187,8 @@ data class RequestTender(
     @field:JsonProperty("framework") @param:JsonProperty("framework") val framework: RequestFramework?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?
+    @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("targets") @param:JsonProperty("targets") val targets: List<RequestTarget> = emptyList()
 )

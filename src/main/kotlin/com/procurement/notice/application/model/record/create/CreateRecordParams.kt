@@ -1,4 +1,4 @@
-package com.procurement.notice.application.model.record
+package com.procurement.notice.application.model.record.create
 
 import com.procurement.notice.domain.extention.tryParseLocalDateTime
 import com.procurement.notice.domain.fail.Fail
@@ -9,7 +9,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestRelease
 import com.procurement.notice.utils.tryDeserialize
 import java.time.LocalDateTime
 
-class UpdateRecordParams private constructor(
+class CreateRecordParams private constructor(
     val date: LocalDateTime,
     val data: RequestRelease
 ) {
@@ -17,10 +17,10 @@ class UpdateRecordParams private constructor(
         fun tryCreate(
             date: String,
             data: String
-        ): Result<UpdateRecordParams, Fail> {
+        ): Result<CreateRecordParams, Fail> {
 
             val startDateParsed = date.tryParseLocalDateTime()
-                .doOnError { expectedFormat ->
+                .doReturn { expectedFormat ->
                     return failure(
                         DataValidationErrors.DataFormatMismatch(
                             name = "date",
@@ -29,10 +29,9 @@ class UpdateRecordParams private constructor(
                         )
                     )
                 }
-                .get
 
             val dataParsed = tryDeserialize(data, RequestRelease::class.java)
-                .doOnError { error ->
+                .doReturn { error ->
                     return failure(
                         Fail.Error.BadRequest(
                             description = "Can not parse 'data'.",
@@ -41,13 +40,9 @@ class UpdateRecordParams private constructor(
                         )
                     )
                 }
-                .get
 
             return Result.success(
-                UpdateRecordParams(
-                    date = startDateParsed,
-                    data = dataParsed
-                )
+                CreateRecordParams(date = startDateParsed, data = dataParsed)
             )
         }
     }
