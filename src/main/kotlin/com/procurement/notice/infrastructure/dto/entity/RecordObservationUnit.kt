@@ -10,5 +10,6 @@ data class RecordObservationUnit(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("name") @param:JsonProperty("name") val name: String?,
 
-    @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String?
 )
