@@ -83,7 +83,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCriteria
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDesignContest
-import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimension
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicAuctions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicWorkflows
@@ -177,7 +177,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficie
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCriteria
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDesignContest
-import com.procurement.notice.infrastructure.dto.request.tender.RequestDimension
+import com.procurement.notice.infrastructure.dto.request.tender.RequestDimensions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicAuctions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicWorkflows
@@ -1571,9 +1571,6 @@ val requestOrganizationReferenceKeyExtractor: (RequestOrganizationReference) -> 
 val recordTargetKeyExtractor: (RecordTarget) -> String = { it.id }
 val requestTargetKeyExtractor: (RequestTarget) -> String = { it.id }
 
-val requestDimensionKeyExtractor: (RequestDimension) -> String = { it.requirementClassIdPR }
-val recordDimensionKeyExtractor: (RecordDimension) -> String = { it.requirementClassIdPR }
-
 fun RecordProcedureOutsourcing.updateProcedureOutsourcing(
     received: RequestProcedureOutsourcing
 ): UpdateRecordResult<RecordProcedureOutsourcing> {
@@ -2790,15 +2787,9 @@ fun RecordObservation.updateObservation(received: RequestObservation): UpdateRec
         }
         ?: this.period
 
-    val dimensions = updateStrategy(
-        receivedElements = received.dimensions,
-        keyExtractorForReceivedElement = requestDimensionKeyExtractor,
-        availableElements = this.dimensions.toList(),
-        keyExtractorForAvailableElement = recordDimensionKeyExtractor,
-        updateBlock = RecordDimension::updateDimension,
-        createBlock = ::createDimensions
-    )
-        .doReturn { e -> return failure(e) }
+    val dimensions = received.dimensions
+        ?.let { createDimensions(it) }
+        ?: this.dimensions
 
     return this
         .copy(
@@ -2813,7 +2804,10 @@ fun RecordObservation.updateObservation(received: RequestObservation): UpdateRec
         .asSuccess()
 }
 
-private fun RecordDimension.updateDimension(received: RequestDimension): UpdateRecordResult<RecordDimension> = this.asSuccess()
+private fun RecordDimensions.updateDimensions(received: RequestDimensions): UpdateRecordResult<RecordDimensions> =
+    this.copy(requirementClassIdPR = received.requirementClassIdPR).asSuccess()
+
+private fun RecordDimensions.updateDimension(received: RequestDimensions): UpdateRecordResult<RecordDimensions> = this.asSuccess()
 
 fun RecordValueTax.updateValueTax(received: RequestValueTax): UpdateRecordResult<RecordValueTax> =
     this.copy(

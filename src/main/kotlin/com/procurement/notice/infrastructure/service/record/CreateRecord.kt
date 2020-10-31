@@ -80,7 +80,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCriteria
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDesignContest
-import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimension
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicAuctions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicWorkflows
@@ -175,7 +175,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficie
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCriteria
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDesignContest
-import com.procurement.notice.infrastructure.dto.request.tender.RequestDimension
+import com.procurement.notice.infrastructure.dto.request.tender.RequestDimensions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicAuctions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicWorkflows
@@ -1276,10 +1276,10 @@ fun createObservation(received: RequestObservation): RecordObservation =
         notes = received.notes,
         period = received.period?.let { createPeriod(it) },
         relatedRequirementId = received.relatedRequirementId,
-        dimensions = received.dimensions.map { createDimensions(it) }
+        dimensions = received.dimensions?.let { createDimensions(it) }
     )
 
-fun createDimensions(received: RequestDimension) = RecordDimension(
+fun createDimensions(received: RequestDimensions) = RecordDimensions(
     requirementClassIdPR = received.requirementClassIdPR
 )
 
