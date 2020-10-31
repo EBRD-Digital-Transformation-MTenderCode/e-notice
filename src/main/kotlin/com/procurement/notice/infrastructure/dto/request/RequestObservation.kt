@@ -2,7 +2,7 @@ package com.procurement.notice.infrastructure.dto.request
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.procurement.notice.infrastructure.dto.request.tender.RequestDimension
+import com.procurement.notice.infrastructure.dto.request.tender.RequestDimensions
 
 data class RequestObservation(
 
@@ -21,7 +21,7 @@ data class RequestObservation(
     @field:JsonProperty("period") @param:JsonProperty("period") val period: RequestPeriod?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("dimensions") @param:JsonProperty("dimensions") val dimensions: List<RequestDimension> = emptyList(),
+    @field:JsonProperty("dimensions") @param:JsonProperty("dimensions") val dimensions: RequestDimensions?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedRequirementId") @param:JsonProperty("relatedRequirementId") val relatedRequirementId: String?
