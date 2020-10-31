@@ -1,6 +1,8 @@
 package com.procurement.notice.infrastructure.service.record
 
+import com.procurement.notice.application.model.record.create.CreateRecordParams
 import com.procurement.notice.infrastructure.dto.enObservationtity.awards.RecordAward
+import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordAgreedMetric
 import com.procurement.notice.infrastructure.dto.entity.RecordAmendment
@@ -39,6 +41,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionResult
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
@@ -70,12 +73,14 @@ import com.procurement.notice.infrastructure.dto.entity.planning.RecordPlanningB
 import com.procurement.notice.infrastructure.dto.entity.planning.RecordTransaction
 import com.procurement.notice.infrastructure.dto.entity.qualification.RecordQualification
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordCandidate
+import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmission
 import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmissionDetail
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCriteria
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDesignContest
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicAuctions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicWorkflows
@@ -92,6 +97,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordPlaceOfPerf
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecordEnquiry
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordVariant
@@ -130,6 +136,7 @@ import com.procurement.notice.infrastructure.dto.request.auction.RequestElectron
 import com.procurement.notice.infrastructure.dto.request.auction.RequestElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
+import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
@@ -168,6 +175,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficie
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCriteria
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDesignContest
+import com.procurement.notice.infrastructure.dto.request.tender.RequestDimensions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicAuctions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicWorkflows
@@ -184,15 +192,143 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestPlaceOfPe
 import com.procurement.notice.infrastructure.dto.request.tender.RequestProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRecordEnquiry
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewal
+import com.procurement.notice.infrastructure.dto.request.tender.RequestTarget
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
 import com.procurement.notice.infrastructure.dto.request.tender.RequestVariant
 import com.procurement.notice.lib.mapIfNotEmpty
+import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
+
+fun createRelease(
+    releaseId: String,
+    tag: List<Tag>,
+    initiationType: InitiationType,
+    params: CreateRecordParams
+): Record {
+    val receivedRelease = params.data
+
+    val relatedProcesses = receivedRelease.relatedProcesses
+        .map { createRelatedProcess(it) }
+        .toMutableList()
+
+    val bids = receivedRelease.bids
+        ?.let { createBidsObject(it) }
+
+    val awards = receivedRelease.awards
+        .map { createAward(it) }
+
+    val contracts = receivedRelease.contracts
+        .map { createContract(it) }
+
+    val parties = receivedRelease.parties
+        .map { createOrganization(it) }
+        .toMutableList()
+
+    val purposeOfNotice = receivedRelease.purposeOfNotice
+        ?.let { createPurposeOfNotice(it) }
+
+    val tender = receivedRelease.tender!!
+        .let { createReleaseTender(it) }
+
+    val agreedMetrics = receivedRelease.agreedMetrics
+        .map { createAgreedMetric(it) }
+
+    val planning = receivedRelease.planning
+        ?.let { createPlanning(it) }
+
+    val submissions = receivedRelease.submissions?.details
+        ?.map { createSubmissionDetail(it) }
+        ?.let { RecordSubmission(it) }
+
+    val qualifications = receivedRelease.qualifications
+        .map { createQualification(it) }
+
+    val preQualification = receivedRelease.preQualification
+        ?.let { createPreQualification(it) }
+
+    val invitations = receivedRelease.invitations
+        .map { createInvitation(it) }
+
+    return Record(
+        id = releaseId,
+        ocid = receivedRelease.ocid,
+        date = params.date,
+        relatedProcesses = relatedProcesses,
+        bids = bids,
+        awards = awards,
+        contracts = contracts,
+        hasPreviousNotice = receivedRelease.hasPreviousNotice,
+        initiationType = initiationType,
+        parties = parties,
+        purposeOfNotice = purposeOfNotice,
+        tag = tag,
+        tender = tender,
+        agreedMetrics = agreedMetrics,
+        cpid = receivedRelease.cpid,
+        planning = planning,
+        submissions = submissions,
+        qualifications = qualifications,
+        preQualification = preQualification,
+        invitations = invitations
+    )
+}
+
+fun defineRecordTag(statusDetails: TenderStatusDetails?): List<Tag> =
+    when (statusDetails) {
+        TenderStatusDetails.TENDERING -> listOf(Tag.TENDER)
+
+        TenderStatusDetails.AGGREGATED,
+        TenderStatusDetails.AGGREGATE_PLANNING,
+        TenderStatusDetails.AGGREGATION,
+        TenderStatusDetails.AGGREGATION_PENDING,
+        TenderStatusDetails.AUCTION,
+        TenderStatusDetails.AWARDED,
+        TenderStatusDetails.AWARDED_CONTRACT_PREPARATION,
+        TenderStatusDetails.AWARDED_STANDSTILL,
+        TenderStatusDetails.AWARDED_SUSPENDED,
+        TenderStatusDetails.AWARDING,
+        TenderStatusDetails.BLOCKED,
+        TenderStatusDetails.CANCELLATION,
+        TenderStatusDetails.CANCELLED,
+        TenderStatusDetails.CLARIFICATION,
+        TenderStatusDetails.COMPLETE,
+        TenderStatusDetails.EMPTY,
+        TenderStatusDetails.ESTABLISHMENT,
+        TenderStatusDetails.EVALUATED,
+        TenderStatusDetails.EVALUATION,
+        TenderStatusDetails.EXECUTION,
+        TenderStatusDetails.LACK_OF_QUALIFICATIONS,
+        TenderStatusDetails.LACK_OF_SUBMISSIONS,
+        TenderStatusDetails.NEGOTIATION,
+        TenderStatusDetails.PLANNED,
+        TenderStatusDetails.PLANNING,
+        TenderStatusDetails.PLANNING_NOTICE,
+        TenderStatusDetails.PREQUALIFICATION,
+        TenderStatusDetails.PREQUALIFIED,
+        TenderStatusDetails.PRESELECTED,
+        TenderStatusDetails.PRESELECTION,
+        TenderStatusDetails.PRIOR_NOTICE,
+        TenderStatusDetails.QUALIFICATION,
+        TenderStatusDetails.QUALIFICATION_STAND_STILL,
+        TenderStatusDetails.STANDSTILL,
+        TenderStatusDetails.SUBMISSION,
+        TenderStatusDetails.SUSPENDED,
+        TenderStatusDetails.UNSUCCESSFUL,
+        TenderStatusDetails.WITHDRAWN,
+        null ->
+            /**
+             * It's temporary mock because Tag is mandatory for publication.
+             * Will be changed soon
+             */
+            listOf(Tag.TENDER)
+
+    }
 
 fun createLot(received: RequestLot): RecordLot =
     RecordLot(
@@ -568,6 +704,12 @@ fun createDocument(received: RequestDocument): RecordDocument =
         title = received.title
     )
 
+fun createBidItem(received: RequestBidItem): RecordBidItem =
+    RecordBidItem(
+        id = received.id,
+        unit = createUnit(received.unit)
+    )
+
 fun createElectronicAuctions(received: RequestElectronicAuctions): RecordElectronicAuctions =
     RecordElectronicAuctions(
         details = received.details
@@ -689,8 +831,17 @@ fun createReleaseTender(received: RequestTender): RecordTender =
         reviewParties = received.reviewParties
             .map { createOrganizationReference(it) },
         reviewPeriod = received.reviewPeriod?.let { createPeriod(it) },
-        secondStage = received.secondStage
+        secondStage = received.secondStage,
+        targets = received.targets.map { createTarget(it) }
     )
+
+fun createTarget(received: RequestTarget) = RecordTarget(
+    id = received.id,
+    title = received.title,
+    relatedItem = received.relatedItem,
+    relatesTo = received.relatesTo,
+    observations = received.observations.map { createObservation(it) }
+)
 
 fun createProcedureOutsourcing(received: RequestProcedureOutsourcing): RecordProcedureOutsourcing =
     RecordProcedureOutsourcing(
@@ -1122,8 +1273,15 @@ fun createObservation(received: RequestObservation): RecordObservation =
         id = received.id,
         unit = received.unit?.let { createObservationUnit(it) },
         measure = received.measure,
-        notes = received.notes
+        notes = received.notes,
+        period = received.period?.let { createPeriod(it) },
+        relatedRequirementId = received.relatedRequirementId,
+        dimensions = received.dimensions?.let { createDimensions(it) }
     )
+
+fun createDimensions(received: RequestDimensions) = RecordDimensions(
+    requirementClassIdPR = received.requirementClassIdPR
+)
 
 fun createValueTax(received: RequestValueTax): RecordValueTax =
     RecordValueTax(

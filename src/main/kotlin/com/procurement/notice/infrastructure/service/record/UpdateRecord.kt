@@ -1,6 +1,6 @@
 package com.procurement.notice.infrastructure.service.record
 
-import com.procurement.notice.application.model.record.UpdateRecordParams
+import com.procurement.notice.application.model.record.update.UpdateRecordParams
 import com.procurement.notice.domain.fail.Fail
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.domain.utils.Result.Companion.failure
@@ -45,6 +45,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionResult
 import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
@@ -82,6 +83,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCriteria
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDesignContest
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicAuctions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordElectronicWorkflows
@@ -98,6 +100,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordPlaceOfPerf
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecordEnquiry
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordVariant
@@ -136,6 +139,7 @@ import com.procurement.notice.infrastructure.dto.request.auction.RequestElectron
 import com.procurement.notice.infrastructure.dto.request.auction.RequestElectronicAuctionsDetails
 import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
+import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
@@ -173,6 +177,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestCoefficie
 import com.procurement.notice.infrastructure.dto.request.tender.RequestConversion
 import com.procurement.notice.infrastructure.dto.request.tender.RequestCriteria
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDesignContest
+import com.procurement.notice.infrastructure.dto.request.tender.RequestDimensions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestDynamicPurchasingSystem
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicAuctions
 import com.procurement.notice.infrastructure.dto.request.tender.RequestElectronicWorkflows
@@ -189,6 +194,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestPlaceOfPe
 import com.procurement.notice.infrastructure.dto.request.tender.RequestProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRecordEnquiry
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewal
+import com.procurement.notice.infrastructure.dto.request.tender.RequestTarget
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
 import com.procurement.notice.infrastructure.dto.request.tender.RequestVariant
@@ -1020,6 +1026,14 @@ fun RecordDocument.updateDocument(received: RequestDocument): UpdateRecordResult
     )
         .asSuccess()
 
+fun RecordBidItem.updateItem(received: RequestBidItem): UpdateRecordResult<RecordBidItem> {
+    val unit = received.unit
+        .let { this.unit.updateUnit(it) }
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(id = received.id, unit = unit).asSuccess()
+}
+
 fun RecordElectronicAuctions.updateElectronicAuctions(received: RequestElectronicAuctions): UpdateRecordResult<RecordElectronicAuctions> =
     this.copy(
         details = updateStrategy(
@@ -1167,6 +1181,16 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
                 ?: createPeriod(it)
         }
         ?: this.awardPeriod
+
+    val targets = updateStrategy(
+        receivedElements = received.targets,
+        keyExtractorForReceivedElement = requestTargetKeyExtractor,
+        availableElements = this.targets,
+        keyExtractorForAvailableElement = recordTargetKeyExtractor,
+        updateBlock = RecordTarget::updateTarget,
+        createBlock = ::createTarget
+    )
+        .doReturn { e -> return failure(e) }
 
     val conversions = updateStrategy(
         receivedElements = received.conversions,
@@ -1491,9 +1515,30 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
             procuringEntity = procuringEntity,
             reviewParties = reviewParties,
             reviewPeriod = reviewPeriod,
-            secondStage = received.secondStage ?: this.secondStage
+            secondStage = received.secondStage ?: this.secondStage,
+            targets = targets
         )
         .asSuccess()
+}
+
+private fun RecordTarget.updateTarget(received: RequestTarget): UpdateRecordResult<RecordTarget> {
+    val observations = updateStrategy(
+        receivedElements = received.observations,
+        keyExtractorForReceivedElement = requestObservationKeyExtractor,
+        availableElements = this.observations.toList(),
+        keyExtractorForAvailableElement = recordObservationKeyExtractor,
+        updateBlock = RecordObservation::updateObservation,
+        createBlock = ::createObservation
+    )
+        .doReturn { e -> return failure(e) }
+
+    return this.copy(
+        id = received.id,
+        relatesTo = received.relatesTo ?: this.relatesTo,
+        relatedItem = received.relatedItem ?: this.relatedItem,
+        title = received.title ?: this.title,
+        observations = observations
+    ).asSuccess()
 }
 
 val recordDocumentKeyExtractor: (RecordDocument) -> String = { it.id }
@@ -1522,6 +1567,9 @@ val requestMilestoneKeyExtractor: (RequestMilestone) -> String = { it.id }
 
 val recordOrganizationReferenceKeyExtractor: (RecordOrganizationReference) -> String = { it.id }
 val requestOrganizationReferenceKeyExtractor: (RequestOrganizationReference) -> String = { it.id }
+
+val recordTargetKeyExtractor: (RecordTarget) -> String = { it.id }
+val requestTargetKeyExtractor: (RequestTarget) -> String = { it.id }
 
 fun RecordProcedureOutsourcing.updateProcedureOutsourcing(
     received: RequestProcedureOutsourcing
@@ -2217,6 +2265,16 @@ fun RecordOrganizationReference.updateSupplier(received: RequestOrganizationRefe
 }
 
 fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
+    val items = updateStrategy(
+        receivedElements = received.items,
+        keyExtractorForReceivedElement = requestBidItemsKeyExtractor,
+        availableElements = this.items.toList(),
+        keyExtractorForAvailableElement = recordBidItemsKeyExtractor,
+        updateBlock = RecordBidItem::updateItem,
+        createBlock = ::createBidItem
+    )
+        .doReturn { e -> return failure(e) }
+
     val documents = updateStrategy(
         receivedElements = received.documents,
         keyExtractorForReceivedElement = requestDocumentKeyExtractor,
@@ -2251,6 +2309,7 @@ fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
         .copy(
             id = received.id,
             value = received.value ?: this.value,
+            items = items,
             relatedLots = this.relatedLots.update(received.relatedLots),
             documents = documents,
             date = received.date ?: this.date,
@@ -2261,6 +2320,9 @@ fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
         )
         .asSuccess()
 }
+
+val recordBidItemsKeyExtractor: (RecordBidItem) -> String = { it.id }
+val requestBidItemsKeyExtractor: (RequestBidItem) -> String = { it.id }
 
 fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult<RecordContract> {
     val requirementResponses = updateStrategy(
@@ -2716,15 +2778,36 @@ fun RecordObservation.updateObservation(received: RequestObservation): UpdateRec
         }
         ?: this.unit
 
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    val dimensions = received.dimensions
+        ?.let { createDimensions(it) }
+        ?: this.dimensions
+
     return this
         .copy(
             id = received.id,
             unit = unit,
             measure = received.measure ?: this.measure,
-            notes = received.notes ?: this.notes
+            notes = received.notes ?: this.notes,
+            period = period,
+            relatedRequirementId = received.relatedRequirementId ?: this.relatedRequirementId,
+            dimensions = dimensions
         )
         .asSuccess()
 }
+
+private fun RecordDimensions.updateDimensions(received: RequestDimensions): UpdateRecordResult<RecordDimensions> =
+    this.copy(requirementClassIdPR = received.requirementClassIdPR).asSuccess()
+
+private fun RecordDimensions.updateDimension(received: RequestDimensions): UpdateRecordResult<RecordDimensions> = this.asSuccess()
 
 fun RecordValueTax.updateValueTax(received: RequestValueTax): UpdateRecordResult<RecordValueTax> =
     this.copy(
@@ -3143,13 +3226,12 @@ fun RecordPreQualification.updatePreQualification(received: RequestPreQualificat
         }
         ?: this.qualificationPeriod
 
-    return  RecordPreQualification(
+    return RecordPreQualification(
         period = period,
         qualificationPeriod = qualificationPeriod
     )
         .asSuccess()
 }
-
 
 fun RecordBids.updateBidsObject(received: RequestBids): UpdateRecordResult<RecordBids> {
     val statistics = updateStrategy(
@@ -3220,7 +3302,6 @@ fun RecordInvitation.updateInvitation(received: RequestInvitation): UpdateRecord
     )
         .asSuccess()
 }
-
 
 fun <R, A, K> updateStrategy(
     receivedElements: List<R>,

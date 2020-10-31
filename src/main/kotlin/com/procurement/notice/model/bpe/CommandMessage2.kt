@@ -26,7 +26,8 @@ import java.util.*
 
 enum class CommandType2(@JsonValue override val key: String) : EnumElementProvider.Key, Action {
 
-    UPDATE_RECORD("updateRecord");
+    UPDATE_RECORD("updateRecord"),
+    CREATE_RECORD("createRecord");
 
     override fun toString(): String = key
 

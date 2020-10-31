@@ -701,7 +701,7 @@ class UpdateReleaseService(
     private fun updateDeliveryAddress(receivedAddress: Address?, storedAddress: Address?) =
         receivedAddress?.copy(
             streetAddress = receivedAddress.streetAddress ?: storedAddress?.streetAddress,
-            postalCode = receivedAddress.streetAddress ?: storedAddress?.postalCode,
+            postalCode = receivedAddress.postalCode ?: storedAddress?.postalCode,
             addressDetails = receivedAddress.addressDetails?.copy(
                 locality = receivedAddress.addressDetails.locality ?: storedAddress?.addressDetails?.locality
             )
