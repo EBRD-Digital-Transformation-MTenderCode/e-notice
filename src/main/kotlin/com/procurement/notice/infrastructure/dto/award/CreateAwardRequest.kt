@@ -36,7 +36,8 @@ data class CreateAwardRequest(
         data class Value(
             @param:JsonDeserialize(using = AmountDeserializer::class)
             @field:JsonSerialize(using = AmountSerializer::class)
-            @field:JsonProperty("amount") @param:JsonProperty("amount") val amount: BigDecimal,
+            @field:JsonInclude(JsonInclude.Include.NON_NULL)
+            @field:JsonProperty("amount") @param:JsonProperty("amount") val amount: BigDecimal?,
 
             @field:JsonProperty("currency") @param:JsonProperty("currency") val currency: String
         )
