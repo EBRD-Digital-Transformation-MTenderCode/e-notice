@@ -7,6 +7,7 @@ import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.BidDocumentType
 import com.procurement.notice.domain.model.lot.LotId
 import com.procurement.notice.domain.model.money.Money
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 class EvaluateAwardData(
@@ -22,11 +23,17 @@ class EvaluateAwardData(
         val statusDetails: AwardStatusDetails,
         val relatedLots: List<LotId>,
         val relatedBid: BidId?,
-        val value: Money,
+        val value: Value,
         val suppliers: List<Supplier>,
         val documents: List<Document>,
         val weightedValue: Money?
     ) {
+
+        data class Value(
+            val amount: BigDecimal?,
+            val currency: String
+        )
+
         data class Supplier(
             val id: String,
             val name: String
