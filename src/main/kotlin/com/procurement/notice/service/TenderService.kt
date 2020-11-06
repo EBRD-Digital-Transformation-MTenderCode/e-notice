@@ -1214,38 +1214,40 @@ class TenderService(
         val recordEntity = releaseService.getRecordEntity(cpid, ocid)
         val release = releaseService.getRelease(recordEntity.jsonData)
 
-        checkPmdForUnsuspendTender(pmd)
+        val stage = Stage.valueOf(stage)
+        checkStageForUnsuspendTender(stage)
         setReleaseIdAndDate(release, ocid, releaseDate)
 
         val tender = release.tender
-        addAnswerToEnquiry(tender.enquiries, dto.enquiry, pmd)
-        setStatusDetails(tender, dto, pmd)
-        setTenderPeriod(tender, dto, pmd)
-        setEnquiryPeriod(tender, dto, pmd)
-        setElectronicAuctionsPeriodAndModalities(tender, dto, pmd)
-        setPreQualificationPeriod(release = release, requestPreQualification = dto.preQualification, pmd = pmd)
+        addAnswerToEnquiry(tender.enquiries, dto.enquiry, stage)
+        setStatusDetails(tender, dto, stage)
+        setTenderPeriod(tender, dto, stage)
+        setEnquiryPeriod(tender, dto, stage)
+        setElectronicAuctionsPeriodAndModalities(tender, dto, stage)
+        setPreQualificationPeriod(release = release, requestPreQualification = dto.preQualification, stage = stage)
 
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage.name, release = release, publishDate = recordEntity.publishDate)
 
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun checkPmdForUnsuspendTender(pmd: ProcurementMethod) = when (pmd) {
-        ProcurementMethod.CF, ProcurementMethod.TEST_CF,
-        ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-        ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-        ProcurementMethod.OF, ProcurementMethod.TEST_OF,
-        ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-        ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-        ProcurementMethod.SV, ProcurementMethod.TEST_SV -> Unit
+    private fun checkStageForUnsuspendTender(stage: Stage) {
+        when(stage){
+            Stage.EV,
+            Stage.TP,
+            Stage.FE,
+            Stage.PC -> Unit
 
-        ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-        ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-        ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-        ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-        ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-        ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-        ProcurementMethod.OP, ProcurementMethod.TEST_OP -> throw ErrorException(ErrorType.INVALID_PMD)
+            Stage.AP,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS -> throw ErrorException(ErrorType.STAGE_ERROR)
+        }
     }
 
     private fun setReleaseIdAndDate(release: Release, ocid: String, releaseDate: LocalDateTime) {
@@ -1256,115 +1258,120 @@ class TenderService(
     }
 
     private fun addAnswerToEnquiry(
-        enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry, pmd: ProcurementMethod
+        enquiries: MutableList<RecordEnquiry>?, enquiry: RecordEnquiry, stage: Stage
     ) {
-        when (pmd) {
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV ->
+        when (stage) {
+            Stage.EV,
+            Stage.TP,
+            Stage.FE,
+            Stage.PC ->
                 enquiries?.asSequence()?.firstOrNull { it.id == enquiry.id }?.apply {
                     this.answer = enquiry.answer
                     this.dateAnswered = enquiry.dateAnswered
                 } ?: throw ErrorException(ErrorType.ENQUIRY_NOT_FOUND)
 
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
+            Stage.AP,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS -> Unit
         }
     }
 
-    private fun setStatusDetails(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
-        when (pmd) {
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.statusDetails = dto.tender.statusDetails
+    private fun setStatusDetails(tender: ReleaseTender, dto: UnsuspendTenderDto,  stage: Stage) {
+        when (stage) {
+            Stage.EV,
+            Stage.TP,
+            Stage.FE,
+            Stage.PC -> tender.statusDetails = dto.tender.statusDetails
 
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
+            Stage.AP,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS -> Unit
         }
     }
 
-    private fun setTenderPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
-        when (pmd) {
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.tenderPeriod = dto.tender.tenderPeriod
+    private fun setTenderPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, stage: Stage) {
+        when (stage) {
+            Stage.EV,
+            Stage.PC -> tender.tenderPeriod = dto.tender.tenderPeriod
 
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            Stage.AP,
+            Stage.FE,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS,
+            Stage.TP -> Unit
         }
     }
 
-    private fun setEnquiryPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod) {
-        when (pmd) {
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> tender.enquiryPeriod = dto.tender.enquiryPeriod
+    private fun setEnquiryPeriod(tender: ReleaseTender, dto: UnsuspendTenderDto, stage: Stage) {
+        when (stage) {
+            Stage.EV,
+            Stage.TP,
+            Stage.FE,
+            Stage.PC  -> tender.enquiryPeriod = dto.tender.enquiryPeriod
 
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP -> Unit
+            Stage.AP,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS -> Unit
         }
     }
 
     private fun setElectronicAuctionsPeriodAndModalities(
-        tender: ReleaseTender, dto: UnsuspendTenderDto, pmd: ProcurementMethod
+        tender: ReleaseTender, dto: UnsuspendTenderDto, stage: Stage
     ) {
-        when (pmd) {
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> {
+        when (stage) {
+            Stage.EV -> {
                 tender.electronicAuctions = dto.tender.electronicAuctions
                 tender.auctionPeriod = dto.tender.auctionPeriod
                 tender.procurementMethodModalities = dto.tender.procurementMethodModalities
             }
 
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> Unit
+            Stage.AP,
+            Stage.FE,
+            Stage.CT,
+            Stage.EI,
+            Stage.FS,
+            Stage.NP,
+            Stage.PC,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS,
+            Stage.TP -> Unit
         }
     }
 
     private fun setPreQualificationPeriod(
         release: Release,
         requestPreQualification: PreQualificationDto?,
-        pmd: ProcurementMethod
+        stage: Stage
     ) {
-        when (pmd) {
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT ->
+        when (stage) {
+            Stage.TP,
+            Stage.FE ->
                 if (requestPreQualification != null) {
                     val preQualificationPeriod = requestPreQualification.period
                         .let { period ->
@@ -1377,17 +1384,18 @@ class TenderService(
                         ?.copy(period = preQualificationPeriod)
                         ?: ReleasePreQualification(period = preQualificationPeriod, qualificationPeriod = null)
                 }
-            
-            ProcurementMethod.CD, ProcurementMethod.TEST_CD, 
-            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
-            ProcurementMethod.DC, ProcurementMethod.TEST_DC, 
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
-            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
-            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
-            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP, 
-            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> Unit
+
+            Stage.AP,
+            Stage.CT,
+            Stage.EI,
+            Stage.EV,
+            Stage.FS,
+            Stage.NP,
+            Stage.PC,
+            Stage.PIN,
+            Stage.PN,
+            Stage.PQ,
+            Stage.PS -> Unit
         }
     }
 
