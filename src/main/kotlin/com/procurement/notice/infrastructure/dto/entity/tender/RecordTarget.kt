@@ -16,7 +16,7 @@ data class RecordTarget(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("observations") @param:JsonProperty("observations") val observations: List<RecordObservation> = emptyList()
 
 )
