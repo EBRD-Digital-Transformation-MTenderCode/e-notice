@@ -270,7 +270,6 @@ fun createRelease(
         tag = tag,
         tender = tender,
         agreedMetrics = agreedMetrics,
-        cpid = null,
         planning = planning,
         submissions = submissions,
         qualifications = qualifications,
