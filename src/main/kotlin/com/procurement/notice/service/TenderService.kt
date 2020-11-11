@@ -91,7 +91,7 @@ class TenderService(
         data: TenderPeriodEndData
     ): TenderPeriodEndResult {
         val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val release = releaseService.getRelease(recordEntity.jsonData)
+        val release: Release = releaseService.getRelease(recordEntity.jsonData)
 
         val updatedAwards = updateAwards(data = data) + release.awards
         val updatedLots = updateLots(data = data, lots = release.tender.lots)
