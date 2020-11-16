@@ -25,7 +25,12 @@ fun EvaluateAwardRequest.convert(): EvaluateAwardData = EvaluateAwardData(
                             message = "The award '${award.id}' contains empty list of relatedLots."
                         )
                     },
-                value = award.value,
+                value = award.value.let { value ->
+                    EvaluateAwardData.Award.Value(
+                        amount = value.amount,
+                        currency = value.currency
+                    )
+                },
                 suppliers = award.suppliers
                     .mapIfNotEmpty { supplier ->
                         EvaluateAwardData.Award.Supplier(

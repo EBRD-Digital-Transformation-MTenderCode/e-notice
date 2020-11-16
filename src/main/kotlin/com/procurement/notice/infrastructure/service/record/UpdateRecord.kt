@@ -2965,7 +2965,6 @@ fun Record.updateRelease(releaseId: String, params: UpdateRecordParams): UpdateR
             tag = this.tag.updateTags(receivedRelease.tag),
             tender = tender,
             agreedMetrics = agreedMetrics,
-            cpid = this.cpid,
             planning = planning,
             submissions = submissions,
             qualifications = qualifications,

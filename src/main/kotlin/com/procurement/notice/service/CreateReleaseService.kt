@@ -471,7 +471,7 @@ class CreateReleaseService(
 
         val updatedFe = receivedFe.copy(
             //FR-5.0.1
-            id = generationService.generateReleaseId(context.ocid),
+            id = generationService.generateReleaseId(context.ocidCn),
             //FR-5.0.2
             date = context.startDate,
             //FR.COM-3.2.1
