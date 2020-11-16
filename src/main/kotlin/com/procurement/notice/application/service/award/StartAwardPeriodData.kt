@@ -22,7 +22,7 @@ data class StartAwardPeriodData(
     ) {
 
         data class Value(
-            val amount: BigDecimal,
+            val amount: BigDecimal?,
             val currency: String
         )
 

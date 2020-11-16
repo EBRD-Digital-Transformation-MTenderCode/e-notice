@@ -277,7 +277,7 @@ class UpdatedRecordTest {
                         id = sampleNewAddress.addressDetails!!.locality.id,
                         description = sampleNewAddress.addressDetails!!.locality.description,
                         scheme = sampleNewAddress.addressDetails!!.locality.scheme,
-                        uri = prevAddress.addressDetails!!.locality.uri
+                        uri = prevAddress.addressDetails!!.locality?.uri
                     )
                 ),
                 postalCode = newAddress.postalCode

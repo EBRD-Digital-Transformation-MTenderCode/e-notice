@@ -15,6 +15,7 @@ data class RecordCriteria(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("requirementGroups") @param:JsonProperty("requirementGroups") val requirementGroups: List<RecordRequirementGroup> = emptyList(),
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

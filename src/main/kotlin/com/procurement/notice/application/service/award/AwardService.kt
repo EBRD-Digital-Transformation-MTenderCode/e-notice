@@ -515,10 +515,10 @@ class AwardServiceImpl(
 
         //FR-5.7.1.1.3 1)-3)
         val awards: List<Award> = release.awards
-            .takeIf {awards ->
+            .takeIf { awards ->
                 awards.isNotEmpty()
             }
-            ?:throw ErrorException(
+            ?: throw ErrorException(
                 error = ErrorType.AWARD_NOT_FOUND,
                 message = "No awards in the database found."
             )
@@ -611,6 +611,7 @@ class AwardServiceImpl(
             )
         }
     }
+
     private fun EvaluateAwardData.Award.convertBy(original: Award): Award = Award(
         id = id.toString(),
         date = date,
@@ -619,7 +620,14 @@ class AwardServiceImpl(
         status = status.value,
         statusDetails = statusDetails.value,
 
-        value = value.toValue(),
+        value = value.let { value ->
+            Value(
+                amount = value.amount,
+                currency = value.currency,
+                amountNet = null,
+                valueAddedTaxIncluded = null
+            )
+        },
         suppliers = suppliers
             .map { supplier ->
                 convertSupplier(id = supplier.id, name = supplier.name)

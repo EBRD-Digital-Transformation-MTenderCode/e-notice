@@ -18,9 +18,6 @@ import java.time.LocalDateTime
 data class Record(
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("cpid") @param:JsonProperty("cpid") val cpid: String?,
-
-        @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("ocid") @param:JsonProperty("ocid") val ocid: String?,
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
