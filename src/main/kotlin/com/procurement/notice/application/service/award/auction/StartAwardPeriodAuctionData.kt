@@ -6,7 +6,7 @@ import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.domain.model.lot.LotId
-import com.procurement.notice.domain.model.money.Money
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class StartAwardPeriodAuctionData(
@@ -51,8 +51,13 @@ data class StartAwardPeriodAuctionData(
 
             data class ElectronicAuctionModality(
                 val url: String,
-                val eligibleMinimumDifference: Money
-            )
+                val eligibleMinimumDifference: Value
+            ) {
+                data class Value(
+                    val amount: BigDecimal?,
+                    val currency: String
+                )
+            }
         }
     }
 }
