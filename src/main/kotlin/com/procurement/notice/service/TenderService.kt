@@ -13,6 +13,7 @@ import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsu
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulResult
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
@@ -55,7 +56,6 @@ import com.procurement.notice.model.ocds.RequirementResponse
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderDescription
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.dto.AwardByBidDto
@@ -138,7 +138,7 @@ class TenderService(
                     maxExtentDate = null,
                     durationInDays = null
                 ),
-                statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value), //FR-5.7.2.1.6
+                statusDetails = data.tenderStatusDetails, //FR-5.7.2.1.6
                 lots = updatedLots.toList(), //FR-5.7.2.1.6
                 criteria = updatedCriteria //FR-5.7.2.1.6
             ),
@@ -1101,7 +1101,7 @@ class TenderService(
             tag = listOf(Tag.AWARD),
             awards = receivedAwards + release.awards, // FR-5.7.2.5.3
             tender = release.tender.copy(
-                statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
+                statusDetails = data.tenderStatusDetails,
                 lots = updatedLots.toList(),
                 electronicAuctions = updatedElectronicAuctions
             )
@@ -1411,7 +1411,7 @@ class TenderService(
             tag = listOf(Tag.COMPILED), //FR-MR-5.7.2.2.1
             tender = ms.tender.copy(
                 status = data.tender.status, //FR-MR-5.7.2.2.2
-                statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value) //FR-MR-5.7.2.2.2
+                statusDetails = data.tender.statusDetails //FR-MR-5.7.2.2.2
             )
         )
 
@@ -1434,7 +1434,7 @@ class TenderService(
             //FR-ER-5.7.2.1.6
             tender = release.tender.copy(
                 status = data.tender.status,
-                statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value),
+                statusDetails = data.tender.statusDetails,
                 lots = updatedLots.toList()
             ),
             bids = updatedBids,//FR-ER-5.7.2.2.3

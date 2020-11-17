@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.time.LocalDateTime
 
 data class EndAwardPeriodRequest(

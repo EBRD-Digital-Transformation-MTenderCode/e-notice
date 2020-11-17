@@ -3,13 +3,13 @@ package com.procurement.notice.infrastructure.dto.entity.tender
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.infrastructure.dto.entity.RecordAmendment
 import com.procurement.notice.infrastructure.dto.entity.RecordClassification
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.model.ocds.RecordParticipationFee
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.tender.record.SecondStage
 

@@ -6,6 +6,7 @@ import com.procurement.notice.application.service.tender.cancel.CancelStandStill
 import com.procurement.notice.application.service.tender.cancel.CancelStandStillPeriodData
 import com.procurement.notice.application.service.tender.cancel.CancelledStandStillPeriodData
 import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.Award
@@ -15,7 +16,6 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.ReleaseAmendment
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.dto.CancellationStandstillPeriodDto
 import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.utils.toJson

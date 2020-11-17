@@ -5,6 +5,7 @@ import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.fe.amend.AmendFeContext
 import com.procurement.notice.application.service.fe.create.CreateFeContext
 import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.lib.toSetBy
@@ -22,7 +23,6 @@ import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderDescription
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
