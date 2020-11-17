@@ -1,5 +1,6 @@
 package com.procurement.notice.controller
 
+import com.procurement.notice.exception.EnumElementProviderException
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.model.bpe.CommandMessage
@@ -57,6 +58,7 @@ class CommandController(private val commandService: CommandService) {
         return when (ex) {
             is ErrorException -> getErrorExceptionResponseDto(ex)
             is EnumException -> getEnumExceptionResponseDto(ex)
+            is EnumElementProviderException -> getEnumExceptionResponseDto(ex)
             else -> getExceptionResponseDto(ex)
         }
     }

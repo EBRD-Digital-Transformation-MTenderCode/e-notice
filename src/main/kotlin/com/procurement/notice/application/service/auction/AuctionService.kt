@@ -34,7 +34,6 @@ import com.procurement.notice.model.ocds.RequirementGroup
 import com.procurement.notice.model.ocds.RequirementReference
 import com.procurement.notice.model.ocds.RequirementResponse
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctionProgress
@@ -70,7 +69,7 @@ class AuctionServiceImpl(
             tag = listOf(Tag.AWARD),                        //FR-5.7.2.6.1
             //FR-5.7.2.6.6
             tender = release.tender.copy(
-                statusDetails = TenderStatusDetails.fromValue(data.tenderStatusDetails.value),
+                statusDetails = data.tenderStatusDetails,
                 auctionPeriod = data.tender.auctionPeriod
                     .let { auctionPeriod ->
                         Period(

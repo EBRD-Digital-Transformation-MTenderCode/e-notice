@@ -3,6 +3,8 @@ package com.procurement.notice.model.tender.ms
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.model.ocds.AcceleratedProcedure
 import com.procurement.notice.model.ocds.Amendment
 import com.procurement.notice.model.ocds.Classification
@@ -14,8 +16,6 @@ import com.procurement.notice.model.ocds.JointProcurement
 import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.ProcedureOutsourcing
-import com.procurement.notice.model.ocds.TenderStatus
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 
 data class MsTender @JsonCreator constructor(

@@ -1,26 +1,24 @@
 package com.procurement.notice.domain.model.enums
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import com.procurement.notice.exception.EnumException
+import com.procurement.notice.domain.utils.EnumElementProvider
 
-enum class TenderStatus(@JsonValue val value: String) {
-    PLANNING("planning"),
-    PLANNED("planned"),
+enum class TenderStatus(@JsonValue override val key: String) : EnumElementProvider.Key {
     ACTIVE("active"),
     CANCELLED("cancelled"),
+    COMPLETE("complete"),
+    PLANNED("planned"),
+    PLANNING("planning"),
     UNSUCCESSFUL("unsuccessful"),
-    COMPLETE("complete");
+    WITHDRAWN("withdrawn");
 
-    override fun toString(): String = this.value
+    override fun toString(): String = this.key
 
-    companion object {
-        private val elements: Map<String, TenderStatus> = values().associateBy { it.value.toUpperCase() }
+    companion object : EnumElementProvider<TenderStatus>(info = info()) {
 
-        fun fromString(value: String): TenderStatus = elements[value.toUpperCase()]
-            ?: throw EnumException(
-                enumType = TenderStatus::class.java.canonicalName,
-                value = value,
-                values = values().joinToString { it.value }
-            )
+        @JvmStatic
+        @JsonCreator
+        fun creator(name: String) = TenderStatus.orThrow(name)
     }
 }
