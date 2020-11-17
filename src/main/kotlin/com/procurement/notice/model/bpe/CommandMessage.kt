@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonValue
 import com.fasterxml.jackson.databind.JsonNode
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.exception.EnumElementProviderException
 import com.procurement.notice.exception.EnumException
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -166,6 +167,18 @@ fun getEnumExceptionResponseDto(error: EnumException, id: String? = null): Respo
             ResponseErrorDto(
                 code = "400.02." + error.code,
                 description = error.msg
+            )
+        ),
+        id = id
+    )
+}
+
+fun getEnumExceptionResponseDto(error: EnumElementProviderException, id: String? = null): ResponseDto {
+    return ResponseDto(
+        errors = listOf(
+            ResponseErrorDto(
+                code = "400.02." + error.code,
+                description = error.message
             )
         ),
         id = id
