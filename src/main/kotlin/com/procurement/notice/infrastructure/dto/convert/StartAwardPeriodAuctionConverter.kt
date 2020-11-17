@@ -43,6 +43,12 @@ fun StartAwardPeriodAuctionRequest.convert(): StartAwardPeriodAuctionData = Star
                             StartAwardPeriodAuctionData.ElectronicAuctions.Detail.ElectronicAuctionModality(
                                 url = electronicAuctionModality.url,
                                 eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference
+                                    .let { eligibleMinimumDifference ->
+                                        StartAwardPeriodAuctionData.ElectronicAuctions.Detail.ElectronicAuctionModality.Value(
+                                            amount = eligibleMinimumDifference.amount,
+                                            currency = eligibleMinimumDifference.currency
+                                        )
+                                    }
                             )
                         }.orThrow {
                                 ErrorException(

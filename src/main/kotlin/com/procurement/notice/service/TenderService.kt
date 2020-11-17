@@ -57,6 +57,7 @@ import com.procurement.notice.model.ocds.TenderDescription
 import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
+import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.dto.AwardByBidDto
 import com.procurement.notice.model.tender.dto.AwardPeriodEndDto
@@ -1148,7 +1149,15 @@ class TenderService(
                                     .map { modality ->
                                         ElectronicAuctionModalities(
                                             url = modality.url,
-                                            eligibleMinimumDifference = modality.eligibleMinimumDifference.toValue()
+                                            eligibleMinimumDifference = modality.eligibleMinimumDifference
+                                                .let { eligibleMinimumDifference ->
+                                                    Value(
+                                                        amount = eligibleMinimumDifference.amount,
+                                                        currency = eligibleMinimumDifference.currency,
+                                                        valueAddedTaxIncluded = null,
+                                                        amountNet = null
+                                                    )
+                                                }
                                         )
                                     }
                                     .toSet(),
