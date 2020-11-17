@@ -1410,7 +1410,7 @@ class TenderService(
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.7.2.2.1
             tender = ms.tender.copy(
-                status = TenderStatus.fromValue(data.tender.status.value), //FR-MR-5.7.2.2.2
+                status = TenderStatus.fromValue(data.tender.status.key), //FR-MR-5.7.2.2.2
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value) //FR-MR-5.7.2.2.2
             )
         )
@@ -1433,7 +1433,7 @@ class TenderService(
 
             //FR-ER-5.7.2.1.6
             tender = release.tender.copy(
-                status = TenderStatus.fromValue(data.tender.status.value),
+                status = TenderStatus.fromValue(data.tender.status.key),
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value),
                 lots = updatedLots.toList()
             ),
