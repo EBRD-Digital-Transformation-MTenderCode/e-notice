@@ -212,40 +212,6 @@ enum class TenderTitle(val text: String) {
     TP("Tendering Phase")
 }
 
-enum class TenderStatus constructor(private val value: String) {
-    PLANNING("planning"),
-    PLANNED("planned"),
-    ACTIVE("active"),
-    CANCELLED("cancelled"),
-    UNSUCCESSFUL("unsuccessful"),
-    COMPLETE("complete"),
-    WITHDRAWN("withdrawn");
-
-    override fun toString(): String {
-        return this.value
-    }
-
-    @JsonValue
-    fun value(): String {
-        return this.value
-    }
-
-    companion object {
-        private val CONSTANTS = HashMap<String, TenderStatus>()
-
-        init {
-            for (c in values()) {
-                CONSTANTS[c.value] = c
-            }
-        }
-
-        @JsonCreator
-        fun fromValue(value: String): TenderStatus {
-            return CONSTANTS[value] ?: throw IllegalArgumentException(value)
-        }
-    }
-}
-
 enum class TenderStatusDetails constructor(private val value: String) {
     AGGREGATED("aggregated"),
     AGGREGATE_PLANNING("aggregatePlanning"),

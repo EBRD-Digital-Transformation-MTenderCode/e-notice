@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
-import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.time.LocalDateTime
 

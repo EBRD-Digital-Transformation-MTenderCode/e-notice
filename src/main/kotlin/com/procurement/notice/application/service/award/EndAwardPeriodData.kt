@@ -1,6 +1,6 @@
 package com.procurement.notice.application.service.award
 
-import com.procurement.notice.model.ocds.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.time.LocalDateTime
 

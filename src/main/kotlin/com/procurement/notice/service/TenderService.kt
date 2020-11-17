@@ -12,6 +12,7 @@ import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsu
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulData
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulResult
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
@@ -54,7 +55,6 @@ import com.procurement.notice.model.ocds.RequirementResponse
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
 import com.procurement.notice.model.ocds.TenderDescription
-import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.ocds.toValue
@@ -1410,7 +1410,7 @@ class TenderService(
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.7.2.2.1
             tender = ms.tender.copy(
-                status = TenderStatus.fromValue(data.tender.status.key), //FR-MR-5.7.2.2.2
+                status = data.tender.status, //FR-MR-5.7.2.2.2
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value) //FR-MR-5.7.2.2.2
             )
         )
@@ -1433,7 +1433,7 @@ class TenderService(
 
             //FR-ER-5.7.2.1.6
             tender = release.tender.copy(
-                status = TenderStatus.fromValue(data.tender.status.key),
+                status = data.tender.status,
                 statusDetails = TenderStatusDetails.fromValue(data.tender.statusDetails.value),
                 lots = updatedLots.toList()
             ),

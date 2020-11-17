@@ -1,8 +1,8 @@
 package com.procurement.notice.application.service.cn
 
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.domain.model.money.Money
-import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime

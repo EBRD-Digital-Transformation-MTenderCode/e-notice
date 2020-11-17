@@ -2,6 +2,7 @@ package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordOtherCriteria
 import com.procurement.notice.model.ocds.Conversion
 import com.procurement.notice.model.ocds.Criteria
@@ -11,7 +12,6 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.LotGroup
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.ReleaseAmendment
-import com.procurement.notice.model.ocds.TenderStatus
 import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
