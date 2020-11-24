@@ -441,7 +441,13 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                             electronicAuctionModalities = detail.electronicAuctionModalities
                                                 .mapIfNotEmpty { electronicAuctionModality ->
                                                     AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionModality(
-                                                        eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference,
+                                                        eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference
+                                                            .let { difference ->
+                                                                AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionModality.Value(
+                                                                    amount = difference.amount,
+                                                                    currency = difference.currency
+                                                                )
+                                                            },
                                                         url = electronicAuctionModality.url
                                                     )
                                                 }
@@ -469,6 +475,12 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                                                     status = breakdown.status,
                                                                     dateMet = breakdown.dateMet,
                                                                     value = breakdown.value
+                                                                        .let { value ->
+                                                                            AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionProgres.Breakdown.Value(
+                                                                                amount = value.amount,
+                                                                                currency = value.currency
+                                                                            )
+                                                                        }
                                                                 )
                                                             }
                                                             .orThrow {
@@ -490,6 +502,12 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                                     AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionResult(
                                                         relatedBid = result.relatedBid,
                                                         value = result.value
+                                                            .let { value ->
+                                                                AuctionPeriodEndData.Tender.ElectronicAuctions.Detail.ElectronicAuctionResult.Value(
+                                                                    amount = value.amount,
+                                                                    currency = value.currency
+                                                                )
+                                                            }
                                                     )
                                                 }
                                                 .orThrow {

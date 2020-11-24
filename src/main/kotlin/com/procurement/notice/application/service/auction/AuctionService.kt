@@ -34,6 +34,7 @@ import com.procurement.notice.model.ocds.RequirementGroup
 import com.procurement.notice.model.ocds.RequirementReference
 import com.procurement.notice.model.ocds.RequirementResponse
 import com.procurement.notice.model.ocds.Tag
+import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctionProgress
@@ -631,7 +632,15 @@ class AuctionServiceImpl(
                                 electronicAuctionModalities = detail.electronicAuctionModalities
                                     .map { electronicAuctionModality ->
                                         ElectronicAuctionModalities(
-                                            eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference.toValue(),
+                                            eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference
+                                                .let { value ->
+                                                    Value(
+                                                        amount = value.amount,
+                                                        currency = value.currency,
+                                                        amountNet = null,
+                                                        valueAddedTaxIncluded = null
+                                                    )
+                                                },
                                             url = electronicAuctionModality.url
                                         )
                                     }
@@ -655,7 +664,15 @@ class AuctionServiceImpl(
                                                         relatedBid = breakdown.relatedBid.toString(),
                                                         status = breakdown.status.value,
                                                         dateMet = breakdown.dateMet,
-                                                        value = breakdown.value.toValue()
+                                                        value = breakdown.value
+                                                            .let { value ->
+                                                                Value(
+                                                                    amount = value.amount,
+                                                                    currency = value.currency,
+                                                                    amountNet = null,
+                                                                    valueAddedTaxIncluded = null
+                                                                )
+                                                            }
                                                     )
                                                 }
                                                 .toSet()
@@ -666,7 +683,15 @@ class AuctionServiceImpl(
                                     .map { result ->
                                         ElectronicAuctionResult(
                                             relatedBid = result.relatedBid.toString(),
-                                            value = result.value.toValue()
+                                            value = result.value
+                                                .let { value ->
+                                                    Value(
+                                                        amount = value.amount,
+                                                        currency = value.currency,
+                                                        amountNet = null,
+                                                        valueAddedTaxIncluded = null
+                                                    )
+                                                }
                                         )
                                     }
                                     .toSet()

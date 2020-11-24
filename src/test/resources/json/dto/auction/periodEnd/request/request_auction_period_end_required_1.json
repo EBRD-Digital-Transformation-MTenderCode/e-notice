@@ -211,7 +211,6 @@
             {
               "url": "https://eauction.mtender.md/cpid/ocid",
               "eligibleMinimumDifference": {
-                "amount": 150.00,
                 "currency": "MDL"
               }
             }
@@ -229,8 +228,7 @@
                   "status": "met",
                   "dateMet": "2011-06-01T17:59:00Z",
                   "value": {
-                    "amount": 1001.00,
-                    "currency": ""
+                    "amount": 1001.00
                   }
                 },
                 {
@@ -258,8 +256,7 @@
             {
               "relatedBid": "a80b61e0-c348-11e8-b9a8-dd319bd9bbdf",
               "value": {
-                "amount": 981.00,
-                "currency": ""
+                "amount": 981.00
               }
             },
             {
