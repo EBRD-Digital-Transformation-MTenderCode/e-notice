@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.infrastructure.bind.amount.AmountDeserializer
 import com.procurement.notice.infrastructure.bind.amount.AmountSerializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeDeserializer
 import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime
 

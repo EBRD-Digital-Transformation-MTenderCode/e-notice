@@ -1,9 +1,9 @@
 package com.procurement.notice.model.tender.record
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 
 data class Params(
     var statusDetails: TenderStatusDetails = TenderStatusDetails.PRESELECTION,
