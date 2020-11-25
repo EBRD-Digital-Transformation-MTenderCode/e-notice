@@ -20,6 +20,7 @@ import com.procurement.notice.domain.model.enums.TypeOfSupplier
 import com.procurement.notice.domain.model.lot.LotId
 import com.procurement.notice.domain.model.money.Money
 import com.procurement.notice.model.ocds.Requirement
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class AuctionPeriodEndData(
@@ -321,13 +322,23 @@ data class AuctionPeriodEndData(
             ) {
                 data class ElectronicAuctionModality(
                     val url: String,
-                    val eligibleMinimumDifference: Money
-                )
+                    val eligibleMinimumDifference: Value
+                ) {
+                    data class Value(
+                        val amount: BigDecimal?,
+                        val currency: String
+                    )
+                }
 
                 data class ElectronicAuctionResult(
                     val relatedBid: BidId,
-                    val value: Money
-                )
+                    val value: Value
+                ) {
+                    data class Value(
+                        val amount: BigDecimal,
+                        val currency: String?
+                    )
+                }
 
                 data class AuctionPeriod(
                     val startDate: LocalDateTime,
@@ -348,8 +359,13 @@ data class AuctionPeriodEndData(
                         val relatedBid: BidId,
                         val status: BreakdownStatus,
                         val dateMet: LocalDateTime,
-                        val value: Money
-                    )
+                        val value: Value
+                    ) {
+                        data class Value(
+                            val amount: BigDecimal,
+                            val currency: String?
+                        )
+                    }
                 }
             }
         }

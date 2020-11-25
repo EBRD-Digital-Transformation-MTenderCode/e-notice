@@ -491,7 +491,10 @@ class UpdateReleaseService(
                         )
                     }.toList(),
                     secondStage = releaseEV.tender.secondStage, //FR-ER-5.5.2.3.9
-                    procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale
+                    procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale,
+                    value = null,
+                    classification = null,
+                    targets = emptyList()
                 )
             }
         )

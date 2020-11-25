@@ -5,6 +5,7 @@ import com.procurement.notice.application.model.Cpid
 import com.procurement.notice.application.model.Ocid
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.fail.Fail
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.domain.utils.Result
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -17,7 +18,6 @@ import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Params

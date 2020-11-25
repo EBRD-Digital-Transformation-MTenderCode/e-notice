@@ -11,9 +11,9 @@ import com.procurement.notice.domain.model.enums.AwardStatus
 import com.procurement.notice.domain.model.enums.AwardStatusDetails
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.domain.model.lot.LotId
-import com.procurement.notice.domain.model.money.Money
-import com.procurement.notice.infrastructure.bind.money.MoneyDeserializer
-import com.procurement.notice.infrastructure.bind.money.MoneySerializer
+import com.procurement.notice.infrastructure.bind.amount.AmountDeserializer
+import com.procurement.notice.infrastructure.bind.amount.AmountSerializer
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class StartAwardPeriodAuctionRequest(
@@ -57,11 +57,18 @@ data class StartAwardPeriodAuctionRequest(
 
             data class ElectronicAuctionModality(
                 @param:JsonProperty("url") @field:JsonProperty("url") val url: String,
+                @param:JsonProperty("eligibleMinimumDifference") @field:JsonProperty("eligibleMinimumDifference") val eligibleMinimumDifference: Value
+            ) {
 
-                @JsonDeserialize(using = MoneyDeserializer::class)
-                @JsonSerialize(using = MoneySerializer::class)
-                @param:JsonProperty("eligibleMinimumDifference") @field:JsonProperty("eligibleMinimumDifference") val eligibleMinimumDifference: Money
-            )
+                data class Value(
+                    @param:JsonDeserialize(using = AmountDeserializer::class)
+                    @field:JsonSerialize(using = AmountSerializer::class)
+                    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+                    @field:JsonProperty("amount") @param:JsonProperty("amount") val amount: BigDecimal?,
+
+                    @field:JsonProperty("currency") @param:JsonProperty("currency") val currency: String
+                )
+            }
         }
     }
 }

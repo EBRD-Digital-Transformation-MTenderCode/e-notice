@@ -18,6 +18,8 @@ import com.procurement.notice.application.service.contract.rejection.TreasuryRej
 import com.procurement.notice.dao.BudgetDao
 import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
+import com.procurement.notice.domain.model.enums.TenderStatus
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.DataResponseDto
@@ -55,8 +57,6 @@ import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Request
 import com.procurement.notice.model.ocds.RequestGroup
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatus
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.ValueTax
 import com.procurement.notice.model.ocds.Verification
 import com.procurement.notice.model.tender.record.Release
@@ -978,8 +978,8 @@ class ContractingService(
             tag = listOf(Tag.TENDER_UPDATE)
             tender.apply {
                 awardPeriod = dto.awardPeriod
-                status = TenderStatus.fromValue(dto.tender.status)
-                statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+                status = TenderStatus.creator(dto.tender.status)
+                statusDetails = TenderStatusDetails.creator(dto.tender.statusDetails)
                 lots.let { updateLots(it, dto.lots) }
             }
             bids?.details?.let { updateBids(it, dto.bids) }
@@ -1416,8 +1416,8 @@ class ContractingService(
             date = releaseDate
             tag = listOf(Tag.COMPILED)
             tender.apply {
-                status = TenderStatus.fromValue(dto.tender.status)
-                statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+                status = TenderStatus.creator(dto.tender.status)
+                statusDetails = TenderStatusDetails.creator(dto.tender.statusDetails)
             }
         }
         val recordEvEntity = releaseDao.getByCpIdAndStage(cpId = cpid, stage = stage)
@@ -1429,8 +1429,8 @@ class ContractingService(
             tag = listOf(Tag.TENDER_UPDATE)
             tender.apply {
                 awardPeriod = dto.awardPeriod
-                status = TenderStatus.fromValue(dto.tender.status)
-                statusDetails = TenderStatusDetails.fromValue(dto.tender.statusDetails)
+                status = TenderStatus.creator(dto.tender.status)
+                statusDetails = TenderStatusDetails.creator(dto.tender.statusDetails)
                 lots.let { updateLots(it, dto.lots) }
             }
             bids?.details?.let { updateBids(it, dto.bids) }

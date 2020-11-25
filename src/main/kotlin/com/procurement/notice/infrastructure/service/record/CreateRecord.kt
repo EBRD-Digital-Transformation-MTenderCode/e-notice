@@ -1,6 +1,7 @@
 package com.procurement.notice.infrastructure.service.record
 
 import com.procurement.notice.application.model.record.create.CreateRecordParams
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.infrastructure.dto.enObservationtity.awards.RecordAward
 import com.procurement.notice.infrastructure.dto.entity.Record
 import com.procurement.notice.infrastructure.dto.entity.RecordAccountIdentifier
@@ -202,7 +203,6 @@ import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 
 fun createRelease(

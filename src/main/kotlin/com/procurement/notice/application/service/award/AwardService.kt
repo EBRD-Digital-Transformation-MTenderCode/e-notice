@@ -6,6 +6,7 @@ import com.procurement.notice.dao.ReleaseDao
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.domain.model.bid.BidId
+import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.contract.ContractRecord
@@ -30,7 +31,6 @@ import com.procurement.notice.model.ocds.RegionDetails
 import com.procurement.notice.model.ocds.RelatedParty
 import com.procurement.notice.model.ocds.Stage
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.TenderStatusDetails
 import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.service.ReleaseService
