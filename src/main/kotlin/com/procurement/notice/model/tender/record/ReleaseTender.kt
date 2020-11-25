@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordOtherCriteria
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
+import com.procurement.notice.model.ocds.Classification
 import com.procurement.notice.model.ocds.Conversion
 import com.procurement.notice.model.ocds.Criteria
 import com.procurement.notice.model.ocds.Document
@@ -13,6 +15,7 @@ import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.LotGroup
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.ReleaseAmendment
+import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
 
 data class ReleaseTender (
@@ -107,5 +110,14 @@ data class ReleaseTender (
     @field:JsonProperty("secondStage") @param:JsonProperty("secondStage") val secondStage: SecondStage?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("procurementMethodRationale") @param:JsonProperty("procurementMethodRationale") val procurementMethodRationale: String?
+    @field:JsonProperty("procurementMethodRationale") @param:JsonProperty("procurementMethodRationale") val procurementMethodRationale: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: Classification?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("value") @param:JsonProperty("value") val value: Value?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("targets") @param:JsonProperty("targets") val targets: List<RecordTarget> = emptyList()
 )
