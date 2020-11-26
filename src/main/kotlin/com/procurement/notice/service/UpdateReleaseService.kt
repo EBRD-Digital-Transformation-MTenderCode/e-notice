@@ -248,7 +248,6 @@ class UpdateReleaseService(
                                             }
                                     )
                                 }
-                                .toHashSet()
                         )
                     else
                         party
@@ -455,7 +454,7 @@ class UpdateReleaseService(
                                         description = additionalClassification.description,
                                         uri = null
                                     )
-                                }.toHashSet(),
+                                },
                             quantity = item.quantity,
                             unit = item.unit.let { unit ->
                                 com.procurement.notice.model.ocds.Unit(
@@ -595,11 +594,11 @@ class UpdateReleaseService(
                                     eligibleMinimumDifference = electronicAuctionModality.eligibleMinimumDifference.toValue(),
                                     url = electronicAuctionModality.url
                                 )
-                            }.toSet(),
+                            },
                             electronicAuctionProgress = null,
                             electronicAuctionResult = null
                         )
-                    }.toSet()
+                    }
                 )
             }
         else

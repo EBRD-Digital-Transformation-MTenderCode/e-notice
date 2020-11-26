@@ -14,7 +14,11 @@ import com.procurement.notice.model.entity.BudgetEntity
 import com.procurement.notice.model.ocds.BudgetBreakdown
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.utils.*
+import com.procurement.notice.utils.localNowUTC
+import com.procurement.notice.utils.milliNowUTC
+import com.procurement.notice.utils.toDate
+import com.procurement.notice.utils.toJson
+import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -95,7 +99,7 @@ class BudgetService(private val budgetDao: BudgetDao,
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = fs.ocid))
     }
 
-    fun createEiByMs(eiIds: HashSet<String>, msCpId: String, dateTime: LocalDateTime) {
+    fun createEiByMs(eiIds: List<String>, msCpId: String, dateTime: LocalDateTime) {
         eiIds.forEach { eiCpId ->
             val entity = budgetDao.getEiByCpId(eiCpId) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
             val ei = toObject(EI::class.java, entity.jsonData)

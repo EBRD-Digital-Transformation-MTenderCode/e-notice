@@ -45,7 +45,7 @@ class ActivationContractStrategy(
             date = context.releaseDate,
 
             //BR-2.7.3.6
-            contracts = updatedContracts.toHashSet()
+            contracts = updatedContracts
         )
 
         val recordStage = when (context.pmd) {
@@ -103,7 +103,7 @@ class ActivationContractStrategy(
                     details = updatingBidsEv(
                         bids = bids.details ?: emptyList(),
                         bidsFromRequest = data.bids ?: emptyList()
-                    ).toHashSet()
+                    )
                 )
             }
         )
@@ -152,7 +152,7 @@ class ActivationContractStrategy(
                     description = milestone.description,
                     type = milestone.type,
                     status = milestone.status,
-                    relatedItems = milestone.relatedItems?.toSet(),
+                    relatedItems = milestone.relatedItems,
                     additionalInformation = milestone.additionalInformation,
                     dueDate = milestone.dueDate,
                     relatedParties = milestone.relatedParties.map { relatedParty ->
@@ -260,9 +260,9 @@ class ActivationContractStrategy(
      *   b. ELSE [no bids in Request] { system does not perform any operation;
      */
     private fun updatingBidsEv(
-        bids: Collection<Bid>,
+        bids: List<Bid>,
         bidsFromRequest: List<ActivateContractData.Bid>
-    ): Collection<Bid> {
+    ): List<Bid> {
         if (bidsFromRequest.isEmpty()) return bids
         val bidsFromRequestById = bidsFromRequest.associateBy { it.id }
         return bids.map { bid ->
