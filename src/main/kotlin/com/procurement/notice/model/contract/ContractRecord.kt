@@ -43,5 +43,5 @@ data class ContractRecord @JsonCreator constructor(
     var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: List<RelatedProcess>? = null
+    var relatedProcesses: MutableList<RelatedProcess>? = null
 )

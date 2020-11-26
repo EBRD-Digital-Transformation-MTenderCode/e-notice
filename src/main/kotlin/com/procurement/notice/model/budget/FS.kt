@@ -48,5 +48,5 @@ data class FS @JsonCreator constructor(
     var planning: FsPlanning?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: List<RelatedProcess>?
+    var relatedProcesses: MutableList<RelatedProcess>?
 )

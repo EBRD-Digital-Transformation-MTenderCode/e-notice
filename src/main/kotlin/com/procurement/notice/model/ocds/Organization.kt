@@ -33,5 +33,5 @@ data class Organization @JsonCreator constructor(
     var buyerProfile: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var roles: List<PartyRole>
+    var roles: MutableList<PartyRole>
 )

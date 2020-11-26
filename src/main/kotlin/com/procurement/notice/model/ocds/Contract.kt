@@ -54,7 +54,7 @@ data class Contract @JsonCreator constructor(
     val dateSigned: LocalDateTime? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: List<RelatedProcess>? = null,
+    var relatedProcesses: MutableList<RelatedProcess>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var amendments: List<Amendment>? = null,

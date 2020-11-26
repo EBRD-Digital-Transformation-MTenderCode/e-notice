@@ -34,5 +34,5 @@ data class Ms @JsonCreator constructor(
     var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: List<RelatedProcess>?
+    var relatedProcesses: MutableList<RelatedProcess>?
 )
