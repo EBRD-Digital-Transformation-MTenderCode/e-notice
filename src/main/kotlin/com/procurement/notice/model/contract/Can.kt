@@ -29,7 +29,7 @@ data class Can @JsonCreator constructor(
     var statusDetails: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var documents: HashSet<Document>?,
+    var documents: List<Document>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var amendment: Amendment?

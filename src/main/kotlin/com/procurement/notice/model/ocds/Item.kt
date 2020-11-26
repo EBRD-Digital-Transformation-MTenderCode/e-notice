@@ -23,7 +23,7 @@ data class Item @JsonCreator constructor(
     val classification: Classification?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val additionalClassifications: HashSet<Classification>?,
+    val additionalClassifications: List<Classification>?,
 
     @param:JsonDeserialize(using = QuantityDeserializer::class)
     @field:JsonSerialize(using = QuantitySerializer::class)

@@ -11,10 +11,10 @@ data class ActivationDto @JsonCreator constructor(
     val contract: ContractActivation,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lots: HashSet<Lot>,
+    val lots: List<Lot>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val cans: HashSet<Can>
+    val cans: List<Can>
 )
 
 data class ContractActivation @JsonCreator constructor(

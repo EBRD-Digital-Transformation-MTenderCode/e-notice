@@ -39,11 +39,11 @@ data class EI @JsonCreator constructor(
     val buyer: OrganizationReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var parties: HashSet<Organization>?,
+    var parties: List<Organization>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var planning: EiPlanning?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: HashSet<RelatedProcess>?
+    var relatedProcesses: List<RelatedProcess>?
 )

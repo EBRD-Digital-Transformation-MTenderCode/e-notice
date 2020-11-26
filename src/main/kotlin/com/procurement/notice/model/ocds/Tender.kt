@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.domain.model.enums.TenderStatus
 import com.procurement.notice.domain.model.enums.TenderStatusDetails
-import java.util.*
 
 data class Tender @JsonCreator constructor(
 
@@ -25,7 +24,7 @@ data class Tender @JsonCreator constructor(
     val statusDetails: TenderStatusDetails?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val items: HashSet<Item>?,
+    val items: List<Item>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val minValue: Value?,
@@ -86,7 +85,7 @@ data class Tender @JsonCreator constructor(
     val numberOfTenderers: Int?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val tenderers: HashSet<OrganizationReference>?,
+    val tenderers: List<OrganizationReference>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val procuringEntity: OrganizationReference?,
@@ -113,7 +112,7 @@ data class Tender @JsonCreator constructor(
     val lotGroups: List<LotGroup>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val participationFees: HashSet<ParticipationFee>?,
+    val participationFees: List<ParticipationFee>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val criteria: List<Criterion>?,
@@ -146,7 +145,7 @@ data class Tender @JsonCreator constructor(
     val procurementMethodAdditionalInfo: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val reviewParties: HashSet<OrganizationReference>?,
+    val reviewParties: List<OrganizationReference>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val reviewPeriod: Period?,
