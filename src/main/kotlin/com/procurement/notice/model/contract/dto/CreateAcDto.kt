@@ -12,7 +12,7 @@ import com.procurement.notice.model.ocds.ContractTerm
 data class CreateAcDto @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val cans: HashSet<Can>,
+    val cans: List<Can>,
 
     val contract: Contract,
 
@@ -36,6 +36,6 @@ data class CreateAcTender @JsonCreator constructor(
     val mainProcurementCategory: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var lots: HashSet<ContractTenderLot>
+    var lots: List<ContractTenderLot>
 
 )

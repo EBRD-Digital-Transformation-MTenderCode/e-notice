@@ -13,18 +13,18 @@ data class EndContractingProcessDto @JsonCreator constructor(
     val tender: EndContractingProcessTender,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lots: HashSet<Lot>,
+    val lots: List<Lot>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val bids: HashSet<Bid>,
+    val bids: List<Bid>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val awards: HashSet<Award>,
+    val awards: List<Award>,
 
     val awardPeriod: Period,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val cans: HashSet<Can>
+    val cans: List<Can>
 )
 
 data class EndContractingProcessTender @JsonCreator constructor(

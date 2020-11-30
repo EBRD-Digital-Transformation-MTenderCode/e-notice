@@ -268,7 +268,7 @@ class TenderService(
                                                 legalName = additionalIdentifier.legalName,
                                                 uri = additionalIdentifier.uri
                                             )
-                                        }.toHashSet(),
+                                        },
                                     address = tenderer.address
                                         .let { address ->
                                             Address(
@@ -327,7 +327,7 @@ class TenderService(
                                                             scheme = mainEconomicActivity.scheme,
                                                             uri = mainEconomicActivity.uri
                                                         )
-                                                    }.toSet(),
+                                                    },
                                                 scale = details.scale.value,
                                                 permits = details.permits
                                                     .map { permit ->
@@ -422,7 +422,6 @@ class TenderService(
                                                                         id = additionalAccountIdentifier.id
                                                                     )
                                                                 }
-                                                                .toSet()
                                                         )
                                                     },
                                                 legalForm = details.legalForm
@@ -486,7 +485,7 @@ class TenderService(
                                                         )
                                                     }
                                             )
-                                        }.toHashSet(),
+                                        },
                                     buyerProfile = null
                                 )
                             },
@@ -513,8 +512,7 @@ class TenderService(
                                             relatedConfirmations = null
                                         )
                                     }
-                            }
-                            .toHashSet(),
+                            },
                         //FR-5.7.2.1.3
                         requirementResponses = bid.requirementResponses
                             .map { requirementResponse ->
@@ -540,10 +538,9 @@ class TenderService(
                                     responder = null
                                 )
                             }
-                            .toHashSet()
                     )
                 }
-            Bids(statistics = null, details = details.toHashSet())
+            Bids(statistics = null, details = details)
         } else
             bids
     }
@@ -601,7 +598,7 @@ class TenderService(
                     if (PartyRole.TENDERER !in party.roles) {
                         val tenderer = tenderersById.getValue(partyId)
                         party.copy(
-                            roles = (party.roles + PartyRole.TENDERER).toHashSet(),
+                            roles = (party.roles + PartyRole.TENDERER).toMutableList(),
                             persones = tenderer.persons
                                 .mapIfNotEmpty { person ->
                                     Person(
@@ -648,7 +645,6 @@ class TenderService(
                                             }
                                     )
                                 }
-                                ?.toHashSet()
                                 ?: party.persones,
                             details = tenderer.details
                                 .let { details ->
@@ -662,7 +658,7 @@ class TenderService(
                                                     scheme = mainEconomicActivity.scheme,
                                                     uri = mainEconomicActivity.uri
                                                 )
-                                            }.toSet(),
+                                            },
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -757,7 +753,6 @@ class TenderService(
                                                                 id = additionalAccountIdentifier.id
                                                             )
                                                         }
-                                                        .toSet()
                                                 )
                                             },
                                         legalForm = details.legalForm
@@ -785,7 +780,6 @@ class TenderService(
                                         uri = additionalIdentifier.uri
                                     )
                                 }
-                                ?.toHashSet()
                                 ?: party.additionalIdentifiers
                         )
                     } else
@@ -800,7 +794,7 @@ class TenderService(
                 Organization(
                     id = tenderer.id,
                     name = tenderer.name,
-                    roles = hashSetOf(PartyRole.TENDERER),
+                    roles = mutableListOf(PartyRole.TENDERER),
                     identifier = tenderer.identifier
                         .let { identifier ->
                             Identifier(
@@ -811,7 +805,6 @@ class TenderService(
                             )
                         },
                     additionalIdentifiers = tenderer.additionalIdentifiers
-                        .asSequence()
                         .map { identifier ->
                             Identifier(
                                 scheme = identifier.scheme,
@@ -819,8 +812,7 @@ class TenderService(
                                 uri = identifier.uri,
                                 legalName = identifier.legalName
                             )
-                        }
-                        .toHashSet(),
+                        },
                     address = tenderer.address.let { address ->
                         Address(
                             streetAddress = address.streetAddress,
@@ -909,8 +901,7 @@ class TenderService(
                                         )
                                     }
                             )
-                        }
-                        .toHashSet(),
+                        },
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier?.value,
@@ -922,7 +913,7 @@ class TenderService(
                                         scheme = mainEconomicActivity.scheme,
                                         uri = mainEconomicActivity.uri
                                     )
-                                }.toSet(),
+                                },
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->
@@ -1017,7 +1008,6 @@ class TenderService(
                                                     id = additionalAccountIdentifier.id
                                                 )
                                             }
-                                            .toSet()
                                     )
                                 },
                             legalForm = details.legalForm
@@ -1054,7 +1044,7 @@ class TenderService(
             .map { party ->
                 if (party.id in suppliersIds && PartyRole.SUPPLIER !in party.roles)
                     party.copy(
-                        roles = (party.roles + PartyRole.SUPPLIER).toHashSet()
+                        roles = (party.roles + PartyRole.SUPPLIER).toMutableList()
                     )
                 else
                     party
@@ -1128,7 +1118,6 @@ class TenderService(
         return release.tender.electronicAuctions.let { releaseAuctions ->
             releaseAuctions?.copy(
                 details = releaseAuctions.details
-                    .asSequence()
                     .map { detail ->
                         val id = detail.id!!
                         val requestAuction = requestAuctionsById[id]
@@ -1145,7 +1134,6 @@ class TenderService(
                                         )
                                     },
                                 electronicAuctionModalities = requestAuction.electronicAuctionModalities
-                                    .asSequence()
                                     .map { modality ->
                                         ElectronicAuctionModalities(
                                             url = modality.url,
@@ -1159,8 +1147,7 @@ class TenderService(
                                                     )
                                                 }
                                         )
-                                    }
-                                    .toSet(),
+                                    },
                                 relatedLot = requestAuction.relatedLot.toString(),
                                 electronicAuctionProgress = null,
                                 electronicAuctionResult = null
@@ -1168,7 +1155,6 @@ class TenderService(
                         } else
                             detail
                     }
-                    .toSet()
             )
         }
     }
@@ -1476,7 +1462,6 @@ class TenderService(
     private fun updateBids(data: TenderUnsuccessfulData, bids: Bids?): Bids? {
         val bidsDocumentsById = data.documents.associateBy { it.id }
         val details = data.bids
-            .asSequence()
             .map { bid ->
                 Bid(
                     id = bid.id,
@@ -1501,7 +1486,6 @@ class TenderService(
                         .map { it.toString() },
                     value = bid.value.toValue(),
                     documents = bid.documents
-                        .asSequence()
                         .map { document ->
                             bidsDocumentsById.getValue(document.id)
                                 .let {
@@ -1519,10 +1503,8 @@ class TenderService(
                                         relatedConfirmations = null
                                     )
                                 }
-                        }
-                        .toHashSet(),
+                        },
                     requirementResponses = bid.requirementResponses
-                        .asSequence()
                         .map { requirementResponse ->
                             RequirementResponse(
                                 id = requirementResponse.id,
@@ -1546,10 +1528,8 @@ class TenderService(
                                 responder = null
                             )
                         }
-                        .toHashSet()
                 )
             }
-            .toHashSet()
         return if (details.isNotEmpty())
             bids?.copy(details = details) ?: Bids(details = details, statistics = null)
         else
@@ -1610,7 +1590,7 @@ class TenderService(
                     if (PartyRole.TENDERER !in party.roles) {
                         val tenderer = tenderersById.getValue(partyId)
                         party.copy(
-                            roles = (party.roles + PartyRole.TENDERER).toHashSet(),
+                            roles = (party.roles + PartyRole.TENDERER).toMutableList(),
                             persones = tenderer.persons
                                 .mapIfNotEmpty { person ->
                                     Person(
@@ -1657,7 +1637,6 @@ class TenderService(
                                             }
                                     )
                                 }
-                                ?.toHashSet()
                                 ?: party.persones,
                             details = tenderer.details
                                 .let { details ->
@@ -1671,7 +1650,7 @@ class TenderService(
                                                     scheme = mainEconomicActivity.scheme,
                                                     uri = mainEconomicActivity.uri
                                                 )
-                                            }.toSet(),
+                                            },
                                         scale = details.scale.value,
                                         permits = details.permits
                                             .map { permit ->
@@ -1766,7 +1745,6 @@ class TenderService(
                                                                 id = additionalAccountIdentifier.id
                                                             )
                                                         }
-                                                        .toSet()
                                                 )
                                             },
                                         legalForm = details.legalForm
@@ -1798,7 +1776,7 @@ class TenderService(
                 Organization(
                     id = tenderer.id,
                     name = tenderer.name,
-                    roles = hashSetOf(PartyRole.TENDERER),
+                    roles = mutableListOf(PartyRole.TENDERER),
                     identifier = tenderer.identifier
                         .let { identifier ->
                             Identifier(
@@ -1809,7 +1787,6 @@ class TenderService(
                             )
                         },
                     additionalIdentifiers = tenderer.additionalIdentifiers
-                        .asSequence()
                         .map { identifier ->
                             Identifier(
                                 scheme = identifier.scheme,
@@ -1817,8 +1794,7 @@ class TenderService(
                                 uri = identifier.uri,
                                 legalName = null
                             )
-                        }
-                        .toHashSet(),
+                        },
                     address = tenderer.address.let { address ->
                         Address(
                             streetAddress = address.streetAddress,
@@ -1907,8 +1883,7 @@ class TenderService(
                                         )
                                     }
                             )
-                        }
-                        .toHashSet(),
+                        },
                     details = tenderer.details.let { details ->
                         Details(
                             typeOfSupplier = details.typeOfSupplier?.value,
@@ -1920,7 +1895,7 @@ class TenderService(
                                         scheme = mainEconomicActivity.scheme,
                                         uri = mainEconomicActivity.uri
                                     )
-                                }.toSet(),
+                                },
                             scale = details.scale.value,
                             permits = details.permits
                                 .map { permit ->
@@ -2015,7 +1990,6 @@ class TenderService(
                                                     id = additionalAccountIdentifier.id
                                                 )
                                             }
-                                            .toSet()
                                     )
                                 },
                             legalForm = details.legalForm
@@ -2240,7 +2214,7 @@ class TenderService(
         prevRelease.tender.documents.let { updateTenderDocuments(release.tender, it) }
     }
 
-    private fun updateAwards(recordAwards: List<Award>, dtoAwards: HashSet<Award>) {
+    private fun updateAwards(recordAwards: List<Award>, dtoAwards: List<Award>) {
         for (award in recordAwards) {
             dtoAwards.firstOrNull { it.id == award.id }?.apply {
                 award.date = this.date
@@ -2250,7 +2224,7 @@ class TenderService(
         }
     }
 
-    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+    private fun updateBids(recordBids: List<Bid>, dtoBids: List<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
                 bid.date = this.date

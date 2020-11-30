@@ -17,7 +17,6 @@ import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.service.ReleaseService
 import com.procurement.notice.utils.toObject
 import java.time.LocalDateTime
-import java.util.*
 
 class CancelCANsAndContractStrategy(
     private val releaseService: ReleaseService,
@@ -188,7 +187,7 @@ class CancelCANsAndContractStrategy(
      * BR-2.7.8.6
      * BR-2.7.8.7
      */
-    private fun HashSet<Contract>.updateContract(contract: CancelCANsAndContractRequest.Contract): HashSet<Contract> {
+    private fun List<Contract>.updateContract(contract: CancelCANsAndContractRequest.Contract): List<Contract> {
         val updatedContract = this.find { it.id == contract.id }
             ?.copy(
                 status = contract.status,
@@ -196,13 +195,12 @@ class CancelCANsAndContractStrategy(
             )
             ?: throw ErrorException(error = ErrorType.CONTRACT_BY_ID_NOT_FOUND)
 
-        return this.asSequence()
+        return this
             .map {
                 if (it.id == updatedContract.id) {
                     updatedContract
                 } else
                     it
             }
-            .toHashSet()
     }
 }

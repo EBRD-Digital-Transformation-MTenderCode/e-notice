@@ -14,5 +14,5 @@ data class BidUpdateDocs @JsonCreator constructor(
     val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var documents: HashSet<Document>
+    var documents: List<Document>
 )

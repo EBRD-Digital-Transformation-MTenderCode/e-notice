@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class ElectronicAuctions @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val details: Set<ElectronicAuctionsDetails>
+    val details: List<ElectronicAuctionsDetails>
 )
 
 data class ElectronicAuctionsDetails @JsonCreator constructor(
@@ -24,13 +24,13 @@ data class ElectronicAuctionsDetails @JsonCreator constructor(
     val auctionPeriod: Period?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val electronicAuctionModalities: Set<ElectronicAuctionModalities>?,
+    val electronicAuctionModalities: List<ElectronicAuctionModalities>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val electronicAuctionResult: Set<ElectronicAuctionResult>?,
+    val electronicAuctionResult: List<ElectronicAuctionResult>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val electronicAuctionProgress: Set<ElectronicAuctionProgress>?
+    val electronicAuctionProgress: List<ElectronicAuctionProgress>?
 )
 
 data class ElectronicAuctionModalities @JsonCreator constructor(
@@ -60,7 +60,7 @@ data class ElectronicAuctionProgress @JsonCreator constructor(
     val period: Period?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val breakdown: Set<ElectronicAuctionProgressBreakdown>
+    val breakdown: List<ElectronicAuctionProgressBreakdown>
 )
 
 data class ElectronicAuctionProgressBreakdown @JsonCreator constructor(

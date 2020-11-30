@@ -193,7 +193,7 @@ class AwardServiceImpl(
         if (PartyRole.SUPPLIER in party.roles)
             party
         else
-            party.copy(roles = party.roles.plus(PartyRole.SUPPLIER).toHashSet())
+            party.copy(roles = party.roles.plus(PartyRole.SUPPLIER).toMutableList())
 
     private fun convertSupplier(supplier: CreateAwardData.Award.Supplier): Organization = Organization(
         id = supplier.id,
@@ -213,7 +213,7 @@ class AwardServiceImpl(
                 legalName = additionalIdentifier.legalName,
                 uri = additionalIdentifier.uri
             )
-        }?.toHashSet(),
+        },
         address = supplier.address.let { address ->
             Address(
                 streetAddress = address.streetAddress,
@@ -272,7 +272,7 @@ class AwardServiceImpl(
         ),
         buyerProfile = null,
         persones = null,
-        roles = hashSetOf(PartyRole.SUPPLIER)
+        roles = mutableListOf(PartyRole.SUPPLIER)
     )
 
     override fun startAwardPeriod(context: StartAwardPeriodContext, data: StartAwardPeriodData) {
@@ -442,7 +442,7 @@ class AwardServiceImpl(
                 legalName = additionalIdentifier.legalName,
                 uri = additionalIdentifier.uri
             )
-        }?.toHashSet(),
+        },
         address = supplier.address.let { address ->
             Address(
                 streetAddress = address.streetAddress,
@@ -501,7 +501,7 @@ class AwardServiceImpl(
         ),
         buyerProfile = null,
         persones = null,
-        roles = hashSetOf(PartyRole.SUPPLIER)
+        roles = mutableListOf(PartyRole.SUPPLIER)
     )
 
     override fun evaluate(context: EvaluateAwardContext, data: EvaluateAwardData) {
@@ -550,7 +550,6 @@ class AwardServiceImpl(
                                 if (bid.id == requestBidId) {
                                     bid.copy(
                                         documents = requestBid.documents
-                                            .asSequence()
                                             .map { document ->
                                                 Document(
                                                     id = document.id,
@@ -566,12 +565,10 @@ class AwardServiceImpl(
                                                     relatedConfirmations = null
                                                 )
                                             }
-                                            .toHashSet()
                                     )
                                 } else
                                     bid
                             }
-                            ?.toHashSet()
                     )
                 }
         } else
@@ -728,7 +725,7 @@ class AwardServiceImpl(
                     id = generationService.generateReleaseId(ocid = context.ocid),
                     tag = listOf(Tag.CONTRACT_UPDATE),
                     date = context.releaseDate,
-                    contracts = updateContracts(contract, contractRecord.contracts!!).toHashSet()
+                    contracts = updateContracts(contract, contractRecord.contracts!!)
                 ) to contractRecordEntity.publishDate
             }
             ?: Pair(null, null)
@@ -785,7 +782,7 @@ class AwardServiceImpl(
                 description = milestone.description,
                 type = milestone.type,
                 status = milestone.status,
-                relatedItems = milestone.relatedItems?.toSet(),
+                relatedItems = milestone.relatedItems,
                 additionalInformation = milestone.additionalInformation,
                 dueDate = milestone.dueDate,
                 relatedParties = milestone.relatedParties.map { relatedParty ->
@@ -817,7 +814,7 @@ class AwardServiceImpl(
                 ?: bid
         }
         return bids.copy(
-            details = updatedBids.toHashSet()
+            details = updatedBids
         )
     }
 
@@ -892,27 +889,25 @@ class AwardServiceImpl(
                                 format = null,
                                 relatedConfirmations = null
                             )
-                        }.toHashSet()
+                        }
                 )
             } else {
                 dbBid
             }
-        }?.toHashSet()
+        }
 
         val updatedRecord = release.copy(
             id = generationService.generateReleaseId(ocid = context.ocid),
             date = context.releaseDate,
             tag = listOf(Tag.AWARD_UPDATE),
             awards = release.awards
-                .asSequence()
                 .map { award ->
                     val requestAward = data.award
                     if (award.id == requestAward.id.toString())
                         award.copy(statusDetails = requestAward.statusDetails.value)
                     else
                         award
-                }
-                .toList(),
+                },
             bids = release.bids?.copy(details = updatedBids)
         )
 

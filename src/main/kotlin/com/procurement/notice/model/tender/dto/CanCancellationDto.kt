@@ -6,7 +6,6 @@ import com.procurement.notice.model.ocds.Award
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Contract
 import com.procurement.notice.model.ocds.Lot
-import java.util.*
 
 data class CanCancellationDto @JsonCreator constructor(
 
@@ -16,10 +15,10 @@ data class CanCancellationDto @JsonCreator constructor(
     val contract: Contract?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val awards: HashSet<Award>,
+    val awards: List<Award>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val bids: HashSet<Bid>,
+    val bids: List<Bid>,
 
     val lot: Lot
 )

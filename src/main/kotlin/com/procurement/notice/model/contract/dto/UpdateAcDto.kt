@@ -22,25 +22,25 @@ data class UpdateAcDto @JsonCreator constructor(
     val buyer: OrganizationReference?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val funders: HashSet<OrganizationReference>?,
+    val funders: List<OrganizationReference>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val payers: HashSet<OrganizationReference>?,
+    val payers: List<OrganizationReference>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val treasuryBudgetSources: List<TreasuryBudgetSource>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val addedEI: Set<String>?,
+    val addedEI: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val excludedEI: Set<String>?,
+    val excludedEI: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val addedFS: Set<String>?,
+    val addedFS: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val excludedFS: Set<String>?,
+    val excludedFS: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val documentsOfContractPersones: List<DocumentBF>?
