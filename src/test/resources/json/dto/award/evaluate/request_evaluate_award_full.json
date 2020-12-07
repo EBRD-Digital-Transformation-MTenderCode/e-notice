@@ -1,6 +1,7 @@
 {
   "award": {
     "id": "09d528dc-0fcf-45b7-a192-dfd8c1464420",
+    "internalId": "string",
     "date": "2019-10-29T16:51:00Z",
     "description": "award.description",
     "status": "active",
