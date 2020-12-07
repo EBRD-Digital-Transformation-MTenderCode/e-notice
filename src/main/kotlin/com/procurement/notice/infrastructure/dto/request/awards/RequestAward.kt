@@ -15,6 +15,9 @@ data class RequestAward(
     @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("internalId") @param:JsonProperty("internalId") val internalId: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("title") @param:JsonProperty("title") val title: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
