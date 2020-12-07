@@ -611,6 +611,7 @@ class AwardServiceImpl(
 
     private fun EvaluateAwardData.Award.convertBy(original: Award): Award = Award(
         id = id.toString(),
+        internalId = internalId,
         date = date,
         title = null,
         description = description,
