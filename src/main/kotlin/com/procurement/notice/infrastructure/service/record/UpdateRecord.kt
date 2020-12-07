@@ -1955,6 +1955,7 @@ fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAw
     return this
         .copy(
             id = received.id,
+            internalId = received.internalId ?: this.internalId,
             status = received.status ?: this.status,
             statusDetails = received.statusDetails ?: this.statusDetails,
             title = received.title ?: this.title,
