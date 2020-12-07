@@ -981,6 +981,7 @@ fun createCandidate(received: RequestCandidate): RecordCandidate =
 fun createAward(received: RequestAward): RecordAward =
     RecordAward(
         id = received.id,
+        internalId = received.internalId,
         status = received.status,
         statusDetails = received.statusDetails,
         title = received.title,
