@@ -10,6 +10,9 @@ data class Award @JsonCreator constructor(
     val id: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val internalId: String? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val title: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

@@ -17,6 +17,7 @@ class EvaluateAwardData(
 ) {
     data class Award(
         val id: AwardId,
+        val internalId: String?,
         val date: LocalDateTime,
         val description: String?,
         val status: AwardStatus,
