@@ -895,34 +895,14 @@ fun RecordPermitDetails.updatePermitDetails(received: RequestPermitDetails): Upd
     return this
         .copy(
             issuedBy = received.issuedBy?.let { requestIssue ->
-                val issuedById = if (requestIssue.id == this.issuedBy?.id)
-                    requestIssue.id
-                else
-                    return failure(
-                        Fail.Error.BadRequest(
-                            description = "Cannot update 'issuedBy'. Ids mismatching: " +
-                                "issuedBy from request (id = '${requestIssue.id}'), " +
-                                "issuedBy from release (id = '${this.issuedBy?.id}'). "
-                        )
-                    )
                 RecordIssue(
-                    id = issuedById,
+                    id = requestIssue.id,
                     name = requestIssue.name ?: this.issuedBy?.name
                 )
             } ?: this.issuedBy,
             issuedThought = received.issuedThought?.let { requestIssue ->
-                val issuedByThought = if (requestIssue.id == this.issuedThought?.id)
-                    requestIssue.id
-                else
-                    return failure(
-                        Fail.Error.BadRequest(
-                            description = "Cannot update 'issuedThought'. Ids mismatching: " +
-                                "issuedThought from request (id = '${requestIssue.id}'), " +
-                                "issuedThought from release (id = '${this.issuedThought?.id}'). "
-                        )
-                    )
                 RecordIssue(
-                    id = issuedByThought,
+                    id = requestIssue.id,
                     name = requestIssue.name ?: this.issuedThought?.name
                 )
             } ?: this.issuedThought,
