@@ -7,14 +7,14 @@ import com.procurement.notice.model.ocds.OrganizationReference
 data class CheckFsDto @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val ei: HashSet<String>,
+    val ei: List<String>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val buyer: HashSet<OrganizationReference>,
+    val buyer: List<OrganizationReference>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val funder: HashSet<OrganizationReference>,
+    val funder: List<OrganizationReference>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val payer: HashSet<OrganizationReference>
+    val payer: List<OrganizationReference>
 )

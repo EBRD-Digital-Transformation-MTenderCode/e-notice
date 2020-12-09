@@ -18,7 +18,7 @@ data class OrganizationReference @JsonCreator constructor(
     var address: Address?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var additionalIdentifiers: HashSet<Identifier>?,
+    var additionalIdentifiers: List<Identifier>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var contactPoint: ContactPoint?,
@@ -30,5 +30,5 @@ data class OrganizationReference @JsonCreator constructor(
     var buyerProfile: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var persones: HashSet<Person>?
+    var persones: List<Person>?
 )

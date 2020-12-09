@@ -2,7 +2,6 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
-import java.util.*
 
 data class Organization @JsonCreator constructor(
 
@@ -19,7 +18,7 @@ data class Organization @JsonCreator constructor(
     var address: Address?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var additionalIdentifiers: HashSet<Identifier>?,
+    var additionalIdentifiers: List<Identifier>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var contactPoint: ContactPoint?,
@@ -28,11 +27,11 @@ data class Organization @JsonCreator constructor(
     var details: Details?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var persones: HashSet<Person>?,
+    var persones: List<Person>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var buyerProfile: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var roles: HashSet<PartyRole>
+    var roles: MutableList<PartyRole>
 )

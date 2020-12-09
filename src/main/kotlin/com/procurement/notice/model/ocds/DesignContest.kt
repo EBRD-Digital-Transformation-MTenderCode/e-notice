@@ -11,7 +11,7 @@ data class DesignContest @JsonCreator constructor(
     val hasPrizes: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val prizes: HashSet<Item>?,
+    val prizes: List<Item>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val paymentsToParticipants: String?,
@@ -25,8 +25,8 @@ data class DesignContest @JsonCreator constructor(
     val juryDecisionBinding: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val juryMembers: HashSet<OrganizationReference>?,
+    val juryMembers: List<OrganizationReference>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val participants: HashSet<OrganizationReference>?
+    val participants: List<OrganizationReference>?
 )

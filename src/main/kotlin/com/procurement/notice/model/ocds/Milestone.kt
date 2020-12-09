@@ -22,7 +22,7 @@ data class Milestone @JsonCreator constructor(
     var status: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedItems: Set<String>?,
+    var relatedItems: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var additionalInformation: String?,

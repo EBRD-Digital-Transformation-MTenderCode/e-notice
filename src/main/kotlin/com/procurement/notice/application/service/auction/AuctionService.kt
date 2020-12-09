@@ -228,8 +228,7 @@ class AuctionServiceImpl(
                                     relatedTenderer = null,
                                     responder = null
                                 )
-                            }
-                            .toHashSet(),
+                            },
                         tenderers = bid.tenderers
                             .map { tenderer ->
                                 OrganizationReference(
@@ -265,10 +264,8 @@ class AuctionServiceImpl(
                                     }
 
                             }
-                            .toHashSet()
                     )
-                }
-                .toHashSet(),
+                },
             statistics = null
         )
     }
@@ -306,13 +303,11 @@ class AuctionServiceImpl(
                 if (PartyRole.TENDERER !in party.roles) {
                     val tenderer = tenderersById.getValue(id)
                     party.copy(
-                        roles = (party.roles + PartyRole.TENDERER).toHashSet(),
+                        roles = (party.roles + PartyRole.TENDERER).toMutableList(),
                         additionalIdentifiers = tenderer.additionalIdentifiers
-                            .map { additionalIdentifier -> additionalIdentifier.convert() }
-                            .toHashSet(),
+                            .map { additionalIdentifier -> additionalIdentifier.convert() },
                         persones = tenderer.persons
-                            .map { person -> person.convert() }
-                            .toHashSet(),
+                            .map { person -> person.convert() },
                         details = tenderer.details
                             .convertToPartiesDetails()
 
@@ -341,7 +336,7 @@ class AuctionServiceImpl(
         return parties.map { party ->
             if (party.id in suppliersIds && PartyRole.SUPPLIER !in party.roles) {
                 party.copy(
-                    roles = (party.roles + PartyRole.SUPPLIER).toHashSet()
+                    roles = (party.roles + PartyRole.SUPPLIER).toMutableList()
                 )
             } else
                 party
@@ -361,8 +356,7 @@ class AuctionServiceImpl(
                 )
             },
         additionalIdentifiers = this.additionalIdentifiers
-            .map { additionalIdentifier -> additionalIdentifier.convert() }
-            .toHashSet(),
+            .map { additionalIdentifier -> additionalIdentifier.convert() },
         address = this.address
             .let { address ->
                 Address(
@@ -415,9 +409,8 @@ class AuctionServiceImpl(
             },
         details = this.details.convertToPartiesDetails(),
         persones = this.persons
-            .map { person -> person.convert() }
-            .toHashSet(),
-        roles = hashSetOf(PartyRole.TENDERER),
+            .map { person -> person.convert() },
+        roles = mutableListOf(PartyRole.TENDERER),
         buyerProfile = null
     )
 
@@ -482,7 +475,7 @@ class AuctionServiceImpl(
                     scheme = mainEconomicActivity.scheme,
                     description = mainEconomicActivity.description
                 )
-            }.toSet(),
+            },
         scale = this.scale.value,
         permits = this.permits
             .map { permit ->
@@ -585,7 +578,6 @@ class AuctionServiceImpl(
                                 id = additionalAccountIdentifier.id
                             )
                         }
-                        .toSet()
                 )
             },
         legalForm = this.legalForm
@@ -613,7 +605,6 @@ class AuctionServiceImpl(
 
         return ElectronicAuctions(
             details = this.details
-                .asSequence()
                 .map { previousDetail ->
                     electronicAuctionsByIds[previousDetail.id!!]
                         ?.let { detail ->
@@ -643,8 +634,7 @@ class AuctionServiceImpl(
                                                 },
                                             url = electronicAuctionModality.url
                                         )
-                                    }
-                                    .toSet(),
+                                    },
                                 electronicAuctionProgress = detail.electronicAuctionProgress
                                     .map { progress ->
                                         ElectronicAuctionProgress(
@@ -675,10 +665,8 @@ class AuctionServiceImpl(
                                                             }
                                                     )
                                                 }
-                                                .toSet()
                                         )
-                                    }
-                                    .toSet(),
+                                    },
                                 electronicAuctionResult = detail.electronicAuctionResult
                                     .map { result ->
                                         ElectronicAuctionResult(
@@ -694,12 +682,10 @@ class AuctionServiceImpl(
                                                 }
                                         )
                                     }
-                                    .toSet()
                             )
                         }
                         ?: previousDetail
                 }
-                .toSet()
         )
     }
 

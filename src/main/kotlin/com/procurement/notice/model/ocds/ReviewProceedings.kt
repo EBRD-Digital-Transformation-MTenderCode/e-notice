@@ -15,5 +15,5 @@ data class ReviewProceedings @JsonCreator constructor(
     val reviewBodyChallenge: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val legalProcedures: HashSet<LegalProceedings>?
+    val legalProcedures: List<LegalProceedings>?
 )

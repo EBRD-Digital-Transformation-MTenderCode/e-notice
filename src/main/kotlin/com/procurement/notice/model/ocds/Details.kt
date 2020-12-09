@@ -13,7 +13,7 @@ data class Details @JsonCreator constructor(
     val typeOfSupplier: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val mainEconomicActivities: Set<MainEconomicActivity>?,
+    val mainEconomicActivities: List<MainEconomicActivity>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val mainGeneralActivity: String?,
@@ -95,7 +95,7 @@ data class BankAccount @JsonCreator constructor(
     val accountIdentification: AccountIdentifier?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val additionalAccountIdentifiers: Set<AccountIdentifier>?
+    val additionalAccountIdentifiers: List<AccountIdentifier>?
 )
 
 data class AccountIdentifier @JsonCreator constructor(

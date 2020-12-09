@@ -33,6 +33,9 @@ data class EvaluateAwardRequest(
     data class Award(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: AwardId,
 
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("internalId") @param:JsonProperty("internalId") val internalId: String?,
+
         @param:JsonDeserialize(using = JsonDateTimeDeserializer::class)
         @field:JsonSerialize(using = JsonDateTimeSerializer::class)
         @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime,

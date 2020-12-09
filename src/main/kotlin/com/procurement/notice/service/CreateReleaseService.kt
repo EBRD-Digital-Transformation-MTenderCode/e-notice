@@ -619,7 +619,7 @@ class CreateReleaseService(
             additionalIdentifiers = requestProcuringEntity.additionalIdentifiers,
             address = requestProcuringEntity.address,
             buyerProfile = requestProcuringEntity.buyerProfile,
-            roles = hashSetOf(PartyRole.PROCURING_ENTITY),
+            roles = mutableListOf(PartyRole.PROCURING_ENTITY),
             details = requestProcuringEntity.details,
             persones = requestProcuringEntity.persones
         )
