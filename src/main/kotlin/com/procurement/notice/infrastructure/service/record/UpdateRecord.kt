@@ -64,6 +64,7 @@ import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentBF
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordDetails
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordOrganization
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermits
@@ -159,6 +160,7 @@ import com.procurement.notice.infrastructure.dto.request.documents.RequestDocume
 import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
+import com.procurement.notice.infrastructure.dto.request.parties.RequestMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermits
@@ -817,6 +819,16 @@ fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<Re
     )
         .doReturn { e -> return failure(e) }
 
+    val mainEconomicActivities = updateStrategy(
+        receivedElements = received.mainEconomicActivities,
+        keyExtractorForReceivedElement = requestMainEconomicActivityKeyExtractor,
+        availableElements = this.mainEconomicActivities,
+        keyExtractorForAvailableElement = recordMainEconomicActivityKeyExtractor,
+        updateBlock = RecordMainEconomicActivity::update,
+        createBlock = ::createMainEconomicActivity
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             typeOfBuyer = received.typeOfBuyer ?: this.typeOfBuyer,
@@ -833,6 +845,16 @@ fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<Re
         )
         .asSuccess()
 }
+
+val recordMainEconomicActivityKeyExtractor: (RecordMainEconomicActivity) -> String = { it.id+it.scheme }
+val requestMainEconomicActivityKeyExtractor: (RequestMainEconomicActivity) -> String = { it.id+it.scheme }
+
+fun RecordMainEconomicActivity.update(received: RequestMainEconomicActivity): UpdateRecordResult<RecordMainEconomicActivity> =
+    this.copy(
+        description = received.description,
+        uri = received.uri ?: this.uri
+    )
+        .asSuccess()
 
 val recordBankAccountKeyExtractor: (RecordBankAccount) -> String = { it.identifier.id }
 val requestBankAccountKeyExtractor: (RequestBankAccount) -> String = { it.identifier.id }
