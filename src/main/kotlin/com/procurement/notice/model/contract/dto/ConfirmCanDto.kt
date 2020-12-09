@@ -7,8 +7,8 @@ import com.procurement.notice.model.ocds.Lot
 
 data class ConfirmCanDto @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lots: HashSet<Lot>,
+    val lots: List<Lot>,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val cans: HashSet<Can>
+    val cans: List<Can>
 )

@@ -17,7 +17,7 @@ data class ContractTender @JsonCreator constructor(
     var description: String? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var lots: HashSet<ContractTenderLot>? = null,
+    var lots: List<ContractTenderLot>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var classification: Classification? = null,

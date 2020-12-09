@@ -25,10 +25,10 @@ data class PlanningBudget @JsonCreator constructor(
     var description: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val budgetAllocation: Set<BudgetAllocation>?,
+    val budgetAllocation: List<BudgetAllocation>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val budgetSource: Set<PlanningBudgetSource>?
+    val budgetSource: List<PlanningBudgetSource>?
 )
 
 data class BudgetAllocation @JsonCreator constructor(
@@ -65,7 +65,7 @@ data class PlanningBudgetSource @JsonCreator constructor(
 data class Implementation @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val transactions: Set<Transaction>?
+    val transactions: List<Transaction>?
 )
 
 data class Transaction @JsonCreator constructor(

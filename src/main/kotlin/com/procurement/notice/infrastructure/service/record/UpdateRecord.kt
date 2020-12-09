@@ -64,6 +64,7 @@ import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentBF
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordDetails
+import com.procurement.notice.infrastructure.dto.entity.parties.RecordMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordOrganization
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermits
@@ -159,6 +160,7 @@ import com.procurement.notice.infrastructure.dto.request.documents.RequestDocume
 import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
+import com.procurement.notice.infrastructure.dto.request.parties.RequestMainEconomicActivity
 import com.procurement.notice.infrastructure.dto.request.parties.RequestOrganization
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermits
@@ -817,6 +819,16 @@ fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<Re
     )
         .doReturn { e -> return failure(e) }
 
+    val mainEconomicActivities = updateStrategy(
+        receivedElements = received.mainEconomicActivities,
+        keyExtractorForReceivedElement = requestMainEconomicActivityKeyExtractor,
+        availableElements = this.mainEconomicActivities,
+        keyExtractorForAvailableElement = recordMainEconomicActivityKeyExtractor,
+        updateBlock = RecordMainEconomicActivity::update,
+        createBlock = ::createMainEconomicActivity
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             typeOfBuyer = received.typeOfBuyer ?: this.typeOfBuyer,
@@ -833,6 +845,16 @@ fun RecordDetails.updateDetails(received: RequestDetails): UpdateRecordResult<Re
         )
         .asSuccess()
 }
+
+val recordMainEconomicActivityKeyExtractor: (RecordMainEconomicActivity) -> String = { it.id+it.scheme }
+val requestMainEconomicActivityKeyExtractor: (RequestMainEconomicActivity) -> String = { it.id+it.scheme }
+
+fun RecordMainEconomicActivity.update(received: RequestMainEconomicActivity): UpdateRecordResult<RecordMainEconomicActivity> =
+    this.copy(
+        description = received.description,
+        uri = received.uri ?: this.uri
+    )
+        .asSuccess()
 
 val recordBankAccountKeyExtractor: (RecordBankAccount) -> String = { it.identifier.id }
 val requestBankAccountKeyExtractor: (RequestBankAccount) -> String = { it.identifier.id }
@@ -873,34 +895,14 @@ fun RecordPermitDetails.updatePermitDetails(received: RequestPermitDetails): Upd
     return this
         .copy(
             issuedBy = received.issuedBy?.let { requestIssue ->
-                val issuedById = if (requestIssue.id == this.issuedBy?.id)
-                    requestIssue.id
-                else
-                    return failure(
-                        Fail.Error.BadRequest(
-                            description = "Cannot update 'issuedBy'. Ids mismatching: " +
-                                "issuedBy from request (id = '${requestIssue.id}'), " +
-                                "issuedBy from release (id = '${this.issuedBy?.id}'). "
-                        )
-                    )
                 RecordIssue(
-                    id = issuedById,
+                    id = requestIssue.id,
                     name = requestIssue.name ?: this.issuedBy?.name
                 )
             } ?: this.issuedBy,
             issuedThought = received.issuedThought?.let { requestIssue ->
-                val issuedByThought = if (requestIssue.id == this.issuedThought?.id)
-                    requestIssue.id
-                else
-                    return failure(
-                        Fail.Error.BadRequest(
-                            description = "Cannot update 'issuedThought'. Ids mismatching: " +
-                                "issuedThought from request (id = '${requestIssue.id}'), " +
-                                "issuedThought from release (id = '${this.issuedThought?.id}'). "
-                        )
-                    )
                 RecordIssue(
-                    id = issuedByThought,
+                    id = requestIssue.id,
                     name = requestIssue.name ?: this.issuedThought?.name
                 )
             } ?: this.issuedThought,
@@ -1955,6 +1957,7 @@ fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAw
     return this
         .copy(
             id = received.id,
+            internalId = received.internalId ?: this.internalId,
             status = received.status ?: this.status,
             statusDetails = received.statusDetails ?: this.statusDetails,
             title = received.title ?: this.title,

@@ -22,7 +22,6 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class TenderCancellationService(
@@ -221,7 +220,7 @@ class TenderCancellationService(
         }
     }
 
-    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+    private fun updateBids(recordBids: List<Bid>, dtoBids: List<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
                 bid.date = this.date
@@ -231,7 +230,7 @@ class TenderCancellationService(
         }
     }
 
-    private fun updateLots(recordLots: List<Lot>, dtoLots: HashSet<Lot>) {
+    private fun updateLots(recordLots: List<Lot>, dtoLots: List<Lot>) {
         for (lot in recordLots) {
             dtoLots.firstOrNull { it.id == lot.id }?.apply {
                 lot.status = this.status

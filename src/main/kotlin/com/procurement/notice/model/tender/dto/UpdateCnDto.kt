@@ -15,5 +15,5 @@ data class UpdateCnDto @JsonCreator constructor(
 data class AmendmentUpdateCn @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val relatedLots: Set<String>
+    val relatedLots: List<String>
 )

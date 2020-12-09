@@ -1166,6 +1166,24 @@ class UpdatedRecordTest {
             assertEquals(prevPermitDetails.validityPeriod!!.toJson(), updatedPermitDetails.validityPeriod!!.toJson())
             assertEquals(newPermitDetails.issuedThought!!.toJson(), updatedPermitDetails.issuedThought!!.toJson())
         }
+
+        @Test
+        fun `update PermitDetails - updating id`() {
+            val newPermitDetails = RequestPermitDetails(
+                issuedBy = RequestIssue(id = "id1", name = "name1"),
+                issuedThought = RequestIssue(id = "id2", name = null),
+                validityPeriod = null
+            )
+
+            val updatedPermitDetails = prevPermitDetails.updatePermitDetails(newPermitDetails)
+                .doReturn { _ -> throw RuntimeException() }
+
+            val expectedIssuedBy = newPermitDetails.issuedBy!!
+            val expectedIssueTrough = RequestIssue(id = "id2", name = "dbPermitDetails?.issuedBy?.name")
+
+            assertEquals(expectedIssuedBy.toJson(), updatedPermitDetails.issuedBy!!.toJson())
+            assertEquals(expectedIssueTrough.toJson(), updatedPermitDetails.issuedThought!!.toJson())
+        }
     }
 
     @Nested

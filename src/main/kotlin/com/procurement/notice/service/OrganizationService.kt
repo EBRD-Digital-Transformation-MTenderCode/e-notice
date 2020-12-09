@@ -21,18 +21,18 @@ class OrganizationService {
         val buyer = ei.buyer
         if (buyer != null) {
             val partyBuyer = Organization(
-                    id = buyer.id,
-                    name = buyer.name,
-                    identifier = buyer.identifier,
-                    additionalIdentifiers = buyer.additionalIdentifiers,
-                    address = buyer.address,
-                    contactPoint = buyer.contactPoint,
-                    roles = setOf(PartyRole.BUYER).toHashSet(),
-                    details = buyer.details,
-                    buyerProfile = buyer.buyerProfile,
-                    persones = null
+                id = buyer.id,
+                name = buyer.name,
+                identifier = buyer.identifier,
+                additionalIdentifiers = buyer.additionalIdentifiers,
+                address = buyer.address,
+                contactPoint = buyer.contactPoint,
+                roles = mutableListOf(PartyRole.BUYER),
+                details = buyer.details,
+                buyerProfile = buyer.buyerProfile,
+                persones = null
             )
-            if (ei.parties == null) ei.parties = hashSetOf()
+            if (ei.parties == null) ei.parties = mutableListOf()
             ei.parties?.add(partyBuyer)
             clearOrganizationReference(buyer)
             if (ei.parties != null && ei.parties!!.isEmpty()) ei.parties = null
@@ -43,16 +43,16 @@ class OrganizationService {
         val funder = fs.funder
         if (funder != null) {
             val partyFunder = Organization(
-                    id = funder.id,
-                    name = funder.name,
-                    identifier = funder.identifier,
-                    additionalIdentifiers = funder.additionalIdentifiers,
-                    address = funder.address,
-                    contactPoint = funder.contactPoint,
-                    roles = setOf(PartyRole.FUNDER).toHashSet(),
-                    details = funder.details,
-                    buyerProfile = null,
-                    persones = null
+                id = funder.id,
+                name = funder.name,
+                identifier = funder.identifier,
+                additionalIdentifiers = funder.additionalIdentifiers,
+                address = funder.address,
+                contactPoint = funder.contactPoint,
+                roles = mutableListOf(PartyRole.FUNDER),
+                details = funder.details,
+                buyerProfile = null,
+                persones = null
             )
             fs.parties.add(partyFunder)
             fs.funder = null
@@ -65,16 +65,16 @@ class OrganizationService {
                 partyPresent.roles.add(PartyRole.PAYER)
             } else {
                 val partyPayer = Organization(
-                        id = payer.id,
-                        name = payer.name,
-                        identifier = payer.identifier,
-                        additionalIdentifiers = payer.additionalIdentifiers,
-                        address = payer.address,
-                        contactPoint = payer.contactPoint,
-                        roles = setOf(PartyRole.PAYER).toHashSet(),
-                        details = payer.details,
-                        buyerProfile = null,
-                        persones = null
+                    id = payer.id,
+                    name = payer.name,
+                    identifier = payer.identifier,
+                    additionalIdentifiers = payer.additionalIdentifiers,
+                    address = payer.address,
+                    contactPoint = payer.contactPoint,
+                    roles = mutableListOf(PartyRole.PAYER),
+                    details = payer.details,
+                    buyerProfile = null,
+                    persones = null
                 )
                 fs.parties.add(partyPayer)
             }
@@ -136,8 +136,8 @@ class OrganizationService {
 
     fun processContractRecordPartiesFromBudget(record: ContractRecord,
                                                buyer: OrganizationReference?,
-                                               funders: HashSet<OrganizationReference>?,
-                                               payers: HashSet<OrganizationReference>?) {
+                                               funders: List<OrganizationReference>?,
+                                               payers: List<OrganizationReference>?) {
         buyer?.let {
             addContractParty(parties = record.parties, organization = it, role = PartyRole.BUYER)
         }
@@ -178,16 +178,16 @@ class OrganizationService {
                 if (partyPresent.persones == null) partyPresent.persones = organization.persones
             } else {
                 val party = Organization(
-                        id = organization.id,
-                        name = organization.name,
-                        identifier = organization.identifier,
-                        additionalIdentifiers = organization.additionalIdentifiers,
-                        address = organization.address,
-                        contactPoint = organization.contactPoint,
-                        roles = setOf(role).toHashSet(),
-                        details = organization.details,
-                        buyerProfile = organization.buyerProfile,
-                        persones = organization.persones
+                    id = organization.id,
+                    name = organization.name,
+                    identifier = organization.identifier,
+                    additionalIdentifiers = organization.additionalIdentifiers,
+                    address = organization.address,
+                    contactPoint = organization.contactPoint,
+                    roles = mutableListOf(role),
+                    details = organization.details,
+                    buyerProfile = organization.buyerProfile,
+                    persones = organization.persones
                 )
                 parties.add(party)
             }
@@ -210,16 +210,16 @@ class OrganizationService {
                 organization.persones?.let { partyPresent.persones = organization.persones }
             } else {
                 val party = Organization(
-                        id = organization.id,
-                        name = organization.name,
-                        identifier = organization.identifier,
-                        additionalIdentifiers = organization.additionalIdentifiers,
-                        address = organization.address,
-                        contactPoint = organization.contactPoint,
-                        roles = setOf(role).toHashSet(),
-                        details = organization.details,
-                        buyerProfile = organization.buyerProfile,
-                        persones = organization.persones
+                    id = organization.id,
+                    name = organization.name,
+                    identifier = organization.identifier,
+                    additionalIdentifiers = organization.additionalIdentifiers,
+                    address = organization.address,
+                    contactPoint = organization.contactPoint,
+                    roles = mutableListOf(role),
+                    details = organization.details,
+                    buyerProfile = organization.buyerProfile,
+                    persones = organization.persones
                 )
                 parties.add(party)
             }

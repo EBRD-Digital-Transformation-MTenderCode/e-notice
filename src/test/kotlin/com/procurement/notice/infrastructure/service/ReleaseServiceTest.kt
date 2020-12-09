@@ -32,14 +32,14 @@ class ReleaseServiceTest {
             .map {
                 sampleOrganization.copy(
                     id = "procuring-entity-id-${it}",
-                    persones = hashSetOf(samplePartiesPerson.copy(identifier = samplePartiesPerson.identifier.copy(id = "$it")))
+                    persones = listOf(samplePartiesPerson.copy(identifier = samplePartiesPerson.identifier.copy(id = "$it")))
                 )
             }.toHashSet()
 
         val requestPerson = toObject(Person::class.java, PERSON_JSON).apply { this.name = "ACTUAL_PERSON" }
         val requestProcuringEntity = OrganizationReference(
             id = targetProcuringEntityId,
-            persones = hashSetOf(requestPerson),
+            persones = listOf(requestPerson),
             additionalIdentifiers = null,
             name = null,
             identifier = null,

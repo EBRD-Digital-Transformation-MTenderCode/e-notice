@@ -24,5 +24,5 @@ data class Criterion @JsonCreator constructor(
     val relatedItem: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val requirementGroups: HashSet<RequirementGroup>?
+    val requirementGroups: List<RequirementGroup>?
 )

@@ -24,7 +24,7 @@ data class ConfirmationRequest @JsonCreator constructor(
     val source: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var requestGroups: Set<RequestGroup>?
+    var requestGroups: List<RequestGroup>?
 )
 
 data class RequestGroup @JsonCreator constructor(
@@ -32,7 +32,7 @@ data class RequestGroup @JsonCreator constructor(
     val id: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val requests: Set<Request>
+    val requests: List<Request>
 )
 
 data class Request @JsonCreator constructor(

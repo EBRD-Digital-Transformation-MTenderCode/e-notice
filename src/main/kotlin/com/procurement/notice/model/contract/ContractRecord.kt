@@ -9,7 +9,6 @@ import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.RelatedProcess
 import com.procurement.notice.model.ocds.Tag
 import java.time.LocalDateTime
-import java.util.*
 
 data class ContractRecord @JsonCreator constructor(
 
@@ -35,14 +34,14 @@ data class ContractRecord @JsonCreator constructor(
     var tender: ContractTender? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var awards: HashSet<Award>? = null,
+    var awards: List<Award>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var contracts: HashSet<Contract>? = null,
+    var contracts: List<Contract>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var parties: MutableList<Organization> = mutableListOf(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: HashSet<RelatedProcess>? = null
+    var relatedProcesses: MutableList<RelatedProcess>? = null
 )

@@ -25,7 +25,7 @@ data class Amendment @JsonCreator constructor(
     val rationale: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val relatedLots: Set<String>?,
+    val relatedLots: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val changes: List<Change>?,

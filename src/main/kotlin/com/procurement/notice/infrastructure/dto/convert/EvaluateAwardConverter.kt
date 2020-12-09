@@ -13,6 +13,7 @@ fun EvaluateAwardRequest.convert(): EvaluateAwardData = EvaluateAwardData(
         .let { award ->
             EvaluateAwardData.Award(
                 id = award.id,
+                internalId = award.internalId,
                 date = award.date,
                 description = award.description,
                 status = award.status,

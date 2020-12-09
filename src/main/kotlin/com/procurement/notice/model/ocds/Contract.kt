@@ -30,7 +30,7 @@ data class Contract @JsonCreator constructor(
     var statusDetails: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var documents: HashSet<Document>?,
+    var documents: List<Document>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val extendsContractId: String? = null,
@@ -48,13 +48,13 @@ data class Contract @JsonCreator constructor(
     val value: ValueTax? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val items: HashSet<Item>? = null,
+    val items: List<Item>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val dateSigned: LocalDateTime? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var relatedProcesses: HashSet<RelatedProcess>? = null,
+    var relatedProcesses: MutableList<RelatedProcess>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var amendments: List<Amendment>? = null,
@@ -63,16 +63,16 @@ data class Contract @JsonCreator constructor(
     var amendment: Amendment? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val requirementResponses: HashSet<RequirementResponse>? = null,
+    val requirementResponses: List<RequirementResponse>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val countryOfOrigin: String? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val lotVariant: HashSet<String>? = null,
+    val lotVariant: List<String>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val valueBreakdown: HashSet<ValueBreakdown>? = null,
+    val valueBreakdown: List<ValueBreakdown>? = null,
 
     @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val isFrameworkOrDynamic: Boolean? = null,
@@ -87,6 +87,6 @@ data class Contract @JsonCreator constructor(
     var confirmationRequests: List<ConfirmationRequest>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var confirmationResponses: HashSet<ConfirmationResponse>? = null
+    var confirmationResponses: List<ConfirmationResponse>? = null
 
 )

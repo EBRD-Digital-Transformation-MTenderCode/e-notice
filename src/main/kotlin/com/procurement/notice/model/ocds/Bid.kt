@@ -29,11 +29,11 @@ data class Bid @JsonCreator constructor(
     @field:JsonProperty("items") @param:JsonProperty("items") val items: List<BidItem> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var documents: HashSet<Document>?,
+    var documents: List<Document>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     val relatedLots: List<String>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val requirementResponses: HashSet<RequirementResponse>?
+    val requirementResponses: List<RequirementResponse>?
 )

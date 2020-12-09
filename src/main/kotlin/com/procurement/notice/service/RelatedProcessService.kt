@@ -30,7 +30,7 @@ class RelatedProcessService(
     private val tenderUri: String? = null
 
     fun addFsRelatedProcessToEi(ei: EI, fsOcId: String) {
-        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        if (ei.relatedProcesses == null) ei.relatedProcesses = mutableListOf()
         if (ei.relatedProcesses!!.asSequence().none { it.identifier == fsOcId })
             ei.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -42,7 +42,7 @@ class RelatedProcessService(
     }
 
     fun addEiRelatedProcessToFs(fs: FS, eiOcId: String) {
-        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        if (fs.relatedProcesses == null) fs.relatedProcesses = mutableListOf()
         if (fs.relatedProcesses!!.asSequence().none { it.identifier == eiOcId })
             fs.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -54,7 +54,7 @@ class RelatedProcessService(
     }
 
     fun addMsRelatedProcessToEi(ei: EI, msOcId: String) {
-        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        if (ei.relatedProcesses == null) ei.relatedProcesses = mutableListOf()
         if (ei.relatedProcesses!!.asSequence().none { it.identifier == msOcId })
             ei.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -66,7 +66,7 @@ class RelatedProcessService(
     }
 
     fun addMsRelatedProcessToFs(fs: FS, msOcId: String) {
-        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        if (fs.relatedProcesses == null) fs.relatedProcesses = mutableListOf()
         if (fs.relatedProcesses!!.asSequence().none { it.identifier == msOcId })
             fs.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -78,7 +78,7 @@ class RelatedProcessService(
     }
 
     fun addEiFsRecordRelatedProcessToMs(ms: Ms, checkFs: CheckFsDto, ocId: String, processType: RelatedProcessType) {
-        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        if (ms.relatedProcesses == null) ms.relatedProcesses = mutableListOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         /*record*/
         if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocId })
@@ -113,7 +113,7 @@ class RelatedProcessService(
     }
 
     fun addApRecordRelatedProcessToMs(ms: Ms, ocId: String, processType: RelatedProcessType) {
-        if (ms.relatedProcesses == null) ms.relatedProcesses = hashSetOf()
+        if (ms.relatedProcesses == null) ms.relatedProcesses = mutableListOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         /*record*/
         if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocId })
@@ -138,7 +138,7 @@ class RelatedProcessService(
 
     fun addRecordRelatedProcessToMs(ms: Ms, ocid: String, processType: RelatedProcessType) {
         if (ms.relatedProcesses == null)
-            ms.relatedProcesses = hashSetOf()
+            ms.relatedProcesses = mutableListOf()
         val msOcId = ms.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
 
         if (ms.relatedProcesses!!.asSequence().none { it.identifier == ocid })
@@ -167,7 +167,7 @@ class RelatedProcessService(
     }
 
     fun addMsRelatedProcessToContract(record: ContractRecord, cpId: String) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses == null) record.relatedProcesses = mutableListOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == cpId })
             record.relatedProcesses?.add(
                 RelatedProcess(
@@ -186,7 +186,7 @@ class RelatedProcessService(
         cpId: String,
         processType: RelatedProcessType
     ) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses == null) record.relatedProcesses = mutableListOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == ocId })
             record.relatedProcesses?.add(
                 RelatedProcess(
@@ -204,14 +204,14 @@ class RelatedProcessService(
         ocId: String,
         cpId: String,
         contract: Contract,
-        cans: HashSet<Can>
+        cans: List<Can>
     ) {
         cans.asSequence().forEach { can ->
             release.contracts
                 .asSequence()
                 .firstOrNull { it.id == can.id }
                 ?.let { contract ->
-                    if (contract.relatedProcesses == null) contract.relatedProcesses = hashSetOf()
+                    if (contract.relatedProcesses == null) contract.relatedProcesses = mutableListOf()
                     contract.relatedProcesses!!.add(
                         RelatedProcess(
                             id = UUIDs.timeBased().toString(),
@@ -226,7 +226,7 @@ class RelatedProcessService(
     }
 
     fun addEiRelatedProcessToContract(record: ContractRecord, eiOcId: String) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses == null) record.relatedProcesses = mutableListOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == eiOcId })
             record.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -238,7 +238,7 @@ class RelatedProcessService(
     }
 
     fun addFsRelatedProcessToContract(record: ContractRecord, fsOcId: String) {
-        if (record.relatedProcesses == null) record.relatedProcesses = hashSetOf()
+        if (record.relatedProcesses == null) record.relatedProcesses = mutableListOf()
         if (record.relatedProcesses!!.asSequence().none { it.identifier == fsOcId })
             record.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -251,7 +251,7 @@ class RelatedProcessService(
 
 
     fun addContractRelatedProcessToFs(fs: FS, cpid: String, ocid: String) {
-        if (fs.relatedProcesses == null) fs.relatedProcesses = hashSetOf()
+        if (fs.relatedProcesses == null) fs.relatedProcesses = mutableListOf()
         if (fs.relatedProcesses!!.asSequence().none { it.identifier == ocid })
             fs.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
@@ -263,7 +263,7 @@ class RelatedProcessService(
     }
 
     fun addContractRelatedProcessToEi(ei: EI, cpid: String, ocid: String) {
-        if (ei.relatedProcesses == null) ei.relatedProcesses = hashSetOf()
+        if (ei.relatedProcesses == null) ei.relatedProcesses = mutableListOf()
         if (ei.relatedProcesses!!.asSequence().none { it.identifier == ocid })
             ei.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),

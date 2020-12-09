@@ -137,8 +137,8 @@ class ContractingService(
             tag = listOf(Tag.CONTRACT),
             initiationType = release.initiationType,
             tender = contractedTender,
-            awards = hashSetOf(contractedAward),
-            contracts = hashSetOf(contract)
+            awards = listOf(contractedAward),
+            contracts = listOf(contract)
         )
         //BR-2.7.1.10
         val processType = when(stage) {
@@ -198,8 +198,8 @@ class ContractingService(
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
             planning = dto.planning
-            awards = hashSetOf(dto.award)
-            contracts = hashSetOf(dto.contract)
+            awards = listOf(dto.award)
+            contracts = listOf(dto.contract)
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
         organizationService.processContractRecordPartiesFromBudget(
@@ -299,7 +299,7 @@ class ContractingService(
             id = generationService.generateReleaseId(ocid)
             date = releaseDate
             tag = listOf(Tag.CONTRACT_UPDATE)
-            contracts = hashSetOf(dto.contract)
+            contracts = listOf(dto.contract)
         }
         val contract = recordContract.contracts?.asSequence()?.first() ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         contract.apply {
@@ -334,7 +334,7 @@ class ContractingService(
             id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
-            contracts = hashSetOf(dto.contract)
+            contracts = listOf(dto.contract)
         }
 
         releaseService.saveContractRecord(
@@ -364,7 +364,7 @@ class ContractingService(
             id = generationService.generateReleaseId(ocid)
             tag = listOf(Tag.CONTRACT_UPDATE)
             date = releaseDate
-            contracts = hashSetOf(dto.contract)
+            contracts = listOf(dto.contract)
         }
 
         releaseService.saveContractRecord(
@@ -420,7 +420,7 @@ class ContractingService(
         recordContract.apply {
             id = generationService.generateReleaseId(ocid)
             date = releaseDate
-            contracts = hashSetOf(dto.contract)
+            contracts = listOf(dto.contract)
         }
 
         releaseService.saveContractRecord(
@@ -457,7 +457,7 @@ class ContractingService(
                 //BR-2.7.6.2
                 date = clarificationContext.releaseDate,
                 //BR-2.7.6.6
-                contracts = hashSetOf(updatedContract),
+                contracts = listOf(updatedContract),
                 //BR-2.7.6.1
                 tag = listOf(Tag.CONTRACT_UPDATE)
             )
@@ -564,7 +564,7 @@ class ContractingService(
                 //BR-2.7.6.2
                 date = rejectionContext.releaseDate,
                 //BR-2.7.6.6
-                contracts = hashSetOf(updatedContract),
+                contracts = listOf(updatedContract),
                 //BR-2.7.6.1
                 tag = listOf(Tag.CONTRACT_UPDATE)
             )
@@ -687,7 +687,7 @@ class ContractingService(
     private fun getContractFromData(contractData: TreasuryClarificationData.Contract): Contract =
         Contract(
             id = contractData.id,
-            documents = contractData.documents.asSequence().map { document ->
+            documents = contractData.documents.map { document ->
                 Document(
                     documentType = document.documentType,
                     relatedConfirmations = document.relatedConfirmations,
@@ -701,7 +701,7 @@ class ContractingService(
                     format = null,
                     language = null
                 )
-            }.toHashSet(),
+            },
             title = contractData.title,
             description = contractData.description,
             period = contractData.period.let { period ->
@@ -729,10 +729,10 @@ class ContractingService(
                     id = confirmationRequest.id,
                     relatedItem = confirmationRequest.relatedItem,
                     relatesTo = confirmationRequest.relatesTo,
-                    requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
+                    requestGroups = confirmationRequest.requestGroups.map { requestGroup ->
                         RequestGroup(
                             id = requestGroup.id,
-                            requests = requestGroup.requests.asSequence().map { request ->
+                            requests = requestGroup.requests.map { request ->
                                 Request(
                                     id = request.id,
                                     description = request.description,
@@ -744,14 +744,14 @@ class ContractingService(
                                         )
                                     }
                                 )
-                            }.toSet()
+                            }
                         )
-                    }.toSet(),
+                    },
                     source = confirmationRequest.source,
                     type = confirmationRequest.type
                 )
             },
-            confirmationResponses = contractData.confirmationResponses.asSequence().map { confirmationResponse ->
+            confirmationResponses = contractData.confirmationResponses.map { confirmationResponse ->
                 ConfirmationResponse(
                     id = confirmationResponse.id,
                     value = confirmationResponse.value.let { value ->
@@ -776,7 +776,7 @@ class ContractingService(
                     },
                     request = confirmationResponse.request
                 )
-            }.toHashSet(),
+            },
             date = contractData.date,
             milestones = contractData.milestones.map { milestone ->
                 Milestone(
@@ -788,7 +788,7 @@ class ContractingService(
                     dateMet = milestone.dateMet,
                     dateModified = milestone.dateModified,
                     dueDate = milestone.dueDate,
-                    relatedItems = milestone.relatedItems?.asSequence()?.map { it.toString() }?.toSet(),
+                    relatedItems = milestone.relatedItems?.map { it.toString() },
                     relatedParties = milestone.relatedParties.map { relatedParty ->
                         RelatedParty(
                             id = relatedParty.id,
@@ -819,7 +819,7 @@ class ContractingService(
     private fun getContractFromData(contractData: TreasuryRejectionData.Contract): Contract =
         Contract(
             id = contractData.id,
-            documents = contractData.documents.asSequence().map { document ->
+            documents = contractData.documents.map { document ->
                 Document(
                     documentType = document.documentType,
                     relatedConfirmations = document.relatedConfirmations,
@@ -833,7 +833,7 @@ class ContractingService(
                     format = null,
                     language = null
                 )
-            }.toHashSet(),
+            },
             title = contractData.title,
             description = contractData.description,
             period = contractData.period.let { period ->
@@ -861,10 +861,10 @@ class ContractingService(
                     id = confirmationRequest.id,
                     relatedItem = confirmationRequest.relatedItem,
                     relatesTo = confirmationRequest.relatesTo,
-                    requestGroups = confirmationRequest.requestGroups.asSequence().map { requestGroup ->
+                    requestGroups = confirmationRequest.requestGroups.map { requestGroup ->
                         RequestGroup(
                             id = requestGroup.id,
-                            requests = requestGroup.requests.asSequence().map { request ->
+                            requests = requestGroup.requests.map { request ->
                                 Request(
                                     id = request.id,
                                     description = request.description,
@@ -876,14 +876,14 @@ class ContractingService(
                                         )
                                     }
                                 )
-                            }.toSet()
+                            }
                         )
-                    }.toSet(),
+                    },
                     source = confirmationRequest.source,
                     type = confirmationRequest.type
                 )
             },
-            confirmationResponses = contractData.confirmationResponses.asSequence().map { confirmationResponse ->
+            confirmationResponses = contractData.confirmationResponses.map { confirmationResponse ->
                 ConfirmationResponse(
                     id = confirmationResponse.id,
                     value = confirmationResponse.value.let { value ->
@@ -908,7 +908,7 @@ class ContractingService(
                     },
                     request = confirmationResponse.request
                 )
-            }.toHashSet(),
+            },
             date = contractData.date,
             milestones = contractData.milestones.map { milestone ->
                 Milestone(
@@ -920,7 +920,7 @@ class ContractingService(
                     dateMet = milestone.dateMet,
                     dateModified = milestone.dateModified,
                     dueDate = milestone.dueDate,
-                    relatedItems = milestone.relatedItems?.asSequence()?.map { it.toString() }?.toSet(),
+                    relatedItems = milestone.relatedItems?.map { it.toString() },
                     relatedParties = milestone.relatedParties.map { relatedParty ->
                         RelatedParty(
                             id = relatedParty.id,
@@ -1018,7 +1018,7 @@ class ContractingService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun updateCanContracts(recordContracts: List<Contract>, dtoCans: HashSet<Can>) {
+    private fun updateCanContracts(recordContracts: List<Contract>, dtoCans: List<Can>) {
         for (contract in recordContracts) {
             dtoCans.firstOrNull { it.id == contract.id }?.apply {
                 contract.status = this.status!!
@@ -1135,7 +1135,7 @@ class ContractingService(
                 }
 
                 bids.copy(
-                    details = updatedDetails.toHashSet()
+                    details = updatedDetails
                 )
             }
             "NP" -> bids
@@ -1269,7 +1269,7 @@ class ContractingService(
             contracts.asSequence()
                 .firstOrNull { it.id == dto.contract.id }
                 ?.apply {
-                    documents = dto.contract.documents.toHashSet()
+                    documents = dto.contract.documents
                 }
 
         }
@@ -1387,7 +1387,7 @@ class ContractingService(
             },
             awards = release.awards.updating(data).toList(),
             bids = release.bids?.let { bids ->
-                bids.copy(details = bids.details?.updating(data)?.toHashSet())
+                bids.copy(details = bids.details?.updating(data))
             },
             contracts = release.contracts.updating(data).toList()
         )
@@ -1447,7 +1447,7 @@ class ContractingService(
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
-    private fun updateAwards(recordAwards: List<Award>, dtoAwards: HashSet<Award>) {
+    private fun updateAwards(recordAwards: List<Award>, dtoAwards: List<Award>) {
         for (award in recordAwards) {
             dtoAwards.firstOrNull { it.id == award.id }?.apply {
                 award.status = this.status
@@ -1456,7 +1456,7 @@ class ContractingService(
         }
     }
 
-    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
+    private fun updateBids(recordBids: List<Bid>, dtoBids: List<Bid>) {
         for (bid in recordBids) {
             dtoBids.firstOrNull { it.id == bid.id }?.apply {
                 bid.status = this.status
@@ -1465,7 +1465,7 @@ class ContractingService(
         }
     }
 
-    private fun updateLots(recordLots: List<Lot>, dtoLots: HashSet<Lot>) {
+    private fun updateLots(recordLots: List<Lot>, dtoLots: List<Lot>) {
         for (lot in recordLots) {
             dtoLots.firstOrNull { it.id == lot.id }?.apply {
                 lot.status = this.status

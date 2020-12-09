@@ -18,7 +18,6 @@ import com.procurement.notice.utils.toJson
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class TenderServiceEv(private val releaseService: ReleaseService,
@@ -124,27 +123,6 @@ class TenderServiceEv(private val releaseService: ReleaseService,
                     ?: throw ErrorException(ErrorType.LOT_NOT_FOUND)
                 lot.statusDetails?.let { upLot.statusDetails = it }
             }
-    }
-
-    private fun updateAwards(recordAwards: HashSet<Award>, dtoAwards: HashSet<Award>) {
-        for (award in recordAwards) {
-            dtoAwards.firstOrNull { it.id == award.id }?.apply {
-                award.date = this.date
-                award.status = this.status
-                award.statusDetails = this.statusDetails
-                award.items = this.items
-            }
-        }
-    }
-
-    private fun updateBids(recordBids: HashSet<Bid>, dtoBids: HashSet<Bid>) {
-        for (bid in recordBids) {
-            dtoBids.firstOrNull { it.id == bid.id }?.apply {
-                bid.date = this.date
-                bid.status = this.status
-                bid.statusDetails = this.statusDetails
-            }
-        }
     }
 
     private fun updateBidDocuments(release: Release, bid: Bid) {
