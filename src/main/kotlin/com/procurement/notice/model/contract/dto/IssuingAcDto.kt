@@ -10,5 +10,6 @@ data class IssuingAcDto @JsonCreator constructor(
 
 data class ContractIssuingAc @JsonCreator constructor(
     var date: LocalDateTime,
-    var statusDetails: String
+    var statusDetails: String,
+    var internalId: String
 )

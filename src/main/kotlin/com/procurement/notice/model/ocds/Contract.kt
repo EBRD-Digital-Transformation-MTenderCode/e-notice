@@ -11,6 +11,9 @@ data class Contract @JsonCreator constructor(
     val id: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var internalId: String? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var date: LocalDateTime?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
@@ -88,5 +91,4 @@ data class Contract @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var confirmationResponses: List<ConfirmationResponse>? = null
-
 )
