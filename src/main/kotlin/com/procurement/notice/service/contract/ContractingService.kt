@@ -272,6 +272,7 @@ class ContractingService(
         contract.apply {
             date = dto.contract.date
             statusDetails = dto.contract.statusDetails
+            internalId = dto.contract.internalId
         }
         releaseService.saveContractRecord(
             cpId = cpid,
