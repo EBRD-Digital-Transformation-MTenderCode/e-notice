@@ -1143,8 +1143,10 @@ fun createContract(received: RequestContract): RecordContract =
         relatedProcesses = received.relatedProcesses
             .map { createRelatedProcess(it) },
         valueBreakdown = received.valueBreakdown
-            .map { createValueBreakdown(it) }
-    )
+            .map { createValueBreakdown(it) },
+        suppliers = received.suppliers
+            .map { createOrganizationReference(it) }
+        )
 
 fun createValueBreakdown(received: RequestValueBreakdown): RecordValueBreakdown =
     RecordValueBreakdown(

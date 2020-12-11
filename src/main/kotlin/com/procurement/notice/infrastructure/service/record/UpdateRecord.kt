@@ -2474,6 +2474,16 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
     )
         .doReturn { e -> return failure(e) }
 
+    val suppliers = updateStrategy(
+        receivedElements = received.suppliers,
+        keyExtractorForReceivedElement = requestOrganizationReferenceKeyExtractor,
+        availableElements = this.suppliers.toList(),
+        keyExtractorForAvailableElement = recordOrganizationReferenceKeyExtractor,
+        updateBlock = RecordOrganizationReference::updateOrganizationReference,
+        createBlock = ::createOrganizationReference
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             id = received.id,
@@ -2503,7 +2513,8 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
             lotVariant = this.lotVariant.update(lotVariant),
             milestones = milestones,
             relatedProcesses = relatedProcesses,
-            valueBreakdown = valueBreakdown
+            valueBreakdown = valueBreakdown,
+            suppliers = suppliers
         )
         .asSuccess()
 }
