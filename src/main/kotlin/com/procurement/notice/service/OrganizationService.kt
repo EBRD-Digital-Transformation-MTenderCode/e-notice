@@ -167,7 +167,7 @@ class OrganizationService {
             organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
             val partyPresent = getParty(parties, organization.id)
             if (partyPresent != null) {
-                partyPresent.roles.add(role)
+                if (role !in partyPresent.roles) partyPresent.roles.add(role)
                 if (partyPresent.name.isNullOrEmpty()) partyPresent.name = organization.name
                 if (partyPresent.identifier == null) partyPresent.identifier = organization.identifier
                 if (partyPresent.additionalIdentifiers == null) partyPresent.additionalIdentifiers = organization.additionalIdentifiers
