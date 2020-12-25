@@ -255,10 +255,10 @@ class RelatedProcessService(
         if (fs.relatedProcesses!!.asSequence().none { it.identifier == ocid })
             fs.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
-                    relationship = listOf(RelatedProcessType.PARENT),
+                    relationship = listOf(RelatedProcessType.X_CONTRACTING),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocid,
-                    uri = getTenderUri(cpId = cpid, ocId = cpid)
+                    uri = getTenderUri(cpId = cpid, ocId = ocid)
             ))
     }
 
@@ -267,10 +267,10 @@ class RelatedProcessService(
         if (ei.relatedProcesses!!.asSequence().none { it.identifier == ocid })
             ei.relatedProcesses?.add(RelatedProcess(
                     id = UUIDs.timeBased().toString(),
-                    relationship = listOf(RelatedProcessType.PARENT),
+                    relationship = listOf(RelatedProcessType.X_CONTRACTING),
                     scheme = RelatedProcessScheme.OCID,
                     identifier = ocid,
-                    uri = getTenderUri(cpId = cpid, ocId = cpid)
+                    uri = getTenderUri(cpId = cpid, ocId = ocid)
             ))
     }
 
