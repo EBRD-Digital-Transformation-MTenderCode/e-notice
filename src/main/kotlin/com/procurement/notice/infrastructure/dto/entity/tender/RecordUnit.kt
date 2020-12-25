@@ -14,8 +14,6 @@ data class RecordUnit(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("value") @param:JsonProperty("value") val value: Value?,
 
-    @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String = "CUMC",
-
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("uri") @param:JsonProperty("uri") val uri: String?
 )
