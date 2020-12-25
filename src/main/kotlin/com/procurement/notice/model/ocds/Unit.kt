@@ -12,9 +12,6 @@ data class Unit @JsonCreator constructor(
     val value: Value?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val scheme: String?,
-
-    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val id: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

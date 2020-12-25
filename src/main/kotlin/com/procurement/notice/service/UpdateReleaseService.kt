@@ -458,7 +458,6 @@ class UpdateReleaseService(
                             quantity = item.quantity,
                             unit = item.unit.let { unit ->
                                 com.procurement.notice.model.ocds.Unit(
-                                    scheme = null,
                                     id = unit.id,
                                     name = unit.name,
                                     value = null,
