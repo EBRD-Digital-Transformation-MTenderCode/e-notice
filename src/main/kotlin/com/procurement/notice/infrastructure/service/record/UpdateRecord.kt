@@ -427,14 +427,14 @@ fun RecordClassification.updateClassification(received: RequestClassification): 
 }
 
 fun RecordUnit.updateUnit(received: RequestUnit): UpdateRecordResult<RecordUnit> {
-    val unitIdent = if (received.id == this.id && received.scheme == this.scheme)
-        received.id to received.scheme
+    val unitId = if (received.id == this.id )
+        received.id
     else
         return failure(
             Fail.Error.BadRequest(
                 description = "Cannot update 'unit'. Ids mismatching: " +
-                    "Unit from request (id = '${received.id}', scheme = '${received.scheme}'), " +
-                    "Unit from release (id = '${this.id}, scheme = '${this.scheme}''). "
+                    "Unit from request (id = '${received.id}'), " +
+                    "Unit from release (id = '${this.id}'). "
             )
         )
 
@@ -449,8 +449,7 @@ fun RecordUnit.updateUnit(received: RequestUnit): UpdateRecordResult<RecordUnit>
 
     return this
         .copy(
-            id = unitIdent.first,
-            scheme = unitIdent.second,
+            id = unitId,
             name = received.name ?: this.name,
             uri = received.uri ?: this.uri,
             value = value

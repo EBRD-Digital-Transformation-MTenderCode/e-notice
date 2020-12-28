@@ -459,7 +459,6 @@ fun createClassification(received: RequestClassification): RecordClassification 
 fun createUnit(received: RequestUnit): RecordUnit =
     RecordUnit(
         id = received.id,
-        scheme = received.scheme,
         name = received.name,
         uri = received.uri,
         value = received.value
