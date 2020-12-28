@@ -2,6 +2,7 @@ package com.procurement.notice.model.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.util.*
 
@@ -90,5 +91,8 @@ data class Contract @JsonCreator constructor(
     var confirmationRequests: List<ConfirmationRequest>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    var confirmationResponses: List<ConfirmationResponse>? = null
+    var confirmationResponses: List<ConfirmationResponse>? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("suppliers") @param:JsonProperty("suppliers") val suppliers: List<OrganizationReference> = emptyList()
 )
