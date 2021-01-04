@@ -459,7 +459,6 @@ fun createClassification(received: RequestClassification): RecordClassification 
 fun createUnit(received: RequestUnit): RecordUnit =
     RecordUnit(
         id = received.id,
-        scheme = received.scheme,
         name = received.name,
         uri = received.uri,
         value = received.value
@@ -1143,8 +1142,10 @@ fun createContract(received: RequestContract): RecordContract =
         relatedProcesses = received.relatedProcesses
             .map { createRelatedProcess(it) },
         valueBreakdown = received.valueBreakdown
-            .map { createValueBreakdown(it) }
-    )
+            .map { createValueBreakdown(it) },
+        suppliers = received.suppliers
+            .map { createOrganizationReference(it) }
+        )
 
 fun createValueBreakdown(received: RequestValueBreakdown): RecordValueBreakdown =
     RecordValueBreakdown(

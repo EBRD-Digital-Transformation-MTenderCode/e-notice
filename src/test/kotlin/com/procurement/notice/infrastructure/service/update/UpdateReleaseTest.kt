@@ -653,7 +653,6 @@ class UpdatedRecordTest {
             id = "unitId",
             name = "available?.name",
             uri = "available?.uri",
-            scheme = "available?.scheme",
             value = Value(BigDecimal.ZERO, "MDL", null, null)
         )
 
@@ -661,7 +660,6 @@ class UpdatedRecordTest {
             id = "unitId",
             name = "rqUnit.name",
             uri = "rqUnit.uri",
-            scheme = "available?.scheme",
             value = Value(BigDecimal.TEN, "MDL", null, null)
         )
 
@@ -671,7 +669,6 @@ class UpdatedRecordTest {
 
             val expectedValue = RecordUnit(
                 id = sampleNewUnit.id,
-                scheme = sampleNewUnit.scheme,
                 name = sampleNewUnit.name,
                 value = sampleNewUnit.value,
                 uri = prevUnit.uri
