@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.infrastructure.dto.request.RequestAgreedMetric
 import com.procurement.notice.infrastructure.dto.request.RequestAmendment
 import com.procurement.notice.infrastructure.dto.request.RequestClassification
+import com.procurement.notice.infrastructure.dto.request.RequestOrganizationReference
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
@@ -95,6 +96,8 @@ data class RequestContract(
     @field:JsonProperty("confirmationRequests") @param:JsonProperty("confirmationRequests") val confirmationRequests: List<RequestConfirmationRequest> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("confirmationResponses") @param:JsonProperty("confirmationResponses") val confirmationResponses: List<RequestConfirmationResponse> = emptyList()
+    @field:JsonProperty("confirmationResponses") @param:JsonProperty("confirmationResponses") val confirmationResponses: List<RequestConfirmationResponse> = emptyList(),
 
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("suppliers") @param:JsonProperty("suppliers") val suppliers: List<RequestOrganizationReference> = emptyList()
 )
