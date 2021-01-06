@@ -36,6 +36,20 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
                         .put("endDate", JsonDateTimeSerializer.serialize(it.endDate))
                 }
 
+                requirement.eligibleEvidences
+                    ?.map {
+                        JsonNodeFactory.instance.objectNode()
+                            .apply {
+                                put("id", it.id)
+                                put("title", it.title)
+                                put("type", it.type)
+
+                                it.description?.let { put("description", it) }
+                                it.relatedDocument?.let { put("relatedDocument", it) }
+                            }
+                    }
+                    ?.let { requirementNode.putArray("eligibleEvidences").addAll(it) }
+
 
                 when (requirement.value) {
 

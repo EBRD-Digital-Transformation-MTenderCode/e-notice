@@ -1,4 +1,4 @@
-package com.procurement.notice.infrastructure.dto.entity.tender
+package com.procurement.notice.infrastructure.dto.entity.tender.criteria
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty

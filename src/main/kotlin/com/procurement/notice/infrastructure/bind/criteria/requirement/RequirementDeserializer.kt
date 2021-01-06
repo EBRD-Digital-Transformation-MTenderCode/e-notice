@@ -40,13 +40,27 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                         )
                     }
 
+                val eligibleEvidences = requirement
+                    .takeIf { it.has("eligibleEvidences") }
+                    ?.get("eligibleEvidences")
+                    ?.map {
+                        Requirement.EligibleEvidence(
+                            id = it.get("id").asText(),
+                            title = it.get("title").asText(),
+                            type = it.get("type").asText(),
+                            description = it.takeIf { it.has("description") }?.get("description")?.asText(),
+                            relatedDocument = it.takeIf { it.has("relatedDocument") }?.get("relatedDocument")?.asText()
+                        )
+                    }
+
                 Requirement(
                     id = id,
                     title = title,
                     description = description,
                     period = period,
                     dataType = dataType,
-                    value = requirementValue(requirement)
+                    value = requirementValue(requirement),
+                    eligibleEvidences = eligibleEvidences
                 )
             }
         }
