@@ -474,7 +474,8 @@ fun createCriteria(received: RequestCriteria): RecordCriteria =
         relatedItem = received.relatedItem,
         source = received.source,
         requirementGroups = received.requirementGroups
-            .map { createRequirementGroup(it) }
+            .map { createRequirementGroup(it) },
+        classification = received.classification?.let { createClassification(it) }
     )
 
 fun createRequirementGroup(received: RequestRequirementGroup): RecordRequirementGroup =
