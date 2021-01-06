@@ -337,6 +337,7 @@ fun createLot(received: RequestLot): RecordLot =
         value = received.value,
         title = received.title,
         description = received.description,
+        classification = received.classification?.let { createClassification(it) },
         recurrentProcurement = createRecurrentProcurement(received.recurrentProcurement),
         contractPeriod = received.contractPeriod?.let { createContractPeriod(it) },
         internalId = received.internalId,
