@@ -5,6 +5,8 @@
       "title": "string",
       "description": "string",
       "dataType": "number",
+      "status": "active",
+      "datePublished": "2020-02-03T00:00:00Z",
       "period": {
         "startDate": "2020-02-01T00:00:00Z",
         "endDate": "2020-02-03T00:00:00Z"

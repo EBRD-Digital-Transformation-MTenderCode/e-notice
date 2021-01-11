@@ -9,6 +9,8 @@ class Requirement(
     val title: String,
     val description: String?,
     val period: Period?,
+    val status: String?,
+    val datePublished: LocalDateTime?,
     val dataType: RequirementDataType,
     val value: RequirementValue,
     val eligibleEvidences: List<EligibleEvidence>?
