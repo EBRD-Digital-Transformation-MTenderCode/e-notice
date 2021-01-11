@@ -23,8 +23,12 @@ class Requirement(
         val title: String,
         val type: String,
         val description: String?,
-        val relatedDocument: String?
-    )
+        val relatedDocument: RelatedDocument?
+    ) {
+        data class RelatedDocument(
+            val id: String
+        )
+    }
 }
 
 sealed class RequirementValue

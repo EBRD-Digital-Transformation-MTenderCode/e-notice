@@ -2,6 +2,7 @@ package com.procurement.notice.infrastructure.bind.criteria.requirement
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -37,19 +38,8 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
                 }
 
                 requirement.eligibleEvidences
-                    ?.map {
-                        JsonNodeFactory.instance.objectNode()
-                            .apply {
-                                put("id", it.id)
-                                put("title", it.title)
-                                put("type", it.type)
-
-                                it.description?.let { put("description", it) }
-                                it.relatedDocument?.let { put("relatedDocument", it) }
-                            }
-                    }
+                    ?.map { it.serialize() }
                     ?.let { requirementNode.putArray("eligibleEvidences").addAll(it) }
-
 
                 when (requirement.value) {
 
@@ -96,6 +86,24 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
 
             return serializedRequirements
         }
+
+        fun Requirement.EligibleEvidence.serialize(): JsonNode =
+            JsonNodeFactory.instance.objectNode()
+                .apply {
+                    put("id", this@serialize.id)
+                    put("title", this@serialize.title)
+                    put("type", this@serialize.type)
+
+                    this@serialize.description?.let { put("description", it) }
+
+                    this@serialize.relatedDocument
+                        ?.let {
+                            val relatedDocumentNode = JsonNodeFactory.instance.objectNode()
+                                .apply { put("id", it.id) }
+
+                            set("relatedDocument", relatedDocumentNode)
+                        }
+                }
     }
 
     @Throws(IOException::class, JsonProcessingException::class)

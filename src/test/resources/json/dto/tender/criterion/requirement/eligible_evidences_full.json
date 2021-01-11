@@ -16,7 +16,9 @@
           "title": "title-string",
           "description": "description-string",
           "type": "reference",
-          "relatedDocument": "relatedDocument-string"
+          "relatedDocument": {
+            "id": "relatedDocument-string"
+          }
         }
       ]
     },
@@ -36,7 +38,9 @@
           "title": "title-string",
           "description": "description-string",
           "type": "reference",
-          "relatedDocument": "relatedDocument-string"
+          "relatedDocument": {
+            "id": "relatedDocument-string"
+          }
         }
       ]
     }
