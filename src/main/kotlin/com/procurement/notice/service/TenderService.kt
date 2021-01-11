@@ -105,6 +105,7 @@ class TenderService(
                     description = criteria.description,
                     source = criteria.source,
                     relatedItem = null,
+                    classification = null,
                     relatesTo = criteria.relatesTo?.value,
                     requirementGroups = criteria.requirementGroups.map { requirementGroup ->
                         RequirementGroup(

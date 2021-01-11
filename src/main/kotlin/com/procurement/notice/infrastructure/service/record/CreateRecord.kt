@@ -79,7 +79,6 @@ import com.procurement.notice.infrastructure.dto.entity.submission.RecordSubmiss
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordAcceleratedProcedure
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordCoefficient
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordConversion
-import com.procurement.notice.infrastructure.dto.entity.tender.RecordCriteria
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDesignContest
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDimensions
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordDynamicPurchasingSystem
@@ -102,6 +101,7 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordVariant
+import com.procurement.notice.infrastructure.dto.entity.tender.criteria.RecordCriteria
 import com.procurement.notice.infrastructure.dto.invitation.RecordInvitation
 import com.procurement.notice.infrastructure.dto.request.RequestAccountIdentifier
 import com.procurement.notice.infrastructure.dto.request.RequestAgreedMetric
@@ -337,6 +337,7 @@ fun createLot(received: RequestLot): RecordLot =
         value = received.value,
         title = received.title,
         description = received.description,
+        classification = received.classification?.let { createClassification(it) },
         recurrentProcurement = createRecurrentProcurement(received.recurrentProcurement),
         contractPeriod = received.contractPeriod?.let { createContractPeriod(it) },
         internalId = received.internalId,
@@ -473,7 +474,8 @@ fun createCriteria(received: RequestCriteria): RecordCriteria =
         relatedItem = received.relatedItem,
         source = received.source,
         requirementGroups = received.requirementGroups
-            .map { createRequirementGroup(it) }
+            .map { createRequirementGroup(it) },
+        classification = received.classification?.let { createClassification(it) }
     )
 
 fun createRequirementGroup(received: RequestRequirementGroup): RecordRequirementGroup =
@@ -491,7 +493,8 @@ fun createRequirement(received: Requirement): Requirement =
         title = received.title,
         value = received.value,
         period = received.period,
-        dataType = received.dataType
+        dataType = received.dataType,
+        eligibleEvidences = received.eligibleEvidences
     )
 
 fun createConversion(received: RequestConversion): RecordConversion =

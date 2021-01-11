@@ -703,7 +703,8 @@ class AuctionServiceImpl(
                     description = requirementGroup.description,
                     requirements = requirementGroup.requirements.toList()
                 )
-            }
+            },
+        classification = null
     )
 
     private fun <T> newElements(received: Set<T>, saved: Set<T>) = received.subtract(saved)

@@ -29,16 +29,8 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                 val title: String = requirement.get("title").asText()
                 val description: String? = requirement.takeIf { it.has("description") }?.get("description")?.asText()
                 val dataType: RequirementDataType = RequirementDataType.fromString(requirement.get("dataType").asText())
-                val period: Requirement.Period? = requirement.takeIf { it.has("period") }
-                    ?.let {
-                        val period = it.get("period")
-                        val startDate = JsonDateTimeDeserializer.deserialize(period.get("startDate").asText())
-                        val endDate = JsonDateTimeDeserializer.deserialize(period.get("endDate").asText())
-                        Requirement.Period(
-                            startDate = startDate,
-                            endDate = endDate
-                        )
-                    }
+                val period: Requirement.Period? = deserializePeriod(requirement)
+                val eligibleEvidences = deserializeEligibleEvidences(requirement)
 
                 Requirement(
                     id = id,
@@ -46,10 +38,42 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                     description = description,
                     period = period,
                     dataType = dataType,
-                    value = requirementValue(requirement)
+                    value = requirementValue(requirement),
+                    eligibleEvidences = eligibleEvidences
                 )
             }
         }
+
+        fun deserializePeriod(requirementNode: JsonNode): Requirement.Period? =
+            requirementNode
+                .takeIf { it.has("period") }
+                ?.let {
+                    val period = it.get("period")
+                    val startDate = JsonDateTimeDeserializer.deserialize(period.get("startDate").asText())
+                    val endDate = JsonDateTimeDeserializer.deserialize(period.get("endDate").asText())
+                    Requirement.Period(
+                        startDate = startDate,
+                        endDate = endDate
+                    )
+                }
+
+        fun deserializeEligibleEvidences(requirementNode: JsonNode): List<Requirement.EligibleEvidence>? =
+            requirementNode
+            .takeIf { it.has("eligibleEvidences") }
+            ?.get("eligibleEvidences")
+            ?.map {
+                Requirement.EligibleEvidence(
+                    id = it.get("id").asText(),
+                    title = it.get("title").asText(),
+                    type = it.get("type").asText(),
+                    description = it.takeIf { it.has("description") }?.get("description")?.asText(),
+                    relatedDocument = it.takeIf { it.has("relatedDocument") }
+                        ?.get("relatedDocument")
+                        ?.let {
+                            Requirement.EligibleEvidence.RelatedDocument(id = it.get("id").asText())
+                        }
+                )
+            }
 
         private fun requirementValue(requirementNode: JsonNode): RequirementValue {
             fun datatypeMismatchException(): Nothing = throw ErrorException(

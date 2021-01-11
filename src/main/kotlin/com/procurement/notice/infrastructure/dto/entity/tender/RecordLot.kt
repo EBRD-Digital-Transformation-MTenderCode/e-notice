@@ -2,6 +2,7 @@ package com.procurement.notice.infrastructure.dto.entity.tender
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.infrastructure.dto.entity.RecordClassification
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
 import com.procurement.notice.model.ocds.Value
@@ -18,6 +19,9 @@ data class RecordLot(
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: RecordClassification?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("status") @param:JsonProperty("status") val status: String?,

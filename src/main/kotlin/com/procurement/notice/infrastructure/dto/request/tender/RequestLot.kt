@@ -2,6 +2,7 @@ package com.procurement.notice.infrastructure.dto.request.tender
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.notice.infrastructure.dto.request.RequestClassification
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
 import com.procurement.notice.model.ocds.Value
@@ -18,6 +19,9 @@ data class RequestLot(
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: RequestClassification?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("status") @param:JsonProperty("status") val status: String?,
