@@ -19,6 +19,7 @@ import com.procurement.notice.model.ocds.Requirement
 import com.procurement.notice.model.ocds.RequirementValue
 import java.io.IOException
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
     companion object {
@@ -28,6 +29,12 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                 val id: String = requirement.get("id").asText()
                 val title: String = requirement.get("title").asText()
                 val description: String? = requirement.takeIf { it.has("description") }?.get("description")?.asText()
+                val status: String? = requirement.takeIf { it.has("status") }?.get("status")?.asText()
+
+                val datePublished: LocalDateTime? = requirement
+                    .takeIf { it.has("datePublished") }
+                    ?.let { dateNode -> JsonDateTimeDeserializer.deserialize(dateNode.get("datePublished").asText()) }
+
                 val dataType: RequirementDataType = RequirementDataType.fromString(requirement.get("dataType").asText())
                 val period: Requirement.Period? = deserializePeriod(requirement)
                 val eligibleEvidences = deserializeEligibleEvidences(requirement)
@@ -37,6 +44,8 @@ class RequirementDeserializer : JsonDeserializer<List<Requirement>>() {
                     title = title,
                     description = description,
                     period = period,
+                    status = status,
+                    datePublished = datePublished,
                     dataType = dataType,
                     value = requirementValue(requirement),
                     eligibleEvidences = eligibleEvidences

@@ -512,6 +512,8 @@ fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Req
         description = received.description ?: this.description,
         title = received.title,
         value = received.value,
+        status = received.status,
+        datePublished = received.datePublished,
         period = received.period ?: this.period,
         dataType = received.dataType,
         eligibleEvidences = received.eligibleEvidences
