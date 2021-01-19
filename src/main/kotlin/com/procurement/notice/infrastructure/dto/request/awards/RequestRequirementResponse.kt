@@ -30,6 +30,9 @@ data class RequestRequirementResponse(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("requirement") @param:JsonProperty("requirement") val requirement: RequestRequirementReference?,
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @param:JsonProperty("evidences") @field:JsonProperty("evidences") val evidences: List<RequestEvidence> = emptyList(),
+
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @param:JsonProperty("responder") @field:JsonProperty("responder") val responder: RequestResponder?,
 
