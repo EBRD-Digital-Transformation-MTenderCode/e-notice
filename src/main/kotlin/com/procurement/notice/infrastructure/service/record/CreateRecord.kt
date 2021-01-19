@@ -44,6 +44,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordEvidence
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordResponder
@@ -59,6 +60,7 @@ import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueBre
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueTax
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentBF
+import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentReference
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordDetails
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordMainEconomicActivity
@@ -139,6 +141,7 @@ import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
+import com.procurement.notice.infrastructure.dto.request.awards.RequestEvidence
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
 import com.procurement.notice.infrastructure.dto.request.awards.RequestResponder
@@ -154,6 +157,7 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueB
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentBF
+import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentReference
 import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
@@ -1055,7 +1059,9 @@ fun createRequirementResponse(received: RequestRequirementResponse): RecordRequi
         requirement = received.requirement
             ?.let { createRequirement(it) },
         responder = received.responder
-            ?.let { createResponder(it) }
+            ?.let { createResponder(it) },
+        evidences = received.evidences
+            .map { createEvidence(it) }
     )
 
 fun createRequirement(received: RequestRequirementReference): RecordRequirementReference? =
@@ -1067,6 +1073,18 @@ fun createRequirement(received: RequestRequirementReference): RecordRequirementR
 fun createResponder(received: RequestResponder) = RecordResponder(
     id = received.id,
     name = received.name
+)
+
+fun createEvidence(received: RequestEvidence) = RecordEvidence(
+    id = received.id,
+    description = received.description,
+    title = received.title,
+    relatedDocument = received.relatedDocument
+        ?.let { createDocumentReference(it) }
+)
+
+fun createDocumentReference(received: RequestDocumentReference) = RecordDocumentReference(
+    id = received.id
 )
 
 fun createOrganizationReference(received: RequestOrganizationReference): RecordOrganizationReference =

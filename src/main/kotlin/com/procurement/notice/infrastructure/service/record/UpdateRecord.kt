@@ -47,6 +47,7 @@ import com.procurement.notice.infrastructure.dto.entity.auction.RecordElectronic
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBid
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidItem
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
+import com.procurement.notice.infrastructure.dto.entity.awards.RecordEvidence
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementReference
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordRequirementResponse
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordResponder
@@ -62,6 +63,7 @@ import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueBre
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueTax
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentBF
+import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocumentReference
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordDetails
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordMainEconomicActivity
@@ -142,6 +144,7 @@ import com.procurement.notice.infrastructure.dto.request.awards.RequestAward
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBid
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidItem
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
+import com.procurement.notice.infrastructure.dto.request.awards.RequestEvidence
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementReference
 import com.procurement.notice.infrastructure.dto.request.awards.RequestRequirementResponse
 import com.procurement.notice.infrastructure.dto.request.awards.RequestResponder
@@ -157,6 +160,7 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueB
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentBF
+import com.procurement.notice.infrastructure.dto.request.documents.RequestDocumentReference
 import com.procurement.notice.infrastructure.dto.request.invitation.RequestInvitation
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestDetails
@@ -574,6 +578,9 @@ fun RecordPeriod.updatePeriod(received: RequestPeriod): UpdateRecordResult<Recor
         maxExtentDate = received.maxExtentDate ?: this.maxExtentDate
     )
         .asSuccess()
+
+fun RecordDocumentReference.update(received: RequestDocumentReference): UpdateRecordResult<RecordDocumentReference> =
+    this.copy(id = received.id ?: this.id).asSuccess()
 
 fun RecordRecordEnquiry.updateRecordEnquiry(received: RequestRecordEnquiry): UpdateRecordResult<RecordRecordEnquiry> {
     val author = received.author
@@ -2059,6 +2066,28 @@ fun RecordLegalProceedings.updateLegalProceeding(received: RequestLegalProceedin
     )
         .asSuccess()
 
+fun RecordEvidence.update(received: RequestEvidence): UpdateRecordResult<RecordEvidence>  {
+    val relatedDocument = received.relatedDocument
+        ?.let {
+            this.relatedDocument
+                ?.update(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDocumentReference(it)
+        }
+        ?: this.relatedDocument
+
+    return this.copy(
+        id = received.id,
+        title = received.title,
+        description = received.description ?: this.description,
+        relatedDocument = relatedDocument
+    )
+        .asSuccess()
+}
+
+val recordEvidenceKeyExtractor: (RecordEvidence) -> String = { it.id }
+val requestEvidenceKeyExtractor: (RequestEvidence) -> String = { it.id }
+
 fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequirementResponse): UpdateRecordResult<RecordRequirementResponse> {
     val period = received.period
         ?.let {
@@ -2096,6 +2125,16 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
         }
         ?: this.responder
 
+    val evidences = updateStrategy(
+        receivedElements = received.evidences,
+        keyExtractorForReceivedElement = requestEvidenceKeyExtractor,
+        availableElements = this.evidences.toList(),
+        keyExtractorForAvailableElement = recordEvidenceKeyExtractor,
+        updateBlock = RecordEvidence::update,
+        createBlock = ::createEvidence
+    )
+        .doReturn { e -> return failure(e) }
+
     return this
         .copy(
             id = received.id,
@@ -2105,6 +2144,7 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
             period = period,
             relatedTenderer = relatedTenderer,
             requirement = requirement,
+            evidences = evidences,
             responder = responder
         )
         .asSuccess()
