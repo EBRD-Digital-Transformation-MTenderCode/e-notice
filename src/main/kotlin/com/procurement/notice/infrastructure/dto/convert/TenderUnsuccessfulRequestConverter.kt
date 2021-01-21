@@ -349,8 +349,6 @@ fun TenderUnsuccessfulRequest.convert(): TenderUnsuccessfulData =
                         ?.map { requirementResponse ->
                             TenderUnsuccessfulData.Bid.RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
                                 value = requirementResponse.value,
                                 requirement = requirementResponse.requirement.let { requirement ->
                                     TenderUnsuccessfulData.Bid.RequirementResponse.Requirement(
@@ -362,6 +360,27 @@ fun TenderUnsuccessfulRequest.convert(): TenderUnsuccessfulData =
                                         TenderUnsuccessfulData.Bid.RequirementResponse.Period(
                                             startDate = period.startDate,
                                             endDate = period.endDate
+                                        )
+                                    },
+                                relatedTenderer = requirementResponse.relatedTenderer
+                                    ?.let { tenderer ->
+                                        TenderUnsuccessfulData.Bid.RequirementResponse.OrganizationReference(
+                                            id = tenderer.id,
+                                            name = tenderer.name
+                                        )
+                                    },
+                                evidences = requirementResponse.evidences
+                                    ?.map { evidence ->
+                                        TenderUnsuccessfulData.Bid.RequirementResponse.Evidence(
+                                            id = evidence.id,
+                                            title = evidence.title,
+                                            description = evidence.description,
+                                            relatedDocument = evidence.relatedDocument
+                                                ?.let { relatedDocument ->
+                                                    TenderUnsuccessfulData.Bid.RequirementResponse.Evidence.RelatedDocument(
+                                                        id = relatedDocument.id
+                                                    )
+                                                }
                                         )
                                     }
                             )
