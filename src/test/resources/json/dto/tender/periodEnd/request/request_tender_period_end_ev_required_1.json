@@ -173,6 +173,10 @@
   "criteria": {
     "id": "criteria.id",
     "title": "Conflict of interest",
+    "classification":{
+      "id":"CRITERION.EXCLUSION.CONFLICT_OF_INTEREST.TBD",
+      "scheme":"ESPD"
+    },
     "requirementGroups": [
       {
         "id": "criteria.requirementGroups[0].id",

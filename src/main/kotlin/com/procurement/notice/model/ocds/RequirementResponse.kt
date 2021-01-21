@@ -33,6 +33,9 @@ data class RequirementResponse @JsonCreator constructor(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val relatedTenderer: OrganizationReference?,
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("evidences") @param:JsonProperty("evidences") val evidences: List<Evidence>?,
+
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val responder: OrganizationReference?
 )

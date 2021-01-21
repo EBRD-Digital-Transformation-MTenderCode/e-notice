@@ -226,7 +226,8 @@ class AuctionServiceImpl(
                                         title = null
                                     ),
                                     relatedTenderer = null,
-                                    responder = null
+                                    responder = null,
+                                    evidences = emptyList()
                                 )
                             },
                         tenderers = bid.tenderers

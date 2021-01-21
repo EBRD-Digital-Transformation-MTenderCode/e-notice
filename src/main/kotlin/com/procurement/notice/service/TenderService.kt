@@ -28,12 +28,15 @@ import com.procurement.notice.model.ocds.BankAccount
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Bids
 import com.procurement.notice.model.ocds.BusinessFunction
+import com.procurement.notice.model.ocds.Classification
 import com.procurement.notice.model.ocds.ContactPoint
 import com.procurement.notice.model.ocds.CountryDetails
 import com.procurement.notice.model.ocds.Criteria
 import com.procurement.notice.model.ocds.Details
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.DocumentBF
+import com.procurement.notice.model.ocds.DocumentReference
+import com.procurement.notice.model.ocds.Evidence
 import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Issue
@@ -105,7 +108,15 @@ class TenderService(
                     description = criteria.description,
                     source = criteria.source,
                     relatedItem = null,
-                    classification = null,
+                    classification = criteria.classification
+                        .let { classification ->
+                             Classification(
+                                 id = classification.id,
+                                 scheme = classification.scheme,
+                                 description = null,
+                                 uri = null
+                             )
+                        },
                     relatesTo = criteria.relatesTo?.value,
                     requirementGroups = criteria.requirementGroups.map { requirementGroup ->
                         RequirementGroup(
@@ -535,7 +546,34 @@ class TenderService(
                                                 maxExtentDate = null
                                             )
                                         },
-                                    relatedTenderer = null,
+                                    relatedTenderer = requirementResponse.relatedTenderer
+                                        ?.let { tenderer ->
+                                            OrganizationReference(
+                                                id = tenderer.id,
+                                                name = tenderer.name,
+                                                address = null,
+                                                details = null,
+                                                identifier = null,
+                                                persones = null,
+                                                contactPoint = null,
+                                                additionalIdentifiers = null,
+                                                buyerProfile = null
+                                            )
+                                        },
+                                    evidences = requirementResponse.evidences
+                                        ?.map { evidence ->
+                                            Evidence(
+                                                id = evidence.id,
+                                                title = evidence.title,
+                                                description = evidence.description,
+                                                relatedDocument = evidence.relatedDocument
+                                                    ?.let { document ->
+                                                        DocumentReference(
+                                                            id = document.id
+                                                        )
+                                                    }
+                                            )
+                                        },
                                     responder = null
                                 )
                             }
@@ -1526,7 +1564,8 @@ class TenderService(
                                         )
                                     },
                                 relatedTenderer = null,
-                                responder = null
+                                responder = null,
+                                evidences = null
                             )
                         }
                 )

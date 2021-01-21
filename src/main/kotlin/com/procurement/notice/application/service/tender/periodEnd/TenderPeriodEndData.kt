@@ -261,12 +261,30 @@ data class TenderPeriodEndData(
         data class RequirementResponse(
             val id: String,
             val value: RequirementRsValue,
+            val relatedTenderer: OrganizationReference?,
+            val evidences: List<Evidence>?,
             val requirement: Requirement,
             val period: Period?
         ) {
 
             data class Requirement(
                 val id: String
+            )
+
+            data class Evidence(
+                val id: String,
+                val title: String,
+                val description: String?,
+                val relatedDocument: RelatedDocument?
+            ) {
+                data class RelatedDocument(
+                    val id: String
+                )
+            }
+
+            data class OrganizationReference(
+                val id: String,
+                val name: String
             )
 
             data class Period(
@@ -282,12 +300,18 @@ data class TenderPeriodEndData(
         val source: CriteriaSource?,
         val relatesTo: CriteriaRelatesTo?,
         val description: String?,
+        val classification: Classification,
         val requirementGroups: List<RequirementGroup>
     ) {
 
         data class RequirementGroup(
             val id: String,
             val requirements: List<Requirement>
+        )
+
+        data class Classification(
+            val scheme: String,
+            val id: String
         )
     }
 
