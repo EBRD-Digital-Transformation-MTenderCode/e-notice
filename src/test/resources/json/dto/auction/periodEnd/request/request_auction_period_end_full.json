@@ -184,6 +184,20 @@
         {
           "id": "bids[0].requirementResponses[0].id",
           "value": "123",
+          "evidences": [
+            {
+              "id": "string",
+              "title": "string",
+              "description": "string",
+              "relatedDocument": {
+                "id": ""
+              }
+            }
+          ],
+          "relatedTenderer": {
+            "name": "name",
+            "id": "id"
+          },
           "requirement": {
             "id": "bids[0].requirementResponses[0].requirement.id"
           },
@@ -205,6 +219,10 @@
     "description": "Is there conflict of interest with any of tenderers submitted bids",
     "relatesTo": "lot",
     "relatedItem": "",
+    "classification":{
+      "id":"CRITERION.EXCLUSION.CONFLICT_OF_INTEREST.TBD",
+      "scheme":"ESPD"
+    },
     "requirementGroups": [
       {
         "id": "criteria.requirementGroups[0].id",
@@ -219,7 +237,9 @@
               "endDate": "2011-06-15T17:59:00Z"
             },
             "dataType": "boolean",
-            "expectedValue": false
+            "expectedValue": false,
+            "status":"active",
+            "datePublished":"2018-12-10T07:07:26Z"
           },
           {
             "id": "974c8196-9d1c-419c-9ca9-45bb9f5fd59a",
@@ -229,14 +249,18 @@
               "startDate": "2011-06-10T17:59:00Z",
               "endDate": "2011-06-15T17:59:00Z"
             },
-            "dataType": "boolean"
+            "dataType": "boolean",
+            "status":"active",
+            "datePublished":"2018-12-10T07:07:26Z"
           },
           {
             "id": "804eb103-49d1-45b8-86cb-187b01ab03b4",
             "title": "Your answer?",
             "dataType": "number",
             "minValue": 10.00,
-            "maxValue": 20.00
+            "maxValue": 20.00,
+            "status":"active",
+            "datePublished":"2018-12-10T07:07:26Z"
           }
         ]
       }
