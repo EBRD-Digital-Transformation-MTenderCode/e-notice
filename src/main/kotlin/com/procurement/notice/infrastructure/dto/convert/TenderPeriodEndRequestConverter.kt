@@ -336,8 +336,6 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                         ?.map { requirementResponse ->
                             TenderPeriodEndData.Bid.RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
                                 value = requirementResponse.value,
                                 requirement = requirementResponse.requirement.let { requirement ->
                                     TenderPeriodEndData.Bid.RequirementResponse.Requirement(
@@ -349,6 +347,27 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                                         TenderPeriodEndData.Bid.RequirementResponse.Period(
                                             startDate = period.startDate,
                                             endDate = period.endDate
+                                        )
+                                    },
+                                relatedTenderer = requirementResponse.relatedTenderer
+                                    ?.let { tenderer ->
+                                        TenderPeriodEndData.Bid.RequirementResponse.OrganizationReference(
+                                            id = tenderer.id,
+                                            name = tenderer.name
+                                        )
+                                    },
+                                evidences = requirementResponse.evidences
+                                    ?.map { evidence ->
+                                        TenderPeriodEndData.Bid.RequirementResponse.Evidence(
+                                            id = evidence.id,
+                                            title = evidence.title,
+                                            description = evidence.description,
+                                            relatedDocument = evidence.relatedDocument
+                                                ?.let { relatedDocument ->
+                                                    TenderPeriodEndData.Bid.RequirementResponse.Evidence.RelatedDocument(
+                                                        id = relatedDocument.id
+                                                    )
+                                                }
                                         )
                                     }
                             )
@@ -381,6 +400,13 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                             ErrorException(
                                 error = ErrorType.IS_EMPTY,
                                 message = "The criteria '${criteria.id}' contain empty list of the requirement groups."
+                            )
+                        },
+                    classification = criteria.classification
+                        .let { classification ->
+                            TenderPeriodEndData.Criteria.Classification(
+                                id = classification.id,
+                                scheme = classification.scheme
                             )
                         }
                 )
