@@ -1547,8 +1547,8 @@ class TenderService(
                         .map { requirementResponse ->
                             RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
+                                title = null,
+                                description = null,
                                 value = requirementResponse.value,
                                 requirement = RequirementReference(
                                     id = requirementResponse.requirement.id,
@@ -1563,9 +1563,35 @@ class TenderService(
                                             maxExtentDate = null
                                         )
                                     },
-                                relatedTenderer = null,
+                                relatedTenderer = requirementResponse.relatedTenderer
+                                    ?.let { tenderer ->
+                                        OrganizationReference(
+                                            id = tenderer.id,
+                                            name = tenderer.name,
+                                            address = null,
+                                            details = null,
+                                            identifier = null,
+                                            persones = null,
+                                            contactPoint = null,
+                                            additionalIdentifiers = null,
+                                            buyerProfile = null
+                                        )
+                                    },
                                 responder = null,
-                                evidences = null
+                                evidences = requirementResponse.evidences
+                                    ?.map { evidence ->
+                                        Evidence(
+                                            id = evidence.id,
+                                            title = evidence.title,
+                                            description = evidence.description,
+                                            relatedDocument = evidence.relatedDocument
+                                                ?.let { document ->
+                                                    DocumentReference(
+                                                        id = document.id
+                                                    )
+                                                }
+                                        )
+                                    }
                             )
                         }
                 )
