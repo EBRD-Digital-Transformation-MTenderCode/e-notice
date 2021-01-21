@@ -336,8 +336,6 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                         ?.map { requirementResponse ->
                             TenderPeriodEndData.Bid.RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
                                 value = requirementResponse.value,
                                 requirement = requirementResponse.requirement.let { requirement ->
                                     TenderPeriodEndData.Bid.RequirementResponse.Requirement(

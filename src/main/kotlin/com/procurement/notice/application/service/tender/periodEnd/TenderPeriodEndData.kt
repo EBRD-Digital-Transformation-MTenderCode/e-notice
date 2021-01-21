@@ -260,8 +260,6 @@ data class TenderPeriodEndData(
 
         data class RequirementResponse(
             val id: String,
-            val title: String?,
-            val description: String?,
             val value: RequirementRsValue,
             val requirement: Requirement,
             val period: Period?

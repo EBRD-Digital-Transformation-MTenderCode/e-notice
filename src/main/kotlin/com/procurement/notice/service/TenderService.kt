@@ -519,8 +519,8 @@ class TenderService(
                             .map { requirementResponse ->
                                 RequirementResponse(
                                     id = requirementResponse.id,
-                                    title = requirementResponse.title,
-                                    description = requirementResponse.description,
+                                    title = null,
+                                    description = null,
                                     value = requirementResponse.value,
                                     requirement = RequirementReference(
                                         id = requirementResponse.requirement.id,
