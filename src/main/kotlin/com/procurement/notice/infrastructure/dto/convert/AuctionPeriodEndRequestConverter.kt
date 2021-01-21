@@ -352,8 +352,6 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                         ?.map { requirementResponse ->
                             AuctionPeriodEndData.Bid.RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
                                 value = requirementResponse.value,
                                 requirement = requirementResponse.requirement
                                     .let { requirement ->

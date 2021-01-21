@@ -209,8 +209,8 @@ class AuctionServiceImpl(
                             .map { requirementResponse ->
                                 RequirementResponse(
                                     id = requirementResponse.id,
-                                    title = requirementResponse.title,
-                                    description = requirementResponse.description,
+                                    title = null,
+                                    description = null,
                                     value = requirementResponse.value,
                                     period = requirementResponse.period
                                         ?.let { period ->
