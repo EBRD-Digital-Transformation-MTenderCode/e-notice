@@ -2,6 +2,7 @@ package com.procurement.notice.infrastructure.bind.criteria.requirement
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -29,6 +30,9 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
                 requirementNode.put("title", requirement.title)
                 requirementNode.put("dataType", requirement.dataType.value)
 
+                requirement.status?.let { requirementNode.put("status", it) }
+                requirement.datePublished?.let { requirementNode.put("datePublished", JsonDateTimeSerializer.serialize(it)) }
+
                 requirement.description?.let { requirementNode.put("description", it) }
                 requirement.period?.let {
                     requirementNode.putObject("period")
@@ -36,6 +40,9 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
                         .put("endDate", JsonDateTimeSerializer.serialize(it.endDate))
                 }
 
+                requirement.eligibleEvidences
+                    ?.map { it.serialize() }
+                    ?.let { requirementNode.putArray("eligibleEvidences").addAll(it) }
 
                 when (requirement.value) {
 
@@ -82,6 +89,24 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
 
             return serializedRequirements
         }
+
+        fun Requirement.EligibleEvidence.serialize(): JsonNode =
+            JsonNodeFactory.instance.objectNode()
+                .apply {
+                    put("id", this@serialize.id)
+                    put("title", this@serialize.title)
+                    put("type", this@serialize.type)
+
+                    this@serialize.description?.let { put("description", it) }
+
+                    this@serialize.relatedDocument
+                        ?.let {
+                            val relatedDocumentNode = JsonNodeFactory.instance.objectNode()
+                                .apply { put("id", it.id) }
+
+                            set("relatedDocument", relatedDocumentNode)
+                        }
+                }
     }
 
     @Throws(IOException::class, JsonProcessingException::class)

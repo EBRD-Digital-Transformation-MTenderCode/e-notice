@@ -20,5 +20,8 @@ data class Criteria(
     @field:JsonProperty("relatesTo") @param:JsonProperty("relatesTo") val relatesTo: String?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?
+    @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: Classification?
 )

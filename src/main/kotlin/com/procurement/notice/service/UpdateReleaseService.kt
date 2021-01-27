@@ -355,6 +355,7 @@ class UpdateReleaseService(
                             internalId = lot.internalId,
                             title = lot.title,
                             description = lot.description,
+                            classification = null,
                             status = lot.status,
                             statusDetails = lot.statusDetails,
                             value = lot.value.toValue(),

@@ -265,15 +265,31 @@ data class AuctionPeriodEndData(
 
         data class RequirementResponse(
             val id: String,
-            val title: String?,
-            val description: String?,
             val value: RequirementRsValue,
+            val relatedTenderer: OrganizationReference?,
+            val evidences: List<Evidence>?,
             val requirement: Requirement,
             val period: Period?
         ) {
 
             data class Requirement(
                 val id: String
+            )
+
+            data class Evidence(
+                val id: String,
+                val title: String,
+                val description: String?,
+                val relatedDocument: RelatedDocument?
+            ) {
+                data class RelatedDocument(
+                    val id: String
+                )
+            }
+
+            data class OrganizationReference(
+                val id: String,
+                val name: String
             )
 
             data class Period(
@@ -290,6 +306,7 @@ data class AuctionPeriodEndData(
         val description: String?,
         val relatesTo: CriteriaRelatesTo?,
         val relatedItem: String?,
+        val classification: Classification,
         val requirementGroups: List<RequirementGroup>
     ) {
 
@@ -297,6 +314,11 @@ data class AuctionPeriodEndData(
             val id: String,
             val description: String?,
             val requirements: List<Requirement>
+        )
+
+        data class Classification(
+            val scheme: String,
+            val id: String
         )
     }
 

@@ -230,7 +230,9 @@ class CreateReleaseService(
                         title = TenderTitle.valueOf(stage.toUpperCase()).text,
                         //FR-ER-5.5.2.2.8
                         description = TenderDescription.valueOf(stage.toUpperCase()).text,
-                        hasEnquiries = false
+                        hasEnquiries = false,
+                        classification = null, // FR-ER-5.5.2.2.10
+                        value = null  // FR-ER-5.5.2.2.10
                 ),
             initiationType = InitiationType.TENDER,
             hasPreviousNotice = true,

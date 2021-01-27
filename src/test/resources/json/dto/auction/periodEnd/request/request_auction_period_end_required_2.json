@@ -79,6 +79,10 @@
   "criteria": {
     "id": "criteria.id",
     "title": "Conflict of interest",
+    "classification":{
+      "id":"CRITERION.EXCLUSION.CONFLICT_OF_INTEREST.TBD",
+      "scheme":"ESPD"
+    },
     "requirementGroups": [
       {
         "id": "criteria.requirementGroups[0].id",
@@ -87,14 +91,18 @@
             "id": "974c8196-9d1c-419c-9ca9-45bb9f5fd59a",
             "title": "Your answer?",
             "dataType": "boolean",
-            "expectedValue": false
+            "expectedValue": false,
+            "status":"active",
+            "datePublished":"2018-12-10T07:07:26Z"
           },
           {
             "id": "804eb103-49d1-45b8-86cb-187b01ab03b4",
             "title": "Your answer?",
             "dataType": "number",
             "minValue": 10.00,
-            "maxValue": 20.00
+            "maxValue": 20.00,
+            "status":"active",
+            "datePublished":"2018-12-10T07:07:26Z"
           }
         ]
       }

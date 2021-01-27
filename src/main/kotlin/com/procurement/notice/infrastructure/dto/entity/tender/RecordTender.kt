@@ -9,6 +9,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordClassification
 import com.procurement.notice.infrastructure.dto.entity.RecordOrganizationReference
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
+import com.procurement.notice.infrastructure.dto.entity.tender.criteria.RecordCriteria
 import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.Value
 import com.procurement.notice.model.tender.record.SecondStage

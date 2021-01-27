@@ -9,13 +9,28 @@ class Requirement(
     val title: String,
     val description: String?,
     val period: Period?,
+    val status: String?,
+    val datePublished: LocalDateTime?,
     val dataType: RequirementDataType,
-    val value: RequirementValue
+    val value: RequirementValue,
+    val eligibleEvidences: List<EligibleEvidence>?
 ) {
     data class Period(
         val startDate: LocalDateTime,
         val endDate: LocalDateTime
     )
+
+    data class EligibleEvidence(
+        val id: String,
+        val title: String,
+        val type: String,
+        val description: String?,
+        val relatedDocument: RelatedDocument?
+    ) {
+        data class RelatedDocument(
+            val id: String
+        )
+    }
 }
 
 sealed class RequirementValue

@@ -352,8 +352,6 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                         ?.map { requirementResponse ->
                             AuctionPeriodEndData.Bid.RequirementResponse(
                                 id = requirementResponse.id,
-                                title = requirementResponse.title,
-                                description = requirementResponse.description,
                                 value = requirementResponse.value,
                                 requirement = requirementResponse.requirement
                                     .let { requirement ->
@@ -366,6 +364,27 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                         AuctionPeriodEndData.Bid.RequirementResponse.Period(
                                             startDate = period.startDate,
                                             endDate = period.endDate
+                                        )
+                                    },
+                                relatedTenderer = requirementResponse.relatedTenderer
+                                    ?.let { tenderer ->
+                                        AuctionPeriodEndData.Bid.RequirementResponse.OrganizationReference(
+                                            id = tenderer.id,
+                                            name = tenderer.name
+                                        )
+                                    },
+                                evidences = requirementResponse.evidences
+                                    ?.map { evidence ->
+                                        AuctionPeriodEndData.Bid.RequirementResponse.Evidence(
+                                            id = evidence.id,
+                                            title = evidence.title,
+                                            description = evidence.description,
+                                            relatedDocument = evidence.relatedDocument
+                                                ?.let { relatedDocument ->
+                                                    AuctionPeriodEndData.Bid.RequirementResponse.Evidence.RelatedDocument(
+                                                        id = relatedDocument.id
+                                                    )
+                                                }
                                         )
                                     }
                             )
@@ -409,6 +428,13 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                             ErrorException(
                                 error = ErrorType.IS_EMPTY,
                                 message = "The criteria '${criteria.id}' contain empty list of the requirement groups."
+                            )
+                        },
+                    classification = criteria.classification
+                        .let { classification ->
+                            AuctionPeriodEndData.Criteria.Classification(
+                                id = classification.id,
+                                scheme = classification.scheme
                             )
                         }
                 )

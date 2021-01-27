@@ -11,12 +11,15 @@ import com.procurement.notice.model.ocds.BankAccount
 import com.procurement.notice.model.ocds.Bid
 import com.procurement.notice.model.ocds.Bids
 import com.procurement.notice.model.ocds.BusinessFunction
+import com.procurement.notice.model.ocds.Classification
 import com.procurement.notice.model.ocds.ContactPoint
 import com.procurement.notice.model.ocds.CountryDetails
 import com.procurement.notice.model.ocds.Criteria
 import com.procurement.notice.model.ocds.Details
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.DocumentBF
+import com.procurement.notice.model.ocds.DocumentReference
+import com.procurement.notice.model.ocds.Evidence
 import com.procurement.notice.model.ocds.Identifier
 import com.procurement.notice.model.ocds.Issue
 import com.procurement.notice.model.ocds.LegalForm
@@ -94,8 +97,8 @@ class AuctionServiceImpl(
 
             ),
             awards = updatedAwards.toList(),             //FR-5.7.2.6.4
-            bids = updatedBids,                             //FR-5.7.2.6.3
-            parties = updatedParties.toMutableList()            //FR-5.7.2.6.5
+            bids = updatedBids,                          //FR-5.7.2.6.3
+            parties = updatedParties.toMutableList()     //FR-5.7.2.6.5
         )
 
         releaseService.saveRecord(
@@ -209,8 +212,8 @@ class AuctionServiceImpl(
                             .map { requirementResponse ->
                                 RequirementResponse(
                                     id = requirementResponse.id,
-                                    title = requirementResponse.title,
-                                    description = requirementResponse.description,
+                                    title = null,
+                                    description = null,
                                     value = requirementResponse.value,
                                     period = requirementResponse.period
                                         ?.let { period ->
@@ -225,8 +228,35 @@ class AuctionServiceImpl(
                                         id = requirementResponse.requirement.id,
                                         title = null
                                     ),
-                                    relatedTenderer = null,
-                                    responder = null
+                                    relatedTenderer = requirementResponse.relatedTenderer
+                                        ?.let { tenderer ->
+                                            OrganizationReference(
+                                                id = tenderer.id,
+                                                name = tenderer.name,
+                                                address = null,
+                                                details = null,
+                                                identifier = null,
+                                                persones = null,
+                                                contactPoint = null,
+                                                additionalIdentifiers = null,
+                                                buyerProfile = null
+                                            )
+                                        },
+                                    responder = null,
+                                    evidences = requirementResponse.evidences
+                                        ?.map { evidence ->
+                                            Evidence(
+                                                id = evidence.id,
+                                                title = evidence.title,
+                                                description = evidence.description,
+                                                relatedDocument = evidence.relatedDocument
+                                                    ?.let { document ->
+                                                        DocumentReference(
+                                                            id = document.id
+                                                        )
+                                                    }
+                                            )
+                                        }
                                 )
                             },
                         tenderers = bid.tenderers
@@ -702,6 +732,15 @@ class AuctionServiceImpl(
                     id = requirementGroup.id,
                     description = requirementGroup.description,
                     requirements = requirementGroup.requirements.toList()
+                )
+            },
+        classification = this.classification
+            .let { classification ->
+                Classification(
+                    id = classification.id,
+                    scheme = classification.scheme,
+                    description = null,
+                    uri = null
                 )
             }
     )

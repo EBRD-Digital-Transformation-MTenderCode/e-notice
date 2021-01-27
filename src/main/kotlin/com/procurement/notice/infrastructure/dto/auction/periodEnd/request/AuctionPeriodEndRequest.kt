@@ -358,15 +358,15 @@ data class AuctionPeriodEndRequest(
         data class RequirementResponse(
             @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
-            @JsonInclude(JsonInclude.Include.NON_NULL)
-            @field:JsonProperty("title") @param:JsonProperty("title") val title: String?,
-
-            @JsonInclude(JsonInclude.Include.NON_NULL)
-            @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
-
             @JsonDeserialize(using = RequirementValueDeserializer::class)
             @JsonSerialize(using = RequirementValueSerializer::class)
             @field:JsonProperty("value") @param:JsonProperty("value") val value: RequirementRsValue,
+
+            @JsonInclude(JsonInclude.Include.NON_NULL)
+            @field:JsonProperty("relatedTenderer") @param:JsonProperty("relatedTenderer") val relatedTenderer: OrganizationReference?,
+
+            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @field:JsonProperty("evidences") @param:JsonProperty("evidences") val evidences: List<Evidence>?,
 
             @field:JsonProperty("requirement") @param:JsonProperty("requirement") val requirement: Requirement,
 
@@ -376,6 +376,26 @@ data class AuctionPeriodEndRequest(
 
             data class Requirement(
                 @field:JsonProperty("id") @param:JsonProperty("id") val id: String
+            )
+
+            data class Evidence(
+                @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+                @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
+
+                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
+
+                @JsonInclude(JsonInclude.Include.NON_NULL)
+                @field:JsonProperty("relatedDocument") @param:JsonProperty("relatedDocument") val relatedDocument: RelatedDocument?
+            ) {
+                data class RelatedDocument(
+                    @field:JsonProperty("id") @param:JsonProperty("id") val id: String
+                )
+            }
+
+            data class OrganizationReference(
+                @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
+                @field:JsonProperty("name") @param:JsonProperty("name") val name: String
             )
 
             data class Period(
@@ -406,6 +426,8 @@ data class AuctionPeriodEndRequest(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?,
 
+        @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: Classification,
+
         @field:JsonProperty("requirementGroups") @param:JsonProperty("requirementGroups") val requirementGroups: List<RequirementGroup>
     ) {
 
@@ -418,6 +440,11 @@ data class AuctionPeriodEndRequest(
             @JsonDeserialize(using = RequirementDeserializer::class)
             @JsonSerialize(using = RequirementSerializer::class)
             @field:JsonProperty("requirements") @param:JsonProperty("requirements") val requirements: List<Requirement>
+        )
+
+        data class Classification(
+            @field:JsonProperty("scheme") @param:JsonProperty("scheme") val scheme: String,
+            @field:JsonProperty("id") @param:JsonProperty("id") val id: String
         )
     }
 
