@@ -1,0 +1,50 @@
+{
+  "requirements": [
+    {
+      "id": "string-1",
+      "title": "string",
+      "description": "string",
+      "dataType": "number",
+      "status": "active",
+      "datePublished": "2020-02-03T00:00:00Z",
+      "period": {
+        "startDate": "2020-02-01T00:00:00Z",
+        "endDate": "2020-02-03T00:00:00Z"
+      },
+      "expectedValue": 12.312,
+      "eligibleEvidences": [
+        {
+          "id": "id-string",
+          "title": "title-string",
+          "description": "description-string",
+          "type": "reference",
+          "relatedDocument": {
+            "id": "relatedDocument-string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "string-2",
+      "title": "string",
+      "description": "string",
+      "dataType": "number",
+      "period": {
+        "startDate": "2020-02-04T00:00:00Z",
+        "endDate": "2020-02-06T00:00:00Z"
+      },
+      "expectedValue": 56.312,
+      "eligibleEvidences": [
+        {
+          "id": "id-string",
+          "title": "title-string",
+          "description": "description-string",
+          "type": "reference",
+          "relatedDocument": {
+            "id": "relatedDocument-string"
+          }
+        }
+      ]
+    }
+  ]
+}

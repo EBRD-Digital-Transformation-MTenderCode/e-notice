@@ -1,0 +1,17 @@
+{
+  "requirements": [
+    {
+      "id": "string-1",
+      "title": "string",
+      "description": "string",
+      "dataType": "number",
+      "period": {
+        "startDate": "2020-02-01T00:00:00Z",
+        "endDate": "2020-02-03T00:00:00Z"
+      },
+      "expectedValue": 12.312,
+      "eligibleEvidences": [
+      ]
+    }
+  ]
+}

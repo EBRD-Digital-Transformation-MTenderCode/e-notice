@@ -159,7 +159,6 @@
       "requirementResponses": [
         {
           "id": "bids[0].requirementResponses[0].id",
-          "title": "bids[0].requirementResponses[0].title",
           "value": "123",
           "requirement": {
             "id": "bids[0].requirementResponses[0].requirement.id"
@@ -174,6 +173,10 @@
   "criteria": {
     "id": "criteria.id",
     "title": "Conflict of interest",
+    "classification":{
+      "id":"CRITERION.EXCLUSION.CONFLICT_OF_INTEREST.TBD",
+      "scheme":"ESPD"
+    },
     "requirementGroups": [
       {
         "id": "criteria.requirementGroups[0].id",

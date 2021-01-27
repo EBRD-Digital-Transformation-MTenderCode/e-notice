@@ -3,6 +3,7 @@ package com.procurement.notice.infrastructure.dto.request.tender
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.notice.domain.model.enums.CriteriaSource
+import com.procurement.notice.infrastructure.dto.request.RequestClassification
 import com.procurement.notice.infrastructure.dto.request.RequestRequirementGroup
 
 data class RequestCriteria(
@@ -22,5 +23,8 @@ data class RequestCriteria(
     @field:JsonProperty("relatesTo") @param:JsonProperty("relatesTo") val relatesTo: String?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?
+    @field:JsonProperty("relatedItem") @param:JsonProperty("relatedItem") val relatedItem: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: RequestClassification?
 )
