@@ -115,6 +115,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_EXPENDITURE_ITEM("x_expenditureItem"),
     X_FUNDING_SOURCE("x_fundingSource"),
     X_NEGOTIATION("x_negotiation"),
+    X_FRAMEWORK("x_framework"),
     X_PLANNED("x_planned"),
     X_PRE_AWARD_CATALOG_REQUEST("x_preAwardCatalogRequest"),
     X_PREQUALIFICATION("x_prequalification"),
