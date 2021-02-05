@@ -26,7 +26,7 @@ import java.time.LocalDateTime
 data class AuctionPeriodEndData(
     val tenderStatusDetails: TenderStatusDetails,
     val bids: List<Bid>,
-    val criteria: Criteria?,
+    val criteria: List<Criteria>?,
     val tender: Tender,
     val awards: List<Award>,
     val awardPeriod: AwardPeriod,
