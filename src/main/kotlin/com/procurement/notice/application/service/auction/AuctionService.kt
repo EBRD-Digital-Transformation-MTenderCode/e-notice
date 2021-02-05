@@ -65,7 +65,7 @@ class AuctionServiceImpl(
         val updatedBids = updateBids(data)
         val updatedParties = updateParties(parties = release.parties, data = data)
         val updatedElectronicAuctions = release.tender.electronicAuctions?.updateElectronicAuctions(data = data)
-        val criteria = data.criteria?.convert()
+        val criteria = data.criteria.orEmpty().map { it.convert() }
 
         val updatedRecord = release.copy(
             id = generationService.generateReleaseId(ocid = context.ocid), //FR-5.0.1
@@ -90,7 +90,7 @@ class AuctionServiceImpl(
                     durationInDays = null
                 ),
                 electronicAuctions = updatedElectronicAuctions,
-                criteria = if (criteria != null) {
+                criteria = if (criteria.isNotEmpty()) {
                     release.tender.criteria.plus(criteria)
                 } else
                     release.tender.criteria
