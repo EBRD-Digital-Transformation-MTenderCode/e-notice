@@ -41,8 +41,8 @@ data class AuctionPeriodEndRequest(
     @field:JsonProperty("tenderStatusDetails") @param:JsonProperty("tenderStatusDetails") val tenderStatusDetails: TenderStatusDetails,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("criteria") @param:JsonProperty("criteria") val criteria: Criteria?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("criteria") @param:JsonProperty("criteria") val criteria: List<Criteria>?,
 
     @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender,
 

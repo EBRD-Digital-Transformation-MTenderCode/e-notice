@@ -399,7 +399,7 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                 )
             },
         criteria = this.criteria
-            ?.let { criteria ->
+            ?.map { criteria ->
                 AuctionPeriodEndData.Criteria(
                     id = criteria.id,
                     title = criteria.title,
