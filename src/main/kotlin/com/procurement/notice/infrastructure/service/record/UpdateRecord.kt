@@ -206,6 +206,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
 import com.procurement.notice.infrastructure.dto.request.tender.RequestVariant
 import com.procurement.notice.lib.mapIfNotEmpty
 import com.procurement.notice.lib.toSetBy
+import com.procurement.notice.model.ocds.NoneValue
 import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.Requirement
@@ -392,7 +393,7 @@ fun RecordItem.updateItem(received: RequestItem): UpdateRecordResult<RecordItem>
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             description = received.description ?: this.description,
             internalId = received.internalId ?: this.internalId,
             unit = unit,
@@ -474,7 +475,7 @@ fun RecordCriteria.updateCriteria(received: RequestCriteria): UpdateRecordResult
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             description = received.description ?: this.description,
             title = received.title,
             relatesTo = received.relatesTo ?: this.relatesTo,
@@ -501,28 +502,67 @@ fun RecordRequirementGroup.updateRequirementGroup(received: RequestRequirementGr
 
     return this
         .copy(
-            id = received.id,
-            description = received.description,
+            id = this.id,
+            description = received.description ?: this.description,
             requirements = requirements
         )
         .asSuccess()
 }
 
 val recordRequirementKeyExtractor: (Requirement) -> String = { it.id }
+val recordEligibleEvidenceKeyExtractor: (Requirement.EligibleEvidence) -> String = { it.id }
 
-fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Requirement> =
-    Requirement(
-        id = received.id,
+fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Requirement> {
+    val updatedEligibleEvidences = updateStrategy(
+            receivedElements = received.eligibleEvidences.orEmpty(),
+            keyExtractorForReceivedElement = recordEligibleEvidenceKeyExtractor,
+            availableElements = this.eligibleEvidences.orEmpty(),
+            keyExtractorForAvailableElement = recordEligibleEvidenceKeyExtractor,
+            updateBlock = Requirement.EligibleEvidence::updateEligibleEvidence,
+            createBlock = ::createEligibleEvidences
+        )
+            .doReturn { e -> return failure(e) }
+
+    val value =
+        if (received.value is NoneValue)
+            this.value
+        else
+            received.value
+
+    return Requirement(
+        id = this.id,
         description = received.description ?: this.description,
         title = received.title,
-        value = received.value,
-        status = received.status,
-        datePublished = received.datePublished,
+        value = value,
+        status = received.status ?: this.status,
+        datePublished = received.datePublished ?: this.datePublished,
         period = received.period ?: this.period,
-        dataType = received.dataType,
-        eligibleEvidences = received.eligibleEvidences
-    )
-        .asSuccess()
+        dataType = received.dataType ?: this.dataType,
+        eligibleEvidences = updatedEligibleEvidences
+    ).asSuccess()
+}
+
+fun Requirement.EligibleEvidence.updateEligibleEvidence(received: Requirement.EligibleEvidence): UpdateRecordResult<Requirement.EligibleEvidence> {
+    val relatedDocument = received.relatedDocument
+        ?.let {
+            this.relatedDocument
+                ?.updateDocumentReference(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDocumentReference(it)
+        }
+        ?: this.relatedDocument
+
+    return Requirement.EligibleEvidence(
+        id = this.id,
+        title = received.title,
+        description = received.description ?: this.description,
+        type = received.type,
+        relatedDocument = relatedDocument
+    ).asSuccess()
+}
+
+fun Requirement.EligibleEvidence.RelatedDocument.updateDocumentReference(received: Requirement.EligibleEvidence.RelatedDocument): UpdateRecordResult<Requirement.EligibleEvidence.RelatedDocument> =
+    this.copy(id = received.id).asSuccess()
 
 fun RecordConversion.updateConversion(received: RequestConversion): UpdateRecordResult<RecordConversion> {
     val coefficients = updateStrategy(
@@ -537,7 +577,7 @@ fun RecordConversion.updateConversion(received: RequestConversion): UpdateRecord
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             description = received.description ?: this.description,
             relatedItem = received.relatedItem,
             relatesTo = received.relatesTo,
@@ -552,7 +592,7 @@ val requestCoefficientsKeyExtractor: (RequestCoefficient) -> String = { it.id }
 
 fun RecordCoefficient.updateCoefficient(received: RequestCoefficient): UpdateRecordResult<RecordCoefficient> =
     this.copy(
-        id = received.id,
+        id = this.id,
         value = received.value,
         coefficient = received.coefficient
     )
@@ -593,7 +633,7 @@ fun RecordRecordEnquiry.updateRecordEnquiry(received: RequestRecordEnquiry): Upd
         ?: this.author
 
     return this.copy(
-        id = received.id,
+        id = this.id,
         relatedItem = received.relatedItem ?: this.relatedItem,
         description = received.description ?: this.description,
         title = received.title ?: this.title,
@@ -734,7 +774,7 @@ fun RecordBusinessFunction.updateBusinessFunction(received: RequestBusinessFunct
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             period = period,
             documents = documents,
             type = received.type,
@@ -748,7 +788,7 @@ val requestDocumentBFKeyExtractor: (RequestDocumentBF) -> String = { it.id }
 
 fun RecordDocumentBF.updateDocumentBF(received: RequestDocumentBF): UpdateRecordResult<RecordDocumentBF> =
     this.copy(
-        id = received.id,
+        id = this.id,
         title = received.title ?: this.title,
         url = received.url ?: this.url,
         description = received.description ?: this.description,
@@ -883,7 +923,7 @@ fun RecordPermits.updatePermits(received: RequestPermits): UpdateRecordResult<Re
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             scheme = received.scheme,
             url = received.url ?: this.url,
             permitDetails = permitDetails
@@ -1006,7 +1046,7 @@ fun RecordAccountIdentifier.updateAccountIdentifier(received: RequestAccountIden
 
 fun RecordAccountIdentifier.updateAccountIdentifierElement(received: RequestAccountIdentifier): UpdateRecordResult<RecordAccountIdentifier> =
     this.copy(
-        id = received.id,
+        id = this.id,
         scheme = received.scheme
     )
         .asSuccess()
@@ -1023,7 +1063,7 @@ fun List<RecordChange>.updateChanges(received: List<RequestChange>): UpdateRecor
 
 fun RecordDocument.updateDocument(received: RequestDocument): UpdateRecordResult<RecordDocument> =
     this.copy(
-        id = received.id,
+        id = this.id,
         relatedLots = this.relatedLots.update(received.relatedLots),
         description = received.description ?: this.description,
         url = received.url ?: this.url,
@@ -1042,7 +1082,7 @@ fun RecordBidItem.updateItem(received: RequestBidItem): UpdateRecordResult<Recor
         .let { this.unit.updateUnit(it) }
         .doReturn { e -> return failure(e) }
 
-    return this.copy(id = received.id, unit = unit).asSuccess()
+    return this.copy(id = this.id, unit = unit).asSuccess()
 }
 
 fun RecordElectronicAuctions.updateElectronicAuctions(received: RequestElectronicAuctions): UpdateRecordResult<RecordElectronicAuctions> =
@@ -1081,7 +1121,7 @@ fun RecordElectronicAuctionsDetails.updateElectronicAuctionsDetails(received: Re
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             relatedLot = received.relatedLot ?: this.relatedLot,
             auctionPeriod = received.auctionPeriod ?: this.auctionPeriod,
             electronicAuctionModalities = electronicAuctionModalities,
@@ -1131,7 +1171,7 @@ fun RecordElectronicAuctionProgress.updateElectronicAuctionProgress(
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             period = period,
             breakdown = breakdown
         )
@@ -1544,7 +1584,7 @@ private fun RecordTarget.updateTarget(received: RequestTarget): UpdateRecordResu
         .doReturn { e -> return failure(e) }
 
     return this.copy(
-        id = received.id,
+        id = this.id,
         relatesTo = received.relatesTo ?: this.relatesTo,
         relatedItem = received.relatedItem ?: this.relatedItem,
         title = received.title ?: this.title,
@@ -1788,7 +1828,7 @@ fun RecordOrganization.updateOrganization(received: RequestOrganization): Update
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             name = received.name ?: this.name,
             details = details,
             identifier = identifier,
@@ -1838,7 +1878,7 @@ fun RecordSubmissionDetail.updateSubmissionDetail(received: RequestSubmissionDet
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             date = received.date ?: this.date,
             status = received.status ?: this.status,
             documents = documents,
@@ -1870,7 +1910,7 @@ fun RecordQualification.updateQualification(received: RequestQualification): Upd
         .doReturn { e -> return failure(e) }
 
     return this.copy(
-        id = received.id,
+        id = this.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
         statusDetails = received.statusDetails ?: this.statusDetails,
@@ -1965,7 +2005,7 @@ fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAw
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             internalId = received.internalId ?: this.internalId,
             status = received.status ?: this.status,
             statusDetails = received.statusDetails ?: this.statusDetails,
@@ -2060,7 +2100,7 @@ val requestLegalProceedingsKeyExtractor: (RequestLegalProceedings) -> String = {
 
 fun RecordLegalProceedings.updateLegalProceeding(received: RequestLegalProceedings): UpdateRecordResult<RecordLegalProceedings> =
     this.copy(
-        id = received.id,
+        id = this.id,
         title = received.title ?: this.title,
         uri = received.uri ?: this.uri
     )
@@ -2077,7 +2117,7 @@ fun RecordEvidence.update(received: RequestEvidence): UpdateRecordResult<RecordE
         ?: this.relatedDocument
 
     return this.copy(
-        id = received.id,
+        id = this.id,
         title = received.title,
         description = received.description ?: this.description,
         relatedDocument = relatedDocument
@@ -2137,7 +2177,7 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             title = received.title ?: this.title,
             value = received.value,
             description = received.description ?: this.description,
@@ -2152,7 +2192,7 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
 
 fun RecordCandidate.updateCandidate(received: RequestCandidate): UpdateRecordResult<RecordCandidate> =
     this.copy(
-        id = received.id,
+        id = this.id,
         name = received.name ?: this.name
     )
         .asSuccess()
@@ -2352,7 +2392,7 @@ fun RecordBid.updateBid(received: RequestBid): UpdateRecordResult<RecordBid> {
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             value = received.value ?: this.value,
             items = items,
             relatedLots = this.relatedLots.update(received.relatedLots),
@@ -2528,7 +2568,7 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             status = received.status,
             statusDetails = received.statusDetails,
             requirementResponses = requirementResponses,
@@ -2581,7 +2621,7 @@ val requestValueBreakdownKeyExtractor: (RequestValueBreakdown) -> String = { it.
 
 fun RecordValueBreakdown.updateValueBreakdown(received: RequestValueBreakdown): UpdateRecordResult<RecordValueBreakdown> =
     this.copy(
-        id = received.id,
+        id = this.id,
         type = this.type.update(received.type),
         description = received.description ?: this.description,
         amount = received.amount ?: this.amount,
@@ -2591,7 +2631,7 @@ fun RecordValueBreakdown.updateValueBreakdown(received: RequestValueBreakdown): 
 
 fun RecordRelatedProcess.updateRelatedProcess(received: RequestRelatedProcess): UpdateRecordResult<RecordRelatedProcess> =
     this.copy(
-        id = received.id,
+        id = this.id,
         scheme = received.scheme,
         identifier = received.identifier ?: this.identifier,
         uri = received.uri ?: this.uri,
@@ -2614,7 +2654,7 @@ fun RecordMilestone.updateMilestone(received: RequestMilestone): UpdateRecordRes
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             title = received.title ?: this.title,
             description = received.description ?: this.description,
             type = received.type ?: this.type,
@@ -2651,7 +2691,7 @@ fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfi
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             value = value,
             request = received.request ?: this.request
         )
@@ -2727,7 +2767,7 @@ fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirm
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             title = received.title ?: this.title,
             description = received.description ?: this.description,
             relatesTo = received.relatesTo ?: this.relatesTo,
@@ -2755,7 +2795,7 @@ fun RecordRequestGroup.updateRequestGroup(received: RequestRequestGroup): Update
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             requests = requests
         )
         .asSuccess()
@@ -2776,7 +2816,7 @@ fun RecordRequest.updateRequest(received: RequestRequest): UpdateRecordResult<Re
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             relatedPerson = relatedPerson,
             description = received.description,
             title = received.title
@@ -2786,7 +2826,7 @@ fun RecordRequest.updateRequest(received: RequestRequest): UpdateRecordResult<Re
 
 fun RecordBudgetSource.updateBudgetSource(received: RequestBudgetSource): UpdateRecordResult<RecordBudgetSource> =
     this.copy(
-        id = received.id,
+        id = this.id,
         currency = received.currency ?: this.currency,
         amount = received.amount ?: this.amount
     )
@@ -2805,7 +2845,7 @@ fun RecordAgreedMetric.updateAgreedMetric(received: RequestAgreedMetric): Update
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             description = received.description ?: this.description,
             title = received.title ?: this.title,
             observations = observations
@@ -2849,7 +2889,7 @@ fun RecordObservation.updateObservation(received: RequestObservation): UpdateRec
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             unit = unit,
             measure = received.measure ?: this.measure,
             notes = received.notes ?: this.notes,
@@ -3113,7 +3153,7 @@ fun RecordTransaction.updateTransaction(received: RequestTransaction): UpdateRec
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             type = received.type ?: this.type,
             value = value,
             executionPeriod = executionPeriod,
@@ -3210,7 +3250,7 @@ fun RecordBudgetBreakdown.updateBudgetBreakdown(received: RequestBudgetBreakdown
 
     return this
         .copy(
-            id = received.id,
+            id = this.id,
             amount = received.amount ?: this.amount,
             period = period,
             description = received.description ?: this.description,
@@ -3325,7 +3365,7 @@ val requestBidKeyExtractor: (RequestBid) -> String = { it.id }
 
 fun RecordBidsStatistic.updateBidsStatistic(received: RequestBidsStatistic): UpdateRecordResult<RecordBidsStatistic> =
     this.copy(
-        id = received.id,
+        id = this.id,
         date = received.date ?: this.date,
         value = received.value ?: this.value,
         notes = received.notes ?: this.notes,
@@ -3349,7 +3389,7 @@ fun RecordInvitation.updateInvitation(received: RequestInvitation): UpdateRecord
         .doReturn { e -> return failure(e) }
 
     return this.copy(
-        id = received.id,
+        id = this.id,
         date = received.date ?: this.date,
         status = received.status ?: this.status,
         relatedQualification = received.relatedQualification ?: this.relatedQualification,
