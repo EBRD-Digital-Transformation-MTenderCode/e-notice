@@ -206,6 +206,7 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
 import com.procurement.notice.infrastructure.dto.request.tender.RequestVariant
 import com.procurement.notice.lib.mapIfNotEmpty
 import com.procurement.notice.lib.toSetBy
+import com.procurement.notice.model.ocds.NoneValue
 import com.procurement.notice.model.ocds.RecordParticipationFee
 import com.procurement.notice.model.ocds.RequestParticipationFee
 import com.procurement.notice.model.ocds.Requirement
@@ -502,27 +503,66 @@ fun RecordRequirementGroup.updateRequirementGroup(received: RequestRequirementGr
     return this
         .copy(
             id = received.id,
-            description = received.description,
+            description = received.description ?: this.description,
             requirements = requirements
         )
         .asSuccess()
 }
 
 val recordRequirementKeyExtractor: (Requirement) -> String = { it.id }
+val recordEligibleEvidenceKeyExtractor: (Requirement.EligibleEvidence) -> String = { it.id }
 
-fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Requirement> =
-    Requirement(
+fun Requirement.updateRequirement(received: Requirement): UpdateRecordResult<Requirement> {
+    val updatedEligibleEvidences = updateStrategy(
+            receivedElements = received.eligibleEvidences.orEmpty(),
+            keyExtractorForReceivedElement = recordEligibleEvidenceKeyExtractor,
+            availableElements = this.eligibleEvidences.orEmpty(),
+            keyExtractorForAvailableElement = recordEligibleEvidenceKeyExtractor,
+            updateBlock = Requirement.EligibleEvidence::updateEligibleEvidence,
+            createBlock = ::createEligibleEvidences
+        )
+            .doReturn { e -> return failure(e) }
+
+    val value =
+        if (received.value is NoneValue)
+            this.value
+        else
+            received.value
+
+    return Requirement(
         id = received.id,
         description = received.description ?: this.description,
         title = received.title,
-        value = received.value,
-        status = received.status,
-        datePublished = received.datePublished,
+        value = value,
+        status = received.status ?: this.status,
+        datePublished = received.datePublished ?: this.datePublished,
         period = received.period ?: this.period,
-        dataType = received.dataType,
-        eligibleEvidences = received.eligibleEvidences
-    )
-        .asSuccess()
+        dataType = received.dataType ?: this.dataType,
+        eligibleEvidences = updatedEligibleEvidences
+    ).asSuccess()
+}
+
+fun Requirement.EligibleEvidence.updateEligibleEvidence(received: Requirement.EligibleEvidence): UpdateRecordResult<Requirement.EligibleEvidence> {
+    val relatedDocument = received.relatedDocument
+        ?.let {
+            this.relatedDocument
+                ?.updateDocumentReference(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createDocumentReference(it)
+        }
+        ?: this.relatedDocument
+
+    return Requirement.EligibleEvidence(
+        id = received.id,
+        title = received.title,
+        description = received.description ?: this.description,
+        type = received.type,
+        relatedDocument = relatedDocument
+    ).asSuccess()
+}
+
+fun Requirement.EligibleEvidence.RelatedDocument.updateDocumentReference(received: Requirement.EligibleEvidence.RelatedDocument): UpdateRecordResult<Requirement.EligibleEvidence.RelatedDocument> =
+    this.copy(id = received.id).asSuccess()
 
 fun RecordConversion.updateConversion(received: RequestConversion): UpdateRecordResult<RecordConversion> {
     val coefficients = updateStrategy(
