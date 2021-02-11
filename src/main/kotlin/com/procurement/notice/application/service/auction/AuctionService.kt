@@ -3,6 +3,7 @@ package com.procurement.notice.application.service.auction
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
+import com.procurement.notice.lib.toSetBy
 import com.procurement.notice.model.ocds.AccountIdentifier
 import com.procurement.notice.model.ocds.Address
 import com.procurement.notice.model.ocds.AddressDetails
@@ -65,7 +66,14 @@ class AuctionServiceImpl(
         val updatedBids = updateBids(data)
         val updatedParties = updateParties(parties = release.parties, data = data)
         val updatedElectronicAuctions = release.tender.electronicAuctions?.updateElectronicAuctions(data = data)
-        val criteria = data.criteria.orEmpty().map { it.convert() }
+        val receivedCriteria = data.criteria.orEmpty().map { it.convert() }
+
+        val receivedCriteriaIds = receivedCriteria.toSetBy { it.id }
+        val storedCriteriaIds = release.tender.criteria.toSetBy { it.id }
+        val newCriteriaIds = newElements(receivedCriteriaIds, storedCriteriaIds)
+
+        val newCriteria = receivedCriteria.filter { it.id in newCriteriaIds }
+        val updatedCriteria = release.tender.criteria + newCriteria
 
         val updatedRecord = release.copy(
             id = generationService.generateReleaseId(ocid = context.ocid), //FR-5.0.1
@@ -90,11 +98,7 @@ class AuctionServiceImpl(
                     durationInDays = null
                 ),
                 electronicAuctions = updatedElectronicAuctions,
-                criteria = if (criteria.isNotEmpty()) {
-                    release.tender.criteria.plus(criteria)
-                } else
-                    release.tender.criteria
-
+                criteria = updatedCriteria
             ),
             awards = updatedAwards.toList(),             //FR-5.7.2.6.4
             bids = updatedBids,                          //FR-5.7.2.6.3

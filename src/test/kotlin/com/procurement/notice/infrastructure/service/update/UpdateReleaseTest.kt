@@ -840,14 +840,14 @@ class UpdatedRecordTest {
     inner class RequestTest {
 
         val prevRequest = RecordRequest(
-            id = "dbRequest.id",
+            id = "id",
             relatedPerson = null,
             description = "dbRequest.description",
             title = "dbRequest.title"
         )
 
         val sampleNewRequest = RequestRequest(
-            id = "rqRequest.id",
+            id = "id",
             relatedPerson = null,
             description = "rqRequest.description",
             title = "rqRequest.title"
@@ -888,7 +888,7 @@ class UpdatedRecordTest {
     inner class ConfirmationRequestTest {
 
         val prevConfirmationRequest = RecordConfirmationRequest(
-            id = "dbConfirmationRequest.id",
+            id = "ConfirmationRequest.id",
             title = "dbConfirmationRequest?.title",
             description = "dbConfirmationRequest?.description",
             relatesTo = "dbConfirmationRequest?.relatesTo",
@@ -899,7 +899,7 @@ class UpdatedRecordTest {
         )
 
         val sampleNewConfirmationRequest = RequestConfirmationRequest(
-            id = "rqConfirmationRequest.id",
+            id = "ConfirmationRequest.id",
             title = "dbConfirmationRequest?.title",
             description = "dbConfirmationRequest?.description",
             relatesTo = "dbConfirmationRequest?.relatesTo",
@@ -952,13 +952,13 @@ class UpdatedRecordTest {
     inner class ConfirmationResponseTest {
 
         val prevConfirmationResponse = RecordConfirmationResponse(
-            id = "dbConfirmationResponse.id",
+            id = "ConfirmationResponse.id",
             value = null,
             request = "dbConfirmationResponse?.request"
         )
 
         val sampleNewConfirmationResponse = RequestConfirmationResponse(
-            id = "rqConfirmationResponse.id",
+            id = "ConfirmationResponse.id",
             value = null,
             request = "rqConfirmationResponse.request"
         )
@@ -1042,7 +1042,7 @@ class UpdatedRecordTest {
     inner class MilestoneTest {
 
         val prevMilestone = RecordMilestone(
-            id = "dbMilestone.id",
+            id = "Milestone.id",
             title = "dbMilestone?.title",
             description = "dbMilestone?.description",
             type = "dbMilestone?.type",
@@ -1056,7 +1056,7 @@ class UpdatedRecordTest {
         )
 
         val sampleNewMilestone = RequestMilestone(
-            id = "rqMilestone.id",
+            id = "Milestone.id",
             title = "rqMilestone?.title",
             description = "rqMilestone?.description",
             type = "rqMilestone?.type",
