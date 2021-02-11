@@ -382,7 +382,7 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                 )
             },
         criteria = this.criteria
-            ?.let { criteria ->
+            ?.map { criteria ->
                 TenderPeriodEndData.Criteria(
                     id = criteria.id,
                     title = criteria.title,
@@ -410,7 +410,8 @@ fun TenderPeriodEndRequest.convert(): TenderPeriodEndData =
                             )
                         }
                 )
-            },
+            }
+            .orEmpty(),
         awards = this.awards
             .mapIfNotEmpty { award ->
                 TenderPeriodEndData.Award(

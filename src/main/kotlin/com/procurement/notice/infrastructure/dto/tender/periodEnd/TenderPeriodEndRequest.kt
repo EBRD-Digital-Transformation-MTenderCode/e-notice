@@ -35,8 +35,8 @@ data class TenderPeriodEndRequest(
     @field:JsonProperty("tenderStatusDetails") @param:JsonProperty("tenderStatusDetails") val tenderStatusDetails: TenderStatusDetails,
     @field:JsonProperty("bids") @param:JsonProperty("bids") val bids: List<Bid>,
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("criteria") @param:JsonProperty("criteria") val criteria: Criteria?,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("criteria") @param:JsonProperty("criteria") val criteria: List<Criteria>?,
 
     @field:JsonProperty("awards") @param:JsonProperty("awards") val awards: List<Award>,
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,

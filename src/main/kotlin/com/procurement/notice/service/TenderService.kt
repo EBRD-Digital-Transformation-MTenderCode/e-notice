@@ -18,6 +18,7 @@ import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.lib.mapIfNotEmpty
+import com.procurement.notice.lib.toSetBy
 import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.ocds.AccountIdentifier
@@ -100,8 +101,8 @@ class TenderService(
         val updatedAwards = updateAwards(data = data) + release.awards
         val updatedLots = updateLots(data = data, lots = release.tender.lots)
 
-        val newCriteria = data.criteria
-            ?.let { criteria ->
+        val receivedCriteria = data.criteria
+            .map { criteria ->
                 Criteria(
                     id = criteria.id,
                     title = criteria.title,
@@ -128,10 +129,12 @@ class TenderService(
                 )
             }
 
-        val updatedCriteria: List<Criteria> = if (newCriteria != null)
-            release.tender.criteria + newCriteria
-        else
-            release.tender.criteria
+        val receivedCriteriaIds = receivedCriteria.toSetBy { it.id }
+        val storedCriteriaIds = release.tender.criteria.toSetBy { it.id }
+        val newCriteriaIds = getNewElements(receivedCriteriaIds, storedCriteriaIds)
+
+        val newCriteria = receivedCriteria.filter { it.id in newCriteriaIds }
+        val updatedCriteria: List<Criteria> = release.tender.criteria + newCriteria
 
         //FR-5.7.2.1.3
         val updatedBids = updateBids(data = data, bids = release.bids)

@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 data class TenderPeriodEndData(
     val tenderStatusDetails: TenderStatusDetails,
     val bids: List<Bid>,
-    val criteria: Criteria?,
+    val criteria: List<Criteria>,
     val awards: List<Award>,
     val awardPeriod: AwardPeriod,
     val documents: List<Document>,

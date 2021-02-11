@@ -503,6 +503,9 @@ fun createRequirement(received: Requirement): Requirement =
         eligibleEvidences = received.eligibleEvidences
     )
 
+fun createEligibleEvidences(received: Requirement.EligibleEvidence): Requirement.EligibleEvidence = received
+fun createDocumentReference(received: Requirement.EligibleEvidence.RelatedDocument): Requirement.EligibleEvidence.RelatedDocument = received
+
 fun createConversion(received: RequestConversion): RecordConversion =
     RecordConversion(
         id = received.id,
