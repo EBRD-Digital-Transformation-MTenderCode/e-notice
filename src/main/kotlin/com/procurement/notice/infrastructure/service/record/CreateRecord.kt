@@ -98,7 +98,9 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordOption
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordPlaceOfPerformance
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecordEnquiry
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecurrence
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewalV2
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
@@ -196,7 +198,9 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestOption
 import com.procurement.notice.infrastructure.dto.request.tender.RequestPlaceOfPerformance
 import com.procurement.notice.infrastructure.dto.request.tender.RequestProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRecordEnquiry
+import com.procurement.notice.infrastructure.dto.request.tender.RequestRecurrence
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewal
+import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewalV2
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTarget
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
@@ -348,7 +352,31 @@ fun createLot(received: RequestLot): RecordLot =
         options = createOptions(received.options),
         placeOfPerformance = received.placeOfPerformance?.let { createPlaceOfPerformance(it) },
         renewals = createRenewals(received.renewals),
-        variants = createVariants(received.variants)
+        variants = createVariants(received.variants),
+        hasRenewal = received.hasRenewal,
+        renewal = received.renewal?.let { createRenewal(it) },
+        hasRecurrence = received.hasRecurrence,
+        recurrence = received.recurrence?.let { createRecurrence(it) },
+        hasOptions = received.hasOptions
+    )
+
+fun createRecurrence(received: RequestRecurrence): RecordRecurrence =
+    RecordRecurrence(
+        description = received.description,
+        dates = received.dates.map { createDate(it) }
+    )
+
+fun createDate(received: RequestRecurrence.Date): RecordRecurrence.Date =
+    RecordRecurrence.Date(
+        startDate = received.startDate
+    )
+
+fun createRenewal(received: RequestRenewalV2): RecordRenewalV2 =
+    RecordRenewalV2(
+        description = received.description,
+        period = received.period?.let { createPeriod(it) },
+        maximumRenewals = received.maximumRenewals,
+        minimumRenewals = received.minimumRenewals
     )
 
 fun createVariants(received: List<RequestVariant>): List<RecordVariant> =
@@ -417,7 +445,9 @@ fun createOptions(received: List<RequestOption>): List<RecordOption> =
     received.mapIfNotEmpty { requestOption ->
         RecordOption(
             hasOptions = requestOption.hasOptions,
-            optionDetails = requestOption.optionDetails
+            optionDetails = requestOption.optionDetails,
+            description = requestOption.description,
+            period = requestOption.period?.let { createPeriod(it) }
         )
     }.orEmpty()
 

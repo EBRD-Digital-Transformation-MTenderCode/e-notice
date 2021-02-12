@@ -362,7 +362,9 @@ class UpdateReleaseService(
                             options = lot.options.map { option ->
                                 Option(
                                     hasOptions = option.hasOptions,
-                                    optionDetails = null
+                                    optionDetails = null,
+                                    description = null,
+                                    period = null
                                 )
                             },
                             variants = lot.variants.map { variant ->
@@ -432,7 +434,12 @@ class UpdateReleaseService(
                                     description = placeOfPerformance.description,
                                     nutScode = null
                                 )
-                            }
+                            },
+                            hasOptions = null,
+                            hasRecurrence = null,
+                            hasRenewal = null,
+                            recurrence = null,
+                            renewal = null
                         )
                     }.toList(),
                     items = tender.items.map { item ->

@@ -27,15 +27,15 @@ data class Lot @JsonCreator constructor(
     val value: Value?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    val options: List<Option>?,
-
-    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     val recurrentProcurement: List<RecurrentProcurement>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     val renewals: List<Renewal>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     val variants: List<Variant>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,5 +45,23 @@ data class Lot @JsonCreator constructor(
     val placeOfPerformance: PlaceOfPerformance?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: Classification?
+    @field:JsonProperty("classification") @param:JsonProperty("classification") val classification: Classification?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasOptions") @param:JsonProperty("hasOptions") val hasOptions: Boolean?,
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("options") @param:JsonProperty("options") val options: List<Option>?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasRecurrence") @param:JsonProperty("hasRecurrence") val hasRecurrence: Boolean?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("recurrence") @param:JsonProperty("recurrence") val recurrence: Recurrence?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasRenewal") @param:JsonProperty("hasRenewal") val hasRenewal: Boolean?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("renewal") @param:JsonProperty("renewal") val renewal: RenewalV2?
 )

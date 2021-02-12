@@ -101,7 +101,9 @@ import com.procurement.notice.infrastructure.dto.entity.tender.RecordOption
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordPlaceOfPerformance
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecordEnquiry
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordRecurrence
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewal
+import com.procurement.notice.infrastructure.dto.entity.tender.RecordRenewalV2
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTarget
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordTender
 import com.procurement.notice.infrastructure.dto.entity.tender.RecordUnit
@@ -199,7 +201,9 @@ import com.procurement.notice.infrastructure.dto.request.tender.RequestOption
 import com.procurement.notice.infrastructure.dto.request.tender.RequestPlaceOfPerformance
 import com.procurement.notice.infrastructure.dto.request.tender.RequestProcedureOutsourcing
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRecordEnquiry
+import com.procurement.notice.infrastructure.dto.request.tender.RequestRecurrence
 import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewal
+import com.procurement.notice.infrastructure.dto.request.tender.RequestRenewalV2
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTarget
 import com.procurement.notice.infrastructure.dto.request.tender.RequestTender
 import com.procurement.notice.infrastructure.dto.request.tender.RequestUnit
@@ -229,7 +233,6 @@ fun RecordLot.updateLot(received: RequestLot): UpdateRecordResult<RecordLot> {
         ?.let {
             this.contractPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.contractPeriod
@@ -239,6 +242,18 @@ fun RecordLot.updateLot(received: RequestLot): UpdateRecordResult<RecordLot> {
             this.placeOfPerformance?.updatePlaceOfPerformance(it) ?: createPlaceOfPerformance(it)
         }
         ?: this.placeOfPerformance
+
+    val recurrence = received.recurrence
+        ?.let {
+            this.recurrence?.update(it) ?: createRecurrence(it)
+        }
+        ?: this.recurrence
+
+    val renewal = received.renewal
+        ?.let {
+            this.renewal?.update(it) ?: createRenewal(it)
+        }
+        ?: this.renewal
 
     return this
         .copy(
@@ -253,10 +268,38 @@ fun RecordLot.updateLot(received: RequestLot): UpdateRecordResult<RecordLot> {
             options = this.options.updateOptions(received.options),
             placeOfPerformance = placeOfPerformance,
             renewals = this.renewals.updateRenewals(received.renewals),
-            variants = this.variants.updateVariants(received.variants)
+            variants = this.variants.updateVariants(received.variants),
+            hasOptions = received.hasOptions ?: this.hasOptions,
+            hasRenewal = received.hasRenewal ?: this.hasRenewal,
+            hasRecurrence = received.hasRecurrence ?: this.hasRecurrence,
+            recurrence = recurrence,
+            renewal = renewal
         )
         .asSuccess()
 }
+
+private fun RecordRenewalV2.update(received: RequestRenewalV2): RecordRenewalV2 {
+    val period = received.period
+        ?.let {
+            this.period
+                ?.updatePeriod(it)
+                ?: createPeriod(it)
+        }
+        ?: this.period
+
+    return RecordRenewalV2(
+        description = received.description ?: this.description,
+        period = period,
+        minimumRenewals = received.minimumRenewals ?: this.minimumRenewals,
+        maximumRenewals = received.maximumRenewals ?: this.maximumRenewals
+    )
+}
+
+private fun RecordRecurrence.update(received: RequestRecurrence): RecordRecurrence =
+    RecordRecurrence(
+        description = received.description ?: this.description,
+        dates = received.dates.map { createDate(it) }
+    )
 
 fun List<RecordVariant>.updateVariants(received: List<RequestVariant>): List<RecordVariant> =
     received.mapIfNotEmpty { requestVariant ->
@@ -334,7 +377,9 @@ fun List<RecordOption>.updateOptions(received: List<RequestOption>): List<Record
     received.mapIfNotEmpty { requestOption ->
         RecordOption(
             hasOptions = requestOption.hasOptions,
-            optionDetails = requestOption.optionDetails
+            optionDetails = requestOption.optionDetails,
+            description = requestOption.description,
+            period = requestOption.period?.let { createPeriod(it) }
         )
     } ?: this
 
@@ -610,14 +655,13 @@ fun List<RecordLotGroup>.updateLotGroups(received: List<RequestLotGroup>): Updat
     return result.asSuccess()
 }
 
-fun RecordPeriod.updatePeriod(received: RequestPeriod): UpdateRecordResult<RecordPeriod> =
+fun RecordPeriod.updatePeriod(received: RequestPeriod): RecordPeriod =
     this.copy(
         startDate = received.startDate ?: this.startDate,
         endDate = received.endDate ?: this.endDate,
         durationInDays = received.durationInDays ?: this.durationInDays,
         maxExtentDate = received.maxExtentDate ?: this.maxExtentDate
     )
-        .asSuccess()
 
 fun RecordDocumentReference.update(received: RequestDocumentReference): UpdateRecordResult<RecordDocumentReference> =
     this.copy(id = received.id ?: this.id).asSuccess()
@@ -761,7 +805,6 @@ val requestBusinessFunctionKeyExtractor: (RequestBusinessFunction) -> String = {
 
 fun RecordBusinessFunction.updateBusinessFunction(received: RequestBusinessFunction): UpdateRecordResult<RecordBusinessFunction> {
     val period = this.period.updatePeriod(received.period)
-        .doReturn { e -> return failure(e) }
     val documents = updateStrategy(
         receivedElements = received.documents,
         keyExtractorForReceivedElement = requestDocumentBFKeyExtractor,
@@ -936,7 +979,6 @@ fun RecordPermitDetails.updatePermitDetails(received: RequestPermitDetails): Upd
         ?.let {
             this.validityPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.validityPeriod
@@ -1161,7 +1203,6 @@ fun RecordElectronicAuctionProgress.updateElectronicAuctionProgress(
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -1199,7 +1240,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.auctionPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.auctionPeriod
@@ -1228,7 +1268,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.awardPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.awardPeriod
@@ -1287,7 +1326,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.enquiryPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.enquiryPeriod
@@ -1319,7 +1357,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.standstillPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.standstillPeriod
@@ -1328,7 +1365,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.tenderPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.tenderPeriod
@@ -1502,7 +1538,6 @@ fun RecordTender.updateReleaseTender(received: RequestTender): UpdateRecordResul
         ?.let {
             this.reviewPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.reviewPeriod
@@ -1929,7 +1964,6 @@ fun RecordAward.updateAward(received: RequestAward): UpdateRecordResult<RecordAw
         ?.let {
             this.contractPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.contractPeriod
@@ -2133,7 +2167,6 @@ fun RecordRequirementResponse.updateRequirementResponse(received: RequestRequire
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -2443,7 +2476,6 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -2878,7 +2910,6 @@ fun RecordObservation.updateObservation(received: RequestObservation): UpdateRec
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -3225,7 +3256,6 @@ fun RecordBudgetBreakdown.updateBudgetBreakdown(received: RequestBudgetBreakdown
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -3273,7 +3303,6 @@ fun RecordBudgetAllocation.updateBudgetAllocation(received: RequestBudgetAllocat
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -3307,7 +3336,6 @@ fun RecordPreQualification.updatePreQualification(received: RequestPreQualificat
         ?.let {
             this.period
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.period
@@ -3316,7 +3344,6 @@ fun RecordPreQualification.updatePreQualification(received: RequestPreQualificat
         ?.let {
             this.qualificationPeriod
                 ?.updatePeriod(it)
-                ?.doReturn { e -> return failure(e) }
                 ?: createPeriod(it)
         }
         ?: this.qualificationPeriod

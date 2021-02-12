@@ -711,7 +711,6 @@ class UpdatedRecordTest {
         @Test
         fun `update Period - full update`() {
             val updatedPeriod = prevPeriod.updatePeriod(sampleNewPeriod)
-                .doReturn { _ -> throw RuntimeException() }
             assertEquals(updatedPeriod.toJson(), sampleNewPeriod.toJson())
         }
 
@@ -729,7 +728,6 @@ class UpdatedRecordTest {
                 maxExtentDate = prevPeriod.maxExtentDate
             )
             val updatedPeriod = prevPeriod.updatePeriod(newPeriod)
-                .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedPeriod.toJson())
         }
