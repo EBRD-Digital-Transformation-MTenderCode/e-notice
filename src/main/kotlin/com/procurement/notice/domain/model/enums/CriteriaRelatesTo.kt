@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonValue
 import com.procurement.notice.exception.EnumException
 
 enum class CriteriaRelatesTo(@JsonValue val value: String) {
-    TENDERER("tenderer"),
+    AWARD("award"),
     ITEM("item"),
     LOT("lot"),
-    AWARD("award");
+    TENDER("tender"),
+    TENDERER("tenderer");
 
     override fun toString(): String = value
 

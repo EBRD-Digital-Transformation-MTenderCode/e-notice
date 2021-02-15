@@ -31,7 +31,8 @@ data class Contract @JsonCreator constructor(
 
     var status: String,
 
-    var statusDetails: String,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var statusDetails: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     var documents: List<Document>?,
