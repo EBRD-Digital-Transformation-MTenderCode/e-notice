@@ -1023,7 +1023,7 @@ class ContractingService(
         for (contract in recordContracts) {
             dtoCans.firstOrNull { it.id == contract.id }?.apply {
                 contract.status = this.status!!
-                contract.statusDetails = this.statusDetails!!
+                contract.statusDetails = this.statusDetails
             }
         }
     }

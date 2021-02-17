@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@Deprecated(message = "Use RenewalV2 instead")
 data class Renewal @JsonCreator constructor(
 
     @get:JsonProperty("hasRenewals")
