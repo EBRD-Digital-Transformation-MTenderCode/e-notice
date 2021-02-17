@@ -33,20 +33,38 @@ data class RecordLot(
     @field:JsonProperty("value") @param:JsonProperty("value") val value: Value?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("options") @param:JsonProperty("options") val options: List<RecordOption> = emptyList(),
-
-    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     @field:JsonProperty("recurrentProcurement") @param:JsonProperty("recurrentProcurement") val recurrentProcurement: List<RecordRecurrentProcurement> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     @field:JsonProperty("renewals") @param:JsonProperty("renewals") val renewals: List<RecordRenewal> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Deprecated(message = "Will not be used anymore")
     @field:JsonProperty("variants") @param:JsonProperty("variants") val variants: List<RecordVariant> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("contractPeriod") @param:JsonProperty("contractPeriod") val contractPeriod: RecordPeriod?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("placeOfPerformance") @param:JsonProperty("placeOfPerformance") val placeOfPerformance: RecordPlaceOfPerformance?
+    @field:JsonProperty("placeOfPerformance") @param:JsonProperty("placeOfPerformance") val placeOfPerformance: RecordPlaceOfPerformance?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasOptions") @param:JsonProperty("hasOptions") val hasOptions: Boolean?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("options") @param:JsonProperty("options") val options: List<RecordOption> = emptyList(),
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasRecurrence") @param:JsonProperty("hasRecurrence") val hasRecurrence: Boolean?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("recurrence") @param:JsonProperty("recurrence") val recurrence: RecordRecurrence?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("hasRenewal") @param:JsonProperty("hasRenewal") val hasRenewal: Boolean?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("renewal") @param:JsonProperty("renewal") val renewal: RecordRenewalV2?
 )
