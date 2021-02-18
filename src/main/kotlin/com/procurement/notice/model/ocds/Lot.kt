@@ -28,15 +28,15 @@ data class Lot @JsonCreator constructor(
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Deprecated(message = "Will not be used anymore")
-    val recurrentProcurement: List<RecurrentProcurement>?,
+    val recurrentProcurement: List<RecurrentProcurement>? = null,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Deprecated(message = "Will not be used anymore")
-    val renewals: List<Renewal>?,
+    val renewals: List<Renewal>? = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Deprecated(message = "Will not be used anymore")
-    val variants: List<Variant>?,
+    val variants: List<Variant>? = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     val contractPeriod: Period?,
