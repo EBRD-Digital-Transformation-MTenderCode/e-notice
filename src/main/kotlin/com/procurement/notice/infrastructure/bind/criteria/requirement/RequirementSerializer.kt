@@ -42,6 +42,7 @@ class RequirementSerializer : JsonSerializer<List<Requirement>>() {
 
                 requirement.eligibleEvidences
                     ?.map { it.serialize() }
+                    ?.takeIf { it.isNotEmpty() }
                     ?.let { requirementNode.putArray("eligibleEvidences").addAll(it) }
 
                 when (requirement.value) {
