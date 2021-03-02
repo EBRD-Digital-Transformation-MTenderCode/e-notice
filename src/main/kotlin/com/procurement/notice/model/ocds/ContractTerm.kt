@@ -50,7 +50,13 @@ data class Observation @JsonCreator constructor(
     val measure: Any?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    val unit: ObservationUnit?
+    val unit: ObservationUnit?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("period") @param:JsonProperty("period") val period: Period?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("relatedRequirementId") @param:JsonProperty("relatedRequirementId") val relatedRequirementId: String?
 )
 
 data class ObservationUnit @JsonCreator constructor(

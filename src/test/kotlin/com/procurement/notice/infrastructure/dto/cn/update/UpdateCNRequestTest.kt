@@ -24,9 +24,4 @@ class UpdateCNRequestTest : AbstractDTOTestBase<UpdateCNRequest>(UpdateCNRequest
     fun required3() {
         testBindingAndMapping("json/dto/cn/update/request_cn_update_required_3.json")
     }
-//
-//    @Test
-//    fun required2() {
-//        testBindingAndMapping("json/dto/award/create/request_crate_award_required_2.json")
-//    }
 }
