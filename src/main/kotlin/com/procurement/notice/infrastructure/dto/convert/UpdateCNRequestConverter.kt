@@ -309,26 +309,65 @@ fun UpdateCNRequest.convert(): UpdateCNData =
                         status = lot.status,
                         statusDetails = lot.statusDetails,
                         value = lot.value,
-                        options = lot.options.map { option ->
-                            UpdateCNData.Tender.Lot.Option(
-                                hasOptions = option.hasOptions
+                        hasOptions = lot.hasOptions,
+                        options = lot.options
+                            .errorIfEmpty {
+                            ErrorException(
+                                error = ErrorType.IS_EMPTY,
+                                message = "The business functions contain empty list of the documents."
                             )
-                        },
-                        variants = lot.variants.map { variant ->
-                            UpdateCNData.Tender.Lot.Variant(
-                                hasVariants = variant.hasVariants
-                            )
-                        },
-                        renewals = lot.renewals.map { renewal ->
+                        }
+                            ?.map  { option ->
+                                UpdateCNData.Tender.Lot.Option(
+                                    description = option.description,
+                                    period = option.period
+                                        ?.let { period ->
+                                            UpdateCNData.Tender.Lot.Option.Period(
+                                                startDate = period.startDate,
+                                                endDate = period.endDate,
+                                                maxExtentDate = period.maxExtentDate,
+                                                durationInDays = period.durationInDays
+                                            )
+                                        }
+                                )
+                            }
+                            .orEmpty(),
+                        hasRenewal = lot.hasRenewal,
+                        renewal = lot.renewal?.let { renewal ->
                             UpdateCNData.Tender.Lot.Renewal(
-                                hasRenewals = renewal.hasRenewals
+                                description = renewal.description,
+                                period = renewal.period
+                                    ?.let { period ->
+                                        UpdateCNData.Tender.Lot.Renewal.Period(
+                                            startDate = period.startDate,
+                                            endDate = period.endDate,
+                                            maxExtentDate = period.maxExtentDate,
+                                            durationInDays = period.durationInDays
+                                        )
+                                    },
+                                minimumRenewals = renewal.minimumRenewals,
+                                maximumRenewals = renewal.maximumRenewals
                             )
                         },
-                        recurrentProcurements = lot.recurrentProcurements.map { recurrentProcurement ->
-                            UpdateCNData.Tender.Lot.RecurrentProcurement(
-                                isRecurrent = recurrentProcurement.isRecurrent
-                            )
-                        },
+                        hasRecurrence = lot.hasRecurrence,
+                        recurrence = lot.recurrence
+                            ?.let { recurrence ->
+                                UpdateCNData.Tender.Lot.Recurrence(
+                                    description = recurrence.description,
+                                    dates = recurrence.dates
+                                        .errorIfEmpty {
+                                            ErrorException(
+                                                error = ErrorType.IS_EMPTY,
+                                                message = "The business functions contain empty list of the documents."
+                                            )
+                                        }
+                                        ?.map { date ->
+                                            UpdateCNData.Tender.Lot.Recurrence.Date(
+                                                startDate = date.startDate
+                                            )
+                                    }.orEmpty()
+                                )
+                            },
                         contractPeriod = lot.contractPeriod.let { contractPeriod ->
                             UpdateCNData.Tender.Lot.ContractPeriod(
                                 startDate = contractPeriod.startDate,

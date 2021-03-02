@@ -35,12 +35,11 @@ import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.Person
 import com.procurement.notice.model.ocds.PlaceOfPerformance
 import com.procurement.notice.model.ocds.ProcedureOutsourcing
-import com.procurement.notice.model.ocds.RecurrentProcurement
+import com.procurement.notice.model.ocds.Recurrence
 import com.procurement.notice.model.ocds.RegionDetails
 import com.procurement.notice.model.ocds.ReleaseAmendment
-import com.procurement.notice.model.ocds.Renewal
+import com.procurement.notice.model.ocds.RenewalV2
 import com.procurement.notice.model.ocds.Tag
-import com.procurement.notice.model.ocds.Variant
 import com.procurement.notice.model.ocds.toValue
 import com.procurement.notice.model.tender.ms.Ms
 import com.procurement.notice.model.tender.ms.MsBudget
@@ -359,34 +358,51 @@ class UpdateReleaseService(
                             status = lot.status,
                             statusDetails = lot.statusDetails,
                             value = lot.value.toValue(),
+                            hasOptions = lot.hasOptions,
                             options = lot.options.map { option ->
                                 Option(
-                                    hasOptions = option.hasOptions,
+                                    hasOptions = null,
                                     optionDetails = null,
-                                    description = null,
-                                    period = null
+                                    description = option.description,
+                                    period = option.period
+                                        ?.let { period ->
+                                            Period(
+                                                startDate = period.startDate,
+                                                endDate = period.endDate,
+                                                maxExtentDate = period.maxExtentDate,
+                                                durationInDays = period.durationInDays
+                                            )
+                                        }
                                 )
                             },
-                            variants = lot.variants.map { variant ->
-                                Variant(
-                                    hasVariants = variant.hasVariants,
-                                    variantDetails = null
+                            hasRenewal = lot.hasRenewal,
+                            renewal = lot.renewal?.let { renewal ->
+                                RenewalV2(
+                                    description = renewal.description,
+                                    minimumRenewals = renewal.minimumRenewals,
+                                    maximumRenewals = renewal.maximumRenewals,
+                                    period = renewal.period
+                                        ?.let { period ->
+                                            Period(
+                                                startDate = period.startDate,
+                                                endDate = period.endDate,
+                                                durationInDays = period.durationInDays,
+                                                maxExtentDate = period.maxExtentDate
+                                            )
+                                        }
                                 )
                             },
-                            renewals = lot.renewals.map { renewal ->
-                                Renewal(
-                                    hasRenewals = renewal.hasRenewals,
-                                    renewalConditions = null,
-                                    maxNumber = null
-                                )
-                            },
-                            recurrentProcurement = lot.recurrentProcurements.map { recurrentProcurement ->
-                                RecurrentProcurement(
-                                    isRecurrent = recurrentProcurement.isRecurrent,
-                                    description = null,
-                                    dates = null
-                                )
-                            },
+                            hasRecurrence = lot.hasRecurrence,
+                            recurrence = lot.recurrence
+                                ?.let { recurrence ->
+                                    Recurrence(
+                                        description = recurrence.description,
+                                        dates = recurrence.dates
+                                            .map { date ->
+                                                Recurrence.Date(date.startDate)
+                                            }
+                                    )
+                                },
                             contractPeriod = lot.contractPeriod.let { contractPeriod ->
                                 Period(
                                     startDate = contractPeriod.startDate,
@@ -434,12 +450,7 @@ class UpdateReleaseService(
                                     description = placeOfPerformance.description,
                                     nutScode = null
                                 )
-                            },
-                            hasOptions = null,
-                            hasRecurrence = null,
-                            hasRenewal = null,
-                            recurrence = null,
-                            renewal = null
+                            }
                         )
                     }.toList(),
                     items = tender.items.map { item ->
