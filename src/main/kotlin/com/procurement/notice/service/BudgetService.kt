@@ -34,14 +34,15 @@ class BudgetService(private val budgetDao: BudgetDao,
         private const val FS_SEPARATOR = "-FS-"
     }
 
-    fun createEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
-        val ei = toObject(EI::class.java, data)
-        ei.apply {
-            id = getReleaseId(cpid)
-            date = releaseDate
-            tag = listOf(Tag.COMPILED)
+    fun createEi(cpid: String, stage: String, language: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
+        val receivedEi = toObject(EI::class.java, data)
+        val ei = receivedEi.copy(
+            id = getReleaseId(cpid),
+            date = releaseDate,
+            tag = listOf(Tag.COMPILED),
+            language = language,
             initiationType = InitiationType.TENDER
-        }
+        )
         organizationService.processEiParties(ei)
         budgetDao.saveBudget(getEiEntity(ei, stage, releaseDate.toDate()))
         return ResponseDto(data = DataResponseDto(cpid = cpid))
@@ -49,16 +50,16 @@ class BudgetService(private val budgetDao: BudgetDao,
 
     fun updateEi(cpid: String, stage: String, releaseDate: LocalDateTime, data: JsonNode): ResponseDto {
         val entity = budgetDao.getEiByCpId(cpid) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        val updateEi = toObject(EI::class.java, data)
-        val ei = toObject(EI::class.java, entity.jsonData)
-        ei.apply {
+        val receivedEi = toObject(EI::class.java, data)
+        val storedEi = toObject(EI::class.java, entity.jsonData)
+        storedEi.apply {
             id = getReleaseId(cpid)
             date = releaseDate
-            title = updateEi.title
-            planning = updateEi.planning
-            tender = updateEi.tender
+            title = receivedEi.title
+            planning = receivedEi.planning
+            tender = receivedEi.tender
         }
-        budgetDao.saveBudget(getEiEntity(ei, stage, entity.publishDate))
+        budgetDao.saveBudget(getEiEntity(storedEi, stage, entity.publishDate))
         val amendmentIds = null
         return ResponseDto(data = DataResponseDto(cpid = cpid, amendmentsIds = amendmentIds))
     }
