@@ -24,6 +24,9 @@ data class EI @JsonCreator constructor(
     var tag: List<Tag>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    var language: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var initiationType: InitiationType?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

@@ -57,6 +57,7 @@ import com.procurement.notice.model.bpe.DataResponseDto
 import com.procurement.notice.model.bpe.ResponseDto
 import com.procurement.notice.model.bpe.cpid
 import com.procurement.notice.model.bpe.isAuction
+import com.procurement.notice.model.bpe.language
 import com.procurement.notice.model.bpe.ocid
 import com.procurement.notice.model.bpe.ocidCn
 import com.procurement.notice.model.bpe.pmd
@@ -176,6 +177,7 @@ class CommandService(
             CREATE_EI -> budgetService.createEi(
                 cpid = cpId,
                 stage = stage,
+                language = cm.language,
                 releaseDate = releaseDate,
                 data = data
             )
