@@ -23,6 +23,9 @@ data class Ms @JsonCreator constructor(
     var tag: List<Tag>?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    val language: String?,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     var initiationType: InitiationType?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)

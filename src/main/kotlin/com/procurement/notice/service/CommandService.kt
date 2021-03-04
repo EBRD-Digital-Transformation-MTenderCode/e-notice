@@ -209,6 +209,7 @@ class CommandService(
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
+                language = cm.language,
                 operation = CREATE_CN
             )
 
@@ -217,6 +218,7 @@ class CommandService(
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
+                language = cm.language,
                 operation = CREATE_PN
             )
 
@@ -233,6 +235,7 @@ class CommandService(
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
+                language = cm.language,
                 operation = CREATE_PIN
             )
 
