@@ -96,6 +96,7 @@ class CreateReleaseService(
         stage: String,
         releaseDate: LocalDateTime,
         data: JsonNode,
+        language: String,
         operation: Operation
     ): ResponseDto {
         val rawMs = releaseService.getMs(data)
@@ -104,6 +105,7 @@ class CreateReleaseService(
             date = releaseDate,
             id = generationService.generateReleaseId(cpid),
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
+            language = language, //  BR-4.263
             initiationType = InitiationType.TENDER,  // BR-4.75
             parties = rawMs.tender.procuringEntity
                 ?.let { mutableListOf(createParty(it)) }
@@ -120,6 +122,7 @@ class CreateReleaseService(
             ocid = ocId,
             id = generationService.generateReleaseId(ocId),
             tag = listOf(Tag.PLANNING),    // BR-4.48
+            language = language, // BR-4.267
             initiationType = InitiationType.TENDER,   // BR-4.74
             hasPreviousNotice = false,   // BR-4.50
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = false)  // BR-4.51

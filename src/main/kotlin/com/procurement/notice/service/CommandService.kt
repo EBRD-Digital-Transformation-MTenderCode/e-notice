@@ -227,6 +227,7 @@ class CommandService(
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
+                language = cm.language,
                 operation = CREATE_AP
             )
 
