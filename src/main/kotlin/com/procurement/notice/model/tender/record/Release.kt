@@ -27,6 +27,9 @@ data class Release (
     @field:JsonProperty("tag") @param:JsonProperty("tag") var tag: List<Tag> = emptyList(),
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("language") @param:JsonProperty("language") val language: String? = null,
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("initiationType") @param:JsonProperty("initiationType") var initiationType: InitiationType?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
