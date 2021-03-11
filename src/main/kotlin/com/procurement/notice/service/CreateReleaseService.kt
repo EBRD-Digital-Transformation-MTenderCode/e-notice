@@ -46,33 +46,41 @@ class CreateReleaseService(
         stage: String,
         releaseDate: LocalDateTime,
         data: JsonNode,
+        language: String,
         operation: Operation
     ): ResponseDto {
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
-        val ms = releaseService.getMs(data)
+        val receivedMs = releaseService.getMs(data)
         val params = releaseService.getParamsForCreateCnPnPin(operation, Stage.valueOf(stage.toUpperCase()))
-        ms.apply {
-            ocid = cpid
-            date = releaseDate
-            id = generationService.generateReleaseId(cpid)
-            tag = listOf(Tag.COMPILED)
-            initiationType = InitiationType.TENDER
-            tender.statusDetails = params.statusDetails
-            organizationService.processMsParties(this, checkFs)
-        }
-        val release = releaseService.getRelease(data)
+        val ms = receivedMs.copy(
+            ocid = cpid,
+            date = releaseDate,
+            id = generationService.generateReleaseId(cpid),
+            tag = listOf(Tag.COMPILED),
+            language = language,
+            initiationType = InitiationType.TENDER,
+            tender = receivedMs.tender.copy(
+                statusDetails = params.statusDetails
+            )
+        )
+        organizationService.processMsParties(ms, checkFs)
+
+        val receivedRelease = releaseService.getRelease(data)
         val ocId = generationService.generateOcid(cpid = cpid, stage = stage)
-        release.apply {
-            date = releaseDate
-            ocid = ocId
-            id = generationService.generateReleaseId(ocId)
-            tag = params.tag
-            initiationType = InitiationType.TENDER
-            tender.title = TenderTitle.valueOf(stage.toUpperCase()).text
-            tender.description = TenderDescription.valueOf(stage.toUpperCase()).text
-            hasPreviousNotice = false
-            purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition)
-        }
+        val release = receivedRelease.copy(
+            date = releaseDate,
+            ocid = ocId,
+            id = generationService.generateReleaseId(ocId),
+            tag = params.tag,
+            language = language,
+            initiationType = InitiationType.TENDER,
+            hasPreviousNotice = false,
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition),
+            tender = receivedRelease.tender.copy(
+                title = TenderTitle.valueOf(stage.toUpperCase()).text,
+                description = TenderDescription.valueOf(stage.toUpperCase()).text
+            )
+        )
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(release = release, cpId = cpid)
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = releaseDate.toDate())
@@ -88,6 +96,7 @@ class CreateReleaseService(
         stage: String,
         releaseDate: LocalDateTime,
         data: JsonNode,
+        language: String,
         operation: Operation
     ): ResponseDto {
         val rawMs = releaseService.getMs(data)
@@ -96,6 +105,7 @@ class CreateReleaseService(
             date = releaseDate,
             id = generationService.generateReleaseId(cpid),
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
+            language = language, //  BR-4.263
             initiationType = InitiationType.TENDER,  // BR-4.75
             parties = rawMs.tender.procuringEntity
                 ?.let { mutableListOf(createParty(it)) }
@@ -112,6 +122,7 @@ class CreateReleaseService(
             ocid = ocId,
             id = generationService.generateReleaseId(ocId),
             tag = listOf(Tag.PLANNING),    // BR-4.48
+            language = language, // BR-4.267
             initiationType = InitiationType.TENDER,   // BR-4.74
             hasPreviousNotice = false,   // BR-4.50
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = false)  // BR-4.51

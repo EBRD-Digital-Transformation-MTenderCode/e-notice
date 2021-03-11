@@ -54,6 +54,10 @@ val CommandMessage.isAuction: Boolean
     get() = this.context.isAuction
         ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'isAuction' attribute in context.")
 
+val CommandMessage.language: String
+    get() = this.context.language
+        ?: throw ErrorException(error = ErrorType.CONTEXT, message = "Missing the 'language' attribute in context.")
+
 data class Context @JsonCreator constructor(
     val operationId: String?,
     val cpid: String,
