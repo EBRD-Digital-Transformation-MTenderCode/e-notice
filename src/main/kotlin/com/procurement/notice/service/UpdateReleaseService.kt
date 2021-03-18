@@ -687,7 +687,8 @@ class UpdateReleaseService(
             id = generationService.generateReleaseId(cpid),
             date = releaseDate,
             planning = updatedReceivedMs.planning,
-            tender = updatedReceivedMs.tender
+            tender = updatedReceivedMs.tender,
+            parties = mutableListOf()
         )
 
         /* release */
