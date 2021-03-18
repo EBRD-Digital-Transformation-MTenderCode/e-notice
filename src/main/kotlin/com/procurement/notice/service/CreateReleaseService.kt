@@ -107,9 +107,7 @@ class CreateReleaseService(
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
             language = language, //  BR-4.263
             initiationType = InitiationType.TENDER,  // BR-4.75
-            parties = rawMs.tender.procuringEntity
-                ?.let { mutableListOf(createParty(it)) }
-                ?: mutableListOf(),
+            parties = mutableListOf(),
             tender = rawMs.tender.copy(
                 procuringEntity = rawMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
                 statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
