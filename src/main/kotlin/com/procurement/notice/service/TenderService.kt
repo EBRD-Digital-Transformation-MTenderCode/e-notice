@@ -140,7 +140,7 @@ class TenderService(
         val updatedBids = updateBids(data = data, bids = release.bids)
 
         //FR-5.7.2.1.5
-        val updatedParties = updateParties(data = data, parties = release.parties)
+        val updatedParties = updateParties(data = data, parties = release.parties, pmd = context.pmd)
 
         val updatedRelease = release.copy(
             id = generationService.generateReleaseId(context.ocid), //FR-5.0.1
@@ -615,7 +615,8 @@ class TenderService(
      */
     private fun updateParties(
         data: TenderPeriodEndData,
-        parties: Collection<Organization>
+        parties: Collection<Organization>,
+        pmd: ProcurementMethod
     ): Collection<Organization> {
         val tenderersById: Map<String, TenderPeriodEndData.Bid.Tenderer> = data.bids
             .asSequence()
@@ -1072,26 +1073,45 @@ class TenderService(
                 )
             }
 
-        val suppliersIds = data.awards
-            .asSequence()
-            .flatMap { award ->
-                award.suppliers.asSequence()
+
+        return (updatedParties + newParties).toList()
+            .let { allParties ->
+                processPartiesRoles(data.awards, allParties, pmd)
             }
-            .map { supplier ->
-                supplier.id
-            }
+    }
+
+    private fun processPartiesRoles(awards: List<TenderPeriodEndData.Award>, parties: Collection<Organization>, pmd: ProcurementMethod): Collection<Organization> =
+        when (pmd) {
+            ProcurementMethod.CF, ProcurementMethod.TEST_CF,
+            ProcurementMethod.OF, ProcurementMethod.TEST_OF -> parties
+
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> setPartiesRoles(awards, parties)
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+
+    private fun setPartiesRoles(awards: List<TenderPeriodEndData.Award>, parties: Collection<Organization>): Collection<Organization> {
+        val suppliersIds = awards.asSequence()
+            .flatMap { award -> award.suppliers.asSequence() }
+            .map { supplier -> supplier.id }
             .toSet()
 
-        return (updatedParties + newParties)
-            .map { party ->
-                if (party.id in suppliersIds && PartyRole.SUPPLIER !in party.roles)
-                    party.copy(
-                        roles = (party.roles + PartyRole.SUPPLIER).toMutableList()
-                    )
-                else
-                    party
-            }
-            .toList()
+        return parties.map { party ->
+            if (party.id in suppliersIds && PartyRole.SUPPLIER !in party.roles)
+                party.copy(roles = (party.roles + PartyRole.SUPPLIER).toMutableList())
+            else
+                party
+        }
     }
 
     fun tenderPeriodEndAuction(
