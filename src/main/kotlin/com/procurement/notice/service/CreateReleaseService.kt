@@ -15,9 +15,7 @@ import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
-import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
-import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.ocds.PurposeOfNotice
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
@@ -455,13 +453,8 @@ class CreateReleaseService(
                 //FR.COM-3.2.16
                 statusDetails = TenderStatusDetails.ESTABLISHMENT,
                 //FR.COM-3.2.17
-                procuringEntity = storedMs.tender.procuringEntity,
+                procuringEntity = storedMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
                 hasEnquiries = storedMs.tender.hasEnquiries
-            ),
-            //FR.COM-3.2.20
-            parties = releaseService.getPartiesWithActualPersones(
-                requestProcuringEntity = receivedTender.procuringEntity!!,
-                parties = storedMs.parties
             )
         )
         //FR.COM-3.2.19
@@ -620,20 +613,6 @@ class CreateReleaseService(
 
         return compiledMs
     }
-
-    fun createParty(requestProcuringEntity: OrganizationReference): Organization =
-        Organization(
-            id = requestProcuringEntity.id,
-            name = requestProcuringEntity.name,
-            contactPoint = requestProcuringEntity.contactPoint,
-            identifier = requestProcuringEntity.identifier,
-            additionalIdentifiers = requestProcuringEntity.additionalIdentifiers,
-            address = requestProcuringEntity.address,
-            buyerProfile = requestProcuringEntity.buyerProfile,
-            roles = mutableListOf(PartyRole.PROCURING_ENTITY),
-            details = requestProcuringEntity.details,
-            persones = requestProcuringEntity.persones
-        )
 
     fun clearOrganizationReference(requestProcuringEntity: OrganizationReference): OrganizationReference =
         OrganizationReference(
