@@ -13,6 +13,7 @@ import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.Item
 import com.procurement.notice.model.ocds.Lot
 import com.procurement.notice.model.ocds.LotGroup
+import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.Period
 import com.procurement.notice.model.ocds.ReleaseAmendment
 import com.procurement.notice.model.ocds.Value
@@ -119,5 +120,8 @@ data class ReleaseTender (
     @field:JsonProperty("value") @param:JsonProperty("value") val value: Value?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("targets") @param:JsonProperty("targets") val targets: List<RecordTarget> = emptyList()
+    @field:JsonProperty("targets") @param:JsonProperty("targets") val targets: List<RecordTarget> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("procuringEntity") @param:JsonProperty("procuringEntity") val procuringEntity: OrganizationReference?
 )

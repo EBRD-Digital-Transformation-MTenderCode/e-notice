@@ -453,9 +453,10 @@ class CreateReleaseService(
                 //FR.COM-3.2.16
                 statusDetails = TenderStatusDetails.ESTABLISHMENT,
                 //FR.COM-3.2.17
-                procuringEntity = storedMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
+                procuringEntity = null,
                 hasEnquiries = storedMs.tender.hasEnquiries
-            )
+            ),
+            parties = mutableListOf()
         )
         //FR.COM-3.2.19
         relatedProcessService.addRecordRelatedProcessToMs(
