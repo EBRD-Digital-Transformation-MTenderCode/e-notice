@@ -511,7 +511,8 @@ class UpdateReleaseService(
                     procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale,
                     value = null,
                     classification = null,
-                    targets = emptyList()
+                    targets = emptyList(),
+                    procuringEntity = null
                 )
             }
         )
