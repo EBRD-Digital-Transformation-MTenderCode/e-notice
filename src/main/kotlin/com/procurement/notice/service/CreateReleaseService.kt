@@ -550,7 +550,8 @@ class CreateReleaseService(
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
                 documents = updatedDocuments,
-                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod
+                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod,
+                procuringEntity = receivedTender.procuringEntity
             ),
             parties = receivedData.parties,
             //FR.COM-3.2.5
