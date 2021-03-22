@@ -550,8 +550,10 @@ class CreateReleaseService(
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
                 documents = updatedDocuments,
-                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod
+                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod,
+                procuringEntity = receivedTender.procuringEntity
             ),
+            parties = receivedData.parties,
             //FR.COM-3.2.5
             preQualification = receivedData.preQualification ?: storedFe.preQualification
         )
@@ -602,14 +604,9 @@ class CreateReleaseService(
                 statusDetails = storedTender.statusDetails,
                 id = storedTender.id,
                 hasEnquiries = storedTender.hasEnquiries,
-                //FR.COM-3.2.8
-                procuringEntity = storedTender.procuringEntity
+                procuringEntity = null
             ),
-            //FR.COM-3.2.11
-            parties = releaseService.getPartiesWithActualPersones(
-                requestProcuringEntity = receivedTender.procuringEntity!!,
-                parties = storedMs.parties
-            )
+            parties = mutableListOf()
         )
 
         return compiledMs
