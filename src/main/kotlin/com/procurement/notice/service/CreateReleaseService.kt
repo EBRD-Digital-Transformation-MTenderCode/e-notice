@@ -15,9 +15,7 @@ import com.procurement.notice.model.entity.ReleaseEntity
 import com.procurement.notice.model.ocds.Document
 import com.procurement.notice.model.ocds.InitiationType
 import com.procurement.notice.model.ocds.Operation
-import com.procurement.notice.model.ocds.Organization
 import com.procurement.notice.model.ocds.OrganizationReference
-import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.ocds.PurposeOfNotice
 import com.procurement.notice.model.ocds.RelatedProcessType
 import com.procurement.notice.model.ocds.Stage
@@ -107,9 +105,7 @@ class CreateReleaseService(
             tag = listOf(Tag.COMPILED), // BR-BR-4.76
             language = language, //  BR-4.263
             initiationType = InitiationType.TENDER,  // BR-4.75
-            parties = rawMs.tender.procuringEntity
-                ?.let { mutableListOf(createParty(it)) }
-                ?: mutableListOf(),
+            parties = mutableListOf(),
             tender = rawMs.tender.copy(
                 procuringEntity = rawMs.tender.procuringEntity?.let { clearOrganizationReference(it) },
                 statusDetails = TenderStatusDetails.AGGREGATE_PLANNING // BR-4.66
@@ -457,14 +453,10 @@ class CreateReleaseService(
                 //FR.COM-3.2.16
                 statusDetails = TenderStatusDetails.ESTABLISHMENT,
                 //FR.COM-3.2.17
-                procuringEntity = storedMs.tender.procuringEntity,
+                procuringEntity = null,
                 hasEnquiries = storedMs.tender.hasEnquiries
             ),
-            //FR.COM-3.2.20
-            parties = releaseService.getPartiesWithActualPersones(
-                requestProcuringEntity = receivedTender.procuringEntity!!,
-                parties = storedMs.parties
-            )
+            parties = mutableListOf()
         )
         //FR.COM-3.2.19
         relatedProcessService.addRecordRelatedProcessToMs(
@@ -558,8 +550,10 @@ class CreateReleaseService(
                 description = receivedTender.description,
                 procurementMethodRationale = receivedTender.procurementMethodRationale ?: storedTender.procurementMethodRationale,
                 documents = updatedDocuments,
-                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod
+                enquiryPeriod = receivedTender.enquiryPeriod ?: storedTender.enquiryPeriod,
+                procuringEntity = receivedTender.procuringEntity
             ),
+            parties = receivedData.parties,
             //FR.COM-3.2.5
             preQualification = receivedData.preQualification ?: storedFe.preQualification
         )
@@ -610,32 +604,13 @@ class CreateReleaseService(
                 statusDetails = storedTender.statusDetails,
                 id = storedTender.id,
                 hasEnquiries = storedTender.hasEnquiries,
-                //FR.COM-3.2.8
-                procuringEntity = storedTender.procuringEntity
+                procuringEntity = null
             ),
-            //FR.COM-3.2.11
-            parties = releaseService.getPartiesWithActualPersones(
-                requestProcuringEntity = receivedTender.procuringEntity!!,
-                parties = storedMs.parties
-            )
+            parties = mutableListOf()
         )
 
         return compiledMs
     }
-
-    fun createParty(requestProcuringEntity: OrganizationReference): Organization =
-        Organization(
-            id = requestProcuringEntity.id,
-            name = requestProcuringEntity.name,
-            contactPoint = requestProcuringEntity.contactPoint,
-            identifier = requestProcuringEntity.identifier,
-            additionalIdentifiers = requestProcuringEntity.additionalIdentifiers,
-            address = requestProcuringEntity.address,
-            buyerProfile = requestProcuringEntity.buyerProfile,
-            roles = mutableListOf(PartyRole.PROCURING_ENTITY),
-            details = requestProcuringEntity.details,
-            persones = requestProcuringEntity.persones
-        )
 
     fun clearOrganizationReference(requestProcuringEntity: OrganizationReference): OrganizationReference =
         OrganizationReference(

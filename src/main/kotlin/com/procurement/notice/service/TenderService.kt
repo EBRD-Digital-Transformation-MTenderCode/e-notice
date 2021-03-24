@@ -163,7 +163,8 @@ class TenderService(
             parties = updatedParties.toMutableList() //FR-5.7.2.1.5
         )
         organizationService.processRecordPartiesFromBids(updatedRelease)
-        organizationService.processRecordPartiesFromAwards(updatedRelease)
+        organizationService.processRecordPartiesFromAwards(updatedRelease, context)
+
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
@@ -1072,26 +1073,7 @@ class TenderService(
                 )
             }
 
-        val suppliersIds = data.awards
-            .asSequence()
-            .flatMap { award ->
-                award.suppliers.asSequence()
-            }
-            .map { supplier ->
-                supplier.id
-            }
-            .toSet()
-
-        return (updatedParties + newParties)
-            .map { party ->
-                if (party.id in suppliersIds && PartyRole.SUPPLIER !in party.roles)
-                    party.copy(
-                        roles = (party.roles + PartyRole.SUPPLIER).toMutableList()
-                    )
-                else
-                    party
-            }
-            .toList()
+        return (updatedParties + newParties).toList()
     }
 
     fun tenderPeriodEndAuction(

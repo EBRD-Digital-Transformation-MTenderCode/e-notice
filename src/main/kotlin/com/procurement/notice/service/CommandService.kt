@@ -379,7 +379,8 @@ class CommandService(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
-                    releaseDate = releaseDate
+                    releaseDate = releaseDate,
+                    pmd = cm.pmd
                 )
                 val request = toObject(TenderPeriodEndRequest::class.java, cm.data)
                 val result = tenderService.tenderPeriodEnd(context = context, data = request.convert())
@@ -419,7 +420,8 @@ class CommandService(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
-                    releaseDate = releaseDate
+                    releaseDate = releaseDate,
+                    pmd = cm.pmd
                 )
                 val request = toObject(AuctionPeriodEndRequest::class.java, cm.data)
                 auctionService.periodEnd(context = context, data = request.convert())
@@ -437,7 +439,8 @@ class CommandService(
                     cpid = cm.cpid,
                     ocid = cm.ocid,
                     stage = cm.stage,
-                    releaseDate = releaseDate
+                    releaseDate = releaseDate,
+                    pmd = cm.pmd
                 )
                 val request = toObject(TenderPeriodEndRequest::class.java, cm.data)
                 val result = tenderService.tenderPeriodEnd(context = context, data = request.convert())
