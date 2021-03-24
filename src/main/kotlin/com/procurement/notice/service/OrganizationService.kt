@@ -1,5 +1,7 @@
 package com.procurement.notice.service
 
+import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.budget.EI
@@ -120,6 +122,40 @@ class OrganizationService {
         }
     }
 
+    fun processRecordPartiesFromAwards(release: Release, context: TenderPeriodEndContext) {
+        release.awards.let { awards ->
+            awards.forEach { award ->
+                award.suppliers?.let { suppliers ->
+                    suppliers.forEach { supplier ->
+                        val role = defineRole(context)
+                        release.parties.let { addParty(parties = it, organization = supplier, role = role) }
+                        clearOrganizationReference(supplier)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun defineRole(context: TenderPeriodEndContext): PartyRole? =
+        when (context.pmd) {
+            ProcurementMethod.CF, ProcurementMethod.TEST_CF,
+            ProcurementMethod.OF, ProcurementMethod.TEST_OF -> null
+
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> PartyRole.SUPPLIER
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> throw ErrorException(ErrorType.INVALID_PMD)
+        }
+
     fun processContractRecordPartiesFromAwards(record: ContractRecord) {
         record.awards?.let { awards ->
             awards.forEach { award ->
@@ -162,12 +198,16 @@ class OrganizationService {
         }
     }
 
-    private fun addParty(parties: MutableList<Organization>, organization: OrganizationReference?, role: PartyRole) {
+    private fun addParty(parties: MutableList<Organization>, organization: OrganizationReference?, role: PartyRole?) {
         if (organization != null) {
             organization.id ?: throw ErrorException(ErrorType.PARAM_ERROR)
             val partyPresent = getParty(parties, organization.id)
             if (partyPresent != null) {
-                if (role !in partyPresent.roles) partyPresent.roles.add(role)
+
+                role?.let { partyRole ->
+                    if (role !in partyPresent.roles) partyPresent.roles.add(partyRole)
+                }
+
                 if (partyPresent.name.isNullOrEmpty()) partyPresent.name = organization.name
                 if (partyPresent.identifier == null) partyPresent.identifier = organization.identifier
                 if (partyPresent.additionalIdentifiers == null) partyPresent.additionalIdentifiers = organization.additionalIdentifiers
@@ -184,7 +224,10 @@ class OrganizationService {
                     additionalIdentifiers = organization.additionalIdentifiers,
                     address = organization.address,
                     contactPoint = organization.contactPoint,
-                    roles = mutableListOf(role),
+                    roles = role
+                        ?.let { mutableListOf(it) }
+                        ?: mutableListOf()
+                    ,
                     details = organization.details,
                     buyerProfile = organization.buyerProfile,
                     persones = organization.persones
