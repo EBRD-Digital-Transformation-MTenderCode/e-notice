@@ -36,6 +36,7 @@ enum class InitiationType constructor(private val value: String) {
 enum class PartyRole constructor(private val value: String) {
     BUYER("buyer"),
     CANDIDATE("candidate"),
+    CENTRAL_PURCHASING_BODY("centralPurchasingBody"),
     CLIENT("client"),
     ENQUIRER("enquirer"),
     FUNDER("funder"),
