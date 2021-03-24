@@ -1,6 +1,7 @@
 package com.procurement.notice.application.service.auction
 
 import com.procurement.notice.application.service.GenerationService
+import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.domain.model.award.AwardId
 import com.procurement.notice.infrastructure.dto.entity.parties.PersonId
 import com.procurement.notice.lib.toSetBy
@@ -64,7 +65,7 @@ class AuctionServiceImpl(
 
         val updatedAwards = updateAwards(awards = release.awards, data = data)
         val updatedBids = updateBids(data)
-        val updatedParties = updateParties(parties = release.parties, data = data)
+        val updatedParties = updateParties(parties = release.parties, data = data, pmd = context.pmd)
         val updatedElectronicAuctions = release.tender.electronicAuctions?.updateElectronicAuctions(data = data)
         val receivedCriteria = data.criteria.orEmpty().map { it.convert() }
 
@@ -306,10 +307,15 @@ class AuctionServiceImpl(
 
     private fun updateParties(
         parties: Collection<Organization>,
-        data: AuctionPeriodEndData
+        data: AuctionPeriodEndData,
+        pmd: ProcurementMethod
     ): List<Organization> {
         val updatedPartiesByTenderers = updatePartiesByTenderers(parties = parties, data = data)
-        return updatePartiesBySuppliers(parties = updatedPartiesByTenderers, data = data)
+
+        if (isNeedToAddSupplierRole(pmd))
+            return updatePartiesBySuppliers(parties = updatedPartiesByTenderers, data = data)
+        else
+            return updatedPartiesByTenderers
     }
 
     private fun updatePartiesByTenderers(
@@ -356,6 +362,25 @@ class AuctionServiceImpl(
 
         return newPartiesByTenderer + updatedPartiesByTenderers + immutablePartiesByTenderers
     }
+
+    private fun isNeedToAddSupplierRole(pmd: ProcurementMethod): Boolean =
+        when(pmd) {
+            ProcurementMethod.MV, ProcurementMethod.TEST_MV,
+            ProcurementMethod.OT, ProcurementMethod.TEST_OT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> true
+
+            ProcurementMethod.CD, ProcurementMethod.TEST_CD,
+            ProcurementMethod.DA, ProcurementMethod.TEST_DA,
+            ProcurementMethod.DC, ProcurementMethod.TEST_DC,
+            ProcurementMethod.IP, ProcurementMethod.TEST_IP,
+            ProcurementMethod.NP, ProcurementMethod.TEST_NP,
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.CF, ProcurementMethod.TEST_CF,
+            ProcurementMethod.OF, ProcurementMethod.TEST_OF,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> false
+        }
 
     private fun updatePartiesBySuppliers(
         parties: Collection<Organization>,

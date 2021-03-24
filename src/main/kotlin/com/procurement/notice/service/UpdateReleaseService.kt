@@ -511,7 +511,8 @@ class UpdateReleaseService(
                     procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale,
                     value = null,
                     classification = null,
-                    targets = emptyList()
+                    targets = emptyList(),
+                    procuringEntity = null
                 )
             }
         )
@@ -687,7 +688,8 @@ class UpdateReleaseService(
             id = generationService.generateReleaseId(cpid),
             date = releaseDate,
             planning = updatedReceivedMs.planning,
-            tender = updatedReceivedMs.tender
+            tender = updatedReceivedMs.tender,
+            parties = mutableListOf()
         )
 
         /* release */
