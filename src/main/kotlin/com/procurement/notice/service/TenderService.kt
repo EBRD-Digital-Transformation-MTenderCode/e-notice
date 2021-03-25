@@ -261,7 +261,7 @@ class TenderService(
                         id = bid.id, //FR-5.7.2.1.3
                         date = bid.date, //FR-5.7.2.1.3
                         status = bid.status.value, //FR-5.7.2.1.3
-                        statusDetails = bid.statusDetails.value, //FR-5.7.2.1.3
+                        statusDetails = bid.statusDetails?.value, //FR-5.7.2.1.3
                         tenderers = bid.tenderers
                             .map { tenderer ->
                                 OrganizationReference(
