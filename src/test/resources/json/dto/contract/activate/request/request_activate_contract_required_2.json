@@ -39,11 +39,5 @@
       "status": "consideration",
       "statusDetails": "empty"
     }
-  ],
-  "bids": [
-    {
-      "id": "4251e51c-7a69-4830-96d1-c74a3d67a676",
-      "status": "disqualified"
-    }
   ]
 }
