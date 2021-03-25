@@ -1491,7 +1491,7 @@ class TenderService(
                     id = bid.id,
                     date = bid.date,
                     status = bid.status.value,
-                    statusDetails = bid.statusDetails.value,
+                    statusDetails = bid.statusDetails?.value,
                     tenderers = bid.tenderers
                         .map { tenderer ->
                             OrganizationReference(

@@ -8,7 +8,6 @@
       "id": "9d353269-c442-47ab-b11e-a82bf84c6cd5",
       "date": "2011-03-01T15:09:00Z",
       "status": "invited",
-      "statusDetails": "pending",
       "tenderers": [
         {
           "id": "bids[0].tenderers.id",
