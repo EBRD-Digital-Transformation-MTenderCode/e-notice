@@ -47,5 +47,11 @@
   "awardPeriod": {
     "startDate": "2019-09-05T16:51:00Z",
     "endDate": "2019-10-05T16:51:00Z"
-  }
+  },
+  "bids": [
+    {
+      "id": "69687876-7680-4730-b154-3a25bf1940b3",
+      "status": "invited"
+    }
+  ]
 }

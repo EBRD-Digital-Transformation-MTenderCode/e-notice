@@ -75,6 +75,6 @@ data class EndAwardPeriodData(
     data class Bid(
         val id: String,
         val status: String,
-        val statusDetails: String
+        val statusDetails: String?
     )
 }
