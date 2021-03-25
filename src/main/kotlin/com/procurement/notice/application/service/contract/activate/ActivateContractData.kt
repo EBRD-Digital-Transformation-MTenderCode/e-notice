@@ -57,6 +57,6 @@ data class ActivateContractData(
     data class Bid(
         val id: String,
         val status: String,
-        val statusDetails: String
+        val statusDetails: String?
     )
 }

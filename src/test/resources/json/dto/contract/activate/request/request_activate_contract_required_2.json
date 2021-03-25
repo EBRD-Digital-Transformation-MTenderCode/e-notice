@@ -21,37 +21,23 @@
   },
   "cans": [
     {
-      "id": "235926b9-93a7-4161-890c-61d14bce1c1d",
+      "id": "4e58229c-0990-4d64-8d58-eba75b4575aa",
       "status": "active",
-      "statusDetails": "contractProject"
+      "statusDetails": "treasuryRejection"
     }
   ],
-  "tender": {
-    "status": "planning",
-    "statusDetails": "execution"
-  },
   "lots": [
     {
-      "id": "6d5f19c6-dc50-417e-8038-206d64a1e0b6",
-      "status": "planning",
+      "id": "2a68a2f2-fb12-4071-8aff-9f37265fc0ea",
+      "status": "complete",
       "statusDetails": "awarded"
     }
   ],
   "awards": [
     {
-      "id": "ff49481c-2812-401c-94b3-72c5dd0baab5",
-      "status": "pending",
-      "statusDetails": "consideration"
-    }
-  ],
-  "awardPeriod": {
-    "startDate": "2019-09-05T16:51:00Z",
-    "endDate": "2019-10-05T16:51:00Z"
-  },
-  "bids": [
-    {
-      "id": "69687876-7680-4730-b154-3a25bf1940b3",
-      "status": "invited"
+      "id": "d0b134ef-4369-4ad4-864d-5cebcff8de74",
+      "status": "consideration",
+      "statusDetails": "empty"
     }
   ]
 }

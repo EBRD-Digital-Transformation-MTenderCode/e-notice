@@ -15,4 +15,9 @@ class ActivateContractRequestTest : AbstractDTOTestBase<ActivateContractRequest>
     fun required1() {
         testBindingAndMapping("json/dto/contract/activate/request/request_activate_contract_required_1.json")
     }
+
+    @Test
+    fun required2() {
+        testBindingAndMapping("json/dto/contract/activate/request/request_activate_contract_required_2.json")
+    }
 }
