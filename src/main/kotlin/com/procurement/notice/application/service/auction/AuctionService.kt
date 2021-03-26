@@ -209,7 +209,7 @@ class AuctionServiceImpl(
                         id = bid.id.toString(),
                         date = bid.date,
                         status = bid.status.value,
-                        statusDetails = bid.statusDetails.value,
+                        statusDetails = bid.statusDetails?.value,
                         value = bid.value.toValue(),
                         relatedLots = bid.relatedLots
                             .map { it.toString() },
