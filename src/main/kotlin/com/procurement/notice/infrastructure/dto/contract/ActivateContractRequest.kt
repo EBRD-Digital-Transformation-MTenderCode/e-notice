@@ -84,6 +84,8 @@ data class ActivateContractRequest(
     data class Bid(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
+
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String?
     )
 }
