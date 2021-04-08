@@ -109,6 +109,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     FRAMEWORK("framework"),
     PARENT("parent"),
     PLANNING("planning"),
+    X_CATALOGUE("x_catalogue"),
     X_CONTRACTING("x_contracting"),
     X_DEMAND("x_demand"),
     X_ESTABLISHMENT("x_establishment"),
@@ -122,6 +123,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_PREQUALIFICATION("x_prequalification"),
     X_PRESELECTION("x_preselection"),
     X_PRE_AWARD_CATALOG_REQUEST("x_preAwardCatalogRequest"),
+    X_PURCHASING("x_purchasing"),
     X_SCOPE("x_scope"),
     X_TENDERING("x_tendering");
 

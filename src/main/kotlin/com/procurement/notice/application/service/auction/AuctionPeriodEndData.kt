@@ -37,7 +37,7 @@ data class AuctionPeriodEndData(
         val id: BidId,
         val date: LocalDateTime,
         val status: BidStatus,
-        val statusDetails: BidStatusDetails,
+        val statusDetails: BidStatusDetails?,
         val tenderers: List<Tenderer>,
         val value: Money,
         val documents: List<Document>,
