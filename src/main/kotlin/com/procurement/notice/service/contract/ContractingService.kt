@@ -1,6 +1,7 @@
 package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.procurement.notice.application.model.Stage
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
@@ -143,10 +144,11 @@ class ContractingService(
         //BR-2.7.1.10
         val processType = when(stage) {
             "EV", "TP" -> RelatedProcessType.X_EVALUATION
-            "NP" ->RelatedProcessType.X_NEGOTIATION
+            "NP" -> RelatedProcessType.X_NEGOTIATION
+            "RQ" -> RelatedProcessType.X_REQUEST_QUOTATION
             else -> throw ErrorException(
                 error = ErrorType.INVALID_STAGE,
-                message = "Current stage '${stage}', required stage: 'EV', 'TP' or 'NP'."
+                message = "Current stage '${stage}', required stage: 'EV', 'TP', 'RQ' or 'NP'."
             )
         }
         organizationService.processContractRecordPartiesFromAwards(recordContract)
@@ -508,6 +510,8 @@ class ContractingService(
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> Stage.RQ.key
+
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
             ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
@@ -614,6 +618,8 @@ class ContractingService(
             ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
+
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> Stage.RQ.key
 
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
@@ -1121,7 +1127,7 @@ class ContractingService(
      */
     private fun updatedBids(context: CreateProtocolContext, data: CreateProtocolData, bids: Bids?): Bids? {
         return when (context.stage) {
-            "EV", "TP" -> {
+            "EV", "TP", "RQ" -> {
                 if (data.bids == null || data.bids.isEmpty())
                     throw ErrorException(error = ErrorType.BIDS_IN_REQUEST_IS_EMPTY)
 

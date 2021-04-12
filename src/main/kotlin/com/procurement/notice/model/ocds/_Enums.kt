@@ -124,6 +124,7 @@ enum class RelatedProcessType constructor(private val value: String) {
     X_PRESELECTION("x_preselection"),
     X_PRE_AWARD_CATALOG_REQUEST("x_preAwardCatalogRequest"),
     X_PURCHASING("x_purchasing"),
+    X_REQUEST_QUOTATION("x_requestQuotation"),
     X_SCOPE("x_scope"),
     X_TENDERING("x_tendering");
 
