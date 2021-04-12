@@ -1,7 +1,6 @@
 package com.procurement.notice.service.contract
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.procurement.notice.application.model.Stage
 import com.procurement.notice.application.service.GenerationService
 import com.procurement.notice.application.service.can.ConfirmCANContext
 import com.procurement.notice.application.service.can.ConfirmCANData
@@ -510,7 +509,7 @@ class ContractingService(
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
-            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> Stage.RQ.key
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> "RQ"
 
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
@@ -619,7 +618,7 @@ class ContractingService(
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
-            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> Stage.RQ.key
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> "RQ"
 
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.FA, ProcurementMethod.TEST_FA,
