@@ -141,11 +141,12 @@ class OrganizationService {
             ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.OF, ProcurementMethod.TEST_OF -> null
 
+            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
             ProcurementMethod.MV, ProcurementMethod.TEST_MV,
             ProcurementMethod.OT, ProcurementMethod.TEST_OT,
-            ProcurementMethod.SV, ProcurementMethod.TEST_SV,
-            ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
-            ProcurementMethod.RT, ProcurementMethod.TEST_RT -> PartyRole.SUPPLIER
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ,
+            ProcurementMethod.RT, ProcurementMethod.TEST_RT,
+            ProcurementMethod.SV, ProcurementMethod.TEST_SV -> PartyRole.SUPPLIER
 
             ProcurementMethod.CD, ProcurementMethod.TEST_CD,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
