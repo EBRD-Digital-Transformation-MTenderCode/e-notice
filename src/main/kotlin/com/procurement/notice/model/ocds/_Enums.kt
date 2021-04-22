@@ -297,7 +297,8 @@ enum class Stage {
     PN,
     PQ,
     PS,
-    TP
+    RQ,
+    TP,
 }
 
 enum class Operation(val value: String) {
