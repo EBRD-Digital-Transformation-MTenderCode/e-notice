@@ -60,6 +60,8 @@ class ActivationContractStrategy(
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
             ProcurementMethod.OP, ProcurementMethod.TEST_OP -> "NP"
 
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> "RQ"
+
             ProcurementMethod.GPA, ProcurementMethod.TEST_GPA,
             ProcurementMethod.RT, ProcurementMethod.TEST_RT -> "TP"
 
