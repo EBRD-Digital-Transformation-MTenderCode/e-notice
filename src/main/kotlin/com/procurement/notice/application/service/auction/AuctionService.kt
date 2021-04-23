@@ -372,14 +372,15 @@ class AuctionServiceImpl(
             ProcurementMethod.RT, ProcurementMethod.TEST_RT -> true
 
             ProcurementMethod.CD, ProcurementMethod.TEST_CD,
+            ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.DA, ProcurementMethod.TEST_DA,
             ProcurementMethod.DC, ProcurementMethod.TEST_DC,
+            ProcurementMethod.FA, ProcurementMethod.TEST_FA,
             ProcurementMethod.IP, ProcurementMethod.TEST_IP,
             ProcurementMethod.NP, ProcurementMethod.TEST_NP,
-            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
-            ProcurementMethod.CF, ProcurementMethod.TEST_CF,
             ProcurementMethod.OF, ProcurementMethod.TEST_OF,
-            ProcurementMethod.FA, ProcurementMethod.TEST_FA -> false
+            ProcurementMethod.OP, ProcurementMethod.TEST_OP,
+            ProcurementMethod.RFQ, ProcurementMethod.TEST_RFQ -> false
         }
 
     private fun updatePartiesBySuppliers(

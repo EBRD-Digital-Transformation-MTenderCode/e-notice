@@ -492,15 +492,6 @@ class CreateReleaseService(
             //FR.COM-3.2.7
             tender = receivedFe.tender.copy(hasEnquiries = false)
         )
-        //FR.COM-3.2.6 1)
-        relatedProcessService.addMsRelatedProcessToRecord(release = updatedFe, cpId = context.cpid)
-        //FR.COM-3.2.6 2)
-        relatedProcessService.addRecordRelatedProcessToRecord(
-            release = updatedFe,
-            cpId = context.cpid,
-            ocId = context.ocid,
-            processType = RelatedProcessType.PLANNING
-        )
 
         return updatedFe
     }
