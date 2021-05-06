@@ -76,7 +76,8 @@ class CreateReleaseService(
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition),
             tender = receivedRelease.tender.copy(
                 title = TenderTitle.valueOf(stage.toUpperCase()).text,
-                description = TenderDescription.valueOf(stage.toUpperCase()).text
+                description = TenderDescription.valueOf(stage.toUpperCase()).text,
+                procuringEntity = null
             )
         )
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
