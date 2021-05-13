@@ -157,7 +157,6 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfir
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequestGroup
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueBreakdown
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
@@ -2787,15 +2786,6 @@ fun RecordRelatedOrganization.updateOrganization(received: RequestRelatedOrganiz
 }
 
 fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirmationRequest): UpdateRecordResult<RecordConfirmationRequest> {
-    val requestGroups = updateStrategy(
-        receivedElements = received.requestGroups,
-        keyExtractorForReceivedElement = requestRequestGroupKeyExtractor,
-        availableElements = this.requestGroups.toList(),
-        keyExtractorForAvailableElement = recordRequestGroupKeyExtractor,
-        updateBlock = RecordRequestGroup::updateRequestGroup,
-        createBlock = ::createRequestGroup
-    ).doReturn { e -> return failure(e) }
-
     val requests = updateStrategy(
         receivedElements = received.requests,
         keyExtractorForReceivedElement = requestRequestKeyExtractor,
@@ -2814,33 +2804,13 @@ fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirm
             relatedItem = received.relatedItem,
             type = received.type ?: this.type,
             source = received.source,
-            requestGroups = requestGroups,
+            requestGroups = this.requestGroups,
             requests = requests
         )
         .asSuccess()
 }
 
 val recordRequestGroupKeyExtractor: (RecordRequestGroup) -> String = { it.id }
-val requestRequestGroupKeyExtractor: (RequestRequestGroup) -> String = { it.id }
-
-fun RecordRequestGroup.updateRequestGroup(received: RequestRequestGroup): UpdateRecordResult<RecordRequestGroup> {
-    val requests = updateStrategy(
-        receivedElements = received.requests,
-        keyExtractorForReceivedElement = requestRequestKeyExtractor,
-        availableElements = this.requests.toList(),
-        keyExtractorForAvailableElement = recordRequestKeyExtractor,
-        updateBlock = RecordRequest::updateRequest,
-        createBlock = ::createRequest
-    )
-        .doReturn { e -> return failure(e) }
-
-    return this
-        .copy(
-            id = this.id,
-            requests = requests
-        )
-        .asSuccess()
-}
 
 val recordRequestKeyExtractor: (RecordRequest) -> String = { it.id }
 val requestRequestKeyExtractor: (RequestRequest) -> String = { it.id }

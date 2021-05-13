@@ -919,8 +919,7 @@ class UpdatedRecordTest {
             relatesTo = "dbConfirmationRequest?.relatesTo",
             relatedItem = "dbConfirmationRequest.relatedItem",
             type = "dbConfirmationRequest?.type",
-            source = "dbConfirmationRequest.source",
-            requestGroups = emptyList()
+            source = "dbConfirmationRequest.source"
         )
 
         @Test

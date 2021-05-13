@@ -55,7 +55,6 @@ import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirma
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationResponse
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordContract
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequest
-import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequestGroup
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueBreakdown
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueTax
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
@@ -154,7 +153,6 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfir
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequestGroup
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueBreakdown
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
@@ -1289,15 +1287,7 @@ fun createConfirmationRequest(received: RequestConfirmationRequest): RecordConfi
         relatedItem = received.relatedItem,
         type = received.type,
         source = received.source,
-        requestGroups = received.requestGroups
-            .map { createRequestGroup(it) },
-        requests = received.requests
-            .map { createRequest(it) }
-    )
-
-fun createRequestGroup(received: RequestRequestGroup): RecordRequestGroup =
-    RecordRequestGroup(
-        id = received.id,
+        requestGroups = emptyList(),
         requests = received.requests
             .map { createRequest(it) }
     )
