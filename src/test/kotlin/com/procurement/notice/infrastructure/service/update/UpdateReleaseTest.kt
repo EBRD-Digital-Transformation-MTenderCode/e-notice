@@ -6,6 +6,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordIssue
 import com.procurement.notice.infrastructure.dto.entity.RecordLegalForm
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedOrganization
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedProcess
 import com.procurement.notice.infrastructure.dto.entity.address.RecordAddress
@@ -29,6 +30,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestIdentifier
 import com.procurement.notice.infrastructure.dto.request.RequestIssue
 import com.procurement.notice.infrastructure.dto.request.RequestLegalForm
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedOrganization
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
 import com.procurement.notice.infrastructure.dto.request.address.RequestAddress
@@ -841,14 +843,22 @@ class UpdatedRecordTest {
             id = "id",
             relatedPerson = null,
             description = "dbRequest.description",
-            title = "dbRequest.title"
+            title = "dbRequest.title",
+            relatedOrganization = RecordRelatedOrganization(
+                id = "org-id",
+                name = "org-name-db"
+            )
         )
 
         val sampleNewRequest = RequestRequest(
             id = "id",
             relatedPerson = null,
             description = "rqRequest.description",
-            title = "rqRequest.title"
+            title = "rqRequest.title",
+            relatedOrganization = RequestRelatedOrganization(
+                id = "org-id",
+                name = "org-name-rq"
+            )
         )
 
         @Test
@@ -874,7 +884,13 @@ class UpdatedRecordTest {
                 id = sampleNewRequest.id,
                 description = sampleNewRequest.description,
                 title = sampleNewRequest.title,
-                relatedPerson = prevRequest.relatedPerson
+                relatedPerson = prevRequest.relatedPerson,
+                relatedOrganization = sampleNewRequest.relatedOrganization?.let { relatedOrganization ->
+                    RecordRelatedOrganization(
+                        id = relatedOrganization.id,
+                        name = relatedOrganization.name
+                    )
+                }
             )
             val updatedRequest = prevRequest.updateRequest(newRequest)
                 .doReturn { _ -> throw RuntimeException() }

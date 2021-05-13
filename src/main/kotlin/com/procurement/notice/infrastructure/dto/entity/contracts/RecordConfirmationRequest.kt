@@ -24,6 +24,9 @@ data class RecordConfirmationRequest(
     @field:JsonProperty("source") @param:JsonProperty("source") val source: String,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("requestGroups") @param:JsonProperty("requestGroups") val requestGroups: List<RecordRequestGroup> = emptyList()
+    @field:JsonProperty("requestGroups") @param:JsonProperty("requestGroups") val requestGroups: List<RecordRequestGroup> = emptyList(),
+
+    @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @field:JsonProperty("requests") @param:JsonProperty("requests") val requests: List<RecordRequest> = emptyList()
 )
 
