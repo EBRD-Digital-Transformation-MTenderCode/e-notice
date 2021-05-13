@@ -26,8 +26,8 @@ import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedOrganization
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
-import com.procurement.notice.infrastructure.dto.entity.RecordRelatedPerson
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedProcess
 import com.procurement.notice.infrastructure.dto.entity.RecordRequirementGroup
 import com.procurement.notice.infrastructure.dto.entity.RecordVerification
@@ -55,7 +55,6 @@ import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirma
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationResponse
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordContract
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequest
-import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequestGroup
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueBreakdown
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordValueTax
 import com.procurement.notice.infrastructure.dto.entity.documents.RecordDocument
@@ -128,8 +127,8 @@ import com.procurement.notice.infrastructure.dto.request.RequestPeriod
 import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedOrganization
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
-import com.procurement.notice.infrastructure.dto.request.RequestRelatedPerson
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
 import com.procurement.notice.infrastructure.dto.request.RequestRequirementGroup
 import com.procurement.notice.infrastructure.dto.request.RequestVerification
@@ -154,7 +153,6 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfir
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequestGroup
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueBreakdown
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
@@ -1255,7 +1253,7 @@ fun createConfirmationResponseValue(received: RequestConfirmationResponseValue):
         id = received.id,
         name = received.name,
         date = received.date,
-        relatedPerson = received.relatedPerson?.let { createRelatedPerson(it) },
+        relatedPerson = received.relatedPerson?.let { createOrganization(it) },
         verification = createVerification(received.verification)
     )
 
@@ -1268,8 +1266,14 @@ fun createVerification(received: List<RequestVerification>): List<RecordVerifica
         )
     }.orEmpty()
 
-fun createRelatedPerson(received: RequestRelatedPerson): RecordRelatedPerson =
-    RecordRelatedPerson(
+fun createOrganization(received: RequestRelatedOrganization): RecordRelatedOrganization =
+    RecordRelatedOrganization(
+        id = received.id,
+        name = received.name
+    )
+
+fun createRelatedOrganization(received: RequestRelatedOrganization): RecordRelatedOrganization =
+    RecordRelatedOrganization(
         id = received.id,
         name = received.name
     )
@@ -1283,13 +1287,7 @@ fun createConfirmationRequest(received: RequestConfirmationRequest): RecordConfi
         relatedItem = received.relatedItem,
         type = received.type,
         source = received.source,
-        requestGroups = received.requestGroups
-            .map { createRequestGroup(it) }
-    )
-
-fun createRequestGroup(received: RequestRequestGroup): RecordRequestGroup =
-    RecordRequestGroup(
-        id = received.id,
+        requestGroups = emptyList(),
         requests = received.requests
             .map { createRequest(it) }
     )
@@ -1297,7 +1295,8 @@ fun createRequestGroup(received: RequestRequestGroup): RecordRequestGroup =
 fun createRequest(received: RequestRequest): RecordRequest =
     RecordRequest(
         id = received.id,
-        relatedPerson = received.relatedPerson?.let { createRelatedPerson(it) },
+        relatedPerson = received.relatedPerson?.let { createOrganization(it) },
+        relatedOrganization = received.relatedOrganization?.let { createRelatedOrganization(it) },
         description = received.description,
         title = received.title
     )
