@@ -12,7 +12,6 @@ import com.procurement.notice.infrastructure.dto.entity.RecordBudgetBreakdown
 import com.procurement.notice.infrastructure.dto.entity.RecordBusinessFunction
 import com.procurement.notice.infrastructure.dto.entity.RecordChange
 import com.procurement.notice.infrastructure.dto.entity.RecordClassification
-import com.procurement.notice.infrastructure.dto.entity.RecordConfirmationResponseValue
 import com.procurement.notice.infrastructure.dto.entity.RecordContactPoint
 import com.procurement.notice.infrastructure.dto.entity.RecordEuropeanUnionFunding
 import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
@@ -114,7 +113,6 @@ import com.procurement.notice.infrastructure.dto.request.RequestBudgetBreakdown
 import com.procurement.notice.infrastructure.dto.request.RequestBusinessFunction
 import com.procurement.notice.infrastructure.dto.request.RequestChange
 import com.procurement.notice.infrastructure.dto.request.RequestClassification
-import com.procurement.notice.infrastructure.dto.request.RequestConfirmationResponseValue
 import com.procurement.notice.infrastructure.dto.request.RequestContactPoint
 import com.procurement.notice.infrastructure.dto.request.RequestEuropeanUnionFunding
 import com.procurement.notice.infrastructure.dto.request.RequestIdentifier
@@ -1244,17 +1242,11 @@ fun createRelatedParty(received: RequestRelatedParty): RecordRelatedParty =
 fun createConfirmationResponse(received: RequestConfirmationResponse): RecordConfirmationResponse =
     RecordConfirmationResponse(
         id = received.id,
-        value = received.value?.let { createConfirmationResponseValue(it) },
-        request = received.request
-    )
-
-fun createConfirmationResponseValue(received: RequestConfirmationResponseValue): RecordConfirmationResponseValue =
-    RecordConfirmationResponseValue(
-        id = received.id,
-        name = received.name,
         date = received.date,
-        relatedPerson = received.relatedPerson?.let { createOrganization(it) },
-        verification = createVerification(received.verification)
+        requestId = received.requestId,
+        type = received.type,
+        value = received.value,
+        relatedPerson = received.relatedPerson?.let { createPerson(it) }
     )
 
 fun createVerification(received: List<RequestVerification>): List<RecordVerification> =
