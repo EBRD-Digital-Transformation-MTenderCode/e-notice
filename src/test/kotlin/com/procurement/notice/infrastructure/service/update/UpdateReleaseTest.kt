@@ -6,6 +6,7 @@ import com.procurement.notice.infrastructure.dto.entity.RecordIdentifier
 import com.procurement.notice.infrastructure.dto.entity.RecordIssue
 import com.procurement.notice.infrastructure.dto.entity.RecordLegalForm
 import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedOrganization
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedProcess
 import com.procurement.notice.infrastructure.dto.entity.address.RecordAddress
@@ -16,7 +17,6 @@ import com.procurement.notice.infrastructure.dto.entity.address.RecordRegionDeta
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationRequest
-import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationResponse
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequest
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
@@ -29,6 +29,7 @@ import com.procurement.notice.infrastructure.dto.request.RequestIdentifier
 import com.procurement.notice.infrastructure.dto.request.RequestIssue
 import com.procurement.notice.infrastructure.dto.request.RequestLegalForm
 import com.procurement.notice.infrastructure.dto.request.RequestPeriod
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedOrganization
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
 import com.procurement.notice.infrastructure.dto.request.address.RequestAddress
@@ -39,7 +40,6 @@ import com.procurement.notice.infrastructure.dto.request.address.RequestRegionDe
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestBudgetSource
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
@@ -53,7 +53,6 @@ import com.procurement.notice.infrastructure.service.record.createBidsStatistic
 import com.procurement.notice.infrastructure.service.record.createBudgetSource
 import com.procurement.notice.infrastructure.service.record.createClassification
 import com.procurement.notice.infrastructure.service.record.createConfirmationRequest
-import com.procurement.notice.infrastructure.service.record.createConfirmationResponse
 import com.procurement.notice.infrastructure.service.record.createContractPeriod
 import com.procurement.notice.infrastructure.service.record.createIdentifier
 import com.procurement.notice.infrastructure.service.record.createLegalForm
@@ -71,7 +70,6 @@ import com.procurement.notice.infrastructure.service.record.updateBidsStatistic
 import com.procurement.notice.infrastructure.service.record.updateBudgetSource
 import com.procurement.notice.infrastructure.service.record.updateClassification
 import com.procurement.notice.infrastructure.service.record.updateConfirmationRequest
-import com.procurement.notice.infrastructure.service.record.updateConfirmationResponse
 import com.procurement.notice.infrastructure.service.record.updateIdentifier
 import com.procurement.notice.infrastructure.service.record.updateLegalForm
 import com.procurement.notice.infrastructure.service.record.updateMilestone
@@ -841,14 +839,20 @@ class UpdatedRecordTest {
             id = "id",
             relatedPerson = null,
             description = "dbRequest.description",
-            title = "dbRequest.title"
+            title = "dbRequest.title",
+            relatedOrganization = RecordRelatedOrganization(
+                id = "org-id",
+                name = "org-name-db"
+            )
         )
 
         val sampleNewRequest = RequestRequest(
             id = "id",
             relatedPerson = null,
-            description = "rqRequest.description",
-            title = "rqRequest.title"
+            relatedOrganization = RequestRelatedOrganization(
+                id = "org-id",
+                name = "org-name-rq"
+            )
         )
 
         @Test
@@ -861,7 +865,21 @@ class UpdatedRecordTest {
         fun `update Request - full update`() {
             val updatedRequest = prevRequest.updateRequest(sampleNewRequest)
                 .doReturn { _ -> throw RuntimeException() }
-            assertEquals(updatedRequest.toJson(), sampleNewRequest.toJson())
+
+            val expectedValue = RecordRequest(
+                id = sampleNewRequest.id,
+                description = prevRequest.description,
+                title = prevRequest.title,
+                relatedPerson = prevRequest.relatedPerson,
+                relatedOrganization = sampleNewRequest.relatedOrganization?.let { relatedOrganization ->
+                    RecordRelatedOrganization(
+                        id = relatedOrganization.id,
+                        name = relatedOrganization.name
+                    )
+                }
+            )
+
+            assertEquals(updatedRequest.toJson(), expectedValue.toJson())
         }
 
         @Test
@@ -872,9 +890,15 @@ class UpdatedRecordTest {
 
             val expectedValue = RecordRequest(
                 id = sampleNewRequest.id,
-                description = sampleNewRequest.description,
-                title = sampleNewRequest.title,
-                relatedPerson = prevRequest.relatedPerson
+                description = prevRequest.description,
+                title = prevRequest.title,
+                relatedPerson = prevRequest.relatedPerson,
+                relatedOrganization = sampleNewRequest.relatedOrganization?.let { relatedOrganization ->
+                    RecordRelatedOrganization(
+                        id = relatedOrganization.id,
+                        name = relatedOrganization.name
+                    )
+                }
             )
             val updatedRequest = prevRequest.updateRequest(newRequest)
                 .doReturn { _ -> throw RuntimeException() }
@@ -903,8 +927,7 @@ class UpdatedRecordTest {
             relatesTo = "dbConfirmationRequest?.relatesTo",
             relatedItem = "dbConfirmationRequest.relatedItem",
             type = "dbConfirmationRequest?.type",
-            source = "dbConfirmationRequest.source",
-            requestGroups = emptyList()
+            source = "dbConfirmationRequest.source"
         )
 
         @Test
@@ -943,54 +966,6 @@ class UpdatedRecordTest {
                 .doReturn { _ -> throw RuntimeException() }
 
             assertEquals(expectedValue.toJson(), updatedConfirmationRequest.toJson())
-        }
-    }
-
-    @Nested
-    inner class ConfirmationResponseTest {
-
-        val prevConfirmationResponse = RecordConfirmationResponse(
-            id = "ConfirmationResponse.id",
-            value = null,
-            request = "dbConfirmationResponse?.request"
-        )
-
-        val sampleNewConfirmationResponse = RequestConfirmationResponse(
-            id = "ConfirmationResponse.id",
-            value = null,
-            request = "rqConfirmationResponse.request"
-        )
-
-        @Test
-        fun `update ConfirmationResponse - without previous value`() {
-            val createdConfirmationResponse = createConfirmationResponse(sampleNewConfirmationResponse)
-            assertEquals(sampleNewConfirmationResponse.toJson(), createdConfirmationResponse.toJson())
-        }
-
-        @Test
-        fun `update ConfirmationResponse - full update`() {
-            val updatedConfirmationResponse = prevConfirmationResponse
-                .updateConfirmationResponse(sampleNewConfirmationResponse)
-                .doReturn { _ -> throw RuntimeException() }
-            assertEquals(updatedConfirmationResponse.toJson(), sampleNewConfirmationResponse.toJson())
-        }
-
-        @Test
-        fun `update ConfirmationResponse - partial updating`() {
-            val newConfirmationResponse = sampleNewConfirmationResponse.copy(
-                value = null
-            )
-
-            val expectedValue = RecordConfirmationResponse(
-                id = sampleNewConfirmationResponse.id,
-                value = prevConfirmationResponse.value,
-                request = sampleNewConfirmationResponse.request
-            )
-            val updatedConfirmationResponse = prevConfirmationResponse
-                .updateConfirmationResponse(newConfirmationResponse)
-                .doReturn { _ -> throw RuntimeException() }
-
-            assertEquals(expectedValue.toJson(), updatedConfirmationResponse.toJson())
         }
     }
 

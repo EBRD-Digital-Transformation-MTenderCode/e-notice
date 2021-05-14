@@ -29,8 +29,8 @@ import com.procurement.notice.infrastructure.dto.entity.RecordPeriod
 import com.procurement.notice.infrastructure.dto.entity.RecordPreQualification
 import com.procurement.notice.infrastructure.dto.entity.RecordPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.entity.RecordRecurrentProcurement
+import com.procurement.notice.infrastructure.dto.entity.RecordRelatedOrganization
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedParty
-import com.procurement.notice.infrastructure.dto.entity.RecordRelatedPerson
 import com.procurement.notice.infrastructure.dto.entity.RecordRelatedProcess
 import com.procurement.notice.infrastructure.dto.entity.RecordRequirementGroup
 import com.procurement.notice.infrastructure.dto.entity.RecordVerification
@@ -131,8 +131,8 @@ import com.procurement.notice.infrastructure.dto.request.RequestPeriod
 import com.procurement.notice.infrastructure.dto.request.RequestPreQualification
 import com.procurement.notice.infrastructure.dto.request.RequestPurposeOfNotice
 import com.procurement.notice.infrastructure.dto.request.RequestRecurrentProcurement
+import com.procurement.notice.infrastructure.dto.request.RequestRelatedOrganization
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedParty
-import com.procurement.notice.infrastructure.dto.request.RequestRelatedPerson
 import com.procurement.notice.infrastructure.dto.request.RequestRelatedProcess
 import com.procurement.notice.infrastructure.dto.request.RequestRequirementGroup
 import com.procurement.notice.infrastructure.dto.request.RequestVerification
@@ -157,7 +157,6 @@ import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfir
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestContract
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequestGroup
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueBreakdown
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestValueTax
 import com.procurement.notice.infrastructure.dto.request.documents.RequestDocument
@@ -2601,7 +2600,7 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
     return this
         .copy(
             id = this.id,
-            status = received.status,
+            status = received.status ?: this.status,
             statusDetails = received.statusDetails,
             requirementResponses = requirementResponses,
             date = received.date ?: this.date,
@@ -2711,24 +2710,21 @@ fun RecordRelatedParty.updateRelatedParty(received: RequestRelatedParty): Update
     )
         .asSuccess()
 
-fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfirmationResponse): UpdateRecordResult<RecordConfirmationResponse> {
-    val value = received.value
-        ?.let {
-            this.value
-                ?.updateConfirmationResponseValue(it)
-                ?.doReturn { e -> return failure(e) }
-                ?: createConfirmationResponseValue(it)
+fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfirmationResponse): UpdateRecordResult<RecordConfirmationResponse> =
+    this.copy(
+        id = this.id,
+        date = received.date ?: this.date,
+        requestId = received.requestId ?: this.requestId,
+        type = received.type ?: this.type,
+        value = received.value ?: this.value,
+        relatedPerson = when {
+            this.relatedPerson != null && received.relatedPerson != null -> this.relatedPerson.updatePerson(received.relatedPerson).doReturn { return failure(it) }
+            this.relatedPerson != null && received.relatedPerson == null -> this.relatedPerson
+            this.relatedPerson == null && received.relatedPerson != null -> createPerson(received.relatedPerson)
+            else -> null
         }
-        ?: this.value
+    ).asSuccess()
 
-    return this
-        .copy(
-            id = this.id,
-            value = value,
-            request = received.request ?: this.request
-        )
-        .asSuccess()
-}
 
 fun RecordConfirmationResponseValue.updateConfirmationResponseValue(
     received: RequestConfirmationResponseValue
@@ -2736,9 +2732,9 @@ fun RecordConfirmationResponseValue.updateConfirmationResponseValue(
     val relatedPerson = received.relatedPerson
         ?.let {
             this.relatedPerson
-                ?.updateRelatedPerson(it)
+                ?.updateOrganization(it)
                 ?.doReturn { e -> return failure(e) }
-                ?: createRelatedPerson(it)
+                ?: createOrganization(it)
         }
         ?: this.relatedPerson
 
@@ -2767,7 +2763,7 @@ fun List<RecordVerification>.updateVerification(received: List<RequestVerificati
     return result.asSuccess()
 }
 
-fun RecordRelatedPerson.updateRelatedPerson(received: RequestRelatedPerson): UpdateRecordResult<RecordRelatedPerson> {
+fun RecordRelatedOrganization.updateOrganization(received: RequestRelatedOrganization): UpdateRecordResult<RecordRelatedOrganization> {
     val personId = if (received.id == this.id)
         received.id
     else
@@ -2787,15 +2783,14 @@ fun RecordRelatedPerson.updateRelatedPerson(received: RequestRelatedPerson): Upd
 }
 
 fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirmationRequest): UpdateRecordResult<RecordConfirmationRequest> {
-    val requestGroups = updateStrategy(
-        receivedElements = received.requestGroups,
-        keyExtractorForReceivedElement = requestRequestGroupKeyExtractor,
-        availableElements = this.requestGroups.toList(),
-        keyExtractorForAvailableElement = recordRequestGroupKeyExtractor,
-        updateBlock = RecordRequestGroup::updateRequestGroup,
-        createBlock = ::createRequestGroup
-    )
-        .doReturn { e -> return failure(e) }
+    val requests = updateStrategy(
+        receivedElements = received.requests,
+        keyExtractorForReceivedElement = requestRequestKeyExtractor,
+        availableElements = this.requests.toList(),
+        keyExtractorForAvailableElement = recordRequestKeyExtractor,
+        updateBlock = RecordRequest::updateRequest,
+        createBlock = ::createRequest
+    ).doReturn { e -> return failure(e) }
 
     return this
         .copy(
@@ -2806,32 +2801,13 @@ fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirm
             relatedItem = received.relatedItem,
             type = received.type ?: this.type,
             source = received.source,
-            requestGroups = requestGroups
+            requestGroups = this.requestGroups,
+            requests = requests
         )
         .asSuccess()
 }
 
 val recordRequestGroupKeyExtractor: (RecordRequestGroup) -> String = { it.id }
-val requestRequestGroupKeyExtractor: (RequestRequestGroup) -> String = { it.id }
-
-fun RecordRequestGroup.updateRequestGroup(received: RequestRequestGroup): UpdateRecordResult<RecordRequestGroup> {
-    val requests = updateStrategy(
-        receivedElements = received.requests,
-        keyExtractorForReceivedElement = requestRequestKeyExtractor,
-        availableElements = this.requests.toList(),
-        keyExtractorForAvailableElement = recordRequestKeyExtractor,
-        updateBlock = RecordRequest::updateRequest,
-        createBlock = ::createRequest
-    )
-        .doReturn { e -> return failure(e) }
-
-    return this
-        .copy(
-            id = this.id,
-            requests = requests
-        )
-        .asSuccess()
-}
 
 val recordRequestKeyExtractor: (RecordRequest) -> String = { it.id }
 val requestRequestKeyExtractor: (RequestRequest) -> String = { it.id }
@@ -2840,18 +2816,28 @@ fun RecordRequest.updateRequest(received: RequestRequest): UpdateRecordResult<Re
     val relatedPerson = received.relatedPerson
         ?.let {
             this.relatedPerson
-                ?.updateRelatedPerson(it)
+                ?.updateOrganization(it)
                 ?.doReturn { e -> return failure(e) }
-                ?: createRelatedPerson(it)
+                ?: createOrganization(it)
         }
         ?: this.relatedPerson
+
+  val relatedOrganization = received.relatedOrganization
+        ?.let {
+            this.relatedOrganization
+                ?.updateOrganization(it)
+                ?.doReturn { e -> return failure(e) }
+                ?: createOrganization(it)
+        }
+        ?: this.relatedOrganization
 
     return this
         .copy(
             id = this.id,
             relatedPerson = relatedPerson,
-            description = received.description,
-            title = received.title
+            relatedOrganization = relatedOrganization,
+            description = this.description,
+            title = this.title
         )
         .asSuccess()
 }
