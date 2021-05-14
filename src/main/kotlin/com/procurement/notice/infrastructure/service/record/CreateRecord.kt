@@ -1289,8 +1289,8 @@ fun createRequest(received: RequestRequest): RecordRequest =
         id = received.id,
         relatedPerson = received.relatedPerson?.let { createOrganization(it) },
         relatedOrganization = received.relatedOrganization?.let { createRelatedOrganization(it) },
-        description = received.description,
-        title = received.title
+        description = null,
+        title = null
     )
 
 fun createBudgetSource(received: RequestBudgetSource): RecordBudgetSource =
