@@ -962,54 +962,6 @@ class UpdatedRecordTest {
     }
 
     @Nested
-    inner class ConfirmationResponseTest {
-
-        val prevConfirmationResponse = RecordConfirmationResponse(
-            id = "ConfirmationResponse.id",
-            value = null,
-            request = "dbConfirmationResponse?.request"
-        )
-
-        val sampleNewConfirmationResponse = RequestConfirmationResponse(
-            id = "ConfirmationResponse.id",
-            value = null,
-            request = "rqConfirmationResponse.request"
-        )
-
-        @Test
-        fun `update ConfirmationResponse - without previous value`() {
-            val createdConfirmationResponse = createConfirmationResponse(sampleNewConfirmationResponse)
-            assertEquals(sampleNewConfirmationResponse.toJson(), createdConfirmationResponse.toJson())
-        }
-
-        @Test
-        fun `update ConfirmationResponse - full update`() {
-            val updatedConfirmationResponse = prevConfirmationResponse
-                .updateConfirmationResponse(sampleNewConfirmationResponse)
-                .doReturn { _ -> throw RuntimeException() }
-            assertEquals(updatedConfirmationResponse.toJson(), sampleNewConfirmationResponse.toJson())
-        }
-
-        @Test
-        fun `update ConfirmationResponse - partial updating`() {
-            val newConfirmationResponse = sampleNewConfirmationResponse.copy(
-                value = null
-            )
-
-            val expectedValue = RecordConfirmationResponse(
-                id = sampleNewConfirmationResponse.id,
-                value = prevConfirmationResponse.value,
-                request = sampleNewConfirmationResponse.request
-            )
-            val updatedConfirmationResponse = prevConfirmationResponse
-                .updateConfirmationResponse(newConfirmationResponse)
-                .doReturn { _ -> throw RuntimeException() }
-
-            assertEquals(expectedValue.toJson(), updatedConfirmationResponse.toJson())
-        }
-    }
-
-    @Nested
     inner class RelatedPartyTest {
 
         val prevRelatedParty = RecordRelatedParty(
