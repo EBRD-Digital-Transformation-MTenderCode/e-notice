@@ -2710,24 +2710,21 @@ fun RecordRelatedParty.updateRelatedParty(received: RequestRelatedParty): Update
     )
         .asSuccess()
 
-fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfirmationResponse): UpdateRecordResult<RecordConfirmationResponse> {
-    val value = received.value
-        ?.let {
-            this.value
-                ?.updateConfirmationResponseValue(it)
-                ?.doReturn { e -> return failure(e) }
-                ?: createConfirmationResponseValue(it)
+fun RecordConfirmationResponse.updateConfirmationResponse(received: RequestConfirmationResponse): UpdateRecordResult<RecordConfirmationResponse> =
+    this.copy(
+        id = this.id,
+        date = received.date ?: this.date,
+        requestId = received.requestId ?: this.requestId,
+        type = received.type ?: this.type,
+        value = received.value ?: this.value,
+        relatedPerson = when {
+            this.relatedPerson != null && received.relatedPerson != null -> this.relatedPerson.updatePerson(received.relatedPerson).doReturn { return failure(it) }
+            this.relatedPerson != null && received.relatedPerson == null -> this.relatedPerson
+            this.relatedPerson == null && received.relatedPerson != null -> createPerson(received.relatedPerson)
+            else -> null
         }
-        ?: this.value
+    ).asSuccess()
 
-    return this
-        .copy(
-            id = this.id,
-            value = value,
-            request = received.request ?: this.request
-        )
-        .asSuccess()
-}
 
 fun RecordConfirmationResponseValue.updateConfirmationResponseValue(
     received: RequestConfirmationResponseValue
