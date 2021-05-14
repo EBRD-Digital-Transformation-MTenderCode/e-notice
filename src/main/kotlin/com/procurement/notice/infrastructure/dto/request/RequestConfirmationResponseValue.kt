@@ -14,7 +14,7 @@ data class RequestConfirmationResponseValue(
     @field:JsonProperty("date") @param:JsonProperty("date") val date: LocalDateTime?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("relatedPerson") @param:JsonProperty("relatedPerson") val relatedPerson: RequestRelatedPerson?,
+    @field:JsonProperty("relatedPerson") @param:JsonProperty("relatedPerson") val relatedPerson: RequestRelatedOrganization?,
 
     @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
     @field:JsonProperty("verification") @param:JsonProperty("verification") val verification: List<RequestVerification> = emptyList()
