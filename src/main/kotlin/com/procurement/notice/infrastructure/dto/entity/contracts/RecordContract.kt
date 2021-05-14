@@ -34,7 +34,8 @@ data class RecordContract(
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("description") @param:JsonProperty("description") val description: String? = null,
 
-    @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("status") @param:JsonProperty("status") val status: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String?,

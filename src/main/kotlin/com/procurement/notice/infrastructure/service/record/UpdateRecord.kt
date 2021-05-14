@@ -2600,7 +2600,7 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
     return this
         .copy(
             id = this.id,
-            status = received.status,
+            status = received.status ?: this.status,
             statusDetails = received.statusDetails,
             requirementResponses = requirementResponses,
             date = received.date ?: this.date,
