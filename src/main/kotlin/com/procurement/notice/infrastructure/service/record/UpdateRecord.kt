@@ -2836,8 +2836,8 @@ fun RecordRequest.updateRequest(received: RequestRequest): UpdateRecordResult<Re
             id = this.id,
             relatedPerson = relatedPerson,
             relatedOrganization = relatedOrganization,
-            description = received.description,
-            title = received.title
+            description = this.description,
+            title = this.title
         )
         .asSuccess()
 }

@@ -8,9 +8,11 @@ data class RecordRequest(
 
     @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
 
-    @field:JsonProperty("title") @param:JsonProperty("title") val title: String,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("title") @param:JsonProperty("title") val title: String?,
 
-    @field:JsonProperty("description") @param:JsonProperty("description") val description: String,
+    @field:JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("description") @param:JsonProperty("description") val description: String?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
     @field:JsonProperty("relatedPerson") @param:JsonProperty("relatedPerson") val relatedPerson: RecordRelatedOrganization?,

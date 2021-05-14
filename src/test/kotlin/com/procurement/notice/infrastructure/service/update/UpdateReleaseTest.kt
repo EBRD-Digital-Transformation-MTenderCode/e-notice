@@ -17,7 +17,6 @@ import com.procurement.notice.infrastructure.dto.entity.address.RecordRegionDeta
 import com.procurement.notice.infrastructure.dto.entity.awards.RecordBidsStatistic
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordBudgetSource
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationRequest
-import com.procurement.notice.infrastructure.dto.entity.contracts.RecordConfirmationResponse
 import com.procurement.notice.infrastructure.dto.entity.contracts.RecordRequest
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordBankAccount
 import com.procurement.notice.infrastructure.dto.entity.parties.RecordPermitDetails
@@ -41,7 +40,6 @@ import com.procurement.notice.infrastructure.dto.request.address.RequestRegionDe
 import com.procurement.notice.infrastructure.dto.request.awards.RequestBidsStatistic
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestBudgetSource
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationRequest
-import com.procurement.notice.infrastructure.dto.request.contracts.RequestConfirmationResponse
 import com.procurement.notice.infrastructure.dto.request.contracts.RequestRequest
 import com.procurement.notice.infrastructure.dto.request.parties.RequestBankAccount
 import com.procurement.notice.infrastructure.dto.request.parties.RequestPermitDetails
@@ -55,7 +53,6 @@ import com.procurement.notice.infrastructure.service.record.createBidsStatistic
 import com.procurement.notice.infrastructure.service.record.createBudgetSource
 import com.procurement.notice.infrastructure.service.record.createClassification
 import com.procurement.notice.infrastructure.service.record.createConfirmationRequest
-import com.procurement.notice.infrastructure.service.record.createConfirmationResponse
 import com.procurement.notice.infrastructure.service.record.createContractPeriod
 import com.procurement.notice.infrastructure.service.record.createIdentifier
 import com.procurement.notice.infrastructure.service.record.createLegalForm
@@ -73,7 +70,6 @@ import com.procurement.notice.infrastructure.service.record.updateBidsStatistic
 import com.procurement.notice.infrastructure.service.record.updateBudgetSource
 import com.procurement.notice.infrastructure.service.record.updateClassification
 import com.procurement.notice.infrastructure.service.record.updateConfirmationRequest
-import com.procurement.notice.infrastructure.service.record.updateConfirmationResponse
 import com.procurement.notice.infrastructure.service.record.updateIdentifier
 import com.procurement.notice.infrastructure.service.record.updateLegalForm
 import com.procurement.notice.infrastructure.service.record.updateMilestone
@@ -853,8 +849,6 @@ class UpdatedRecordTest {
         val sampleNewRequest = RequestRequest(
             id = "id",
             relatedPerson = null,
-            description = "rqRequest.description",
-            title = "rqRequest.title",
             relatedOrganization = RequestRelatedOrganization(
                 id = "org-id",
                 name = "org-name-rq"
@@ -871,7 +865,21 @@ class UpdatedRecordTest {
         fun `update Request - full update`() {
             val updatedRequest = prevRequest.updateRequest(sampleNewRequest)
                 .doReturn { _ -> throw RuntimeException() }
-            assertEquals(updatedRequest.toJson(), sampleNewRequest.toJson())
+
+            val expectedValue = RecordRequest(
+                id = sampleNewRequest.id,
+                description = prevRequest.description,
+                title = prevRequest.title,
+                relatedPerson = prevRequest.relatedPerson,
+                relatedOrganization = sampleNewRequest.relatedOrganization?.let { relatedOrganization ->
+                    RecordRelatedOrganization(
+                        id = relatedOrganization.id,
+                        name = relatedOrganization.name
+                    )
+                }
+            )
+
+            assertEquals(updatedRequest.toJson(), expectedValue.toJson())
         }
 
         @Test
@@ -882,8 +890,8 @@ class UpdatedRecordTest {
 
             val expectedValue = RecordRequest(
                 id = sampleNewRequest.id,
-                description = sampleNewRequest.description,
-                title = sampleNewRequest.title,
+                description = prevRequest.description,
+                title = prevRequest.title,
                 relatedPerson = prevRequest.relatedPerson,
                 relatedOrganization = sampleNewRequest.relatedOrganization?.let { relatedOrganization ->
                     RecordRelatedOrganization(
