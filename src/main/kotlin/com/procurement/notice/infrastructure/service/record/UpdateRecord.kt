@@ -2601,7 +2601,7 @@ fun RecordContract.updateContract(received: RequestContract): UpdateRecordResult
         .copy(
             id = this.id,
             status = received.status ?: this.status,
-            statusDetails = received.statusDetails,
+            statusDetails = received.statusDetails ?: this.statusDetails,
             requirementResponses = requirementResponses,
             date = received.date ?: this.date,
             documents = documents,
@@ -2798,9 +2798,9 @@ fun RecordConfirmationRequest.updateConfirmationRequest(received: RequestConfirm
             title = received.title ?: this.title,
             description = received.description ?: this.description,
             relatesTo = received.relatesTo ?: this.relatesTo,
-            relatedItem = received.relatedItem,
+            relatedItem = received.relatedItem ?: this.relatedItem,
             type = received.type ?: this.type,
-            source = received.source,
+            source = received.source ?: this.source,
             requestGroups = this.requestGroups,
             requests = requests
         )
