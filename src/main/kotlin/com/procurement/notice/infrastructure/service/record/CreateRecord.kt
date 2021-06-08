@@ -261,6 +261,7 @@ fun createRelease(
 
     return Record(
         id = releaseId,
+        language = receivedRelease.language,
         ocid = receivedRelease.ocid,
         date = params.date,
         relatedProcesses = relatedProcesses,

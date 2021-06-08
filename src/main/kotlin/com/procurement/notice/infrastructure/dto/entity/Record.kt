@@ -33,6 +33,9 @@ data class Record(
         @field:JsonProperty("initiationType") @param:JsonProperty("initiationType") val initiationType: InitiationType?,
 
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("language") @param:JsonProperty("language") val language: String?,
+
+        @field:JsonInclude(JsonInclude.Include.NON_NULL)
         @field:JsonProperty("planning") @param:JsonProperty("planning") val planning: RecordPlanning?,
 
         @field:JsonInclude(JsonInclude.Include.NON_EMPTY)
