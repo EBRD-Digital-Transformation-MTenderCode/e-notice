@@ -33,6 +33,8 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.auction.periodEnd.request.AuctionPeriodEndRequest
 import com.procurement.notice.infrastructure.dto.award.AwardConsiderationRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
@@ -206,6 +208,11 @@ class CommandService(
 
             CREATE_CN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'cpid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -215,6 +222,11 @@ class CommandService(
 
             CREATE_PN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'cpid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -224,6 +236,11 @@ class CommandService(
 
             CREATE_AP -> createReleaseService.createAp(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'cpid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -233,6 +250,11 @@ class CommandService(
 
             CREATE_PIN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'cpid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
