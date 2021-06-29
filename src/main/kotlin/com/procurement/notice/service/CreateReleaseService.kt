@@ -268,6 +268,7 @@ class CreateReleaseService(
     fun createNegotiationCnOnPn(
         cpid: String,
         ocid: String,
+        ocidCn: String,
         stage: String,
         prevStage: String,
         operation: Operation,
@@ -305,8 +306,8 @@ class CreateReleaseService(
         releaseService.saveRecord(cpId = cpid, stage = prevStage, release = releasePN, publishDate = recordEntity.publishDate)
 
         val releaseNP = releasePN.copy(
-            ocid = ocid, //BR-2.4.16.6
-            id = generationService.generateReleaseId(ocid), //BR-2.4.16.7
+            ocid = ocidCn, //BR-2.4.16.6
+            id = generationService.generateReleaseId(ocidCn), //BR-2.4.16.7
             date = releaseDate, //BR-2.4.16.8
             tag = listOf(Tag.TENDER), //BR-2.4.16.3
             tender = recordTender.copy( //BR-2.4.16.11
@@ -320,14 +321,14 @@ class CreateReleaseService(
             parties = mutableListOf() //BR-2.4.16.12
         )
         //BR-2.4.16.26
-        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocid, processType = params.relatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocidCn, processType = params.relatedProcessType)
 
         //BR-2.4.16.2
-        relatedProcessService.addRecordRelatedProcessToRecord(release = releaseNP, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
+        relatedProcessService.addRecordRelatedProcessToRecord(release = releaseNP, ocId = ocidCn, cpId = cpid, processType = RelatedProcessType.PLANNING)
 
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, release = releaseNP, publishDate = releaseDate.toDate())
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocidCn))
     }
 
     fun createCnOnPin(cpid: String,
