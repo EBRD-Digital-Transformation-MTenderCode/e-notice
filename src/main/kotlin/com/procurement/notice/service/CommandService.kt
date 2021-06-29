@@ -295,10 +295,10 @@ class CommandService(
 
             CREATE_NEGOTIATION_CN_ON_PN -> createReleaseService.createNegotiationCnOnPn(
                 cpid = cpId,
-                ocid = ocId
+                ocid = ocidCn
                     ?: throw ErrorException(
                         error = ErrorType.CONTEXT,
-                        message = "Missing the 'ocid' attribute in context."
+                        message = "Missing the 'ocidCn' attribute in context."
                     ),
                 stage = stage,
                 prevStage = prevStage!!,
