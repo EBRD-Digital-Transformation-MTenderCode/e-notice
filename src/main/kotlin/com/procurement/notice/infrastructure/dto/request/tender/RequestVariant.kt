@@ -9,5 +9,5 @@ data class RequestVariant(
     @get:JsonProperty("hasVariants") @param:JsonProperty("hasVariants") val hasVariants: Boolean?,
 
     @field:JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("variantDetails") @param:JsonProperty("variantDetails") val variantDetails: String?
+    @field:JsonProperty("variantsDetails") @param:JsonProperty("variantsDetails") val variantsDetails: String?
 )

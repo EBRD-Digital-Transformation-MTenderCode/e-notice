@@ -33,6 +33,8 @@ import com.procurement.notice.application.service.tender.cancel.CancelledStandSt
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
 import com.procurement.notice.application.service.tender.unsuccessful.TenderUnsuccessfulContext
 import com.procurement.notice.dao.HistoryDao
+import com.procurement.notice.exception.ErrorException
+import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.infrastructure.dto.auction.periodEnd.request.AuctionPeriodEndRequest
 import com.procurement.notice.infrastructure.dto.award.AwardConsiderationRequest
 import com.procurement.notice.infrastructure.dto.award.CreateAwardRequest
@@ -198,7 +200,11 @@ class CommandService(
 
             UPDATE_FS -> budgetService.updateFs(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -206,6 +212,11 @@ class CommandService(
 
             CREATE_CN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -215,6 +226,11 @@ class CommandService(
 
             CREATE_PN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -224,6 +240,11 @@ class CommandService(
 
             CREATE_AP -> createReleaseService.createAp(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -233,6 +254,11 @@ class CommandService(
 
             CREATE_PIN -> createReleaseService.createCnPnPin(
                 cpid = cpId,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data,
@@ -242,7 +268,11 @@ class CommandService(
 
             CREATE_PIN_ON_PN -> createReleaseService.createPinOnPn(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,
@@ -251,8 +281,16 @@ class CommandService(
 
             CREATE_CN_ON_PN -> createReleaseService.createCnOnPn(
                 cpid = cpId,
-                ocid = ocId!!,
-                ocidCn = ocidCn!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
+                ocidCn = ocidCn
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocidCn' attribute in context."
+                    ),
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,
@@ -261,7 +299,16 @@ class CommandService(
 
             CREATE_NEGOTIATION_CN_ON_PN -> createReleaseService.createNegotiationCnOnPn(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
+                ocidCn = ocidCn
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocidCn' attribute in context."
+                    ),
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,
@@ -271,7 +318,11 @@ class CommandService(
 
             CREATE_CN_ON_PIN -> createReleaseService.createCnOnPin(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,
@@ -302,7 +353,11 @@ class CommandService(
 
             UPDATE_PN -> updateReleaseService.updatePn(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -310,7 +365,11 @@ class CommandService(
 
             UPDATE_AP -> updateReleaseService.updateAp(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -318,7 +377,11 @@ class CommandService(
 
             UPDATE_TENDER_PERIOD -> updateReleaseService.updateTenderPeriod(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -326,7 +389,11 @@ class CommandService(
 
             CREATE_ENQUIRY -> enquiryService.createEnquiry(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -334,7 +401,11 @@ class CommandService(
 
             ADD_ANSWER -> enquiryService.addAnswer(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -342,7 +413,11 @@ class CommandService(
 
             SUSPEND_TENDER -> tenderService.suspendTender(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -350,7 +425,11 @@ class CommandService(
 
             UNSUSPEND_TENDER -> tenderService.unsuspendTender(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 pmd = cm.pmd,
                 releaseDate = releaseDate,
@@ -454,7 +533,11 @@ class CommandService(
 
             ENQUIRY_PERIOD_END -> tenderServiceEv.enquiryPeriodEnd(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -462,7 +545,11 @@ class CommandService(
 
             AWARD_BY_BID -> tenderService.awardByBid(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -470,7 +557,11 @@ class CommandService(
 
             AWARD_BY_BID_EV -> tenderServiceEv.awardByBidEv(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -478,7 +569,11 @@ class CommandService(
 
             STANDSTILL_PERIOD -> tenderService.standstillPeriod(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -486,7 +581,11 @@ class CommandService(
 
             AWARD_PERIOD_END -> tenderService.awardPeriodEnd(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -494,7 +593,11 @@ class CommandService(
 
             START_NEW_STAGE -> tenderService.startNewStage(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,
@@ -554,7 +657,11 @@ class CommandService(
 
             CANCEL_TENDER, CANCEL_TENDER_EV, CANCEL_PLAN -> tenderCancellationService.tenderCancellation(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -562,7 +669,11 @@ class CommandService(
 
             UPDATE_BID_DOCS -> tenderServiceEv.updateBidDocs(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -570,7 +681,11 @@ class CommandService(
 
             CREATE_AC -> contractingService.createAc(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -578,7 +693,11 @@ class CommandService(
 
             UPDATE_AC -> contractingService.updateAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -586,7 +705,11 @@ class CommandService(
 
             ISSUING_AC -> contractingService.issuingAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -594,7 +717,11 @@ class CommandService(
 
             FINAL_UPDATE -> contractingService.finalUpdateAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -602,7 +729,11 @@ class CommandService(
 
             BUYER_SIGNING_AC -> contractingService.buyerSigningAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -610,7 +741,11 @@ class CommandService(
 
             SUPPLIER_SIGNING_AC -> contractingService.supplierSigningAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -618,7 +753,11 @@ class CommandService(
 
             VERIFICATION_AC -> contractingService.verificationAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -626,7 +765,11 @@ class CommandService(
 
             TREASURY_APPROVING_AC -> contractingService.treasuryApprovingAC(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -926,7 +1069,11 @@ class CommandService(
 
             UPDATE_CAN_DOCS -> contractingService.updateCanDocs(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -934,7 +1081,11 @@ class CommandService(
 
             CANCEL_CAN -> contractingService.cancelCan(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -942,7 +1093,11 @@ class CommandService(
 
             CANCEL_CAN_CONTRACT -> contractingService.cancelCanAndContract(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data
@@ -1079,7 +1234,11 @@ class CommandService(
             }
             END_CONTRACT_PROCESS -> contractingService.endContractingProcess(
                 cpid = cpId,
-                ocid = ocId!!,
+                ocid = ocId
+                    ?: throw ErrorException(
+                        error = ErrorType.CONTEXT,
+                        message = "Missing the 'ocid' attribute in context."
+                    ),
                 stage = stage,
                 releaseDate = releaseDate,
                 data = data

@@ -41,6 +41,7 @@ class CreateReleaseService(
 
     fun createCnPnPin(
         cpid: String,
+        ocid: String,
         stage: String,
         releaseDate: LocalDateTime,
         data: JsonNode,
@@ -64,11 +65,10 @@ class CreateReleaseService(
         organizationService.processMsParties(ms, checkFs)
 
         val receivedRelease = releaseService.getRelease(data)
-        val ocId = generationService.generateOcid(cpid = cpid, stage = stage)
         val release = receivedRelease.copy(
             date = releaseDate,
-            ocid = ocId,
-            id = generationService.generateReleaseId(ocId),
+            ocid = ocid,
+            id = generationService.generateReleaseId(ocid),
             tag = params.tag,
             language = language,
             initiationType = InitiationType.TENDER,
@@ -80,18 +80,19 @@ class CreateReleaseService(
                 procuringEntity = null
             )
         )
-        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocId, processType = params.relatedProcessType)
+        relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocid, processType = params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(release = release, cpId = cpid)
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = releaseDate.toDate())
         releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = releaseDate.toDate())
         budgetService.createEiByMs(eiIds = checkFs.ei, msCpId = cpid, dateTime = releaseDate)
         val budgetBreakdowns = ms.planning?.budget?.budgetBreakdown ?: throw ErrorException(ErrorType.BREAKDOWN_ERROR)
         budgetService.createFsByMs(budgetBreakdowns = budgetBreakdowns, msCpId = cpid, dateTime = releaseDate)
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     fun createAp(
         cpid: String,
+        ocid: String,
         stage: String,
         releaseDate: LocalDateTime,
         data: JsonNode,
@@ -113,11 +114,10 @@ class CreateReleaseService(
             )
         )
         val rawRelease = releaseService.getRelease(data)
-        val ocId = generationService.generateOcid(cpid = cpid, stage = stage)
         val compiledRelease = rawRelease.copy(
             date = releaseDate, // BR-4.256
-            ocid = ocId,
-            id = generationService.generateReleaseId(ocId),
+            ocid = ocid,
+            id = generationService.generateReleaseId(ocid),
             tag = listOf(Tag.PLANNING),    // BR-4.48
             language = language, // BR-4.267
             initiationType = InitiationType.TENDER,   // BR-4.74
@@ -126,13 +126,13 @@ class CreateReleaseService(
         )
         relatedProcessService.addApRecordRelatedProcessToMs(
             ms = compiledMs,
-            ocId = ocId,
+            ocId = ocid,
             processType = RelatedProcessType.AGGREGATE_PLANNING
         )
         relatedProcessService.addMsRelatedProcessToRecord(release = compiledRelease, cpId = cpid)
         releaseService.saveMs(cpId = cpid, ms = compiledMs, publishDate = releaseDate.toDate())
         releaseService.saveRecord(cpId = cpid, stage = stage, release = compiledRelease, publishDate = releaseDate.toDate())
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocId))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid))
     }
 
     fun createPinOnPn(cpid: String,
@@ -268,6 +268,7 @@ class CreateReleaseService(
     fun createNegotiationCnOnPn(
         cpid: String,
         ocid: String,
+        ocidCn: String,
         stage: String,
         prevStage: String,
         operation: Operation,
@@ -304,12 +305,9 @@ class CreateReleaseService(
         }
         releaseService.saveRecord(cpId = cpid, stage = prevStage, release = releasePN, publishDate = recordEntity.publishDate)
 
-        //BR-2.4.16.6
-        val newOcId = generationService.generateOcid(cpid = cpid, stage = stage)
-
         val releaseNP = releasePN.copy(
-            ocid = newOcId, //BR-2.4.16.6
-            id = generationService.generateReleaseId(newOcId), //BR-2.4.16.7
+            ocid = ocidCn, //BR-2.4.16.6
+            id = generationService.generateReleaseId(ocidCn), //BR-2.4.16.7
             date = releaseDate, //BR-2.4.16.8
             tag = listOf(Tag.TENDER), //BR-2.4.16.3
             tender = recordTender.copy( //BR-2.4.16.11
@@ -323,14 +321,14 @@ class CreateReleaseService(
             parties = mutableListOf() //BR-2.4.16.12
         )
         //BR-2.4.16.26
-        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = newOcId, processType = params.relatedProcessType)
+        relatedProcessService.addRecordRelatedProcessToMs(ms = ms, ocid = ocidCn, processType = params.relatedProcessType)
 
         //BR-2.4.16.2
-        relatedProcessService.addRecordRelatedProcessToRecord(release = releaseNP, ocId = ocid, cpId = cpid, processType = RelatedProcessType.PLANNING)
+        relatedProcessService.addRecordRelatedProcessToRecord(release = releaseNP, ocId = ocidCn, cpId = cpid, processType = RelatedProcessType.PLANNING)
 
         releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, release = releaseNP, publishDate = releaseDate.toDate())
-        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = newOcId))
+        return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocidCn))
     }
 
     fun createCnOnPin(cpid: String,

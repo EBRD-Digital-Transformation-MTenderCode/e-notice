@@ -304,7 +304,7 @@ fun List<RecordVariant>.updateVariants(received: List<RequestVariant>): List<Rec
     received.mapIfNotEmpty { requestVariant ->
         RecordVariant(
             hasVariants = requestVariant.hasVariants,
-            variantDetails = requestVariant.variantDetails
+            variantDetails = requestVariant.variantsDetails
         )
     } ?: this
 

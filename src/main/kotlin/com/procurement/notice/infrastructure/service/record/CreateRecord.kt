@@ -261,6 +261,7 @@ fun createRelease(
 
     return Record(
         id = releaseId,
+        language = receivedRelease.language,
         ocid = receivedRelease.ocid,
         date = params.date,
         relatedProcesses = relatedProcesses,
@@ -379,7 +380,7 @@ fun createVariants(received: List<RequestVariant>): List<RecordVariant> =
     received.mapIfNotEmpty { requestVariant ->
         RecordVariant(
             hasVariants = requestVariant.hasVariants,
-            variantDetails = requestVariant.variantDetails
+            variantDetails = requestVariant.variantsDetails
         )
     }.orEmpty()
 
