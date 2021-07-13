@@ -39,6 +39,6 @@ data class ConfirmCANRequest(
     data class Bid(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: UUID,
         @field:JsonProperty("status") @param:JsonProperty("status") val status: String,
-        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String
+        @field:JsonProperty("statusDetails") @param:JsonProperty("statusDetails") val statusDetails: String?
     )
 }
