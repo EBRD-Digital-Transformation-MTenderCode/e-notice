@@ -30,6 +30,6 @@ data class ConfirmCANData(
     data class Bid(
         val id: UUID,
         val status: String,
-        val statusDetails: String
+        val statusDetails: String?
     )
 }
