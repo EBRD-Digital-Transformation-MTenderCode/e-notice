@@ -24,7 +24,9 @@ import com.procurement.notice.model.ocds.TenderDescription
 import com.procurement.notice.model.ocds.TenderTitle
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Release
+import com.procurement.notice.model.tender.record.ReleaseTender
 import com.procurement.notice.utils.toDate
 import com.procurement.notice.utils.toObject
 import org.springframework.stereotype.Service
@@ -58,9 +60,51 @@ class CreateReleaseService(
             tag = listOf(Tag.COMPILED),
             language = language,
             initiationType = InitiationType.TENDER,
-            tender = receivedMs.tender.copy(
-                statusDetails = params.statusDetails
-            )
+            tender = receivedMs.tender
+                .let { tender ->
+                    MsTender(
+                        id = tender.id,
+                        title = tender.title,
+                        description = tender.description,
+                        status = tender.status,
+                        statusDetails = params.statusDetails,
+                        value = tender.value,
+                        procurementMethod = tender.procurementMethod,
+                        procurementMethodDetails = tender.procurementMethodDetails,
+                        procurementMethodRationale = tender.procurementMethodRationale,
+                        mainProcurementCategory = tender.mainProcurementCategory,
+                        hasEnquiries = tender.hasEnquiries,
+                        eligibilityCriteria = tender.eligibilityCriteria,
+                        contractPeriod = tender.contractPeriod,
+                        acceleratedProcedure = tender.acceleratedProcedure,
+                        classification = tender.classification,
+                        designContest = tender.designContest,
+                        electronicWorkflows = tender.electronicWorkflows,
+                        jointProcurement = tender.jointProcurement,
+                        legalBasis = tender.legalBasis,
+                        procedureOutsourcing = tender.procedureOutsourcing,
+                        procurementMethodAdditionalInfo = tender.procurementMethodAdditionalInfo,
+                        dynamicPurchasingSystem = tender.dynamicPurchasingSystem,
+                        framework = tender.framework,
+                        procuringEntity = tender.procuringEntity
+                            ?.let { procuringEntity ->
+                                OrganizationReference(
+                                    id = procuringEntity.id,
+                                    name = procuringEntity.name,
+                                    identifier = null,
+                                    address = null,
+                                    additionalIdentifiers = null,
+                                    contactPoint = null,
+                                    details = null,
+                                    buyerProfile = null,
+                                    persones = null
+                                )
+                            },
+                        additionalProcurementCategories = emptyList(),
+                        amendments = emptyList(),
+                        submissionLanguages = emptyList()
+                    )
+                }
         )
         organizationService.processMsParties(ms, checkFs)
 
@@ -74,11 +118,45 @@ class CreateReleaseService(
             initiationType = InitiationType.TENDER,
             hasPreviousNotice = false,
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = params.isACallForCompetition),
-            tender = receivedRelease.tender.copy(
-                title = TenderTitle.valueOf(stage.toUpperCase()).text,
-                description = TenderDescription.valueOf(stage.toUpperCase()).text,
-                procuringEntity = null
-            )
+            tender = receivedRelease.tender
+                .let {tender->
+                ReleaseTender(
+                    id = tender.id,
+                    title = tender.title,
+                    description = tender.description,
+                    status = tender.status,
+                    statusDetails = tender.statusDetails,
+                    lotGroups = tender.lotGroups,
+                    tenderPeriod = tender.tenderPeriod,
+                    hasEnquiries = tender.hasEnquiries,
+                    submissionMethod = tender.submissionMethod,
+                    submissionMethodDetails = tender.submissionMethodDetails,
+                    submissionMethodRationale = tender.submissionMethodRationale,
+                    requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
+                    lots = tender.lots,
+                    items = tender.items,
+                    documents = tender.documents,
+                    criteria = emptyList(),
+                    conversions = emptyList(),
+                    otherCriteria = null,
+                    enquiryPeriod = null,
+                    standstillPeriod = null,
+                    awardPeriod = null,
+                    auctionPeriod = null,
+                    enquiries = mutableListOf(),
+                    amendments = emptyList(),
+                    awardCriteria = null,
+                    awardCriteriaDetails = null,
+                    procurementMethodModalities = emptyList(),
+                    electronicAuctions = null,
+                    secondStage = null,
+                    procurementMethodRationale = null,
+                    classification = null,
+                    value = null,
+                    targets = emptyList(),
+                    procuringEntity = null
+                )
+            }
         )
         relatedProcessService.addEiFsRecordRelatedProcessToMs(ms = ms, checkFs = checkFs, ocId = ocid, processType = params.relatedProcessType)
         relatedProcessService.addMsRelatedProcessToRecord(release = release, cpId = cpid)
