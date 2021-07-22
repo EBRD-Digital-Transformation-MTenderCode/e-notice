@@ -48,6 +48,7 @@ import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.ElectronicAuctionModalities
 import com.procurement.notice.model.tender.record.ElectronicAuctions
 import com.procurement.notice.model.tender.record.ElectronicAuctionsDetails
+import com.procurement.notice.model.tender.record.Release
 import com.procurement.notice.model.tender.record.ReleasePreQualification
 import com.procurement.notice.model.tender.record.ReleaseTender
 import org.springframework.stereotype.Service
@@ -630,38 +631,128 @@ class UpdateReleaseService(
         releaseDate: LocalDateTime,
         data: JsonNode
     ): ResponseDto {
-        val msReq = releaseService.getMs(data)
-        val recordTender = releaseService.getRecordTender(data)
+        val receivedMs = releaseService.getMs(data)
+        val receivedTender = releaseService.getRecordTender(data)
         /*ms*/
         val msEntity = releaseService.getMsEntity(cpid)
-        val ms = releaseService.getMs(msEntity.jsonData)
-        msReq.tender.apply {
-            id = ms.tender.id
-            status = ms.tender.status
-            statusDetails = ms.tender.statusDetails
-            procuringEntity = ms.tender.procuringEntity
-            hasEnquiries = ms.tender.hasEnquiries
-        }
-        ms.apply {
-            id = generationService.generateReleaseId(cpid)
-            date = releaseDate
-            planning = msReq.planning
-            tender = msReq.tender
-        }
+        val storedMs = releaseService.getMs(msEntity.jsonData)
+
+        val updatedTenderMs = storedMs.tender
+            .let{ tender ->
+                MsTender(
+                    id = tender.id,
+                    status = tender.status,
+                    statusDetails = tender.statusDetails,
+                    value = tender.value,
+                    procurementMethod = tender.procurementMethod,
+                    procurementMethodDetails = tender.procurementMethodDetails,
+                    mainProcurementCategory = tender.mainProcurementCategory,
+                    hasEnquiries = tender.hasEnquiries,
+                    eligibilityCriteria = tender.eligibilityCriteria,
+                    contractPeriod = tender.contractPeriod,
+                    acceleratedProcedure = tender.acceleratedProcedure,
+                    classification = tender.classification,
+                    designContest = tender.designContest,
+                    electronicWorkflows = tender.electronicWorkflows,
+                    jointProcurement = tender.jointProcurement,
+                    legalBasis = tender.legalBasis,
+                    procedureOutsourcing = tender.procedureOutsourcing,
+                    dynamicPurchasingSystem = tender.dynamicPurchasingSystem,
+                    framework = tender.framework,
+                    procuringEntity = tender.procuringEntity,
+
+                    title = receivedMs.tender.title,
+                    description = receivedMs.tender.description,
+                    procurementMethodRationale = receivedMs.tender.procurementMethodRationale,
+                    procurementMethodAdditionalInfo = receivedMs.tender.procurementMethodAdditionalInfo,
+
+                    additionalProcurementCategories = emptyList(),
+                    amendments = emptyList(),
+                    submissionLanguages = emptyList()
+                )
+            }
+
+
+        val updatedMs = Ms(
+            id = generationService.generateReleaseId(cpid),
+            date = releaseDate,
+            initiationType = storedMs.initiationType,
+            ocid = storedMs.ocid,
+            language = storedMs.language,
+            tag = listOf(Tag.COMPILED),
+            planning = receivedMs.planning,
+            tender = updatedTenderMs,
+            parties = receivedMs.parties,
+            relatedProcesses = receivedMs.relatedProcesses
+        )
+
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val release = releaseService.getRelease(recordEntity.jsonData)
-        recordTender.apply {
-            title = release.tender.title
-            description = release.tender.description
-        }
-        release.apply {
-            id = generationService.generateReleaseId(ocid)
-            date = releaseDate
-            tag = listOf(Tag.PLANNING_UPDATE)
-            tender = recordTender
-        }
-        releaseService.saveMs(cpId = cpid, ms = ms, publishDate = msEntity.publishDate)
-        releaseService.saveRecord(cpId = cpid, stage = stage, release = release, publishDate = recordEntity.publishDate)
+        val storedRelease: Release = releaseService.getRelease(recordEntity.jsonData)
+        val updatedTender = storedRelease.tender
+            .let{ tender ->
+                ReleaseTender(
+                    id = tender.id,
+                    title = tender.title,
+                    description = tender.description,
+                    status = tender.status,
+                    statusDetails = tender.statusDetails,
+                    lotGroups = tender.lotGroups,
+                    hasEnquiries = tender.hasEnquiries,
+                    submissionMethod = tender.submissionMethod,
+                    submissionMethodDetails = tender.submissionMethodDetails,
+                    submissionMethodRationale = tender.submissionMethodRationale,
+                    requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
+
+                    tenderPeriod = receivedTender.tenderPeriod,
+                    lots = receivedTender.lots,
+                    items = receivedTender.items,
+                    documents = receivedTender.documents,
+
+                    criteria = emptyList(),
+                    conversions = emptyList(),
+                    otherCriteria = null,
+                    enquiryPeriod = null,
+                    standstillPeriod = null,
+                    awardPeriod = null,
+                    auctionPeriod = null,
+                    enquiries = mutableListOf(),
+                    amendments = emptyList(),
+                    awardCriteria = null,
+                    awardCriteriaDetails = null,
+                    procurementMethodModalities = emptyList(),
+                    electronicAuctions = null,
+                    secondStage = null,
+                    procurementMethodRationale = null,
+                    classification = null,
+                    value = null,
+                    targets = emptyList(),
+                    procuringEntity = null
+                )
+            }
+
+        val updatedRelease = Release(
+            id = generationService.generateReleaseId(ocid),
+            tag = listOf(Tag.PLANNING_UPDATE),
+            hasPreviousNotice = storedRelease.hasPreviousNotice,
+            purposeOfNotice = storedRelease.purposeOfNotice,
+            ocid = storedRelease.ocid,
+            initiationType = storedRelease.initiationType,
+            language = storedRelease.language,
+            date = releaseDate,
+            relatedProcesses = storedRelease.relatedProcesses,
+            parties = storedRelease.parties,
+            preQualification = null,
+            awards = emptyList(),
+            bids = null,
+            contracts = emptyList(),
+            qualifications = emptyList(),
+            submissions = null,
+            invitations = emptyList(),
+            tender = updatedTender
+        )
+
+        releaseService.saveMs(cpId = cpid, ms = updatedMs, publishDate = msEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = stage, release = updatedRelease, publishDate = recordEntity.publishDate)
         val amendmentsIds = null
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocid, amendmentsIds = amendmentsIds))
     }
