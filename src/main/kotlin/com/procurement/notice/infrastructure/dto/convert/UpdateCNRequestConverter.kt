@@ -128,6 +128,15 @@ fun UpdateCNRequest.convert(): UpdateCNData =
                 procurementMethodRationale = tender.procurementMethodRationale,
                 procurementMethodAdditionalInfo = tender.procurementMethodAdditionalInfo,
                 mainProcurementCategory = tender.mainProcurementCategory,
+                additionalProcurementCategories = tender.additionalProcurementCategories
+                    .errorIfEmpty {
+                        ErrorException(
+                            error = ErrorType.IS_EMPTY,
+                            message = "The tender contain empty list of the additional procurement categories."
+                        )
+                    }
+                    ?.toList()
+                    .orEmpty(),
                 eligibilityCriteria = tender.eligibilityCriteria,
                 contractPeriod = tender.contractPeriod.let { tenderPeriod ->
                     UpdateCNData.Tender.ContractPeriod(
