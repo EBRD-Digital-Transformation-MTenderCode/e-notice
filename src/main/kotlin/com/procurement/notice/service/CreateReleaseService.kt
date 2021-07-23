@@ -271,60 +271,149 @@ class CreateReleaseService(
         releaseDate: LocalDateTime,
         data: JsonNode
     ): ResponseDto {
-        val msTender = releaseService.getMsTender(data = data)
+        val receivedMsTender: MsTender = releaseService.getMsTender(data = data)
         val receivedRelease: Release = releaseService.getRelease(data = data)
-        val msEntity = releaseService.getMsEntity(cpid = cpid)
-        val ms = releaseService.getMs(data = msEntity.jsonData)
-        val prevProcuringEntity = ms.tender.procuringEntity
+        val receivedReleaseTender: ReleaseTender = receivedRelease.tender
+
+        val storedMsEntity = releaseService.getMsEntity(cpid = cpid)
+        val storedMs = releaseService.getMs(data = storedMsEntity.jsonData)
+        val storedMsTender = storedMs.tender
+
         val params = releaseService.getParamsForUpdateCnOnPnPin(Stage.valueOf(stage.toUpperCase()))
-        val updatedMS = ms.copy(
+        val updatedMS = Ms(
             id = generationService.generateReleaseId(ocid = cpid),
             date = releaseDate,
             tag = listOf(Tag.COMPILED),
-            parties = releaseService.getPartiesWithActualPersones(msTender.procuringEntity!!, ms.parties),
-            tender = msTender.copy(
-                statusDetails = params.statusDetails,
-                procuringEntity = prevProcuringEntity,
-                hasEnquiries = false
-            )
+            planning = storedMs.planning,
+            parties = releaseService.getPartiesWithActualPersones(receivedMsTender.procuringEntity!!, storedMs.parties),
+            relatedProcesses = storedMs.relatedProcesses,
+            ocid = storedMs.ocid,
+            initiationType = storedMs.initiationType,
+
+            tender = MsTender(
+                id = storedMsTender.id,
+                title = storedMsTender.title,
+                description = storedMsTender.description,
+                procuringEntity = storedMsTender.procuringEntity,
+
+                status = receivedMsTender.status,
+                statusDetails = TenderStatusDetails.EVALUATION,
+                procurementMethod = receivedMsTender.procurementMethod,
+                procurementMethodDetails = receivedMsTender.procurementMethodDetails,
+                procurementMethodRationale = receivedMsTender.procurementMethodRationale,
+                procurementMethodAdditionalInfo = receivedMsTender.procurementMethodAdditionalInfo,
+                mainProcurementCategory = receivedMsTender.mainProcurementCategory,
+                additionalProcurementCategories = receivedMsTender.additionalProcurementCategories,
+                hasEnquiries = receivedMsTender.hasEnquiries,
+                eligibilityCriteria = receivedMsTender.eligibilityCriteria,
+                contractPeriod = receivedMsTender.contractPeriod,
+                acceleratedProcedure = receivedMsTender.acceleratedProcedure,
+                classification = receivedMsTender.classification,
+                designContest = receivedMsTender.designContest,
+                electronicWorkflows = receivedMsTender.electronicWorkflows,
+                jointProcurement = receivedMsTender.jointProcurement,
+                legalBasis = receivedMsTender.legalBasis,
+                procedureOutsourcing = receivedMsTender.procedureOutsourcing,
+                dynamicPurchasingSystem = receivedMsTender.dynamicPurchasingSystem,
+                framework = receivedMsTender.framework,
+                value = receivedMsTender.value,
+
+                amendments = emptyList(),
+                submissionLanguages = emptyList()
+            ),
+
+            language = null
         )
-        val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
-        val release = releaseService.getRelease(data = recordEntity.jsonData)
-        val updatedRelease = release.copy (
+
+        val releasePNEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
+        val storedReleasePN = releaseService.getRelease(data = releasePNEntity.jsonData)
+
+        val updatedReleasePN = Release (
             id = generationService.generateReleaseId(ocid),
             date = releaseDate,
             tag = listOf(Tag.PLANNING_UPDATE),
-            tender = release.tender.copy(
+
+            ocid = storedReleasePN.ocid,
+            initiationType = storedReleasePN.initiationType,
+            hasPreviousNotice = storedReleasePN.hasPreviousNotice,
+            purposeOfNotice = storedReleasePN.purposeOfNotice,
+            relatedProcesses = storedReleasePN.relatedProcesses,
+            parties = storedReleasePN.parties,
+            tender = storedReleasePN.tender.copy(
                 status = TenderStatus.COMPLETE,
                 statusDetails = TenderStatusDetails.EMPTY
-            )
-        )
-        releaseService.saveRecord(
-            cpId = cpid,
-            stage = prevStage,
-            release = updatedRelease,
-            publishDate = recordEntity.publishDate
+            ),
+
+            language = null,
+            awards = emptyList(),
+            bids = null,
+            contracts = emptyList(),
+            qualifications = emptyList(),
+            submissions = null,
+            invitations = emptyList(),
+            preQualification = null
         )
 
-        val newRelease = updatedRelease.copy(
-            ocid = ocidCn,
+        val newRelease = Release(
             id = generationService.generateReleaseId(ocidCn),
+            ocid = ocidCn,
             date = releaseDate,
             tag = listOf(Tag.TENDER),
-            tender = receivedRelease.tender.copy(
-                        //FR-ER-5.5.2.2.7
-                        title = TenderTitle.valueOf(stage.toUpperCase()).text,
-                        //FR-ER-5.5.2.2.8
-                        description = TenderDescription.valueOf(stage.toUpperCase()).text,
-                        hasEnquiries = false,
-                        classification = null, // FR-ER-5.5.2.2.10
-                        value = null  // FR-ER-5.5.2.2.10
-                ),
             initiationType = InitiationType.TENDER,
             hasPreviousNotice = true,
-            purposeOfNotice = PurposeOfNotice(true),
+            purposeOfNotice = PurposeOfNotice(isACallForCompetition = true),
+
+            preQualification = receivedRelease.preQualification,
+            tender = ReleaseTender(
+                //FR-ER-5.5.2.2.7
+                title = TenderTitle.valueOf(stage.toUpperCase()).text,
+                //FR-ER-5.5.2.2.8
+                description = TenderDescription.valueOf(stage.toUpperCase()).text,
+                hasEnquiries = false,
+
+                id = receivedReleaseTender.id,
+                status = receivedReleaseTender.status,
+                statusDetails = receivedReleaseTender.statusDetails,
+                lotGroups = receivedReleaseTender.lotGroups,
+                tenderPeriod = receivedReleaseTender.tenderPeriod,
+                enquiryPeriod = receivedReleaseTender.enquiryPeriod,
+                auctionPeriod = receivedReleaseTender.auctionPeriod,
+                submissionMethod = receivedReleaseTender.submissionMethod,
+                submissionMethodDetails = receivedReleaseTender.submissionMethodDetails,
+                submissionMethodRationale = receivedReleaseTender.submissionMethodRationale,
+                requiresElectronicCatalogue = receivedReleaseTender.requiresElectronicCatalogue,
+                awardCriteria = receivedReleaseTender.awardCriteria,
+                awardCriteriaDetails = receivedReleaseTender.awardCriteriaDetails,
+                procurementMethodModalities = receivedReleaseTender.procurementMethodModalities,
+                electronicAuctions = receivedReleaseTender.electronicAuctions,
+                lots = receivedReleaseTender.lots,
+                items = receivedReleaseTender.items,
+                criteria = receivedReleaseTender.criteria,
+                conversions = receivedReleaseTender.conversions,
+                documents = receivedReleaseTender.documents,
+                otherCriteria = receivedReleaseTender.otherCriteria,
+
+                classification = null, // FR-ER-5.5.2.2.10
+                value = null,  // FR-ER-5.5.2.2.10
+                standstillPeriod = null,
+                awardPeriod = null,
+                enquiries = mutableListOf(),
+                amendments = emptyList(),
+                secondStage = null,
+                procurementMethodRationale = null,
+                targets = emptyList(),
+                procuringEntity = null
+            ),
+
             parties = mutableListOf(),
-            preQualification = receivedRelease.preQualification
+            language = null,
+            awards = emptyList(),
+            bids = null,
+            contracts = emptyList(),
+            relatedProcesses = mutableListOf(),
+            qualifications = emptyList(),
+            submissions = null,
+            invitations = emptyList()
         )
         //FR-MR-5.5.2.2.5
         relatedProcessService.addRecordRelatedProcessToMs(
@@ -338,7 +427,9 @@ class CreateReleaseService(
             cpId = cpid,
             processType = RelatedProcessType.PLANNING
         )
-        releaseService.saveMs(cpId = cpid, ms = updatedMS, publishDate = msEntity.publishDate)
+
+        releaseService.saveMs(cpId = cpid, ms = updatedMS, publishDate = storedMsEntity.publishDate)
+        releaseService.saveRecord(cpId = cpid, stage = prevStage, release = updatedReleasePN, publishDate = releasePNEntity.publishDate)
         releaseService.saveRecord(cpId = cpid, stage = stage, release = newRelease, publishDate = releaseDate.toDate())
         return ResponseDto(data = DataResponseDto(cpid = cpid, ocid = ocidCn))
     }
