@@ -672,7 +672,6 @@ class UpdateReleaseService(
                 )
             }
 
-
         val updatedMs = Ms(
             id = generationService.generateReleaseId(cpid),
             date = releaseDate,
@@ -682,8 +681,8 @@ class UpdateReleaseService(
             tag = listOf(Tag.COMPILED),
             planning = receivedMs.planning,
             tender = updatedTenderMs,
-            parties = receivedMs.parties,
-            relatedProcesses = receivedMs.relatedProcesses
+            parties = storedMs.parties,
+            relatedProcesses = storedMs.relatedProcesses
         )
 
         val recordEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
