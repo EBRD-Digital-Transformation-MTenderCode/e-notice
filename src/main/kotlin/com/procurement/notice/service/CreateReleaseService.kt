@@ -363,6 +363,7 @@ class CreateReleaseService(
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = true),
 
             preQualification = receivedRelease.preQualification,
+            language = receivedRelease.language,
             tender = ReleaseTender(
                 //FR-ER-5.5.2.2.7
                 title = TenderTitle.valueOf(stage.toUpperCase()).text,
@@ -405,7 +406,6 @@ class CreateReleaseService(
             ),
 
             parties = mutableListOf(),
-            language = null,
             awards = emptyList(),
             bids = null,
             contracts = emptyList(),
