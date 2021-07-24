@@ -291,6 +291,7 @@ class CommandService(
                         error = ErrorType.CONTEXT,
                         message = "Missing the 'ocidCn' attribute in context."
                     ),
+                language = cm.language,
                 stage = stage,
                 prevStage = prevStage!!,
                 releaseDate = releaseDate,

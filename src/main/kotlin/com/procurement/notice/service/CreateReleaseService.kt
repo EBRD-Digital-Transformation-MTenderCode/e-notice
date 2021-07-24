@@ -266,6 +266,7 @@ class CreateReleaseService(
         cpid: String,
         ocid: String,
         ocidCn: String,
+        language: String,
         stage: String,
         prevStage: String,
         releaseDate: LocalDateTime,
@@ -363,7 +364,7 @@ class CreateReleaseService(
             purposeOfNotice = PurposeOfNotice(isACallForCompetition = true),
 
             preQualification = receivedRelease.preQualification,
-            language = receivedRelease.language,
+            language = language,
             tender = ReleaseTender(
                 //FR-ER-5.5.2.2.7
                 title = TenderTitle.valueOf(stage.toUpperCase()).text,
