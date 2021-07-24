@@ -289,6 +289,7 @@ class CreateReleaseService(
             relatedProcesses = storedMs.relatedProcesses,
             ocid = storedMs.ocid,
             initiationType = storedMs.initiationType,
+            language = storedMs.language,
 
             tender = MsTender(
                 id = storedMsTender.id,
@@ -320,9 +321,7 @@ class CreateReleaseService(
 
                 amendments = emptyList(),
                 submissionLanguages = emptyList()
-            ),
-
-            language = null
+            )
         )
 
         val releasePNEntity = releaseService.getRecordEntity(cpId = cpid, ocId = ocid)
@@ -335,6 +334,7 @@ class CreateReleaseService(
 
             ocid = storedReleasePN.ocid,
             initiationType = storedReleasePN.initiationType,
+            language = storedReleasePN.language,
             hasPreviousNotice = storedReleasePN.hasPreviousNotice,
             purposeOfNotice = storedReleasePN.purposeOfNotice,
             relatedProcesses = storedReleasePN.relatedProcesses,
@@ -344,7 +344,6 @@ class CreateReleaseService(
                 statusDetails = TenderStatusDetails.EMPTY
             ),
 
-            language = null,
             awards = emptyList(),
             bids = null,
             contracts = emptyList(),
