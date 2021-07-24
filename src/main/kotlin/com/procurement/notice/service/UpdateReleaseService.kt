@@ -558,12 +558,12 @@ class UpdateReleaseService(
                     )
                 }
                 ?: storedReleaseEV.preQualification,
+            awards = storedReleaseEV.awards,
+            hasPreviousNotice = storedReleaseEV.hasPreviousNotice,
+            purposeOfNotice = storedReleaseEV.purposeOfNotice,
 
-            awards = emptyList(),
             bids = null,
             contracts = emptyList(),
-            hasPreviousNotice = null,
-            purposeOfNotice = null,
             qualifications = emptyList(),
             submissions = null,
             invitations = emptyList()
