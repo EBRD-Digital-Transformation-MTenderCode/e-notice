@@ -85,6 +85,7 @@ data class UpdateCNData(
         val procurementMethodRationale: String?,
         val procurementMethodAdditionalInfo: String?,
         val mainProcurementCategory: String,
+        val additionalProcurementCategories: List<String>,
         val eligibilityCriteria: String,
         val contractPeriod: ContractPeriod,
         val procurementMethodModalities: List<String>,

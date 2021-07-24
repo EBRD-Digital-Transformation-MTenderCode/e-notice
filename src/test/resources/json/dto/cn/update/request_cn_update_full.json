@@ -87,6 +87,7 @@
     "procurementMethodRationale": "tender.procurementMethodRationale",
     "procurementMethodAdditionalInfo": "tender.procurementMethodAdditionalInfo",
     "mainProcurementCategory": "services",
+    "additionalProcurementCategories": ["goods"],
     "eligibilityCriteria": "tender.eligibilityCriteria",
     "contractPeriod": {
       "startDate": "2019-03-16T12:40:11Z",

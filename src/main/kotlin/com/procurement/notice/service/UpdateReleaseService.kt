@@ -63,142 +63,159 @@ class UpdateReleaseService(
 
     fun updateCn(context: UpdateCNContext, data: UpdateCNData): UpdatedCN {
         val msEntity = releaseService.getMsEntity(cpid = context.cpid)
-        val recordMS = releaseService.getMs(msEntity.jsonData)
-        val updatedRecordMS: Ms = recordMS.copy(
+        val storedMs = releaseService.getMs(msEntity.jsonData)
+
+        val updatedMs = Ms(
             id = generationService.generateReleaseId(ocid = context.cpid), //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.COMPILED), //FR-MR-5.5.2.3.1
+            ocid = storedMs.ocid,
+            initiationType = storedMs.initiationType,
+            language = storedMs.language,
+
             //FR-MR-5.5.2.3.6
-            planning = data.planning.let { planning ->
-                MsPlanning(
-                    rationale = planning.rationale,
-                    budget = planning.budget.let { budget ->
-                        MsBudget(
-                            id = null,
-                            description = budget.description,
-                            amount = budget.amount.toValue(),
-                            isEuropeanUnionFunded = budget.isEuropeanUnionFunded,
-                            budgetBreakdown = budget.budgetBreakdowns
-                                .mapIfNotEmpty { budgetBreakdown ->
-                                    BudgetBreakdown(
-                                        id = budgetBreakdown.id,
-                                        description = budgetBreakdown.description,
-                                        amount = budgetBreakdown.amount.toValue(),
-                                        period = budgetBreakdown.period.let { period ->
-                                            Period(
-                                                startDate = period.startDate,
-                                                endDate = period.endDate,
-                                                maxExtentDate = null,
-                                                durationInDays = null
-                                            )
-                                        },
-                                        sourceParty = budgetBreakdown.sourceParty.let { sourceParty ->
-                                            OrganizationReference(
-                                                id = sourceParty.id,
-                                                name = sourceParty.name,
-                                                identifier = null,
-                                                additionalIdentifiers = null,
-                                                address = null,
-                                                contactPoint = null,
-                                                buyerProfile = null,
-                                                persones = null,
-                                                details = null
-                                            )
-                                        },
-                                        europeanUnionFunding = budgetBreakdown.europeanUnionFunding?.let { europeanUnionFunding ->
-                                            EuropeanUnionFunding(
-                                                projectIdentifier = europeanUnionFunding.projectIdentifier,
-                                                projectName = europeanUnionFunding.projectName,
-                                                uri = europeanUnionFunding.uri
+            planning = data.planning
+                .let { planning ->
+                    MsPlanning(
+                        rationale = planning.rationale,
+                        budget = planning.budget
+                            .let { budget ->
+                                MsBudget(
+                                    id = null,
+                                    description = budget.description,
+                                    amount = budget.amount.toValue(),
+                                    isEuropeanUnionFunded = budget.isEuropeanUnionFunded,
+                                    budgetBreakdown = budget.budgetBreakdowns
+                                        .mapIfNotEmpty { budgetBreakdown ->
+                                            BudgetBreakdown(
+                                                id = budgetBreakdown.id,
+                                                description = budgetBreakdown.description,
+                                                amount = budgetBreakdown.amount.toValue(),
+                                                period = budgetBreakdown.period
+                                                    .let { period ->
+                                                        Period(
+                                                            startDate = period.startDate,
+                                                            endDate = period.endDate,
+                                                            maxExtentDate = null,
+                                                            durationInDays = null
+                                                        )
+                                                    },
+                                                sourceParty = budgetBreakdown.sourceParty
+                                                    .let { sourceParty ->
+                                                        OrganizationReference(
+                                                            id = sourceParty.id,
+                                                            name = sourceParty.name,
+                                                            identifier = null,
+                                                            additionalIdentifiers = null,
+                                                            address = null,
+                                                            contactPoint = null,
+                                                            buyerProfile = null,
+                                                            persones = null,
+                                                            details = null
+                                                        )
+                                                    },
+                                                europeanUnionFunding = budgetBreakdown.europeanUnionFunding
+                                                    ?.let { europeanUnionFunding ->
+                                                        EuropeanUnionFunding(
+                                                            projectIdentifier = europeanUnionFunding.projectIdentifier,
+                                                            projectName = europeanUnionFunding.projectName,
+                                                            uri = europeanUnionFunding.uri
+                                                        )
+                                                    }
                                             )
                                         }
-                                    )
-                                }
-                        )
-                    }
-                )
-            },
-            tender = data.tender.let { tender ->
-                MsTender(
-                    id = recordMS.tender.id, //FR-MR-5.5.2.3.4
-                    status = recordMS.tender.status, //FR-MR-5.5.2.3.4
-                    statusDetails = recordMS.tender.statusDetails, //FR-MR-5.5.2.3.4
-                    title = tender.title,
-                    description = tender.description,
-                    classification = tender.classification.let { classification ->
-                        Classification(
-                            scheme = classification.scheme,
-                            id = classification.id,
-                            description = classification.description,
-                            uri = null
-                        )
-                    },
-                    acceleratedProcedure = AcceleratedProcedure(
-                        isAcceleratedProcedure = tender.acceleratedProcedure.isAcceleratedProcedure,
-                        acceleratedProcedureJustification = null
-                    ),
-                    designContest = DesignContest(
-                        serviceContractAward = tender.designContest.serviceContractAward,
-                        hasPrizes = null,
-                        prizes = null,
-                        paymentsToParticipants = null,
-                        juryDecisionBinding = null,
-                        juryMembers = null,
-                        participants = null
-                    ),
-                    electronicWorkflows = tender.electronicWorkflows.let { electronicWorkflows ->
-                        ElectronicWorkflows(
-                            useOrdering = electronicWorkflows.useOrdering,
-                            usePayment = electronicWorkflows.usePayment,
-                            acceptInvoicing = electronicWorkflows.acceptInvoicing
-                        )
-                    },
-                    jointProcurement = JointProcurement(
-                        isJointProcurement = tender.jointProcurement.isJointProcurement,
-                        country = null
-                    ),
-                    procedureOutsourcing = ProcedureOutsourcing(
-                        procedureOutsourced = tender.procedureOutsourcing.procedureOutsourced,
-                        outsourcedTo = null
-                    ),
-                    framework = Framework(
-                        isAFramework = tender.framework.isAFramework,
-                        typeOfFramework = null,
-                        maxSuppliers = null,
-                        exceptionalDurationRationale = null,
-                        additionalBuyerCategories = null
-                    ),
-                    dynamicPurchasingSystem = DynamicPurchasingSystem(
-                        hasDynamicPurchasingSystem = tender.dynamicPurchasingSystem.hasDynamicPurchasingSystem,
-                        hasOutsideBuyerAccess = null,
-                        noFurtherContracts = null
-                    ),
-                    legalBasis = tender.legalBasis,
-                    procurementMethod = tender.procurementMethod.toString(),
-                    procurementMethodDetails = tender.procurementMethodDetails,
-                    procurementMethodRationale = tender.procurementMethodRationale,
-                    procurementMethodAdditionalInfo = tender.procurementMethodAdditionalInfo,
-                    mainProcurementCategory = tender.mainProcurementCategory,
-                    eligibilityCriteria = tender.eligibilityCriteria,
-                    contractPeriod = tender.contractPeriod.let { tenderPeriod ->
-                        Period(
-                            startDate = tenderPeriod.startDate,
-                            endDate = tenderPeriod.endDate,
-                            durationInDays = null,
-                            maxExtentDate = null
-                        )
-                    },
-                    procuringEntity = recordMS.tender.procuringEntity, //FR-MR-5.5.2.3.3
-                    value = tender.value.toValue(),
-                    hasEnquiries = recordMS.tender.hasEnquiries,
-                    additionalProcurementCategories = null,
-                    submissionLanguages = null,
-                    amendments = null
-                )
-            },
+                                )
+                            }
+                    )
+                },
+            tender = data.tender
+                .let { tender ->
+                    MsTender(
+                        id = storedMs.tender.id, //FR-MR-5.5.2.3.4
+                        status = storedMs.tender.status, //FR-MR-5.5.2.3.4
+                        statusDetails = storedMs.tender.statusDetails, //FR-MR-5.5.2.3.4
+                        title = storedMs.tender.title,
+                        description = storedMs.tender.description,
+                        procuringEntity = storedMs.tender.procuringEntity, //FR-MR-5.5.2.3.3
+                        hasEnquiries = storedMs.tender.hasEnquiries,
+
+                        value = tender.value.toValue(),
+                        procurementMethod = tender.procurementMethod.toString(),
+                        procurementMethodDetails = tender.procurementMethodDetails,
+                        procurementMethodRationale = tender.procurementMethodRationale,
+                        procurementMethodAdditionalInfo = tender.procurementMethodAdditionalInfo,
+                        mainProcurementCategory = tender.mainProcurementCategory,
+                        additionalProcurementCategories = tender.additionalProcurementCategories,
+                        eligibilityCriteria = tender.eligibilityCriteria,
+                        contractPeriod = tender.contractPeriod
+                            .let { contractPeriod ->
+                                Period(
+                                    startDate = contractPeriod.startDate,
+                                    endDate = contractPeriod.endDate,
+                                    durationInDays = null,
+                                    maxExtentDate = null
+                                )
+                            },
+                        acceleratedProcedure = AcceleratedProcedure(
+                            isAcceleratedProcedure = tender.acceleratedProcedure.isAcceleratedProcedure,
+                            acceleratedProcedureJustification = null
+                        ),
+                        classification = tender.classification
+                            .let { classification ->
+                                Classification(
+                                    scheme = classification.scheme,
+                                    id = classification.id,
+                                    description = classification.description,
+                                    uri = null
+                                )
+                            },
+                        designContest = DesignContest(
+                            serviceContractAward = tender.designContest.serviceContractAward,
+                            hasPrizes = null,
+                            prizes = null,
+                            paymentsToParticipants = null,
+                            juryDecisionBinding = null,
+                            juryMembers = null,
+                            participants = null
+                        ),
+                        electronicWorkflows = tender.electronicWorkflows
+                            .let { electronicWorkflows ->
+                                ElectronicWorkflows(
+                                    useOrdering = electronicWorkflows.useOrdering,
+                                    usePayment = electronicWorkflows.usePayment,
+                                    acceptInvoicing = electronicWorkflows.acceptInvoicing
+                                )
+                            },
+                        jointProcurement = JointProcurement(
+                            isJointProcurement = tender.jointProcurement.isJointProcurement,
+                            country = null
+                        ),
+                        legalBasis = tender.legalBasis,
+                        procedureOutsourcing = ProcedureOutsourcing(
+                            procedureOutsourced = tender.procedureOutsourcing.procedureOutsourced,
+                            outsourcedTo = null
+                        ),
+                        dynamicPurchasingSystem = DynamicPurchasingSystem(
+                            hasDynamicPurchasingSystem = tender.dynamicPurchasingSystem.hasDynamicPurchasingSystem,
+                            hasOutsideBuyerAccess = null,
+                            noFurtherContracts = null
+                        ),
+                        framework = Framework(
+                            isAFramework = tender.framework.isAFramework,
+                            typeOfFramework = null,
+                            maxSuppliers = null,
+                            exceptionalDurationRationale = null,
+                            additionalBuyerCategories = null
+                        ),
+
+                        submissionLanguages = null,
+                        amendments = null
+                    )
+                },
+            relatedProcesses = storedMs.relatedProcesses,
 
             //FR-MR-5.5.2.3.7
-            parties = recordMS.parties
+            parties = storedMs.parties
                 .map { party ->
                     if (party.id == data.tender.procuringEntity.id)
                         party.copy(
@@ -255,25 +272,278 @@ class UpdateReleaseService(
                 .toMutableList()
         )
 
-        val recordEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
-        val releaseEV = releaseService.getRelease(recordEntity.jsonData)
+        val storedReleaseEntity = releaseService.getRecordEntity(cpId = context.cpid, ocId = context.ocid)
+        val storedReleaseEV = releaseService.getRelease(storedReleaseEntity.jsonData)
 
-        val newReleaseID = generationService.generateReleaseId(context.ocid)
-        val actualReleaseID = releaseEV.id!!
+        val newReleaseId = generationService.generateReleaseId(context.ocid)
+        val actualReleaseId = storedReleaseEV.id!!
         val newAmendment: ReleaseAmendment = newAmendment(
             context = context,
             data = data,
-            actualReleaseID = actualReleaseID,
-            newReleaseID = newReleaseID
+            actualReleaseID = actualReleaseId,
+            newReleaseID = newReleaseId
         )
-        val updatedAmendments: List<ReleaseAmendment> = releaseEV.tender.amendments.plus(newAmendment)
+        val updatedAmendments: List<ReleaseAmendment> = storedReleaseEV.tender.amendments + newAmendment
 
-        val updatedReleaseEV = releaseEV.copy(
-            id = newReleaseID, //FR-5.0.1
+        val updatedReleaseEV = Release(
+            id = newReleaseId, //FR-5.0.1
             date = context.releaseDate, //FR-5.0.2
             tag = listOf(Tag.TENDER_AMENDMENT), //FR-ER-5.5.2.3.1
-            relatedProcesses = releaseEV.relatedProcesses, //FR-ER-5.5.2.3.2
-            parties = releaseEV.parties, //FR-ER-5.5.2.3.2
+            relatedProcesses = storedReleaseEV.relatedProcesses, //FR-ER-5.5.2.3.2
+            parties = storedReleaseEV.parties, //FR-ER-5.5.2.3.2
+            ocid = storedReleaseEV.ocid,
+            initiationType = storedReleaseEV.initiationType,
+            language = storedReleaseEV.language,
+
+            tender = data.tender
+                .let { tender ->
+                    ReleaseTender(
+                        title = storedReleaseEV.tender.title, //FR-ER-5.5.2.3.3
+                        description = storedReleaseEV.tender.description, //FR-ER-5.5.2.3.3
+                        hasEnquiries = storedReleaseEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
+                        enquiries = storedReleaseEV.tender.enquiries, //FR-ER-5.5.2.3.3
+                        awardCriteria = storedReleaseEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
+                        awardCriteriaDetails = storedReleaseEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
+                        criteria = storedReleaseEV.tender.criteria, //FR-ER-5.5.2.3.3
+                        conversions = storedReleaseEV.tender.conversions, //FR-ER-5.5.2.3.3
+                        otherCriteria = storedReleaseEV.tender.otherCriteria, // FR-ER-5.5.2.3.8
+                        secondStage = storedReleaseEV.tender.secondStage, //FR-ER-5.5.2.3.9
+
+                        id = tender.id,
+                        status = tender.status,
+                        statusDetails = tender.statusDetails,
+                        lotGroups = tender.lotGroups
+                            .map { lotGroup ->
+                                LotGroup(
+                                    id = null,
+                                    optionToCombine = lotGroup.optionToCombine,
+                                    relatedLots = null,
+                                    maximumValue = null
+                                )
+                            },
+                        tenderPeriod = tender.tenderPeriod
+                            ?.let { tenderPeriod ->
+                                Period(
+                                    startDate = tenderPeriod.startDate,
+                                    endDate = tenderPeriod.endDate,
+                                    maxExtentDate = null,
+                                    durationInDays = null
+                                )
+                            }
+                            ?: storedReleaseEV.tender.tenderPeriod,
+                        enquiryPeriod = tender.enquiryPeriod
+                            ?.let { enquiryPeriod ->
+                                Period(
+                                    startDate = enquiryPeriod.startDate,
+                                    endDate = enquiryPeriod.endDate,
+                                    maxExtentDate = null,
+                                    durationInDays = null
+                                )
+                            }
+                            ?: storedReleaseEV.tender.enquiryPeriod,
+                        submissionMethod = tender.submissionMethod.toList(),
+                        submissionMethodDetails = tender.submissionMethodDetails,
+                        submissionMethodRationale = tender.submissionMethodRationale.toList(),
+                        requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
+                        procurementMethodModalities = getProcurementMethodModalities(
+                            context = context,
+                            data = data,
+                            previous = storedReleaseEV.tender.procurementMethodModalities
+                        ),
+                        lots = tender.lots
+                            .map { lot ->
+                                Lot(
+                                    id = lot.id,
+                                    internalId = lot.internalId,
+                                    title = lot.title,
+                                    description = lot.description,
+                                    classification = null,
+                                    status = lot.status,
+                                    statusDetails = lot.statusDetails,
+                                    value = lot.value.toValue(),
+                                    hasOptions = lot.hasOptions,
+                                    options = lot.options
+                                        .map { option ->
+                                            Option(
+                                                hasOptions = null,
+                                                optionDetails = null,
+                                                description = option.description,
+                                                period = option.period
+                                                    ?.let { period ->
+                                                        Period(
+                                                            startDate = period.startDate,
+                                                            endDate = period.endDate,
+                                                            maxExtentDate = period.maxExtentDate,
+                                                            durationInDays = period.durationInDays
+                                                        )
+                                                    }
+                                            )
+                                        },
+                                    hasRenewal = lot.hasRenewal,
+                                    renewal = lot.renewal
+                                        ?.let { renewal ->
+                                            RenewalV2(
+                                                description = renewal.description,
+                                                minimumRenewals = renewal.minimumRenewals,
+                                                maximumRenewals = renewal.maximumRenewals,
+                                                period = renewal.period
+                                                    ?.let { period ->
+                                                        Period(
+                                                            startDate = period.startDate,
+                                                            endDate = period.endDate,
+                                                            durationInDays = period.durationInDays,
+                                                            maxExtentDate = period.maxExtentDate
+                                                        )
+                                                    }
+                                            )
+                                        },
+                                    hasRecurrence = lot.hasRecurrence,
+                                    recurrence = lot.recurrence
+                                        ?.let { recurrence ->
+                                            Recurrence(
+                                                description = recurrence.description,
+                                                dates = recurrence.dates
+                                                    .map { date ->
+                                                        Recurrence.Date(date.startDate)
+                                                    }
+                                            )
+                                        },
+                                    contractPeriod = lot.contractPeriod
+                                        .let { contractPeriod ->
+                                            Period(
+                                                startDate = contractPeriod.startDate,
+                                                endDate = contractPeriod.endDate,
+                                                durationInDays = null,
+                                                maxExtentDate = null
+                                            )
+                                        },
+                                    placeOfPerformance = lot.placeOfPerformance
+                                        ?.let { placeOfPerformance ->
+                                            PlaceOfPerformance(
+                                                address = placeOfPerformance.address
+                                                    .let { address ->
+                                                        Address(
+                                                            streetAddress = address.streetAddress,
+                                                            postalCode = address.postalCode,
+                                                            addressDetails = address.addressDetails
+                                                                .let { addressDetails ->
+                                                                    AddressDetails(
+                                                                        country = addressDetails.country
+                                                                            .let { country ->
+                                                                                CountryDetails(
+                                                                                    scheme = country.scheme,
+                                                                                    id = country.id,
+                                                                                    description = country.description,
+                                                                                    uri = country.uri
+                                                                                )
+                                                                            },
+                                                                        region = addressDetails.region
+                                                                            .let { region ->
+                                                                                RegionDetails(
+                                                                                    scheme = region.scheme,
+                                                                                    id = region.id,
+                                                                                    description = region.description,
+                                                                                    uri = region.uri
+                                                                                )
+                                                                            },
+                                                                        locality = addressDetails.locality
+                                                                            .let { locality ->
+                                                                                LocalityDetails(
+                                                                                    scheme = locality.scheme,
+                                                                                    id = locality.id,
+                                                                                    description = locality.description,
+                                                                                    uri = locality.uri
+                                                                                )
+                                                                            }
+                                                                    )
+                                                                }
+                                                        )
+                                                    },
+                                                description = placeOfPerformance.description,
+                                                nutScode = null
+                                            )
+                                        }
+                                )
+                            },
+                        items = tender.items
+                            .map { item ->
+                                Item(
+                                    id = item.id,
+                                    internalId = item.internalId,
+                                    classification = item.classification
+                                        .let { classification ->
+                                            Classification(
+                                                scheme = classification.scheme,
+                                                id = classification.id,
+                                                description = classification.description,
+                                                uri = null
+                                            )
+                                        },
+                                    additionalClassifications = item.additionalClassifications
+                                        .map { additionalClassification ->
+                                            Classification(
+                                                scheme = additionalClassification.scheme,
+                                                id = additionalClassification.id,
+                                                description = additionalClassification.description,
+                                                uri = null
+                                            )
+                                        },
+                                    quantity = item.quantity,
+                                    unit = item.unit
+                                        .let { unit ->
+                                            com.procurement.notice.model.ocds.Unit(
+                                                id = unit.id,
+                                                name = unit.name,
+                                                value = null,
+                                                uri = null
+                                            )
+                                        },
+                                    description = item.description,
+                                    relatedLot = item.relatedLot,
+                                    deliveryAddress = null
+                                )
+                            },
+                        documents = tender.documents
+                            .map { document ->
+                                Document(
+                                    documentType = document.documentType,
+                                    id = document.id,
+                                    title = document.title,
+                                    description = document.description,
+                                    relatedLots = document.relatedLots.toList(),
+                                    datePublished = document.datePublished,
+                                    url = document.url,
+                                    dateModified = null,
+                                    format = null,
+                                    language = null,
+                                    relatedConfirmations = null
+                                )
+                            },
+                        amendments = updatedAmendments, //FR-ER-5.5.2.3.4
+
+                        //FR-ER-5.5.2.3.6
+                        auctionPeriod = getAuctionPeriod(
+                            context = context,
+                            data = data,
+                            previous = storedReleaseEV.tender.auctionPeriod
+                        ),
+
+                        //FR-ER-5.5.2.3.6
+                        electronicAuctions = getElectronicAuctions(
+                            context = context,
+                            data = data,
+                            previous = storedReleaseEV.tender.electronicAuctions
+                        ),
+
+                        procurementMethodRationale = null,
+                        awardPeriod = null,
+                        standstillPeriod = null,
+                        value = null,
+                        classification = null,
+                        targets = emptyList(),
+                        procuringEntity = null
+                    )
+                },
             preQualification = data.preQualification
                 ?.let { preQualification ->
                     ReleasePreQualification(
@@ -287,243 +557,24 @@ class UpdateReleaseService(
                         qualificationPeriod = null
                     )
                 }
-                ?: releaseEV.preQualification,
-            tender = data.tender.let { tender ->
-                ReleaseTender(
-                    id = tender.id,
-                    status = tender.status,
-                    statusDetails = tender.statusDetails,
-                    title = releaseEV.tender.title, //FR-ER-5.5.2.3.3
-                    description = releaseEV.tender.description, //FR-ER-5.5.2.3.3
-                    hasEnquiries = releaseEV.tender.hasEnquiries, //FR-ER-5.5.2.3.3
-                    enquiries = releaseEV.tender.enquiries, //FR-ER-5.5.2.3.3
-                    criteria = releaseEV.tender.criteria, //FR-ER-5.5.2.3.3
-                    otherCriteria = releaseEV.tender.otherCriteria, // FR-ER-5.5.2.3.8
-                    conversions = releaseEV.tender.conversions, //FR-ER-5.5.2.3.3
-                    awardCriteria = releaseEV.tender.awardCriteria, //FR-ER-5.5.2.3.3
-                    awardCriteriaDetails = releaseEV.tender.awardCriteriaDetails, //FR-ER-5.5.2.3.3
-                    awardPeriod = null,
-                    standstillPeriod = null,
-                    amendments = updatedAmendments, //FR-ER-5.5.2.3.4
-                    //FR-ER-5.5.2.3.6
-                    auctionPeriod = getAuctionPeriod(
-                        context = context,
-                        data = data,
-                        previous = releaseEV.tender.auctionPeriod
-                    ),
-                    //FR-ER-5.5.2.3.6
-                    electronicAuctions = getElectronicAuctions(
-                        context = context,
-                        data = data, previous = releaseEV.tender.electronicAuctions
-                    ),
-                    procurementMethodModalities = getProcurementMethodModalities(
-                        context = context,
-                        data = data,
-                        previous = releaseEV.tender.procurementMethodModalities
-                    ),
-                    tenderPeriod = tender.tenderPeriod
-                        ?.let { tenderPeriod ->
-                            Period(
-                                startDate = tenderPeriod.startDate,
-                                endDate = tenderPeriod.endDate,
-                                maxExtentDate = null,
-                                durationInDays = null
-                            )
-                        }
-                        ?: releaseEV.tender.tenderPeriod,
-                    enquiryPeriod = tender.enquiryPeriod
-                        ?.let { enquiryPeriod ->
-                            Period(
-                                startDate = enquiryPeriod.startDate,
-                                endDate = enquiryPeriod.endDate,
-                                maxExtentDate = null,
-                                durationInDays = null
-                            )
-                        }
-                        ?: releaseEV.tender.enquiryPeriod,
-                    lotGroups = tender.lotGroups.map { lotGroup ->
-                        LotGroup(
-                            id = null,
-                            optionToCombine = lotGroup.optionToCombine,
-                            relatedLots = null,
-                            maximumValue = null
-                        )
-                    },
-                    lots = tender.lots.map { lot ->
-                        Lot(
-                            id = lot.id,
-                            internalId = lot.internalId,
-                            title = lot.title,
-                            description = lot.description,
-                            classification = null,
-                            status = lot.status,
-                            statusDetails = lot.statusDetails,
-                            value = lot.value.toValue(),
-                            hasOptions = lot.hasOptions,
-                            options = lot.options.map { option ->
-                                Option(
-                                    hasOptions = null,
-                                    optionDetails = null,
-                                    description = option.description,
-                                    period = option.period
-                                        ?.let { period ->
-                                            Period(
-                                                startDate = period.startDate,
-                                                endDate = period.endDate,
-                                                maxExtentDate = period.maxExtentDate,
-                                                durationInDays = period.durationInDays
-                                            )
-                                        }
-                                )
-                            },
-                            hasRenewal = lot.hasRenewal,
-                            renewal = lot.renewal?.let { renewal ->
-                                RenewalV2(
-                                    description = renewal.description,
-                                    minimumRenewals = renewal.minimumRenewals,
-                                    maximumRenewals = renewal.maximumRenewals,
-                                    period = renewal.period
-                                        ?.let { period ->
-                                            Period(
-                                                startDate = period.startDate,
-                                                endDate = period.endDate,
-                                                durationInDays = period.durationInDays,
-                                                maxExtentDate = period.maxExtentDate
-                                            )
-                                        }
-                                )
-                            },
-                            hasRecurrence = lot.hasRecurrence,
-                            recurrence = lot.recurrence
-                                ?.let { recurrence ->
-                                    Recurrence(
-                                        description = recurrence.description,
-                                        dates = recurrence.dates
-                                            .map { date ->
-                                                Recurrence.Date(date.startDate)
-                                            }
-                                    )
-                                },
-                            contractPeriod = lot.contractPeriod.let { contractPeriod ->
-                                Period(
-                                    startDate = contractPeriod.startDate,
-                                    endDate = contractPeriod.endDate,
-                                    durationInDays = null,
-                                    maxExtentDate = null
-                                )
-                            },
-                            placeOfPerformance = lot.placeOfPerformance?.let { placeOfPerformance ->
-                                PlaceOfPerformance(
-                                    address = placeOfPerformance.address.let { address ->
-                                        Address(
-                                            streetAddress = address.streetAddress,
-                                            postalCode = address.postalCode,
-                                            addressDetails = address.addressDetails.let { addressDetails ->
-                                                AddressDetails(
-                                                    country = addressDetails.country.let { country ->
-                                                        CountryDetails(
-                                                            scheme = country.scheme,
-                                                            id = country.id,
-                                                            description = country.description,
-                                                            uri = country.uri
-                                                        )
-                                                    },
-                                                    region = addressDetails.region.let { region ->
-                                                        RegionDetails(
-                                                            scheme = region.scheme,
-                                                            id = region.id,
-                                                            description = region.description,
-                                                            uri = region.uri
-                                                        )
-                                                    },
-                                                    locality = addressDetails.locality.let { locality ->
-                                                        LocalityDetails(
-                                                            scheme = locality.scheme,
-                                                            id = locality.id,
-                                                            description = locality.description,
-                                                            uri = locality.uri
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        )
-                                    },
-                                    description = placeOfPerformance.description,
-                                    nutScode = null
-                                )
-                            }
-                        )
-                    }.toList(),
-                    items = tender.items.map { item ->
-                        Item(
-                            id = item.id,
-                            internalId = item.internalId,
-                            classification = item.classification.let { classification ->
-                                Classification(
-                                    scheme = classification.scheme,
-                                    id = classification.id,
-                                    description = classification.description,
-                                    uri = null
-                                )
-                            },
-                            additionalClassifications = item.additionalClassifications
-                                .map { additionalClassification ->
-                                    Classification(
-                                        scheme = additionalClassification.scheme,
-                                        id = additionalClassification.id,
-                                        description = additionalClassification.description,
-                                        uri = null
-                                    )
-                                },
-                            quantity = item.quantity,
-                            unit = item.unit.let { unit ->
-                                com.procurement.notice.model.ocds.Unit(
-                                    id = unit.id,
-                                    name = unit.name,
-                                    value = null,
-                                    uri = null
-                                )
-                            },
-                            description = item.description,
-                            relatedLot = item.relatedLot,
-                            deliveryAddress = null
-                        )
-                    }.toList(),
-                    requiresElectronicCatalogue = tender.requiresElectronicCatalogue,
-                    submissionMethod = tender.submissionMethod.toList(),
-                    submissionMethodRationale = tender.submissionMethodRationale.toList(),
-                    submissionMethodDetails = tender.submissionMethodDetails,
-                    documents = tender.documents.map { document ->
-                        Document(
-                            documentType = document.documentType,
-                            id = document.id,
-                            title = document.title,
-                            description = document.description,
-                            relatedLots = document.relatedLots.toList(),
-                            datePublished = document.datePublished,
-                            url = document.url,
-                            dateModified = null,
-                            format = null,
-                            language = null,
-                            relatedConfirmations = null
-                        )
-                    }.toList(),
-                    secondStage = releaseEV.tender.secondStage, //FR-ER-5.5.2.3.9
-                    procurementMethodRationale = tender.procurementMethodRationale ?: releaseEV.tender.procurementMethodRationale,
-                    value = null,
-                    classification = null,
-                    targets = emptyList(),
-                    procuringEntity = null
-                )
-            }
+                ?: storedReleaseEV.preQualification,
+
+            awards = emptyList(),
+            bids = null,
+            contracts = emptyList(),
+            hasPreviousNotice = null,
+            purposeOfNotice = null,
+            qualifications = emptyList(),
+            submissions = null,
+            invitations = emptyList()
         )
 
-        releaseService.saveMs(cpId = context.cpid, ms = updatedRecordMS, publishDate = msEntity.publishDate)
+        releaseService.saveMs(cpId = context.cpid, ms = updatedMs, publishDate = msEntity.publishDate)
         releaseService.saveRecord(
             cpId = context.cpid,
             stage = context.stage,
             release = updatedReleaseEV,
-            publishDate = recordEntity.publishDate
+            publishDate = storedReleaseEntity.publishDate
         )
         return UpdatedCN(
             cpid = context.cpid,
