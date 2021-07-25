@@ -51,8 +51,10 @@ data class AuctionPeriodEndRequest(
     @field:JsonProperty("awardPeriod") @param:JsonProperty("awardPeriod") val awardPeriod: AwardPeriod,
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?
+    @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?,
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
 ) {
 
     data class Bid(
@@ -454,10 +456,7 @@ data class AuctionPeriodEndRequest(
 
     data class Tender(
         @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
-        @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions,
-
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
+        @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
     ) {
         data class AuctionPeriod(
             @JsonDeserialize(using = JsonDateTimeDeserializer::class)

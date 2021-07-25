@@ -552,7 +552,7 @@ fun AuctionPeriodEndRequest.convert(): AuctionPeriodEndData =
                                     }
                             )
                         },
-                    awardCriteriaDetails = tender.awardCriteriaDetails
+                    awardCriteriaDetails = this.awardCriteriaDetails
                 )
             },
         awards = this.awards

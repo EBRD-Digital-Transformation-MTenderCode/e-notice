@@ -354,8 +354,7 @@
           ]
         }
       ]
-    },
-    "awardCriteriaDetails": "manual"
+    }
   },
   "awards": [
     {
@@ -398,5 +397,6 @@
       "datePublished": "2011-08-01T16:09:00Z",
       "url": "http://com.example"
     }
-  ]
+  ],
+  "awardCriteriaDetails": "manual"
 }
