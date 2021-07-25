@@ -49,13 +49,8 @@ data class TenderPeriodEndRequest(
     @field:JsonProperty("unsuccessfulLots") @param:JsonProperty("unsuccessfulLots") val unsuccessfulLots: List<UnsuccessfulLot>?,
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender?
+    @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
 ) {
-
-    data class Tender(
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
-    )
 
     data class Bid(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,
