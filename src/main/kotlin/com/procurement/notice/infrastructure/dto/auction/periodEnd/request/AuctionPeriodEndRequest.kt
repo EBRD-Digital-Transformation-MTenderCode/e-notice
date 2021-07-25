@@ -34,6 +34,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.infrastructure.bind.money.MoneyDeserializer
 import com.procurement.notice.infrastructure.bind.money.MoneySerializer
 import com.procurement.notice.model.ocds.Requirement
+import com.procurement.notice.model.tender.record.AwardCriteriaDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -453,7 +454,10 @@ data class AuctionPeriodEndRequest(
 
     data class Tender(
         @field:JsonProperty("auctionPeriod") @param:JsonProperty("auctionPeriod") val auctionPeriod: AuctionPeriod,
-        @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions
+        @field:JsonProperty("electronicAuctions") @param:JsonProperty("electronicAuctions") val electronicAuctions: ElectronicAuctions,
+
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
     ) {
         data class AuctionPeriod(
             @JsonDeserialize(using = JsonDateTimeDeserializer::class)

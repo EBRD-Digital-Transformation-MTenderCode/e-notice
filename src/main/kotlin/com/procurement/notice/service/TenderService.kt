@@ -156,7 +156,8 @@ class TenderService(
                 ),
                 statusDetails = data.tenderStatusDetails, //FR-5.7.2.1.6
                 lots = updatedLots.toList(), //FR-5.7.2.1.6
-                criteria = updatedCriteria //FR-5.7.2.1.6
+                criteria = updatedCriteria, //FR-5.7.2.1.6
+                awardCriteriaDetails = release.tender.awardCriteriaDetails ?: data.tender?.awardCriteriaDetails?.key
             ),
             awards = updatedAwards.toList(),
             bids = updatedBids, //FR-5.7.2.1.3

@@ -20,6 +20,7 @@ import com.procurement.notice.domain.model.enums.TypeOfSupplier
 import com.procurement.notice.domain.model.lot.LotId
 import com.procurement.notice.domain.model.money.Money
 import com.procurement.notice.model.ocds.Requirement
+import com.procurement.notice.model.tender.record.AwardCriteriaDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -324,7 +325,8 @@ data class AuctionPeriodEndData(
 
     data class Tender(
         val auctionPeriod: AuctionPeriod,
-        val electronicAuctions: ElectronicAuctions
+        val electronicAuctions: ElectronicAuctions,
+        val awardCriteriaDetails: AwardCriteriaDetails?
     ) {
         data class AuctionPeriod(
             val startDate: LocalDateTime,
