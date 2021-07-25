@@ -29,6 +29,7 @@ import com.procurement.notice.infrastructure.bind.date.JsonDateTimeSerializer
 import com.procurement.notice.infrastructure.bind.money.MoneyDeserializer
 import com.procurement.notice.infrastructure.bind.money.MoneySerializer
 import com.procurement.notice.model.ocds.Requirement
+import com.procurement.notice.model.tender.record.AwardCriteriaDetails
 import java.time.LocalDateTime
 
 data class TenderPeriodEndRequest(
@@ -45,8 +46,16 @@ data class TenderPeriodEndRequest(
     @field:JsonProperty("documents") @param:JsonProperty("documents") val documents: List<Document>?,
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @field:JsonProperty("unsuccessfulLots") @param:JsonProperty("unsuccessfulLots") val unsuccessfulLots: List<UnsuccessfulLot>?
+    @field:JsonProperty("unsuccessfulLots") @param:JsonProperty("unsuccessfulLots") val unsuccessfulLots: List<UnsuccessfulLot>?,
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @field:JsonProperty("tender") @param:JsonProperty("tender") val tender: Tender?
 ) {
+
+    data class Tender(
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @field:JsonProperty("awardCriteriaDetails") @param:JsonProperty("awardCriteriaDetails") val awardCriteriaDetails: AwardCriteriaDetails?
+    )
 
     data class Bid(
         @field:JsonProperty("id") @param:JsonProperty("id") val id: String,

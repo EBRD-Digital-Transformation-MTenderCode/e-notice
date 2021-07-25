@@ -1,5 +1,8 @@
 {
   "tenderStatusDetails": "empty",
+  "tender": {
+    "awardCriteriaDetails": "manual"
+  },
   "bids": [
     {
       "id": "9d353269-c442-47ab-b11e-a82bf84c6cd5",

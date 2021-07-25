@@ -99,7 +99,8 @@ class AuctionServiceImpl(
                     durationInDays = null
                 ),
                 electronicAuctions = updatedElectronicAuctions,
-                criteria = updatedCriteria
+                criteria = updatedCriteria,
+                awardCriteriaDetails = release.tender.awardCriteriaDetails ?: data.tender.awardCriteriaDetails?.key
             ),
             awards = updatedAwards.toList(),             //FR-5.7.2.6.4
             bids = updatedBids,                          //FR-5.7.2.6.3

@@ -17,10 +17,12 @@ import com.procurement.notice.domain.model.enums.TypeOfSupplier
 import com.procurement.notice.domain.model.lot.LotId
 import com.procurement.notice.domain.model.money.Money
 import com.procurement.notice.model.ocds.Requirement
+import com.procurement.notice.model.tender.record.AwardCriteriaDetails
 import java.time.LocalDateTime
 
 data class TenderPeriodEndData(
     val tenderStatusDetails: TenderStatusDetails,
+    val tender: Tender?,
     val bids: List<Bid>,
     val criteria: List<Criteria>,
     val awards: List<Award>,
@@ -28,6 +30,11 @@ data class TenderPeriodEndData(
     val documents: List<Document>,
     val unsuccessfulLots: List<UnsuccessfulLot>
 ) {
+
+    data class Tender(
+        val awardCriteriaDetails: AwardCriteriaDetails?
+    )
+
     data class Bid(
         val id: String,
         val date: LocalDateTime,
