@@ -53,6 +53,10 @@ class CreateReleaseService(
         val checkFs = toObject(CheckFsDto::class.java, data.toString())
         val receivedMs = releaseService.getMs(data)
         val params = releaseService.getParamsForCreateCnPnPin(operation, Stage.valueOf(stage.toUpperCase()))
+        val mergedParties = receivedMs.parties
+            .mergeParties(receivedMs.tender, checkFs)
+            .toMutableList()
+
         val ms = receivedMs.copy(
             ocid = cpid,
             date = releaseDate,
@@ -104,9 +108,9 @@ class CreateReleaseService(
                         amendments = emptyList(),
                         submissionLanguages = emptyList()
                     )
-                }
+                },
+            parties = mergedParties
         )
-        organizationService.processMsParties(ms, checkFs)
 
         val receivedRelease = releaseService.getRelease(data)
         val release = receivedRelease.copy(
