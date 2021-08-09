@@ -425,6 +425,8 @@ class CreateReleaseService(
             ocid = ocidCn,
             processType = params.relatedProcessType
         )
+        //FR-ER-5.5.2.2.6
+        relatedProcessService.addMsRelatedProcessToRecord(release = newRelease, cpId = cpid)
         relatedProcessService.addRecordRelatedProcessToRecord(
             release = newRelease,
             ocId = ocid,
