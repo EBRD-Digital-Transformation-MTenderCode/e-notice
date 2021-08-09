@@ -1,6 +1,7 @@
 package com.procurement.notice.service
 
 import com.procurement.notice.application.service.tender.periodEnd.TenderPeriodEndContext
+import com.procurement.notice.domain.extention.toList
 import com.procurement.notice.domain.model.ProcurementMethod
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
@@ -12,7 +13,7 @@ import com.procurement.notice.model.ocds.OrganizationReference
 import com.procurement.notice.model.ocds.PartyRole
 import com.procurement.notice.model.tender.dto.CheckFsDto
 import com.procurement.notice.model.tender.enquiry.RecordEnquiry
-import com.procurement.notice.model.tender.ms.Ms
+import com.procurement.notice.model.tender.ms.MsTender
 import com.procurement.notice.model.tender.record.Release
 import org.springframework.stereotype.Service
 
@@ -81,18 +82,6 @@ class OrganizationService {
                 fs.parties.add(partyPayer)
             }
             fs.payer = null
-        }
-    }
-
-    fun processMsParties(ms: Ms, checkFs: CheckFsDto) {
-        ms.parties.let { parties ->
-            if (checkFs.buyer.isNotEmpty()) checkFs.buyer.forEach { buyer -> addParty(parties = parties, organization = buyer, role = PartyRole.BUYER) }
-            if (checkFs.payer.isNotEmpty()) checkFs.payer.forEach { payer -> addParty(parties = parties, organization = payer, role = PartyRole.PAYER) }
-            if (checkFs.funder.isNotEmpty()) checkFs.funder.forEach { funder -> addParty(parties = parties, organization = funder, role = PartyRole.FUNDER) }
-            ms.tender.procuringEntity?.let { procuringEntity ->
-                addParty(parties = parties, organization = procuringEntity, role = PartyRole.PROCURING_ENTITY)
-                clearOrganizationReference(procuringEntity)
-            }
         }
     }
 
@@ -282,5 +271,65 @@ class OrganizationService {
         organization.details = null
         organization.buyerProfile = null
         organization.persones = null
+    }
+}
+
+fun List<Organization>.mergeParties(msTender: MsTender, checkFs: CheckFsDto): List<Organization> =
+    this.mergePartiesBy(organizations = checkFs.buyer, role = PartyRole.BUYER)
+        .mergePartiesBy(organizations = checkFs.payer, role = PartyRole.PAYER)
+        .mergePartiesBy(organizations = checkFs.funder, role = PartyRole.FUNDER)
+        .mergePartiesBy(organizations = msTender.procuringEntity.toList(), role = PartyRole.PROCURING_ENTITY)
+
+fun List<Organization>.mergePartiesBy(
+    organizations: List<OrganizationReference>,
+    role: PartyRole
+): List<Organization> {
+    if (organizations.isEmpty()) return this
+
+    val partiesId: List<String> = this.map { it.id!! }
+    val organizationsId: List<String> = organizations.map { it.id!! }
+    val allIds: List<String> = partiesId + organizationsId
+
+    val partiesById: Map<String, Organization> = this.associateBy { it.id!! }
+    val organizationsById: Map<String, OrganizationReference> = organizations.associateBy { it.id!! }
+
+    return allIds.map { id ->
+        partiesById[id]
+            ?.let { party ->
+                organizationsById[id]
+                    ?.let { organization ->
+                        Organization(
+                            id = id,
+                            name = if (party.name.isNullOrEmpty()) organization.name else party.name,
+                            identifier = if (party.identifier == null) organization.identifier else party.identifier,
+                            additionalIdentifiers = if (party.additionalIdentifiers == null) organization.additionalIdentifiers else party.additionalIdentifiers,
+                            address = if (party.address == null) organization.address else party.address,
+                            contactPoint = if (party.contactPoint == null) organization.contactPoint else party.contactPoint,
+                            details = if (party.details == null) organization.details else party.details,
+                            buyerProfile = if (party.buyerProfile.isNullOrEmpty()) organization.buyerProfile else party.buyerProfile,
+                            persones = if (party.persones == null) organization.persones else party.persones,
+                            roles = if (role in party.roles)
+                                party.roles
+                            else
+                                (party.roles + role).toMutableList()
+                        )
+                    }
+                    ?: party
+            }
+            ?: organizationsById.getValue(id)
+                .let { organization ->
+                    Organization(
+                        id = id,
+                        name = organization.name,
+                        identifier = organization.identifier,
+                        additionalIdentifiers = organization.additionalIdentifiers,
+                        address = organization.address,
+                        contactPoint = organization.contactPoint,
+                        roles = mutableListOf(role),
+                        details = organization.details,
+                        buyerProfile = organization.buyerProfile,
+                        persones = organization.persones
+                    )
+                }
     }
 }
