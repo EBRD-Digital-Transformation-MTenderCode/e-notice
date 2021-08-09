@@ -288,7 +288,7 @@ fun List<Organization>.mergePartiesBy(
 
     val partiesId: List<String> = this.map { it.id!! }
     val organizationsId: List<String> = organizations.map { it.id!! }
-    val allIds: List<String> = partiesId + organizationsId
+    val allIds: List<String> = partiesId.mergeUnique(organizationsId)
 
     val partiesById: Map<String, Organization> = this.associateBy { it.id!! }
     val organizationsById: Map<String, OrganizationReference> = organizations.associateBy { it.id!! }
@@ -332,4 +332,14 @@ fun List<Organization>.mergePartiesBy(
                     )
                 }
     }
+}
+
+fun <T> Collection<T>.mergeUnique(other: Collection<T>): List<T> {
+    val unique = mutableSetOf<T>()
+        .apply { addAll(this@mergeUnique) }
+    return mutableListOf<T>()
+        .apply {
+            addAll(this@mergeUnique)
+            other.forEach { if (unique.add(it)) add(it) }
+        }
 }
